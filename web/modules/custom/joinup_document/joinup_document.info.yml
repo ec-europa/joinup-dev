@@ -13,6 +13,7 @@ config_devel:
   - core.base_field_override.node.document.title
   - core.entity_form_display.node.document.default
   - core.entity_view_display.node.document.default
+  - core.entity_view_display.node.document.moderation
   - core.entity_view_display.node.document.view_mode_featured
   - core.entity_view_display.node.document.view_mode_tile
   - field.field.node.document.body
@@ -23,6 +24,7 @@ config_devel:
   - field.field.node.document.field_keywords
   - field.field.node.document.field_licence
   - field.field.node.document.field_policy_domain
+  - field.field.node.document.field_shared_in
   - field.field.node.document.field_short_title
   - field.field.node.document.field_state
   - field.field.node.document.field_type

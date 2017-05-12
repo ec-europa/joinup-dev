@@ -59,8 +59,8 @@ Feature: Collections Overview
     And I click "Propose collection"
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title         | Colonies in space                           |
-      | Description   | Some space mumbo jumbo description.         |
+      | Title       | Colonies in space                   |
+      | Description | Some space mumbo jumbo description. |
     When I select "Employment and Support Allowance" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -87,3 +87,37 @@ Feature: Collections Overview
 
     # Clean up the collection that was created manually.
     Then I delete the "Colonies in space" collection
+
+  @terms
+  Scenario: View collection detailed information in the About page
+    Given the following owner:
+      | name         | type                |
+      | Tamsin Irwin | Industry consortium |
+    And the following contact:
+      | email       | irwinbvba@example.com        |
+      | name        | Irwin BVBA made-up company   |
+      | Website URL | http://www.example.org/irwin |
+    And the following collection:
+      | title               | Fitness at work                                                      |
+      | description         | This collection is intended to show ways of being fit while working. |
+      | policy domain       | E-health                                                             |
+      | owner               | Tamsin Irwin                                                         |
+      | abstract            | Fit while working is dope.                                           |
+      | logo                | logo.png                                                             |
+      | banner              | banner.jpg                                                           |
+      | contact information | Irwin BVBA made-up company                                           |
+      | spatial coverage    | Belgium                                                              |
+      | closed              | no                                                                   |
+      | elibrary creation   | facilitators                                                         |
+      | moderation          | no                                                                   |
+      | state               | validated                                                            |
+
+    When I go to the homepage of the "Fitness at work" collection
+    And I click "About" in the "Left sidebar" region
+    Then I should see the heading "About Fitness at work"
+    And I should see the text "Fit while working is dope."
+    And I should see the text "This collection is intended to show ways of being fit while working."
+    And I should see the text "Tamsin Irwin"
+    And I should see the text "Irwin BVBA made-up company"
+    And I should see the text "E-health"
+    And I should see the text "Belgium"

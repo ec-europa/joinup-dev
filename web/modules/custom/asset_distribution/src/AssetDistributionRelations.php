@@ -5,6 +5,7 @@ namespace Drupal\asset_distribution;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -67,6 +68,19 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
     }
     $target_id = $asset_release->field_isr_is_version_of->first()->target_id;
     return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
+  }
+
+  /**
+   * Returns the solution to which a distribution belongs.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $distribution
+   *   The distribution for which to return the solution.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The solution.
+   */
+  public static function getDistributionSolution(RdfInterface $distribution) {
+    return $distribution->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
   }
 
   /**

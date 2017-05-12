@@ -12,12 +12,13 @@ config_devel:
   - core.base_field_override.node.discussion.status
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.node.discussion.default
-  - core.entity_view_display.node.discussion.default
+  - core.entity_view_display.node.discussion.moderation
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
   - field.field.node.discussion.body
   - field.field.node.discussion.field_comments
   - field.field.node.discussion.field_policy_domain
+  - field.field.node.discussion.field_shared_in
   - field.field.node.discussion.field_state
   - field.field.node.discussion.og_audience
   - node.type.discussion

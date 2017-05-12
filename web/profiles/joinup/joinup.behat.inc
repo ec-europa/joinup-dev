@@ -15,6 +15,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -35,6 +36,7 @@ use Drupal\User\Entity\User;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use EntityTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
@@ -278,7 +280,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Then the :select select available options should be :options
+   * @Then the available options in the :select select should be :options
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -421,6 +423,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks if the given node has the correct publication state.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $state
+   *   The expected publication state, either 'published' or 'unpublished'.
+   *
+   * @Then the community content with title :title should have the publication state :state
+   */
+  public function assertPublicationState($title, $state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getEntityByLabel('node', $title);
+    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
+  }
+
+  /**
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
@@ -443,7 +461,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
         unset($node->alias);
-        $node->$name = $value;
+        // Don't set empty values, since we can have multiple aliases that point
+        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // 'og_audience' field).
+        if (!empty($value)) {
+          $node->$name = $value;
+        }
       }
     }
 
@@ -472,6 +495,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Replace the human readable value with the expected boolean.
       $node->status = $mapping[$node->status];
     }
+
+    // Replace human readable workflow states with machine names.
+    if (!empty($node->field_state)) {
+      $node->field_state = self::translateWorkflowStateAlias($node->field_state);
+    }
   }
 
   /**
@@ -490,24 +518,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'discussion' => [
         'state' => 'field_state',
         'content' => 'body',
+        'shared in' => 'field_shared_in',
       ],
       'document' => [
-        'short title' => 'field_short_title',
-        'type' => 'field_type',
+        'keywords' => 'field_keywords',
         'licence' => 'field_licence',
+        'short title' => 'field_short_title',
+        'state' => 'field_state',
+        'type' => 'field_type',
+        'spatial coverage' => 'field_document_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'event' => [
+        'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
+        'agenda' => 'field_event_agenda',
+        'location' => 'field_location',
+        'additional info address' => 'field_event_adtl_address_info',
+        'organisation' => 'field_organisation',
+        'scope' => 'field_scope',
+        'shared in' => 'field_shared_in',
       ],
       'news' => [
         'headline' => 'field_news_headline',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
+        'spatial coverage' => 'field_news_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'policy domain' => 'field_policy_domain',
       ],
     ];
 
@@ -660,13 +704,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I (should )not see the :heading tile
    */
   public function assertTileNotPresent($heading) {
-    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    // We target the heading with "h2" instead of ".listing__title" because both
+    // unstyled and styled tiles use h2 as element for their titles.
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
     foreach ($results as $result) {
       /** @var \Behat\Mink\Element\Element $result */
       if ($result->getText() === $heading) {
         throw new \Exception("The tile '$heading' was found on the page");
       }
     }
+  }
+
+  /**
+   * Asserts that only the expected tiles are found in the page.
+   *
+   * @param string $headings
+   *   A comma-separated list of tile headings.
+   *
+   * @Then the page should show( only) the tiles :headings
+   */
+  public function assertUnorderedTilesPresent($headings) {
+    $tiles_in_page = array_map(function ($element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      return $element->getText();
+    }, $this->getTiles());
+    $headings = $this->explodeCommaSeparatedStepArgument($headings);
+
+    sort($headings);
+    sort($tiles_in_page);
+    \PHPUnit_Framework_Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
   }
 
   /**
@@ -687,7 +753,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       return $result->getText();
     }, $results);
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
 
   /**
@@ -1113,6 +1179,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // Finally save the node.
       $node->save();
     }
+  }
+
+  /**
+   * Checks if a field contains a link to a community content page.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $title
+   *   The title of the community content page.
+   *
+   * @Then the :field field should contain the link to the :title page
+   */
+  public function assertFieldContainsLinkToPage($field, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $uri = '/' . $node->toUrl()->getInternalPath();
+    $this->assertSession()->fieldValueEquals($field, $uri);
   }
 
 }

@@ -85,6 +85,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'owner' => $this->t('Owner'),
+      'collection_owner' => $this->t('Collection owner'),
       'elibrary' => $this->t('Elibrary Creation'),
       'collection_status' => $this->t('Collection status'),
       'content_item_status' => $this->t('Content item status'),

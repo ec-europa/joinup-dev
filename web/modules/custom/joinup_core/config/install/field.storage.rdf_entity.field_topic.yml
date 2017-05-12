@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://www.w3.org/ns/dcat#theme'
+      target_id:
+        predicate: 'http://www.w3.org/ns/dcat#theme'
+        format: resource
 id: rdf_entity.field_topic
 field_name: field_topic
 entity_type: rdf_entity

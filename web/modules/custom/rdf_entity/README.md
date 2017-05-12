@@ -10,8 +10,14 @@ solution would do.
 
 ## Setting up Virtuoso
 ### On a Debian based system
- apt-get install virtuoso-opensource
- service virtuoso-opensource-6.1 start
+
+`apt-cache search "^virtuoso"` will show you available packages.
+
+  ```
+  $ apt-get install virtuoso-opensource
+  $ service virtuoso-opensource-6.1 start
+  ```
+ 
  (Set the password during installation)
 
 ### On Mac OS X system

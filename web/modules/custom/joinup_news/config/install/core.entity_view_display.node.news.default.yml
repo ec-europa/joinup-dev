@@ -7,7 +7,7 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
-    - field.field.node.news.field_news_shared_in
+    - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
@@ -35,7 +35,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 9
+    weight: 8
     label: hidden
     settings:
       pager_id: 0
@@ -51,8 +51,8 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_news_shared_in:
-    weight: 10
+  field_news_referenced_solution:
+    weight: 9
     label: above
     settings:
       view_mode: view_mode_tile
@@ -128,5 +128,23 @@ content:
       joinup:
         template_suggestion: no_wrappers
     region: content
+  report:
+    label: hidden
+    weight: 50
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  share_link:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_keywords: true
+  field_shared_in: true

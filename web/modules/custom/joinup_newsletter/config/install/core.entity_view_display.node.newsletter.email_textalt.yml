@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.newsletter.newsletter
     - node.type.newsletter
   module:
+    - link
     - text
     - user
 id: node.newsletter.email_textalt
@@ -24,3 +25,4 @@ content:
 hidden:
   links: true
   newsletter: true
+  report: true

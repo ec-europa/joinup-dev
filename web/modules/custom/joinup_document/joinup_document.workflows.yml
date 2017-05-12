@@ -12,8 +12,8 @@ node:document:pre_moderated:
     validated:
       label: Validated
       published: true
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
     proposed:
       label: Proposed
     deletion_request:
@@ -50,10 +50,10 @@ node:document:pre_moderated:
     report:
       label: Report
       from: [validated]
-      to: in_assessment
+      to: needs_update
     approve_report:
       label: 'Approve report'
-      from: [in_assessment]
+      from: [needs_update]
       to: proposed
     update_proposed:
       label: 'Update proposed'
@@ -78,8 +78,8 @@ node:document:post_moderated:
     validated:
       label: Validated
       published: true
-    in_assessment:
-      label: In assessment
+    needs_update:
+      label: Needs update
     proposed:
       label: Proposed
   transitions:
@@ -102,10 +102,10 @@ node:document:post_moderated:
     report:
       label: Report
       from: [validated]
-      to: in_assessment
+      to: needs_update
     approve_report:
       label: 'Approve report'
-      from: [in_assessment]
+      from: [needs_update]
       to: proposed
     update_proposed:
       label: 'Update proposed'

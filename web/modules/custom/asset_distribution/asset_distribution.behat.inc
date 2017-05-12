@@ -10,6 +10,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -25,6 +26,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   use FileTrait;
   use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use EntityReferenceTrait;
 
   /**
    * Test asset distributions.
@@ -193,7 +195,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     };
 
     $values = $this->convertValueAliases($values);
-
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'asset_distribution', $values);
     $asset_distribution_entity = $this->createAssetDistribution($values);
 
     // Create the relation with the parent entity if requested.

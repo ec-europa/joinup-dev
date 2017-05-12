@@ -2,12 +2,12 @@ langcode: en
 status: false
 dependencies:
   module:
-    - facets
+    - joinup
   theme:
     - joinup_theme
 id: addcontent
 theme: joinup_theme
-region: '-1'
+region: header
 weight: -8
 provider: null
 plugin: add_content_block
@@ -16,10 +16,4 @@ settings:
   label: 'Add content'
   provider: joinup
   label_display: visible
-visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
-    negate: false
-    context_mapping: {  }
+visibility: {  }

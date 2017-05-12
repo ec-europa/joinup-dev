@@ -5,16 +5,17 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - facets
   - comment
   - ds
+  - facets
   - image
+  - link
+  - message
+  - message_notify
   - og
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
-  - message
-  - message_notify
   - search_api
   - search_api_solr
   - state_machine
@@ -24,13 +25,16 @@ config_devel:
   - core.entity_form_display.comment.comment.default
   - core.entity_form_mode.rdf_entity.inline
   - core.entity_view_display.comment.comment.default
+  - core.entity_view_mode.node.moderation
   - core.entity_view_mode.node.view_mode_tile
+  - core.entity_view_mode.rdf_entity.about
   - core.entity_view_mode.rdf_entity.group_header
   - core.entity_view_mode.rdf_entity.view_mode_featured
   - core.entity_view_mode.rdf_entity.view_mode_tile
   - field.field.comment.comment.field_body
   - field.field.taxonomy_term.file_type.extension
   - field.field.taxonomy_term.file_type.mime_type
+  - field.storage.node.field_shared_in
   - field.storage.comment.field_body
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_keywords

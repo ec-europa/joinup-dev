@@ -19,6 +19,7 @@ dependencies:
   module:
     - ds
     - file_url
+    - link
     - text
     - user
 id: node.document.view_mode_featured
@@ -84,3 +85,5 @@ hidden:
   field_type: true
   links: true
   og_audience: true
+  report: true
+  share_link: true

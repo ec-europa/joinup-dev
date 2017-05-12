@@ -6,10 +6,11 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
-    - field.field.node.news.field_news_shared_in
+    - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_shared_in
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - node.type.news
@@ -39,6 +40,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_comments:
     weight: 7
@@ -62,7 +64,7 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_news_shared_in:
+  field_news_referenced_solution:
     weight: 8
     settings:
       match_operator: CONTAINS
@@ -111,6 +113,7 @@ content:
     region: content
 hidden:
   created: true
+  field_shared_in: true
   og_audience: true
   path: true
   promote: true

@@ -111,12 +111,18 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The RDF entity for which the custom page is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
   }
 
   /**
@@ -156,12 +162,14 @@ class AssetReleaseController extends ControllerBase {
       }
     }
 
-    $standalone_distribution_ids = $this->queryFactory->get('rdf_entity')
+    $query = $this->queryFactory->get('rdf_entity');
+    $query
       ->condition('rid', 'asset_distribution')
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id())
-      ->condition('id', $release_distribution_ids, 'NOT IN')
-      ->execute();
-
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id());
+    if (!empty($release_distribution_ids)) {
+      $query->condition('id', $release_distribution_ids, 'NOT IN');
+    }
+    $standalone_distribution_ids = $query->execute();
     $standalone_distributions = Rdf::loadMultiple($standalone_distribution_ids);
 
     // Put a flag on the standalone distributions so they can be identified for

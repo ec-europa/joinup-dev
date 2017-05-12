@@ -30,5 +30,5 @@ destination:
   plugin: entity:node
   default_bundle: newsletter
 migration_dependencies:
- required:
-   - newsletter_type
+  required:
+    - newsletter_type

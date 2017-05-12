@@ -5,16 +5,21 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\joinup_core\Element\Datetime;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
@@ -26,6 +31,15 @@ function joinup_core_theme($existing, $type, $theme, $path) {
   return [
     'joinup_tiles' => [
       'path' => drupal_get_path('module', 'joinup_core') . '/templates',
+    ],
+    'facet_widget_links_inline' => [
+      'variables' => [
+        'active' => [],
+        'items' => [],
+        'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
+      ],
     ],
   ];
 }
@@ -42,6 +56,24 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  */
 function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Prepares variables for the facet widget "links inline" template.
+ *
+ * Default template: facet-widget-links-inline.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - active: an array of active facet items.
+ *   - items: an array of inactive facet items.
+ *   - attributes: HTML attributes for the main facet wrapper.
+ */
+function template_preprocess_facet_widget_links_inline(array &$variables) {
+  $variables['button_attributes'] = new Attribute([
+    'id' => Html::getUniqueId('filter-button'),
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
+  ]);
 }
 
 /**
@@ -140,22 +172,48 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
 /**
  * Implements hook_entity_base_field_info().
  *
- * Provides a base field that displays the current workflow state on nodes and
- * RDF entities. This field is intended to be used on edit forms which use the
- * set of buttons to perform the workflow state transitions. When these buttons
- * are used the current workflow state is not indicated, so this field can be
- * used to expose this information.
+ * - Provides a base field that displays the current workflow state on nodes and
+ *   RDF entities. This field is intended to be used on edit forms which use the
+ *   set of buttons to perform the workflow state transitions. When these
+ *   buttons are used the current workflow state is not indicated, so this field
+ *   can be used to expose this information.
+ * - Provides a 'report' field on community content pages that can be used to
+ *   report inappropriate content.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
   if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
     $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
       ->setLabel(new TranslatableMarkup('Current workflow state'))
       ->setDisplayOptions('form', ['type' => 'hidden'])
       ->setDisplayConfigurable('form', TRUE)
       ->setComputed(TRUE);
-
-    return $fields;
   }
+
+  // Add a 'report' field to community content entities. Currently all node
+  // types are community content.
+  if ($entity_type->id() === 'node') {
+    $fields['report'] = BaseFieldDefinition::create('report_link')
+      ->setName('report')
+      ->setLabel(t('Report'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\joinup_core\ReportLinkFieldItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 50,
+        'settings' => [
+          'trim_length' => 80,
+          'url_only' => FALSE,
+          'url_plain' => FALSE,
+          'rel' => '',
+          'target' => '',
+        ],
+      ]);
+  }
+
+  return $fields;
 }
 
 /**
@@ -166,6 +224,10 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+
+  // Add the about page as link template, so the og context will be
+  // automatically solved.
+  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
 }
 
 /**
@@ -273,4 +335,101 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * In Joinup, solutions and releases share the same bundle uri. The distinction
+ * between these two is that the releases always have the field
+ * 'field_isr_is_version_of' filled, while solutions do not have this field.
+ * This alter performs the following:
+ * 1. If there is a filter on both the release and solution bundles, do nothing.
+ * 2. If there is a filter on the solution, set the field
+ * 'field_isr_is_version_of' as a field required to be absent.
+ * 3. If there is a filter on the asset release, set the field
+ * 'field_isr_is_version_of' as a required field.
+ * 4. If there is a negative case on the bundles, perform cases 2 and 3 on
+ * reverse.
+ * 5. If none of these exist, as a filter, ignore it.
+ */
+function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  // If only one of the following are true, then add a condition on their
+  // corresponding field. If both are set, then do not bother.
+  $solution = FALSE;
+  $release = FALSE;
+
+  $entity_type = $query->getMetaData('entity_type');
+  $bundle_key = $entity_type->getKey('bundle');
+  foreach ($conditions as $condition) {
+    if ($condition['field'] === $bundle_key) {
+      $bundles = array_intersect(['solution', 'asset_release'], $condition['value']);
+      if (empty($bundles) || count($bundles) !== 1) {
+        continue;
+      }
+      $bundle = reset($bundles);
+      if ($bundle === 'solution') {
+        $solution = TRUE;
+      }
+      elseif ($bundle === 'asset_release') {
+        $release = TRUE;
+      }
+    }
+  }
+
+  if ($solution && !$release) {
+    $query->notExists('field_isr_is_version_of');
+  }
+  elseif (!$solution && $release) {
+    $query->exists('field_isr_is_version_of');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ *
+ * - Make sure the standard formatter for links can be used for the link that is
+ *   used to report inappropriate content.
+ */
+function joinup_core_field_formatter_info_alter(array &$info) {
+  $info['link']['field_types'][] = 'report_link';
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function joinup_core_entity_create(EntityInterface $entity) {
+  // Set the publication state when creating an entity that uses workflow.
+  if ($entity instanceof EntityPublishedInterface) {
+    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    if ($workflow_helper->hasEntityStateField($entity)) {
+      $state_field = $workflow_helper->getEntityStateField($entity);
+      $workflow = $state_field->getWorkflow();
+      $state_id = $state_field->getValue()['value'];
+      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Override the validate handler for the datetime widget.
+ */
+function joinup_core_element_info_alter(array &$info) {
+  if (isset($info['datetime'])) {
+    $info['datetime']['#element_validate'] = [
+      [
+        Datetime::class,
+        'validateDatetime',
+      ],
+    ];
+  }
 }

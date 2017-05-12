@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
     - field.field.rdf_entity.solution.field_is_banner
@@ -60,6 +61,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_is_banner:
     weight: 3

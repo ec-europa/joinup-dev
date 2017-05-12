@@ -10,6 +10,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.node.event.default
   - core.entity_view_display.node.event.default
+  - core.entity_view_display.node.event.moderation
   - core.entity_view_display.node.event.view_mode_featured
   - core.entity_view_display.node.event.view_mode_tile
   - field.field.node.event.body
@@ -26,6 +27,7 @@ config_devel:
   - field.field.node.event.field_organisation_type
   - field.field.node.event.field_policy_domain
   - field.field.node.event.field_scope
+  - field.field.node.event.field_shared_in
   - field.field.node.event.field_short_title
   - field.field.node.event.field_state
   - field.field.node.event.og_audience

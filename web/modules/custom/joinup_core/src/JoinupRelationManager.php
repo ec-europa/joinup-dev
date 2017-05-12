@@ -65,9 +65,15 @@ class JoinupRelationManager implements ContainerInjectionInterface {
    *
    * @return int
    *   The moderation status.
+   *
+   * @throws \Drupal\joinup_core\Exception\MissingRelationException
+   *   Thrown when the entity doesn't have a parent.
    */
   public function getParentModeration(EntityInterface $entity) {
     $parent = $this->getParent($entity);
+    if (!$parent) {
+      return NULL;
+    }
     $field_array = [
       'collection' => 'field_ar_moderation',
       'solution' => 'field_is_moderation',

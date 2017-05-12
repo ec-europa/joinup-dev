@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -20,6 +21,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 
 /**
@@ -159,6 +161,25 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
     $og_menu_instance = OgMenuInstance::create($values);
     $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
   }
 
   // When a new collection is proposed, give the user the 'group owner' role.
@@ -210,7 +231,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:
@@ -226,9 +247,23 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
  *
  * Default graph is published. Draft graph is draft.
  */
-function collection_rdf_entity_presave(EntityInterface $entity) {
+function collection_rdf_entity_presave(RdfInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  // Provide default values for date/time fields if were missed.
+  foreach (['field_ar_creation_date', 'field_ar_modification_date'] as $field_name) {
+    if ($entity->get($field_name)->isEmpty()) {
+      if (!isset($request_time)) {
+        $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());
+      }
+      $entity->set($field_name, $request_time);
+    }
+  }
+
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
 
@@ -338,10 +373,14 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
 
-  // Show only content that is related to this collection through the aggregated
+  $or = $query->createConditionGroup('OR');
+  // Show content that is related to this collection through the aggregated
   // field. This makes sure that other related entities (such as the collection
   // owner) do not show up as collection content tiles.
-  $query->addCondition('entity_groups', [$entity->id()], 'IN');
+  $or->addCondition('entity_groups', [$entity->id()], 'IN');
+  // Or show content that has been shared in this collection.
+  $or->addCondition('field_shared_in', [$entity->id()], 'IN');
+  $query->addConditionGroup($or);
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');

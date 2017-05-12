@@ -16,6 +16,7 @@ function joinup_user_install() {
     'access content',
     'access contextual links',
     'access dashboard',
+    'access user profiles',
     'create contact_information rdf entity',
     'create owner rdf entity',
     'create document content',
@@ -42,6 +43,7 @@ function joinup_user_install() {
   $anonymous_permissions = [
     'access comments',
     'access content',
+    'access user profiles',
     'use text format restricted_html',
     'view rdf entity',
     'export rdf metadata',

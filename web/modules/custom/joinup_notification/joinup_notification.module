@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Og;
+use Drupal\state_machine\Event\WorkflowTransitionEvent;
 
 /**
  * Implements hook_entity_predelete().
@@ -40,20 +41,14 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   $entity_type = $entity->getEntityTypeId();
   $bundle = $entity->bundle();
+  /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+
   // The asset distribution rdf entity does not have a workflow so it is
   // excluded from the following check.
-  if ($entity_type !== 'rdf_entity' || $bundle !== 'asset_distribution') {
-    $field_definitions = array_filter(\Drupal::entityManager()->getFieldDefinitions($entity_type, $bundle), function ($field_definition) {
-      return $field_definition->getType() == 'state';
-    });
-
-    if (empty($field_definitions)) {
-      return;
-    }
-
-    $field_definition = array_pop($field_definitions);
-    $state_field = $entity->{$field_definition->getName()}->first();
-    if (empty($state_field->value) || $state_field->value !== 'deletion_request') {
+  if ($workflow_helper->hasEntityStateField($entity)) {
+    $state_field = $workflow_helper->getEntityStateField($entity);
+    if (empty($state_field) || empty($state_field->value) || $state_field->value !== 'deletion_request') {
       return;
     }
   }
@@ -139,4 +134,56 @@ function joinup_notification_node_admin_action_notification(EntityInterface $ent
 function joinup_notification_node_update(EntityInterface $entity) {
   $values = ['field_message_node' => $entity->id()];
   joinup_notification_node_admin_action_notification($entity, 'content_update_notifications', $values);
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * State machine does not fire a transition event when the target state is the
+ * same as the source state because the current state 'is always allowed'.
+ * If the original state is the same as the target entity, fire that transition
+ * manually.
+ *
+ * @see https://www.drupal.org/node/2746091
+ */
+function joinup_notification_entity_update(EntityInterface $entity) {
+  if (!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
+    return;
+  }
+
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+  if (!$workflow_helper->hasEntityStateField($entity)) {
+    return;
+  }
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity)->getName();
+
+  // Skip cases where original version is not present or the original state
+  // is empty.
+  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+  if (empty($entity->original) || empty($entity->original->get($state_field)->first()->value)) {
+    return;
+  }
+
+  /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_field_item */
+  $state_field_item = $entity->get($state_field)->first();
+  $original_state = $entity->original->get($state_field)->first()->value;
+  $target_state = $state_field_item->value;
+  if ($original_state !== $target_state) {
+    return;
+  }
+
+  $workflow = $state_field_item->getWorkflow();
+  $transition = $workflow->findTransition($original_state, $target_state);
+  if ($transition === NULL) {
+    return;
+  }
+  // Replicate the event fire process by StateItem.
+  // @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem
+  $event_id = $workflow->getGroup() . '.' . $transition->getId() . '.' . 'post_transition';
+  $original_state = $workflow->getState($original_state);
+  $target_state = $workflow->getState($target_state);
+  $event = new WorkflowTransitionEvent($original_state, $target_state, $workflow, $entity, 'post_transition');
+  $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+  $event_dispatcher->dispatch($event_id, $event);
+  $event_dispatcher->dispatch('state_machine.post_transition', $event);
 }
