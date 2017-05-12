@@ -111,12 +111,18 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The RDF entity for which the custom page is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
   }
 
   /**

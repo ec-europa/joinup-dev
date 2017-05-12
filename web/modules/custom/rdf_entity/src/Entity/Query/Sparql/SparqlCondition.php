@@ -53,8 +53,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
     'NOT LIKE' => ['prefix' => 'FILTER(!CONTAINS(', 'suffix' => '))'],
     'EXISTS' => ['prefix' => 'FILTER EXISTS {', 'suffix' => '}'],
     'NOT EXISTS' => ['prefix' => 'FILTER NOT EXISTS {', 'suffix' => '}'],
-    // @todo This is not starts with but contains...
-    'STARTS_WITH' => ['prefix' => 'FILTER(regex(', 'suffix' => ', "i"))'],
     '<' => ['prefix' => '', 'suffix' => ''],
     '>' => ['prefix' => '', 'suffix' => ''],
     '>=' => ['prefix' => '', 'suffix' => ''],
@@ -589,7 +587,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
   protected function compileLike(array $condition) {
     $prefix = self::$filterOperatorMap[$condition['operator']]['prefix'];
     $suffix = self::$filterOperatorMap[$condition['operator']]['suffix'];
-    $value = 'str(' . $this->toVar($condition['field']) . '), str(' . $condition['value'] . ')';
+    $value = 'lcase(str(' . $this->toVar($condition['field']) . ')), lcase(str(' . $condition['value'] . '))';
     return $prefix . $value . $suffix;
   }
 

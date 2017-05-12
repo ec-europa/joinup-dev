@@ -13,6 +13,7 @@ config_devel:
   - core.base_field_override.node.document.title
   - core.entity_form_display.node.document.default
   - core.entity_view_display.node.document.default
+  - core.entity_view_display.node.document.moderation
   - core.entity_view_display.node.document.view_mode_featured
   - core.entity_view_display.node.document.view_mode_tile
   - field.field.node.document.body

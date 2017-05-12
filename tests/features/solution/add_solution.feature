@@ -73,7 +73,7 @@ Feature: "Add solution" visibility options.
       | email | foo@bar.com                 |
       | name  | Contact information example |
     And the following owner:
-      | name                 | type    |
+      | name                 | type                         |
       | Organisation example | Company, Industry consortium |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
@@ -83,10 +83,10 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state"
     When I fill in the following:
-      | Title            | Espresso is the solution                                               |
-      | Description      | This is a test text                                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Title            | Espresso is the solution                                      |
+      | Description      | This is a test text                                           |
+      | Spatial coverage | Belgium                                                       |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
@@ -101,6 +101,9 @@ Feature: "Add solution" visibility options.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
+    # Ensure that the Status field is a dropdown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    And I select "Completed" from "Status"
     And I press "Propose"
     Then I should see the heading "Espresso is the solution"
     When I am logged in as a moderator

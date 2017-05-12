@@ -8,6 +8,7 @@ dependencies:
   - ds
   - joinup_comment
   - joinup_community_content
+  - joinup_core
   - og
   - solution
   - view_unpublished
@@ -18,6 +19,7 @@ config_devel:
   - core.base_field_override.node.news.title
   - core.entity_form_display.node.news.default
   - core.entity_view_display.node.news.default
+  - core.entity_view_display.node.news.moderation
   - core.entity_view_display.node.news.view_mode_featured
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body

@@ -7,6 +7,8 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -860,6 +862,114 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       }
     }
     throw new \Exception(sprintf("The text '%s' was not found in any heading on the page %s", $heading, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Checks multiple headings on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I (should )see the following headings:
+   */
+  public function assertHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key === FALSE) {
+          continue;
+        }
+        unset($headings[$key]);
+      }
+    }
+    if (!empty($headings)) {
+      throw new \Exception(sprintf("The following headings were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $headings)));
+    }
+  }
+
+  /**
+   * Checks if multiple headings are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I should not see the following headings:
+   */
+  public function assertNoHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    $found_headings = [];
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key !== FALSE) {
+          $found_headings[] = $headings[$key];
+        }
+      }
+    }
+    if (!empty($found_headings)) {
+      throw new \Exception(sprintf("The following headings were found on the page %s, but they shouldn't have been: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $found_headings)));
+    }
+  }
+
+  /**
+   * Checks multiple lines of text on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I (should )see the following lines of text:
+   */
+  public function assertTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks that multiple lines of text are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I should not see the following lines of text:
+   */
+  public function assertNoTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextNotContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
   }
 
 }
