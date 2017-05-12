@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.27.1",
+            "version": "3.27.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9fc7aa9cad2e8cff8e49582f1be19cf92631153c"
+                "reference": "eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9fc7aa9cad2e8cff8e49582f1be19cf92631153c",
-                "reference": "9fc7aa9cad2e8cff8e49582f1be19cf92631153c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8",
+                "reference": "eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-09T17:51:04+00:00"
+            "time": "2017-05-11T21:23:43+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2645,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "86b94dd2038e5ebba0aa1b1b000969ab362bcb3a"
+                "reference": "5819f0f0f1132fe130e6eff889802dfa938c4331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/86b94dd2038e5ebba0aa1b1b000969ab362bcb3a",
-                "reference": "86b94dd2038e5ebba0aa1b1b000969ab362bcb3a",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/5819f0f0f1132fe130e6eff889802dfa938c4331",
+                "reference": "5819f0f0f1132fe130e6eff889802dfa938c4331",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,7 +2667,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-11 10:24:00"
+            "time": "2017-05-12 11:29:01"
         },
         {
             "name": "drupal/og_menu",
@@ -3082,8 +3082,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3+12-dev",
-                    "datestamp": "1494257585"
+                    "version": "8.x-1.0-rc2+1-dev",
+                    "datestamp": "1494524885"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
