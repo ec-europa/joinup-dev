@@ -1,16 +1,16 @@
-@api
+@api @terms
 Feature: Collection homepage
   In order find content around a topic
   As a user of the website
   I need to be able see all content related to a collection on the collection homepage
 
-  @terms
-  Scenario: The collection homepage shows related content.
+  Background:
     Given the following owner:
       | name          |
       | Bilbo Baggins |
     And the following collection:
       | title             | Middle earth daily               |
+      | description       | Middle earth daily               |
       | owner             | Bilbo Baggins                    |
       | logo              | logo.png                         |
       | moderation        | yes                              |
@@ -25,6 +25,7 @@ Feature: Collection homepage
       | title                                    | short title      | body                                      | collection         | start date          | state     | policy domain     |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated | Supplier exchange |
 
+  Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
     # The collection fields are shown in the about page.
     Then I should not see the text "Only members can create new content"
@@ -79,3 +80,22 @@ Feature: Collection homepage
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
+
+  # Regression test to ensure that related community content does not appear in the draft view.
+  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  Scenario: The related content should not be shown in the draft view version as part of the content.
+    When I am logged in as a facilitator of the "Middle earth daily" collection
+    And I go to the homepage of the "Middle earth daily" collection
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "Middle earth nightly"
+    And I press "Save as draft"
+    And I click "View draft" in the "Entity actions" region
+    Then I should see the text "Moderated"
+    And I should see the text "Open collection"
+    And I should see the text "Bilbo Baggins"
+    And I should see the text "Employment and Support Allowance"
+    And I should see the heading "Middle earth nightly"
+    # But the tiles should not be visible.
+    But I should not see the "Rohirrim make extraordinary deal" tile
+    And I should not see the "Breaking: Gandalf supposedly plans his retirement" tile
+    And I should not see the "Big hobbit feast - fireworks at midnight" tile
