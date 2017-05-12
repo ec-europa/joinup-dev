@@ -51,6 +51,7 @@ class RouteProcessorRdf implements OutboundRouteProcessorInterface {
         // If the rdf_entity converter exists in the parameter,
         // then the parameter is of type rdf_entity and needs to be normalized.
         if (isset($parameter['converter']) && $parameter['converter'] == 'paramconverter.rdf_entity') {
+          $parameters[$type] = str_replace('/', '\\', $parameters[$type]);
           $parameters[$type] = urlencode($parameters[$type]);
         }
       }
