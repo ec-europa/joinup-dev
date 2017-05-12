@@ -30,6 +30,7 @@ dependencies:
     - ds
     - state_machine
     - text
+    - user
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
 bundle: asset_release
@@ -42,6 +43,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_asset_release_category:
     weight: 3
     label: above
@@ -49,6 +51,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_asset_release_type:
     weight: 4
     label: above
@@ -56,6 +59,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_creation_date:
     weight: 1
     label: hidden
@@ -74,6 +78,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: datetime_time_ago
+    region: content
   field_isr_distribution:
     weight: 3
     label: hidden
@@ -92,12 +97,14 @@ content:
       joinup:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
+    region: content
   field_isr_elibrary_creation:
     weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
   field_isr_is_version_of:
     weight: 2
     label: above
@@ -114,6 +121,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: entity_reference_label
+    region: content
   field_isr_issue_tracker:
     weight: 19
     label: above
@@ -125,6 +133,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_landing_page:
     weight: 17
     label: above
@@ -136,6 +145,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_metrics_page:
     weight: 18
     label: above
@@ -147,6 +157,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_moderation:
     weight: 14
     label: above
@@ -156,6 +167,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_isr_related_asset_releases:
     weight: 2
     label: above
@@ -163,6 +175,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_release_notes:
     type: text_default
     weight: 4
@@ -178,6 +191,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
   field_isr_source_code_repository:
     weight: 21
     label: above
@@ -189,12 +203,14 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_state:
     type: state_transition_form
     weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_isr_webdav_creation:
     weight: 15
     label: above
@@ -204,6 +220,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_isr_webdav_url:
     weight: 16
     label: above
@@ -215,6 +232,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_wiki:
     weight: 20
     label: above
@@ -226,6 +244,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   label:
     label: hidden
     type: string
@@ -242,6 +261,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
 hidden:
   field_isr_banner: true
   field_isr_contact_information: true

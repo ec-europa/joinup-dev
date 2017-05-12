@@ -7,5 +7,6 @@ node_access_strict: false
 delete_orphans: true
 delete_orphans_plugin_id: simple
 group_resolvers:
+  - joinup_route_group
   - route_group
   - route_group_content

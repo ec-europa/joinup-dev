@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://www.w3.org/ns/dcat#keyword'
+      value:
+        predicate: 'http://www.w3.org/ns/dcat#keyword'
+        format: literal
 id: rdf_entity.field_keywords
 field_name: field_keywords
 entity_type: rdf_entity

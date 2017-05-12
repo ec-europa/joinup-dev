@@ -240,8 +240,7 @@ QUERY;
       if (empty($this->treeChildren[$vid])) {
         /** @var \Drupal\taxonomy\Entity\Vocabulary $voc */
         $voc = entity_load('taxonomy_vocabulary', $vid);
-        $settings = rdf_entity_get_third_party_property($voc, 'mapping', 'vid', FALSE);
-        $concept_schema = array_pop($settings);
+        $concept_schema = $voc->getThirdPartySetting('rdf_entity', 'rdf_type');
         $this->treeChildren[$vid] = [];
         $this->treeParents[$vid] = [];
         $this->treeTerms[$vid] = [];

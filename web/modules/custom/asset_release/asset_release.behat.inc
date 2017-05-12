@@ -202,7 +202,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {

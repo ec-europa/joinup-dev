@@ -5,27 +5,48 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://eurovoc.europa.eu/100141'
     mapping:
       uuid:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       vid:
-        target_id: 'http://eurovoc.europa.eu/100141'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+          format: resource
       langcode:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       name:
-        value: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: t_literal
       description:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       format:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       weight:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       parent:
-        target_id: 'http://www.w3.org/2004/02/skos/core#broader'
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+          format: resource
       changed:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       default_langcode:
-        value: ''
+        value:
+          predicate: ''
+          format: ''
       path: {  }
     graph:
       default: 'http://joinup.eu/license_type/published'

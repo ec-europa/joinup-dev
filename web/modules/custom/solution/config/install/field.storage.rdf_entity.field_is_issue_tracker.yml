@@ -7,9 +7,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://joinup.eu/solution/issue_tracker'
-      title: ''
-      options: ''
+      uri:
+        predicate: 'http://joinup.eu/solution/issue_tracker'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_is_issue_tracker
 field_name: field_is_issue_tracker
 entity_type: rdf_entity
