@@ -44,6 +44,9 @@ Feature: "Add release" visibility options.
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
+    # Ensure that the Status field is a dropdown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    And I select "Completed" from "Status"
     And I press "Publish"
     Then I should see the error message "Content with name Release Test 2 already exists."
 
@@ -72,3 +75,17 @@ Feature: "Add release" visibility options.
 
     # Cleanup created release.
     Then I delete the "Release Test 1 v2" release
+
+  Scenario: Do not allow access to the page if the parent is not a solution.
+    Given the following collection:
+      | uri   | http://example1regression |
+      | title | The Stripped Stream       |
+      | state | validated                 |
+
+    When I am not logged in
+    And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
+    Then I should see the heading "Page not found"
+
+    When I am logged in as a moderator
+    And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
+    Then I should see the heading "Page not found"

@@ -7,13 +7,13 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 
+      uri:
         predicate: 'http://joinup.eu/solution/wiki'
         format: 'xsd:string'
-      title: 
+      title:
         predicate: ''
         format: ''
-      options: 
+      options:
         predicate: ''
         format: ''
 id: rdf_entity.field_is_wiki

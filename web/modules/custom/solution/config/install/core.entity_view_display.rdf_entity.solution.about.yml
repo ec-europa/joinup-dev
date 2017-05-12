@@ -327,6 +327,7 @@ hidden:
   field_is_related_solutions: true
   field_is_state: true
   og_group: true
+  rdf_entity_field_is_content_inline_facets: true
   rdf_entity_field_is_content_top: true
   related_solutions: true
   releases_overview: true

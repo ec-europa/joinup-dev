@@ -43,6 +43,9 @@ class ActiveGraphSubscriber implements EventSubscriberInterface {
         $storage = \Drupal::entityManager()->getStorage($entity_type_id);
         $storage->setRequestGraphs($event->getValue(), ['draft', 'default']);
         $entity = $storage->load($event->getValue());
+        // If the entity is empty, it means the user tried to access the edit
+        // route of a non existing entity. In that case, simply return and let
+        // the rdf entity try to load the entity from all graphs.
         if (empty($entity)) {
           return;
         }

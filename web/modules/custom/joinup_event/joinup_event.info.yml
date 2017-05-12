@@ -10,6 +10,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.node.event.default
   - core.entity_view_display.node.event.default
+  - core.entity_view_display.node.event.moderation
   - core.entity_view_display.node.event.view_mode_featured
   - core.entity_view_display.node.event.view_mode_tile
   - field.field.node.event.body
