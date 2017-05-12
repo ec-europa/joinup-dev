@@ -45,4 +45,30 @@ class RdfEntityCacheTest extends JoinupKernelTestBase {
     $this->assertFalse($cache->get('foo'));
   }
 
+  /**
+   * Test if the cache is invalidated when editing an RDF entity through API.
+   */
+  public function testEntityCacheInvalidadtion() {
+    // Create a rdf_entity.
+    $rdf = Rdf::create([
+      'rid' => 'dummy',
+      'id' => 'http://example.com',
+      'label' => 'Foo',
+    ]);
+    $rdf->save();
+
+    // Check that the label is correct after reloading the entity.
+    $rdf = Rdf::load($rdf->id());
+    $this->assertEquals('Foo', $rdf->label());
+
+    // Change the label.
+    $rdf = Rdf::load($rdf->id());
+    $rdf->label->value = 'Bar';
+    $rdf->save();
+
+    // Check that the label is correct after reloading the entity.
+    $rdf = Rdf::load($rdf->id());
+    $this->assertEquals('Bar', $rdf->label());
+  }
+
 }
