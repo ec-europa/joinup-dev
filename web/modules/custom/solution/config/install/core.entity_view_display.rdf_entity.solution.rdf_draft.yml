@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.rdf_entity.draft
+    - core.entity_view_mode.rdf_entity.rdf_draft
     - field.field.rdf_entity.solution.field_is_actor
     - field.field.rdf_entity.solution.field_is_affiliations_requests
     - field.field.rdf_entity.solution.field_is_banner
@@ -47,10 +47,10 @@ dependencies:
     - options
     - text
     - user
-id: rdf_entity.solution.draft
+id: rdf_entity.solution.rdf_draft
 targetEntityType: rdf_entity
 bundle: solution
-mode: draft
+mode: rdf_draft
 content:
   field_is_actor:
     weight: 31

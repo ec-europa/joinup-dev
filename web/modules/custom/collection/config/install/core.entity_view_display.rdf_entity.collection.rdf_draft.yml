@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.rdf_entity.draft
+    - core.entity_view_mode.rdf_entity.rdf_draft
     - field.field.rdf_entity.collection.field_ar_abstract
     - field.field.rdf_entity.collection.field_ar_access_url
     - field.field.rdf_entity.collection.field_ar_affiliates
@@ -26,10 +26,10 @@ dependencies:
     - options
     - text
     - user
-id: rdf_entity.collection.draft
+id: rdf_entity.collection.rdf_draft
 targetEntityType: rdf_entity
 bundle: collection
-mode: draft
+mode: rdf_draft
 content:
   field_ar_abstract:
     weight: 9
