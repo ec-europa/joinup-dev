@@ -1062,6 +1062,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that a logo exists in the header.
+   *
+   * @Then I should see a logo on the header
+   */
+  public function assertExistingLogo() {
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__logo ")]//img';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Asserts that a banner exists in the header.
+   *
+   * @Then I should see a banner on the header
+   */
+  public function assertExistingBanner() {
+    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $results = $this->getSession()->getPage()->find('xpath', $xpath);
+    return $results->getText() !== 'background-image: url("");';
+  }
+
+  /**
    * Asserts that the current user's profile picture is shown in the header.
    *
    * @Then my user profile picture should be shown in the page header
