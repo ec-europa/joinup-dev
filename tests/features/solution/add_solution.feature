@@ -104,6 +104,7 @@ Feature: "Add solution" visibility options.
     And I select "Completed" from "Status"
     And I press "Propose"
     # Regression test for non required fields 'Banner' and 'Logo'.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
     Then I should not see the following error messages:
       | Banner field is required. |
       | Logo field is required.   |
