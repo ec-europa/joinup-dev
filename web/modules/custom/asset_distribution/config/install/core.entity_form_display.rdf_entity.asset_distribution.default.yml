@@ -16,7 +16,6 @@ dependencies:
     - rdf_entity.rdfentity.asset_distribution
   module:
     - file_url
-    - link
     - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
@@ -37,6 +36,7 @@ content:
     settings:
       behaviour: create
     third_party_settings: {  }
+    region: content
   field_ad_description:
     weight: 2
     settings:
@@ -44,6 +44,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_ad_format:
     weight: 6
     settings:
@@ -52,22 +53,26 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   field_ad_gitb_compliant:
     type: options_select
     weight: 10
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_ad_licence:
     weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
   field_ad_modification_date:
     type: datetime_create_update
     weight: 9
     settings:
       behaviour: create
     third_party_settings: {  }
+    region: content
   field_ad_repr_technique:
     weight: 7
     settings:
@@ -76,6 +81,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
   label:
     type: string_textfield
     weight: 1
@@ -83,7 +89,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  current_workflow_state: true
   field_ad_file_size: true
   field_status: true
   og_audience: true
+  uid: true
