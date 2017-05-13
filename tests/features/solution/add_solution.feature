@@ -106,6 +106,7 @@ Feature: "Add solution" visibility options.
     # Regression test for non required fields 'Banner' and 'Logo'.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
     Then I should not see the following error messages:
+      | error messages            |
       | Banner field is required. |
       | Logo field is required.   |
     But I should see a logo on the header
