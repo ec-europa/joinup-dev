@@ -28,6 +28,7 @@ dependencies:
   module:
     - datetime
     - ds
+    - joinup
     - state_machine
     - text
     - user

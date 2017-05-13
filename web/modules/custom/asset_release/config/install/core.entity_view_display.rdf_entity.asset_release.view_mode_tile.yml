@@ -28,6 +28,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - ds
+    - joinup
     - text
     - user
 id: rdf_entity.asset_release.view_mode_tile
