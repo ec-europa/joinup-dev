@@ -39,7 +39,7 @@ Feature: Proposing a collection
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
+      | Spatial coverage | Belgium                                                                                              |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
