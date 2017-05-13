@@ -89,10 +89,12 @@ use Drupal\user\UserInterface;
  *   base_table = null,
  *   admin_permission = "administer rdf entity",
  *   fieldable = TRUE,
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
  *     "uid" = "uid",
  *     "bundle" = "rid",
+ *     "langcode" = "langcode",
  *     "label" = "label",
  *     "uuid" = "uuid",
  *   },
@@ -249,6 +251,17 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setReadOnly(TRUE)
       ->setComputed(TRUE)
       ->setCustomStorage(TRUE);
+
+    $fields['langcode'] = BaseFieldDefinition::create('language')
+      ->setLabel(new TranslatableMarkup('Language'))
+      ->setDisplayOptions('view', [
+        'region' => 'hidden',
+      ])
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'language_select',
+        'weight' => 2,
+      ]);
 
     return $fields;
   }
