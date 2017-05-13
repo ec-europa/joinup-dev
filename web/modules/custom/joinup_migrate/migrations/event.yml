@@ -41,10 +41,27 @@ process:
   field_scope:
     plugin: static_map
     source: scope
-    bypass: true
+    default_value: null
     map:
-      'Regional (sub-national)': Regional
-  field_organisation_type: organisation_type
+      'Cross-border': cross_border
+      European: european
+      International: international
+      'Local (city or municipality)': local
+      National: national
+      'Pan-European': pan_european
+      'Regional (sub-national)': regional
+  field_organisation_type:
+    plugin: static_map
+    source: organisation_type
+    default_value: null
+    map:
+      Academia: academia
+      'Non-profit': european
+      Other: other
+      'Private (Contractor on behalf of Public Organisation)': private_on_behalf_of_public_organisation
+      'Private (large enterprise)': private_enterprise
+      'Private (SME or independent)': private_sme
+      Public: public
   field_state: state
   og_audience:
     plugin: migration

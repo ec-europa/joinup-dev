@@ -111,7 +111,7 @@ class Event extends NodeBase {
       ->condition('td.vid', 63)
       ->execute()
       ->fetchField();
-    $row->setSourceProperty('organisation_type', $organisation_type);
+    $row->setSourceProperty('organisation_type', $organisation_type ?: NULL);
 
     // State.
     $this->setState($row);
