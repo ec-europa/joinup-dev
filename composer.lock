@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "87da00acf3bd670cbad34ba68055e1f0",
+    "content-hash": "21cc7e6a4361d1965f229a461e885e39",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2149,7 +2149,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-beta2",
-                    "datestamp": "1491592383"
+                    "datestamp": "1492710243"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2217,7 +2217,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1491851643"
+                    "datestamp": "1492681579"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -2306,6 +2306,49 @@
             "homepage": "https://www.drupal.org/project/field_group",
             "support": {
                 "source": "http://cgit.drupalcode.org/field_group"
+            }
+        },
+        {
+            "name": "drupal/file_url",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/file_url",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha1.zip",
+                "reference": null,
+                "shasum": "284cea8836d5bdefd70c7711f71bf1db8900a702"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1494538986"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                }
+            ],
+            "description": "Reference both local and remote files by URI",
+            "homepage": "https://www.drupal.org/project/file_url",
+            "support": {
+                "source": "http://cgit.drupalcode.org/file_url"
             }
         },
         {
@@ -2482,6 +2525,14 @@
                 "GPL-2.0+"
             ],
             "authors": [
+                {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -3019,7 +3070,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc2",
-                    "datestamp": "1491843242"
+                    "datestamp": "1492677545"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -3065,14 +3116,18 @@
                 "drupal/search_api": "*",
                 "solarium/solarium": "3.8.*"
             },
+            "suggest": {
+                "drupal/facets": "Provides facetted search.",
+                "drupal/search_api_solr_multilingual": "Highly recommended if installation is multilingual or uses a language different than English."
+            },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+56-dev",
-                    "datestamp": "1492123750"
+                    "version": "8.x-1.0-rc2+1-dev",
+                    "datestamp": "1494524885"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3081,12 +3136,12 @@
             ],
             "authors": [
                 {
-                    "name": "Berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
+                    "name": "Markus Kalkbrenner",
+                    "homepage": "https://www.drupal.org/u/mkalkbrenner"
                 },
                 {
-                    "name": "Nick_vh",
-                    "homepage": "https://www.drupal.org/user/122682"
+                    "name": "Other contributors",
+                    "homepage": "https://www.drupal.org/node/982682/committers"
                 },
                 {
                     "name": "amateescu",
@@ -3108,7 +3163,7 @@
             "description": "Offers an implementation of the Search API that uses an Apache Solr server for indexing content.",
             "homepage": "https://www.drupal.org/project/search_api_solr",
             "support": {
-                "source": "http://cgit.drupalcode.org/search_api_solr",
+                "source": "http://git.drupal.org/project/search_api_solr.git",
                 "issues": "https://www.drupal.org/project/issues/search_api_solr",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
             },
@@ -3297,7 +3352,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc1",
-                    "datestamp": "1483290542"
+                    "datestamp": "1493466843"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4201,7 +4256,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -4922,7 +4977,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2016-10-03T08:18:38+00:00"
+            "time": "2016-10-03 08:18:38"
         },
         {
             "name": "psr/http-message",
@@ -8118,7 +8173,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
             },
-            "time": "2017-03-28 23:54:52"
+            "time": "2017-03-28T23:54:52+00:00"
         },
         {
             "name": "drupal/config_update",
@@ -8231,7 +8286,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-04-10 22:44:14"
+            "time": "2017-04-10T22:44:14+00:00"
         },
         {
             "name": "drupal/devel",
@@ -8244,7 +8299,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-rc1.zip",
-                "reference": "8.x-1.0-rc1",
+                "reference": null,
                 "shasum": "04a01f50d508eca70e065b7eba38cd6c83a436c0"
             },
             "require": {
@@ -8260,7 +8315,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc1",
-                    "datestamp": "1484837884"
+                    "datestamp": "1492989244"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8295,24 +8350,12 @@
                     "homepage": "https://www.drupal.org/node/3236/committers"
                 },
                 {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "pcambra",
-                    "homepage": "https://www.drupal.org/user/122101"
-                },
-                {
                     "name": "salvis",
                     "homepage": "https://www.drupal.org/user/82964"
                 },
                 {
                     "name": "willzyx",
                     "homepage": "https://www.drupal.org/user/1043862"
-                },
-                {
-                    "name": "yched",
-                    "homepage": "https://www.drupal.org/user/39567"
                 }
             ],
             "description": "Various blocks, pages, and functions for developers.",
@@ -8378,7 +8421,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-01-03 14:21:15"
+            "time": "2017-01-03T14:21:15+00:00"
         },
         {
             "name": "drupal/drupal-extension",
@@ -8439,7 +8482,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15 08:54:07"
+            "time": "2017-04-15T08:54:07+00:00"
         },
         {
             "name": "fabpot/goutte",
