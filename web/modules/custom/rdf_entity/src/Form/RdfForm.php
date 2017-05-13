@@ -33,13 +33,6 @@ class RdfForm extends ContentEntityForm {
         $form['#title'] = $this->t('<em>Edit @type</em> @title', ['@type' => $type->label(), '@title' => $entity->label()]);
       }
     }
-
-    $form['langcode'] = [
-      '#title' => $this->t('Language'),
-      '#type' => 'language_select',
-      '#default_value' => $entity->getUntranslated()->language()->getId(),
-      '#languages' => Language::STATE_ALL,
-    ];
     return $form;
   }
 
