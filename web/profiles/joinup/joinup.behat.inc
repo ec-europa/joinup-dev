@@ -280,7 +280,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Then the :select select available options should be :options
+   * @Then the available options in the :select select should be :options
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);

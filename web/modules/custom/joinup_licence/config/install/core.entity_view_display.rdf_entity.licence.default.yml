@@ -7,6 +7,7 @@ dependencies:
     - rdf_entity.rdfentity.licence
   module:
     - text
+    - user
 id: rdf_entity.licence.default
 targetEntityType: rdf_entity
 bundle: licence
@@ -18,6 +19,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
   field_licence_type:
     weight: -3
     label: above
@@ -25,6 +27,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -32,4 +35,5 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
 hidden: {  }

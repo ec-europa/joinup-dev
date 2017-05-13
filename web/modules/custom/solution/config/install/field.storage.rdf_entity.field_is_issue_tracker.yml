@@ -10,10 +10,10 @@ third_party_settings:
       uri:
         predicate: 'http://joinup.eu/solution/issue_tracker'
         format: 'xsd:string'
-      title: 
+      title:
         predicate: ''
         format: ''
-      options: 
+      options:
         predicate: ''
         format: ''
 id: rdf_entity.field_is_issue_tracker

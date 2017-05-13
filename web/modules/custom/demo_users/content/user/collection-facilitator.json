@@ -33,6 +33,11 @@
             "value": "collection_facilitator"
         }
     ],
+    "mail": [
+        {
+            "value": "collection_facilitator@example.com"
+        }
+    ],
     "created": [
         {
             "value": "1473770036"
