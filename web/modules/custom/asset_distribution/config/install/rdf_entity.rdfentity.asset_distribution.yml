@@ -13,6 +13,34 @@ third_party_settings:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: 'literal'
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: 'xsd:string'
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: 'xsd:string'
+      content_translation_source:
+        value:
+          predicate: 'http://joinup.eu/language/source'
+          format: 'xsd:string'
+      content_translation_outdated:
+        value:
+          predicate: 'http://joinup.eu/language/outdated'
+          format: 'xsd:boolean'
+      content_translation_status:
+        value:
+          predicate: 'http://joinup.eu/language/status'
+          format: 'xsd:boolean'
+      content_translation_created:
+        value:
+          predicate: 'http://joinup.eu/language/created'
+          format: 'xsd:dateTime'
+      content_translation_changed:
+        value:
+          predicate: 'http://joinup.eu/language/changed'
+          format: 'xsd:dateTime'
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'

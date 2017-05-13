@@ -9,13 +9,54 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: literal
+      uuid:
+        value:
+          predicate: ''
+          format: ''
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: 'xsd:string'
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: 'xsd:string'
+      content_translation_source:
+        value:
+          predicate: 'http://joinup.eu/language/source'
+          format: 'xsd:string'
+      content_translation_outdated:
+        value:
+          predicate: 'http://joinup.eu/language/outdated'
+          format: 'xsd:boolean'
+      content_translation_status:
+        value:
+          predicate: 'http://joinup.eu/language/status'
+          format: 'xsd:boolean'
+      content_translation_created:
+        value:
+          predicate: 'http://joinup.eu/language/created'
+          format: 'xsd:dateTime'
+      content_translation_changed:
+        value:
+          predicate: 'http://joinup.eu/language/changed'
+          format: 'xsd:dateTime'
+      graph:
+        value:
+          predicate: ''
+          format: ''
     graph:
       default: 'http://joinup.eu/collection/published'
       draft: 'http://joinup.eu/collection/draft'
+    entity_id_plugin: default
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
