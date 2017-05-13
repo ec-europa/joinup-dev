@@ -184,11 +184,9 @@ Feature: "Add solution" visibility options.
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
     When I press "Propose"
-    Then I should see the following error messages:
+    Then I should see the following error message:
       | error messages                         |
-      | Banner field is required.              |
       | Contact information field is required. |
-      | Logo field is required.                |
     # Buttons should be shown for the allowed solution transitions.
     And I should see the button "Save as draft"
     And I should see the button "Propose"
