@@ -1079,7 +1079,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertExistingBanner() {
     $xpath = '//div[@class="featured__outer-wrapper"]/@style';
     $results = $this->getSession()->getPage()->find('xpath', $xpath);
-    return $results->getText() !== 'background-image: url("");';
+    // If the preg_match get a match, it means that the background image is
+    // empty.
+    $match = preg_match('/background\-image\: url\([\'"][\'"]\)/', $results->getText());
+    if ($match !== 0) {
+      throw new \Exception("The banner is empty.");
+    }
   }
 
   /**

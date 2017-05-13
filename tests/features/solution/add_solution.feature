@@ -91,8 +91,6 @@ Feature: "Add solution" visibility options.
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation, this has a hidden label "File".
     And I attach the file "text.pdf" to "File"
-    And I attach the file "logo.png" to "Logo"
-    And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Contact information example"
@@ -105,7 +103,13 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Propose"
-    Then I should see the heading "Espresso is the solution"
+    # Regression test for non required fields 'Banner' and 'Logo'.
+    Then I should not see the following error messages:
+      | Banner field is required. |
+      | Logo field is required.   |
+    But I should see a logo on the header
+    And I should see a banner on the header
+    And I should see the heading "Espresso is the solution"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
     And I press "Publish"
