@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.rdf_entity.inline
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
     - field.field.rdf_entity.asset_release.field_isr_creation_date
@@ -28,7 +27,6 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - file_url
-    - inline_entity_form
     - joinup_core
     - rdf_entity
     - text
@@ -39,28 +37,13 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 11
+    weight: 10
     region: content
     settings:
       title: 'Current workflow state'
       title_display: before
       show_for_new_entities: false
     third_party_settings: {  }
-  field_isr_contact_information:
-    type: inline_entity_form_complex
-    weight: 9
-    settings:
-      form_mode: inline
-      override_labels: true
-      label_singular: 'contact information'
-      label_plural: 'contact information'
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      collapsible: false
-      collapsed: false
-    third_party_settings: {  }
-    region: content
   field_isr_creation_date:
     type: datetime_create_update
     weight: 4
@@ -77,7 +60,7 @@ content:
     region: content
   field_isr_language:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -109,7 +92,7 @@ content:
     region: content
   field_isr_state:
     type: state_machine_buttons
-    weight: 12
+    weight: 11
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -147,6 +130,7 @@ content:
     region: content
 hidden:
   field_isr_banner: true
+  field_isr_contact_information: true
   field_isr_description: true
   field_isr_distribution: true
   field_isr_included_asset: true
