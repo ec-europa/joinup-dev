@@ -48,3 +48,4 @@ destination:
 migration_dependencies:
  required:
    - document_file
+   - collection

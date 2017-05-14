@@ -178,6 +178,14 @@ $expected_values = [
     'collection_owner' => 'doe@example.com',
     'row_index' => '29',
   ],
+  125548 => [
+    'type' => 'document',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'row_index' => '30',
+  ],
 ];
 
 // Migration counts.

@@ -26,10 +26,6 @@ CREATE OR REPLACE VIEW d8_document (
   factsheet_topic,
   presentation_nature_of_doc,
   original_url,
-  file_id,
-  file_path,
-  file_timestamp,
-  file_uid,
   state
 ) AS
 SELECT
@@ -70,18 +66,13 @@ SELECT
   (SELECT GROUP_CONCAT(DISTINCT td.name SEPARATOR '|') FROM term_node tn INNER JOIN term_data td ON tn.tid = td.tid AND td.vid = 55 WHERE tn.vid = n.vid AND n.type = 'presentation'),
   CASE n.type
     WHEN 'document' THEN IF(ctd.field_original_url_url = 'N/A', NULL, ctd.field_original_url_url)
-    WHEN 'case_epractice' THEN IF(d8df.fid IS NULL, ctce.field_website_url_url, NULL)
+    WHEN 'case_epractice' THEN ctce.field_website_url_url
   END,
-  d8df.fid,
-  d8df.path,
-  d8df.timestamp,
-  d8df.uid,
   IFNULL(ws.state, 'validated')
 FROM d8_node n
 LEFT JOIN content_field_publication_date cfpd ON n.vid = cfpd.vid
 LEFT JOIN content_type_document ctd ON n.vid = ctd.vid
 LEFT JOIN content_type_case_epractice ctce ON n.vid = ctce.vid
-LEFT JOIN d8_document_file d8df ON d8df.vid = n.vid AND d8df.delta = 0
 LEFT JOIN workflow_node w ON n.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type IN('case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation')
