@@ -49,8 +49,8 @@ third_party_settings:
           format: ''
       path: {  }
     graph:
-      default: 'http://actor'
-      draft: 'http://actor'
+      default: 'http://taxonomy/actor'
+      draft: 'http://taxonomy/actor'
 name: Actor
 vid: actor
 description: ''
