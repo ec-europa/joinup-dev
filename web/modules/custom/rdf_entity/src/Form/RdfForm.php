@@ -3,7 +3,6 @@
 namespace Drupal\rdf_entity\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
-use Drupal\Core\Language\Language;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 
