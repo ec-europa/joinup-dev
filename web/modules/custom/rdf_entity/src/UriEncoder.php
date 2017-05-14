@@ -22,6 +22,7 @@ class UriEncoder {
     $encode_chars = self::charsToEscape();
     $keys = array_keys($encode_chars);
     $replace = array_values($encode_chars);
+    $uri = str_replace('_', '_a', $uri);
     return str_replace($keys, $replace, $uri);
   }
 
@@ -38,7 +39,8 @@ class UriEncoder {
     $encode_chars = self::charsToEscape();
     $keys = array_keys($encode_chars);
     $replace = array_values($encode_chars);
-    return str_replace($replace, $keys, $uri);
+    $uri = str_replace($replace, $keys, $uri);
+    return str_replace('_a', '_', $uri);
   }
 
   /**
@@ -54,7 +56,6 @@ class UriEncoder {
    */
   protected static function charsToEscape() {
     return [
-      '_' => '_a',
       '-' => '_b',
       '.' => '_c',
       '~' => '_d',
