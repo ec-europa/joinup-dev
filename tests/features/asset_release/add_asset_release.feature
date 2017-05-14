@@ -83,9 +83,9 @@ Feature: "Add release" visibility options.
       | state | validated                 |
 
     When I am not logged in
-    And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
+    And I go to "/rdf_entity/http_e_f_fexample1regression/asset_release/add"
     Then I should see the heading "Page not found"
 
     When I am logged in as a moderator
-    And I go to "/rdf_entity/http%3A%5C%5Cexample1regression/asset_release/add"
+    And I go to "/rdf_entity/http_e_f_fexample1regression/asset_release/add"
     Then I should see the heading "Page not found"
