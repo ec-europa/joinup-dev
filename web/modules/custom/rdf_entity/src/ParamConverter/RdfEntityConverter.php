@@ -6,6 +6,7 @@ use Drupal\rdf_entity\ActiveGraphEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\ParamConverter\EntityConverter;
 use Drupal\Core\TypedData\TranslatableInterface;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\UriEncoder;
 use Symfony\Component\Routing\Route;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
@@ -43,7 +44,9 @@ class RdfEntityConverter extends EntityConverter {
   public function convert($value, $definition, $name, array $defaults) {
     // Here the escaped uri is transformed into a valid uri.
     // @see \Drupal\rdf_entity\Entity\Rdf::urlRouteParameters
-    $value = UriEncoder::decodeUrl($value);
+    if (!SparqlArg::isValidResource($value)) {
+      $value = UriEncoder::decodeUrl($value);
+    }
     $entity_type_id = $this->getEntityTypeFromDefaults($definition, $name, $defaults);
     if ($storage = $this->entityManager->getStorage($entity_type_id)) {
       /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher */
