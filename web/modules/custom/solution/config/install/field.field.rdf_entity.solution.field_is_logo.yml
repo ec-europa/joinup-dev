@@ -12,7 +12,7 @@ entity_type: rdf_entity
 bundle: solution
 label: Logo
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
