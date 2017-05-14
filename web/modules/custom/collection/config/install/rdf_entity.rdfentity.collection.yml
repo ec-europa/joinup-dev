@@ -16,7 +16,7 @@ third_party_settings:
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
-          format: literal
+          format: t_literal
       uuid:
         value:
           predicate: ''
@@ -24,15 +24,15 @@ third_party_settings:
       langcode:
         value:
           predicate: 'http://joinup.eu/language'
-          format: 'xsd:string'
+          format: literal
       default_langcode:
         value:
           predicate: 'http://joinup.eu/language/default'
-          format: 'xsd:string'
+          format: literal
       content_translation_source:
         value:
           predicate: 'http://joinup.eu/language/source'
-          format: 'xsd:string'
+          format: literal
       content_translation_outdated:
         value:
           predicate: 'http://joinup.eu/language/outdated'
