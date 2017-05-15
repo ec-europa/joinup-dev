@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b6710502123236964919159cf26c421",
+    "content-hash": "dfe636befc3b0c3882d8f899d4d3f7b0",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2645,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "f80b977ad6a02a2a294d406cf0635270c73a2bcc"
+                "reference": "7dcbb29b46641910a13b61ea668a124cdbfcab69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/f80b977ad6a02a2a294d406cf0635270c73a2bcc",
-                "reference": "f80b977ad6a02a2a294d406cf0635270c73a2bcc",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/7dcbb29b46641910a13b61ea668a124cdbfcab69",
+                "reference": "7dcbb29b46641910a13b61ea668a124cdbfcab69",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,7 +2667,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-12 13:41:35"
+            "time": "2017-03-14 16:17:37"
         },
         {
             "name": "drupal/og_menu",
@@ -8252,7 +8252,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -8448,7 +8449,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15T08:54:07+00:00"
+            "time": "2017-04-15 08:54:07"
         },
         {
             "name": "fabpot/goutte",
