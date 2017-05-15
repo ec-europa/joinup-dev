@@ -35,8 +35,9 @@ $expected_values = [
     'type' => 'community',
     'nid' => '144326',
     'policy2' => 'Open government',
-    'state' => 'archived',
+    'state' => 'validated',
     'collection_owner' => 'doe@example.com',
+    'roles' => '{"admin":[],"facilitator":{"6364":1329387383},"member":{"6364":1329387383}}',
   ],
 ];
 

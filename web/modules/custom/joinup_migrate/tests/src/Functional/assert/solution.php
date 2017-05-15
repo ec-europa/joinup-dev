@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('solution', 4);
-$this->assertSuccessCount('solution', 4);
+$this->assertTotalCount('solution', 5);
+$this->assertSuccessCount('solution', 5);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -88,4 +88,24 @@ $this->assertStringEndsWith("The KASPeR application enables downloading of image
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
+$this->assertEquals('Core Location Vocabulary', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1329465556), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462891660), $solution->field_is_modification_date->value);
+$this->assertReferences([
+  'Core Location Vocabulary 0.2',
+  'Core Location Vocabulary 0.3',
+  'Core Location Vocabulary 1.00',
+], $solution->field_is_has_version);
+$this->assertTrue($solution->get('field_is_distribution')->isEmpty());
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
+$this->assertStringEndsWith("Virtual Meeting 2012.04.03</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);

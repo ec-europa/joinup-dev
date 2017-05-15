@@ -63,6 +63,11 @@ process:
       'Private (SME or independent)': private_sme
       Public: public
   field_state: state
+  field_attachment:
+    plugin: migration
+    migration: attachment
+    source: fids
+    no_stub: true
   og_audience:
     plugin: migration
     source: collection
@@ -73,3 +78,4 @@ destination:
 migration_dependencies:
   required:
     - event_logo
+    - attachment

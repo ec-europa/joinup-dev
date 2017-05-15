@@ -110,6 +110,7 @@ $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Styles Layer Descriptor',
   'KASPeR - Mapping application of statistical data e-dimensions',
+  'Core Location Vocabulary',
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
