@@ -12,7 +12,6 @@ CREATE OR REPLACE VIEW d8_solution (
   docs_path,
   docs_timestamp,
   docs_uid,
-  sid,
   policy,
   policy2,
   banner,
@@ -20,7 +19,9 @@ CREATE OR REPLACE VIEW d8_solution (
   logo,
   logo_timestamp,
   logo_uid,
-  metrics_page
+  metrics_page,
+  state,
+  item_state
 ) AS
 SELECT
   m.collection,
@@ -36,7 +37,6 @@ SELECT
   fd.filepath,
   fd.timestamp,
   fd.uid,
-  w.sid,
   m.policy,
   m.policy2,
   m.banner,
@@ -44,7 +44,9 @@ SELECT
   IF(m.logo IS NOT NULL, m.logo, IF(m.type = 'asset_release' AND fl.filepath IS NOT NULL AND fl.filepath <> '', fl.filepath, IF(fpl.filepath IS NOT NULL AND fpl.filepath <> '', fpl.filepath, NULL))),
   IF(m.logo IS NOT NULL, UNIX_TIMESTAMP(), IF(m.type = 'asset_release' AND fl.timestamp IS NOT NULL AND fl.timestamp > 0, fl.timestamp, IF(fpl.timestamp IS NOT NULL AND fpl.timestamp > 0, fpl.timestamp, NULL))),
   IF(m.logo IS NOT NULL, -1, IF(m.type = 'asset_release', fl.uid, fpl.uid)),
-  TRIM(cfu.field_id_uri_value)
+  TRIM(cfu.field_id_uri_value),
+  ws.state,
+  m.content_item_state
 FROM d8_mapping m
 INNER JOIN d8_prepare p ON m.collection = p.collection
 INNER JOIN node n ON m.nid = n.nid
@@ -60,6 +62,7 @@ LEFT JOIN node nd ON cfad.field_asset_documentation_nid = nd.nid
 LEFT JOIN content_type_documentation ctd1 ON nd.vid = ctd1.vid
 LEFT JOIN files fd ON ctd1.field_documentation_access_url_fid = fd.fid
 LEFT JOIN workflow_node w ON m.nid = w.nid
+LEFT JOIN workflow_states ws ON w.sid = ws.sid
 LEFT JOIN content_field_asset_sw_metrics swm ON n.vid = swm.vid
 LEFT JOIN node nm ON swm.field_asset_sw_metrics_nid = nm.nid
 LEFT JOIN content_field_id_uri cfu ON nm.vid = cfu.vid

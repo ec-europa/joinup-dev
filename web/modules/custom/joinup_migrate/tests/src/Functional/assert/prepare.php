@@ -31,6 +31,13 @@ $expected_values = [
     'elibrary' => '0',
     'collection_owner' => 'jbloggs@example.com',
   ],
+  'Archived collection' => [
+    'type' => 'community',
+    'nid' => '144326',
+    'policy2' => 'Open government',
+    'state' => 'archived',
+    'collection_owner' => 'doe@example.com',
+  ],
 ];
 
 // Migration counts.
@@ -64,7 +71,7 @@ foreach ($expected_values as $collection => $expected_value) {
     'publisher' => NULL,
     'contact' => NULL,
     'collection_owner' => NULL,
-    'status' => NULL,
+    'state' => 'validated',
     'roles' => NULL,
   ];
   ksort($expected_value);

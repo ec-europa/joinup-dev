@@ -29,7 +29,8 @@ CREATE OR REPLACE VIEW d8_document (
   file_id,
   file_path,
   file_timestamp,
-  file_uid
+  file_uid,
+  state
 ) AS
 SELECT
   n.collection,
@@ -74,10 +75,13 @@ SELECT
   d8df.fid,
   d8df.path,
   d8df.timestamp,
-  d8df.uid
+  d8df.uid,
+  IFNULL(ws.state, 'validated')
 FROM d8_node n
 LEFT JOIN content_field_publication_date cfpd ON n.vid = cfpd.vid
 LEFT JOIN content_type_document ctd ON n.vid = ctd.vid
 LEFT JOIN content_type_case_epractice ctce ON n.vid = ctce.vid
 LEFT JOIN d8_document_file d8df ON d8df.vid = n.vid AND d8df.delta = 0
+LEFT JOIN workflow_node w ON n.nid = w.nid
+LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type IN('case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation')
