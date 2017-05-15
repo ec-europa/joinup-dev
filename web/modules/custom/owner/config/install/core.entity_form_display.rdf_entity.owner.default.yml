@@ -20,6 +20,7 @@ content:
       title: 'Current workflow state'
       title_display: before
     third_party_settings: {  }
+    region: content
   field_owner_name:
     weight: 0
     settings:
@@ -27,23 +28,27 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_owner_state:
     weight: 3
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     type: state_machine_buttons
+    region: content
   field_owner_type:
     weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
   id:
     type: auto_uri
     weight: -10
     settings:
       prefix: 'http://example.org/joinup/publisher'
     third_party_settings: {  }
+    region: content
 hidden:
   label: true
   uid: true
