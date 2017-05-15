@@ -11,10 +11,10 @@ third_party_settings:
       target_id:
         predicate: 'http://xmlns.com/foaf/spec/#term_page'
         format: 'xsd:string'
-      display: 
+      display:
         predicate: ''
         format: ''
-      description: 
+      description:
         predicate: ''
         format: ''
 id: rdf_entity.field_is_documentation
