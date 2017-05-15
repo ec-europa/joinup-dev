@@ -14,6 +14,7 @@ config_devel:
   - core.entity_view_display.node.event.view_mode_featured
   - core.entity_view_display.node.event.view_mode_tile
   - field.field.node.event.body
+  - field.field.node.event.field_attachment
   - field.field.node.event.field_event_adtl_address_info
   - field.field.node.event.field_event_agenda
   - field.field.node.event.field_event_contact_email

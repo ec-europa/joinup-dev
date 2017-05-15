@@ -23,6 +23,7 @@ config_devel:
   - core.entity_view_display.node.news.view_mode_featured
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
+  - field.field.node.news.field_attachment
   - field.field.node.news.field_keywords
   - field.field.node.news.field_news_headline
   - field.field.node.news.field_news_referenced_solution
