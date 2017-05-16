@@ -13,11 +13,6 @@
       <div class="label gray">{{ 'Weight'|t }}:</div>
       <div class="value bold">{{ content.field_ad_file_size }}</div>
     </div>
-    <div class="listing__field is-only-placeholder">
-      <div class="label gray">{{ 'OS'|t }}:</div>
-      {# todo: It is only placeholder. #}
-      <div class="value bold underline">Linux</div>
-    </div>
     {% if (content.field_ad_licence|render) %}
     <div class="listing__field">
       <div class="label gray">{{ 'Licence'|t }}:</div>
