@@ -16,7 +16,8 @@ CREATE OR REPLACE VIEW d8_collection (
   contact,
   banner,
   logo,
-  logo_timestamp
+  logo_timestamp,
+  state
 ) AS
 SELECT
   p.collection,
@@ -36,7 +37,8 @@ SELECT
   p.contact,
   p.banner,
   IF(p.nid = 0, p.logo, IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', fc.filepath, IF(fr.filepath IS NOT NULL AND fr.filepath <> '', fr.filepath, NULL))),
-  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL)))
+  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL))),
+  p.state
 FROM d8_prepare p
 LEFT JOIN node n ON p.nid = n.nid
 LEFT JOIN node_revisions nr ON n.vid = nr.vid

@@ -12,6 +12,7 @@ config_devel:
   - core.base_field_override.rdf_entity.owner.label
   - core.entity_form_display.rdf_entity.owner.default
   - core.entity_form_display.rdf_entity.owner.inline
+  - core.entity_view_display.rdf_entity.owner.default
   - field.field.rdf_entity.owner.field_owner_name
   - field.field.rdf_entity.owner.field_owner_state
   - field.field.rdf_entity.owner.field_owner_type

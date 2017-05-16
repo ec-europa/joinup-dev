@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\file\Entity\File;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
@@ -433,5 +434,37 @@ function joinup_core_element_info_alter(array &$info) {
         'validateDatetime',
       ],
     ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Provide default images for collections and solutions in case they are empty.
+ */
+function joinup_core_rdf_entity_presave(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['solution', 'collection'])) {
+    return;
+  }
+
+  $field_data = [
+    'logo' => ['field_ar_logo', 'field_is_logo'],
+    'banner' => ['field_ar_banner', 'field_is_banner'],
+  ];
+
+  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  foreach ($field_data as $field_type => $fields) {
+    foreach ($fields as $field) {
+      if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
+        // Get files without the . and .. directories.
+        $files = array_slice(scandir($fixtures_path . $field_type), 2);
+        $random = array_rand($files);
+        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file = File::create(['uri' => $file_path]);
+        $file->save();
+        $entity->set($field, $file->id());
+      }
+    }
   }
 }

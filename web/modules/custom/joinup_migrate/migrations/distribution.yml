@@ -44,10 +44,7 @@ process:
         'WSMO (Web Service Modeling Ontology)': 'Web Service Modelling Ontology'
     - plugin: term_reference
       vocabulary: representation_technique
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # field_status:
-
+  field_status: status
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_distribution

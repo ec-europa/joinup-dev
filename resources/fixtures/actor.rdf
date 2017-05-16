@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/taxonomy/actor">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#employee">
+    <skos:prefLabel xml:lang="en">Employee</skos:prefLabel>
+    <skos:definition xml:lang="en">Employee</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#student">
+    <skos:prefLabel xml:lang="en">Student</skos:prefLabel>
+    <skos:definition xml:lang="en">Student</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#beneficiary">
+    <skos:prefLabel xml:lang="en">Beneficiary</skos:prefLabel>
+    <skos:definition xml:lang="en">Beneficiary</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#vendor">
+    <skos:prefLabel xml:lang="en">Vendor</skos:prefLabel>
+    <skos:definition xml:lang="en">Vendor</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#logistics-worker">
+    <skos:prefLabel xml:lang="en">Logistics Worker</skos:prefLabel>
+    <skos:definition xml:lang="en">Logistics Worker</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#trucker">
+    <skos:prefLabel xml:lang="en">Trucker</skos:prefLabel>
+    <skos:definition xml:lang="en">Trucker</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#factory-worker">
+    <skos:prefLabel xml:lang="en">Factory Worker</skos:prefLabel>
+    <skos:definition xml:lang="en">Factory Worker</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#supervisor">
+    <skos:prefLabel xml:lang="en">Supervisor</skos:prefLabel>
+    <skos:definition xml:lang="en">Supervisor</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#qc-inspector">
+    <skos:prefLabel xml:lang="en">QC Inspector</skos:prefLabel>
+    <skos:definition xml:lang="en">QC Inspector</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#customer">
+    <skos:prefLabel xml:lang="en">Customer</skos:prefLabel>
+    <skos:definition xml:lang="en">Customer</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#salesperson">
+    <skos:prefLabel xml:lang="en">Salesperson</skos:prefLabel>
+    <skos:definition xml:lang="en">Salesperson</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#customer-service">
+    <skos:prefLabel xml:lang="en">Customer Service</skos:prefLabel>
+    <skos:definition xml:lang="en">Customer Service</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#agent">
+    <skos:prefLabel xml:lang="en">Agent</skos:prefLabel>
+    <skos:definition xml:lang="en">Agent</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#stockholders">
+    <skos:prefLabel xml:lang="en">Stockholders</skos:prefLabel>
+    <skos:definition xml:lang="en">Stockholders</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#bond-holders">
+    <skos:prefLabel xml:lang="en">Bond Holders</skos:prefLabel>
+    <skos:definition xml:lang="en">Bond Holders</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#investment-brokers">
+    <skos:prefLabel xml:lang="en">Investment Brokers</skos:prefLabel>
+    <skos:definition xml:lang="en">Investment Brokers</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#financial-managers">
+    <skos:prefLabel xml:lang="en">Financial Managers</skos:prefLabel>
+    <skos:definition xml:lang="en">Financial Managers</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#managers">
+    <skos:prefLabel xml:lang="en">Managers</skos:prefLabel>
+    <skos:definition xml:lang="en">Managers</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#clerks">
+    <skos:prefLabel xml:lang="en">Clerks</skos:prefLabel>
+    <skos:definition xml:lang="en">Clerks</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
+</rdf:RDF>

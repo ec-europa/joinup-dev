@@ -26,6 +26,7 @@ $this->assertStringEndsWith("<p>More information can be found on the <a href=\"h
 $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'Good Practice Study');
 $this->assertEquals('Good Practice Study', $document->label());
@@ -41,6 +42,7 @@ $this->assertStringEndsWith("interoperability and exchange of solutions.</div>\r
 $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertReferences(['Belgium'], $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'CAMSS method (v1.0) scenario 2 - SMEF');
 $this->assertEquals('CAMSS method (v1.0) scenario 2 - SMEF', $document->label());
@@ -56,6 +58,7 @@ $this->assertStringEndsWith("v1.0 by the CAMSS team.</div>\r\n<p>Nature of docum
 $this->assertKeywords(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $document);
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('proposed', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'The Irish ePassport');
 $this->assertEquals('The Irish ePassport', $document->label());
@@ -77,6 +80,7 @@ $this->assertKeywords([
 ], $document);
 $this->assertReferences(['Ireland'], $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'National Interoperability Framework Observatory (NIFO) Factsheets');
 $this->assertEquals('National Interoperability Framework Observatory (NIFO) Factsheets', $document->label());
@@ -96,6 +100,7 @@ $this->assertKeywords([
 ], $document);
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'ISA Contributor Agreement v1.1');
 $this->assertEquals('ISA Contributor Agreement v1.1', $document->label());
@@ -109,6 +114,7 @@ $this->assertStringEndsWith(", will be considered as a valid commitment.</p>\r\n
 $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
 
 $document = $this->loadEntityByLabel('node', 'E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson');
 $this->assertEquals('E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson', $document->label());
@@ -124,3 +130,4 @@ $this->assertStringEndsWith('took place on 20 September 2016 in Brussels.</span>
 $this->assertKeywords(['Other'], $document);
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
+$this->assertEquals('proposed', $document->field_state->value);
