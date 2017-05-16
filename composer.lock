@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "87da00acf3bd670cbad34ba68055e1f0",
+    "content-hash": "a0f0258b4bbeddbf62158e8fe8ccf106",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.27.0",
+            "version": "3.27.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "23fd97c5bc4aaa923b994f8876c86574ed84f27d"
+                "reference": "5530121afccd4c7842de11d0e5c1d1ac2526f26d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/23fd97c5bc4aaa923b994f8876c86574ed84f27d",
-                "reference": "23fd97c5bc4aaa923b994f8876c86574ed84f27d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5530121afccd4c7842de11d0e5c1d1ac2526f26d",
+                "reference": "5530121afccd4c7842de11d0e5c1d1ac2526f26d",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-04T22:43:46+00:00"
+            "time": "2017-05-15T21:42:26+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2641,16 +2641,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-3258",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "9feef6556d0b67385ec459e5df03e79b6d88e97f"
+                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/9feef6556d0b67385ec459e5df03e79b6d88e97f",
-                "reference": "9feef6556d0b67385ec459e5df03e79b6d88e97f",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
+                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,7 +2667,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-05 12:14:23"
+            "time": "2017-05-16 11:45:50"
         },
         {
             "name": "drupal/og_menu",
@@ -3001,17 +3001,17 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.0.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.1.zip",
                 "reference": null,
-                "shasum": "f95109c2038bdf01f144da2b97170e8a2eb2bf4d"
+                "shasum": "896d21a8b0dee0bea6e49fb0b2ac38315f4b52fe"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -3025,8 +3025,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1493201342"
+                    "version": "8.x-1.1",
+                    "datestamp": "1494413585"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -3082,8 +3082,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3+12-dev",
-                    "datestamp": "1494257585"
+                    "version": "8.x-1.0-rc2+6-dev",
+                    "datestamp": "1494934385"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5033,16 +5033,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.3",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e"
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/17cf432bb80d9198df239b80d00a29155bd74d82",
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82",
                 "shasum": ""
             },
             "require": {
@@ -5102,7 +5102,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-03-19T21:40:44+00:00"
+            "time": "2017-05-12T15:41:55+00:00"
         },
         {
             "name": "seld/cli-prompt",
@@ -9794,7 +9794,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-3258",
             "package": "drupal/og"
         },
         {
