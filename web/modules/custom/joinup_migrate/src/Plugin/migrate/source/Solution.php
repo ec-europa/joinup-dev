@@ -16,6 +16,8 @@ class Solution extends SolutionBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -49,6 +51,8 @@ class Solution extends SolutionBase {
       'contact' => $this->t('Contact info'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
     ] + parent::fields();
   }
 
@@ -58,17 +62,19 @@ class Solution extends SolutionBase {
   public function query() {
     return parent::query()->fields('s', [
       'vid',
+      'type',
       'title',
       'uri',
       'created_time',
       'changed_time',
       'body',
-      'sid',
       'policy2',
       'landing_page',
       'metrics_page',
       'docs_url',
       'docs_path',
+      'state',
+      'item_state',
     ]);
   }
 
@@ -111,6 +117,12 @@ class Solution extends SolutionBase {
     $query->join('node', 'n', 'd.field_asset_distribution_nid = n.nid');
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
+
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // State.
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }
