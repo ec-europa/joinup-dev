@@ -78,6 +78,12 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
           'rdf_entity' => $group->id(),
         ],
       ],
+      // Custom link to moderate content.
+      'group_header_block' => [
+        'route_parameters' => [
+          'rdf_entity' => $group->id(),
+        ],
+      ],
     ];
 
     return $build;

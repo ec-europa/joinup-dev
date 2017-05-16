@@ -100,7 +100,7 @@ use Drupal\user\UserInterface;
  *   links = {
  *     "canonical" = "/rdf_entity/{rdf_entity}",
  *     "edit-form" = "/rdf_entity/{rdf_entity}/edit",
- *     "delete-form" = "/rdf_enity/{rdf_entity}/delete",
+ *     "delete-form" = "/rdf_entity/{rdf_entity}/delete",
  *     "collection" = "/rdf_entity/list"
  *   },
  *   field_ui_base_route = "entity.rdf_type.edit_form",
@@ -375,7 +375,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     }
     $bundle = $this->entityTypeManager()->getStorage('rdf_type')->load($this->bundle());
     $mapping = rdf_entity_get_third_party_property($bundle, 'mapping', 'uid');
-    return !empty($mapping['target_id']);
+    return !empty($mapping['target_id']['predicate']);
   }
 
   /**
@@ -413,7 +413,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function hasGraph($graph) {
-    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this, $graph);
   }
 
 }

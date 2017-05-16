@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.27.2",
+            "version": "3.27.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8"
+                "reference": "5530121afccd4c7842de11d0e5c1d1ac2526f26d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8",
-                "reference": "eb10e43cccf8e868f9622ab8ce2beb9fb756b5a8",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5530121afccd4c7842de11d0e5c1d1ac2526f26d",
+                "reference": "5530121afccd4c7842de11d0e5c1d1ac2526f26d",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-11T21:23:43+00:00"
+            "time": "2017-05-15T21:42:26+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2645,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "5819f0f0f1132fe130e6eff889802dfa938c4331"
+                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/5819f0f0f1132fe130e6eff889802dfa938c4331",
-                "reference": "5819f0f0f1132fe130e6eff889802dfa938c4331",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
+                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,7 +2667,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-12 11:29:01"
+            "time": "2017-05-16 11:45:50"
         },
         {
             "name": "drupal/og_menu",
@@ -3082,8 +3082,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc2+1-dev",
-                    "datestamp": "1494524885"
+                    "version": "8.x-1.0-rc2+6-dev",
+                    "datestamp": "1494934385"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5033,16 +5033,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.3",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e"
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
-                "reference": "1dd4bbbc64d71e7ec075ffe82b42d9e096dc8d5e",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/17cf432bb80d9198df239b80d00a29155bd74d82",
+                "reference": "17cf432bb80d9198df239b80d00a29155bd74d82",
                 "shasum": ""
             },
             "require": {
@@ -5102,7 +5102,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-03-19T21:40:44+00:00"
+            "time": "2017-05-12T15:41:55+00:00"
         },
         {
             "name": "seld/cli-prompt",

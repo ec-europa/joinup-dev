@@ -7,8 +7,12 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://purl.org/dc/terms/abstract'
-      format: ''
+      value:
+        predicate: 'http://purl.org/dc/terms/abstract'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ar_abstract
 field_name: field_ar_abstract
 entity_type: rdf_entity

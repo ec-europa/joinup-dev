@@ -23,13 +23,9 @@ process:
     - plugin: default_value
       default_value: 1
   status: status
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # Revisit this mapping in ISAICP-3068.
   field_state:
     plugin: default_value
     default_value: validated
-
   og_audience:
     plugin: migration
     source: solution

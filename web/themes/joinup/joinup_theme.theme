@@ -644,6 +644,37 @@ function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for node--moderation.html.twig.
+ *
+ * - Removes the contextual links.
+ * - Adds an edit URL.
+ */
+function joinup_theme_preprocess_node__moderation(&$variables) {
+  joinup_theme_remove_contextual_links($variables);
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $variables['edit_url'] = $node->toUrl('edit-form')->toString();
+}
+
+/**
+ * Remove the contextual links from a template preprocess variable array.
+ *
+ * @param array $variables
+ *   An array of template preprocess variables.
+ *
+ * @see contextual_preprocess()
+ */
+function joinup_theme_remove_contextual_links(array &$variables) {
+  if (!empty($variables['attributes']['class'])) {
+    $key = array_search('contextual-region', $variables['attributes']['class']);
+    if ($key !== FALSE) {
+      unset($variables['attributes']['class'][$key]);
+    }
+  }
+  unset($variables['title_suffix']['contextual_links']);
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter() for input.html.twig.
  *
  * Add theme suggestions so we can provide different styling on some form

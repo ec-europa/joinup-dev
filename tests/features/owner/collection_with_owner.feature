@@ -21,7 +21,10 @@ Feature: Creation of owners through UI
 
     # Click the button to create an organisation owner.
     And I press "Add new" at the "Owner" field
-    And I set the Owner type to "Company"
+    # Since it is a 'propose' form, the field is not shown for the parent either.
+    # It is safe to check that the field is not found in the entire form.
+    Then the following fields should not be present "Current workflow state"
+    When I set the Owner type to "Company"
     And I fill in "Name" with "Acme"
     And I press "Create owner"
     Then I should see "Acme"

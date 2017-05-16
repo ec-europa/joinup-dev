@@ -5,9 +5,11 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\file\Entity\File;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -272,35 +274,6 @@ QUERY;
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Remove non-related actions (adding/removing roles) for other group types
- * from member overview page.
- */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // The form id will contain the entity id of the group, so we have to fall
-  // back to strstr to see if the generic part matches.
-  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
-    return;
-  }
-  $entity = \Drupal::request()->get('rdf_entity');
-  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
-    return;
-  }
-  // Header not set if the view is empty (no members).
-  if (empty($form['header'])) {
-    return;
-  }
-  // Remove the actions to remove / add the Collection Owner role. There should
-  // always be one owner. It is still to be decided how owner transfership will
-  // work.
-  foreach (['add', 'remove'] as $action) {
-    $action = "og_membership_{$action}_role_action.administrator";
-    unset($form['header']['og_membership_bulk_form']['action']['#options'][$action]);
-  }
-}
-
-/**
  * Implements hook_node_links_alter().
  */
 function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
@@ -336,6 +309,55 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * In Joinup, solutions and releases share the same bundle uri. The distinction
+ * between these two is that the releases always have the field
+ * 'field_isr_is_version_of' filled, while solutions do not have this field.
+ * This alter performs the following:
+ * 1. If there is a filter on both the release and solution bundles, do nothing.
+ * 2. If there is a filter on the solution, set the field
+ * 'field_isr_is_version_of' as a field required to be absent.
+ * 3. If there is a filter on the asset release, set the field
+ * 'field_isr_is_version_of' as a required field.
+ * 4. If there is a negative case on the bundles, perform cases 2 and 3 on
+ * reverse.
+ * 5. If none of these exist, as a filter, ignore it.
+ */
+function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  // If only one of the following are true, then add a condition on their
+  // corresponding field. If both are set, then do not bother.
+  $solution = FALSE;
+  $release = FALSE;
+
+  $entity_type = $query->getMetaData('entity_type');
+  $bundle_key = $entity_type->getKey('bundle');
+  foreach ($conditions as $condition) {
+    if ($condition['field'] === $bundle_key) {
+      $bundles = array_intersect(['solution', 'asset_release'], $condition['value']);
+      if (empty($bundles) || count($bundles) !== 1) {
+        continue;
+      }
+      $bundle = reset($bundles);
+      if ($bundle === 'solution') {
+        $solution = TRUE;
+      }
+      elseif ($bundle === 'asset_release') {
+        $release = TRUE;
+      }
+    }
+  }
+
+  if ($solution && !$release) {
+    $query->notExists('field_isr_is_version_of');
+  }
+  elseif (!$solution && $release) {
+    $query->exists('field_isr_is_version_of');
+  }
 }
 
 /**
@@ -383,5 +405,37 @@ function joinup_core_element_info_alter(array &$info) {
         'validateDatetime',
       ],
     ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Provide default images for collections and solutions in case they are empty.
+ */
+function joinup_core_rdf_entity_presave(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['solution', 'collection'])) {
+    return;
+  }
+
+  $field_data = [
+    'logo' => ['field_ar_logo', 'field_is_logo'],
+    'banner' => ['field_ar_banner', 'field_is_banner'],
+  ];
+
+  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  foreach ($field_data as $field_type => $fields) {
+    foreach ($fields as $field) {
+      if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
+        // Get files without the . and .. directories.
+        $files = array_slice(scandir($fixtures_path . $field_type), 2);
+        $random = array_rand($files);
+        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file = File::create(['uri' => $file_path]);
+        $file->save();
+        $entity->set($field, $file->id());
+      }
+    }
   }
 }

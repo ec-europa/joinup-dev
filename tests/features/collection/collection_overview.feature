@@ -97,19 +97,19 @@ Feature: Collections Overview
       | name        | Irwin BVBA made-up company   |
       | Website URL | http://www.example.org/irwin |
     And the following collection:
-      | title               | Fitness at work                                                        |
-      | description         | This collection is intended to show ways of being fit while working.   |
-      | policy domain       | E-health                                                               |
-      | owner               | Tamsin Irwin                                                           |
-      | abstract            | Fit while working is dope.                                             |
-      | logo                | logo.png                                                               |
-      | banner              | banner.jpg                                                             |
-      | contact information | Irwin BVBA made-up company                                             |
-      | spatial coverage    | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | closed              | no                                                                     |
-      | elibrary creation   | facilitators                                                           |
-      | moderation          | no                                                                     |
-      | state               | validated                                                              |
+      | title               | Fitness at work                                                      |
+      | description         | This collection is intended to show ways of being fit while working. |
+      | policy domain       | E-health                                                             |
+      | owner               | Tamsin Irwin                                                         |
+      | abstract            | Fit while working is dope.                                           |
+      | logo                | logo.png                                                             |
+      | banner              | banner.jpg                                                           |
+      | contact information | Irwin BVBA made-up company                                           |
+      | spatial coverage    | Belgium                                                              |
+      | closed              | no                                                                   |
+      | elibrary creation   | facilitators                                                         |
+      | moderation          | no                                                                   |
+      | state               | validated                                                            |
 
     When I go to the homepage of the "Fitness at work" collection
     And I click "About" in the "Left sidebar" region

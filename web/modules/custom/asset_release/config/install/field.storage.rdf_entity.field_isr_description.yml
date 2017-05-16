@@ -7,8 +7,12 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://purl.org/dc/terms/description'
-      format: ''
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_isr_description
 field_name: field_isr_description
 entity_type: rdf_entity

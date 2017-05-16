@@ -16,6 +16,7 @@ class Document extends NodeBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
 
   /**
    * {@inheritdoc}
@@ -35,6 +36,7 @@ class Document extends NodeBase {
       'keywords' => $this->t('Keywords'),
       'country' => $this->t('Spatial coverage'),
       'licence' => $this->t('Licence'),
+      'state' => $this->t('State'),
     ] + parent::fields();
   }
 
@@ -62,6 +64,7 @@ class Document extends NodeBase {
       'target_users_or_group',
       'factsheet_topic',
       'presentation_nature_of_doc',
+      'state',
     ]);
   }
 
@@ -113,6 +116,9 @@ class Document extends NodeBase {
       }
     }
     $row->setSourceProperty('body', trim($body));
+
+    // State.
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }
