@@ -1,0 +1,26 @@
+id: owner_text
+label: 'Text owners'
+migration_tags:
+  - owner
+source:
+  plugin: owner_text
+  track_changes: true
+  constants:
+    base_url: 'http://purl.org/adms/publishertype/'
+process:
+  label: owner_name
+  field_owner_name: owner_name
+  field_owner_type:
+    plugin: concat
+    source:
+      - constants/base_url
+      - owner_type
+  field_owner_state:
+    plugin: default_value
+    default_value: validated
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: owner
+migration_dependencies:
+ required:
+   - mapping
