@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_date
+    - rdf_entity.rdfentity.multifield
+  module:
+    - datetime
+id: rdf_entity.multifield.field_date
+field_name: field_date
+entity_type: rdf_entity
+bundle: multifield
+label: 'Date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

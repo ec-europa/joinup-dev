@@ -7,9 +7,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://www.w3.org/ns/dcat#landingPage'
-      title: ''
-      options: ''
+      uri:
+        predicate: 'http://www.w3.org/ns/dcat#landingPage'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_is_landing_page
 field_name: field_is_landing_page
 entity_type: rdf_entity

@@ -39,7 +39,7 @@ Feature: Proposing a collection
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
+      | Spatial coverage | Belgium                                                                                              |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
@@ -55,6 +55,8 @@ Feature: Proposing a collection
       | Field Logo is required   |
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
+    And I should see a logo on the header
+    And I should see a banner on the header
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member

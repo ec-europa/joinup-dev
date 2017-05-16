@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/asset_distribution/gitb_compliant'
+      value:
+        predicate: 'http://joinup.eu/asset_distribution/gitb_compliant'
+        format: 'xsd:string'
 id: rdf_entity.field_ad_gitb_compliant
 field_name: field_ad_gitb_compliant
 entity_type: rdf_entity
