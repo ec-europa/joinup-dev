@@ -21,7 +21,8 @@ CREATE OR REPLACE VIEW d8_event (
   file_id,
   file_path,
   file_timestamp,
-  file_uid
+  file_uid,
+  state
 ) AS
 SELECT
   n.collection,
@@ -51,8 +52,11 @@ SELECT
   f.fid,
   IF(f.filepath IS NOT NULL AND TRIM(f.filepath) <> '', TRIM(f.filepath), NULL),
   IF(f.timestamp > 0, f.timestamp, NULL),
-  IF(f.uid > 0, f.uid, -1)
+  IF(f.uid > 0, f.uid, -1),
+  IFNULL(ws.state, 'validated')
 FROM d8_node n
 LEFT JOIN content_type_event cte ON n.vid = cte.vid
 LEFT JOIN files f ON cte.field_event_logo_fid = f.fid
+LEFT JOIN workflow_node w ON n.nid = w.nid
+LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type = 'event'

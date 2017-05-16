@@ -13,7 +13,6 @@ dependencies:
   module:
     - ds
     - joinup_core
-    - link
     - text
     - user
 id: node.discussion.view_mode_tile

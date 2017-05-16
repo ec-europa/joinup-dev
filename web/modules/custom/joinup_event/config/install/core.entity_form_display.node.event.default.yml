@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_attachment
     - field.field.node.event.field_comments
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
@@ -26,6 +27,7 @@ dependencies:
   module:
     - comment
     - datetime
+    - file
     - image
     - joinup_core
     - link
@@ -46,15 +48,22 @@ content:
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 17
+    weight: 18
     region: content
     settings:
       title: 'Current workflow state'
       title_display: before
       show_for_new_entities: false
     third_party_settings: {  }
+  field_attachment:
+    weight: 15
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
   field_comments:
-    weight: 16
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -112,7 +121,7 @@ content:
     type: link_default
     region: content
   field_keywords:
-    weight: 15
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -163,7 +172,7 @@ content:
     region: content
   field_state:
     type: state_machine_buttons
-    weight: 18
+    weight: 19
     region: content
     settings:
       use_transition_label: 1
