@@ -10,10 +10,10 @@ third_party_settings:
       uri:
         predicate: 'http://www.w3.org/ns/dcat#landingPage'
         format: 'xsd:string'
-      title: 
+      title:
         predicate: ''
         format: ''
-      options: 
+      options:
         predicate: ''
         format: ''
 id: rdf_entity.field_is_landing_page

@@ -8,7 +8,8 @@ CREATE OR REPLACE VIEW d8_news (
   created,
   changed,
   uid,
-  source_url
+  source_url,
+  state
 ) AS
 SELECT
   n.collection,
@@ -20,8 +21,11 @@ SELECT
   n.created,
   n.changed,
   n.uid,
-  TRIM(ctn.field_source_url_url)
+  TRIM(ctn.field_source_url_url),
+  IFNULL(ws.state, 'validated')
 FROM d8_node n
 INNER JOIN content_type_news ctn ON n.vid = ctn.vid
 LEFT JOIN content_field_city cfc ON n.vid = cfc.vid
+LEFT JOIN workflow_node w ON n.nid = w.nid
+LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type = 'news'

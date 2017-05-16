@@ -15,6 +15,7 @@ class News extends NodeBase {
 
   use CountryTrait;
   use KeywordsTrait;
+  use StateTrait;
 
   /**
    * {@inheritdoc}
@@ -24,6 +25,7 @@ class News extends NodeBase {
       'source_url' => $this->t('Source URL'),
       'keywords' => $this->t('Keywords'),
       'country' => $this->t('Spatial coverage'),
+      'state' => $this->t('State'),
     ] + parent::fields();
   }
 
@@ -33,6 +35,7 @@ class News extends NodeBase {
   public function query() {
     return $this->select('d8_news', 'n')->fields('n', [
       'source_url',
+      'state',
     ]);
   }
 
@@ -48,6 +51,9 @@ class News extends NodeBase {
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
+
+    // State.
+    $this->setState($row);
 
     return parent::prepareRow($row);
   }
