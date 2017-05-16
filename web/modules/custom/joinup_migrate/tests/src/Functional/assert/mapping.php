@@ -230,6 +230,7 @@ $this->assertMessage('mapping', "Row: 6, Nid: 58729: Collection name empty or in
 $this->assertMessage('mapping', "Row: 7, Nid: 60736: Collection name empty or invalid");
 $this->assertMessage('mapping', "Row: 8, Nid: 156207: Invalid 'New Collection': '#N/A'");
 $this->assertMessage('mapping', "Row: 13, Nid: 87737: Software (project) content should not be in the Excel file. Replace with Project (project_project)");
+$this->assertMessage('mapping', "Row: 34, Nid: 156973: Type 'Newsletter' declared, but nid 156973 is 'news' in Drupal 6");
 
 // Imported content check.
 $imported = $this->legacyDb->select('d8_mapping')

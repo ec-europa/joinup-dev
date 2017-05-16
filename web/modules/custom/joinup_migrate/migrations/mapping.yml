@@ -10,6 +10,7 @@ source:
   origin: A2
   header_row: 1
   columns:
+    - 'Type of content item'
     - Collection_Name
     - 'Policy domain 1'
     - 'Policy domain 2'
