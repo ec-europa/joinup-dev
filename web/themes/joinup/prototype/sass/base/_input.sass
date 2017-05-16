@@ -21,11 +21,11 @@
     bottom: auto
 
 .textfield__helptext
-  font-size: $font-size-small - 1px
+  font-size: $font-size-xsmall
   font-weight: $font-weight-thin
   display: block
   margin-top: 6px
-  color: $color-grey-medium
+  color: lighten($color-grey-medium, 10%)
 
 .textfield--helptext-container
   margin-bottom: 0 !important
@@ -40,10 +40,13 @@
 
 // States
 // --------------------------------------------------
-.mdl-textfield--floating-label.is-invalid, .mdl-textfield--floating-label
+.mdl-textfield--floating-label.is-invalid,
+.mdl-textfield--floating-label,
+.mdl-textfield.is-invalid,
+.mdl-textfield
   .mdl-textfield__input
-    border-color: $color-grey-input !important
-    border-width: 1px !important
+    border-color: $color-grey-input
+    border-width: 1px
   .mdl-textfield__label
     font-size: $font-size-medium
     color: $color-grey-input
@@ -52,10 +55,31 @@
       background-color: #a0a1a2
 
 .mdl-textfield--floating-label.is-focused,
-.mdl-textfield--floating-label.is-dirty
+.mdl-textfield--floating-label.is-dirty,
+.mdl-textfield.is-focused,
+.mdl-textfield.is-dirty,
   .mdl-textfield__label
     font-size: $font-size-small
     color: $color-blue-medium
     &:after
       background-color: $color-blue-medium
       top: 57px !important
+
+
+.textfield--textarea.mdl-textfield.is-focused,
+.textfield--textarea.mdl-textfield.is-dirty
+  textarea
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    height: 57px
+  .mdl-textfield__label
+    &:after
+      top: 47px !important
+
+.textfield--textarea.mdl-textfield
+  width: 100%
+
+.comment-comment-form
+  .form-wrapper.field--widget-string-textarea
+    margin-bottom: 0
+    height: 97px

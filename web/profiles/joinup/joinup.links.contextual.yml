@@ -12,3 +12,8 @@ comment_approve:
   title: 'Approve comment'
   route_name: 'comment.approve'
   group: comment
+
+group_header_block.moderate_content:
+  title: 'Moderate content'
+  route_name: 'moderation.content_moderation_overview'
+  group: group_header_block

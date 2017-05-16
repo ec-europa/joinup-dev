@@ -13,7 +13,6 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
@@ -106,9 +105,9 @@ function joinup_form_field_config_edit_form_alter(&$form) {
  * With this hook, we make sure that the default fields with type 'text_long'
  * have the 'content_editor' filter format as default.
  */
-function joinup_rdf_apply_default_fields_alter(FieldStorageConfig $storage, &$values) {
+function joinup_rdf_apply_default_fields_alter($type, &$values) {
   // Since the profile includes a filter format, we provide this as default.
-  if ($storage->getType() == 'text_long') {
+  if ($type == 'text_long') {
     foreach ($values as &$value) {
       if ($value['format'] == 'full_html') {
         $value['format'] = 'content_editor';
@@ -201,12 +200,18 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Disable access to the revision information vertical tab.
- * This prevents access to the revision log and the revision checkbox too.
+ * - Disable access to the revision information vertical tab.
+ *   This prevents access to the revision log and the revision checkbox too.
+ * - Disable access to the comment settings. These are managed on collection
+ *   level.
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
+
+  if (!empty($form['field_comments'])) {
+    $form['field_comments']['#access'] = FALSE;
+  }
 }
 
 /**

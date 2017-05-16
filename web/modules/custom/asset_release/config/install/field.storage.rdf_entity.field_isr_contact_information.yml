@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'https://www.w3.org/ns/dcat#contactPoint'
+      target_id:
+        predicate: 'https://www.w3.org/ns/dcat#contactPoint'
+        format: resource
 id: rdf_entity.field_isr_contact_information
 field_name: field_isr_contact_information
 entity_type: rdf_entity

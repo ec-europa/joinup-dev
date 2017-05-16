@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_display.comment.comment.default
     - field.field.node.event.body
+    - field.field.node.event.field_attachment
     - field.field.node.event.field_comments
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
@@ -209,6 +210,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_attachment: true
   field_keywords: true
   field_organisation: true
   field_organisation_type: true

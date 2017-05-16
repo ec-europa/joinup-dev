@@ -32,21 +32,8 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  # Revisit this mapping in ISAICP-3068.
-  field_isr_state:
-    plugin: default_value
-    default_value: validated
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # field_status:
-  #   plugin: static_map
-  #   source: status
-  #   map:
-  #     11646: http://purl.org/adms/status/Completed
-  #     11647: http://purl.org/adms/status/Deprecated
-  #     11648: http://purl.org/adms/status/UnderDevelopment
-  #     11649: http://purl.org/adms/status/Withdrawn
-
+  field_isr_state: state
+  field_status: status
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_release

@@ -33,6 +33,11 @@
             "value": "solution_facilitator"
         }
     ],
+    "mail": [
+        {
+            "value": "solution_facilitator@example.com"
+        }
+    ],
     "created": [
         {
             "value": "1473770036"

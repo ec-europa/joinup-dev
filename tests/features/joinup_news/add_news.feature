@@ -24,9 +24,11 @@ Feature: Creation of news through the UI.
     And I go to the homepage of the "Density catalogue project" solution
     And I click "Add news"
     And I fill in the following:
-      | Kicker   | Ytterbium metal of the year                                                                   |
-      | Headline | Strong request for this rare metal that is on the mouth of everybody                          |
-      | Content  | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+      | Kicker         | Ytterbium metal of the year                                                                   |
+      | Headline       | Strong request for this rare metal that is on the mouth of everybody                          |
+      | Content        | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+      | Add a new file | test.zip                                                                                      |
+      | Add a new file | text.pdf                                                                                      |
 
     # Share the content in another solution.
     When I fill in "Referenced solution" with "Dig do's and don'ts"

@@ -280,7 +280,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $options
    *   A comma-separated list of options to be present.
    *
-   * @Then the :select select available options should be :options
+   * @Then the available options in the :select select should be :options
    */
   public function assertSelectOptions($select, $options) {
     $field = $this->findSelect($select);
@@ -518,23 +518,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'discussion' => [
         'state' => 'field_state',
         'content' => 'body',
+        'shared in' => 'field_shared_in',
       ],
       'document' => [
+        'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
         'state' => 'field_state',
         'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'event' => [
+        'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_start_date',
         'state' => 'field_state',
+        'agenda' => 'field_event_agenda',
+        'location' => 'field_location',
+        'additional info address' => 'field_event_adtl_address_info',
+        'organisation' => 'field_organisation',
+        'scope' => 'field_scope',
+        'shared in' => 'field_shared_in',
       ],
       'news' => [
         'headline' => 'field_news_headline',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
+        'shared in' => 'field_shared_in',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -704,6 +716,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that only the expected tiles are found in the page.
+   *
+   * @param string $headings
+   *   A comma-separated list of tile headings.
+   *
+   * @Then the page should show( only) the tiles :headings
+   */
+  public function assertUnorderedTilesPresent($headings) {
+    $tiles_in_page = array_map(function ($element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      return $element->getText();
+    }, $this->getTiles());
+    $headings = $this->explodeCommaSeparatedStepArgument($headings);
+
+    sort($headings);
+    sort($tiles_in_page);
+    \PHPUnit_Framework_Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
+  }
+
+  /**
    * Checks that the given tiles are found in the given block.
    *
    * The weight of the tiles are also taken into account.
@@ -721,7 +753,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       return $result->getText();
     }, $results);
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, "The expected tiles are not in the page or not in the proper order.");
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
 
   /**
@@ -1026,6 +1058,32 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     foreach ($elements as $element) {
       \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+    }
+  }
+
+  /**
+   * Asserts that a logo exists in the header.
+   *
+   * @Then I should see a logo on the header
+   */
+  public function assertExistingLogo() {
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__logo ")]//img';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Asserts that a banner exists in the header.
+   *
+   * @Then I should see a banner on the header
+   */
+  public function assertExistingBanner() {
+    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $results = $this->getSession()->getPage()->find('xpath', $xpath);
+    // If the preg_match get a match, it means that the background image is
+    // empty.
+    $match = preg_match('/background\-image\: url\([\'"][\'"]\)/', $results->getText());
+    if ($match !== 0) {
+      throw new \Exception("The banner is empty.");
     }
   }
 
