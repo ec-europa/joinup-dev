@@ -140,6 +140,10 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
       }
     }
 
+    if (!empty($elements)) {
+      $elements['#attached']['library'][] = 'asset_distribution/download_tracking';
+    }
+
     return $elements;
   }
 
