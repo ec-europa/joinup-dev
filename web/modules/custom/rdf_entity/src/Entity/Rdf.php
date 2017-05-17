@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Core\Entity\EntityChangedTrait;
@@ -205,7 +206,8 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('uri')
-      ->setLabel(t('ID'));
+      ->setLabel(t('ID'))
+      ->setTranslatable(FALSE);
 
     $fields['rid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Rdf Type'))
@@ -217,7 +219,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDescription(t('The username of the content author.'))
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback('Drupal\rdf_entity\Entity\Rdf::getCurrentUserId')
-      ->setTranslatable(TRUE)
+      ->setTranslatable(FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
@@ -248,6 +250,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     $fields[$entity_type->getKey('uuid')] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('UUID'))
       ->setRevisionable(FALSE)
+      ->setTranslatable(FALSE)
       ->setReadOnly(TRUE)
       ->setComputed(TRUE)
       ->setCustomStorage(TRUE);
