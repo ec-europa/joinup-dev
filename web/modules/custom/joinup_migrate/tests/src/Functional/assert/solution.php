@@ -54,7 +54,9 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $solution->get('field_is_owner'));
-$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
+$this->assertReferences([
+  'DIGIT-CIPA-SUPPORT@ec.europa.eu',
+], $solution->get('field_is_contact_information'));
 $logo = File::load($solution->field_is_logo->target_id);
 $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->getFileUri());
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
@@ -90,13 +92,15 @@ $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1423650568), $solution->field_is_modi
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['KASPeR - Mapping application of statistical data e-dimensions'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertReferences(['Geodetic Institute of Slovenia'], $solution->field_is_contact_information);
 $this->assertStringEndsWith("The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Geodetic Institute of Slovenia',
 ], $solution->get('field_is_owner'));
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $solution->field_is_contact_information);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
 
@@ -113,7 +117,9 @@ $this->assertReferences([
 ], $solution->field_is_has_version);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
+$this->assertReferences([
+  'digit-semic-team@ec.europa.eu',
+], $solution->get('field_is_contact_information'));
 $this->assertStringEndsWith("Virtual Meeting 2012.04.03</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);

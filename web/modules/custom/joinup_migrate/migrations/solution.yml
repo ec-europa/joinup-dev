@@ -14,14 +14,22 @@ process:
     source: nid
     migration: solution_banner
     no_stub: true
-
-  # Contact info imported from 'project_project' is handled in ISAICP-3103.
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3103
-  field_is_contact_information:
+  contact_from_node:
     plugin: migration
     source: contact
     migration: contact
     no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_is_contact_information:
+    plugin: merge
+    source:
+      - @contact_from_node
+      - @contact_from_email
+    unique: true
   field_is_creation_date: created_time
   field_is_description/value: body
   field_is_description/format:
@@ -88,4 +96,5 @@ migration_dependencies:
     - distribution
     - owner
     - contact
+    - contact_email
     - documentation_file

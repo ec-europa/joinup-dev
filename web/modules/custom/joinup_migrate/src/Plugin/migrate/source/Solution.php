@@ -49,6 +49,7 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
@@ -75,6 +76,7 @@ class Solution extends SolutionBase {
       'docs_path',
       'state',
       'item_state',
+      'contact_email',
     ]);
   }
 
