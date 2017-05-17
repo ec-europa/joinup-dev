@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
 class Distribution extends DistributionBase {
 
   use FileUrlFieldTrait;
+  use LicenceTrait;
   use StatusTrait;
 
   /**
@@ -81,6 +82,9 @@ class Distribution extends DistributionBase {
 
     // Status.
     $this->setStatus($vid, $row);
+
+    // Licence.
+    $this->setLicence($row, 'distribution');
 
     return parent::prepareRow($row);
   }
