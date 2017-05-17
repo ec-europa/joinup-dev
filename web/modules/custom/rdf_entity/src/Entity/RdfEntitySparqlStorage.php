@@ -23,6 +23,7 @@ use Drupal\rdf_entity\RdfGraphHandler;
 use Drupal\rdf_entity\RdfFieldHandler;
 use EasyRdf\Graph;
 use EasyRdf\Literal;
+use EasyRdf\Sparql\Result;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -285,7 +286,16 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
       if ($entities_values) {
         foreach ($entities_values as $id => $entity_values) {
           $bundle = $this->bundleKey ? $entity_values[$this->bundleKey][LanguageInterface::LANGCODE_DEFAULT] : FALSE;
-          $entity = new $this->entityClass($entity_values, $this->entityTypeId, $bundle);
+          $langcode_key = $this->getEntityType()->getKey('langcode');
+          $translations = [];
+          if (!empty($entities_values[$id][$langcode_key])) {
+            foreach ($entities_values[$id][$langcode_key] as $langcode => $data) {
+              if (!empty(reset($data)['value'])) {
+                $translations[] = reset($data)['value'];
+              }
+            }
+          }
+          $entity = new $this->entityClass($entity_values, $this->entityTypeId, $bundle, $translations);
           $entities[$id] = $entity;
         }
         $this->invokeStorageLoadHook($entities);
@@ -322,7 +332,6 @@ WHERE{
   GRAPH ?graph {
     ?entity_id ?predicate ?field_value .
     VALUES ?entity_id { $ids_string } .
-    FILTER(!isLiteral(?field_value) || (lang(?field_value) = "" || langMatches(lang(?field_value), "EN")))
   }
 }
 QUERY;
@@ -345,19 +354,6 @@ QUERY;
    * If the graph parameter can be used to restrict the available graphs to load
    * from.
    *
-   * The results array is an array of loaded entity values from different
-   * graphs.
-   * @code
-   *    $results = [
-   *      'http://entity_id.uri' => [
-   *        'http://field.mapping.uri' => [
-   *          'x-default' => [
-   *            0 => 'actual value'
-   *          ]
-   *        ]
-   *      ];
-   * @code
-   *
    * @param \EasyRdf\Sparql\Result|\EasyRdf\Graph $results
    *   A set of query results indexed per graph and entity id.
    *
@@ -368,28 +364,13 @@ QUERY;
    *    Thrown when the entity graph is empty.
    */
   protected function processGraphResults($results) {
-    $inbound_map = $this->fieldHandler->getInboundMap($this->entityTypeId);
-    // If no graphs are passed, fetch all available graphs derived from the
-    // results.
-    $values_per_entity = [];
-    foreach ($results as $result) {
-      $entity_id = (string) $result->entity_id;
-      $entity_graphs[$entity_id] = (string) $result->graph;
-
-      $lang = LanguageInterface::LANGCODE_DEFAULT;
-      if ($result->field_value instanceof Literal) {
-        $lang_temp = $result->field_value->getLang();
-        if ($lang_temp) {
-          $lang = $lang_temp;
-        }
-      }
-      $values_per_entity[$entity_id][(string) $result->graph][(string) $result->predicate][$lang][] = (string) $result->field_value;
-    }
-
+    $values_per_entity = $this->deserializeGraphResults($results);
     if (empty($values_per_entity)) {
       return NULL;
     }
 
+    $default_language = $this->languageManager->getDefaultLanguage()->getId();
+    $inbound_map = $this->fieldHandler->getInboundMap($this->entityTypeId);
     $return = [];
     foreach ($values_per_entity as $entity_id => $values_per_graph) {
       $request_graphs = $this->getGraphHandler()->getRequestGraphs($entity_id);
@@ -427,22 +408,17 @@ QUERY;
 
             $column = $inbound_map['fields'][$predicate][$bundle]['column'];
             foreach ($field as $lang => $items) {
+              $langcode_key = ($lang === $default_language) ? LanguageInterface::LANGCODE_DEFAULT : $lang;
               foreach ($items as $item) {
                 if ($this->fieldHandler->isFieldSerializable($this->getEntityTypeId(), $field_name, $column)) {
                   $item = unserialize($item);
                 }
-                if (!isset($return[$entity_id][$field_name]) || !is_string($return[$entity_id][$field_name][$lang])) {
-                  $return[$entity_id][$field_name][$lang][][$column] = $item;
+                if (!isset($return[$entity_id][$field_name][$langcode_key]) || !is_string($return[$entity_id][$field_name][$langcode_key])) {
+                  $return[$entity_id][$field_name][$langcode_key][][$column] = $item;
                 }
               }
-              if (is_array($return[$entity_id][$field_name][$lang])) {
-                $this->applyFieldDefaults($inbound_map['fields'][$predicate][$bundle]['type'], $return[$entity_id][$field_name][$lang]);
-              }
-              if (!isset($return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT])) {
-                $langcode = $this->languageManager->getDefaultLanguage()->getId();
-                if (isset($langcode)) {
-                  $return[$entity_id][$field_name][LanguageInterface::LANGCODE_DEFAULT] = $return[$entity_id][$field_name][$langcode];
-                }
+              if (is_array($return[$entity_id][$field_name][$langcode_key])) {
+                $this->applyFieldDefaults($inbound_map['fields'][$predicate][$bundle]['type'], $return[$entity_id][$field_name][$langcode_key]);
               }
             }
           }
@@ -450,6 +426,47 @@ QUERY;
       }
     }
     return $return;
+  }
+
+  /**
+   * Desirializes a list of graph results to an array.
+   *
+   * The results array is an array of loaded entity values from different
+   * graphs.
+   * @code
+   *    $results = [
+   *      'http://entity_id.uri' => [
+   *        'http://field.mapping.uri' => [
+   *          'x-default' => [
+   *            0 => 'actual value'
+   *          ]
+   *        ]
+   *      ];
+   * @code
+   *
+   * @param \EasyRdf\Sparql\Result|\EasyRdf\Result $results
+   *   A set of query results indexed per graph and entity id.
+   *
+   * @return array
+   *   The entity values indexed by the field mapping id.
+   */
+  protected function deserializeGraphResults(Result $results) {
+    $values_per_entity = [];
+    foreach ($results as $result) {
+      $entity_id = (string) $result->entity_id;
+      $entity_graphs[$entity_id] = (string) $result->graph;
+
+      $lang = LanguageInterface::LANGCODE_DEFAULT;
+      if ($result->field_value instanceof Literal) {
+        $lang_temp = $result->field_value->getLang();
+        if ($lang_temp) {
+          $lang = $lang_temp;
+        }
+      }
+      $values_per_entity[$entity_id][(string) $result->graph][(string) $result->predicate][$lang][] = (string) $result->field_value;
+    }
+
+    return $values_per_entity;
   }
 
   /**
@@ -738,27 +755,27 @@ QUERY;
     $target_graph = $this->getGraphHandler()->getTargetGraphFromEntity($entity);
     $graph_uri = $this->getBundleGraphUri($bundle, $target_graph);
     $graph = self::getGraph($graph_uri);
-
-    foreach ($entity->toArray() as $field_name => $field) {
-      foreach ($field as $field_item) {
-        foreach ($field_item as $column => $value) {
-          // Filter out empty values or non mapped fields. The id is also
-          // excluded as it is not mapped.
-          if ($value === NULL || $value === '' || !$this->fieldHandler->hasFieldPredicate($this->getEntityTypeId(), $field_name, $column, $bundle)) {
-            continue;
+    $lang_array = $this->toLangArray($entity);
+    foreach ($lang_array as $field_name => $langcode_data) {
+      foreach ($langcode_data as $langcode => $field_item) {
+        foreach ($field_item as $delta => $column_data) {
+          foreach ($column_data as $column => $value) {
+            // Filter out empty values or non mapped fields. The id is also
+            // excluded as it is not mapped.
+            if ($value === NULL || $value === '' || !$this->fieldHandler->hasFieldPredicate($this->getEntityTypeId(), $field_name, $column, $bundle)) {
+              continue;
+            }
+            $predicate = $this->fieldHandler->getFieldPredicates($this->getEntityTypeId(), $field_name, $column, $bundle);
+            $predicate = reset($predicate);
+            $value = $this->fieldHandler->getOutboundValue($this->getEntityTypeId(), $field_name, $value, $langcode, $column);
+            $graph->add((string) $id, $predicate, $value);
           }
-          $predicate = $this->fieldHandler->getFieldPredicates($this->getEntityTypeId(), $field_name, $column, $bundle);
-          $predicate = reset($predicate);
-          $lang = $this->resolveFieldLangcode($entity, $entity->get($field_name)->first());
-          $value = $this->fieldHandler->getOutboundValue($this->getEntityTypeId(), $field_name, $value, $lang, $column);
-          $graph->add((string) $id, $predicate, $value);
         }
       }
     }
 
     // Give implementations a chance to alter the graph before is saved.
     $this->alterGraph($graph, $entity);
-
     if (!$entity->isNew()) {
       $this->deleteBeforeInsert($id, $graph_uri);
     }
@@ -772,21 +789,98 @@ QUERY;
   }
 
   /**
+   * In this method the latest values have to be applied to the entity. The end
+   * array should have an index with the x-default language which should be the
+   * default language to save and one index for each other translation.
+   *
+   * Since the user can be presented with non translatable fields in the
+   * translation form, the process has to give priority to the values of the
+   * current language over the default language.
+   *
+   * So, the process is:
+   * - If the current language is the default one, add all fields to the
+   * x-default index.
+   * - If the current language is not the default language, then the default
+   * - language will only provide the translatable fields as default and the
+   * non translatable will be filled by the current language.
+   * - All the other languages, will only provide the translatable fields.
+   *
+   * Only t_literal fields should be translatable.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *    The entity to convert to an array of values.
+   *
+   * @return array
+   *    The array of values including the translations.
+   */
+  public function toLangArray(ContentEntityInterface $entity) {
+    $values = [];
+    $languages = array_keys(array_filter($entity->getTranslationLanguages(), function (LanguageInterface $language) {
+      return !$language->isLocked();
+    }));
+    $translatable_fields = array_keys($entity->getTranslatableFields());
+    $fields = array_keys($entity->getFields());
+    $non_translatable_fields = array_diff($fields, $translatable_fields);
+
+    $current_langcode = $entity->language()->getId();
+    if ($entity->isDefaultTranslation()) {
+      foreach ($entity->getFields() as $name => $property) {
+        $values[$name][$current_langcode] = $entity->get($name)->getValue();
+      }
+      $processed = [$entity->language()->getId()];
+    }
+    else {
+      // Fill in the translatable fields of the default language and then all
+      // the fields from the current language.
+      $default_translation = $entity->getUntranslated();
+      $default_langcode = $default_translation->language()->getId();
+      foreach ($translatable_fields as $name) {
+        $values[$name][$default_langcode] = $default_translation->get($name)->getValue();
+      }
+      // For the current language, add the translatable fields as a translation
+      // and the non translatable fields as default.
+      foreach ($non_translatable_fields as $name) {
+        $values[$name][$default_langcode] = $entity->get($name)->getValue();
+      }
+      // The current language is not included in the translations if it is a
+      // new translation and is outdated if it is not a new translation.
+      // Thus, the handling occurs here, instead of the generic handling below.
+      foreach ($translatable_fields as $name) {
+        $values[$name][$current_langcode] = $entity->get($name)->getValue();
+      }
+
+      $processed = [$current_langcode, $default_langcode];
+    }
+
+    // For the rest of the languages not computed above, simply add the
+    // the translatable fields. This will prevent data loss from the database.
+    foreach (array_diff($languages, $processed) as $langcode) {
+      if (!$entity->hasTranslation($langcode)) {
+        continue;
+      }
+      $translation = $entity->getTranslation($langcode);
+      foreach ($translatable_fields as $name) {
+        $values[$name][$langcode] = $translation->get($name)->getValue();
+      }
+    }
+    return $values;
+  }
+
+  /**
    * Resolves the language based on entity and current site language.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
-   * @param \Drupal\Core\Field\FieldItemInterface $field_item
-   *   The field for which to resolve the language.
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $field_name
+   *   The field name for which to resolve the language.
+   * @param string $langcode
+   *   A default langcode or the fields detected langcode.
    *
    * @return string|null
    *   A language code or NULL, if the field has no language.
    */
-  protected function resolveFieldLangcode(EntityInterface $entity, FieldItemInterface $field_item) {
-    if (!$langcode = $field_item->getLangcode()) {
-      return NULL;
-    }
-
+  protected function resolveFieldLangcode($entity_type_id, $field_name, $langcode = NULL) {
+    $format = $this->fieldHandler->getFieldFormat($entity_type_id, $field_name);
     $non_languages = [
       LanguageInterface::LANGCODE_NOT_SPECIFIED,
       LanguageInterface::LANGCODE_DEFAULT,
@@ -795,15 +889,34 @@ QUERY;
       LanguageInterface::LANGCODE_SYSTEM,
     ];
 
-    // Accept only real languages or NULL.
-    if (in_array($langcode, $non_languages)) {
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
-      if (in_array($langcode, $non_languages)) {
-        return NULL;
-      }
+    if ($format == RdfFieldHandler::TRANSLATABLE_LITERAL && !empty($langcode) && !in_array($langcode, $non_languages)) {
+      return $langcode;
     }
 
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    if (in_array($langcode, $non_languages)) {
+      return NULL;
+    }
     return $langcode;
+  }
+
+  /**
+   * Resolves the language based on entity and current site language.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   * @param mixed $field_item
+   *   The field item or the field item list for which to resolve the language.
+   *
+   * @return string|null
+   *   A language code or NULL, if the field has no language.
+   */
+  protected function resolveFieldItemLangcode(EntityInterface $entity, $field_item) {
+    if (!$langcode = $field_item->getLangcode()) {
+      return NULL;
+    }
+
+    return $this->resolveFieldLangcode($entity->getEntityTypeId(), $field_item->getName(), $langcode);
   }
 
   /**
