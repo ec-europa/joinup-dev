@@ -47,6 +47,7 @@ config_devel:
   - field.storage.taxonomy_term.mime_type
   - image.style.banner
   - rdf_draft.settings
+  - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.file_type
