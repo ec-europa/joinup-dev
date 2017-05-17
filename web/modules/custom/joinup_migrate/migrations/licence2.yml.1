@@ -1,0 +1,30 @@
+id: licence2
+label: 'Licence2'
+migration_tags:
+  - distribution
+  - licence
+source:
+  plugin: spreadsheet
+  track_changes: true
+process:
+  worksheet: '4. Licence Mapping'
+  origin: A2
+  header_row: 1
+  columns:
+
+
+  label: title
+  field_licence_description/value: body
+  field_licence_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_licence_type:
+    plugin: term_reference
+    source: type
+    vocabulary: licence_type
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: licence
+migration_dependencies:
+  required:
+    - prepare
