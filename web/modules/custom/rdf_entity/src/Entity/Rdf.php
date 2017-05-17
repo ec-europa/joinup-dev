@@ -255,7 +255,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setCustomStorage(TRUE);
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
-      ->setLabel(new TranslatableMarkup('Language'))
+      ->setLabel(new TranslatableMarkup('Langcode'))
       ->setDisplayOptions('view', [
         'region' => 'hidden',
       ])
