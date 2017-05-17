@@ -38,6 +38,7 @@ class Collection extends CollectionBase {
       'country' => $this->t('Spatial coverage'),
       'affiliates' => $this->t('Affiliates'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
       'state' => $this->t('Workflow state'),
     ];
   }
@@ -60,6 +61,7 @@ class Collection extends CollectionBase {
       'owner',
       'owner_text',
       'contact',
+      'contact_email',
       'access_url',
       'state',
     ]);

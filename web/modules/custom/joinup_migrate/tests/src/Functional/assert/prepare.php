@@ -17,6 +17,7 @@ $expected_values = [
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
     'owner_text' => '49860',
+    'contact_email' => 'DIGIT-CIPA-SUPPORT@ec.europa.eu',
     'roles' => '{"admin":[],"facilitator":[],"member":{"6842":1378476956}}',
   ],
   'Collection from Repository' => [
@@ -75,6 +76,7 @@ foreach ($expected_values as $collection => $expected_value) {
     'owner_text' => NULL,
     'publisher' => NULL,
     'contact' => NULL,
+    'contact_email' => NULL,
     'collection_owner' => NULL,
     'state' => 'validated',
     'roles' => NULL,

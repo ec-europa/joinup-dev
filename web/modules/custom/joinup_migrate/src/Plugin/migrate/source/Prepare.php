@@ -243,9 +243,19 @@ class Prepare extends SourcePluginBase {
         }
       }
 
-      // Add text owner, if case.
-      if ($is_owner && ($row['type'] === 'project_project') && !empty($row['owner_name']) && !empty($row['owner_type'])) {
-        $collections[$collection]['owner_text'] = $row['nid'];
+      // Add text owner and E-mail contact, if case.
+      if ($is_owner && ($row['type'] === 'project_project')) {
+        if (!empty($row['owner_name']) && !empty($row['owner_type'])) {
+          $collections[$collection]['owner_text'] = $row['nid'];
+        }
+        $query = $db->select('node', 'n')
+          ->fields('c', ['field_project_common_contact_value'])
+          ->isNotNull('c.field_project_common_contact_value')
+          ->condition('n.nid', $row['nid']);
+        $query->join('content_field_project_common_contact', 'c', 'n.vid = c.vid');
+        if ($contact_email = $query->execute()->fetchField()) {
+          $collections[$collection]['contact_email'] = $contact_email;
+        }
       }
     }
 

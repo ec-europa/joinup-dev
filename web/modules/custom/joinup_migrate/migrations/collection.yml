@@ -21,7 +21,7 @@ process:
     source: collection
     migration: collection_banner
     no_stub: true
-  field_ar_contact_information:
+  contact_from_node:
     - plugin: explode
       source: contact
       delimiter: ','
@@ -29,6 +29,17 @@ process:
     - plugin: migration
       migration: contact
       no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_ar_contact_information:
+    plugin: merge
+    source:
+      - @contact_from_node
+      - @contact_from_email
+    unique: true
   field_ar_creation_date: created_time
   field_ar_description/value: body
   field_ar_description/format:

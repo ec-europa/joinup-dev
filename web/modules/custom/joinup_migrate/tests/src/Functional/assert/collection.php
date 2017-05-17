@@ -32,7 +32,9 @@ $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $collection->get('field_ar_owner'));
-$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertReferences([
+  'DIGIT-CIPA-SUPPORT@ec.europa.eu',
+], $collection->get('field_ar_contact_information'));
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);

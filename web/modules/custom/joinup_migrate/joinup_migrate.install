@@ -259,6 +259,12 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 1024,
           'not null' => FALSE,
         ],
+        'contact_email' => [
+          'description' => 'Contact E-mail',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
         'collection_owner' => [
           'description' => 'Collection owner',
           'type' => 'varchar',
