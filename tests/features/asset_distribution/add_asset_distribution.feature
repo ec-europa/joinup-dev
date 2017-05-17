@@ -64,28 +64,33 @@ Feature: Add distribution through the UI
     # Test that unauthorized users cannot add a distribution, both for a release
     # and directly from the solution page.
     Scenario: "Add distribution" button should not be shown to unprivileged users.
-      When I am logged in as a "facilitator" of the "Solution random x name" solution
+      Given I am logged in as a "facilitator" of the "Solution random x name" solution
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
-      # Click the + button.
-      Then I click "Add"
+      When I open the plus button menu
       Then I should see the link "Add distribution"
 
-      When I am logged in as a "member" of the "Asset Distribution Test" collection
+      Given I am logged in as a "member" of the "Asset Distribution Test" collection
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
-      When I am logged in as an "authenticated user"
+      Given I am logged in as an "authenticated user"
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
-      When I am an anonymous user
+      Given I am an anonymous user
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
     Scenario: Add a distribution to a release as a facilitator.

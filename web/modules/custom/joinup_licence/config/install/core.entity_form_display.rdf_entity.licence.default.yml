@@ -19,14 +19,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
   field_licence_type:
     weight: -3
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
+    region: content
   label:
     type: string_textfield
     weight: -5
@@ -34,4 +33,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+    region: content
+hidden:
+  current_workflow_state: true
+  uid: true

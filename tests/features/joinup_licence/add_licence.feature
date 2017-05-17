@@ -23,7 +23,9 @@ Feature: Add licence through UI
     Then I should see the heading "Add Licence"
     When I fill in "Title" with "This is a random licence"
     And I fill in "Description" with "Licence details go here.."
-    And I fill in "Type" with "Public domain"
+    # Ensure that the Type field is a dropdown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    And I select "Public domain" from "Type"
     And I press "Save"
     Then I should have 1 licence
     When I go to the homepage of the "This is a random licence" licence

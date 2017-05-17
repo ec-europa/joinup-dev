@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event"
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Keywords, Scope"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 
@@ -51,10 +51,12 @@ Feature: "Add event" visibility options.
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
-      | Title       | An amazing event                      |
-      | Short title | Amazing event                         |
-      | Description | This is going to be an amazing event. |
-      | Location    | Rue Belliard, 28                      |
+      | Title          | An amazing event                      |
+      | Short title    | Amazing event                         |
+      | Description    | This is going to be an amazing event. |
+      | Location       | Rue Belliard, 28                      |
+      | Add a new file | test.zip                              |
+      | Add a new file | text.pdf                              |
     And I fill in "Start date" with the date "2018-08-29"
     And I fill in "Start date" with the time "23:59:00"
     And I press "Save as draft"

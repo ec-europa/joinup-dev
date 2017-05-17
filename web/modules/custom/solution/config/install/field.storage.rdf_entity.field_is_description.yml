@@ -10,7 +10,7 @@ third_party_settings:
       value:
         predicate: 'http://purl.org/dc/terms/description'
         format: literal
-      format: 
+      format:
         predicate: ''
         format: ''
 id: rdf_entity.field_is_description

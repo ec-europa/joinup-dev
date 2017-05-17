@@ -8,10 +8,12 @@
  */
 #}
 
-<div class="page__content timeline">
+<div class="timeline">
 {% if releases %}
     {{ releases }}
 {% else %}
-    {{ 'No releases yet'|t }}
+    <div class="page__content">
+      {{ 'No releases yet'|t }}
+    </div>
 {% endif %}
 </div>

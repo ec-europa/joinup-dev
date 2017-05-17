@@ -5,11 +5,14 @@
  * Main functions and hook implementations of the custom page module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -157,4 +160,18 @@ function custom_page_field_widget_search_api_field_default_form_alter(&$element,
       $element['wrapper'][$key]['#access'] = FALSE;
     }
   }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Prevent custom page view access to unprivileged users when the parent entity
+ * is not published.
+ */
+function custom_page_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($op !== 'view' || $node->bundle() !== 'custom_page') {
+    return AccessResult::neutral();
+  }
+
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($node, $op, $account);
 }

@@ -6,15 +6,16 @@
  */
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\Component\Utility\Unicode;
-use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 
 /**
  * Implements hook_preprocess_page().
@@ -188,6 +189,7 @@ function joinup_theme_preprocess_block(&$variables) {
         }
         break;
 
+      case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':
@@ -628,6 +630,49 @@ function joinup_theme_preprocess_search_api_field__user__field_user_content(&$va
     '#suffix' => '</div>',
     '#markup' => $markup,
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for joinup-tiles--collections.html.twig.
+ */
+function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
+  // Add a link to propose a collection. This should appear as the final tile.
+  $variables['add_collection_link'] = [
+    '#type' => 'link',
+    '#title' => t('Create collection'),
+    '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--moderation.html.twig.
+ *
+ * - Removes the contextual links.
+ * - Adds an edit URL.
+ */
+function joinup_theme_preprocess_node__moderation(&$variables) {
+  joinup_theme_remove_contextual_links($variables);
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $variables['edit_url'] = $node->toUrl('edit-form')->toString();
+}
+
+/**
+ * Remove the contextual links from a template preprocess variable array.
+ *
+ * @param array $variables
+ *   An array of template preprocess variables.
+ *
+ * @see contextual_preprocess()
+ */
+function joinup_theme_remove_contextual_links(array &$variables) {
+  if (!empty($variables['attributes']['class'])) {
+    $key = array_search('contextual-region', $variables['attributes']['class']);
+    if ($key !== FALSE) {
+      unset($variables['attributes']['class'][$key]);
+    }
+  }
+  unset($variables['title_suffix']['contextual_links']);
 }
 
 /**

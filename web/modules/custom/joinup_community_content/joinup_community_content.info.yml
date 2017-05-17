@@ -14,6 +14,7 @@ dependencies:
   - text
 
 config_devel:
+  - field.storage.node.field_attachment
   - field.storage.node.field_comments
   - field.storage.node.field_keywords
   - field.storage.node.field_policy_domain
