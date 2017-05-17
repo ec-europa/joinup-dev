@@ -39,7 +39,7 @@ class ContactEmail extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('d8_contact_email', 'c')->fields('c');
+    return $this->select('d8_contact_email', 'c')->fields('c', ['name']);
   }
 
   /**
