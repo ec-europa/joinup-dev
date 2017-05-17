@@ -1,0 +1,1502 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/business-process">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d246c">
+    <skos:prefLabel xml:lang="en">Manage Product Information Subscription</skos:prefLabel>
+    <skos:definition xml:lang="en">Manage Product Information Subscription</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d2c99">
+    <skos:prefLabel xml:lang="en">Request/Verify Account Info</skos:prefLabel>
+    <skos:definition xml:lang="en">Request/Verify Account Info</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d2ec4">
+    <skos:prefLabel xml:lang="en">Delete Party Profile</skos:prefLabel>
+    <skos:definition xml:lang="en">Delete Party Profile</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d304b">
+    <skos:prefLabel xml:lang="en">Request Account Setup</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Account Setup</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d31ac">
+    <skos:prefLabel xml:lang="en">Maintain Account</skos:prefLabel>
+    <skos:definition xml:lang="en">Maintain Account</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d333c">
+    <skos:prefLabel xml:lang="en">Request Credit Reference</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Credit Reference</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d347c">
+    <skos:prefLabel xml:lang="en">Maintain Agreement</skos:prefLabel>
+    <skos:definition xml:lang="en">Maintain Agreement</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d35be">
+    <skos:prefLabel xml:lang="en">Request Quote / Response</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Quote / Response</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3711">
+    <skos:prefLabel xml:lang="en">Query Price And Availability</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Price And Availability</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d38b7">
+    <skos:prefLabel xml:lang="en">Query Price</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Price</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3a07">
+    <skos:prefLabel xml:lang="en">Query Availability</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Availability</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3b57">
+    <skos:prefLabel xml:lang="en">Request Promise of Availablity</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Promise of Availablity</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3ca8">
+    <skos:prefLabel xml:lang="en">Price Catalog</skos:prefLabel>
+    <skos:definition xml:lang="en">Price Catalog</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3e0b">
+    <skos:prefLabel xml:lang="en">Establishment of Contract Award</skos:prefLabel>
+    <skos:definition xml:lang="en">Establishment of Contract Award</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d3f72">
+    <skos:prefLabel xml:lang="en">Negotiate Reservation</skos:prefLabel>
+    <skos:definition xml:lang="en">Negotiate Reservation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d40d2">
+    <skos:prefLabel xml:lang="en">Create Auction Offer</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Auction Offer</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4234">
+    <skos:prefLabel xml:lang="en">Create Auction Bid</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Auction Bid</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d43ea">
+    <skos:prefLabel xml:lang="en">Bid Acceptance</skos:prefLabel>
+    <skos:definition xml:lang="en">Bid Acceptance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d454c">
+    <skos:prefLabel xml:lang="en">Barter Offer</skos:prefLabel>
+    <skos:definition xml:lang="en">Barter Offer</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d469c">
+    <skos:prefLabel xml:lang="en">Barter Acceptance</skos:prefLabel>
+    <skos:definition xml:lang="en">Barter Acceptance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d47f0">
+    <skos:prefLabel xml:lang="en">Haggle/Negotiation</skos:prefLabel>
+    <skos:definition xml:lang="en">Haggle/Negotiation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4949">
+    <skos:prefLabel xml:lang="en">Report Auction Results</skos:prefLabel>
+    <skos:definition xml:lang="en">Report Auction Results</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4aa3">
+    <skos:prefLabel xml:lang="en">Check Credit</skos:prefLabel>
+    <skos:definition xml:lang="en">Check Credit</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4bf6">
+    <skos:prefLabel xml:lang="en">Establish Payment Terms</skos:prefLabel>
+    <skos:definition xml:lang="en">Establish Payment Terms</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4d5c">
+    <skos:prefLabel xml:lang="en">Amend Payment Terms</skos:prefLabel>
+    <skos:definition xml:lang="en">Amend Payment Terms</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d4ec9">
+    <skos:prefLabel xml:lang="en">Item Performance History Request</skos:prefLabel>
+    <skos:definition xml:lang="en">Item Performance History Request</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d501b">
+    <skos:prefLabel xml:lang="en">Item Performance History Response</skos:prefLabel>
+    <skos:definition xml:lang="en">Item Performance History Response</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d518b">
+    <skos:prefLabel xml:lang="en">Create Sales/Order Forecast</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Sales/Order Forecast</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5323">
+    <skos:prefLabel xml:lang="en">Identify Forecast Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Identify Forecast Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d549c">
+    <skos:prefLabel xml:lang="en">Resolve Forecast Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Resolve Forecast Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d55db">
+    <skos:prefLabel xml:lang="en">Create Shipping Schedule For JIT Delivery</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Shipping Schedule For JIT Delivery</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5725">
+    <skos:prefLabel xml:lang="en">Request Forecast Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Forecast Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d58cd">
+    <skos:prefLabel xml:lang="en">Obtain Future Trend Analysis Request</skos:prefLabel>
+    <skos:definition xml:lang="en">Obtain Future Trend Analysis Request</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5a1a">
+    <skos:prefLabel xml:lang="en">Obtain Future Trend Analysis Response</skos:prefLabel>
+    <skos:definition xml:lang="en">Obtain Future Trend Analysis Response</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5b99">
+    <skos:prefLabel xml:lang="en">Obtain Performance History Request</skos:prefLabel>
+    <skos:definition xml:lang="en">Obtain Performance History Request</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5ce4">
+    <skos:prefLabel xml:lang="en">Obtain Performance History Response</skos:prefLabel>
+    <skos:definition xml:lang="en">Obtain Performance History Response</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5e2e">
+    <skos:prefLabel xml:lang="en">Issue Sales/Order Forecast</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Sales/Order Forecast</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d5f7a">
+    <skos:prefLabel xml:lang="en">Issue Raw Material Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Raw Material Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d60d4">
+    <skos:prefLabel xml:lang="en">Issue Fabrication Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Fabrication Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d624b">
+    <skos:prefLabel xml:lang="en">Identify Forecast Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Identify Forecast Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d639d">
+    <skos:prefLabel xml:lang="en">Resolve Forecast Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Resolve Forecast Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d64e7">
+    <skos:prefLabel xml:lang="en">Issue Shipping Schedule for Delivery</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Shipping Schedule for Delivery</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6634">
+    <skos:prefLabel xml:lang="en">Receive Acknowledgment of Shipping Schedule Delivery</skos:prefLabel>
+    <skos:definition xml:lang="en">Receive Acknowledgment of Shipping Schedule Delivery</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6781">
+    <skos:prefLabel xml:lang="en">Issue Shipment Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Shipment Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d68cc">
+    <skos:prefLabel xml:lang="en">Identify Schedule Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Identify Schedule Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6a18">
+    <skos:prefLabel xml:lang="en">Resolve Schedule Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Resolve Schedule Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6b5e">
+    <skos:prefLabel xml:lang="en">Issue Defect Notification</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Defect Notification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6ca4">
+    <skos:prefLabel xml:lang="en">Issue Defect Resolution Plan</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Defect Resolution Plan</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6e25">
+    <skos:prefLabel xml:lang="en">Receive Resolution Plan Acceptance</skos:prefLabel>
+    <skos:definition xml:lang="en">Receive Resolution Plan Acceptance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d6f68">
+    <skos:prefLabel xml:lang="en">Test Specification</skos:prefLabel>
+    <skos:definition xml:lang="en">Test Specification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d70b9">
+    <skos:prefLabel xml:lang="en">Manage Purchase Order (Create/Change/Cancel and Accept PO)</skos:prefLabel>
+    <skos:definition xml:lang="en">Manage Purchase Order (Create/Change/Cancel and Accept PO)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7225">
+    <skos:prefLabel xml:lang="en">Create Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7370">
+    <skos:prefLabel xml:lang="en">Change Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d74b9">
+    <skos:prefLabel xml:lang="en">Request Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d761b">
+    <skos:prefLabel xml:lang="en">Query Order Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Order Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d77b5">
+    <skos:prefLabel xml:lang="en">Distribute Order Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Order Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d78fa">
+    <skos:prefLabel xml:lang="en">Notify Of Purchase Order Acceptance</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Purchase Order Acceptance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7a47">
+    <skos:prefLabel xml:lang="en">Evaluate Supplier Performance</skos:prefLabel>
+    <skos:definition xml:lang="en">Evaluate Supplier Performance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7b96">
+    <skos:prefLabel xml:lang="en">Communicate Supplier Performance</skos:prefLabel>
+    <skos:definition xml:lang="en">Communicate Supplier Performance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7cdc">
+    <skos:prefLabel xml:lang="en">Authorize Fabrication</skos:prefLabel>
+    <skos:definition xml:lang="en">Authorize Fabrication</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7e21">
+    <skos:prefLabel xml:lang="en">Authorize Shipment</skos:prefLabel>
+    <skos:definition xml:lang="en">Authorize Shipment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d7f65">
+    <skos:prefLabel xml:lang="en">Authorize Raw Material</skos:prefLabel>
+    <skos:definition xml:lang="en">Authorize Raw Material</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d80ab">
+    <skos:prefLabel xml:lang="en">Distribute Despatch Instructions</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Despatch Instructions</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8207">
+    <skos:prefLabel xml:lang="en">Notify Of Advance Shipment</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Advance Shipment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8336">
+    <skos:prefLabel xml:lang="en">Notify Of Shipment Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Shipment Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8465">
+    <skos:prefLabel xml:lang="en">Query Shipment Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Shipment Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8601">
+    <skos:prefLabel xml:lang="en">Change Shipment Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Shipment Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8743">
+    <skos:prefLabel xml:lang="en">Notify Of Transport Exception</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Transport Exception</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d88fb">
+    <skos:prefLabel xml:lang="en">Create Delivery Appointment</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Delivery Appointment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8b2f">
+    <skos:prefLabel xml:lang="en">Notify Of Shipment Receipt</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Shipment Receipt</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8d37">
+    <skos:prefLabel xml:lang="en">Create Transportation Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Transportation Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d8f30">
+    <skos:prefLabel xml:lang="en">Shipment Instruction</skos:prefLabel>
+    <skos:definition xml:lang="en">Shipment Instruction</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d912f">
+    <skos:prefLabel xml:lang="en">Booking Confirmation</skos:prefLabel>
+    <skos:definition xml:lang="en">Booking Confirmation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d930e">
+    <skos:prefLabel xml:lang="en">Create Freight Invoices</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Freight Invoices</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d94e0">
+    <skos:prefLabel xml:lang="en">Customs Declaration (International Freight)</skos:prefLabel>
+    <skos:definition xml:lang="en">Customs Declaration (International Freight)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d965b">
+    <skos:prefLabel xml:lang="en">Material Safety Data Sheet</skos:prefLabel>
+    <skos:definition xml:lang="en">Material Safety Data Sheet</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9801">
+    <skos:prefLabel xml:lang="en">Compliance Leak Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Compliance Leak Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d993e">
+    <skos:prefLabel xml:lang="en">Marine Inspection Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Marine Inspection Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9a7e">
+    <skos:prefLabel xml:lang="en">Return Product</skos:prefLabel>
+    <skos:definition xml:lang="en">Return Product</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9bbb">
+    <skos:prefLabel xml:lang="en">Obtain Financing Approval</skos:prefLabel>
+    <skos:definition xml:lang="en">Obtain Financing Approval</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9cf9">
+    <skos:prefLabel xml:lang="en">Match Invoice</skos:prefLabel>
+    <skos:definition xml:lang="en">Match Invoice</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9e36">
+    <skos:prefLabel xml:lang="en">Process Payment</skos:prefLabel>
+    <skos:definition xml:lang="en">Process Payment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00d9f74">
+    <skos:prefLabel xml:lang="en">Distribute Risk Analysis</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Risk Analysis</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da0c6">
+    <skos:prefLabel xml:lang="en">Distribute Test Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Test Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da204">
+    <skos:prefLabel xml:lang="en">Distribute Test Result</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Test Result</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da341">
+    <skos:prefLabel xml:lang="en">Request Product Acceptance</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Product Acceptance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da47e">
+    <skos:prefLabel xml:lang="en">Distribute Engineering Change Request</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Engineering Change Request</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da5bb">
+    <skos:prefLabel xml:lang="en">Distribute Engineering Change Response</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Engineering Change Response</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da6f7">
+    <skos:prefLabel xml:lang="en">Request Engineering Change Order Approval</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Engineering Change Order Approval</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da836">
+    <skos:prefLabel xml:lang="en">Notify Of Engineering Change Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Engineering Change Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00da972">
+    <skos:prefLabel xml:lang="en">Notify Of Engineering Change Implementation Plan</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Engineering Change Implementation Plan</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00daaaf">
+    <skos:prefLabel xml:lang="en">Notify Of Solution Configuration</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Solution Configuration</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dabeb">
+    <skos:prefLabel xml:lang="en">Notify Of Manufacturing Specification</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Manufacturing Specification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dad27">
+    <skos:prefLabel xml:lang="en">Request Build Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Build Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dae64">
+    <skos:prefLabel xml:lang="en">Distribute Material Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Material Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dafa3">
+    <skos:prefLabel xml:lang="en">Notify Of Build Readiness</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Build Readiness</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db0e9">
+    <skos:prefLabel xml:lang="en">Request Deviation Or Waiver</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Deviation Or Waiver</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db226">
+    <skos:prefLabel xml:lang="en">Distribute Work In Process</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Work In Process</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db362">
+    <skos:prefLabel xml:lang="en">Query Work In Process</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Work In Process</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db4a0">
+    <skos:prefLabel xml:lang="en">Distribute New Product Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute New Product Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db5dc">
+    <skos:prefLabel xml:lang="en">Query Product Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Product Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db71e">
+    <skos:prefLabel xml:lang="en">Query Marketing Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Marketing Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db84a">
+    <skos:prefLabel xml:lang="en">Query Sales Promotion And Rebate Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Sales Promotion And Rebate Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00db976">
+    <skos:prefLabel xml:lang="en">Query Technical Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Technical Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dbaa2">
+    <skos:prefLabel xml:lang="en">Query Product Lifecycle Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Product Lifecycle Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dbbd0">
+    <skos:prefLabel xml:lang="en">Request Product Discontinuation Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Product Discontinuation Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dbd4e">
+    <skos:prefLabel xml:lang="en">Distribute Product Stock Keeping Unit (SKU)</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Product Stock Keeping Unit (SKU)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dbe8f">
+    <skos:prefLabel xml:lang="en">Change Product Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Product Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dbfce">
+    <skos:prefLabel xml:lang="en">Change Marketing Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Marketing Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc10b">
+    <skos:prefLabel xml:lang="en">Change Sales Promotion And Rebate Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Sales Promotion And Rebate Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc246">
+    <skos:prefLabel xml:lang="en">Change Product Technical Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Product Technical Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc40c">
+    <skos:prefLabel xml:lang="en">Change Product Lifecycle Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Product Lifecycle Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc54c">
+    <skos:prefLabel xml:lang="en">Query Optional Product Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Optional Product Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc68b">
+    <skos:prefLabel xml:lang="en">Distribute Inventory Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Inventory Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc7c9">
+    <skos:prefLabel xml:lang="en">Distribute Inventory Timeout Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Inventory Timeout Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dc908">
+    <skos:prefLabel xml:lang="en">Distribute Inventory Error Notification</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Inventory Error Notification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dca43">
+    <skos:prefLabel xml:lang="en">Distribute Inventory Time-Out Discrepancy Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Inventory Time-Out Discrepancy Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dcb80">
+    <skos:prefLabel xml:lang="en">Warehouse Stock Transfer Receipt Advice</skos:prefLabel>
+    <skos:definition xml:lang="en">Warehouse Stock Transfer Receipt Advice</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dccbf">
+    <skos:prefLabel xml:lang="en">Warehouse Stock Transfer Shipment Advice</skos:prefLabel>
+    <skos:definition xml:lang="en">Warehouse Stock Transfer Shipment Advice</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dcdfc">
+    <skos:prefLabel xml:lang="en">Notify Of Commercial Sales Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Commercial Sales Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dcf38">
+    <skos:prefLabel xml:lang="en">Notify Of Consumer Sales Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Consumer Sales Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd084">
+    <skos:prefLabel xml:lang="en">Notify Of Timeout Sales Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Timeout Sales Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd1c2">
+    <skos:prefLabel xml:lang="en">Request Detail Sales Timeout Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Detail Sales Timeout Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd2ff">
+    <skos:prefLabel xml:lang="en">Distribute Commercial Sales Report Error Notification</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Commercial Sales Report Error Notification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd43e">
+    <skos:prefLabel xml:lang="en">Notify Of Consumer Sales Report For Affected Errors</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Consumer Sales Report For Affected Errors</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd57b">
+    <skos:prefLabel xml:lang="en">Distribute Consumer Sales Report Error Notification</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Consumer Sales Report Error Notification</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd6b8">
+    <skos:prefLabel xml:lang="en">Price Protection</skos:prefLabel>
+    <skos:definition xml:lang="en">Price Protection</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd7fe">
+    <skos:prefLabel xml:lang="en">Ship From Stock And Debit_Credit</skos:prefLabel>
+    <skos:definition xml:lang="en">Ship From Stock And Debit_Credit</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dd93f">
+    <skos:prefLabel xml:lang="en">Create Invoice (Products)</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Invoice (Products)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dda81">
+    <skos:prefLabel xml:lang="en">Create Invoice (Services)</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Invoice (Services)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00ddbc1">
+    <skos:prefLabel xml:lang="en">Receive Payables</skos:prefLabel>
+    <skos:definition xml:lang="en">Receive Payables</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00ddcfd">
+    <skos:prefLabel xml:lang="en">Originate Payables</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Payables</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dde3a">
+    <skos:prefLabel xml:lang="en">Receive Receivables</skos:prefLabel>
+    <skos:definition xml:lang="en">Receive Receivables</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00ddf81">
+    <skos:prefLabel xml:lang="en">Originate Receivables</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Receivables</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de0be">
+    <skos:prefLabel xml:lang="en">Originate Child Support Payments</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Child Support Payments</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de1fc">
+    <skos:prefLabel xml:lang="en">Originate Payroll</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Payroll</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de33b">
+    <skos:prefLabel xml:lang="en">Originate Tax Payments</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Tax Payments</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de479">
+    <skos:prefLabel xml:lang="en">Originate Royalty Payments</skos:prefLabel>
+    <skos:definition xml:lang="en">Originate Royalty Payments</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de5b5">
+    <skos:prefLabel xml:lang="en">Acknowledge a Payment Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Acknowledge a Payment Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de6f2">
+    <skos:prefLabel xml:lang="en">Confirm/Verify Payment Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Confirm/Verify Payment Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de82d">
+    <skos:prefLabel xml:lang="en">Notify Party of Returned payment Item</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Party of Returned payment Item</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00de969">
+    <skos:prefLabel xml:lang="en">Request Payment Cancellation</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Payment Cancellation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00deaa8">
+    <skos:prefLabel xml:lang="en">Process Lockbox</skos:prefLabel>
+    <skos:definition xml:lang="en">Process Lockbox</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00debe5">
+    <skos:prefLabel xml:lang="en">Cash Reconciliation (Asset)</skos:prefLabel>
+    <skos:definition xml:lang="en">Cash Reconciliation (Asset)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00ded20">
+    <skos:prefLabel xml:lang="en">Cash Reconciliation (Liability)</skos:prefLabel>
+    <skos:definition xml:lang="en">Cash Reconciliation (Liability)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dee4e">
+    <skos:prefLabel xml:lang="en">Send Debit Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Send Debit Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00def93">
+    <skos:prefLabel xml:lang="en">Issue a Check Issuance List</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue a Check Issuance List</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df0cf">
+    <skos:prefLabel xml:lang="en">Transmit Business Credit Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Business Credit Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df20e">
+    <skos:prefLabel xml:lang="en">Transmit Real Estate Title Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Real Estate Title Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df34b">
+    <skos:prefLabel xml:lang="en">Request Loan Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Loan Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df489">
+    <skos:prefLabel xml:lang="en">Transmit Loan Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Loan Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df5c6">
+    <skos:prefLabel xml:lang="en">Transmit Real Estate Settlement Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Real Estate Settlement Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df707">
+    <skos:prefLabel xml:lang="en">Report Mortgage Credit Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Report Mortgage Credit Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df847">
+    <skos:prefLabel xml:lang="en">Transmit Uniform Residential Loan Application</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Uniform Residential Loan Application</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00df984">
+    <skos:prefLabel xml:lang="en">Transmit Mortgage Loan Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Mortgage Loan Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dfac1">
+    <skos:prefLabel xml:lang="en">Transmit Mortgage Note Information and Characteristics</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Mortgage Note Information and Characteristics</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dfc7b">
+    <skos:prefLabel xml:lang="en">Transmit Mortgage Service Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Mortgage Service Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dfdc6">
+    <skos:prefLabel xml:lang="en">Transmit Real Estate Site Inspection Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Real Estate Site Inspection Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00dff14">
+    <skos:prefLabel xml:lang="en">Transmit Property Tax Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Property Tax Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0053">
+    <skos:prefLabel xml:lang="en">Transmit Collection Account Assignments</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Collection Account Assignments</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0191">
+    <skos:prefLabel xml:lang="en">Report Collection Account Status Inquiries</skos:prefLabel>
+    <skos:definition xml:lang="en">Report Collection Account Status Inquiries</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e02cd">
+    <skos:prefLabel xml:lang="en">Apply for Mortgage Insurance Benefits</skos:prefLabel>
+    <skos:definition xml:lang="en">Apply for Mortgage Insurance Benefits</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e040b">
+    <skos:prefLabel xml:lang="en">Request Real Estate Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Real Estate Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e054a">
+    <skos:prefLabel xml:lang="en">Report Real Estate Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Report Real Estate Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0713">
+    <skos:prefLabel xml:lang="en">Respond to a Residential Mortgage Insurance Application</skos:prefLabel>
+    <skos:definition xml:lang="en">Respond to a Residential Mortgage Insurance Application</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0853">
+    <skos:prefLabel xml:lang="en">Mortgage Loan Default Status Report</skos:prefLabel>
+    <skos:definition xml:lang="en">Mortgage Loan Default Status Report</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e09cd">
+    <skos:prefLabel xml:lang="en">Order Real Estate Title Insurance Services</skos:prefLabel>
+    <skos:definition xml:lang="en">Order Real Estate Title Insurance Services</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0b0a">
+    <skos:prefLabel xml:lang="en">Notify Parties of Mortgage or Property Record Change</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Parties of Mortgage or Property Record Change</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0c48">
+    <skos:prefLabel xml:lang="en">Transmit a Debit/Credit Adjustment</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit a Debit/Credit Adjustment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0d85">
+    <skos:prefLabel xml:lang="en">Request/Respond Financial Action</skos:prefLabel>
+    <skos:definition xml:lang="en">Request/Respond Financial Action</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e0ecd">
+    <skos:prefLabel xml:lang="en">Transmit Billing and Operating Expense Details</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Billing and Operating Expense Details</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e100d">
+    <skos:prefLabel xml:lang="en">Transmit Account Analysis Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Transmit Account Analysis Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1149">
+    <skos:prefLabel xml:lang="en">Order for Mortgage Credit Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Order for Mortgage Credit Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e12bd">
+    <skos:prefLabel xml:lang="en">Request Account Adjustment Action</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Account Adjustment Action</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e13fd">
+    <skos:prefLabel xml:lang="en">Respond to a Request for Account Adjustment Action</skos:prefLabel>
+    <skos:definition xml:lang="en">Respond to a Request for Account Adjustment Action</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1538">
+    <skos:prefLabel xml:lang="en">Apply for Residential Mortgage Insurance</skos:prefLabel>
+    <skos:definition xml:lang="en">Apply for Residential Mortgage Insurance</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1674">
+    <skos:prefLabel xml:lang="en">Invoice for Grocery Products</skos:prefLabel>
+    <skos:definition xml:lang="en">Invoice for Grocery Products</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e17b2">
+    <skos:prefLabel xml:lang="en">Create Payroll</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Payroll</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e18f7">
+    <skos:prefLabel xml:lang="en">Issue Ticket/Voucher</skos:prefLabel>
+    <skos:definition xml:lang="en">Issue Ticket/Voucher</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1a33">
+    <skos:prefLabel xml:lang="en">Exchange/Reissue Ticket</skos:prefLabel>
+    <skos:definition xml:lang="en">Exchange/Reissue Ticket</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1b70">
+    <skos:prefLabel xml:lang="en">Refund Ticket</skos:prefLabel>
+    <skos:definition xml:lang="en">Refund Ticket</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1cae">
+    <skos:prefLabel xml:lang="en">Void Ticket</skos:prefLabel>
+    <skos:definition xml:lang="en">Void Ticket</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1df8">
+    <skos:prefLabel xml:lang="en">Request Payment Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Payment Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e1f34">
+    <skos:prefLabel xml:lang="en">Request Payment</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Payment</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e206f">
+    <skos:prefLabel xml:lang="en">Customs Declaration (Shipper)</skos:prefLabel>
+    <skos:definition xml:lang="en">Customs Declaration (Shipper)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e21ac">
+    <skos:prefLabel xml:lang="en">Shipping Line To Customs–(Carrier)</skos:prefLabel>
+    <skos:definition xml:lang="en">Shipping Line To Customs–(Carrier)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e22e7">
+    <skos:prefLabel xml:lang="en">Environment Health And Safety Declaration</skos:prefLabel>
+    <skos:definition xml:lang="en">Environment Health And Safety Declaration</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2423">
+    <skos:prefLabel xml:lang="en">Export And Import Declaration</skos:prefLabel>
+    <skos:definition xml:lang="en">Export And Import Declaration</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2562">
+    <skos:prefLabel xml:lang="en">Import Side Compliance Check</skos:prefLabel>
+    <skos:definition xml:lang="en">Import Side Compliance Check</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e269e">
+    <skos:prefLabel xml:lang="en">Voyage Itinerary / Schedules</skos:prefLabel>
+    <skos:definition xml:lang="en">Voyage Itinerary / Schedules</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e27db">
+    <skos:prefLabel xml:lang="en">Request For Compliance Screening (Solvency Check)</skos:prefLabel>
+    <skos:definition xml:lang="en">Request For Compliance Screening (Solvency Check)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2918">
+    <skos:prefLabel xml:lang="en">Announce Arrival Of Vessel/Vehicle</skos:prefLabel>
+    <skos:definition xml:lang="en">Announce Arrival Of Vessel/Vehicle</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2a56">
+    <skos:prefLabel xml:lang="en">Entry Of Cargo</skos:prefLabel>
+    <skos:definition xml:lang="en">Entry Of Cargo</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2b93">
+    <skos:prefLabel xml:lang="en">Pickup / Pre-carriage Of Goods At Origin</skos:prefLabel>
+    <skos:definition xml:lang="en">Pickup / Pre-carriage Of Goods At Origin</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2cd1">
+    <skos:prefLabel xml:lang="en">Announce Departure Of Vessel / Vehicle</skos:prefLabel>
+    <skos:definition xml:lang="en">Announce Departure Of Vessel / Vehicle</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2e19">
+    <skos:prefLabel xml:lang="en">Departure Of Cargo</skos:prefLabel>
+    <skos:definition xml:lang="en">Departure Of Cargo</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e2f56">
+    <skos:prefLabel xml:lang="en">Onward Carriage Of Cargo To Final Destination</skos:prefLabel>
+    <skos:definition xml:lang="en">Onward Carriage Of Cargo To Final Destination</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3092">
+    <skos:prefLabel xml:lang="en">Vessel / Vehicle Arrival Planning</skos:prefLabel>
+    <skos:definition xml:lang="en">Vessel / Vehicle Arrival Planning</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e31ce">
+    <skos:prefLabel xml:lang="en">Vessel / Vehicle Departure Planning</skos:prefLabel>
+    <skos:definition xml:lang="en">Vessel / Vehicle Departure Planning</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e330a">
+    <skos:prefLabel xml:lang="en">Vessel / Vehicle Discharge Operation</skos:prefLabel>
+    <skos:definition xml:lang="en">Vessel / Vehicle Discharge Operation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3447">
+    <skos:prefLabel xml:lang="en">Vessel / Vehicle Load Operation</skos:prefLabel>
+    <skos:definition xml:lang="en">Vessel / Vehicle Load Operation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3584">
+    <skos:prefLabel xml:lang="en">Cargo Relay Operation</skos:prefLabel>
+    <skos:definition xml:lang="en">Cargo Relay Operation</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e36c0">
+    <skos:prefLabel xml:lang="en">Customs Clearance Of Cargo For Export</skos:prefLabel>
+    <skos:definition xml:lang="en">Customs Clearance Of Cargo For Export</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3801">
+    <skos:prefLabel xml:lang="en">Customs Clearance Of Cargo For Import</skos:prefLabel>
+    <skos:definition xml:lang="en">Customs Clearance Of Cargo For Import</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3941">
+    <skos:prefLabel xml:lang="en">Health And Safety Clearance Of Cargo</skos:prefLabel>
+    <skos:definition xml:lang="en">Health And Safety Clearance Of Cargo</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3ac6">
+    <skos:prefLabel xml:lang="en">Manage Sales Lead</skos:prefLabel>
+    <skos:definition xml:lang="en">Manage Sales Lead</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3c75">
+    <skos:prefLabel xml:lang="en">Transfer Sales Lead Responsibility</skos:prefLabel>
+    <skos:definition xml:lang="en">Transfer Sales Lead Responsibility</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e3e6b">
+    <skos:prefLabel xml:lang="en">Query Sales Lead Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Sales Lead Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4197">
+    <skos:prefLabel xml:lang="en">Notify Of Sales Lead Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Sales Lead Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4398">
+    <skos:prefLabel xml:lang="en">Distribute Marketing Activity Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Marketing Activity Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4598">
+    <skos:prefLabel xml:lang="en">Notify Of Marketing Activity</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Marketing Activity</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4779">
+    <skos:prefLabel xml:lang="en">Create Sales Marketing Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Sales Marketing Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4970">
+    <skos:prefLabel xml:lang="en">Process Sales Marketing Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Process Sales Marketing Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4b3c">
+    <skos:prefLabel xml:lang="en">Change Sales Marketing Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Change Sales Marketing Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4cf5">
+    <skos:prefLabel xml:lang="en">Notify Of Cancel Sales Marketing Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Cancel Sales Marketing Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4e5e">
+    <skos:prefLabel xml:lang="en">Query Sales Marketing Claim Status </skos:prefLabel>
+    <skos:definition xml:lang="en">Query Sales Marketing Claim Status </skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e4fbb">
+    <skos:prefLabel xml:lang="en">Notify Of Sales Marketing Claim Status </skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Sales Marketing Claim Status </skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5125">
+    <skos:prefLabel xml:lang="en">Distribute Product List</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Product List</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5281">
+    <skos:prefLabel xml:lang="en">Request Design Registration</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Design Registration</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e540c">
+    <skos:prefLabel xml:lang="en">Request Design Win</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Design Win</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5553">
+    <skos:prefLabel xml:lang="en">Distribute Registration Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Registration Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5699">
+    <skos:prefLabel xml:lang="en">Query Registration Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Registration Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e57e3">
+    <skos:prefLabel xml:lang="en">Request Ship From Stock And Debit Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Ship From Stock And Debit Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5936">
+    <skos:prefLabel xml:lang="en">Notify Of Blanket Ship From Stock And Debit Authorization</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Blanket Ship From Stock And Debit Authorization</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5a92">
+    <skos:prefLabel xml:lang="en">Distribute Open Ship From Stock And Debit Authorization Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Distribute Open Ship From Stock And Debit Authorization Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5beb">
+    <skos:prefLabel xml:lang="en">Query Ship From Stock And Debit Authorization Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Query Ship From Stock And Debit Authorization Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5d28">
+    <skos:prefLabel xml:lang="en">Create Ship From Stock And Debit Claim</skos:prefLabel>
+    <skos:definition xml:lang="en">Create Ship From Stock And Debit Claim</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5e65">
+    <skos:prefLabel xml:lang="en">Notify Of Ship From Stock And Debit Claim Status</skos:prefLabel>
+    <skos:definition xml:lang="en">Notify Of Ship From Stock And Debit Claim Status</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e5fa3">
+    <skos:prefLabel xml:lang="en">Product Request (Internal / External – All Sources)</skos:prefLabel>
+    <skos:definition xml:lang="en">Product Request (Internal / External – All Sources)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e60eb">
+    <skos:prefLabel xml:lang="en">Request Evaluation (Research)</skos:prefLabel>
+    <skos:definition xml:lang="en">Request Evaluation (Research)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6227">
+    <skos:prefLabel xml:lang="en">Evaluation Results</skos:prefLabel>
+    <skos:definition xml:lang="en">Evaluation Results</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6364">
+    <skos:prefLabel xml:lang="en">Gather And Document Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Gather And Document Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e649f">
+    <skos:prefLabel xml:lang="en">Analyze Information</skos:prefLabel>
+    <skos:definition xml:lang="en">Analyze Information</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e65db">
+    <skos:prefLabel xml:lang="en">Develop Functional Specifications</skos:prefLabel>
+    <skos:definition xml:lang="en">Develop Functional Specifications</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6715">
+    <skos:prefLabel xml:lang="en">Develop Technical Specifications</skos:prefLabel>
+    <skos:definition xml:lang="en">Develop Technical Specifications</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6853">
+    <skos:prefLabel xml:lang="en">Design Tooling</skos:prefLabel>
+    <skos:definition xml:lang="en">Design Tooling</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e69bb">
+    <skos:prefLabel xml:lang="en">Design Process (Routing)</skos:prefLabel>
+    <skos:definition xml:lang="en">Design Process (Routing)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6af7">
+    <skos:prefLabel xml:lang="en">Establish Product Configuration (BOM)</skos:prefLabel>
+    <skos:definition xml:lang="en">Establish Product Configuration (BOM)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6c58">
+    <skos:prefLabel xml:lang="en">Initiate Manufacturing Order</skos:prefLabel>
+    <skos:definition xml:lang="en">Initiate Manufacturing Order</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6d94">
+    <skos:prefLabel xml:lang="en">Setup Production Line (Tooling)</skos:prefLabel>
+    <skos:definition xml:lang="en">Setup Production Line (Tooling)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e6ed1">
+    <skos:prefLabel xml:lang="en">Get Materials (RM / Component Parts / MRO)</skos:prefLabel>
+    <skos:definition xml:lang="en">Get Materials (RM / Component Parts / MRO)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e700f">
+    <skos:prefLabel xml:lang="en">Produce Product</skos:prefLabel>
+    <skos:definition xml:lang="en">Produce Product</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e714d">
+    <skos:prefLabel xml:lang="en">Inspect Incoming Material (Tooling, RM, Components)</skos:prefLabel>
+    <skos:definition xml:lang="en">Inspect Incoming Material (Tooling, RM, Components)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e7288">
+    <skos:prefLabel xml:lang="en">Inspect WIP</skos:prefLabel>
+    <skos:definition xml:lang="en">Inspect WIP</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e73c4">
+    <skos:prefLabel xml:lang="en">Inspect Finished Goods</skos:prefLabel>
+    <skos:definition xml:lang="en">Inspect Finished Goods</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e74ff">
+    <skos:prefLabel xml:lang="en">Test Product/Process Characteristics (RM, Components, Finished Goods)</skos:prefLabel>
+    <skos:definition xml:lang="en">Test Product/Process Characteristics (RM, Components, Finished Goods)</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e763d">
+    <skos:prefLabel xml:lang="en">Report Test Results / Non-conformance / Scrap / Rework / Certifications</skos:prefLabel>
+    <skos:definition xml:lang="en">Report Test Results / Non-conformance / Scrap / Rework / Certifications</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e7778">
+    <skos:prefLabel xml:lang="en">Provide And Administer Asset Management</skos:prefLabel>
+    <skos:definition xml:lang="en">Provide And Administer Asset Management</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/business-process/59197c00e78b5">
+    <skos:prefLabel xml:lang="en">Technical Support And Service Management</skos:prefLabel>
+    <skos:definition xml:lang="en">Technical Support And Service Management</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/business-process"/>
+  </skos:Concept>
+
+</rdf:RDF>

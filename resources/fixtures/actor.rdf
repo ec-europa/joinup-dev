@@ -5,6 +5,12 @@
   <skos:ConceptScheme rdf:about="http://joinup.eu/taxonomy/actor">
   </skos:ConceptScheme>
 
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#cashier">
+    <skos:prefLabel xml:lang="en">Cashier</skos:prefLabel>
+    <skos:definition xml:lang="en">Cashier ZIP</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/actor"/>
+  </skos:Concept>
+
   <skos:Concept rdf:about="http://joinup.eu/taxonomy/actor#employee">
     <skos:prefLabel xml:lang="en">Employee</skos:prefLabel>
     <skos:definition xml:lang="en">Employee</skos:definition>
