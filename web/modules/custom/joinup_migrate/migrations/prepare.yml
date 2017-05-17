@@ -14,6 +14,7 @@ process:
   banner: banner
   elibrary: elibrary
   publisher: publisher
+  owner_text: owner_text
   contact: contact
   collection_owner: collection_owner
   state: state
@@ -27,3 +28,4 @@ migration_dependencies:
     - user
     - mapping
     - policy_domain
+    - owner_text

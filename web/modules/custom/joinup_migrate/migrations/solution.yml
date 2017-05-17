@@ -42,11 +42,22 @@ process:
     no_stub: true
   field_is_metrics_page: metrics_page
   field_is_modification_date: changed_time
-  field_is_owner:
+  owner_from_publisher:
     plugin: migration
     source: owner
     migration: owner
     no_stub: true
+  owner_from_text:
+    plugin: migration
+    source: nid
+    migration: owner_text
+    no_stub: true
+  field_is_owner:
+    plugin: merge
+    source:
+      - @owner_from_publisher
+      - @owner_from_text
+    unique: true
   field_policy_domain:
     plugin: policy_domain
     source: policy2

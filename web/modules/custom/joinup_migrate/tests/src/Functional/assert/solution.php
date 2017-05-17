@@ -26,9 +26,8 @@ $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
 $this->assertEquals("<p>An ontology describing the administrative and voting area geography of Great Britain</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
-/* @var \Drupal\rdf_entity\RdfInterface $owner */
-$owner = $this->loadEntityByLabel('rdf_entity', 'Ordnance Survey', 'owner');
-$this->assertEquals($owner->id(), $solution->field_is_owner->target_id);
+$this->assertReferences(['Ordnance Survey'], $solution->get('field_is_owner'));
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
 
@@ -52,6 +51,10 @@ $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
 $this->assertStringEndsWith("and the <a href=\"http://www.esens.eu/technical-solutions/e-sens-competence-clusters/e-delivery/\">eSENS eDelivery</a> building blocks.</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'Dark Side of The Force',
+], $solution->get('field_is_owner'));
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $logo = File::load($solution->field_is_logo->target_id);
 $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->getFileUri());
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
@@ -71,6 +74,10 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertStringEndsWith("user-defined symbols and colors to be used in geographic information.</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'Forumstandaardisatie.nl',
+], $solution->get('field_is_owner'));
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
 
@@ -87,6 +94,9 @@ $this->assertReferences(['Geodetic Institute of Slovenia'], $solution->field_is_
 $this->assertStringEndsWith("The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $solution->get('field_is_owner'));
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
 
@@ -107,5 +117,6 @@ $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertStringEndsWith("Virtual Meeting 2012.04.03</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);

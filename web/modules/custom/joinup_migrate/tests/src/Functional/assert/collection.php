@@ -29,6 +29,10 @@ $this->assertReferences([
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['eProcurement'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertReferences([
+  'Dark Side of The Force',
+], $collection->get('field_ar_owner'));
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
@@ -47,6 +51,8 @@ $this->assertReferences([
 ], $collection->field_spatial_coverage);
 $this->assertReferences(['Defence'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
@@ -68,6 +74,8 @@ $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(['Finland'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
@@ -89,6 +97,8 @@ $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->field_spatial_coverage);
 $this->assertReferences(['Collaboration'], $collection->field_policy_domain);
 $this->assertEquals(0, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertStringEndsWith('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal. ', $collection->field_ar_abstract->value);
@@ -115,6 +125,12 @@ $this->assertReferences([
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $collection->get('field_ar_owner'));
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $collection->get('field_ar_contact_information'));
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('ashi', $collection->field_ar_abstract->value);

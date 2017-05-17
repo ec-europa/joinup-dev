@@ -44,7 +44,7 @@ process:
     plugin: default_value
     default_value: true
   field_ar_modification_date: changed_time
-  field_ar_owner:
+  owner_from_publisher:
     - plugin: explode
       source: owner
       delimiter: ','
@@ -52,6 +52,16 @@ process:
     - plugin: migration
       migration: owner
       no_stub: true
+  owner_from_text:
+    plugin: migration
+    migration: owner_text
+    source: owner_text
+    no_stub: true
+  field_ar_owner:
+    plugin: merge
+    source:
+      - @owner_from_publisher
+      - @owner_from_text
   field_policy_domain:
     plugin: policy_domain
     source: policy2

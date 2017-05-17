@@ -43,6 +43,8 @@ class Prepare extends SourcePluginBase {
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),
+      'owner_name' => $this->t('Owner name'),
+      'owner_type' => $this->t('Owner type'),
       'collection_owner' => $this->t('Collection owner'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
@@ -177,7 +179,7 @@ class Prepare extends SourcePluginBase {
         $collections[$collection]['state'] = empty($row['state']) ? 'validated' : $row['state'];
       }
 
-      $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');
+      $is_owner = !empty($row['owner']) && in_array($row['owner'], ['Yes', 'Y']);
 
       // OG roles.
       /** @var \Drupal\Core\Database\Query\SelectInterface $query */
@@ -239,6 +241,11 @@ class Prepare extends SourcePluginBase {
         if ($contacts) {
           $collections[$collection]['contact'] = implode(',', $contacts);
         }
+      }
+
+      // Add text owner, if case.
+      if ($is_owner && ($row['type'] === 'project_project') && !empty($row['owner_name']) && !empty($row['owner_type'])) {
+        $collections[$collection]['owner_text'] = $row['nid'];
       }
     }
 

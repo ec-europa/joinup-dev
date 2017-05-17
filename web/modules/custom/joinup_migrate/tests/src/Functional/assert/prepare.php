@@ -16,6 +16,7 @@ $expected_values = [
     'policy2' => 'eProcurement',
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
+    'owner_text' => '49860',
     'roles' => '{"admin":[],"facilitator":[],"member":{"6842":1378476956}}',
   ],
   'Collection from Repository' => [
@@ -37,6 +38,8 @@ $expected_values = [
     'policy2' => 'Open government',
     'state' => 'validated',
     'collection_owner' => 'doe@example.com',
+    'contact' => '137963',
+    'publisher' => '137962',
     'roles' => '{"admin":[],"facilitator":{"6364":1329387383},"member":{"6364":1329387383}}',
   ],
 ];
@@ -69,6 +72,7 @@ foreach ($expected_values as $collection => $expected_value) {
     'logo' => NULL,
     'banner' => NULL,
     'elibrary' => NULL,
+    'owner_text' => NULL,
     'publisher' => NULL,
     'contact' => NULL,
     'collection_owner' => NULL,
