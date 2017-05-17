@@ -16,31 +16,11 @@ third_party_settings:
       langcode:
         value:
           predicate: 'http://joinup.eu/language'
-          format: literal
+          format: t_literal
       default_langcode:
         value:
           predicate: 'http://joinup.eu/language/default'
           format: literal
-      content_translation_source:
-        value:
-          predicate: 'http://joinup.eu/language/source'
-          format: literal
-      content_translation_outdated:
-        value:
-          predicate: 'http://joinup.eu/language/outdated'
-          format: 'xsd:boolean'
-      content_translation_status:
-        value:
-          predicate: 'http://joinup.eu/language/status'
-          format: 'xsd:boolean'
-      content_translation_created:
-        value:
-          predicate: 'http://joinup.eu/language/created'
-          format: 'xsd:dateTime'
-      content_translation_changed:
-        value:
-          predicate: 'http://joinup.eu/language/changed'
-          format: 'xsd:dateTime'
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'

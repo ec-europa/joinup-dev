@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/description'
-        format: literal
+        format: t_literal
 id: rdf_entity.field_ad_description
 field_name: field_ad_description
 entity_type: rdf_entity

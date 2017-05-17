@@ -17,6 +17,14 @@ third_party_settings:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: literal
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
     graph:
       default: 'http://joinup.eu/contact-information/published'
       draft: 'http://joinup.eu/contact-information/draft'

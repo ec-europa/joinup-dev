@@ -10,7 +10,7 @@ third_party_settings:
     mapping:
       target_id:
         predicate: 'http://www.w3.org/ns/dcat#accessURL'
-        format: 'xsd:string'
+        format: literal
       display:
         predicate: ''
         format: ''
@@ -29,7 +29,7 @@ settings:
 module: file_url
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false
