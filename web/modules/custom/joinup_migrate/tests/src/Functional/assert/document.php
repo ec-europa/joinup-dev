@@ -27,6 +27,7 @@ $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'Good Practice Study');
 $this->assertEquals('Good Practice Study', $document->label());
@@ -43,6 +44,7 @@ $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertReferences(['Belgium'], $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'CAMSS method (v1.0) scenario 2 - SMEF');
 $this->assertEquals('CAMSS method (v1.0) scenario 2 - SMEF', $document->label());
@@ -59,6 +61,7 @@ $this->assertKeywords(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $document);
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'The Irish ePassport');
 $this->assertEquals('The Irish ePassport', $document->label());
@@ -81,6 +84,7 @@ $this->assertKeywords([
 $this->assertReferences(['Ireland'], $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'National Interoperability Framework Observatory (NIFO) Factsheets');
 $this->assertEquals('National Interoperability Framework Observatory (NIFO) Factsheets', $document->label());
@@ -132,6 +136,7 @@ $this->assertKeywords([
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'ISA Contributor Agreement v1.1');
 $this->assertEquals('ISA Contributor Agreement v1.1', $document->label());
@@ -146,6 +151,7 @@ $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', 'E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson');
 $this->assertEquals('E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson', $document->label());
@@ -162,6 +168,7 @@ $this->assertKeywords(['Other'], $document);
 $this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
 
 $document = $this->loadEntityByLabel('node', "FR: 6th Edition of 'Words of Elected Representatives'");
 $this->assertEquals("FR: 6th Edition of 'Words of Elected Representatives'", $document->label());
@@ -208,3 +215,4 @@ $this->assertReferences(['France'], $document->field_document_spatial_coverage);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');
 $this->assertEquals($collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+// @todo Test also the licence when the final excel mapping table is in.
