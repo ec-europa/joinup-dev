@@ -17,7 +17,24 @@
    */
   Drupal.behaviors.assetDistributionDownloadTracking = {
     attach: function (context, settings) {
-      // Placeholder.
+      $(context).find('a.track-download').once('track-download').each(function () {
+        var $this = $(this);
+        var url = $this.data('tracking');
+
+        Drupal.ajax({
+          url: url,
+          base: $this.attr('id'),
+          event: 'track_download.joinup',
+          progress: false,
+          element: this
+        });
+
+        $this.on('click.joinup', function () {
+          $(this).trigger('track_download.joinup');
+
+          return false;
+        });
+      });
     }
   };
 

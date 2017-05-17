@@ -2,6 +2,7 @@
 
 namespace Drupal\asset_distribution\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -127,6 +128,13 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
         '#type' => 'link',
         '#title' => $this->getSetting('title'),
         '#url' => Url::fromUri(file_create_url($file->getFileUri())),
+        '#attributes' => [
+          'id' => Html::getUniqueId('tracked-file-download'),
+          'class' => ['track-download'],
+          'data-tracking' => Url::fromRoute('asset_distribution.track_download', [
+            'file' => $file->id(),
+          ])->toString(),
+        ],
       ];
 
       // Pass field item attributes to the theme function.
