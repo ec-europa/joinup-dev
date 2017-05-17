@@ -7,9 +7,8 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.field_ad_description }}
-    <div class="action-link__wrapper right is-only-placeholder">
-      {# todo: It is only placeholder #}
-      <a href="/" class="action-link">{{ 'Download'|t }}</a>
+    <div class="action-link__wrapper right">
+      {{ content.field_ad_access_url }}
     </div>
   </div>
 </article>

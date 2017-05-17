@@ -21,8 +21,7 @@
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      {# todo: It is only placeholder. #}
-      <a href="/" class="listing__action-link action-link is-only-placeholder">{{ 'Download'|t }}</a>
+      {{ content.field_ad_access_url }}
     </div>
   </div>
 </div>
