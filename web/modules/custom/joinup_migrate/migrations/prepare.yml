@@ -28,4 +28,5 @@ migration_dependencies:
     - user
     - mapping
     - policy_domain
+    - licence
     - owner_text
