@@ -789,9 +789,10 @@ QUERY;
   }
 
   /**
-   * In this method the latest values have to be applied to the entity. The end
-   * array should have an index with the x-default language which should be the
-   * default language to save and one index for each other translation.
+   * In this method the latest values have to be applied to the entity.
+   *
+   * The end array should have an index with the x-default language which should
+   * be the default language to save and one index for each other translation.
    *
    * Since the user can be presented with non translatable fields in the
    * translation form, the process has to give priority to the values of the
@@ -808,10 +809,10 @@ QUERY;
    * Only t_literal fields should be translatable.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *    The entity to convert to an array of values.
+   *   The entity to convert to an array of values.
    *
    * @return array
-   *    The array of values including the translations.
+   *   The array of values including the translations.
    */
   public function toLangArray(ContentEntityInterface $entity) {
     $values = [];
