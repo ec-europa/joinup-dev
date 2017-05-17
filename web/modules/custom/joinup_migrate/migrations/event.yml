@@ -56,7 +56,7 @@ process:
     default_value: null
     map:
       Academia: academia
-      'Non-profit': european
+      'Non-profit': non_profit
       Other: other
       'Private (Contractor on behalf of Public Organisation)': private_on_behalf_of_public_organisation
       'Private (large enterprise)': private_enterprise
