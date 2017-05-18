@@ -42,7 +42,7 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "The World of the Waves" collection
     And I click "Add discussion"
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain"
+    And the following fields should be present "Title, Content, Policy domain, Add a new file"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 
@@ -51,8 +51,10 @@ Feature: "Add discussion" visibility options.
     And the following fields should not be present "Create new revision, Revision log message, Shared in"
 
     When I fill in the following:
-      | Title   | An amazing discussion                      |
-      | Content | This is going to be an amazing discussion. |
+      | Title          | An amazing discussion                      |
+      | Content        | This is going to be an amazing discussion. |
+      | Add a new file | test.zip                                   |
+      | Add a new file | text.pdf                                   |
     And I press "Publish"
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."

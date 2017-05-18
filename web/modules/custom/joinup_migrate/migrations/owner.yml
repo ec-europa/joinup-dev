@@ -10,7 +10,7 @@ process:
   field_owner_name: title
   field_owner_type:
     - plugin: static_map
-      source: type
+      source: owner_type
       bypass: true
       map:
         'Local authority': 'Local Authority'
@@ -26,6 +26,7 @@ process:
       no_stub: true
     - plugin: default_value
       default_value: 1
+  field_owner_state: state
 destination:
   plugin: entity:rdf_entity
   default_bundle: owner

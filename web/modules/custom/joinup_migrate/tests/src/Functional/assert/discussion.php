@@ -24,6 +24,7 @@ $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
+$this->assertEquals('validated', $discussion->field_state->value);
 
 $discussion = $this->loadEntityByLabel('node', "Spaces in 'Apache Tomcat 6.0.16' cause problems under linux");
 $this->assertEquals("Spaces in 'Apache Tomcat 6.0.16' cause problems under linux", $discussion->label());
@@ -35,6 +36,7 @@ $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
+$this->assertEquals('validated', $discussion->field_state->value);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-webapp is not thread safe');
 $this->assertEquals('cipa-smp-webapp is not thread safe', $discussion->label());
@@ -46,6 +48,7 @@ $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
+$this->assertEquals('validated', $discussion->field_state->value);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-client-console still only use START protocol');
 $this->assertEquals('cipa-smp-client-console still only use START protocol', $discussion->label());
@@ -57,3 +60,4 @@ $this->assertContains('<h2>Component</h2>', $discussion->body->value);
 $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
+$this->assertEquals('validated', $discussion->field_state->value);

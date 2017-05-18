@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
 class Distribution extends DistributionBase {
 
   use FileUrlFieldTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -33,6 +34,7 @@ class Distribution extends DistributionBase {
       'licence' => $this->t('Licence'),
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
+      'status' => $this->t('Status'),
     ] + parent::fields();
   }
 
@@ -75,6 +77,9 @@ class Distribution extends DistributionBase {
 
     // Resolve 'access_url'.
     $this->setFileUrlTargetId($row, 'access_url', ['nid' => $nid], 'file_id', 'distribution_file', 'access_url');
+
+    // Status.
+    $this->setStatus($vid, $row);
 
     return parent::prepareRow($row);
   }
