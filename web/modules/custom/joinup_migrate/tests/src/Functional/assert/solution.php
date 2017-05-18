@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('solution', 5);
-$this->assertSuccessCount('solution', 5);
+$this->assertTotalCount('solution', 6);
+$this->assertSuccessCount('solution', 6);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */

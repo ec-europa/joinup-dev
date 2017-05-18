@@ -18,8 +18,8 @@ $this->assertEquals('New collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 // This collection is new, thus its creation and modification time is the
 // migration time. We approximately check those values by assuming that the
-// migration ran in the last 10 minutes.
-$migration_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime() - 10 * 60);
+// migration ran in the last 20 minutes.
+$migration_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime() - 20 * 60);
 $this->assertGreaterThan($migration_time, $collection->field_ar_creation_date->value);
 $this->assertGreaterThan($migration_time, $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
@@ -123,6 +123,7 @@ $this->assertReferences([
   'Styles Layer Descriptor',
   'KASPeR - Mapping application of statistical data e-dimensions',
   'Core Location Vocabulary',
+  'DCAT application profile for data portals in Europe',
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);

@@ -41,7 +41,7 @@ $expected_values = [
     'collection_owner' => 'doe@example.com',
     'contact' => '137963',
     'publisher' => '137962',
-    'roles' => '{"admin":[],"facilitator":{"6364":1329387383},"member":{"6364":1329387383}}',
+    'roles' => '{"admin":[],"facilitator":{"6364":1472543615},"member":{"6364":1472543615,"7355":1367501419}}',
   ],
 ];
 

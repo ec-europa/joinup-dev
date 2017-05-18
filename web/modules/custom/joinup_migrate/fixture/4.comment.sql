@@ -12,7 +12,9 @@ CREATE OR REPLACE VIEW d8_comment (
   name,
   mail,
   homepage,
-  hostname
+  hostname,
+  comment_type,
+  field_name
 ) AS
 SELECT
   n.nid,
@@ -28,7 +30,9 @@ SELECT
   c.name,
   c.mail,
   c.homepage,
-  c.hostname
+  c.hostname,
+  IF(n.type = 'project_issue', 'reply', 'comment'),
+  IF(n.type = 'project_issue', 'field_replies', 'field_comments')
 FROM comments c
 INNER JOIN node n ON c.nid = n.nid
 WHERE c.nid IN(

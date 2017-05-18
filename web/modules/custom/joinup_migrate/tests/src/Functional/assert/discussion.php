@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('discussion', 48);
-$this->assertSuccessCount('discussion', 48);
+$this->assertTotalCount('discussion', 299);
+$this->assertSuccessCount('discussion', 299);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -64,7 +64,10 @@ $this->assertEquals('validated', $discussion->field_state->value);
 
 // There are 44 discussions in Solution 'Core Location Vocabulary' but we test
 // only 'Format issue (release 1.00)' because we want to check how attachments
-// were migrated.
+// were migrated. Also the solution 'DCAT application profile for data portals
+// in Europe' is creating 251 discussions but we don't test them here because
+// they are valuable for 'comment' and 'comment_file' migration, they contain
+// comments with attachments.
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
 $discussion = $this->loadEntityByLabel('node', 'Format issue (release 1.00)', 'discussion');
 $this->assertEquals('Format issue (release 1.00)', $discussion->label());
