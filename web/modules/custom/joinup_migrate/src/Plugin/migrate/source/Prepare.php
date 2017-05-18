@@ -47,7 +47,7 @@ class Prepare extends SourcePluginBase {
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
-      'status' => $this->t('Status'),
+      'state' => $this->t('State'),
     ];
   }
 
@@ -78,7 +78,7 @@ class Prepare extends SourcePluginBase {
       ->fetchCol();
 
     $fields = $this->fields();
-    unset($fields['status'], $fields['elibrary']);
+    unset($fields['elibrary']);
     $query = $db->select('d8_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
       ->fields('m', array_keys($fields))
       ->fields('n', ['vid'])
@@ -170,6 +170,11 @@ class Prepare extends SourcePluginBase {
 
       if (!empty($row['policy2'])) {
         $collections[$collection]['policy2'] = $row['policy2'];
+      }
+
+      // State.
+      if (!isset($collections[$collection]['state']) || $collections[$collection]['state'] !== $row['state']) {
+        $collections[$collection]['state'] = empty($row['state']) ? 'validated' : $row['state'];
       }
 
       $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');

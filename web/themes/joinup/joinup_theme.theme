@@ -188,6 +188,7 @@ function joinup_theme_preprocess_block(&$variables) {
         }
         break;
 
+      case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':

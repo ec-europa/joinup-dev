@@ -23,6 +23,7 @@ config_devel:
   - core.entity_form_display.rdf_entity.solution.default
   - core.entity_view_display.rdf_entity.solution.about
   - core.entity_view_display.rdf_entity.solution.default
+  - core.entity_view_display.rdf_entity.solution.rdf_draft
   - core.entity_view_display.rdf_entity.solution.group_header
   - core.entity_view_display.rdf_entity.solution.view_mode_featured
   - core.entity_view_display.rdf_entity.solution.view_mode_tile
