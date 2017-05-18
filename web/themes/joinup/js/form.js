@@ -142,4 +142,21 @@
     }
   };
 
+  Drupal.behaviors.checkRow = {
+    attach: function (context, settings) {
+      $(context).find('.share-content-form div.form-wrapper').once('checkRow').each(function () {
+        $(this).on('click', function (event) {
+          if ($(this).find('input[type="checkbox"]').is(':checked')) {
+            $(this).find('input[type="checkbox"]').prop('checked', false);
+          }
+          else {
+            $(this).find('input[type="checkbox"]').prop('checked', true);
+          }
+          // Only needed for social placeholders.
+          $(this).toggleClass('already-shared');
+        });
+      });
+    }
+  };
+
 })(jQuery, Drupal);
