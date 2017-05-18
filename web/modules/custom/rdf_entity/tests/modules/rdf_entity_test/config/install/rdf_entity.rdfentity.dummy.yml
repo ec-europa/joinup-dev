@@ -16,11 +16,15 @@ third_party_settings:
       label:
         value:
           predicate: 'http://example.com/dummy_label'
-          format: literal
+          format: t_literal
       uuid:
         value:
           predicate: ''
           format: ''
+      langcode:
+        value:
+          predicate: 'http://example.com/language'
+          format: t_literal
       graph:
         value:
           predicate: ''
