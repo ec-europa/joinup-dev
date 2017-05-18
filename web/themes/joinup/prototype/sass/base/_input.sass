@@ -40,10 +40,13 @@
 
 // States
 // --------------------------------------------------
-.mdl-textfield--floating-label.is-invalid, .mdl-textfield--floating-label, .mdl-textfield.is-invalid, .mdl-textfield
+.mdl-textfield--floating-label.is-invalid,
+.mdl-textfield--floating-label,
+.mdl-textfield.is-invalid,
+.mdl-textfield
   .mdl-textfield__input
-    border-color: $color-grey-input !important
-    border-width: 1px !important
+    border-color: $color-grey-input
+    border-width: 1px
   .mdl-textfield__label
     font-size: $font-size-medium
     color: $color-grey-input
@@ -66,10 +69,17 @@
 .textfield--textarea.mdl-textfield.is-focused,
 .textfield--textarea.mdl-textfield.is-dirty
   textarea
-    min-height: 32px
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+    height: 57px
   .mdl-textfield__label
     &:after
       top: 47px !important
 
 .textfield--textarea.mdl-textfield
   width: 100%
+
+.comment-comment-form
+  .form-wrapper.field--widget-string-textarea
+    margin-bottom: 0
+    height: 97px

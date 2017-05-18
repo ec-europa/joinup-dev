@@ -73,7 +73,7 @@ Feature: "Add solution" visibility options.
       | email | foo@bar.com                 |
       | name  | Contact information example |
     And the following owner:
-      | name                 | type    |
+      | name                 | type                         |
       | Organisation example | Company, Industry consortium |
     And I am logged in as a facilitator of the "Belgian barista's" collection
 
@@ -83,16 +83,14 @@ Feature: "Add solution" visibility options.
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state"
     When I fill in the following:
-      | Title            | Espresso is the solution                                               |
-      | Description      | This is a test text                                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Title            | Espresso is the solution                                      |
+      | Description      | This is a test text                                           |
+      | Spatial coverage | Belgium                                                       |
+      | Language         | http://publications.europa.eu/resource/authority/language/VLS |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation, this has a hidden label "File".
     And I attach the file "text.pdf" to "File"
-    And I attach the file "logo.png" to "Logo"
-    And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Contact information example"
@@ -101,8 +99,19 @@ Feature: "Add solution" visibility options.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
     And I press "Add owner"
+    # Ensure that the Status field is a dropdown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
+    And I select "Completed" from "Status"
     And I press "Propose"
-    Then I should see the heading "Espresso is the solution"
+    # Regression test for non required fields 'Banner' and 'Logo'.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
+    Then I should not see the following error messages:
+      | error messages            |
+      | Banner field is required. |
+      | Logo field is required.   |
+    But I should see a logo on the header
+    And I should see a banner on the header
+    And I should see the heading "Espresso is the solution"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
     And I press "Publish"
@@ -175,11 +184,9 @@ Feature: "Add solution" visibility options.
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
     When I press "Propose"
-    Then I should see the following error messages:
+    Then I should see the following error message:
       | error messages                         |
-      | Banner field is required.              |
       | Contact information field is required. |
-      | Logo field is required.                |
     # Buttons should be shown for the allowed solution transitions.
     And I should see the button "Save as draft"
     And I should see the button "Propose"

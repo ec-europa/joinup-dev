@@ -44,6 +44,7 @@ $expected_values = [
     'abstract' => 'Abstract for a new collection',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'content_item_state' => 'proposed',
     'row_index' => '12',
   ],
   139528 => [
@@ -52,6 +53,7 @@ $expected_values = [
     'policy2' => 'eProcurement',
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
+    'content_item_state' => 'needs_update',
     'row_index' => '14',
   ],
   42233 => [
@@ -108,6 +110,7 @@ $expected_values = [
     'policy2' => 'eProcurement',
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
+    'content_item_state' => 'draft',
     'row_index' => '21',
   ],
   155894 => [
@@ -150,6 +153,31 @@ $expected_values = [
     'collection_owner' => 'jbloggs@example.com',
     'row_index' => '26',
   ],
+  144326 => [
+    'type' => 'community',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
+    'row_index' => '27',
+  ],
+  76726 => [
+    'type' => 'asset_release',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'row_index' => '28',
+  ],
+  102713 => [
+    'type' => 'asset_release',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'row_index' => '29',
+  ],
 ];
 
 // Migration counts.
@@ -160,6 +188,7 @@ $this->assertSuccessCount('mapping', $expected_values_count);
 // Expected logged messages.
 $this->assertMessage('mapping', "Row: 3, Nid: 99999999: This node doesn't exist in the source database");
 $this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid nid 'ew56%43'");
+$this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid 'Collection state': 'wrong' (allowed empty or 'validated' or 'archived')");
 $this->assertMessage('mapping', "Row: 5, Nid: 157729: 'MOA-ID 3.2.1' is a release and shouldn't be in the Excel file. Releases are computed");
 $this->assertMessage('mapping', "Row: 6, Nid: 58729: Collection name empty or invalid");
 $this->assertMessage('mapping', "Row: 7, Nid: 60736: Collection name empty or invalid");
@@ -186,8 +215,8 @@ foreach ($expected_values as $nid => $expected_value) {
     'owner' => NULL,
     'collection_owner' => NULL,
     'elibrary' => NULL,
-    'collection_status' => NULL,
-    'content_item_status' => NULL,
+    'state' => NULL,
+    'content_item_state' => NULL,
   ];
   ksort($expected_value);
   ksort($imported[$nid]);

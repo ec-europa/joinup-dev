@@ -25,6 +25,7 @@ config_devel:
   - core.entity_form_display.comment.comment.default
   - core.entity_form_mode.rdf_entity.inline
   - core.entity_view_display.comment.comment.default
+  - core.entity_view_mode.node.moderation
   - core.entity_view_mode.node.view_mode_tile
   - core.entity_view_mode.rdf_entity.about
   - core.entity_view_mode.rdf_entity.group_header
@@ -46,6 +47,7 @@ config_devel:
   - field.storage.taxonomy_term.mime_type
   - image.style.banner
   - rdf_draft.settings
+  - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.file_type

@@ -91,7 +91,7 @@ class Mapping extends Spreadsheet {
   protected function rowIsValid(array &$row) {
     $messages = [];
 
-    $nid = $row['nid'];
+    $nid = $row['Nid'];
     $row['Collection_Name'] = trim((string) $row['Collection_Name']);
 
     $title = $type = NULL;
@@ -139,10 +139,14 @@ class Mapping extends Spreadsheet {
       $messages[] = "Invalid 'New Collection': '{$row['New collection']}'";
     }
 
+    if (!empty($row['Collection state']) && !in_array($row['Collection state'], ['validated', 'archived'])) {
+      $messages[] = "Invalid 'Collection state': '{$row['Collection state']}' (allowed empty or 'validated' or 'archived')";
+    }
+
     // Register inconsistencies.
     if ($messages) {
       $row_index = $row['row_index'];
-      $source_ids = ['nid' => $row['nid']];
+      $source_ids = ['Nid' => $row['Nid']];
       foreach ($messages as $message) {
         $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
       }

@@ -74,7 +74,7 @@ class RdfController extends ControllerBase {
       // Should not occur: RdfGraphAccessCheck validates that the entity exists.
       throw new \Exception('Entity not loaded from graph');
     }
-    $page = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($draft_entity, 'full');
+    $page = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($draft_entity, 'rdf_draft');
     $page['#pre_render'][] = [$this, 'buildTitle'];
     $page['#entity_type'] = $entity->getEntityTypeId();
     $page['#' . $page['#entity_type']] = $draft_entity;
