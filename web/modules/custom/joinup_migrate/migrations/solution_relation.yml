@@ -1,0 +1,30 @@
+id: solution_relation
+label: 'Solution relation'
+migration_tags:
+  - solution
+source:
+  plugin: solution_relation
+  track_changes: true
+process:
+  id:
+    plugin: migration
+    source: nid
+    migration: solution
+    no_stub: true
+  field_is_related_solutions:
+    plugin: migration
+    source: related_solutions
+    migration: solution
+    no_stub: true
+  field_is_translation:
+    plugin: migration
+    source: translations
+    migration: solution
+    no_stub: true
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: solution
+  update_existing: true
+migration_dependencies:
+  required:
+    - solution

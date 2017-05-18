@@ -6,10 +6,11 @@
  */
 
 use Drupal\file\Entity\File;
+use Drupal\rdf_entity\Entity\Rdf;
 
 // Migration counts.
-$this->assertTotalCount('solution', 6);
-$this->assertSuccessCount('solution', 6);
+$this->assertTotalCount('solution', 9);
+$this->assertSuccessCount('solution', 9);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -125,4 +126,70 @@ $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+// There are 2 solutions with the same title, so we cannot load by title. We are
+// interested in inspecting the solution migrated from node 59180. So, we'll use
+// the known URL to load th eentity.
+$solution = Rdf::load('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.4.0');
+$this->assertEquals('Common Reporting Framework XBRL Project', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1320274800), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675309), $solution->field_is_modification_date->value);
+$this->assertReferences(['1.4.1.corep.zip'], $solution->field_is_distribution);
+$this->assertTrue($solution->get('field_is_has_version')->isEmpty());
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertReferences(['Ignacio Boixo'], $solution->get('field_is_contact_information'));
+$this->assertStringEndsWith("XBRL+Taxonomy+v2.0.0.pdf</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'European Banking Authority',
+], $solution->get('field_is_owner'));
+$this->assertReferences([
+  'Evaluation and Report Language (EARL) 1.0 Schema',
+], $solution->get('field_is_related_solutions'));
+$this->assertEquals('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1', $solution->get('field_is_translation')->target_id);
+$this->assertReferences(['Completed'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = Rdf::load('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1');
+$this->assertEquals('Common Reporting Framework XBRL Project', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1262732400), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675322), $solution->field_is_modification_date->value);
+$this->assertReferences(['1.3.1.core.zip'], $solution->field_is_distribution);
+$this->assertTrue($solution->get('field_is_has_version')->isEmpty());
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertReferences(['Romain Loth'], $solution->get('field_is_contact_information'));
+$this->assertStringEndsWith("EU capital requirements regime.</p>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'European Banking Authority',
+], $solution->get('field_is_owner'));
+$this->assertReferences(['Completed'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = Rdf::load('http://www.w3.org/TR/2011/WD-EARL10-Schema-20110510');
+$this->assertEquals('Evaluation and Report Language (EARL) 1.0 Schema', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1304985600), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1455802561), $solution->field_is_modification_date->value);
+$this->assertReferences([
+  'Evaluation and Report Language (EARL) 1.0 Schema',
+], $solution->field_is_distribution);
+$this->assertTrue($solution->get('field_is_has_version')->isEmpty());
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
+$this->assertStringEndsWith("assurance and\nvalidation purposes.", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'World Wide Web Consortium',
+], $solution->get('field_is_owner'));
+$this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);

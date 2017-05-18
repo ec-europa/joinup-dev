@@ -124,6 +124,9 @@ $this->assertReferences([
   'KASPeR - Mapping application of statistical data e-dimensions',
   'Core Location Vocabulary',
   'DCAT application profile for data portals in Europe',
+  'Common Reporting Framework XBRL Project',
+  'Common Reporting Framework XBRL Project',
+  'Evaluation and Report Language (EARL) 1.0 Schema',
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);

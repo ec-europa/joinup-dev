@@ -171,6 +171,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '28',
   ],
   102713 => [
@@ -180,6 +181,7 @@ $expected_values = [
     'new_collection' => 'No',
     'owner' => 'Y',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '29',
   ],
   125548 => [
@@ -188,6 +190,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '30',
   ],
   42444 => [
@@ -198,6 +201,7 @@ $expected_values = [
     'owner_name' => 'ACME University',
     'owner_type' => 'Academia-ScientificOrganisation',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '31',
   ],
   150255 => [
@@ -206,6 +210,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '32',
   ],
   65803 => [
@@ -214,6 +219,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '33',
   ],
   63567 => [
@@ -222,7 +228,35 @@ $expected_values = [
     'policy2' => 'Open government',
     'new_collection' => 'No',
     'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
     'row_index' => '35',
+  ],
+  59180 => [
+    'type' => 'asset_release',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
+    'row_index' => '36',
+  ],
+  59183 => [
+    'type' => 'asset_release',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
+    'row_index' => '37',
+  ],
+  60208 => [
+    'type' => 'asset_release',
+    'collection' => 'Archived collection',
+    'policy2' => 'Open government',
+    'new_collection' => 'No',
+    'collection_owner' => 'doe@example.com',
+    'state' => 'archived',
+    'row_index' => '38',
   ],
 ];
 

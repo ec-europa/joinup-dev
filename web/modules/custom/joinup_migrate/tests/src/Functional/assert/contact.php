@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('contact', 1);
-$this->assertSuccessCount('contact', 1);
+$this->assertTotalCount('contact', 3);
+$this->assertSuccessCount('contact', 3);
 $this->assertTotalCount('contact_email', 2);
 $this->assertSuccessCount('contact_email', 2);
 
@@ -37,5 +37,23 @@ $this->assertEquals('contact_information', $contact->bundle());
 $this->assertEquals('default', $contact->graph->value);
 $this->assertEquals('digit-semic-team@ec.europa.eu', $contact->field_ci_name->value);
 $this->assertEquals('digit-semic-team@ec.europa.eu', $contact->field_ci_email->value);
+$this->assertTrue($contact->get('field_ci_webpage')->isEmpty());
+$this->assertEquals('validated', $contact->field_ci_state->value);
+
+$contact = $this->loadEntityByLabel('rdf_entity', 'Ignacio Boixo', 'contact_information');
+$this->assertEquals('Ignacio Boixo', $contact->label());
+$this->assertEquals('contact_information', $contact->bundle());
+$this->assertEquals('default', $contact->graph->value);
+$this->assertEquals('Ignacio Boixo', $contact->field_ci_name->value);
+$this->assertTrue($contact->get('field_ci_email')->isEmpty());
+$this->assertTrue($contact->get('field_ci_webpage')->isEmpty());
+$this->assertEquals('validated', $contact->field_ci_state->value);
+
+$contact = $this->loadEntityByLabel('rdf_entity', 'Romain Loth', 'contact_information');
+$this->assertEquals('Romain Loth', $contact->label());
+$this->assertEquals('contact_information', $contact->bundle());
+$this->assertEquals('default', $contact->graph->value);
+$this->assertEquals('Romain Loth', $contact->field_ci_name->value);
+$this->assertTrue($contact->get('field_ci_email')->isEmpty());
 $this->assertTrue($contact->get('field_ci_webpage')->isEmpty());
 $this->assertEquals('validated', $contact->field_ci_state->value);
