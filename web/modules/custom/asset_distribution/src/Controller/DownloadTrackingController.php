@@ -10,6 +10,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller to handle the tracking of distribution downloads.
@@ -115,7 +116,7 @@ class DownloadTrackingController extends ControllerBase {
     $event->save();
 
     $response = new AjaxResponse();
-    $response->setStatusCode(204);
+    $response->setStatusCode(Response::HTTP_NO_CONTENT);
 
     return $response;
   }
