@@ -10,3 +10,11 @@ asset_distribution.asset_release_asset_distribution.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+asset_distribution.track_download:
+  path: 'distribution/track/{file}'
+  defaults:
+    _controller: '\Drupal\asset_distribution\Controller\DownloadTrackingController::trackDownload'
+  requirements:
+    _access: 'TRUE'
+    _csrf_token: 'TRUE'
+    _custom_access: '\Drupal\asset_distribution\Controller\DownloadTrackingController::isDistributionFile'
