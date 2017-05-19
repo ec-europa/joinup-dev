@@ -57,7 +57,9 @@ process:
     no_stub: true
   owner_from_text:
     plugin: migration
-    source: nid
+    source:
+      - owner_name
+      - owner_type
     migration: owner_text
     no_stub: true
   field_is_owner:

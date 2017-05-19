@@ -246,7 +246,8 @@ class Prepare extends SourcePluginBase {
       // Add text owner and E-mail contact, if case.
       if ($is_owner && ($row['type'] === 'project_project')) {
         if (!empty($row['owner_name']) && !empty($row['owner_type'])) {
-          $collections[$collection]['owner_text'] = $row['nid'];
+          $collections[$collection]['owner_name'] = $row['owner_name'];
+          $collections[$collection]['owner_type'] = $row['owner_type'];
         }
         $query = $db->select('node', 'n')
           ->fields('c', ['field_project_common_contact_value'])

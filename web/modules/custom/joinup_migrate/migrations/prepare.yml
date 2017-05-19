@@ -14,7 +14,8 @@ process:
   banner: banner
   elibrary: elibrary
   publisher: publisher
-  owner_text: owner_text
+  owner_text_name: owner_name
+  owner_text_type: owner_type
   contact: contact
   contact_email: contact_email
   collection_owner: collection_owner

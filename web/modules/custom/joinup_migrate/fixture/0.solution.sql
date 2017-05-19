@@ -22,7 +22,9 @@ CREATE OR REPLACE VIEW d8_solution (
   metrics_page,
   state,
   item_state,
-  contact_email
+  contact_email,
+  owner_name,
+  owner_type
 ) AS
 SELECT
   m.collection,
@@ -48,7 +50,9 @@ SELECT
   TRIM(cfu.field_id_uri_value),
   ws.state,
   m.content_item_state,
-  field_project_common_contact_value
+  field_project_common_contact_value,
+  m.owner_name,
+  m.owner_type
 FROM d8_mapping m
 INNER JOIN d8_prepare p ON m.collection = p.collection
 INNER JOIN node n ON m.nid = n.nid

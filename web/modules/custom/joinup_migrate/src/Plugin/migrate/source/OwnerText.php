@@ -16,9 +16,13 @@ class OwnerText extends JoinupSqlBase {
    */
   public function getIds() {
     return [
-      'nid' => [
-        'type' => 'integer',
-        'alias' => 'm',
+      'name' => [
+        'type' => 'string',
+        'alias' => 'o',
+      ],
+      'type' => [
+        'type' => 'string',
+        'alias' => 'o',
       ],
     ];
   }
@@ -28,9 +32,8 @@ class OwnerText extends JoinupSqlBase {
    */
   public function fields() {
     return [
-      'nid' => $this->t('ID'),
-      'owner_name' => $this->t('Owner name'),
-      'owner_type' => $this->t('Owner type'),
+      'name' => $this->t('Owner name'),
+      'type' => $this->t('Owner type'),
     ];
   }
 
@@ -38,9 +41,7 @@ class OwnerText extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('d8_mapping', 'm')
-      ->fields('m', ['nid', 'owner_name', 'owner_type'])
-      ->isNotNull('m.owner_name');
+    return $this->select('d8_owner_text', 'o')->fields('o');
   }
 
 }

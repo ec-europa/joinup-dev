@@ -8,13 +8,13 @@ source:
   constants:
     base_url: 'http://purl.org/adms/publishertype/'
 process:
-  label: owner_name
-  field_owner_name: owner_name
+  label: name
+  field_owner_name: name
   field_owner_type:
     plugin: concat
     source:
       - constants/base_url
-      - owner_type
+      - type
   field_owner_state:
     plugin: default_value
     default_value: validated

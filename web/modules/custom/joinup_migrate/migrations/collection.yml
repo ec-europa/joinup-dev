@@ -66,7 +66,9 @@ process:
   owner_from_text:
     plugin: migration
     migration: owner_text
-    source: owner_text
+    source:
+      - owner_text_name
+      - owner_text_type
     no_stub: true
   field_ar_owner:
     plugin: merge

@@ -247,10 +247,16 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 1024,
           'not null' => FALSE,
         ],
-        'owner_text' => [
-          'description' => 'Text owner',
-          'type' => 'int',
-          'unsigned' => TRUE,
+        'owner_text_name' => [
+          'description' => 'Text owner name',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'owner_text_type' => [
+          'description' => 'Text owner type',
+          'type' => 'varchar',
+          'length' => 255,
           'not null' => FALSE,
         ],
         'contact' => [

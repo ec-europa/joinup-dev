@@ -128,6 +128,37 @@ $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
 
+$solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
+$this->assertEquals('DCAT application profile for data portals in Europe', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1445872685), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1472543614), $solution->field_is_modification_date->value);
+$this->assertTrue($solution->get('field_is_distribution')->isEmpty());
+$this->assertReferences([
+  'DCAT Application Profile for Data Portals in Europe - Draft 1',
+  'DCAT Application Profile for Data Portals in Europe - Draft 2',
+  'DCAT Application Profile for Data Portals in Europe - Draft 3',
+  'DCAT Application Profile for Data Portals in Europe - Final Draft',
+  'DCAT Application Profile for Data Portals in Europe - Final',
+  'DCAT Application Profile for Data Portals in Europe - Revision',
+  'GeoDCAT-AP working drafts',
+  'DCAT-AP v1.1',
+  'GeoDCAT-AP v1.0',
+  'GeoDCAT-AP v1.0.1',
+], $solution->get('field_is_has_version'));
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
+
+$this->assertStringEndsWith("Open Data Support Community</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'Dark Side of The Force',
+], $solution->get('field_is_owner'));
+$this->assertReferences(['Under development'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
 // There are 2 solutions with the same title, so we cannot load by title. We are
 // interested in inspecting the solution migrated from node 59180. So, we'll use
 // the known URL to load th eentity.

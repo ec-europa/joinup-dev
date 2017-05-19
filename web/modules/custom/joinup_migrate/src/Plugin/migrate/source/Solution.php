@@ -40,6 +40,8 @@ class Solution extends SolutionBase {
       'body' => $this->t('Description'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owners'),
+      'owner_name' => $this->t('Text owner name'),
+      'owner_type' => $this->t('Text owner type'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
@@ -77,6 +79,8 @@ class Solution extends SolutionBase {
       'state',
       'item_state',
       'contact_email',
+      'owner_name',
+      'owner_type',
     ]);
   }
 
