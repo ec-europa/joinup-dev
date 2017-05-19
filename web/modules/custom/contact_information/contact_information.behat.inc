@@ -84,6 +84,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    *   Thrown when an unknown field name is passed.
    */
   protected static function translateFieldNameAlias($field_name) {
+    $field_name = strtolower($field_name);
     $aliases = self::contactInformationFieldAliases();
     if (array_key_exists($field_name, $aliases)) {
       $field_name = $aliases[$field_name];
@@ -202,7 +203,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       'uri' => 'id',
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
-      'Website URL' => 'field_ci_webpage',
+      'website url' => 'field_ci_webpage',
       'author' => 'uid',
     ];
   }
