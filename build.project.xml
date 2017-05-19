@@ -141,16 +141,6 @@
             output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
-    <!-- Make services.yml writeable. -->
-    <target name="writable-services-yml">
-        <if>
-            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
-            <then>
-                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
-            </then>
-        </if>
-    </target>
-
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
     <target name="disable-persistent-session-cookies">
