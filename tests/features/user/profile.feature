@@ -150,3 +150,37 @@ Feature: User profile
     Then I should see the heading delwin999 in the "Header" region
     And the HTML title tag should contain the text delwin999
     And I should not see the "Page title" region
+
+  Scenario: The user profile page is updated when the user joins a collection
+    Given users:
+      | Username      | E-mail                           |
+      | Korben Dallas | k.dallas@cabs.services.zorg.corp |
+    And collection:
+      | title | Federated Army Veterans |
+      | state | validated               |
+    # Visit the user profile page for the first time. It should not yet be
+    # cached and we should not see anything about the collection since we are
+    # not a member.
+    When I am an anonymous user
+    And I go to the public profile of "Korben Dallas"
+    Then I should not see the "Federated Army Veterans" tile
+    And the page should not be cached
+
+    # On the next visit the page should be cached.
+    When I reload the page
+    Then the page should be cached
+
+    # Join the collection. Now the cache of the user profile page should be
+    # cleared and the collection that was joined should show up.
+    Given I am logged in as "Korben Dallas"
+    And I go to the homepage of the "Federated Army Veterans" collection
+    And I press the "Join this collection" button
+
+    When I am an anonymous user
+    And I go to the public profile of "Korben Dallas"
+    Then I should see the "Federated Army Veterans" tile
+    And the page should not be cached
+
+    # Verify the page can be cached correctly.
+    When I reload the page
+    Then the page should be cached

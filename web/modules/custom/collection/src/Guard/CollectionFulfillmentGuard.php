@@ -14,8 +14,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Guard class for the transitions of the collection entity.
- *
- * @package Drupal\collection\Guard
  */
 class CollectionFulfillmentGuard implements GuardInterface {
 
