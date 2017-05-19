@@ -80,9 +80,9 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * Creates a number of contact information with data provided in a table.
    *
    * Table format:
-   * | email                            | name       | author      |
-   * | foo@example.com, bar@example.com | John Irwin | Author name |
-   * | baz@example.com                  | Jack Smith |             |
+   * | name                   | email                            | website url                            | author      |
+   * | John Irwin             | foo@example.com, bar@example.com | http://google.com                      | Author name |
+   * | Jack Smith, John Irwin | baz@example.com                  | http://yahoo.com, http://altavista.com |             |
    *
    * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contacts table.
