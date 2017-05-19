@@ -85,7 +85,7 @@
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {% if file_name %}
-        <div class="small gray">{{ file_name }}</div>
+        <div class="value gray small truncated">{{ file_name }}</div>
       {% endif %}
     </div>
     <div class="listing__field">
@@ -102,7 +102,7 @@
     {% if licence %}
     <div class="listing__field">
       <div class="label gray">{{ 'Licence'|t }}:</div>
-      <div class="value bold">{{ licence }}</div>
+      <div class="value bold color-base">{{ licence }}</div>
     </div>
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">

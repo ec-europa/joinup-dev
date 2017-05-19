@@ -1,4 +1,4 @@
-.bold
+.bold, .bold a
   font-weight: $font-weight-bold
 
 .italic
@@ -13,6 +13,9 @@
 .blue
   color: $color-blue-slider
 
+.color-base, .color-base a
+  color: $color-base
+
 .left
   text-align: left
 
@@ -21,6 +24,15 @@
 
 .right
   text-align: right
+
+.small
+  font-size: $font-size-small
+
+.truncated
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+  width: 100%
 
 .hide--phone
   +breakpoint(sm-mobile, mobile)
