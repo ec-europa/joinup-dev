@@ -60,20 +60,39 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @Given (the following )contact:
    */
   public function givenContactEntity(TableNode $contact_table) {
-    $aliases = self::contactInformationFieldAliases();
-
     $values = [];
-    // Replace the column aliases with the actual field names.
+
     foreach ($contact_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in contact information table.");
-      }
+      // Replace the column aliases with the actual field names.
+      $key = self::translateFieldNameAlias($key);
+      $values[$key] = $value;
     };
 
     $this->createContactInformation($values);
+  }
+
+  /**
+   * Translates human readable field names to machine names.
+   *
+   * @param string $field_name
+   *   The human readable field name. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the field.
+   *
+   * @throws \Exception
+   *   Thrown when an unknown field name is passed.
+   */
+  protected static function translateFieldNameAlias($field_name) {
+    $aliases = self::contactInformationFieldAliases();
+    if (array_key_exists($field_name, $aliases)) {
+      $field_name = $aliases[$field_name];
+    }
+    else {
+      throw new \Exception("Unknown field name '$field_name'.");
+    }
+
+    return $field_name;
   }
 
   /**
@@ -93,19 +112,12 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @Given (the following )contacts:
    */
   public function givenContactEntities(TableNode $contact_table) {
-    $aliases = self::contactInformationFieldAliases();
-
     foreach ($contact_table->getColumnsHash() as $entity) {
       $values = [];
 
       foreach ($entity as $key => $value) {
-        // Replace aliases with the actual field names.
-        if (array_key_exists($key, $aliases)) {
-          $values[$aliases[$key]] = $value;
-        }
-        else {
-          throw new \Exception("Unknown column '$key' in contact information table.");
-        }
+        $key = self::translateFieldNameAlias($key);
+        $values[$key] = $value;
       }
 
       $this->createContactInformation($values);
