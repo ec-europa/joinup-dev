@@ -237,6 +237,30 @@
         </if>
     </target>
 
+    <!-- Create services.yml by copying the default file. -->
+    <target name="create-services-yml">
+        <if>
+            <not>
+                <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            </not>
+            <then>
+                <copy file="${website.services.yml.default}" tofile="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Make services.yml writeable. -->
+    <target
+        name="writable-services-yml"
+        depends="create-services-yml">
+        <if>
+            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."

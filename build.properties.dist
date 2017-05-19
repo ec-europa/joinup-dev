@@ -51,6 +51,8 @@ website.settings.dir = ${website.sites.dir}/default
 website.settings.php = ${website.settings.dir}/settings.php
 website.settings.local.php.example = ${website.sites.dir}/example.settings.local.php
 website.settings.local.php = ${website.settings.dir}/settings.local.php
+website.services.yml = ${website.settings.dir}/services.yml
+website.services.yml.default = ${website.settings.dir}/default.services.yml
 website.files.dir = ${website.settings.dir}/files
 
 website.modules.dir = ${website.drupal.dir}/modules
