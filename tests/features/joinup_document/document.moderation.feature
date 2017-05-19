@@ -86,7 +86,7 @@ Feature: Document moderation
       | Short title | Amazing document                         |
     And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
-    Then I upload the file "test.zip" to "Upload a new file or enter a URL"
+    And I attach the file "test.zip" to "File"
     And I press "Save as draft"
     Then I should see the success message "Document An amazing document has been created"
 

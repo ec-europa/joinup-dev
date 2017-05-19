@@ -6,6 +6,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -424,50 +425,97 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Uploads a file or sets a remote URL to a 'file_url' field.
+   * Upload a file to a 'file_url' field.
    *
-   * @param string $file_or_url
-   *   Either file name to be uploaded or a remote URL.
+   * @param string $filename
+   *   The file name ti be uplaoded.
    * @param string $file_url_field
    *   The file URL field label.
    *
    * @throws \Exception
    *   The file to be uploaded doesn't exists.
    *
-   * @Given I upload the file :file_or_url to :file_url_field
-   * @Given I set a remote URL :file_or_url to :file_url_field
+   * @Given I upload the file :filename to :file_url_field
    */
-  public function addFileUrlItem($file_or_url, $file_url_field) {
-    $type = UrlHelper::isExternal($file_or_url) ? 'remote' : 'upload';
+  public function uploadFileToFileUrlField($filename, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'file');
 
+    // Qualify the file path.
+    $files_path = $this->getMinkParameter('files_path');
+    $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+    if (!is_file($path)) {
+      throw new \Exception("File '$filename' was not found in file path '$files_path'.");
+    }
+
+    // Attach the file.
+    $this->getSession()->getPage()->attachFileToField($id, $path);
+  }
+
+  /**
+   * Sets an URI as remote file to a 'file_url' field.
+   *
+   * @param string $uri
+   *   The URI string to be set.
+   * @param string $file_url_field
+   *   The file URL field label.
+   *
+   * @Given I set the URI :uri to :file_url_field
+   */
+  public function setUriToFileUrlField($uri, $file_url_field) {
+    $id = $this->fileUrlFieldHelper($file_url_field, 'remote-file');
+    // Fill in the text.
+    $this->getSession()->getPage()->fillField($id, $uri);
+  }
+
+  /**
+   * Provides a helper for file URL field steps.
+   *
+   * @param string $file_url_field
+   *   The file URL field label.
+   * @param string $option
+   *   What option to use: 'file' or 'remote-file'.
+   *
+   * @return string
+   *   The id attribute of the field being changed.
+   *
+   * @throws \Exception
+   *   When parts of the widget cannot be found.
+   */
+  protected function fileUrlFieldHelper($file_url_field, $option) {
     $session = $this->getSession();
     $page = $session->getPage();
 
     // Locate the file URL field widget wrapper.
     $wrapper = $page->find('xpath', "//label[text()='$file_url_field']/ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' field--type-file-url ')][1]");
     if (!$wrapper) {
-      throw new \Exception("Cannot find the file URL field '$file_url_field'.");
+      throw new ElementNotFoundException($session->getDriver(), "Cannot find the file URL field '$file_url_field'.");
     }
+    // Get the data selector but trim the '-wrapper' suffix.
+    $data_selector_base = substr($wrapper->getAttribute('data-drupal-selector'), 0, -8);
 
-    /** @var \Behat\Mink\Element\NodeElement $radio */
-    $radio = $wrapper->find('xpath', "//input[@type='radio']");
+    // Select the option for file upload or remote file.
+    $data_selector_radio = "$data_selector_base-0-file-wrap-select-$option";
+    $radio = $page->find('xpath', "//input[@type='radio' and @data-drupal-selector='$data_selector_radio']");
     if (!$radio) {
-      throw new \Exception("Malformed file URL field '$file_url_field': Can't find the inner radio option.");
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner '$option' radio option.");
     }
-    $page->selectFieldOption($radio->getAttribute('name'), $type);
+    $page->selectFieldOption($radio->getAttribute('name'), $option);
 
-    if ($type === 'upload') {
-      // Qualify the file path.
-      $files_path = $this->getMinkParameter('files_path');
-      $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_or_url;
-      if (!is_file($path)) {
-        throw new \Exception("File '$file_or_url' was not found in file path '$files_path'.");
-      }
-      $wrapper->attachFileToField('Choose a file', $path);
+    // Find the field to be updated.
+    if ($option === 'file') {
+      $data_selector = "$data_selector_base-0-file-wrap-file-upload";
+      $type = 'file';
     }
-    elseif ($type === 'remote') {
-      $wrapper->fillField('Remote URL', $file_or_url);
+    else {
+      $data_selector = "$data_selector_base-0-file-wrap-remote-file";
+      $type = 'url';
     }
+    $field = $page->find('xpath', "//input[@type='$type' and @data-drupal-selector='$data_selector']");
+    if (!$field) {
+      throw new \Exception($session->getDriver(), "Malformed file URL field '$file_url_field': Can't find the inner field '$data_selector'.");
+    }
+
+    return $field->getAttribute('id');
   }
 
 }

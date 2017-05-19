@@ -6,7 +6,6 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -426,18 +425,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if (!$input->isChecked()) {
       throw new \Exception("The radio '$radio' is not selected.");
-    }
-  }
-
-  /**
-   * @Then the :radio radio button should not be selected
-   */
-  public function assertRadioButtonNotChecked($radio) {
-    $session = $this->getSession();
-    $page = $session->getPage();
-    $radio = $page->find('named', ['radio', $radio]);
-    if ($radio->isChecked()) {
-      throw new ExpectationException($session->getDriver(), 'The radio button is checked but it should not be.');
     }
   }
 

@@ -90,7 +90,7 @@ trait WorkflowTrait {
    *    found.
    */
   protected function getEntityStateFieldDefinition(FieldableEntityInterface $entity) {
-    return $this->getWorkflowHelper()->getEntityStateFieldDefinition($entity);
+    return $this->getWorkflowHelper()::getEntityStateFieldDefinition($entity);
   }
 
   /**
