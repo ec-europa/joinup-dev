@@ -14,8 +14,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Guard class for the transitions of the solution entity.
- *
- * @package Drupal\solution\Guard
  */
 class SolutionFulfillmentGuard implements GuardInterface {
 

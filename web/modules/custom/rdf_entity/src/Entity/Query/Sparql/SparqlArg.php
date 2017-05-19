@@ -13,8 +13,6 @@ use EasyRdf\Serialiser\Ntriples;
  *
  * @todo Return SparqlArgument objects in order to distinguish between
  * raw strings and sanitized ones. Query should expect objects.
- *
- * @package Drupal\rdf_entity\Entity\Query\Sparql
  */
 class SparqlArg {
 

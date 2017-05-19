@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 
 /**
  * Builds a custom 404 page with a simple text.
- *
- * @package Drupal\joinup_core\Controller
  */
 class NotFoundController extends ControllerBase {
 
