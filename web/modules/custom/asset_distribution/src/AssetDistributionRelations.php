@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service containing methods to get associated entities like parent solution.
- *
- * @package Drupal\asset_distribution
  */
 class AssetDistributionRelations implements ContainerInjectionInterface {
 

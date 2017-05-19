@@ -9,8 +9,6 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class ImportSubscriber.
- *
- * @package Drupal\demo_content
  */
 class ImportSubscriber implements EventSubscriberInterface {
 

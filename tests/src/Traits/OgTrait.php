@@ -11,8 +11,6 @@ use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
- *
- * @package src\Traits
  */
 trait OgTrait {
 
