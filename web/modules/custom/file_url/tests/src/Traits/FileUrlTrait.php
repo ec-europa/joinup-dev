@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\joinup_core\Traits;
+namespace Drupal\Tests\file_url\Traits;
 
 use Drupal\file\Entity\File;
 use Drupal\Tests\rdf_entity\Traits\RdfEntityCreationTrait;
