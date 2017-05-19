@@ -898,11 +898,18 @@ function joinup_theme_preprocess_node(&$variables) {
 
   /** @var \Drupal\file\FileInterface $file */
   $file = $node->get('field_file')->first()->entity;
-  $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
 
-  // Do not render file size for remote files.
-  if (!\Drupal::service('file_url.handler')->isRemote($file) && $file->getSize()) {
-    $variables['file_size'] = format_size(round($file->getSize()));
+  if (!$is_remote) {
+    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    $variables['file_name'] = $file->getFilename();
+
+    if ($file->getSize()) {
+      $variables['file_size'] = format_size(round($file->getSize()));
+    }
+  }
+  else {
+    $variables['extension'] = t('External');
   }
 }
 

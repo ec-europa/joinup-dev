@@ -84,6 +84,9 @@
   <div class="listing__metadata">
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      {% if file_name %}
+        <div class="small gray">{{ file_name }}</div>
+      {% endif %}
     </div>
     <div class="listing__field">
       <div class="label gray">{{ 'Type'|t }}:</div>
@@ -91,13 +94,17 @@
     </div>
     {% if file_size %}
     <div class="listing__field">
-      <div class="label gray">{{ 'Weight'|t }}:</div>
+      <div class="label gray">{{ 'Size'|t }}:</div>
       <div class="value bold">{{ file_size }}</div>
     </div>
     {% endif %}
+    {% set licence = content.field_licence|render %}
+    {% if licence %}
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
+      <div class="label gray">{{ 'Licence'|t }}:</div>
+      <div class="value bold">{{ licence }}</div>
     </div>
+    {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
       <a href="{{ content.field_file|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
