@@ -98,6 +98,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_ar_abstract:
     weight: 10
@@ -255,11 +256,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
-  langcode:
-    type: language_select
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  langcode: true
+  translation: true
   uid: true
