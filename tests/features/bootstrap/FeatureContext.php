@@ -959,4 +959,22 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Checks that the page is cached.
+   *
+   * @Then the page should be cached
+   */
+  public function assertPageCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the page is not cached.
+   *
+   * @Then the page should not be cached
+   */
+  public function assertPageNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
+  }
+
 }
