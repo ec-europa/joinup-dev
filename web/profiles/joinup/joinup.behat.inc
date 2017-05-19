@@ -794,7 +794,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then I( should) not see the text :text in the :heading tile
    */
-  public function assertTileDoesContainsText($heading, $text) {
+  public function assertTileDoesNotContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
     if (!$element) {
