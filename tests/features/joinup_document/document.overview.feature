@@ -25,7 +25,9 @@ Feature: "Document" overview.
     And I should see the text "text.pdf" in the "VAT refund sample document" tile
     And I should see the text "Type: PDF" in the "VAT refund sample document" tile
     And I should see the text "Size: 1.08 KB" in the "VAT refund sample document" tile
+    And the download link is shown in the "VAT refund sample document" document tile
     # A document that contains a remote file URI should mark the type as external.
     And I should see the text "Type: EXTERNAL" in the "Local maps archive" tile
     But I should not see the text "Size" in the "Local maps archive" tile
     And I should not see the text "develop.zip" in the "Local maps archive" tile
+    And the download link is shown in the "Local maps archive" document tile
