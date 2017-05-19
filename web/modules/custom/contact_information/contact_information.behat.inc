@@ -184,7 +184,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       $values['uid'] = $this->getUserByName($values['uid'])->id();
     }
 
-    $entity = Rdf::create($values);
+    $entity = Rdf::create($this->parseRdfEntityFields($values));
     $entity->save();
     $this->contactInformations[$entity->id()] = $entity;
 

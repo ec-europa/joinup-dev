@@ -250,7 +250,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     foreach ($file_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
@@ -498,8 +500,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
+    // Convert any entity reference field label value with the entity ID.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
