@@ -72,9 +72,6 @@ process:
     plugin: policy_domain
     source: policy2
 
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
-  # field_is_related_solutions:
-
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
   # field_is_solution_type:
 
@@ -84,10 +81,6 @@ process:
     vocabulary: spatial
   field_is_state: state
   field_status: status
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
-  # field_is_translation:
-
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
