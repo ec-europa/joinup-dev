@@ -20,7 +20,7 @@ class NotFoundController extends ControllerBase {
    *   The render array.
    */
   public function build404() {
-    $search = Link::fromTextAndUrl('search function', Url::fromUri('internal:/search'));
+    $search = Link::fromTextAndUrl('search', Url::fromUri('internal:/search'));
     $front = Link::fromTextAndUrl('go to the homepage', Url::fromUri('internal:/<front>'));
 
     $build = [
