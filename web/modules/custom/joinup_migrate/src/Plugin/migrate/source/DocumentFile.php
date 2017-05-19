@@ -11,44 +11,32 @@ use Drupal\migrate\Row;
  *   id = "document_file"
  * )
  */
-class DocumentFile extends JoinupSqlBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIds() {
-    return [
-      'nid' => [
-        'type' => 'integer',
-        'alias' => 'df',
-      ],
-      'delta' => [
-        'type' => 'integer',
-      ],
-    ];
-  }
+class DocumentFile extends Document {
 
   /**
    * {@inheritdoc}
    */
   public function fields() {
     return [
-      'nid' => $this->t('Parent document node ID'),
-      'vid' => $this->t('Parent document node revision ID'),
-      'delta' => $this->t('Field item delta'),
-      'fid' => $this->t('File ID'),
-      'path' => $this->t('File path'),
-      'timestamp' => $this->t('Created time'),
-      'uid' => $this->t('File owner'),
-    ];
+      'nid' => $this->t('ID'),
+      'file_path' => $this->t('Source path'),
+      'destination_uri' => $this->t('Destination URI'),
+      'file_timestamp' => $this->t('Created time'),
+      'file_uid' => $this->t('File owner'),
+    ] + parent::fields();
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select('d8_document_file', 'df')
-      ->fields('df', array_keys($this->fields()));
+    return parent::query()->fields('n', [
+      'file_id',
+      'file_path',
+      'file_timestamp',
+      'file_uid',
+    ])->isNotNull('file_path')
+      ->condition('file_path', '', '<>');
   }
 
   /**
@@ -56,11 +44,11 @@ class DocumentFile extends JoinupSqlBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path.
-    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('path');
-    $row->setSourceProperty('path', $source_path);
+    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('file_path');
+    $row->setSourceProperty('file_path', $source_path);
 
     // Build the destination URI.
-    $date = date('Y-m', $row->getSourceProperty('timestamp'));
+    $date = date('Y-m', $row->getSourceProperty('file_timestamp'));
     $basename = basename($source_path);
     $destination_uri = "public://document/$date/$basename";
     $row->setSourceProperty('destination_uri', $destination_uri);

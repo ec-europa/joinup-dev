@@ -77,8 +77,7 @@ class Distribution extends DistributionBase {
     $row->setSourceProperty('technique', $representation_technique);
 
     // Resolve 'access_url'.
-    $file_source_id_values = $row->getSourceProperty('file_id') ? [['nid' => $nid]] : [];
-    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'distribution_file', 'access_url');
+    $this->setFileUrlTargetId($row, 'access_url', ['nid' => $nid], 'file_id', 'distribution_file', 'access_url');
 
     // Status.
     $this->setStatus($vid, $row);

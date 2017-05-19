@@ -8,8 +8,8 @@
 use Drupal\file_url\FileUrlHandler;
 
 // Migration counts.
-$this->assertTotalCount('document', 8);
-$this->assertSuccessCount('document', 8);
+$this->assertTotalCount('document', 7);
+$this->assertSuccessCount('document', 7);
 
 // Imported content check.
 /* @var \Drupal\node\NodeInterface $document */
@@ -95,38 +95,7 @@ $this->assertEquals(1453821476, $document->changed->value);
 $this->assertEquals(1, $document->uid->target_id);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1353062565), $document->field_document_publication_date->value);
 $file = FileUrlHandler::urlToFile($document->field_file->target_id);
-$this->assertReferences([
-  'NIFO - Factsheet Austria 02-2013.pdf',
-  'NIFO - Factsheet Belgium 2011.pdf',
-  'NIFO - Factsheet Bulgaria 2011.pdf',
-  'NIFO - Factsheet Cyprus 11-2012.pdf',
-  'NIFO – Factsheet Denmark 11-2012.pdf',
-  'NIFO – Factsheet Estonia 11-2012.pdf',
-  'NIFO – Factsheet Finland 01-2013.pdf',
-  'NIFO - Factsheet France 2011.pdf',
-  'NIFO - Factsheet Germany 05-2013.pdf',
-  'NIFO - Factsheet Greece 01-2013.pdf',
-  'NIFO - Factsheet Hungary 01-2013.pdf',
-  'NIFO - Factsheet Iceland 2011.pdf',
-  'NIFO - Factsheet Ireland 2011.pdf',
-  'NIFO - Factsheet Italy 05-2013.pdf',
-  'NIFO - Factsheet Latvia 12-2012.pdf',
-  'NIFO – Factsheet Liechtenstein 11-2012.pdf',
-  'NIFO – Factsheet Lithuania 11-2012.pdf',
-  'NIFO - Factsheet Luxembourg 01-2013.pdf',
-  'NIFO - Factsheet Malta 01-2013.pdf',
-  'NIFO - Factsheet Norway 05-2013.pdf',
-  'NIFO - Factsheet Poland 05-2013.pdf',
-  'NIFO - Factsheet Portugal 01-2013.pdf',
-  'NIFO - Factsheet Romania 2011.pdf',
-  'NIFO - Factsheet Slovakia 11-2012.pdf',
-  'NIFO - Factsheet Slovenia 02-2013.pdf',
-  'NIFO - Factsheet Spain 05-2013.pdf',
-  'NIFO - Factsheet Sweden 01-2013.pdf',
-  'NIFO - Factsheet Switzerland 11-2012.pdf',
-  'NIFO - Factsheet The Netherlands 2011.pdf',
-  'NIFO – Factsheet United Kingdom 11-2012.pdf',
-], $document->get('field_file'));
+$this->assertEquals('public://document/2013-02/NIFO - Factsheet Austria 02-2013.pdf', $file->getFileUri());
 $this->assertStringEndsWith("interoperability in each of the Countries in scope.&nbsp;</div>\r\n</div>\r\n<p>&nbsp;</p>", $document->body->value);
 $this->assertKeywords([
   'Country profile',

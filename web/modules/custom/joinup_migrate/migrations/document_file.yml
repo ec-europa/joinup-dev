@@ -11,13 +11,13 @@ process:
   uid:
     - plugin: migration
       migration: user
-      source: uid
+      source: file_uid
       no_stub: true
     - plugin: default_value
       default_value: 1
   source_path_encoded:
     plugin: urlencode
-    source: path
+    source: file_path
   uri:
     plugin: file_copy
     source:
@@ -26,7 +26,7 @@ process:
   status:
     plugin: default_value
     default_value: 1
-  created: timestamp
+  created: file_timestamp
 destination:
   plugin: entity:file
 migration_dependencies:
