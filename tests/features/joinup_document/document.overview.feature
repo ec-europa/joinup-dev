@@ -5,21 +5,27 @@ Feature: "Document" overview.
   I need to be able to interact with them.
 
   Scenario: File type and size should be visible in the document tiles.
-    Given the following collection:
+    Given the following licence:
+      | title       | Beer licence                                     |
+      | description | Offer a beer to the developer when you meet him. |
+      | type        | Attribution                                      |
+    And the following collection:
       | title | Traveller tools |
       | state | validated       |
     And document content:
-      | title                      | type     | short title           | file type | file                                                        | body                                            | collection      | state     |
-      | VAT refund sample document | document | VAT refund fac-simile | upload    | text.pdf                                                    | Valid for people living outside the EU.         | Traveller tools | validated |
-      | Local maps archive         | document | Local maps            | remote    | https://github.com/ec-europa/joinup-dev/archive/develop.zip | Contains maps with the top locations in the EU. | Traveller tools | validated |
+      | title                      | type     | short title           | file type | file                                                        | body                                            | collection      | licence      | state     |
+      | VAT refund sample document | document | VAT refund fac-simile | upload    | text.pdf                                                    | Valid for people living outside the EU.         | Traveller tools | Beer licence | validated |
+      | Local maps archive         | document | Local maps            | remote    | https://github.com/ec-europa/joinup-dev/archive/develop.zip | Contains maps with the top locations in the EU. | Traveller tools | Beer licence | validated |
 
     When I go to the homepage of the "Traveller tools" collection
     Then I should see the "VAT refund sample document" tile
     And I should see the "Local maps archive" tile
-    # A document that contains an uploaded file should show the type and
-    # the weight of it.
+    # A document that contains an uploaded file should show the file name,
+    # type and the weight of it.
+    And I should see the text "text.pdf" in the "VAT refund sample document" tile
     And I should see the text "Type: PDF" in the "VAT refund sample document" tile
-    And I should see the text "Weight: 1.08 KB" in the "VAT refund sample document" tile
-    # A document that contains a remote file URI should show the type only.
-    And I should see the text "Type: ZIP" in the "Local maps archive" tile
-    But I should not see the text "Weight" in the "Local maps archive" tile
+    And I should see the text "Size: 1.08 KB" in the "VAT refund sample document" tile
+    # A document that contains a remote file URI should mark the type as external.
+    And I should see the text "Type: EXTERNAL" in the "Local maps archive" tile
+    But I should not see the text "Size" in the "Local maps archive" tile
+    And I should not see the text "develop.zip" in the "Local maps archive" tile
