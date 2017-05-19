@@ -105,13 +105,13 @@ trait RdfEntityTrait {
    * This is a convenient wrapper around parseEntityFields() that handles the
    * type casting.
    *
-   * @see \Drupal\DrupalExtension\Context\RawDrupalContext::parseEntityFields()
-   *
    * @param array $fields
    *   An array of human readable field values.
    *
    * @return array
    *   An array of field data as expected by the field storage handler.
+   *
+   * @see \Drupal\DrupalExtension\Context\RawDrupalContext::parseEntityFields()
    */
   public function parseRdfEntityFields(array $fields) {
     $entity = (object) $fields;
