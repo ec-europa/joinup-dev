@@ -47,14 +47,14 @@ class ScriptHandler {
         ],
       ];
       drupal_rewrite_settings($settings, $drupalRoot . '/sites/default/settings.php');
-      $fs->chmod($drupalRoot . '/sites/default/settings.php', 0666);
-      $event->getIO()->write("Create a sites/default/settings.php file with chmod 0666");
+      $fs->chmod($drupalRoot . '/sites/default/settings.php', 0640);
+      $event->getIO()->write("Create a sites/default/settings.php file with chmod 0640");
     }
 
-    // Create the files directory with chmod 0777
+    // Create the files directory with chmod 0755
     if (!$fs->exists($drupalRoot . '/sites/default/files')) {
       $oldmask = umask(0);
-      $fs->mkdir($drupalRoot . '/sites/default/files', 0777);
+      $fs->mkdir($drupalRoot . '/sites/default/files', 0755);
       umask($oldmask);
       $event->getIO()->write("Create a sites/default/files directory with chmod 0755");
     }
