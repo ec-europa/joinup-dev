@@ -11,8 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * The event subscriber that handles the message notifications in joinup.
- *
- * @package Drupal\joinup_notification
  */
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 

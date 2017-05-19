@@ -14,8 +14,6 @@ use Drupal\user\Entity\Role;
 
 /**
  * Class NotificationSenderService.
- *
- * @package Drupal\joinup_notification
  */
 class NotificationSenderService {
 
