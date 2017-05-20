@@ -57,3 +57,10 @@ settings.php file.
       'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
       'driver' => 'sparql',
     ];
+
+## Content translation
+Rdf entities support basic content translations. This is still WIP.
+
+**Note:** If content translations are enabled, the 'langcode' property
+**must** be mapped, otherwise entity reference fields will not store
+information.

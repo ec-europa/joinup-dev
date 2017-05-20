@@ -71,4 +71,5 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   join_collection: true
+  langcode: true
   og_group: true

@@ -56,9 +56,12 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   // @see solution_rdf_entity_load().
   $fields['collection'] = BaseFieldDefinition::create('entity_reference')
     ->setLabel(t('Collection'))
+    ->setName('collection')
     ->setDescription(t('The collections this solution belongs to.'))
-    ->setReadOnly(TRUE)
-    ->setSetting('target_type', 'rdf_type');
+    ->setTranslatable(FALSE)
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setComputed(TRUE)
+    ->setReadOnly(TRUE);
 
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);

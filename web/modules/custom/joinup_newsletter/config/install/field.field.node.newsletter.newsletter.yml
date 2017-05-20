@@ -13,7 +13,7 @@ bundle: newsletter
 label: Newsletter
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value:
   -
     target_id: default

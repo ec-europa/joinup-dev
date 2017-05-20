@@ -32,7 +32,7 @@ Feature: Proposing a collection
     And I am logged in as an "authenticated user"
     When I go to the propose collection form
     Then I should see the heading "Propose collection"
-    And the following fields should not be present "Current workflow state"
+    And the following fields should not be present "Current workflow state, Langcode, Translation"
     And the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |

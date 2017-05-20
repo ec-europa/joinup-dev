@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/description'
-        format: literal
+        format: t_literal
       format:
         predicate: ''
         format: ''
@@ -21,7 +21,7 @@ settings: {  }
 module: text
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

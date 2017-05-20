@@ -9,13 +9,34 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
+          format: t_literal
+      uuid:
+        value:
+          predicate: ''
+          format: ''
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
           format: literal
+      graph:
+        value:
+          predicate: ''
+          format: ''
     graph:
       default: 'http://joinup.eu/collection/published'
       draft: 'http://joinup.eu/collection/draft'
+    entity_id_plugin: default
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
