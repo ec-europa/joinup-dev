@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/description'
-        format: literal
+        format: t_literal
       format:
         predicate: ''
         format: ''

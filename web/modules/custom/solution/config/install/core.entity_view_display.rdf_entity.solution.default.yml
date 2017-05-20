@@ -116,6 +116,7 @@ hidden:
   field_spatial_coverage: true
   field_status: true
   label: true
+  langcode: true
   licence: true
   og_group: true
   releases_overview: true

@@ -6,10 +6,10 @@ package: Joinup
 dependencies:
   - datetime
   - digital_size_formatter
+  - file_url
   - joinup_core
   - link
   - rdf_entity
-  - file_url
   - text
 
 config_devel:

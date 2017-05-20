@@ -17,10 +17,10 @@ third_party_settings:
         value:
           predicate: 'http://example.com/file_url_label'
           format: 'literal'
-      uuid:
+      langcode:
         value:
-          predicate: ''
-          format: ''
+          predicate: 'http://example.com/language'
+          format: t_literal
       graph:
         value:
           predicate: ''

@@ -27,7 +27,7 @@ config_devel:
   - core.entity_view_display.rdf_entity.collection.about
   - core.entity_view_display.rdf_entity.collection.compact
   - core.entity_view_display.rdf_entity.collection.default
-  - core.entity_view_display.rdf_entity.collection.draft
+  - core.entity_view_display.rdf_entity.collection.rdf_draft
   - core.entity_view_display.rdf_entity.collection.group_header
   - core.entity_view_display.rdf_entity.collection.view_mode_featured
   - core.entity_view_display.rdf_entity.collection.view_mode_tile
