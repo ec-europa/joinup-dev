@@ -127,6 +127,13 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
     case 'view':
       $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
 
+      // In case an attempt is being made to check view access for a release
+      // without parent, e.g. create an entity only to get a view access result
+      // return neutral.
+      if (empty($parent)) {
+        return AccessResult::forbidden();
+      }
+
       /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
       $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
       if (!$access_handler->access($parent, 'view', $account)) {
