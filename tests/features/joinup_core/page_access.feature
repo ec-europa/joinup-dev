@@ -14,4 +14,4 @@ Feature:
     Then I should see the heading "Page not found"
     And I should see the text "The page you are looking for does not exist; It may have been moved, or removed altogether. You might want to:"
     And I should see the link "search function"
-    And I should see the link "go to the homepage"
+    And I should see the link "home page"

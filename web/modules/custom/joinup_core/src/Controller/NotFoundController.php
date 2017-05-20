@@ -19,7 +19,7 @@ class NotFoundController extends ControllerBase {
    */
   public function build404() {
     $search = Link::fromTextAndUrl('search function', Url::fromUri('internal:/search'));
-    $front = Link::fromTextAndUrl('go to the homepage', Url::fromUri('internal:/<front>'));
+    $front = Link::fromTextAndUrl('home page', Url::fromUri('internal:/<front>'));
 
     $build = [
       '#theme' => '404_not_found',
