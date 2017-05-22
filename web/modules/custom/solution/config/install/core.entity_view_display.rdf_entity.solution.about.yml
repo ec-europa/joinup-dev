@@ -44,7 +44,6 @@ dependencies:
   module:
     - ds
     - file_url
-    - joinup
     - user
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
