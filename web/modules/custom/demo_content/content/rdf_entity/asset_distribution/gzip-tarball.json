@@ -24,7 +24,7 @@
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
             {
                 "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json",
-                "lang": "und"
+                "lang": "en"
             }
         ]
     },
@@ -41,7 +41,7 @@
     "label": [
         {
             "value": "Gzip tarball",
-            "lang": "und"
+            "lang": "en"
         }
     ],
     "uuid": [
@@ -118,7 +118,7 @@
                         "value": "http:\/\/www.w3.org\/ns\/person#"
                     }
                 ],
-                "lang": "und"
+                "lang": "en"
             }
         ]
     },

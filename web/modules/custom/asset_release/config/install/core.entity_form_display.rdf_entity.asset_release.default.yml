@@ -141,4 +141,6 @@ hidden:
   field_isr_solution_type: true
   field_isr_translation: true
   field_policy_domain: true
+  langcode: true
+  translation: true
   uid: true

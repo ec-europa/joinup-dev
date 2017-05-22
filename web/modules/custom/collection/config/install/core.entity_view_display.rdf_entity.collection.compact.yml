@@ -75,6 +75,7 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   join_collection: true
+  langcode: true
   og_group: true
   rdf_entity_field_collection_content_inline_facets: true
   rdf_entity_field_collection_content_top: true

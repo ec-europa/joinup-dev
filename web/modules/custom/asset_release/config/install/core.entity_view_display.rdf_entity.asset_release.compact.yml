@@ -233,4 +233,5 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  langcode: true
   og_audience: true

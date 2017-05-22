@@ -19,6 +19,7 @@ dependencies:
     - digital_size_formatter
     - ds
     - file_url
+    - user
 id: rdf_entity.asset_distribution.view_mode_tile
 targetEntityType: rdf_entity
 bundle: asset_distribution
@@ -37,6 +38,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_ad_licence:
     weight: 5
     label: hidden
@@ -44,6 +46,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -58,6 +61,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
   field_ad_creation_date: true
   field_ad_description: true
@@ -66,4 +70,5 @@ hidden:
   field_ad_modification_date: true
   field_ad_repr_technique: true
   field_status: true
+  langcode: true
   og_audience: true
