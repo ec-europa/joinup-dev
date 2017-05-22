@@ -50,7 +50,6 @@ class CoreController extends ControllerBase {
     $page = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
 
     $page['#entity_type'] = 'rdf_entity';
-    $page['#rdf_entity'] = $rdf_entity;
 
     return $page;
   }
