@@ -142,18 +142,17 @@
     }
   };
 
-  Drupal.behaviors.checkRow = {
+  // Forwards a click on a share modal row to the related checkbox.
+  Drupal.behaviors.checkShareBoxRow = {
     attach: function (context, settings) {
-      $(context).find('.share-content-form div.form-wrapper').once('checkRow').each(function () {
+      $(context).find('.share-box__row').once('checkShareBoxRow').each(function () {
         $(this).on('click', function (event) {
-          if ($(this).find('input[type="checkbox"]').is(':checked')) {
-            $(this).find('input[type="checkbox"]').prop('checked', false);
+          // Avoid calling click() twice due to event propagation.
+          if ($(event.target).is('input[type="checkbox"]')) {
+            return;
           }
-          else {
-            $(this).find('input[type="checkbox"]').prop('checked', true);
-          }
-          // Only needed for social placeholders.
-          $(this).toggleClass('already-shared');
+
+          $(this).find('input[type="checkbox"]').click();
         });
       });
     }

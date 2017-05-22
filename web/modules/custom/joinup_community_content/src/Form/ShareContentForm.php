@@ -119,6 +119,9 @@ class ShareContentForm extends FormBase {
       $form['collections'][$id] = [
         '#type' => 'container',
         '#id' => $wrapper_id,
+        '#attributes' => [
+          'class' => ['share-box__row'],
+        ],
         'entity' => $this->rdfBuilder->view($collection, 'compact'),
         'checkbox' => [
           '#type' => 'checkbox',
