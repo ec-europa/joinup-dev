@@ -50,13 +50,13 @@ content:
       joinup:
         template_suggestion: ''
   label:
-    label: hidden
     type: string
     weight: 1
+    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    region: content
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true
@@ -76,4 +76,5 @@ hidden:
   field_spatial_coverage: true
   join_collection: true
   og_group: true
+  rdf_entity_field_collection_content_inline_facets: true
   rdf_entity_field_collection_content_top: true
