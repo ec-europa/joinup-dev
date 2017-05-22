@@ -42,6 +42,12 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'suffix_text' => '',
       ],
     ],
+    '404_not_found' => [
+      'variables' => [
+        'search' => [],
+        'front' => [],
+      ],
+    ],
   ];
 }
 

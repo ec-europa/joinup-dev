@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service containing methods to get associated entities like parent solution.
- *
- * @package Drupal\asset_release
  */
 class AssetReleaseRelations implements ContainerInjectionInterface {
 

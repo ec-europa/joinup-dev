@@ -12,7 +12,7 @@ bundle: rdf_entity_release_update
 label: 'Asset release entity'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

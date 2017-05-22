@@ -13,6 +13,7 @@ dependencies:
   - ckeditor
   - collection
   - contact_form
+  - content_translation
   - contextual
   - custom_page
   - dashboard
@@ -140,6 +141,11 @@ config_devel:
   - filter.format.restricted_html
   - image.style.profile_icon
   - image.style.profile_icon_big
+  - language.content_settings.rdf_entity.asset_distribution
+  - language.content_settings.rdf_entity.asset_release
+  - language.content_settings.rdf_entity.collection
+  - language.content_settings.rdf_entity.licence
+  - language.content_settings.rdf_entity.solution
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy

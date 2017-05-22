@@ -4,8 +4,6 @@ namespace Drupal\rdf_entity;
 
 /**
  * Handler class for the rdf uris.
- *
- * @package Drupal\rdf_entity
  */
 class UriEncoder {
 

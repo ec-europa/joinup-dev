@@ -22,6 +22,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_ci_email:
     weight: 0
@@ -56,4 +57,5 @@ content:
     region: content
 hidden:
   label: true
+  langcode: true
   uid: true

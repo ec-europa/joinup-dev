@@ -8,11 +8,19 @@ third_party_settings:
       rid:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-          format: 'resource'
+          format: resource
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
-          format: 'literal'
+          format: t_literal
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'

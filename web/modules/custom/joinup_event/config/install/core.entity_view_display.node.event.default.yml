@@ -47,7 +47,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 10
+    weight: 11
     label: above
     settings:
       pager_id: 0
@@ -168,6 +168,25 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: content
+  field_shared_in:
+    type: entity_reference_entity_view
+    weight: 10
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   links:
     weight: 0
     region: content
@@ -175,18 +194,27 @@ content:
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 12
+    weight: 13
     region: content
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -197,7 +225,6 @@ hidden:
   field_organisation_type: true
   field_policy_domain: true
   field_scope: true
-  field_shared_in: true
   field_short_title: true
   field_state: true
   og_audience: true

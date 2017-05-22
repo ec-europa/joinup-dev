@@ -18,8 +18,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\asset_release\Controller
  */
 class AssetReleaseController extends ControllerBase {
 

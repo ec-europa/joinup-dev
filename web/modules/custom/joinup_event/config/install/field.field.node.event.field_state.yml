@@ -13,7 +13,7 @@ bundle: event
 label: State
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value:
   -
     value: __new__
