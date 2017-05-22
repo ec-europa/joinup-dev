@@ -5,8 +5,10 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - asset_release
   - contact_information
   - datetime
+  - file_url
   - image
   - inline_entity_form
   - joinup_core
@@ -14,7 +16,6 @@ dependencies:
   - options
   - owner
   - rdf_entity
-  - file_url
   - state_machine
   - text
   - token
@@ -99,4 +100,8 @@ config_devel:
   - field.storage.rdf_entity.field_is_webdav_creation
   - field.storage.rdf_entity.field_is_webdav_url
   - field.storage.rdf_entity.field_is_wiki
+  - og.og_role.rdf_entity-solution-administrator
+  - og.og_role.rdf_entity-solution-facilitator
+  - og.og_role.rdf_entity-solution-member
+  - og.og_role.rdf_entity-solution-non-member
   - rdf_entity.rdfentity.solution
