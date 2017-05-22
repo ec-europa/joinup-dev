@@ -458,7 +458,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
       else {
         $field_name = $condition['field'] . '__' . $condition['column'];
         $predicate = $this->fieldMappings[$field_name];
-        $langcode = $this->getLangCode($condition['field'], $condition['column'], $condition['lang']);
         // In case the operator is not '=', add a support triple pattern.
         if (in_array($condition['operator'], $this->requiresDefaultPatternOperators) && isset($this->fieldMappings[$field_name])) {
           $this->addConditionFragment(self::ID_KEY . ' ' . $this->escapePredicate($this->fieldMappings[$field_name]) . ' ' . $this->toVar($field_name));
@@ -485,9 +484,6 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
         case 'STARTS WITH':
         case 'ENDS WITH':
           $this->addConditionFragment($this->compileLike($condition));
-          if (!empty($langcode)) {
-            $this->addConditionFragment("FILTER(lang({$this->toVar($condition['field'])}) = '{$langcode}')");
-          }
           break;
 
         case 'IN':

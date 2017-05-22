@@ -10,8 +10,6 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 
 /**
  * Contains helper methods for managing the Rdf graphs.
- *
- * @package Drupal\rdf_entity
  */
 class RdfGraphHandler {
 

@@ -118,7 +118,8 @@ Feature: Discussion moderation
     # The comment form is available, even for non-members.
     When I am logged in as "Denny Winslow"
     And I go to the "What's the best escape gift?" discussion
-    Then I should see the button "Post comment"
+    Then I should see the heading "What's the best escape gift?"
+    And I should see the button "Post comment"
 
     # Disable the discussion with the facilitator.
     When I am logged in as "Lance Rustici"

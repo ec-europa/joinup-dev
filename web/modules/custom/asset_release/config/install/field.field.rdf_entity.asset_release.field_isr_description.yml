@@ -13,7 +13,7 @@ bundle: asset_release
 label: Description
 description: 'At least 5 words, not similar to the title.'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

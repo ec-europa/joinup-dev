@@ -16,6 +16,7 @@ Feature: Creation of contact information
       | Name   | Contact information example |
       | URL    | http://www.example.org      |
     And I press "Create contact information"
+    Then the following fields should not be present "Langcode, Translation"
     Then I should see the error message "The e-mail foo@bar is not valid."
     When I fill in "E-mail address" with "foo@bar.com"
     And I press "Create contact information"

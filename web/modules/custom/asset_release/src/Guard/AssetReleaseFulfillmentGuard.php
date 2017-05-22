@@ -15,8 +15,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Guard class for the transitions of the asset release entity.
- *
- * @package Drupal\asset_release\Guard
  */
 class AssetReleaseFulfillmentGuard implements GuardInterface {
 

@@ -23,3 +23,10 @@ entity.rdf_entity.about_page:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+joinup_core.not_found:
+  path: '/not-found'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\NotFoundController::build404'
+    _title: 'Page not found'
+  requirements:
+    _access: 'TRUE'

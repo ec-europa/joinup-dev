@@ -5,8 +5,6 @@ namespace Drupal\rdf_entity\Database\Driver\sparql;
 /**
  * Class Log.
  *
- * @package Drupal\rdf_entity\Database\Driver\sparql
- *
  * Database query logger.
  *
  * We log queries in a separate object rather than in the connection object

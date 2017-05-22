@@ -11,7 +11,7 @@ bundle: rdf_collection_node_delete
 label: 'Node title'
 description: 'Due to the deletion of the entity, the title will not be available in the message so we need to save it separatelly.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

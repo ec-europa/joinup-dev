@@ -121,6 +121,24 @@ trait TraversingTrait {
   }
 
   /**
+   * Finds a tile element by its heading.
+   *
+   * @param string $heading
+   *   The heading of the tile to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The tile element, or null if not found.
+   */
+  protected function getTileByHeading($heading) {
+    // Locate all the tiles.
+    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__item--tile ")]';
+    // That have a heading with the specified text.
+    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
+
+    return $this->getSession()->getPage()->find('xpath', $xpath);
+  }
+
+  /**
    * Finds a facet by alias.
    *
    * @param string $alias
