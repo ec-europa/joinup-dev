@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bce54482a38f003590fa4091497ad706",
+    "content-hash": "408c53bd8f0edf385b41abc783dc3040",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.27.4",
+            "version": "3.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3f313d2bfb7c56fecf58fc728701f7282a39e318"
+                "reference": "af653f256d99ff372ce3e3be3048e7e5373ab1bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3f313d2bfb7c56fecf58fc728701f7282a39e318",
-                "reference": "3f313d2bfb7c56fecf58fc728701f7282a39e318",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/af653f256d99ff372ce3e3be3048e7e5373ab1bc",
+                "reference": "af653f256d99ff372ce3e3be3048e7e5373ab1bc",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-16T20:49:25+00:00"
+            "time": "2017-05-18T20:44:27+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2130,17 +2130,17 @@
         },
         {
             "name": "drupal/ds",
-            "version": "3.0.0-rc1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "8.x-3.0-rc1"
+                "reference": "8.x-3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0-rc1.zip",
+                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0.zip",
                 "reference": null,
-                "shasum": "36c397a2d67aab3e376322c65a003f9fcc3642da"
+                "shasum": "f05791c33ddbc46e0c04318e4529e2a8fa3fb50d"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -2155,8 +2155,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-rc1",
-                    "datestamp": "1493926384"
+                    "version": "8.x-3.0",
+                    "datestamp": "1495040306"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2645,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6"
+                "reference": "7730b8414d8a5c344f3b3c519cdeb120627c1b4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
-                "reference": "17a4e0fa9b92f56a38bc1153aeb26ece52121de6",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/7730b8414d8a5c344f3b3c519cdeb120627c1b4a",
+                "reference": "7730b8414d8a5c344f3b3c519cdeb120627c1b4a",
                 "shasum": ""
             },
             "require-dev": {
@@ -2667,21 +2667,21 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-16 11:45:50"
+            "time": "2017-05-17 13:33:35"
         },
         {
             "name": "drupal/og_menu",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og_menu",
-                "reference": "8.x-1.0-alpha1"
+                "reference": "8.x-1.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha1.zip",
+                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha2.zip",
                 "reference": null,
-                "shasum": "109bdabd75984bcea3aadccacf1c7d2c14b49fd4"
+                "shasum": "cdb0cae343a91e49e21c83164d9cd1b7e9896b67"
             },
             "require": {
                 "drupal/core": "*",
@@ -2693,8 +2693,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1486119782"
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1495121886"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3061,17 +3061,17 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.0.0-rc2",
+            "version": "1.0.0-rc3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.0-rc2"
+                "reference": "8.x-1.0-rc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-rc2.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-rc3.zip",
                 "reference": null,
-                "shasum": "e35f48b1e57eb9a757be2a84d36b2ef37b0a569a"
+                "shasum": "0b4f7cbe4e5f43cea6399a180e7366b109f68e6b"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3088,8 +3088,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc2",
-                    "datestamp": "1494518286"
+                    "version": "8.x-1.0-rc3",
+                    "datestamp": "1495024986"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8252,7 +8252,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -8387,7 +8388,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-09T08:39:37+00:00"
+            "time": "2017-04-09 08:39:37"
         },
         {
             "name": "drupal/drupal-extension",
@@ -8395,12 +8396,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf"
+                "reference": "0cc5400664d26943c4b90b693e059246221ffec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
-                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/0cc5400664d26943c4b90b693e059246221ffec3",
+                "reference": "0cc5400664d26943c4b90b693e059246221ffec3",
                 "shasum": ""
             },
             "require": {
@@ -8448,7 +8449,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15 08:54:07"
+            "time": "2017-05-19 10:27:18"
         },
         {
             "name": "fabpot/goutte",
@@ -9353,23 +9354,23 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.4.1",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e"
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/13edfd8706462032c2f52b4b862974dd46b71c9e",
-                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7f066a26a962dbe58ddea9f72a4e82874a3975a4",
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
             },
             "type": "library",
             "extra": {
@@ -9401,7 +9402,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08T07:14:41+00:00"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -9661,16 +9662,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97"
+                "reference": "dcbed1074f8244661eecddfc2a675430d8d33f62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
-                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/dcbed1074f8244661eecddfc2a675430d8d33f62",
+                "reference": "dcbed1074f8244661eecddfc2a675430d8d33f62",
                 "shasum": ""
             },
             "require": {
@@ -9735,7 +9736,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-05-03T23:30:39+00:00"
+            "time": "2017-05-22T02:43:20+00:00"
         },
         {
             "name": "symfony/browser-kit",

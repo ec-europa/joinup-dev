@@ -62,14 +62,19 @@
         "mikey179/vfsStream": "~1.2",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
-        "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "~2.8"
+        "phpunit/phpunit": "^4.8.28",
+        "symfony/css-selector": "~2.8",
+        "webflo/drupal-finder": "^0.3",
+        "webmozart/path-util": "~2.3"
     },
     "conflict": {
         "drupal/drupal": "*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+      "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
