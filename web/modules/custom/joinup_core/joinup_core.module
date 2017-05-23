@@ -280,33 +280,6 @@ QUERY;
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Remove non-related actions (adding/removing roles) for other group types
- * from member overview page.
- */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // The form id will contain the entity id of the group, so we have to fall
-  // back to strstr to see if the generic part matches.
-  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
-    return;
-  }
-  $entity = \Drupal::request()->get('rdf_entity');
-  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
-    return;
-  }
-  // Header not set if the view is empty (no members).
-  if (empty($form['header'])) {
-    return;
-  }
-  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
-    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
-    }
-  }
-}
-
-/**
  * Implements hook_node_links_alter().
  */
 function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
