@@ -17,5 +17,4 @@ asset_distribution.track_download:
     _title: 'Download in progress'
   requirements:
     _access: 'TRUE'
-    _csrf_token: 'TRUE'
     _custom_access: '\Drupal\asset_distribution\Controller\DownloadTrackingController::isDistributionFile'
