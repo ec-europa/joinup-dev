@@ -101,6 +101,7 @@ hidden:
   field_user_frequency: true
   field_user_group_types: true
   field_user_subscription_events: true
+  langcode: true
   language: true
   simplenews: true
   timezone: true
