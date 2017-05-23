@@ -304,3 +304,16 @@ function joinup_install_tasks_alter(&$tasks, $install_state) {
     'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
   ];
 }
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ * Prepares the front page block to be displayed as a content listing.
+ *
+ * @see: joinup_theme_preprocess_block.
+ */
+function joinup_preprocess_block(&$variables) {
+  if ($variables['elements']['#id'] === 'frontpageblock') {
+    $variables['is_listing'] = TRUE;
+  }
+}
