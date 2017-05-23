@@ -13,8 +13,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Guard class for the transitions of the owner entity.
- *
- * @package Drupal\owner\Guard
  */
 class OwnerFulfillmentGuard implements GuardInterface {
 

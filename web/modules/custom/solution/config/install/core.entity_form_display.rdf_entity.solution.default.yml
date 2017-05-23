@@ -238,4 +238,6 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  langcode: true
+  translation: true
   uid: true

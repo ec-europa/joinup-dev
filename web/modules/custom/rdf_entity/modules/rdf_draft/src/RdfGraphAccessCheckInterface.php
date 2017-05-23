@@ -12,8 +12,6 @@ use Symfony\Component\Routing\Route;
  * Interface RdfGraphAccessCheckInterface.
  *
  * @todo: Needs better documentation.
- *
- * @package Drupal\rdf_draft
  */
 interface RdfGraphAccessCheckInterface extends AccessInterface {
 

@@ -13,7 +13,7 @@ bundle: collection
 label: Description
 description: 'Description of the collection (compulsory in English, other languages are optionals)'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

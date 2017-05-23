@@ -81,7 +81,7 @@ Feature: "Add solution" visibility options.
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
-    And the following fields should not be present "Groups audience, Other groups, Current workflow state"
+    And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
     When I fill in the following:
       | Title            | Espresso is the solution                                      |
       | Description      | This is a test text                                           |
@@ -91,8 +91,6 @@ Feature: "Add solution" visibility options.
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Documentation"
-    And I attach the file "logo.png" to "Logo"
-    And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Contact information example"
@@ -105,7 +103,15 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Propose"
-    Then I should see the heading "Espresso is the solution"
+    # Regression test for non required fields 'Banner' and 'Logo'.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
+    Then I should not see the following error messages:
+      | error messages            |
+      | Banner field is required. |
+      | Logo field is required.   |
+    But I should see a logo on the header
+    And I should see a banner on the header
+    And I should see the heading "Espresso is the solution"
     When I am logged in as a moderator
     When I go to the "Espresso is the solution" solution edit form
     And I press "Publish"
@@ -178,11 +184,9 @@ Feature: "Add solution" visibility options.
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
     When I press "Propose"
-    Then I should see the following error messages:
+    Then I should see the following error message:
       | error messages                         |
-      | Banner field is required.              |
       | Contact information field is required. |
-      | Logo field is required.                |
     # Buttons should be shown for the allowed solution transitions.
     And I should see the button "Save as draft"
     And I should see the button "Propose"

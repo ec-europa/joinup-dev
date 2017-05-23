@@ -15,8 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Controller that handles the form to add community content to a collection.
  *
  * The parent is passed as a parameter from the route.
- *
- * @package Drupal\joinup_core\Controller
  */
 abstract class CommunityContentController extends ControllerBase {
 

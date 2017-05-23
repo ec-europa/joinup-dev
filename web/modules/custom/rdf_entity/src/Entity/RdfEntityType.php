@@ -24,6 +24,7 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
  *   entity_keys = {
  *     "id" = "rid",
  *     "label" = "name",
+ *     "langcode" = "langcode",
  *   },
  *   links = {
  *     "add-form" = "/admin/structure/rdf_type/manage/{rdf_type}/add",

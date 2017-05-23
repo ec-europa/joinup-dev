@@ -757,6 +757,56 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that a certain text is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text to search.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is not found in the tile.
+   *
+   * @Then I( should) see the text :text in the :heading tile
+   */
+  public function assertTileContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    if (strpos(trim($element->getText()), $text) === FALSE) {
+      throw new \Exception("The text '$text' was not found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Asserts that a certain text is not present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text that should not be present.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is found in the tile.
+   *
+   * @Then I( should) not see the text :text in the :heading tile
+   */
+  public function assertTileDoesNotContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    if (strpos(trim($element->getText()), $text) !== FALSE) {
+      throw new \Exception("The text '$text' was found in the tile '$heading'.");
+    }
+  }
+
+  /**
    * Assert that the given form submission buttons are present on the page.
    *
    * @param string $buttons
@@ -1058,6 +1108,32 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     foreach ($elements as $element) {
       \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+    }
+  }
+
+  /**
+   * Asserts that a logo exists in the header.
+   *
+   * @Then I should see a logo on the header
+   */
+  public function assertExistingLogo() {
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__logo ")]//img';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Asserts that a banner exists in the header.
+   *
+   * @Then I should see a banner on the header
+   */
+  public function assertExistingBanner() {
+    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $results = $this->getSession()->getPage()->find('xpath', $xpath);
+    // If the preg_match get a match, it means that the background image is
+    // empty.
+    $match = preg_match('/background\-image\: url\([\'"][\'"]\)/', $results->getText());
+    if ($match !== 0) {
+      throw new \Exception("The banner is empty.");
     }
   }
 

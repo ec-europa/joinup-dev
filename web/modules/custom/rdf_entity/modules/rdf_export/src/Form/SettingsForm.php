@@ -8,8 +8,6 @@ use EasyRdf\Format;
 
 /**
  * Configuration form for rdf_export module.
- *
- * @package Drupal\rdf_export\Form
  */
 class SettingsForm extends ConfigFormBase {
 

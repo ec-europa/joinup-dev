@@ -43,4 +43,5 @@ hidden:
   current_workflow_state: true
   field_ci_state: true
   label: true
+  langcode: true
   uid: true

@@ -236,7 +236,7 @@ class Query extends QueryBase implements QueryInterface {
       }
     }
     else {
-      $this->query = 'SELECT ?entity ';
+      $this->query = 'SELECT DISTINCT(?entity) ';
     }
     $this->query .= "\n";
 

@@ -188,6 +188,7 @@ function joinup_theme_preprocess_block(&$variables) {
         }
         break;
 
+      case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':
@@ -879,6 +880,37 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds extension and file size to the available variables when rendering a
+ * document node.
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
+    return;
+  }
+
+  /** @var \Drupal\file\FileInterface $file */
+  $file = $node->get('field_file')->first()->entity;
+  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
+
+  if (!$is_remote) {
+    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    $variables['file_name'] = $file->getFilename();
+
+    if ($file->getSize()) {
+      $variables['file_size'] = format_size(round($file->getSize()));
+    }
+  }
+  else {
+    $variables['extension'] = t('External');
+  }
 }
 
 /**

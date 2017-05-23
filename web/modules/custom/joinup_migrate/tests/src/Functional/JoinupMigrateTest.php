@@ -323,18 +323,20 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *   A list of expected keywords.
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
+   * @param string $field_name
+   *   (optional) If passed, allows a field other than 'field_keywords'.
    *
    * @throws \InvalidArgumentException
-   *   When the entity is missing the 'field_keywords' field.
+   *   When the entity is missing the field.
    */
-  protected function assertKeywords(array $expected_keywords, ContentEntityInterface $entity) {
-    if (!$entity->hasField('field_keywords')) {
-      throw new \InvalidArgumentException("{$entity->getEntityType()->getLabel()} entity doesn't have a 'field_keywords' field.");
+  protected function assertKeywords(array $expected_keywords, ContentEntityInterface $entity, $field_name = 'field_keywords') {
+    if (!$entity->hasField($field_name)) {
+      throw new \InvalidArgumentException("{$entity->getEntityType()->getLabel()} entity doesn't have a '$field_name' field.");
     }
 
     $keywords = array_map(function (array $item) {
       return $item['value'];
-    }, $entity->get('field_keywords')->getValue());
+    }, $entity->get($field_name)->getValue());
 
     sort($expected_keywords);
     sort($keywords);

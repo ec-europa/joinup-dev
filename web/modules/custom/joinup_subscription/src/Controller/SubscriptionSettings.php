@@ -10,8 +10,6 @@ use Drupal\Core\Session\AccountProxy;
 
 /**
  * Class SubscriptionSettings.
- *
- * @package Drupal\joinup_subscription\Controller
  */
 class SubscriptionSettings extends ControllerBase {
 

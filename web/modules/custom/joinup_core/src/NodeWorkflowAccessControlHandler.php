@@ -17,8 +17,6 @@ use Drupal\og\Og;
  * @todo: If we are going with a unified way, a readme should include the
  *  workflow creation process.
  * @todo: Add cacheability to all access.
- *
- * @package Drupal\joinup_core
  */
 class NodeWorkflowAccessControlHandler {
 

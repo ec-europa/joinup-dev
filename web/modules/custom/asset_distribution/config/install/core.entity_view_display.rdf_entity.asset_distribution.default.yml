@@ -18,6 +18,7 @@ dependencies:
     - digital_size_formatter
     - ds
     - text
+    - user
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
 bundle: asset_distribution
@@ -38,6 +39,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: text_default
+    region: content
   field_ad_file_size:
     type: digital_size
     weight: 3
@@ -53,6 +55,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
   field_ad_licence:
     weight: 2
     label: hidden
@@ -69,6 +72,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -85,6 +89,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
 hidden:
   field_ad_access_url: true
   field_ad_creation_date: true
@@ -93,4 +98,5 @@ hidden:
   field_ad_modification_date: true
   field_ad_repr_technique: true
   field_status: true
+  langcode: true
   og_audience: true
