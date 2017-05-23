@@ -5,7 +5,6 @@ namespace Drupal\asset_distribution\Controller;
 use Drupal\asset_distribution\Form\AnonymousDownloadForm;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -106,26 +105,11 @@ class DownloadTrackingController extends ControllerBase {
    * @param \Drupal\file\FileInterface $file
    *   The distribution file that has been downloaded.
    *
-   * @return \Drupal\Core\Ajax\AjaxResponse
-   *   The generated response.
+   * @return array
+   *   The form array.
    */
   protected function trackAnonymousDownload(FileInterface $file) {
-    $form = $this->formBuilder->getForm(AnonymousDownloadForm::class, $file);
-    $response = new AjaxResponse();
-
-    // First render the main content, because it might provide a title.
-    $content = drupal_render_root($form);
-
-    // Attach the library necessary for using the OpenModalDialogCommand and set
-    // the attachments for this Ajax response.
-    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $response->setAttachments($form['#attached']);
-    $options = [
-      'modal' => TRUE,
-    ];
-
-    $response->addCommand(new OpenModalDialogCommand('Banana', $content, $options));
-    return $response;
+    return $this->formBuilder->getForm(AnonymousDownloadForm::class, $file);
   }
 
   /**

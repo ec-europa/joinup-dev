@@ -26,7 +26,8 @@
           base: $this.attr('id'),
           event: 'track_download.joinup',
           progress: false,
-          element: this
+          element: this,
+          dialogType: 'modal'
         });
 
         $this.on('click.joinup', function () {
