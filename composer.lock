@@ -2208,7 +2208,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha9.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha9",
                 "shasum": "b0b1e1cc57bc2586cf1afb67c3a8ed24771f4738"
             },
             "require": {
@@ -2317,17 +2317,17 @@
         },
         {
             "name": "drupal/file_url",
-            "version": "1.0.0-alpha2",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/file_url",
-                "reference": "8.x-1.0-alpha2"
+                "reference": "8.x-1.0-alpha3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha2.zip",
+                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha3.zip",
                 "reference": null,
-                "shasum": "a8c997318e2e8fa969322da8c279e4a3a6da30e5"
+                "shasum": "29edc0b50b7003ef99e33fa7ed3d9523f29f7745"
             },
             "require": {
                 "drupal/core": "*"
@@ -2338,8 +2338,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2",
-                    "datestamp": "1495527184"
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1495553583"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2348,12 +2348,15 @@
             ],
             "authors": [
                 {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
+                    "name": "Sander Van Dooren",
+                    "homepage": "https://github.com/sandervd",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://github.com/claudiu-cristea",
+                    "email": "clau.cristea@gmail.com",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "pfrenssen",
@@ -2368,10 +2371,12 @@
                     "homepage": "https://www.drupal.org/user/2353864"
                 }
             ],
-            "description": "Reference both local and remote files by URI",
-            "homepage": "https://www.drupal.org/project/file_url",
+            "description": "Reference both local and remote files by URI.",
+            "homepage": "http://drupal.org/project/file_uri",
             "support": {
-                "source": "http://cgit.drupalcode.org/file_url"
+                "source": "http://cgit.drupalcode.org/file_uri",
+                "issues": "http://drupal.org/project/file_uri",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -3077,7 +3082,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.1.zip",
-                "reference": null,
+                "reference": "8.x-1.1",
                 "shasum": "896d21a8b0dee0bea6e49fb0b2ac38315f4b52fe"
             },
             "require": {
@@ -3271,7 +3276,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
