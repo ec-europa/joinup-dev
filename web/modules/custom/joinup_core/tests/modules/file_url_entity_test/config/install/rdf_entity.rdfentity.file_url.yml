@@ -8,7 +8,7 @@ third_party_settings:
       rid:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-          format: 'resource'
+          format: resource
       uid:
         target_id:
           predicate: ''
@@ -16,15 +16,15 @@ third_party_settings:
       label:
         value:
           predicate: 'http://example.com/file_url_label'
-          format: 'literal'
+          format: t_literal
       langcode:
         value:
           predicate: 'http://example.com/language'
           format: t_literal
-      graph:
+      default_langcode:
         value:
-          predicate: ''
-          format: ''
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
     graph:
       default: 'http://example.com/file_url/published'
       draft: 'http://example.com/file_url/draft'

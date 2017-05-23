@@ -8,7 +8,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -18,7 +18,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
 class FileUrlFieldTest extends RdfWebTestBase {
 
   use FileUrlTrait;
-  use RdfEntityUtilityTrait;
+  use EntityUtilityTrait;
 
   /**
    * {@inheritdoc}
@@ -67,8 +67,9 @@ class FileUrlFieldTest extends RdfWebTestBase {
     $this->addFileUrlItem($field_name, 'remote', $url);
     $this->drupalPostForm(NULL, [], 'Save');
 
-    // @todo We should not need this. The cache should be wiped in this point.
-    //   This is a regression.
+    // @todo We should not need cache clearing hre. The cache should have been
+    //   be wiped out at this point. Fix this regression in ISAICP-3392.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache([$rdf_entity->id()]);
 
     // Check that the remote URL replaced the uploaded file.
