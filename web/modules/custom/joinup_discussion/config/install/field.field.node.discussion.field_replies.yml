@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_comments
+    - field.storage.node.field_replies
     - node.type.discussion
   module:
     - comment
-id: node.discussion.field_comments
-field_name: field_comments
+id: node.discussion.field_replies
+field_name: field_replies
 entity_type: node
 bundle: discussion
 label: Comments

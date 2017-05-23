@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Row;
+
 /**
  * Migrates discussions.
  *
@@ -11,6 +13,8 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
  */
 class Discussion extends NodeBase {
 
+  use AttachmentTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -19,6 +23,7 @@ class Discussion extends NodeBase {
       'status' => $this->t('Status'),
       'collection' => $this->t('Collection'),
       'solution' => $this->t('Solution'),
+      'fids' => $this->t('Attachments'),
     ] + parent::fields();
   }
 
@@ -27,6 +32,14 @@ class Discussion extends NodeBase {
    */
   public function query() {
     return $this->select('d8_discussion', 'n')->fields('n', ['status', 'solution']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    $this->setAttachment($row);
+    return parent::prepareRow($row);
   }
 
 }

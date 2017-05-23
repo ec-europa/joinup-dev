@@ -16,6 +16,7 @@ class Document extends NodeBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use LicenceTrait;
   use StateTrait;
 
   /**
@@ -119,6 +120,20 @@ class Document extends NodeBase {
 
     // State.
     $this->setState($row);
+
+    // Licence.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $licence = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The License of document vocabulary vid is 56.
+      ->condition('td.vid', 56)
+      ->execute()
+      ->fetchField();
+    $row->setSourceProperty('licence', $licence ?: NULL);
+    $this->setLicence($row, 'document');
 
     return parent::prepareRow($row);
   }

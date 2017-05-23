@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.reply
+    - field.field.comment.reply.field_attachment
+    - field.field.comment.reply.field_body
+id: comment.reply.default
+targetEntityType: comment
+bundle: reply
+mode: default
+content:
+  field_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  field_attachment: true
+  links: true

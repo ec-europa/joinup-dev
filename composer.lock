@@ -2224,7 +2224,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1491851643"
+                    "datestamp": "1492681579"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -8403,12 +8403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf"
+                "reference": "0cc5400664d26943c4b90b693e059246221ffec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
-                "reference": "e49e1b1cbc68916ec35c0f72b69951a973c61dcf",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/0cc5400664d26943c4b90b693e059246221ffec3",
+                "reference": "0cc5400664d26943c4b90b693e059246221ffec3",
                 "shasum": ""
             },
             "require": {
@@ -8456,7 +8456,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-15 08:54:07"
+            "time": "2017-05-19T10:27:18+00:00"
         },
         {
             "name": "fabpot/goutte",

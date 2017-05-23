@@ -3,7 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 /**
- * Migrates collections.
+ * Migrates contact info.
  *
  * @MigrateSource(
  *   id = "contact"

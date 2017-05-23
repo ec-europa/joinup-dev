@@ -209,8 +209,10 @@ function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $fo
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
 
-  if (!empty($form['field_comments'])) {
-    $form['field_comments']['#access'] = FALSE;
+  foreach (['field_comments', 'field_replies'] as $field) {
+    if (!empty($form[$field])) {
+      $form[$field]['#access'] = FALSE;
+    }
   }
 }
 
