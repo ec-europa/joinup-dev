@@ -2139,7 +2139,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0.zip",
-                "reference": null,
+                "reference": "8.x-3.0",
                 "shasum": "f05791c33ddbc46e0c04318e4529e2a8fa3fb50d"
             },
             "require": {
@@ -2317,17 +2317,17 @@
         },
         {
             "name": "drupal/file_url",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/file_url",
-                "reference": "8.x-1.0-alpha1"
+                "reference": "8.x-1.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha1.zip",
+                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha2.zip",
                 "reference": null,
-                "shasum": "284cea8836d5bdefd70c7711f71bf1db8900a702"
+                "shasum": "a8c997318e2e8fa969322da8c279e4a3a6da30e5"
             },
             "require": {
                 "drupal/core": "*"
@@ -2338,8 +2338,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1494538986"
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1495527184"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2747,7 +2747,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha2",
                 "shasum": "cdb0cae343a91e49e21c83164d9cd1b7e9896b67"
             },
             "require": {
@@ -3137,7 +3137,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-rc3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc3",
                 "shasum": "0b4f7cbe4e5f43cea6399a180e7366b109f68e6b"
             },
             "require": {
