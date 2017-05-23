@@ -32,8 +32,6 @@
 
         $this.on('click.joinup', function () {
           $(this).trigger('track_download.joinup');
-
-          return false;
         });
       });
     }
