@@ -3,9 +3,9 @@
 namespace Drupal\Tests\rdf_entity\Traits;
 
 /**
- * Provide some utility methods to be used in tests.
+ * Provide some entity utility methods to be used in tests.
  */
-trait RdfEntityUtilityTrait {
+trait EntityUtilityTrait {
 
   /**
    * Returns an entity by its label.

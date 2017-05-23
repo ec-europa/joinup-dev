@@ -8,7 +8,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -18,7 +18,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
 class FileUrlFieldTest extends RdfWebTestBase {
 
   use FileUrlTrait;
-  use RdfEntityUtilityTrait;
+  use EntityUtilityTrait;
 
   /**
    * {@inheritdoc}

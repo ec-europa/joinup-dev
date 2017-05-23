@@ -12,7 +12,7 @@ use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
-use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 
 /**
  * Tests Joinup migration.
@@ -21,7 +21,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfEntityUtilityTrait;
  */
 class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterface {
 
-  use RdfEntityUtilityTrait;
+  use EntityUtilityTrait;
   use RdfDatabaseConnectionTrait;
 
   /**
