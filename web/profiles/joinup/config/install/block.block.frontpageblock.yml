@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+    - system
+    - user
+  theme:
+    - joinup_theme
+id: frontpageblock
+theme: joinup_theme
+region: content
+weight: 0
+provider: null
+plugin: frontpage_block
+settings:
+  id: frontpage_block
+  label: 'Frontpage block'
+  provider: joinup
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

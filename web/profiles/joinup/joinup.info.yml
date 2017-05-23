@@ -75,6 +75,7 @@ themes:
 config_devel:
   - block.block.addcontent
   - block.block.footer_menu
+  - block.block.frontpageblock
   - block.block.groupheader
   - block.block.userheader
   - block.block.joinup_add_content
