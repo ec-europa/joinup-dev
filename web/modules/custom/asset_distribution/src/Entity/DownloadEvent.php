@@ -80,7 +80,8 @@ class DownloadEvent extends ContentEntityBase implements EntityOwnerInterface {
     parent::preSave($storage);
 
     /** @var \Drupal\user\UserInterface $account */
-    if ($account = $this->uid->entity) {
+    $account = $this->uid->entity;
+    if ($account && !$account->isAnonymous()) {
       // If the user is not anonymous set its E-mail in 'mail' field.
       $this->set('mail', $account->getEmail());
     }
