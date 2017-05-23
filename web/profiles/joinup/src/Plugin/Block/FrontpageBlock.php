@@ -49,7 +49,7 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $ogMembershipManager;
 
   /**
-   * \Drupal\Core\Entity\EntityTypeManagerInterface definition.
+   * Drupal\Core\Entity\EntityTypeManagerInterface definition.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
@@ -91,6 +91,7 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $container->get('entity_type.manager')
     );
   }
+
   /**
    * Provides empty homepage.
    *
@@ -106,7 +107,7 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
     // @todo: Else: Provide content with site-wide content.
 
     $build['#attributes'] = [
-      'class' => ['listing', 'listing--grid', 'mdl-grid']
+      'class' => ['listing', 'listing--grid', 'mdl-grid'],
     ];
 
     $build += $rows;
@@ -116,12 +117,19 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
   }
 
   /**
-   * @param $groups
+   * Receives the content of the groups the user is a member of.
+   *
+   * @param array $groups
+   *   The user's memberships.
+   *
    * @return array
+   *   An array of rows to render.
    */
-  protected function getContentFromMemberships($groups) {
+  protected function getContentFromMemberships(array $groups) {
     $rdf_entities = isset($groups['rdf_entity']) ? $groups['rdf_entity'] : [];
-    $cids = array_map(function($rdf_entity) { return $rdf_entity->id(); }, $rdf_entities);
+    $cids = array_map(function ($rdf_entity) {
+      return $rdf_entity->id();
+    }, $rdf_entities);
 
     $index = Index::load('collections');
     $query = $index->query();
@@ -158,7 +166,8 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
       try {
         /** @var \Drupal\Core\Entity\EntityInterface $entity */
         $entity = $item->getOriginalObject()->getValue();
-      } catch (SearchApiException $e) {
+      }
+      catch (SearchApiException $e) {
         $entity = NULL;
       }
       // Search results might be stale, so we check if the entity has been
