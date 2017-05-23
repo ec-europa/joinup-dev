@@ -13,8 +13,6 @@ use Drupal\Core\Entity\EntityTypeManager;
  *
  * This overview replaces the system's content overview so that we can
  * show the entities to user with no access to the admin area.
- *
- * @package Drupal\joinup_licence\Controller
  */
 class LicenceOverviewController extends ControllerBase {
 

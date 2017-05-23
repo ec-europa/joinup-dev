@@ -758,6 +758,56 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that a certain text is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text to search.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is not found in the tile.
+   *
+   * @Then I( should) see the text :text in the :heading tile
+   */
+  public function assertTileContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    if (strpos(trim($element->getText()), $text) === FALSE) {
+      throw new \Exception("The text '$text' was not found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Asserts that a certain text is not present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text that should not be present.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is found in the tile.
+   *
+   * @Then I( should) not see the text :text in the :heading tile
+   */
+  public function assertTileDoesNotContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    if (strpos(trim($element->getText()), $text) !== FALSE) {
+      throw new \Exception("The text '$text' was found in the tile '$heading'.");
+    }
+  }
+
+  /**
    * Assert that the given form submission buttons are present on the page.
    *
    * @param string $buttons

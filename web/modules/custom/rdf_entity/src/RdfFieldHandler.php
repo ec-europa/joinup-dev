@@ -10,8 +10,6 @@ use EasyRdf\Literal;
 
 /**
  * Contains helper methods that help with the uri mappings of Drupal elements.
- *
- * @package Drupal\rdf_entity
  */
 class RdfFieldHandler {
 

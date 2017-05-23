@@ -13,8 +13,6 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Guard class for the transitions of the contact_information entity.
- *
- * @package Drupal\contact_information\Guard
  */
 class ContactInformationFulfillmentGuard implements GuardInterface {
 

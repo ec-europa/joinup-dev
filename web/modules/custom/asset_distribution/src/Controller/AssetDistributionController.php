@@ -15,8 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\asset_distribution\Controller
  */
 class AssetDistributionController extends ControllerBase {
 

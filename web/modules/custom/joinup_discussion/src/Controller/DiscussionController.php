@@ -8,8 +8,6 @@ use Drupal\joinup_core\Controller\CommunityContentController;
  * Controller that handles the form to add discussion to a collection.
  *
  * The parent is passed as a parameter from the route.
- *
- * @package Drupal\joinup_discussion\Controller
  */
 class DiscussionController extends CommunityContentController {
 

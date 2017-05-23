@@ -81,7 +81,7 @@ Feature: "Add solution" visibility options.
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
-    And the following fields should not be present "Groups audience, Other groups, Current workflow state"
+    And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
     When I fill in the following:
       | Title            | Espresso is the solution                                      |
       | Description      | This is a test text                                           |
