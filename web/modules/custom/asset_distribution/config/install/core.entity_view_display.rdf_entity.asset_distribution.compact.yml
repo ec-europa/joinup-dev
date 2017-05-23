@@ -16,9 +16,9 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - asset_distribution
     - digital_size_formatter
     - ds
-    - file_url
     - user
 id: rdf_entity.asset_distribution.compact
 targetEntityType: rdf_entity
@@ -26,11 +26,12 @@ bundle: asset_distribution
 mode: compact
 content:
   field_ad_access_url:
-    type: file_url_default
+    type: tracked_hosted_file_download
     weight: 1
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      title: Download
     third_party_settings: {  }
   field_ad_file_size:
     type: digital_size
