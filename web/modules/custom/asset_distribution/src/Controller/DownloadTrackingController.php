@@ -2,10 +2,13 @@
 
 namespace Drupal\asset_distribution\Controller;
 
+use Drupal\asset_distribution\Form\AnonymousDownloadForm;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityStorageInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
@@ -32,6 +35,13 @@ class DownloadTrackingController extends ControllerBase {
   protected $fileUrlHandler;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * The RDF entity storage.
    *
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface
@@ -47,13 +57,16 @@ class DownloadTrackingController extends ControllerBase {
    *   The download event entity storage.
    * @param \Drupal\file_url\FileUrlHandler $file_url_handler
    *   The file URL handler service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   The form builder.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    */
-  public function __construct(ContentEntityStorageInterface $rdf_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, AccountInterface $current_user) {
+  public function __construct(ContentEntityStorageInterface $rdf_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, FormBuilderInterface $form_builder, AccountInterface $current_user) {
     $this->rdfStorage = $rdf_storage;
     $this->eventStorage = $event_storage;
     $this->fileUrlHandler = $file_url_handler;
+    $this->formBuilder = $form_builder;
     $this->currentUser = $current_user;
   }
 
@@ -65,6 +78,7 @@ class DownloadTrackingController extends ControllerBase {
       $container->get('entity_type.manager')->getStorage('rdf_entity'),
       $container->get('entity_type.manager')->getStorage('download_event'),
       $container->get('file_url.handler'),
+      $container->get('form_builder'),
       $container->get('current_user')
     );
   }
@@ -96,7 +110,22 @@ class DownloadTrackingController extends ControllerBase {
    *   The generated response.
    */
   protected function trackAnonymousDownload(FileInterface $file) {
-    return new AjaxResponse();
+    $form = $this->formBuilder->getForm(AnonymousDownloadForm::class, $file);
+    $response = new AjaxResponse();
+
+    // First render the main content, because it might provide a title.
+    $content = drupal_render_root($form);
+
+    // Attach the library necessary for using the OpenModalDialogCommand and set
+    // the attachments for this Ajax response.
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $response->setAttachments($form['#attached']);
+    $options = [
+      'modal' => TRUE,
+    ];
+
+    $response->addCommand(new OpenModalDialogCommand('Banana', $content, $options));
+    return $response;
   }
 
   /**
