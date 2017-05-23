@@ -1,0 +1,7 @@
+field.formatter.settings.tracked_hosted_file_download:
+  type: mapping
+  label: 'Tracked hosted file download formatter settings'
+  mapping:
+    title:
+      type: string
+      label: 'The title to use for the link'
