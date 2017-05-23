@@ -14,6 +14,7 @@ asset_distribution.track_download:
   path: 'distribution/track/{file}'
   defaults:
     _controller: '\Drupal\asset_distribution\Controller\DownloadTrackingController::trackDownload'
+    _title: 'Download in progress'
   requirements:
     _access: 'TRUE'
     _csrf_token: 'TRUE'
