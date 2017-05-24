@@ -1230,8 +1230,32 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then a modal should/will open
    */
   public function waitForDrupalModalToOpen() {
+    // A modal can be opened only in a Javascript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
-    $this->getSession()->wait(5000, '(typeof(jQuery)=="undefined" || (0 === jQuery.active && jQuery("#drupal-modal").is(":visible")))');
+
+    $page = $this->getSession()->getPage();
+    $page->waitFor(5, function () use ($page) {
+      $modal = $page->find('css', '#drupal-modal');
+
+      return $modal && $modal->isVisible();
+    });
+  }
+
+  /**
+   * Asserts that the default Drupal modal is closed.
+   *
+   * @Then the modal should be closed
+   */
+  public function waitForDrupalModalToClose() {
+    // A modal can be opened only in a Javascript-enabled browser.
+    self::assertJavaScriptEnabledBrowser();
+
+    $page = $this->getSession()->getPage();
+    $page->waitFor(5, function () use ($page) {
+      $modal = $page->find('css', '#drupal-modal');
+
+      return !$modal;
+    });
   }
 
 }
