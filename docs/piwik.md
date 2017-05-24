@@ -22,3 +22,11 @@ at http://localhost:8000.
 
 Check the 'Piwik' section in `build.properties` for possible configuration
 options.
+
+## Troubleshooting
+
+If your page visits are not being registered in Piwik, check the following:
+
+* Adblockers or other privacy enhancing extensions might be blocking the
+  requests.
+* The browser's "Do not track" option might be enabled.
