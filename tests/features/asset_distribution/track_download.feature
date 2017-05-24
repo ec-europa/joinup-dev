@@ -18,18 +18,19 @@ Feature: Asset distribution editing.
       | affiliates | OpenBSD                         |
       | state      | validated                       |
     And release:
-      | title          | "Winter of 95" |
-      | release number | 6.1            |
-      | is version of  | OpenBSD        |
-      | state          | validated      |
+      | title          | Winter of 95 |
+      | release number | 6.1          |
+      | is version of  | OpenBSD      |
+      | state          | validated    |
     And distributions:
-      | title          | description                 | parent         | access url                                                  | licence          |
-      | i386           | The i386 version            | "Winter of 95" | https://mirrors.evowise.com/pub/OpenBSD/6.1/i386/random.iso | Postcard licence |
-      | Changelog      | Detailed Changelog          | "Winter of 95" | text.pdf                                                    | Postcard licence |
-      | OpenDSB images | Images for logos and flyers | OpenBSD        | test.zip                                                    | Postcard licence |
-    And user:
-      | Username | Bradley Emmett             |
-      | E-mail   | bradley.emmett@example.com |
+      | title          | description                 | parent       | access url                                                  | licence          |
+      | i386           | The i386 version            | Winter of 95 | https://mirrors.evowise.com/pub/OpenBSD/6.1/i386/random.iso | Postcard licence |
+      | Changelog      | Detailed Changelog          | Winter of 95 | text.pdf                                                    | Postcard licence |
+      | OpenBSD images | Images for logos and flyers | OpenBSD      | test.zip                                                    | Postcard licence |
+    And users:
+      | Username           | E-mail                        |
+      | Bradley Emmett     | bradley.emmett@example.com    |
+      | Marianne Sherburne | marianne.herburne@example.com |
 
     When I am logged in as "Bradley Emmett"
     And I go to the "Berkeley Software Distributions" collection
@@ -38,10 +39,11 @@ Feature: Asset distribution editing.
     Then I should see "Releases for OpenBSD solution"
 
     And the "i386" asset distribution should not have any download urls
-    And I should see the download link in the "OpenDSB images" asset distribution
+    And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
 
-    Then I click "Download" in the "OpenDSB images" asset distribution
+    # Clicking these links will track the download event.
+    Then I click "Download" in the "OpenBSD images" asset distribution
     And I click "Download" in the "Changelog" asset distribution
 
     When I am an anonymous user
@@ -51,11 +53,11 @@ Feature: Asset distribution editing.
 
     # The same download links are shown to anonymous users.
     And the "i386" asset distribution should not have any download urls
-    And I should see the download link in the "OpenDSB images" asset distribution
+    And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
 
     # Anonymous users will be prompted with a modal to enter their e-mails.
-    When I click "Download" in the "OpenDSB images" asset distribution
+    When I click "Download" in the "OpenBSD images" asset distribution
     Then a modal should open
     And I should see the text "Download in progress"
     When I fill in "E-mail address" with "trackme@example.com" in the "Modal content" region
@@ -69,10 +71,26 @@ Feature: Asset distribution editing.
     Then the modal should be closed
 
     When I am logged in as a user with the moderator role
-    Then I click "Manage"
-    And I click "Distribution downloads"
+    And I go to the distribution downloads page
     Then I should see the following download entries:
       | user                     | e-mail                     | file name | distribution   |
-      | Anonymous (not verified) | trackme@example.com        | test.zip  | OpenDSB images |
+      | Anonymous (not verified) | trackme@example.com        | test.zip  | OpenBSD images |
       | Bradley Emmett           | bradley.emmett@example.com | text.pdf  | Changelog      |
-      | Bradley Emmett           | bradley.emmett@example.com | test.zip  | OpenDSB images |
+      | Bradley Emmett           | bradley.emmett@example.com | test.zip  | OpenBSD images |
+
+    # Verify that the tracking happens when clicking the Download button in
+    # the tile view mode and in the canonical page view of the distribution.
+    When I am logged in as "Marianne Sherburne"
+    And I go to the "OpenBSD" solution
+    # The only download link is the one in the "OpenBSD images" tile.
+    Then I click "Download"
+    And I click "Winter of 95 6.1"
+    And I click "Download"
+
+    When I am logged in as a user with the moderator role
+    And I go to the distribution downloads page
+    Then I should see the following download entries:
+      | user                     | e-mail                        | file name | distribution   |
+      | Marianne Sherburne       | marianne.herburne@example.com | text.pdf  | Changelog      |
+      | Marianne Sherburne       | marianne.herburne@example.com | test.zip  | OpenBSD images |
+      | Anonymous (not verified) | trackme@example.com           | test.zip  | OpenBSD images |
