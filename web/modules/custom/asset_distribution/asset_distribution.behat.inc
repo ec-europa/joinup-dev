@@ -468,6 +468,29 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Clicks a link inside a distribution rendered with the compact view mode.
+   *
+   * @param string $link
+   *   The text of the link to click.
+   * @param string $heading
+   *   The distribution title.
+   *
+   * @throws \Exception
+   *   Thrown when the rendered distribution is not found.
+   *
+   * @When I click :link in the :heading asset distribution
+   */
+  public function clickLinkInCompactDistribution($link, $heading) {
+    $element = $this->getCompactDistributionByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    $element->clickLink($link);
+  }
+
+  /**
    * Provides a helper for file URL field steps.
    *
    * @param string $file_url_field
@@ -516,6 +539,24 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
 
     return $field->getAttribute('id');
+  }
+
+  /**
+   * Finds a distribution rendered with the compact view mode by its heading.
+   *
+   * @param string $heading
+   *   The heading of the distribution to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The compact distribution element, or null if not found.
+   */
+  protected function getCompactDistributionByHeading($heading) {
+    // Locate all the elements.
+    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " timeline__listing-item ")]';
+    // That have a heading with the specified text.
+    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " timeline__listing-title ")][normalize-space()="' . $heading . '"]]';
+
+    return $this->getSession()->getPage()->find('xpath', $xpath);
   }
 
 }
