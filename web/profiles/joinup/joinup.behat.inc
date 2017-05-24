@@ -1272,7 +1272,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     });
 
     if (!$result) {
-      //throw new \Exception('The modal did not close.');
+      throw new \Exception('The modal did not close.');
     }
   }
 
