@@ -491,6 +491,35 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Asserts the entries in the download event table.
+   *
+   * Table format:
+   * @codingStandardsIgnoreStart
+   * | user                     | e-mail                | file name   | distribution |
+   * | Anonymous (not verified) | mail1@example.com     | example.zip | Distro one   |
+   * | Nickolas Underwood       | underwood@example.com | text.pdf    | Distro two   |
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The entries list.
+   *
+   * @Then I should see the following download entries:
+   */
+  public function assertDownloadEventEntries(TableNode $table) {
+    $base_selector = '.distribution-download-table table > tbody > tr';
+    $count = 0;
+    foreach ($table->getColumnsHash() as $entry) {
+      $count++;
+      $selector = $base_selector . ":nth-child({$count})";
+
+      $this->assertSession()->elementTextContains('css', $selector, $entry['user']);
+      $this->assertSession()->elementTextContains('css', $selector, $entry['e-mail']);
+      $this->assertSession()->elementTextContains('css', $selector, $entry['file name']);
+      $this->getSession()->getPage()->find('css', $selector)->hasLink($entry['distribution']);
+    }
+  }
+
+  /**
    * Provides a helper for file URL field steps.
    *
    * @param string $file_url_field
