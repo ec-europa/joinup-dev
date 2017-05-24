@@ -39,3 +39,4 @@ config_devel:
   - field.storage.rdf_entity.field_ad_modification_date
   - field.storage.rdf_entity.field_ad_repr_technique
   - rdf_entity.rdfentity.asset_distribution
+  - views.view.asset_distribution_downloads
