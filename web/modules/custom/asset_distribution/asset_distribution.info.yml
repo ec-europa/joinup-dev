@@ -8,6 +8,7 @@ dependencies:
   - digital_size_formatter
   - file_url
   - joinup_core
+  - joinup_user
   - link
   - rdf_entity
   - text
