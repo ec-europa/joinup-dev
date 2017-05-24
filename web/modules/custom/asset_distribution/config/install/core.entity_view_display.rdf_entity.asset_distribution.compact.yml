@@ -32,7 +32,16 @@ content:
     label: hidden
     settings:
       title: Download
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_file_size:
     type: digital_size
     weight: 2
