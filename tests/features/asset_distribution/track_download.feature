@@ -54,12 +54,19 @@ Feature: Asset distribution editing.
     And I should see the download link in the "OpenDSB images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
 
+    # Anonymous users will be prompted with a modal to enter their e-mails.
     When I click "Download" in the "OpenDSB images" asset distribution
     Then a modal should open
     And I should see the text "Download in progress"
     When I fill in "E-mail address" with "trackme@example.com" in the "Modal content" region
     Then I press "Submit" in the "Modal buttons" region
-    Then I wait for AJAX to finish
+    Then the modal should be closed
+
+    # Verify that users can opt-out from inserting their e-mail.
+    When I click "Download" in the "Changelog" asset distribution
+    Then a modal should open
+    When I press "No thanks" in the "Modal buttons" region
+    Then the modal should be closed
 
     When I am logged in as a user with the moderator role
     Then I click "Manage"
