@@ -1,65 +1,55 @@
 // Share box
 //
 
-.share-box__checkbox-label
-  width: auto
-  margin: 0
-
-.share-box__checkbox-label
-  max-width: 300px
-
-.share-content-form
-  .form-wrapper
-    margin-bottom: 0
-  .fieldset-wrapper .form-wrapper
-    position: relative
-    min-height: 70px
-    margin-bottom: 0
-    padding: 10px
-    &:hover, &:hover label
-      cursor: pointer
-    & > div
-      margin-bottom: 0
-    &.already-shared
-      background: $color-grey-lighter
-  .form__legend
-    display: none
-
-.share-box__checkbox-input
+// Elements
+//
+.share-box__item-icon
+  +icon-size(50px)
+  color: $color-blue-dark
   display: none
 
-.share-box__image img
-  max-width: 50px
-  max-height: 50px
-
-.share-box__image, .share-box__checkbox
-  display: table-cell
-  vertical-align: middle
+.share-box__row
+  padding: 10px 10px 10px 50px
+  margin-bottom: 0 !important
+  position: relative
+  min-height: 70px
   &:hover
     cursor: pointer
+  &.already-shared
+    background: $color-grey-lighter
+    padding-left: 0
+    .share-box__item-icon
+      display: table-cell
+      vertical-align: middle
+  .form-type-checkbox
+    display: none
 
-.share-box__image
+.share-box__item-image
   padding-right: 10px
+  img
+    max-width: 50px
+    max-height: 50px
 
-.share-box__social-item
-  display: block
-  height: 50px
+.share-box__item-image,
+.share-box__item-label,
+.share-box__item-social-icon
+  display: table-cell
   vertical-align: middle
-  .icon
-    display: inline-block
-    vertical-align: middle
-    +icon-size(50px)
-    color: $color-blue-dark
-    margin-right: 10px
-  .form__label
-    display: inline-block
-    margin-bottom: 0
-    vertical-align: middle
+
+
+.share-box__item-social-icon
+  padding-right: 10px
+  +icon-size(50px)
+  color: $color-blue-dark
 
 .share-box__container
+  max-width: $screen-sm
+  fieldset
+    margin-bottom: 0
   +breakpoint(tablet)
-    min-width: 720px
+    min-width: $screen-sm
 
+// Modal box classes
 .ui-dialog
   z-index: 600
   .ui-dialog-titlebar
