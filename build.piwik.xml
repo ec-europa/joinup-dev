@@ -73,7 +73,7 @@
                 <replaceregexp>
                     <regexp
                         pattern="^(.*)(cron:.*)$"
-                        replace="\1  ports:${line.separator}\1    - &quot;${piwik.port}:80&quot;${line.separator}\1\2"
+                        replace="\1  ports:${line.separator}\1    - &quot;${piwik.port}:80&quot;${line.separator}\1    - &quot;8443:443&quot;${line.separator}\1\2"
                         modifiers="m" />
                 </replaceregexp>
             </filterchain>
