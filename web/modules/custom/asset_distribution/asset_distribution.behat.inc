@@ -520,6 +520,15 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Navigates to the distribution downloads statistics page.
+   *
+   * @When I go to the distribution downloads page
+   */
+  public function goToDistributionDownloadsPage() {
+    $this->visitPath('admin/statistics/distribution-downloads');
+  }
+
+  /**
    * Provides a helper for file URL field steps.
    *
    * @param string $file_url_field
