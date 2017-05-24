@@ -85,6 +85,7 @@ Feature: Asset distribution editing.
     # The only download link is the one in the "OpenBSD images" tile.
     Then I click "Download"
     And I click "Winter of 95 6.1"
+    # The only download link is the one in the "Changelog" tile.
     And I click "Download"
 
     When I am logged in as a user with the moderator role
