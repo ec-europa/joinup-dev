@@ -75,6 +75,16 @@ class AnonymousDownloadForm extends FormBase {
     ];
 
     $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['cancel'] = [
+      '#type' => 'button',
+      '#value' => $this->t('No thanks') ,
+      // This button will be used only to close the modal, so it doesn't have
+      // any submit callback.
+      '#submit' => [],
+      '#attributes' => [
+        'class' => ['dialog-cancel'],
+      ],
+    ];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
