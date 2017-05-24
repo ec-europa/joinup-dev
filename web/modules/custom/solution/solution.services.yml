@@ -1,9 +1,4 @@
 services:
-  solution.solution_route_context:
-    class: Drupal\solution\ContextProvider\SolutionRouteContext
-    arguments: ['@current_route_match']
-    tags:
-      - { name: 'context_provider' }
   cache_context.solution:
     class: Drupal\solution\Cache\SolutionCacheContext
     arguments: ['@request_stack']
