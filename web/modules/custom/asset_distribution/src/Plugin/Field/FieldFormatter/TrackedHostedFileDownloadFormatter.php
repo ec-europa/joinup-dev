@@ -134,6 +134,8 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
           'data-tracking' => Url::fromRoute('asset_distribution.track_download', [
             'file' => $file->id(),
           ])->toString(),
+          // Force the download of the file in HTML5 compatible browsers.
+          'download' => $file->getFilename(),
         ],
       ];
 
