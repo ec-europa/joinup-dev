@@ -46,11 +46,13 @@
     <target
         name="configure-piwik"
         depends="download-piwik-repository">
+        <!-- Start by doing a clean checkout of the branch. -->
         <gitcheckout
             gitPath="${git.bin}"
             repository="${piwik.dir}"
             branchname="${piwik.branch}"
             force="true" />
+        <!-- Configure docker. -->
         <reflexive>
             <fileset dir="${piwik.dir}">
                 <include pattern="${piwik.config}" />
@@ -78,6 +80,24 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
+        <!-- Configure Drupal. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out previous configuration. -->
+                <replaceregexp>
+                    <regexp
+                        pattern="^(.*piwik\.settings.*)$"
+                        replace="#\1"
+                        modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+            destFile="${website.settings.local.php}"
+            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}" />
     </target>
 
     <target
