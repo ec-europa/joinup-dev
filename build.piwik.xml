@@ -97,7 +97,7 @@
         </reflexive>
         <append
             destFile="${website.settings.local.php}"
-            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}" />
+            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}/';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}" />
     </target>
 
     <target
