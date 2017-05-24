@@ -1227,22 +1227,32 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Asserts that the default Drupal modal is opened.
    *
+   * @throws \Exception
+   *   Thrown when the modal doesn't open within 5 seconds.
+   *
    * @Then a modal should/will open
    */
   public function waitForDrupalModalToOpen() {
     // A modal can be opened only in a Javascript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
-    $page = $this->getSession()->getPage();
-    $page->waitFor(5, function () use ($page) {
-      $modal = $page->find('css', '#drupal-modal');
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      // Retrieve again a fresh copy of the page element at each cycle.
+      $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
 
       return $modal && $modal->isVisible();
     });
+
+    if (!$result) {
+      throw new \Exception('The modal did not open.');
+    }
   }
 
   /**
    * Asserts that the default Drupal modal is closed.
+   *
+   * @throws \Exception
+   *   Thrown when the modal doesn't close within 5 seconds.
    *
    * @Then the modal should be closed
    */
@@ -1250,12 +1260,20 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // A modal can be opened only in a Javascript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
-    $page = $this->getSession()->getPage();
-    $page->waitFor(5, function () use ($page) {
-      $modal = $page->find('css', '#drupal-modal');
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      // Retrieve again a fresh copy of the page element at each cycle.
+      $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
 
-      return !$modal;
+      // Normally the modal should be completely removed from the DOM,
+      // but when it's closed for the first time the markup with the above ID
+      // is kept in the DOM as hidden.
+      // @see Drupal.AjaxCommands.prototype.closeDialog()
+      return empty($modal) || !$modal->isVisible();
     });
+
+    if (!$result) {
+      //throw new \Exception('The modal did not close.');
+    }
   }
 
 }
