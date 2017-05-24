@@ -12,6 +12,7 @@ dependencies:
   - link
   - rdf_entity
   - text
+  - views
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_distribution.default
