@@ -131,7 +131,7 @@ display:
               empty_column: false
               responsive: priority-medium
           default: created
-          empty_table: false
+          empty_table: true
       row:
         type: fields
       fields:
@@ -544,6 +544,7 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
+      css_class: distribution-download-table
     cache_metadata:
       max-age: 0
       contexts:
