@@ -5,11 +5,11 @@ namespace Drupal\moderation\Form;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -33,6 +33,13 @@ class ContentModerationOverviewForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The node storage class.
+   *
+   * @var \Drupal\node\NodeStorageInterface
+   */
+  protected $nodeStorage;
+
+  /**
    * Constructs a new ContentModerationOverviewForm object.
    *
    * @param \Drupal\Core\Database\Connection $connection
@@ -43,6 +50,7 @@ class ContentModerationOverviewForm extends FormBase {
   public function __construct(Connection $connection, EntityTypeManagerInterface $entityTypeManager) {
     $this->connection = $connection;
     $this->entityTypeManager = $entityTypeManager;
+    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
   }
 
   /**
@@ -76,10 +84,9 @@ class ContentModerationOverviewForm extends FormBase {
 
     // Retrieve the entities that need moderation. Only execute this query when
     // there actually are results to fetch.
-    if ($this->getFilteredItemsCount($count, $type_filter, $state_filter)) {
-      $entities = $this->loadModeratedEntities($rdf_entity, $type_filter, $state_filter);
+    if ($result = $this->filterCountedItems($result, $type_filter, $state_filter)) {
       $form['wrapper']['content'][] = $this->entityTypeManager->getViewBuilder('node')
-        ->viewMultiple($entities, 'moderation');
+        ->viewMultiple($result, 'moderation');
     }
     else {
       $form['wrapper']['content'] = $this->buildNoResultsForm();;
@@ -205,9 +212,8 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * Returns the number of items are matching the given filters.
    *
-   * @param array $content_count
-   *   An associative array keyed by content type, each value an associative
-   *   array keyed by moderation state, with the number of items as value.
+   * @param \Drupal\Core\Entity\EntityInterface[] $entities
+   *   An array of entities.
    * @param string $type_filter
    *   Optional content type for which to return the count. If this is omitted
    *   or 'all', the count for all content types will be returned.
@@ -215,22 +221,22 @@ class ContentModerationOverviewForm extends FormBase {
    *   Optional workflow state for which to return the count. If this is omitted
    *   or 'all', the count for all workflow states will be returned.
    *
-   * @return int
-   *   The number of items that match the given filters.
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   The filtered array.
    */
-  protected function getFilteredItemsCount(array $content_count, $type_filter = NULL, $state_filter = NULL) {
-    $count = 0;
-    foreach ($content_count as $type => $states_count) {
-      foreach ($states_count as $state => $state_count) {
-        $valid_types = [NULL, 'all', $type];
-        $valid_states = [NULL, 'all', $state];
-        if (in_array($type_filter, $valid_types) && in_array($state_filter, $valid_states)) {
-          $count += $state_count;
-        }
-      }
+  protected function filterCountedItems(array $entities, $type_filter = NULL, $state_filter = NULL) {
+    if (!empty($type_filter) && $type_filter !== 'all') {
+      $entities = array_filter($entities, function (EntityInterface $entity) use ($type_filter) {
+        return $entity->bundle() === $type_filter;
+      });
+    }
+    if (!empty($state_filter) && $state_filter !== 'all') {
+      $entities = array_filter($entities, function (EntityInterface $entity) use ($state_filter) {
+        return $entity->get('field_state')->first()->value === $state_filter;
+      });
     }
 
-    return $count;
+    return $entities;
   }
 
   /**
@@ -284,27 +290,65 @@ class ContentModerationOverviewForm extends FormBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection or solution that is being moderated.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   The related entities.
    */
   protected function getModerationItems(RdfInterface $rdf_entity) {
-    // Retrieve the number of content items that need moderation.
-    $sql = <<<SQL
-      SELECT n.type, s.field_state_value as state, COUNT(1) as count
-      FROM node n
-      LEFT JOIN node__field_state s ON n.nid = s.entity_id
-      LEFT JOIN node__og_audience o ON n.nid = o.entity_id
-      WHERE n.type in (:types[])
-      AND s.field_state_value in (:states[])
-      AND o.og_audience_target_id = :group
-      GROUP BY s.field_state_value, n.type;
-SQL;
-    $args = [
-      ':types[]' => CommunityContentHelper::getBundles(),
-      ':states[]' => CommunityContentHelper::getModeratorAttentionNeededStates(),
-      ':group' => $rdf_entity->id(),
-    ];
+    $entities = $this->nodeStorage->getQuery()
+      ->condition('og_audience.target_id', $rdf_entity->id())
+      ->condition('field_state', CommunityContentHelper::getModeratorAttentionNeededStates(), 'IN')
+      ->condition('type', CommunityContentHelper::getBundles(), 'IN')
+      ->allRevisions()
+      ->execute();
+    $return = [];
 
-    $query = $this->connection->query($sql, $args);
-    return $query->fetchAll(\PDO::FETCH_ASSOC);
+    // Filter out the non-latest versions.
+    foreach ($entities as $vid => $nid) {
+      if ($this->isLatestRevision($vid, $nid)) {
+        $return[$nid] = $this->nodeStorage->loadRevision($vid);
+      }
+    }
+
+    return $return;
+  }
+
+  /**
+   * Returns the latest revision id of an entity.
+   *
+   * @param string $entity_id
+   *   The entity id.
+   *
+   * @return mixed
+   *   The revision id or null.
+   */
+  public function getLatestRevisionId($entity_id) {
+    if ($storage = $this->entityTypeManager->getStorage('node')) {
+      $revision_ids = $storage->getQuery()
+        ->allRevisions()
+        ->condition('nid', $entity_id)
+        ->sort('vid', 'DESC')
+        ->range(0, 1)
+        ->execute();
+      if ($revision_ids) {
+        return array_keys($revision_ids)[0];
+      }
+    }
+  }
+
+  /**
+   * Checks if the passed revision is the latest one.
+   *
+   * @param string $revision_id
+   *   The revision id.
+   * @param string $entity_id
+   *   The entity id.
+   *
+   * @return bool
+   *   Whether the revision is the latest.
+   */
+  public function isLatestRevision($revision_id, $entity_id) {
+    return $revision_id == $this->getLatestRevisionId($entity_id);
   }
 
   /**
@@ -313,48 +357,28 @@ SQL;
    * Builds an associative array keyed by content type,
    * each value an associative array keyed by moderation state,
    * with the number of items as value.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface[] $result
+   *   An array of entities indexed by nid.
+   *
+   * @return array
+   *   An associative array indexed by bundle and the the values being an
+   *   associative array having the moderation state as a key and the count as
+   *   a value.
    */
-  protected function getModerationItemCount($result) {
+  protected function getModerationItemCount(array $result) {
     // Turn the count query result into a hierarchical array, keyed by bundle.
-    $count = array_reduce($result, function ($count, $row) {
-      $count[$row['type']][$row['state']] = $row['count'];
+    $count = array_reduce($result, function ($count, EntityInterface $row) {
+      $bundle = $row->bundle();
+      $state = $row->get('field_state')->first()->value;
+      if (!isset($count[$bundle][$state])) {
+        $count[$bundle][$state] = 0;
+      }
+      $count[$bundle][$state]++;
       return $count;
     }, []);
     ksort($count);
     return $count;
-  }
-
-  /**
-   * Loads the nodes that need moderation.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection or solution that is being moderated.
-   * @param string $type_filter
-   *   The active content type filter.
-   * @param string $state_filter
-   *   The active state filter.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]|static[]
-   *   A list of loaded nodes.
-   */
-  protected function loadModeratedEntities(RdfInterface $rdf_entity, $type_filter, $state_filter) {
-    $moderatable_types = CommunityContentHelper::getBundles();
-    $moderatable_states = CommunityContentHelper::getModeratorAttentionNeededStates();
-    $query = $this->entityTypeManager->getStorage('node')->getQuery();
-    $query->condition('og_audience', $rdf_entity->id());
-    if ($type_filter && $type_filter !== 'all') {
-      $query->condition('type', $type_filter);
-    }
-    else {
-      $query->condition('type', $moderatable_types, 'IN');
-    }
-    if ($state_filter && $state_filter !== 'all') {
-      $query->condition('field_state', $state_filter);
-    }
-    else {
-      $query->condition('field_state', $moderatable_states, 'IN');
-    }
-    return Node::loadMultiple($query->execute());
   }
 
   /**

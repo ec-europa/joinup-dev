@@ -279,6 +279,17 @@ Feature: Moderate community content
     Then I should see the heading "Content moderation"
     And I should not see the text "Cataclysmic variables"
 
+    # Verify that when an entity receives a version to moderate while having a published version,
+    # the latest version is shown in the moderation page.
+    When I go to the "Cataclysmic variables" discussion
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "Cataclysmic conditions"
+    And I press "Request changes"
+    And I click the contextual link "Moderate content" in the "Header" region
+    Then I should see the heading "Content moderation"
+    And I should see the text "Cataclysmic conditions"
+    And I should not see the text "Cataclysmic variables"
+
   @javascript
   Scenario: Filtering the content moderation overview
 
