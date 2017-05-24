@@ -348,14 +348,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then I should see the download link in the :distribution( asset) distribution
    */
-  public function assertLinkDistribution($distribution) {
+  public function assertLinkPresentInCompactDistributionTile($distribution) {
     $distribution = $this->getAssetDistributionByName($distribution);
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
     $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
-    $promoted_link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
-    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    $link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$link}']");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
     }
@@ -374,7 +374,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then the :distribution( asset) distribution should not have any download urls
    */
-  public function assertNotLinkDistribution($distribution) {
+  public function assertLinkNotPresentInCompactDistributionTile($distribution) {
     $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
     if (!empty($link)) {
       throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
