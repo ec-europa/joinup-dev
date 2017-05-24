@@ -17,8 +17,8 @@ dependencies:
   - contextual
   - custom_page
   - dashboard
-  - ds
   - diff
+  - ds
   - dynamic_page_cache
   - editor
   - field_group
@@ -52,6 +52,7 @@ dependencies:
   - password_policy_types_negate
   - path
   - persistent_login
+  - piwik
   - r4032login
   - rdf_draft
   - rdf_entity
