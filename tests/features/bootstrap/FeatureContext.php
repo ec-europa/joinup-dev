@@ -960,6 +960,54 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks multiple links on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I (should )see the following links:
+   */
+  public function assertLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks if multiple links are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I should not see the following links:
+   */
+  public function assertNoLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (!empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
    * Checks that the page is cached.
    *
    * @Then the page should be cached
