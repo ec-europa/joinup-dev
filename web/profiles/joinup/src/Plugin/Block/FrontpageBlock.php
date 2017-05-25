@@ -105,6 +105,7 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $rows = $this->getContentFromMemberships($groups);
     }
     // @todo: Else: Provide content with site-wide content.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
 
     $build['#attributes'] = [
       'class' => ['listing', 'listing--grid', 'mdl-grid'],
@@ -135,6 +136,7 @@ class FrontpageBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $query = $index->query();
     $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
+    $query->sort('created', 'DESC');
     $results = $query->execute();
     $entities = $this->getResultEntities($results);
     $rows = [];

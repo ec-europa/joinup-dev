@@ -27,4 +27,3 @@ Feature: Homepage feature
     And I am on the homepage
     Then I should see the "The Danger of the Bridges" tile
     But I should not see the "Girl in the Dreams" tile
-    # @todo: Provide cache invalidation test (add entities manually).
