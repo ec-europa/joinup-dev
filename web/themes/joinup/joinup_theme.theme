@@ -6,15 +6,16 @@
  */
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\Component\Utility\Unicode;
-use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 
 /**
  * Implements hook_preprocess_page().
@@ -631,6 +632,33 @@ function joinup_theme_preprocess_search_api_field__user__field_user_content(&$va
     '#suffix' => '</div>',
     '#markup' => $markup,
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for joinup-tiles--collections.html.twig.
+ */
+function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
+  // Add a link to propose a collection. This should appear as the final tile.
+  $variables['add_collection_link'] = [
+    '#type' => 'link',
+    '#title' => t('Create collection'),
+    '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-action.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_action(&$variables) {
+  // Add mdl classes for local action button.
+  $mdl_button_classes = ['button--blue-light',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ];
+  $variables['link']['#options']['attributes']['class'] = array_merge($variables['link']['#options']['attributes']['class'], $mdl_button_classes);
 }
 
 /**

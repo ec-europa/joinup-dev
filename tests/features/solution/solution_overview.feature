@@ -70,8 +70,7 @@ Feature: Solutions Overview
 
     # Add new solution as a moderator to directly publish it.
     Given I am logged in as a moderator
-    When I am on the homepage
-    And I click "Propose solution"
+    When I go to the add solution form
     Then I should see the heading "Propose solution"
     When I fill in the following:
       | Title            | Colonies in Earth                                                      |
