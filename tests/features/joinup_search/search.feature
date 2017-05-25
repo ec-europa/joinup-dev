@@ -20,6 +20,9 @@ Feature: Global search
       | El Celler de Can Roca | The best in town | Molecular cooking collection | validated |
 
     Given I am logged in as a user with the "authenticated" role
+    # @todo The search page cache should be cleared when new content is added.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    And the cache has been cleared
     When I am at "/search"
     # All content visible
     Then I should see the text "Molecular cooking collection"
