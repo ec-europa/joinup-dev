@@ -34,7 +34,7 @@ trait EntityReferenceTrait {
       // Retrieve the entity type and bundles that can be referenced.
       $settings = $definition->getSettings();
       $target_entity_type = $settings['target_type'];
-      $target_entity_bundles = $settings['handler_settings']['target_bundles'];
+      $target_entity_bundles = !empty($settings['handler_settings']['target_bundles']) ? $settings['handler_settings']['target_bundles'] : NULL;
 
       // Multi-value fields are separated by comma.
       foreach ($values[$name] as &$label) {
