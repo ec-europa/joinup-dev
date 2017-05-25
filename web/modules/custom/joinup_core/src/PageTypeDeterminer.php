@@ -77,6 +77,7 @@ class PageTypeDeterminer implements PageTypeDeterminerInterface, ContainerInject
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to debundle.
+   *
    * @return string
    *   The human readable bundle name.
    */

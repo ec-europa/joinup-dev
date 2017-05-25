@@ -528,6 +528,7 @@ function joinup_core_tokens($type, $tokens, array $data, array $options, Bubblea
               $replacements[$original] = $group->label();
             }
             break;
+
           case 'page-type':
             $replacements[$original] = \Drupal::service('joinup_core.page_type_determiner')->getType();
             break;
