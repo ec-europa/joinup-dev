@@ -100,23 +100,6 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => FALSE,
         ],
-        'new_collection' => [
-          'description' => 'If "Yes" a new collection will be created using the data from the Excel sheet. If "No" then the collection will be created using migrated data.',
-          'type' => 'varchar',
-          'length' => 32,
-          'not null' => TRUE,
-          'default' => '',
-        ],
-        'migrate' => [
-          'description' => '1 if this content should be migrated, 0 otherwise.',
-          'type' => 'int',
-          'size' => 'tiny',
-          'default' => 1,
-        ],
-        'abstract' => [
-          'description' => 'Abstract',
-          'type' => 'text',
-        ],
         'logo' => [
           'description' => 'Logo',
           'type' => 'varchar',
@@ -147,24 +130,6 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => FALSE,
         ],
-        'collection_owner' => [
-          'description' => 'Collection owner',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ],
-        'elibrary' => [
-          'description' => 'Elibrary Creation',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ],
-        'state' => [
-          'description' => 'Collection state',
-          'type' => 'varchar',
-          'length' => 32,
-          'not null' => FALSE,
-        ],
         'content_item_state' => [
           'description' => 'Content item state',
           'type' => 'varchar',
@@ -180,9 +145,7 @@ function joinup_migrate_source_db_schema($table) {
       ],
       'primary key' => ['nid'],
       'indexes' => [
-        'new_collection' => ['new_collection'],
         'collection' => ['collection'],
-        'migrate' => ['migrate'],
       ],
     ],
     'd8_prepare' => [
@@ -197,27 +160,25 @@ function joinup_migrate_source_db_schema($table) {
           'description' => 'Source node-type',
           'type' => 'varchar',
           'length' => 255,
-          'not null' => TRUE,
-          'default' => '',
+          'not null' => FALSE,
         ],
         'nid' => [
           'description' => 'The node ID from of the source item',
           'type' => 'int',
           'unsigned' => TRUE,
           'not null' => FALSE,
-          'default' => 0,
-        ],
-        'policy2' => [
-          'description' => 'Policy domain 2',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
         ],
         'policy' => [
           'description' => 'Policy domain',
           'type' => 'varchar',
           'length' => 255,
           'not null' => FALSE,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
         ],
         'abstract' => [
           'description' => 'Abstract',
@@ -267,12 +228,6 @@ function joinup_migrate_source_db_schema($table) {
         ],
         'contact_email' => [
           'description' => 'Contact E-mail',
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => FALSE,
-        ],
-        'collection_owner' => [
-          'description' => 'Collection owner',
           'type' => 'varchar',
           'length' => 255,
           'not null' => FALSE,

@@ -9,8 +9,8 @@ use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
 // Migration counts.
-$this->assertTotalCount('solution', 9);
-$this->assertSuccessCount('solution', 9);
+$this->assertTotalCount('solution', 10);
+$this->assertSuccessCount('solution', 10);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -149,8 +149,35 @@ $this->assertReferences([
 ], $solution->get('field_is_has_version'));
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
-
 $this->assertStringEndsWith("Open Data Support Community</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertReferences([
+  'Dark Side of The Force',
+], $solution->get('field_is_owner'));
+$this->assertReferences(['Under development'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = $this->loadEntityByLabel('rdf_entity', 'Asset Description Metadata Schema (ADMS)', 'solution');
+$this->assertEquals('Asset Description Metadata Schema (ADMS)', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462873423), $solution->field_is_modification_date->value);
+$this->assertTrue($solution->get('field_is_distribution')->isEmpty());
+$this->assertReferences([
+  'ADMS 0.6',
+  'ADMS 0.7',
+  'ADMS 0.8',
+  'ADMS 0.9',
+  'ADMS 0.98',
+  'ADMS',
+  'ADMS Application Profile for Joinup',
+  'ADMS-AP for Joinup version 2.0',
+  'GHGghg',
+], $solution->get('field_is_has_version'));$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertReferences(['contact@semic.eu'], $solution->get('field_is_contact_information'));
+$this->assertStringEndsWith("Towards Open Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([

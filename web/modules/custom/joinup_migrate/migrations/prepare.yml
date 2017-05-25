@@ -2,24 +2,45 @@ id: prepare
 label: 'Prepare'
 source:
   plugin: prepare
+  cache_counts: true
   track_changes: true
+  worksheet: '5. Collections'
+  origin: S2
+  header_row: 1
+  columns:
+    - Nid
+    - 'Policy domain 1'
+    - 'Policy domain 2'
+    - Abstract
+    - Logo
+    - Banner
+    - 'Owner name'
+    - 'Owner type'
+    - 'Collection Owner'
+    - 'Collection state'
+  row_index_column: row_index
+  keys:
+    Collection_name:
+      type: string
 process:
-  collection: collection
+  collection: Collection_name
   type: type
-  nid: nid
-  policy: policy
-  policy2: policy2
-  abstract: abstract
-  logo: logo
-  banner: banner
+  nid: Nid
+  policy: 'Policy domain 1'
+  policy2: 'Policy domain 2'
+  abstract: Abstract
+  logo: Logo
+  banner: Banner
   elibrary: elibrary
   publisher: publisher
-  owner_text_name: owner_name
-  owner_text_type: owner_type
+  owner_text_name: 'Owner name'
+  owner_text_type: 'Owner type'
   contact: contact
   contact_email: contact_email
-  collection_owner: collection_owner
-  state: state
+  state:
+    plugin: default_value
+    source: 'Collection state'
+    default_value: validated
   roles: roles
 destination:
   plugin: prepare

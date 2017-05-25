@@ -36,7 +36,7 @@ SELECT
 FROM node n
 INNER JOIN og_ancestry o ON n.nid = o.nid
 INNER JOIN node g ON o.group_nid = g.nid AND g.type = 'project_project'
-INNER JOIN d8_mapping m ON g.nid = m.nid AND m.migrate = 1
+INNER JOIN d8_mapping m ON g.nid = m.nid
 INNER JOIN content_type_asset_release ctar ON n.vid = ctar.vid
 INNER JOIN content_field_asset_version cfav ON n.vid = cfav.vid
 LEFT JOIN content_field_asset_documentation cfad ON ctar.vid = cfad.vid

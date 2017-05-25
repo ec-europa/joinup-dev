@@ -88,7 +88,6 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'owner_text_type' => $this->t('Text owner type'),
       'contact' => $this->t('Contact'),
       'contact_email' => $this->t('Contact E-mail'),
-      'collection_owner' => $this->t('Collection owner'),
       'state' => $this->t('State'),
       'roles' => $this->t('Roles'),
     ];
