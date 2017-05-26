@@ -10,8 +10,6 @@ Feature: User interface for the File URL field
     # An example of the File URL field is the "Documentation" field in the
     # solution form.
     And I go to the add solution form
-    # The "Upload file" option should be selected by default.
-    Then the "Upload file" radio button should be selected
 
     # Initially, only the radio button selector should be visible, but no option
     # is selected.
