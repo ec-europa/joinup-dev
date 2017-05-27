@@ -47,4 +47,3 @@ LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 LEFT JOIN workflow_node w ON m.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type = 'asset_release'
-ORDER BY g.nid ASC, n.nid ASC

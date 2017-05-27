@@ -84,4 +84,3 @@ AND (
   OR
   m.type = 'project_project'
 )
-ORDER BY m.collection ASC, m.nid ASC
