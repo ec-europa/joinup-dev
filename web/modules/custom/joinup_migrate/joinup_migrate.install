@@ -121,7 +121,7 @@ function joinup_migrate_source_db_schema($table) {
         'owner_name' => [
           'description' => 'Owner name',
           'type' => 'varchar',
-          'length' => 255,
+          'length' => 2048,
           'not null' => FALSE,
         ],
         'owner_type' => [
