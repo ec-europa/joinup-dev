@@ -23,6 +23,13 @@ class Mapping extends TestableSpreadsheetBase {
   protected $collections;
 
   /**
+   * List of processed node IDs n order to check duplicates.
+   *
+   * @var int[]
+   */
+  protected $nids;
+
+  /**
    * {@inheritdoc}
    */
   public function fields() {
@@ -43,6 +50,7 @@ class Mapping extends TestableSpreadsheetBase {
     $messages = [];
     $title = $type = NULL;
 
+    $row_index = (int) $row['row_index'];
     $nid = $row['Nid'];
     $collection = $row['Collection_Name'] = trim((string) $row['Collection_Name']);
 
@@ -66,9 +74,13 @@ class Mapping extends TestableSpreadsheetBase {
       if (!$node) {
         $messages[] = "This node doesn't exist in the source database";
       }
+      elseif (isset($this->nids[$nid])) {
+        $messages[] = "Node nid $nid was already used in row $row_index";
+      }
       else {
         $title = $node->title;
         $type = $node->type;
+        $this->nids[$nid] = $row_index;
       }
     }
 
@@ -103,7 +115,6 @@ class Mapping extends TestableSpreadsheetBase {
 
     // Register inconsistencies.
     if ($messages) {
-      $row_index = $row['row_index'];
       $source_ids = ['Nid' => $row['Nid']];
       foreach ($messages as $message) {
         $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
