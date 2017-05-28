@@ -106,6 +106,8 @@ foreach ($expected_values as $collection => $expected_value) {
     $this->assertSame(array_keys($expected_roles['admin']), array_keys($roles['admin']));
     unset($roles['admin']);
     unset($expected_roles['admin']);
+    ksort($roles);
+    ksort($expected_roles);
     $this->assertSame($expected_roles, $roles);
   }
 }
