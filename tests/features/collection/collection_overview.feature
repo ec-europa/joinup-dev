@@ -55,8 +55,7 @@ Feature: Collections Overview
 
     # Add new collection as a moderator to directly publish it.
     Given I am logged in as a moderator
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then I should see the heading "Propose collection"
     When I fill in the following:
       | Title       | Colonies in space                   |

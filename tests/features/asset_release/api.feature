@@ -1,3 +1,4 @@
+@api
 Feature: Release API
   In order to manage solutions programmatically
   As a backend developer
