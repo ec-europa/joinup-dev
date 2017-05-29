@@ -73,10 +73,10 @@ Feature: Asset distribution editing.
     When I am logged in as a user with the moderator role
     And I go to the distribution downloads page
     Then I should see the following download entries:
-      | user                     | e-mail                     | file name | distribution   |
-      | Anonymous (not verified) | trackme@example.com        | test.zip  | OpenBSD images |
-      | Bradley Emmett           | bradley.emmett@example.com | text.pdf  | Changelog      |
-      | Bradley Emmett           | bradley.emmett@example.com | test.zip  | OpenBSD images |
+      | user                     | e-mail                     | distribution   |
+      | Anonymous (not verified) | trackme@example.com        | OpenBSD images |
+      | Bradley Emmett           | bradley.emmett@example.com | Changelog      |
+      | Bradley Emmett           | bradley.emmett@example.com | OpenBSD images |
 
     # Verify that the tracking happens when clicking the Download button in
     # the tile view mode and in the canonical page view of the distribution.
@@ -91,7 +91,7 @@ Feature: Asset distribution editing.
     When I am logged in as a user with the moderator role
     And I go to the distribution downloads page
     Then I should see the following download entries:
-      | user                     | e-mail                        | file name | distribution   |
-      | Marianne Sherburne       | marianne.herburne@example.com | text.pdf  | Changelog      |
-      | Marianne Sherburne       | marianne.herburne@example.com | test.zip  | OpenBSD images |
-      | Anonymous (not verified) | trackme@example.com           | test.zip  | OpenBSD images |
+      | user                     | e-mail                        | distribution   |
+      | Marianne Sherburne       | marianne.herburne@example.com | Changelog      |
+      | Marianne Sherburne       | marianne.herburne@example.com | OpenBSD images |
+      | Anonymous (not verified) | trackme@example.com           | OpenBSD images |

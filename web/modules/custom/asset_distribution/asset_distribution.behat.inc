@@ -495,9 +495,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | user                     | e-mail                | file name   | distribution |
-   * | Anonymous (not verified) | mail1@example.com     | example.zip | Distro one   |
-   * | Nickolas Underwood       | underwood@example.com | text.pdf    | Distro two   |
+   * | user                     | e-mail                | distribution |
+   * | Anonymous (not verified) | mail1@example.com     | Distro one   |
+   * | Nickolas Underwood       | underwood@example.com | Distro two   |
    * @codingStandardsIgnoreEnd
    *
    * @param \Behat\Gherkin\Node\TableNode $table
@@ -514,7 +514,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
 
       $this->assertSession()->elementTextContains('css', $selector, $entry['user']);
       $this->assertSession()->elementTextContains('css', $selector, $entry['e-mail']);
-      $this->assertSession()->elementTextContains('css', $selector, $entry['file name']);
       $this->getSession()->getPage()->find('css', $selector)->hasLink($entry['distribution']);
     }
   }
