@@ -118,7 +118,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       }
     };
 
-    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($values));
 
     $this->createLicence($values);
   }

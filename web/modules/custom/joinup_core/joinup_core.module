@@ -5,8 +5,6 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
-use Drupal\file\Entity\File;
-use Drupal\joinup_core\Element\Datetime;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -21,9 +19,14 @@ use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
+use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
 
 /**
  * Implements hook_theme().
@@ -280,33 +283,6 @@ QUERY;
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Remove non-related actions (adding/removing roles) for other group types
- * from member overview page.
- */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // The form id will contain the entity id of the group, so we have to fall
-  // back to strstr to see if the generic part matches.
-  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
-    return;
-  }
-  $entity = \Drupal::request()->get('rdf_entity');
-  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
-    return;
-  }
-  // Header not set if the view is empty (no members).
-  if (empty($form['header'])) {
-    return;
-  }
-  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
-    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
-    }
-  }
-}
-
-/**
  * Implements hook_node_links_alter().
  */
 function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
@@ -438,6 +414,42 @@ function joinup_core_element_info_alter(array &$info) {
         'validateDatetime',
       ],
     ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for RDF entities.
+ */
+function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+  // When a collection or solution is created, create a new navigation menu and
+  // associate it with the new collection or solution. This menu can be used to
+  // link to custom pages, member overviews, an about page etc.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
   }
 }
 
