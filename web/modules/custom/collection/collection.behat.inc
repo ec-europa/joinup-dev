@@ -268,7 +268,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $fields);
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
@@ -290,7 +290,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
