@@ -55,8 +55,9 @@ function joinup_user_install() {
 
 /**
  * Set weight of the Joinup User module.
- * Joinup User module override Password Policy form and its need to have higher
- * weight than default 0.
+ *
+ * Joinup User module override Password Policy form
+ * and its need to have higher weight than default 0.
  */
 function joinup_user_update_8101() {
   module_set_weight('joinup_user', 1);
