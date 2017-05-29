@@ -50,5 +50,11 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       'data-dialog-type' => 'modal',
     ],
     '#access' => $url->access(),
+
+  ];
+  $build['#cache'] = [
+    'contexts' => [
+      'og_role',
+    ],
   ];
 }
