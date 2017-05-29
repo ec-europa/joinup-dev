@@ -44,6 +44,7 @@ dependencies:
   module:
     - ds
     - file_url
+    - text
     - user
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
@@ -51,7 +52,7 @@ bundle: solution
 mode: about
 content:
   field_is_contact_information:
-    weight: 1
+    weight: 2
     label: above
     settings:
       view_mode: view_mode_tile
@@ -69,8 +70,15 @@ content:
         template_suggestion: ''
     type: entity_reference_entity_view
     region: content
+  field_is_description:
+    type: text_default
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_is_documentation:
-    weight: 9
+    weight: 10
     label: above
     settings:
       mode: link
@@ -78,7 +86,7 @@ content:
     type: file_url_default
     region: content
   field_is_language:
-    weight: 6
+    weight: 7
     label: above
     settings:
       link: true
@@ -86,7 +94,7 @@ content:
     type: entity_reference_label
     region: content
   field_is_owner:
-    weight: 2
+    weight: 3
     label: above
     settings:
       view_mode: view_mode_tile
@@ -106,7 +114,7 @@ content:
     region: content
   field_is_related_solutions:
     type: entity_reference_label
-    weight: 10
+    weight: 11
     region: content
     label: above
     settings:
@@ -121,7 +129,7 @@ content:
     type: entity_reference_label
     region: content
   field_is_solution_type:
-    weight: 4
+    weight: 5
     label: above
     settings:
       link: true
@@ -129,7 +137,7 @@ content:
     type: entity_reference_label
     region: content
   field_policy_domain:
-    weight: 7
+    weight: 8
     label: above
     settings:
       link: true
@@ -137,7 +145,7 @@ content:
     type: entity_reference_label
     region: content
   field_spatial_coverage:
-    weight: 3
+    weight: 4
     label: above
     settings:
       link: true
@@ -145,7 +153,7 @@ content:
     type: entity_reference_label
     region: content
   field_status:
-    weight: 5
+    weight: 6
     label: above
     settings:
       link: true
@@ -161,7 +169,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   licence:
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -172,7 +180,6 @@ hidden:
   field_is_business_process: true
   field_is_content: true
   field_is_creation_date: true
-  field_is_description: true
   field_is_distribution: true
   field_is_elibrary_creation: true
   field_is_has_version: true
