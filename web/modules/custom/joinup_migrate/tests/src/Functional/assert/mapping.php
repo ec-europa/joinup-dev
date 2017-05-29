@@ -177,6 +177,26 @@ $expected_values = [
     'policy2' => 'Open government',
     'row_index' => '34',
   ],
+  157710 => [
+    'type' => 'community',
+    'collection' => 'Collection with 2 entities having custom section',
+    'policy2' => 'Open government',
+    'owner' => 'Y',
+    'row_index' => '35',
+  ],
+  27024 => [
+    'type' => 'project_project',
+    'collection' => 'Collection with 2 entities having custom section',
+    'policy2' => 'Open government',
+    'row_index' => '36',
+  ],
+  26768 => [
+    'type' => 'community',
+    'collection' => 'Collection with 1 entity having custom section',
+    'policy2' => 'Open government',
+    'owner' => 'Y',
+    'row_index' => '37',
+  ],
 ];
 
 // Migration counts.

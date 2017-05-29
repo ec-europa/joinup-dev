@@ -9,8 +9,8 @@ use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
 // Migration counts.
-$this->assertTotalCount('solution', 10);
-$this->assertSuccessCount('solution', 10);
+$this->assertTotalCount('solution', 11);
+$this->assertSuccessCount('solution', 11);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -61,7 +61,6 @@ $this->assertReferences([
 $logo = File::load($solution->field_is_logo->target_id);
 $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->getFileUri());
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
-$this->assertEquals(1435, filesize('public://solution/logo/CIPA_e-Delivery_70x70.png'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('proposed', $solution->field_is_state->value);
 
@@ -250,4 +249,49 @@ $this->assertReferences([
   'World Wide Web Consortium',
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
+$this->assertEquals('validated', $solution->field_is_state->value);
+
+$solution = $this->loadEntityByLabel('rdf_entity', 'Digital Signature Service', 'solution');
+$this->assertEquals('Digital Signature Service', $solution->label());
+$this->assertEquals('solution', $solution->bundle());
+$this->assertEquals('default', $solution->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1312882209), $solution->field_is_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467281398), $solution->field_is_modification_date->value);
+$this->assertTrue($solution->get('field_is_distribution')->isEmpty());
+$this->assertReferences([
+  'sd-dss 1.00',
+  'sd-dss 1.02',
+  'sd-dss 2.00',
+  'sd-dss 2.0.1',
+  'sd-dss 2.0.2',
+  'sd-dss 3.0.2',
+  'sd-dss 3.0.3',
+  'sd-dss 4.0.2',
+  'sd-dss ',
+  'SD-DSS 4.1.0 RC',
+  'SD-DSS ',
+  'SD-DSS 4.2.0-RC',
+  'SD-DSS 4.2.0',
+  'SD-DSS 4.3.0-RC',
+  'DSS 4.3.0',
+  'DSS 4.4.RC1',
+  'DSS 4.4.RC2',
+  'DSS 4.4.0',
+  'DSS 4.5.RC1',
+  'DSS 4.5.RC2',
+  'DSS 4.5.0',
+  'DSS 4.6.RC1',
+  'DSS 4.6.RC2',
+  'DSS 4.6.0',
+  'DSS 4.7.RC1',
+  'DSS 4.7.RC2',
+  'DSS 4.7.0',
+], $solution->get('field_is_has_version'));
+$this->assertReferences(['Open government'], $solution->field_policy_domain);
+$this->assertReferences(['david.naramski@nowina.lu'], $solution->get('field_is_contact_information'));
+$this->assertStringEndsWith("release note and support, can be found at: https://joinup.ec.europa.eu/asset/sd-dss/asset_release/all</p>\r\n", $solution->field_is_description->value);
+$this->assertEquals('content_editor', $solution->field_is_description->format);
+$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertTrue($solution->get('field_is_owner')->isEmpty());
+$this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);

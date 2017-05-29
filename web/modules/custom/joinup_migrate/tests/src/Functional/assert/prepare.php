@@ -50,6 +50,19 @@ $expected_values = [
     'publisher' => '89762',
     'roles' => '{"admin":{"7051":1495635879}}',
   ],
+  'Collection with 2 entities having custom section' => [
+    'type' => 'community',
+    'nid' => '157710',
+    'policy' => 'eGovernment',
+    'policy2' => 'Open government',
+  ],
+  'Collection with 1 entity having custom section' => [
+    'type' => 'community',
+    'nid' => '26768',
+    'policy' => 'eGovernment',
+    'policy2' => 'Open government',
+    'roles' => '{"facilitator":{"6363":1407159052,"7355":1393952275},"member":{"6363":1407159052,"6364":1323367295,"6549":1452513330,"6822":1422537893,"7100":1323762526,"7207":1331313796}}',
+  ],
 ];
 
 // Migration counts.
@@ -94,18 +107,25 @@ foreach ($expected_values as $collection => $expected_value) {
   unset($import['roles']);
   unset($expected_value['roles']);
 
+  // Check main values.
   $this->assertSame($expected_value, $import);
 
-  if (!empty($roles) && !empty($expected_roles)) {
+  $this->assertTrue(($roles && $expected_roles) || (!$roles && !$expected_roles));
+
+  if ($roles && $expected_roles) {
     // Check roles.
     $roles = Json::decode($roles);
     $expected_roles = Json::decode($expected_roles);
 
     // Admin should be compared only as user IDs because the creation time is
     // the migration time and that we cannot predict.
-    $this->assertSame(array_keys($expected_roles['admin']), array_keys($roles['admin']));
-    unset($roles['admin']);
-    unset($expected_roles['admin']);
+    $this->assertTrue((isset($expected_roles['admin']) && isset($roles['admin'])) || (!isset($expected_roles['admin']) && !isset($roles['admin'])));
+    if (isset($expected_roles['admin']) && isset($roles['admin'])) {
+      $this->assertSame(array_keys($expected_roles['admin']), array_keys($roles['admin']));
+      unset($roles['admin']);
+      unset($expected_roles['admin']);
+    }
+
     ksort($roles);
     ksort($expected_roles);
     $this->assertSame($expected_roles, $roles);

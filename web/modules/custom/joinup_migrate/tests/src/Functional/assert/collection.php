@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('collection', 5);
-$this->assertSuccessCount('collection', 5);
+$this->assertTotalCount('collection', 7);
+$this->assertSuccessCount('collection', 7);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -91,7 +91,6 @@ $this->assertEquals('content_editor', $collection->field_ar_description->format)
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
-$this->assertEquals(46068, filesize('public://collection/logo/epdp_final_logo1-01.png'));
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
@@ -125,5 +124,50 @@ $this->assertEquals('content_editor', $collection->field_ar_description->format)
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
-$this->assertEquals(10636, filesize('public://collection/logo/guadalinex.JPG'));
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
+
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
+$this->assertEquals('Collection with 2 entities having custom section', $collection->label());
+$this->assertEquals('collection', $collection->bundle());
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1481725653), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1482240807), $collection->field_ar_modification_date->value);
+$this->assertEquals('default', $collection->graph->value);
+$this->assertReferences([
+  'Digital Signature Service',
+], $collection->get('field_ar_affiliates'));
+$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertReferences(['Open government'], $collection->field_policy_domain);
+$this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertEquals(1, $collection->field_ar_moderation->value);
+$this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('EIC (European Interoperability Catalogue)', $collection->get('field_ar_abstract')->value);
+$this->assertStringEndsWith("cross-sector setting.</p>\r\n<p>&nbsp;</p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
+$logo = File::load($collection->field_ar_logo->target_id);
+$this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/eic.jpg');
+$this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
+$this->assertEquals('Collection with 1 entity having custom section', $collection->label());
+$this->assertEquals('collection', $collection->bundle());
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1282400000), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458318547), $collection->field_ar_modification_date->value);
+$this->assertEquals('default', $collection->graph->value);
+$this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
+$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertReferences(['Open government'], $collection->field_policy_domain);
+$this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertEquals(1, $collection->field_ar_moderation->value);
+$this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('<p>ISA</p>', $collection->get('field_ar_abstract')->value);
+$this->assertStringEndsWith("ISA<sup>2</sup> programme</span></a><span style=\"color:#0064a3;\">.</span></strong></p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
+$logo = File::load($collection->field_ar_logo->target_id);
+$this->assertEquals('public://collection/logo/Logo_project-isa-logo-2.jpg', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/Logo_project-isa-logo-2.jpg');
+$this->assertEquals('http://ec.europa.eu/isa/', $collection->get('field_ar_access_url')->uri);

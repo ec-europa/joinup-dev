@@ -8,8 +8,8 @@
 // Migration counts.
 $this->assertTotalCount('contact', 3);
 $this->assertSuccessCount('contact', 3);
-$this->assertTotalCount('contact_email', 3);
-$this->assertSuccessCount('contact_email', 3);
+$this->assertTotalCount('contact_email', 4);
+$this->assertSuccessCount('contact_email', 4);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $contact */
@@ -64,5 +64,14 @@ $this->assertEquals('contact_information', $contact->bundle());
 $this->assertEquals('default', $contact->graph->value);
 $this->assertEquals('contact@semic.eu', $contact->field_ci_name->value);
 $this->assertEquals('contact@semic.eu', $contact->field_ci_email->value);
+$this->assertTrue($contact->get('field_ci_webpage')->isEmpty());
+$this->assertEquals('validated', $contact->field_ci_state->value);
+
+$contact = $this->loadEntityByLabel('rdf_entity', 'david.naramski@nowina.lu', 'contact_information');
+$this->assertEquals('david.naramski@nowina.lu', $contact->label());
+$this->assertEquals('contact_information', $contact->bundle());
+$this->assertEquals('default', $contact->graph->value);
+$this->assertEquals('david.naramski@nowina.lu', $contact->field_ci_name->value);
+$this->assertEquals('david.naramski@nowina.lu', $contact->field_ci_email->value);
 $this->assertTrue($contact->get('field_ci_webpage')->isEmpty());
 $this->assertEquals('validated', $contact->field_ci_state->value);
