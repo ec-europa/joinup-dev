@@ -49,7 +49,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )visit the add solution form
    */
   public function visitAddSolutionForm() {
-    $this->visitPath('/rdf_entity/add/solution');
+    $this->visitPath('/propose/solution');
   }
 
   /**

@@ -29,8 +29,10 @@ Feature: "Add solution" visibility options.
       | state | validated                        |
 
     When I am an anonymous user
+    # The link to propose a solution should no longer be accessible on the
+    # homepage. It should only be shown in context of a collection.
     And I go to the homepage
-    Then I should see the link "Propose solution"
+    Then I should not see the link "Propose solution"
     When I go to the homepage of the "Collection propose solution test" collection
     Then I should see the link "Propose solution"
     When I click "Propose solution"
@@ -39,7 +41,7 @@ Feature: "Add solution" visibility options.
 
     When I am logged in as an "authenticated user"
     And I go to the homepage
-    Then I should see the link "Propose solution"
+    Then I should not see the link "Propose solution"
     When I go to the homepage of the "Collection propose solution test" collection
     Then I should see the link "Propose solution"
     When I click "Propose solution"
@@ -48,7 +50,7 @@ Feature: "Add solution" visibility options.
 
     When I am logged in as a user with the "moderator" role
     And I go to the homepage
-    Then I should see the link "Propose solution"
+    Then I should not see the link "Propose solution"
     When I go to the homepage of the "Collection propose solution test" collection
     Then I should see the link "Propose solution"
     When I click "Propose solution"
@@ -57,7 +59,7 @@ Feature: "Add solution" visibility options.
 
     When I am logged in as a "facilitator" of the "Collection propose solution test" collection
     And I go to the homepage
-    Then I should see the link "Propose solution"
+    Then I should not see the link "Propose solution"
     When I go to the homepage of the "Collection propose solution test" collection
     # For facilitators of a collection, the button changes to 'Add solution'.
     Then I should not see the link "Propose solution"

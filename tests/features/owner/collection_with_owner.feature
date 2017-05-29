@@ -10,8 +10,7 @@ Feature: Creation of owners through UI
       | name            | type    |
       | My organisation | Company |
     And I am logged in as a user with the "authenticated" role
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title         | Classical and Ancient Mythology                                                                      |

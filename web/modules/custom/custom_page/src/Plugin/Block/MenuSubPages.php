@@ -9,10 +9,8 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\Context\ContextProviderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -22,6 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *  id = "menu_sub_pages",
  *  admin_label = @Translation("Menu subpages"),
+ *   context = {
+ *     "og" = @ContextDefinition("og", label = @Translation("Organic group"))
+ *   }
  * )
  */
 class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface {
@@ -55,13 +56,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
   protected $entityRepository;
 
   /**
-   * The relation manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManager
-   */
-  protected $joinupCoreRelationsManager;
-
-  /**
    * The menu link tree service.
    *
    * @var \Drupal\Core\Menu\MenuLinkTreeInterface
@@ -76,13 +70,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
   protected $membershipManager;
 
   /**
-   * The ogmenu instance.
-   *
-   * @var \Drupal\og_menu\OgMenuInstanceInterface
-   */
-  protected $ogMenuInstance;
-
-  /**
    * Constructs a new MenuSubPages object.
    *
    * @param array $configuration
@@ -95,10 +82,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    *   The entity type manager service.
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
-   *   The Joinup relation manager service.
-   * @param \Drupal\Core\Plugin\Context\ContextProviderInterface $collection_context
-   *   The collection route context.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
    *   The menu link tree service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -106,27 +89,14 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The og membership manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityRepositoryInterface $entity_repository, JoinupRelationManager $relation_manager, ContextProviderInterface $collection_context, MenuLinkManagerInterface $menu_link_manager, RouteMatchInterface $route_match, MembershipManagerInterface $membership_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityRepositoryInterface $entity_repository, MenuLinkManagerInterface $menu_link_manager, RouteMatchInterface $route_match, MembershipManagerInterface $membership_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityRepository = $entity_repository;
-    $this->joinupCoreRelationsManager = $relation_manager;
     $this->menuLinkManager = $menu_link_manager;
     $this->currentRouteMatch = $route_match;
     $this->membershipManager = $membership_manager;
 
-    // Retrieve the og group from the context handled by og. The context value
-    // is offered by the collection route context.
-    // @see \Drupal\collection\ContextProvider\CollectionRouteContext.
-    $collection_contexts = $collection_context->getRuntimeContexts(['og']);
-    if ($collection_contexts && $collection_contexts['og']->hasContextValue()) {
-      $this->collection = $collection_contexts['og']->getContextValue();
-      $results = $this->membershipManager->getGroupContentIds($this->collection, ['ogmenu_instance']);
-
-      if (!empty($results)) {
-        $this->ogMenuInstance = $this->entityTypeManager->getStorage('ogmenu_instance')->load(reset($results['ogmenu_instance']));
-      }
-    }
   }
 
   /**
@@ -139,8 +109,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('entity.repository'),
-      $container->get('joinup_core.relations_manager'),
-      $container->get('collection.collection_route_context'),
       $container->get('plugin.manager.menu.link'),
       $container->get('current_route_match'),
       $container->get('og.membership_manager')
@@ -205,9 +173,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    *   An array of menu links.
    */
   protected function getChildLinks() {
-    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->ogMenuInstance->id());
-    $link = reset($links);
-    $child_ids = $this->menuLinkManager->getChildIds($link->getPluginId());
+    $child_ids = $this->menuLinkManager->getChildIds($this->getRootLink()->getPluginId());
     $links = [];
 
     foreach ($child_ids as $child_plugin_id) {
@@ -224,18 +190,24 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
   }
 
   /**
-   * {@inheritdoc}
+   * Returns the root menu link.
    *
-   * The block should not be shown if there is no collection context or if the
-   * collection does not have an ogMenuInstance created. The second case should
-   * not normally occur as the ogMenuInstance is being created automatically for
-   * the collection so it is merely to ensure that the page will not break.
+   * @return \Drupal\menu_link_content\Entity\MenuLinkContent|null
+   *   The root menu link.
    */
-  protected function blockAccess(AccountInterface $account) {
-    if (empty($this->collection) || empty($this->ogMenuInstance)) {
-      return AccessResult::forbidden();
-    }
-    return parent::blockAccess($account);
+  protected function getRootLink() {
+    $links = $this->menuLinkManager->loadLinksByRoute($this->currentRouteMatch->getRouteName(), $this->currentRouteMatch->getRawParameters()->all(), 'ogmenu-' . $this->getMenuInstance()->id());
+    return reset($links);
+  }
+
+  /**
+   * Returns whether the current page has a root menu link.
+   *
+   * @return bool
+   *   Whether or not it has a root menu link.
+   */
+  protected function hasRootLink() {
+    return !empty($this->getRootLink());
   }
 
   /**
@@ -251,7 +223,42 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-    return Cache::mergeTags($tags, $this->ogMenuInstance->getCacheTags());
+    return Cache::mergeTags($tags, $this->getMenuInstance()->getCacheTags());
+  }
+
+  /**
+   * Returns the OG Menu instance for the collection in the current context.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The OG Menu instance, or NULL if it wasn't found. This shouldn't happen
+   *   in practice since the menu instance is created automatically whenever a
+   *   collection is created.
+   */
+  protected function getMenuInstance() {
+    $collection = $this->getContext('og')->getContextValue();
+    $results = $this->membershipManager->getGroupContentIds($collection, ['ogmenu_instance']);
+    if (!empty($results)) {
+      $og_menu_instance_id = reset($results['ogmenu_instance']);
+      return $this->entityTypeManager->getStorage('ogmenu_instance')->load($og_menu_instance_id);
+    }
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access(AccountInterface $account, $return_as_object = FALSE) {
+    // Do not show the block if the current page has no menu links associated
+    // with it. This might happen if the current page is the edit form of a
+    // custom page.
+    if ($this->hasRootLink()) {
+      $access = parent::access($account, TRUE);
+    }
+    else {
+      $access = AccessResult::forbidden();
+    }
+
+    return $return_as_object ? $access : $access->isAllowed();
   }
 
 }
