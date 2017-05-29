@@ -235,9 +235,15 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 
-  // Add the about page as link template, so the og context will be
-  // automatically solved.
-  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
+  // Add the about page and member overview as link templates, so the OG context
+  // will be automatically solved.
+  $link_templates = [
+    'about-page' => '/rdf_entity/{rdf_entity}/about',
+    'member-overview' => '/rdf_entity/{rdf_entity}/members',
+  ];
+  foreach ($link_templates as $key => $path) {
+    $entity_types['rdf_entity']->setLinkTemplate($key, $path);
+  }
 }
 
 /**
@@ -444,10 +450,18 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link->save();
 
     $link = MenuLinkContent::create([
+      'title' => t('Members'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('member-overview')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
       'title' => t('About'),
       'menu_name' => $menu_name,
       'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
-      'weight' => -9,
+      'weight' => -8,
     ]);
     $link->save();
   }
