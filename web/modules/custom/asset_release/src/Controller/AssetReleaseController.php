@@ -204,8 +204,9 @@ class AssetReleaseController extends ControllerBase {
     });
 
     // Flag the first release so it can be themed accordingly.
-    $first_release = reset($releases);
-    $first_release->top_of_timeline = TRUE;
+    if ($first_release = reset($releases)) {
+      $first_release->top_of_timeline = TRUE;
+    }
 
     $build_array = [];
     /** @var \Drupal\rdf_entity\RdfInterface $release */

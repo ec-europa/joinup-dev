@@ -49,7 +49,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When (I )visit the add solution form
    */
   public function visitAddSolutionForm() {
-    $this->visitPath('/rdf_entity/add/solution');
+    $this->visitPath('/propose/solution');
   }
 
   /**
@@ -88,9 +88,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * title        | description            | documentation | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
+   * Foo solution | This is a foo solution | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
+   * Bar solution | This is a bar solution | text.pdf      | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description and elibrary creation are mandatory.
@@ -130,7 +130,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Table format:
    * | title             | Sample solution                         |
    * | description       | A sample solution                       |
-   * | document          | text.pdf                                |
+   * | documentation     | text.pdf                                |
    * | moderation        | no|yes                                  |
    * | closed            | no|yes                                  |
    * | elibrary creation | facilitators|members|registered users   |
@@ -250,7 +250,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     foreach ($file_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
@@ -498,8 +500,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
+    // Convert any entity reference field label value with the entity ID.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }

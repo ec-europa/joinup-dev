@@ -10,11 +10,4 @@
  * @see template_preprocess_menu_local_action()
  */
 #}
-{%
-  set classes = [
-    'tab',
-    'tab--horizontal',
-    'mdl-tabs__tab',
-  ]
-%}
-<li{{ attributes.addClass(classes) }}>{{ link }}</li>
+<span{{ attributes }}>{{ link }}</span>
