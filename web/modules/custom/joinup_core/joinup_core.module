@@ -5,8 +5,6 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
-use Drupal\file\Entity\File;
-use Drupal\joinup_core\Element\Datetime;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -21,9 +19,14 @@ use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
+use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
 
 /**
  * Implements hook_theme().
@@ -411,6 +414,42 @@ function joinup_core_element_info_alter(array &$info) {
         'validateDatetime',
       ],
     ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for RDF entities.
+ */
+function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+  // When a collection or solution is created, create a new navigation menu and
+  // associate it with the new collection or solution. This menu can be used to
+  // link to custom pages, member overviews, an about page etc.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
   }
 }
 

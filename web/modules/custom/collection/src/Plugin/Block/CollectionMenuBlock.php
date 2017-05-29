@@ -16,7 +16,7 @@ use Drupal\og_menu\Plugin\Block\OgMenuBlock;
  *   category = @Translation("Collection"),
  *   deriver = "Drupal\og_menu\Plugin\Derivative\OgMenuBlock",
  *   context = {
- *     "og" = @ContextDefinition("og", label = @Translation("Collection"))
+ *     "og" = @ContextDefinition("entity", label = @Translation("Collection"))
  *   }
  * )
  */

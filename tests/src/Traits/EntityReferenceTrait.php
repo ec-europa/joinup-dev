@@ -24,29 +24,28 @@ trait EntityReferenceTrait {
    *   Thrown when no entity with the given label has been found.
    */
   public function convertEntityReferencesValues($entity_type, $entity_bundle, array $values) {
-    $definitions = \Drupal::entityManager()->getFieldDefinitions($entity_type, $entity_bundle);
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $definitions */
+    $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type, $entity_bundle);
     foreach ($definitions as $name => $definition) {
-      if ($definition->getType() != 'entity_reference' || !array_key_exists($name, $values) || !strlen($values[$name])) {
+      if ($definition->getType() != 'entity_reference' || !array_key_exists($name, $values) || empty($values[$name])) {
         continue;
       }
 
       // Retrieve the entity type and bundles that can be referenced.
       $settings = $definition->getSettings();
       $target_entity_type = $settings['target_type'];
-      $target_entity_bundles = $settings['handler_settings']['target_bundles'];
+      $target_entity_bundles = !empty($settings['handler_settings']['target_bundles']) ? $settings['handler_settings']['target_bundles'] : NULL;
 
       // Multi-value fields are separated by comma.
-      $labels = explode(', ', $values[$name]);
-      $values[$name] = [];
-      foreach ($labels as $label) {
+      foreach ($values[$name] as &$label) {
         $id = $this->getEntityIdByLabel($label, $target_entity_type, $target_entity_bundles);
-        $bundles = implode(',', $target_entity_bundles);
 
         if (!$id) {
+          $bundles = implode(',', $target_entity_bundles);
           throw new \Exception("Entity with label '$label' could not be found for '$target_entity_type ($bundles)' to fill field '$name'.");
         }
 
-        $values[$name][] = $id;
+        $label = $id;
       }
     }
 

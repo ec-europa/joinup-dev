@@ -60,29 +60,51 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @Given (the following )contact:
    */
   public function givenContactEntity(TableNode $contact_table) {
-    $aliases = self::contactInformationFieldAliases();
-
     $values = [];
-    // Replace the column aliases with the actual field names.
+
     foreach ($contact_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in contact information table.");
-      }
+      // Replace the column aliases with the actual field names.
+      $key = self::translateFieldNameAlias($key);
+      $values[$key] = $value;
     };
 
     $this->createContactInformation($values);
   }
 
   /**
+   * Translates human readable field names to machine names.
+   *
+   * @param string $field_name
+   *   The human readable field name. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the field.
+   *
+   * @throws \Exception
+   *   Thrown when an unknown field name is passed.
+   */
+  protected static function translateFieldNameAlias($field_name) {
+    $field_name = strtolower($field_name);
+    $aliases = self::contactInformationFieldAliases();
+    if (array_key_exists($field_name, $aliases)) {
+      $field_name = $aliases[$field_name];
+    }
+    else {
+      throw new \Exception("Unknown field name '$field_name'.");
+    }
+
+    return $field_name;
+  }
+
+  /**
    * Creates a number of contact information with data provided in a table.
    *
    * Table format:
-   * | email                            | name       | author      |
-   * | foo@example.com, bar@example.com | John Irwin | Author name |
-   * | baz@example.com                  | Jack Smith |             |
+   * @codingStandardsIgnoreStart
+   * | name                   | email                            | website url                            | author      |
+   * | John Irwin             | foo@example.com, bar@example.com | http://google.com                      | Author name |
+   * | Jack Smith, John Irwin | baz@example.com                  | http://yahoo.com, http://altavista.com |             |
+   * @codingStandardsIgnoreEnd
    *
    * @param \Behat\Gherkin\Node\TableNode $contact_table
    *   The contacts table.
@@ -93,19 +115,12 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @Given (the following )contacts:
    */
   public function givenContactEntities(TableNode $contact_table) {
-    $aliases = self::contactInformationFieldAliases();
-
     foreach ($contact_table->getColumnsHash() as $entity) {
       $values = [];
 
       foreach ($entity as $key => $value) {
-        // Replace aliases with the actual field names.
-        if (array_key_exists($key, $aliases)) {
-          $values[$aliases[$key]] = $value;
-        }
-        else {
-          throw new \Exception("Unknown column '$key' in contact information table.");
-        }
+        $key = self::translateFieldNameAlias($key);
+        $values[$key] = $value;
       }
 
       $this->createContactInformation($values);
@@ -171,7 +186,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       $values['uid'] = $this->getUserByName($values['uid'])->id();
     }
 
-    $entity = Rdf::create($values);
+    $entity = Rdf::create($this->parseRdfEntityFields($values));
     $entity->save();
     $this->contactInformations[$entity->id()] = $entity;
 
@@ -190,7 +205,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
       'uri' => 'id',
       'email' => 'field_ci_email',
       'name' => 'field_ci_name',
-      'Website URL' => 'field_ci_webpage',
+      'website url' => 'field_ci_webpage',
       'author' => 'uid',
     ];
   }

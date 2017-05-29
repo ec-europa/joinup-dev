@@ -132,11 +132,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   protected function createAssetDistribution(array $values) {
     // The Access URL field is either an external URI, or file upload.
-    if (!empty($url = $values['field_ad_access_url'])) {
+    if (!empty($values['field_ad_access_url'])) {
       global $base_url;
-      if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
-        // It's a local file to be uploaded.
-        $values['field_ad_access_url'] = FileUrlHandler::fileToUrl($this->createFile($url));
+      foreach ($values['field_ad_access_url'] as $key => $url) {
+        if (!UrlHelper::isValid($url, TRUE) || !UrlHelper::isExternal($url) || UrlHelper::externalIsLocal($url, $base_url)) {
+          // It's a local file to be uploaded.
+          $values['field_ad_access_url'][$key] = FileUrlHandler::fileToUrl($this->createFile($url));
+        }
       }
     }
 
@@ -194,7 +196,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     };
 
     $values = $this->convertValueAliases($values);
-    $values = $this->convertEntityReferencesValues('rdf_entity', 'asset_distribution', $values);
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'asset_distribution', $this->parseRdfEntityFields($values));
     $asset_distribution_entity = $this->createAssetDistribution($values);
 
     // Create the relation with the parent entity if requested.
