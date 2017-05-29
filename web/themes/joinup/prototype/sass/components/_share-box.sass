@@ -9,15 +9,15 @@
   display: none
 
 .share-box__row
-  padding: 10px 10px 10px 50px
+  padding: 10px 50px 10px 10px
   margin-bottom: 0 !important
   position: relative
   min-height: 70px
   &:hover
     cursor: pointer
   &.already-shared
+    padding-right: 0
     background: $color-grey-lighter
-    padding-left: 0
     .share-box__item-icon
       display: table-cell
       vertical-align: middle
@@ -36,6 +36,8 @@
   display: table-cell
   vertical-align: middle
 
+.share-box__item-label
+  width: 100%
 
 .share-box__item-social-icon
   padding-right: 10px
@@ -48,6 +50,10 @@
     margin-bottom: 0
   +breakpoint(tablet)
     min-width: $screen-sm
+
+.share-content-form
+  .form__legend
+    margin: 0
 
 // Modal box classes
 .ui-dialog
