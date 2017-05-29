@@ -1,4 +1,4 @@
-joinup_core.members:
+entity.rdf_entity.member_overview:
   path: 'rdf_entity/{rdf_entity}/members'
   defaults:
     _controller: '\Drupal\joinup_core\Controller\GroupMembersController::membersList'
