@@ -20,7 +20,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: email_mailto
     region: content
   field_ci_name:
     type: string

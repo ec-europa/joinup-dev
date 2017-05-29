@@ -57,7 +57,7 @@
         "drupal/config_update": "~1.2",
         "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
+        "drupal/drupal-extension": "dev-master#0cc5400664d26943c4b90b693e059246221ffec3",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",

@@ -100,6 +100,6 @@ function contact_information_inline_entity_form_entity_builder($entity_type, Ent
  */
 function contact_information_entity_auto_label(EntityInterface $entity) {
   // Generate the label using the values of the name field.
-  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
+  $names = array_map('trim', array_column($entity->get('field_ci_name')->getValue(), 'value'));
   $entity->set('label', implode(', ', $names));
 }
