@@ -5,6 +5,7 @@ dependencies:
     - og_menu.ogmenu.navigation
   module:
     - collection
+    - og
   theme:
     - joinup_theme
 id: navigation
@@ -21,5 +22,12 @@ settings:
   level: 1
   depth: 1
   context_mapping:
-    og: '@collection.collection_route_context:og'
-visibility: {  }
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

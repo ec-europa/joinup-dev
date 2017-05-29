@@ -4,6 +4,7 @@ dependencies:
   module:
     - custom_page
     - node
+    - og
   theme:
     - joinup_theme
 id: menusubpages
@@ -17,6 +18,8 @@ settings:
   label: 'Sub pages'
   provider: custom_page
   label_display: visible
+  context_mapping:
+    og: '@og.context:og'
 visibility:
   node_type:
     id: node_type
@@ -25,3 +28,10 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+    negate: false
+    context_mapping:
+      og: '@og.context:og'
