@@ -29,6 +29,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
+use WebDriver\Exception\NoSuchElement;
 
 /**
  * Behat step definitions that are generally useful for the Joinup project.
@@ -1261,14 +1262,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     self::assertJavaScriptEnabledBrowser();
 
     $result = $this->getSession()->getPage()->waitFor(5, function () {
-      // Retrieve again a fresh copy of the page element at each cycle.
-      $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
-
-      // Normally the modal should be completely removed from the DOM,
-      // but when it's closed for the first time the markup with the above ID
-      // is kept in the DOM as hidden.
-      // @see Drupal.AjaxCommands.prototype.closeDialog()
-      return empty($modal) || !$modal->isVisible();
+      try {
+        // Normally the modal should be completely removed from the DOM,
+        // but sometimes the markup is kept in the DOM as hidden.
+        // @see Drupal.AjaxCommands.prototype.closeDialog()
+        return !$this->getSession()->getDriver()->isVisible('//*[@id = "drupal-modal"]');
+      }
+      catch (NoSuchElement $e) {
+        // The modal has been completely removed from the DOM.
+        return TRUE;
+      }
     });
 
     if (!$result) {
