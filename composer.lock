@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5227fdf130310d4bf7401bc2a8d60682",
+    "content-hash": "c3c0dee7708b0fd6a8d26debab09e80f",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2156,7 +2156,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0",
-                    "datestamp": "1495040306"
+                    "datestamp": "1495660084"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2224,7 +2224,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1492681579"
+                    "datestamp": "1491851643"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -2820,8 +2820,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3+4-dev",
-                    "datestamp": "1488210483"
+                    "version": "8.x-3.0-alpha3+3-dev",
+                    "datestamp": "1488167584"
                 },
                 "patches_applied": {
                     "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch",
@@ -3098,7 +3098,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1494495709"
+                    "datestamp": "1494413585"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -4288,7 +4288,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -8521,7 +8521,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-05-19T10:27:18+00:00"
+            "time": "2017-05-19 10:27:18"
         },
         {
             "name": "fabpot/goutte",

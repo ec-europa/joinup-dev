@@ -4,9 +4,9 @@ Feature: Global search
 
   Scenario: Anonymous user can find items
     Given the following solutions:
-      | title          | description                                                                                                                        | state     |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                            | validated |
-      | Foam           | The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams | validated |
+      | title          | description                                                                                                                          | state     |
+      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                              | validated |
+      | Foam           | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" | validated |
       # Taxonomies are not yet implemented, so uncomment this after #ISAICP-2545 is done
       # | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
     And the following collection:
@@ -20,6 +20,9 @@ Feature: Global search
       | El Celler de Can Roca | The best in town | Molecular cooking collection | validated |
 
     Given I am logged in as a user with the "authenticated" role
+    # @todo The search page cache should be cleared when new content is added.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
+    And the cache has been cleared
     When I am at "/search"
     # All content visible
     Then I should see the text "Molecular cooking collection"
