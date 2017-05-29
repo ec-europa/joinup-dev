@@ -4,6 +4,7 @@ dependencies:
   module:
     - joinup_core
     - og
+    - user
 id: members_overview
 label: 'Members overview (public)'
 module: views
@@ -119,15 +120,15 @@ display:
           hide_alter_empty: true
           view_mode: default
       filters:
-        entity_type:
-          id: entity_type
+        state:
+          id: state
           table: og_membership
-          field: entity_type
+          field: state
           relationship: none
           group_type: group
           admin_label: ''
           operator: '='
-          value: rdf_entity
+          value: active
           group: 1
           exposed: false
           expose:
@@ -155,14 +156,114 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           entity_type: og_membership
-          entity_field: entity_type
+          entity_field: state
+          plugin_id: string
+        roles:
+          id: roles
+          table: og_membership__roles
+          field: roles
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: roles_op
+            label: Roles
+            description: null
+            use_operator: false
+            operator: roles_op
+            identifier: roles
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: Roles
+            description: ''
+            identifier: roles
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Owner
+                operator: '='
+                value: administrator
+              2:
+                title: Facilitator
+                operator: '='
+                value: facilitator
+              3:
+                title: Member
+                operator: '='
+                value: member
+          entity_type: og_membership
+          entity_field: roles
+          plugin_id: string
+        field_user_organisation_value:
+          id: field_user_organisation_value
+          table: user__field_user_organisation
+          field: field_user_organisation_value
+          relationship: uid
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_user_organisation_value_op
+            label: Organisation
+            description: ''
+            use_operator: false
+            operator: field_user_organisation_value_op
+            identifier: field_user_organisation_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           plugin_id: string
       sorts: {  }
       title: 'Collection members'
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        uid:
+          id: uid
+          table: og_membership
+          field: uid
+          relationship: none
+          group_type: group
+          admin_label: User
+          required: true
+          entity_type: og_membership
+          entity_field: uid
+          plugin_id: standard
       arguments:
         entity_type:
           id: entity_type
@@ -247,6 +348,10 @@ display:
           entity_field: entity_id
           plugin_id: string
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
