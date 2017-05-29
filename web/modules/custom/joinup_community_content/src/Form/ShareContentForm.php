@@ -108,6 +108,7 @@ class ShareContentForm extends FormBase {
     $form['collections'] = [
       '#theme_wrappers' => ['fieldset'],
       '#title' => $this->t('Collections'),
+      '#title_display' => 'invisible',
       '#tree' => TRUE,
     ];
 

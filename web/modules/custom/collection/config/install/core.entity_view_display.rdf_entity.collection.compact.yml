@@ -25,7 +25,6 @@ dependencies:
   module:
     - ds
     - image
-    - joinup
     - user
 id: rdf_entity.collection.compact
 targetEntityType: rdf_entity
