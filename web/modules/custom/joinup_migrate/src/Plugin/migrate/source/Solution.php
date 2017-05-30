@@ -40,6 +40,8 @@ class Solution extends SolutionBase {
       'body' => $this->t('Description'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owners'),
+      'owner_name' => $this->t('Text owner name'),
+      'owner_type' => $this->t('Text owner type'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
@@ -49,6 +51,7 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
@@ -75,6 +78,9 @@ class Solution extends SolutionBase {
       'docs_path',
       'state',
       'item_state',
+      'contact_email',
+      'owner_name',
+      'owner_type',
     ]);
   }
 
@@ -89,7 +95,8 @@ class Solution extends SolutionBase {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['nid' => $nid]] : [];
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'documentation_file', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));

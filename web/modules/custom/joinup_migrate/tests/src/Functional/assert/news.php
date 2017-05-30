@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('news', 2);
-$this->assertSuccessCount('news', 2);
+$this->assertTotalCount('news', 3);
+$this->assertSuccessCount('news', 3);
 
 // Imported content check.
 /* @var \Drupal\node\NodeInterface $news */
@@ -41,4 +41,19 @@ $this->assertKeywords([
 ], $news);
 $this->assertReferences(['Belgium', 'Netherlands'], $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
+$this->assertEquals('validated', $news->field_state->value);
+
+$news = $this->loadEntityByLabel('node', 'Public workshop to discuss ways to sustain governmental open standards', 'news');
+$this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->label());
+$this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->field_news_headline->value);
+$this->assertEquals('news', $news->bundle());
+$this->assertEquals(1366966462, $news->created->value);
+$this->assertEquals(1366966650, $news->changed->value);
+$this->assertEquals(1, $news->uid->target_id);
+$this->assertTrue($news->get('field_news_source_url')->isEmpty());
+$this->assertStringEndsWith("Bomos2i (English, pdf)</a><br />\r\n\t<a href=\"http://www.logius.nl/\" target=\"_blank\">Logius</a></p>\r\n", $news->body->value);
+$this->assertTrue($news->get('field_keywords')->isEmpty());
+$this->assertReferences(['Netherlands', 'European Union'], $news->field_news_spatial_coverage);
+$collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');
+$this->assertEquals($collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);

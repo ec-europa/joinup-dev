@@ -51,6 +51,7 @@ Feature: Sharing content between collections
     # A collection member should see the link.
     When I am logged in as "Sara Barber"
     And I go to the "Rockabilly is still rocking" discussion
+    Then I should see the heading "Rockabilly is still rocking"
     Then I should see the link "Share"
     When I click "Share"
     Then I should see the heading "Share"

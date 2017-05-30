@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rdf_entity\Traits;
 
+use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\RandomGeneratorTrait;
 
 /**
  * Provides methods to create rdf entities based on default settings.
@@ -13,7 +13,6 @@ use Drupal\Tests\RandomGeneratorTrait;
 trait RdfEntityCreationTrait {
 
   use RandomGeneratorTrait;
-  use \Drupal\joinup\Traits\RandomGeneratorTrait;
 
   /**
    * Get an rdf entity from the database based on its title.
