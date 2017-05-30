@@ -137,10 +137,12 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     }, $rdf_entities);
 
     $index = Index::load('collections');
+    /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
     $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
     $query->sort('created', 'DESC');
+    $query->range(0, 9);
     $results = $query->execute();
     $entities = $this->getResultEntities($results);
     $rows = [];
