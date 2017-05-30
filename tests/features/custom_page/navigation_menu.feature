@@ -14,11 +14,12 @@ Feature: Navigation menu for custom pages
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
     And I should see the following collection menu items in the specified order:
-      | text               |
-      | Overview           |
-      | About              |
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
     # Check that the 'Edit menu' local action is present.
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
