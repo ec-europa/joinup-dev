@@ -741,7 +741,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * The weight of the tiles are also taken into account.
    *
    * Table format:
-   * | title        |
    * | Tile title 1 |
    * | Tile title 2 |
    *
@@ -754,6 +753,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }, $results);
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
+  }
+
+  /**
+   * Checks that the given tiles are found in the correct order.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the correct order:
+   */
+  public function assertOrderedTilesPresent(TableNode $titles_table) {
+    $results = $this->getTiles();
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
 
   /**
