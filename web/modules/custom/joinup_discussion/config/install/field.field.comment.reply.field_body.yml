@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.reply
+    - field.storage.comment.field_body
+id: comment.reply.field_body
+field_name: field_body
+entity_type: comment
+bundle: reply
+label: Comment
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

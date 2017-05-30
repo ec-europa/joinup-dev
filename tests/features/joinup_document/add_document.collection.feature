@@ -42,7 +42,7 @@ Feature: "Add document" visibility options.
     When I go to the homepage of the "Hunter in the Swords" collection
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
-    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, File"
+    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 
@@ -55,10 +55,11 @@ Feature: "Add document" visibility options.
       | Short title | Amazing document                         |
     And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
-    And I attach the file "test.zip" to "File"
+    Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
+    And I should see the link "test.zip"
     # Check that the link to the document is visible on the collection page.
     When I go to the homepage of the "Hunter in the Swords" collection
     Then I should see the link "An amazing document"
