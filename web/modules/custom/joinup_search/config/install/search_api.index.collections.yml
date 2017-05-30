@@ -95,13 +95,6 @@ field_settings:
       fields:
         - 'entity:node/field_keywords'
         - 'entity:rdf_entity/field_keywords'
-  aggregated_field:
-    label: 'Aggregated field'
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: union
-      fields: {  }
   title:
     label: Title
     datasource_id: 'entity:node'

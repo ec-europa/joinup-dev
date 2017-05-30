@@ -12,9 +12,9 @@ theme: joinup_theme
 region: content
 weight: 0
 provider: null
-plugin: frontpage_block
+plugin: recommended_content_block
 settings:
-  id: frontpage_block
+  id: recommended_content_block
   label: 'Frontpage block'
   provider: joinup
   label_display: '0'
