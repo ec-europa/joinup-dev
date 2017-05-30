@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\MigrateException;
@@ -98,7 +99,9 @@ class Mapping extends Spreadsheet {
     if (in_array($row['Collection_Name'], ['', '#N/A'], TRUE)) {
       $messages[] = 'Collection name empty or invalid';
     }
+
     if (!is_numeric($nid)) {
+      $node = NULL;
       $messages[] = "Invalid nid '$nid'";
     }
     else {
@@ -114,6 +117,12 @@ class Mapping extends Spreadsheet {
         $title = $node->title;
         $type = $node->type;
       }
+    }
+
+    $declared_type = static::$typeMapping[Unicode::strtolower($row['Type of content item'])];
+
+    if (!empty($node) && ($type !== $declared_type)) {
+      $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$type' in Drupal 6";
     }
 
     $row['type'] = $type;
@@ -154,5 +163,25 @@ class Mapping extends Spreadsheet {
 
     return empty($messages);
   }
+
+  /**
+   * Map between Excel file declared types and Drupal 6 real types.
+   *
+   * @var array
+   */
+  protected static $typeMapping = [
+    'case' => 'case_epractice',
+    'community' => 'community',
+    'document' => 'document',
+    'event' => 'event',
+    'factsheet' => 'factsheet',
+    'interoperability solution' => 'asset_release',
+    'legal document' => 'legaldocument',
+    'news' => 'news',
+    'newsletter' => 'newsletter',
+    'presentation' => 'presentation',
+    'project' => 'project_project',
+    'repository' => 'repository',
+  ];
 
 }

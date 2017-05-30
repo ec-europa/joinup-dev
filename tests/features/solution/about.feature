@@ -4,6 +4,7 @@ Feature: About this solution
   As a solution owner or solution facilitator
   I need to be able to sum up information in an "About" page
 
+  @terms
   Scenario: About page
     Given the following contacts:
       | name                      | email                        | Website URL                     |
@@ -31,7 +32,7 @@ Feature: About this solution
       | state               | validated                                                           |
       | documentation       | text.pdf                                                            |
       | language            | Italian, Kallawaya                                                  |
-      | policy domain       | Whales protection, E-identity                                       |
+      | policy domain       | Demography, E-inclusion                                             |
       | related solutions   | Gel, Polymer, Protein                                               |
       | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
       | spatial coverage    | Netherlands Antilles, Egypt                                         |
@@ -46,6 +47,9 @@ Feature: About this solution
     # All the public information from the basic fields should be visible on the
     # about page.
     When I click "About"
+
+    # The description.
+    Then I should see the text "Separating molecules by size."
 
     # Multiple instances of Contact information, each potentially having
     # multiple names, e-mail addresses and websites.
@@ -86,8 +90,8 @@ Feature: About this solution
 
     # Multiple policy domains.
     And I should see the following lines of text:
-    | Whales protection |
-    | E-identity        |
+    | Demography  |
+    | E-inclusion |
 
     # Multiple related solutions.
     And I should see the following lines of text:

@@ -22,10 +22,17 @@ class RdfEntity extends EntityContentBase {
       return parent::getEntity($row, $old_destination_id_values);
     }
 
-    $id = $row->getDestinationProperty('id');
-    if ($id && empty($old_destination_id_values) && $this->storage->idExists($id)) {
+    // Migrations that are updating existing entities should explicitly declare
+    // this in the destination configuration. Otherwise, the destination plugin
+    // is not able to distinguish between a new entity with a pre-filled ID and
+    // an existing entity.
+    $update_existing = !empty($this->configuration['update_existing']);
+
+    $id_key = $this->getKey('id');
+    $id = $row->getDestinationProperty($id_key);
+    if (!$update_existing && $id && empty($old_destination_id_values) && $this->storage->idExists($id)) {
       // This ID has been already taken.
-      $row->setDestinationProperty('id', NULL);
+      $row->setDestinationProperty($id_key, NULL);
     }
 
     return parent::getEntity($row, $old_destination_id_values);

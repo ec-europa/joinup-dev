@@ -4,22 +4,32 @@ migration_tags:
   - distribution
   - licence
 source:
-  plugin: licence
+  plugin: spreadsheet
   track_changes: true
+  cache_counts: true
+  constants:
+    base_url: 'http://purl.org/adms/licencetype/'
+  file: '../resources/migrate/mapping-production.xlsx'
+  worksheet: '4. Licence Mapping'
+  origin: A2
+  columns:
+    - B
+    - C
+  row_index_column: row_index
+  keys:
+    A:
+      type: string
 process:
-  id: uri
-  label: title
-  field_licence_description/value: body
+  label: A
+  field_licence_description/value: B
   field_licence_description/format:
     plugin: default_value
     default_value: content_editor
   field_licence_type:
-    plugin: term_reference
-    source: type
-    vocabulary: licence_type
+    plugin: concat
+    source:
+      - constants/base_url
+      - C
 destination:
   plugin: entity:rdf_entity
   default_bundle: licence
-migration_dependencies:
-  required:
-    - prepare

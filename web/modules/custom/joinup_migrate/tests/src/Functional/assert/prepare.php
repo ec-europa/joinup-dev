@@ -16,6 +16,9 @@ $expected_values = [
     'policy2' => 'eProcurement',
     'abstract' => 'Abstract for a new collection',
     'collection_owner' => 'doe@example.com',
+    'owner_text_name' => 'Dark Side of The Force',
+    'owner_text_type' => 'SupraNationalAuthority',
+    'contact_email' => 'DIGIT-CIPA-SUPPORT@ec.europa.eu',
     'roles' => '{"admin":[],"facilitator":[],"member":{"6842":1378476956}}',
   ],
   'Collection from Repository' => [
@@ -37,6 +40,9 @@ $expected_values = [
     'policy2' => 'Open government',
     'state' => 'archived',
     'collection_owner' => 'doe@example.com',
+    'contact' => '137963',
+    'publisher' => '137962',
+    'roles' => '{"admin":[],"facilitator":{"6364":1472543615},"member":{"6364":1472543615,"7355":1367501419}}',
   ],
 ];
 
@@ -68,8 +74,11 @@ foreach ($expected_values as $collection => $expected_value) {
     'logo' => NULL,
     'banner' => NULL,
     'elibrary' => NULL,
+    'owner_text_name' => NULL,
+    'owner_text_type' => NULL,
     'publisher' => NULL,
     'contact' => NULL,
+    'contact_email' => NULL,
     'collection_owner' => NULL,
     'state' => 'validated',
     'roles' => NULL,
