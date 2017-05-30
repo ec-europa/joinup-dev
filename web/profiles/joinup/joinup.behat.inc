@@ -31,6 +31,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * Behat step definitions that are generally useful for the Joinup project.
@@ -1283,6 +1284,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       catch (NoSuchElement $e) {
         // The modal has been completely removed from the DOM.
         return TRUE;
+      }
+      catch (StaleElementReference $e) {
+        // The element went stale in the time between fetching it and actually
+        // checking its visibility. The next check should launch a NoSuchElement
+        // exception.
+        return FALSE;
       }
     });
 
