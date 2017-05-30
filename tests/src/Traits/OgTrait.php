@@ -27,7 +27,7 @@ trait OgTrait {
    *   Optional state to assign to the membership. Can be one of:
    *   - OgMembershipInterface::STATE_ACTIVE
    *   - OgMembershipInterface::STATE_PENDING
-   *   - OgMembershipInterface::STATE_BLOCKED
+   *   - OgMembershipInterface::STATE_BLOCKED.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
