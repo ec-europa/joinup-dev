@@ -14,7 +14,7 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\og\MembershipManager;
 
 /**
- * Provides a 'RecommendedContentBlock' block.
+ * Provides a block with the recommended community content for the current user.
  *
  * @Block(
  *  id = "recommended_content",
@@ -24,7 +24,7 @@ use Drupal\og\MembershipManager;
 class RecommendedContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * An array of bundles.
+   * The community content bundle ids.
    *
    * @var array
    */
@@ -36,21 +36,21 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   ];
 
   /**
-   * Drupal\Core\Session\AccountProxy definition.
+   * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxy
    */
   protected $currentUser;
 
   /**
-   * Drupal\og\MembershipManager definition.
+   * The OG membership manager service.
    *
    * @var \Drupal\og\MembershipManager
    */
   protected $ogMembershipManager;
 
   /**
-   * Drupal\Core\Entity\EntityTypeManagerInterface definition.
+   * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
@@ -94,10 +94,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   }
 
   /**
-   * Provides empty homepage.
-   *
-   * @return array
-   *   A render array for the homepage.
+   * {@inheritdoc}
    */
   public function build() {
     $groups = $this->ogMembershipManager->getUserGroups($this->currentUser->getAccount());
