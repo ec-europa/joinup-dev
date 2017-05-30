@@ -26,4 +26,40 @@ Feature: Homepage feature
     When I am logged in as "Henry Austin"
     And I am on the homepage
     Then I should see the "The Danger of the Bridges" tile
+    # Only content of collections I am a member of are shown.
     But I should not see the "Girl in the Dreams" tile
+
+    # Show new list of content when I join a collection.
+    When I go to the homepage of the "Boy of Courage" collection
+    And I press the "Join this collection" button
+    # Navigate to the homepage.
+    And I am on the homepage
+    Then I should see the "The Danger of the Bridges" tile
+    And I should see the "Girl in the Dreams" tile
+
+    # Show new list of content when I leave a collection.
+    When I go to the homepage of the "Boy of Courage" collection
+    And I click "Leave this collection"
+    And I press the "Confirm" button
+    # Navigate to the homepage.
+    And I am on the homepage
+    Then I should see the "The Danger of the Bridges" tile
+    But I should not see the "Girl in the Dreams" tile
+
+    # Show new items created within the parent.
+    When I am logged in as a facilitator of the "The Sacred Future" collection
+    And I go to the homepage of the "The Sacred Future" collection
+    And I click "Add document" in the plus button menu
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And I fill in the following:
+      | Title       | The Sacred Future documentation |
+      | Short title | The Sacred Future documentation |
+    And I enter "The Sacred Future documentation." in the "Description" wysiwyg editor
+    And I select "Document" from "Type"
+    Then I upload the file "test.zip" to "Upload a new file or enter a URL"
+    And I press "Publish"
+    Then I should see the heading "The Sacred Future documentation"
+
+    When I am logged in as "Henry Austin"
+    And I am on the homepage
+    Then I should see the "The Sacred Future documentation" tile
