@@ -43,6 +43,8 @@ class Prepare extends SourcePluginBase {
       'policy2' => $this->t('Level2 policy domain'),
       'abstract' => $this->t('Abstract'),
       'owner' => $this->t('Owner'),
+      'owner_name' => $this->t('Owner name'),
+      'owner_type' => $this->t('Owner type'),
       'collection_owner' => $this->t('Collection owner'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
@@ -177,7 +179,7 @@ class Prepare extends SourcePluginBase {
         $collections[$collection]['state'] = empty($row['state']) ? 'validated' : $row['state'];
       }
 
-      $is_owner = !empty($row['owner']) && ($row['owner'] === 'Yes');
+      $is_owner = !empty($row['owner']) && in_array($row['owner'], ['Yes', 'Y']);
 
       // OG roles.
       /** @var \Drupal\Core\Database\Query\SelectInterface $query */
@@ -238,6 +240,22 @@ class Prepare extends SourcePluginBase {
           ->fetchCol();
         if ($contacts) {
           $collections[$collection]['contact'] = implode(',', $contacts);
+        }
+      }
+
+      // Add text owner and E-mail contact, if case.
+      if ($is_owner && ($row['type'] === 'project_project')) {
+        if (!empty($row['owner_name']) && !empty($row['owner_type'])) {
+          $collections[$collection]['owner_name'] = $row['owner_name'];
+          $collections[$collection]['owner_type'] = $row['owner_type'];
+        }
+        $query = $db->select('node', 'n')
+          ->fields('c', ['field_project_common_contact_value'])
+          ->isNotNull('c.field_project_common_contact_value')
+          ->condition('n.nid', $row['nid']);
+        $query->join('content_field_project_common_contact', 'c', 'n.vid = c.vid');
+        if ($contact_email = $query->execute()->fetchField()) {
+          $collections[$collection]['contact_email'] = $contact_email;
         }
       }
     }

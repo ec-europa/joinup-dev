@@ -28,7 +28,7 @@ SELECT
   f.timestamp,
   f.uid,
   cfdau1.field_distribution_access_url1_url,
-  nl.nid,
+  nl.title,
   ar.nid,
   IF(g.type = 'project_project', 'release', 'solution')
 FROM node n

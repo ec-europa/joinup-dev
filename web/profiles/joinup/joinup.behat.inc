@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
+use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
@@ -974,6 +975,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
       // Reload from database to avoid caching issues and get latest version.
       $id = reset($result);
+      $node = Node::load($id);
+
+      // Discussion node-type uses its own field and comment type.
+      if ($node->bundle() === 'discussion') {
+        $field_name = 'field_replies';
+        $comment_type = 'reply';
+      }
+      else {
+        $field_name = 'field_comments';
+        $comment_type = 'comment';
+      }
 
       $query = \Drupal::entityQuery('user')
         ->condition('name', $comment_values['author'])
@@ -995,10 +1007,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       unset($comment_values['author']);
       $comment_values['uid'] = $uid;
       $values = [
-        'comment_type' => 'comment',
+        'comment_type' => $comment_type,
         'status' => CommentInterface::PUBLISHED,
         'uid' => $uid,
-        'field_name' => 'field_comments',
+        'field_name' => $field_name,
         'entity_type' => 'node',
         'entity_id' => $id,
       ];

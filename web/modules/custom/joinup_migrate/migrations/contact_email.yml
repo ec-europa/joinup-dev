@@ -1,0 +1,19 @@
+id: contact_email
+label: 'Contact from E-mail'
+migration_tags:
+  - contact
+source:
+  plugin: contact_email
+  track_changes: true
+process:
+  field_ci_name: name
+  field_ci_email: mail
+  field_ci_state:
+    plugin: default_value
+    default_value: validated
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: contact_information
+migration_dependencies:
+ required:
+   - prepare

@@ -4,8 +4,9 @@ dependencies:
   config:
     - core.entity_view_mode.node.moderation
     - field.field.node.discussion.body
-    - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_attachment
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
@@ -35,8 +36,9 @@ content:
     type: list_default
     region: content
 hidden:
-  field_comments: true
+  field_attachment: true
   field_policy_domain: true
+  field_replies: true
   field_shared_in: true
   links: true
   og_audience: true
