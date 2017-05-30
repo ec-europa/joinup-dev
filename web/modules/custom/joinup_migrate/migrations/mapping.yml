@@ -10,6 +10,7 @@ source:
   origin: A2
   header_row: 1
   columns:
+    - 'Type of content item'
     - Collection_Name
     - 'Policy domain 1'
     - 'Policy domain 2'
@@ -19,6 +20,8 @@ source:
     - Logo
     - Banner
     - Owner
+    - 'Owner name'
+    - 'Owner type'
     - 'Collection Owner'
     - 'Elibrary Creation'
     - 'Collection state'
@@ -45,6 +48,8 @@ process:
   logo: Logo
   banner: Banner
   owner: Owner
+  owner_name: 'Owner name'
+  owner_type: 'Owner type'
   collection_owner: 'Collection Owner'
   elibrary: 'Elibrary Creation'
   state: 'Collection state'

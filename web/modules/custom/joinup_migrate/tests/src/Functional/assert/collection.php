@@ -18,8 +18,8 @@ $this->assertEquals('New collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 // This collection is new, thus its creation and modification time is the
 // migration time. We approximately check those values by assuming that the
-// migration ran in the last 10 minutes.
-$migration_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime() - 10 * 60);
+// migration ran in the last 20 minutes.
+$migration_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime() - 20 * 60);
 $this->assertGreaterThan($migration_time, $collection->field_ar_creation_date->value);
 $this->assertGreaterThan($migration_time, $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
@@ -29,6 +29,12 @@ $this->assertReferences([
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['eProcurement'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertReferences([
+  'Dark Side of The Force',
+], $collection->get('field_ar_owner'));
+$this->assertReferences([
+  'DIGIT-CIPA-SUPPORT@ec.europa.eu',
+], $collection->get('field_ar_contact_information'));
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
@@ -47,6 +53,8 @@ $this->assertReferences([
 ], $collection->field_spatial_coverage);
 $this->assertReferences(['Defence'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
@@ -68,6 +76,8 @@ $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(['Finland'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
@@ -89,6 +99,8 @@ $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->field_spatial_coverage);
 $this->assertReferences(['Collaboration'], $collection->field_policy_domain);
 $this->assertEquals(0, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertStringEndsWith('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal. ', $collection->field_ar_abstract->value);
@@ -110,10 +122,21 @@ $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Styles Layer Descriptor',
   'KASPeR - Mapping application of statistical data e-dimensions',
+  'Core Location Vocabulary',
+  'DCAT application profile for data portals in Europe',
+  'Common Reporting Framework XBRL Project',
+  'Common Reporting Framework XBRL Project',
+  'Evaluation and Report Language (EARL) 1.0 Schema',
 ], $collection->field_ar_affiliates);
 $this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $collection->get('field_ar_owner'));
+$this->assertReferences([
+  'Geodetic Institute of Slovenia',
+], $collection->get('field_ar_contact_information'));
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('ashi', $collection->field_ar_abstract->value);

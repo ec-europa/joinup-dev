@@ -31,9 +31,15 @@ process:
     source: solution
     migration: solution
     no_stub: true
+  field_attachment:
+    plugin: migration
+    migration: attachment
+    source: fids
+    no_stub: true
 destination:
   plugin: entity:node
   default_bundle: discussion
 migration_dependencies:
   required:
     - solution
+    - attachment

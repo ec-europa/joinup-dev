@@ -15,6 +15,16 @@ use Drupal\migrate\Row;
 abstract class JoinupSqlBase extends SqlBase {
 
   /**
+   * File URL mode: Cardinality is 1, file has priority over URL.
+   */
+  const FILE_URL_MODE_SINGLE = 0;
+
+  /**
+   * File URL mode: Cardinality is unlimited, URL and files are cumulated.
+   */
+  const FILE_URL_MODE_MULTIPLE = 1;
+
+  /**
    * A list of source objects that should be checked for existing URIs.
    *
    * Migration source plugin classes should implement this property to declare

@@ -13,6 +13,7 @@ use Drupal\migrate\Row;
  */
 class News extends NodeBase {
 
+  use AttachmentTrait;
   use CountryTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -54,6 +55,9 @@ class News extends NodeBase {
 
     // State.
     $this->setState($row);
+
+    // Attachments.
+    $this->setAttachment($row);
 
     return parent::prepareRow($row);
   }
