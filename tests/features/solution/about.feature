@@ -48,6 +48,9 @@ Feature: About this solution
     # about page.
     When I click "About"
 
+    # The description.
+    Then I should see the text "Separating molecules by size."
+
     # Multiple instances of Contact information, each potentially having
     # multiple names, e-mail addresses and websites.
     Then I should see the following lines of text:

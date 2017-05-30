@@ -21,7 +21,10 @@ CREATE OR REPLACE VIEW d8_solution (
   logo_uid,
   metrics_page,
   state,
-  item_state
+  item_state,
+  contact_email,
+  owner_name,
+  owner_type
 ) AS
 SELECT
   m.collection,
@@ -46,7 +49,10 @@ SELECT
   IF(m.logo IS NOT NULL, -1, IF(m.type = 'asset_release', fl.uid, fpl.uid)),
   TRIM(cfu.field_id_uri_value),
   ws.state,
-  m.content_item_state
+  m.content_item_state,
+  field_project_common_contact_value,
+  m.owner_name,
+  m.owner_type
 FROM d8_mapping m
 INNER JOIN d8_prepare p ON m.collection = p.collection
 INNER JOIN node n ON m.nid = n.nid
@@ -71,6 +77,7 @@ LEFT JOIN content_type_documentation ctdl ON nl.vid = ctdl.vid
 LEFT JOIN files fl ON ctdl.field_documentation_access_url_fid = fl.fid
 LEFT JOIN content_field_project_soft_logo cfsl ON n.vid = cfsl.vid
 LEFT JOIN files fpl ON cfsl.field_project_soft_logo_fid = fpl.fid
+LEFT JOIN content_field_project_common_contact cfpcc ON n.vid = cfpcc.vid
 WHERE m.type IN('asset_release', 'project_project')
 AND m.migrate = 1
 AND (

@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('discussion', 4);
-$this->assertSuccessCount('discussion', 4);
+$this->assertTotalCount('discussion', 299);
+$this->assertSuccessCount('discussion', 299);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -61,3 +61,26 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
+
+// There are 44 discussions in Solution 'Core Location Vocabulary' but we test
+// only 'Format issue (release 1.00)' because we want to check how attachments
+// were migrated. Also the solution 'DCAT application profile for data portals
+// in Europe' is creating 251 discussions but we don't test them here because
+// they are valuable for 'comment' and 'comment_file' migration, they contain
+// comments with attachments.
+$solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
+$discussion = $this->loadEntityByLabel('node', 'Format issue (release 1.00)', 'discussion');
+$this->assertEquals('Format issue (release 1.00)', $discussion->label());
+$this->assertEquals('discussion', $discussion->bundle());
+$this->assertEquals(1356010265, $discussion->created->value);
+$this->assertEquals(1360231478, $discussion->changed->value);
+$this->assertEquals(1, $discussion->uid->target_id);
+$this->assertContains('<h2>Component</h2>', $discussion->body->value);
+$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertTrue($discussion->isPublished());
+$this->assertEquals($solution->id(), $discussion->og_audience->target_id);
+$this->assertEquals('validated', $discussion->field_state->value);
+$this->assertReferences([
+  'CoreLocTBCProblem.png',
+  'locn-v1.00-afterTBC load.rdf_.txt',
+], $discussion->field_attachment);

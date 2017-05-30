@@ -4,22 +4,30 @@ description: A discussion content bundle for the Joinup project.
 core: 8.x
 package: Joinup
 dependencies:
+  - comment
   - joinup_community_content
   - joinup_core
   - joinup_user
 
 config_devel:
+  - comment.type.reply
   - core.base_field_override.node.discussion.status
+  - core.entity_form_display.comment.reply.default
   - core.entity_form_display.node.discussion.default
+  - core.entity_view_display.comment.reply.default
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.moderation
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
+  - field.field.comment.reply.field_attachment
+  - field.field.comment.reply.field_body
+  - field.field.node.discussion.field_replies
   - field.field.node.discussion.body
   - field.field.node.discussion.field_attachment
-  - field.field.node.discussion.field_comments
   - field.field.node.discussion.field_policy_domain
   - field.field.node.discussion.field_shared_in
   - field.field.node.discussion.field_state
   - field.field.node.discussion.og_audience
+  - field.storage.node.field_replies
+  - field.storage.comment.field_attachment
   - node.type.discussion
