@@ -17,8 +17,8 @@ use Drupal\og\MembershipManager;
  * Provides a 'RecommendedContentBlock' block.
  *
  * @Block(
- *  id = "recommended_content_block",
- *  admin_label = @Translation("Frontpage block"),
+ *  id = "recommended_content",
+ *  admin_label = @Translation("Recommended content"),
  * )
  */
 class RecommendedContentBlock extends BlockBase implements ContainerFactoryPluginInterface {

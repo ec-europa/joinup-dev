@@ -7,15 +7,15 @@ dependencies:
     - user
   theme:
     - joinup_theme
-id: frontpageblock
+id: recommendedcontent
 theme: joinup_theme
 region: content
 weight: 0
 provider: null
-plugin: recommended_content_block
+plugin: recommended_content
 settings:
-  id: recommended_content_block
-  label: 'Frontpage block'
+  id: recommended_content
+  label: 'Recommended content'
   provider: joinup
   label_display: '0'
 visibility:

@@ -74,7 +74,7 @@ themes:
 
 config_devel:
   - block.block.footer_menu
-  - block.block.frontpageblock
+  - block.block.recommendedcontent
   - block.block.groupheader
   - block.block.menusubpages
   - block.block.userheader
