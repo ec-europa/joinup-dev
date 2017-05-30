@@ -75,6 +75,15 @@ class AnonymousDownloadForm extends FormBase {
     ];
 
     $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#ajax' => [
+        'wrapper' => $form['#id'],
+      ],
+    ];
+    // The cancel button is rendered after the submit button to leave the latter
+    // as default action.
     $form['actions']['cancel'] = [
       '#type' => 'button',
       '#value' => $this->t('No thanks') ,
@@ -83,13 +92,6 @@ class AnonymousDownloadForm extends FormBase {
       '#submit' => [],
       '#attributes' => [
         'class' => ['dialog-cancel'],
-      ],
-    ];
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Submit'),
-      '#ajax' => [
-        'wrapper' => $form['#id'],
       ],
     ];
 
