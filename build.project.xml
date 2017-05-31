@@ -11,6 +11,9 @@
     <!-- Import Phing targets related to Apache Solr. -->
     <import file="${project.basedir}/build.solr.xml" optional="true" />
 
+    <!-- Import Phing targets related to Piwik. -->
+    <import file="${project.basedir}/build.piwik.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 

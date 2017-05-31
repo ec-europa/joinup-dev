@@ -17,8 +17,8 @@ dependencies:
   - contextual
   - custom_page
   - dashboard
-  - ds
   - diff
+  - ds
   - dynamic_page_cache
   - editor
   - field_group
@@ -49,9 +49,9 @@ dependencies:
   - password_policy_character_types
   - password_policy_characters
   - password_policy_length
-  - password_policy_types_negate
   - path
   - persistent_login
+  - piwik
   - r4032login
   - rdf_draft
   - rdf_entity
@@ -74,6 +74,7 @@ themes:
 
 config_devel:
   - block.block.footer_menu
+  - block.block.recommendedcontent
   - block.block.groupheader
   - block.block.menusubpages
   - block.block.userheader
@@ -149,6 +150,7 @@ config_devel:
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy
+  - piwik.settings
   - system.theme
   - user.flood
   - user.mail

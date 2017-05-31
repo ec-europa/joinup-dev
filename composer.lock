@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3c0dee7708b0fd6a8d26debab09e80f",
+    "content-hash": "81a7b4c3aa7afb8e814570ec607aef5e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.28.1",
+            "version": "3.28.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "374225ec7e4ca2cc3edab2cd54b99ab383bfcbc6"
+                "reference": "8c3c45f73abfa377f37599da49d053e5d2347059"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/374225ec7e4ca2cc3edab2cd54b99ab383bfcbc6",
-                "reference": "374225ec7e4ca2cc3edab2cd54b99ab383bfcbc6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8c3c45f73abfa377f37599da49d053e5d2347059",
+                "reference": "8c3c45f73abfa377f37599da49d053e5d2347059",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-22T22:26:55+00:00"
+            "time": "2017-05-24T18:18:21+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2130,17 +2130,17 @@
         },
         {
             "name": "drupal/ds",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/ds",
-                "reference": "8.x-3.0"
+                "reference": "8.x-3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.0.zip",
-                "reference": "8.x-3.0",
-                "shasum": "f05791c33ddbc46e0c04318e4529e2a8fa3fb50d"
+                "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.1.zip",
+                "reference": "8.x-3.1",
+                "shasum": "1f7fd1bafed43844976d69b8c78513c84362facf"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -2155,7 +2155,7 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0",
+                    "version": "8.x-3.1",
                     "datestamp": "1495660084"
                 }
             },
@@ -2554,6 +2554,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2812,11 +2820,10 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3+3-dev",
-                    "datestamp": "1488167584"
+                    "version": "8.x-3.0-alpha3+4-dev",
+                    "datestamp": "1488210483"
                 },
                 "patches_applied": {
-                    "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch",
                     "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
                 }
             },
@@ -2994,6 +3001,58 @@
             "time": "2016-12-02 20:39:55"
         },
         {
+            "name": "drupal/piwik",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/piwik",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "a2b5b77a92da5c7198b93bb264eac7ef4795089a"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/php": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1470845524"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/u/hass"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/247808/committers"
+                }
+            ],
+            "description": "Adds Piwik javascript tracking code to all your site's pages",
+            "homepage": "https://www.drupal.org/project/piwik",
+            "support": {
+                "source": "http://git.drupal.org/project/piwik.git",
+                "issues": "https://www.drupal.org/project/issues/piwik"
+            }
+        },
+        {
             "name": "drupal/r4032login",
             "version": "dev-1.x",
             "source": {
@@ -3090,7 +3149,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1494413585"
+                    "datestamp": "1494495709"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -4280,7 +4339,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -8624,16 +8683,16 @@
         },
         {
             "name": "jcalderonzumba/gastonjs",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jcalderonzumba/gastonjs.git",
-                "reference": "4d7fe5f8a92f247bafa618189ea0fb60f82fb7ff"
+                "reference": "575a9c18d8b87990c37252e8d9707b29f0a313f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jcalderonzumba/gastonjs/zipball/4d7fe5f8a92f247bafa618189ea0fb60f82fb7ff",
-                "reference": "4d7fe5f8a92f247bafa618189ea0fb60f82fb7ff",
+                "url": "https://api.github.com/repos/jcalderonzumba/gastonjs/zipball/575a9c18d8b87990c37252e8d9707b29f0a313f3",
+                "reference": "575a9c18d8b87990c37252e8d9707b29f0a313f3",
                 "shasum": ""
             },
             "require": {
@@ -8677,7 +8736,7 @@
                 "headless",
                 "phantomjs"
             ],
-            "time": "2016-11-10T11:26:43+00:00"
+            "time": "2017-03-31T07:31:47+00:00"
         },
         {
             "name": "jcalderonzumba/mink-phantomjs-driver",
