@@ -237,7 +237,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $query->setCountQuery($count_query);
     }
 
-    if ($items->access('administer comments')) {
+    if (!$items->access('administer comments')) {
       $query->condition('c.status', CommentInterface::PUBLISHED);
       if ($comments_per_page) {
         $count_query->condition('c.status', CommentInterface::PUBLISHED);
