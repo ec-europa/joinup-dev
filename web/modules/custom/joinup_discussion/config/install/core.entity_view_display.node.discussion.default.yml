@@ -14,6 +14,7 @@ dependencies:
   module:
     - comment
     - ds
+    - file
     - link
     - options
     - text
@@ -30,6 +31,23 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_attachment:
+    type: file_table
+    weight: 9
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: with_label
   field_policy_domain:
     weight: 0
     label: hidden
@@ -123,4 +141,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_attachment: true
+  langcode: true

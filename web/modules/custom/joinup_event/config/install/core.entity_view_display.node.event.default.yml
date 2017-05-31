@@ -29,8 +29,8 @@ dependencies:
     - comment
     - datetime
     - ds
+    - file
     - image
-    - joinup_core
     - link
     - text
     - user
@@ -46,6 +46,23 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_attachment:
+    type: file_table
+    weight: 14
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: with_label
   field_comments:
     weight: 11
     label: above
@@ -219,7 +236,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_attachment: true
   field_keywords: true
   field_organisation: true
   field_organisation_type: true
@@ -227,4 +243,5 @@ hidden:
   field_scope: true
   field_short_title: true
   field_state: true
+  langcode: true
   og_audience: true
