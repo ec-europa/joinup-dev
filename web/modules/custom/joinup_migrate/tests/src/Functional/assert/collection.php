@@ -8,20 +8,14 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('collection', 5);
-$this->assertSuccessCount('collection', 5);
+$this->assertTotalCount('collection', 7);
+$this->assertSuccessCount('collection', 7);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
 $collection = $new_collection;
 $this->assertEquals('New collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-// This collection is new, thus its creation and modification time is the
-// migration time. We approximately check those values by assuming that the
-// migration ran in the last 20 minutes.
-$migration_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime() - 20 * 60);
-$this->assertGreaterThan($migration_time, $collection->field_ar_creation_date->value);
-$this->assertGreaterThan($migration_time, $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'The administrative geography and civil voting area ontology',
@@ -32,25 +26,18 @@ $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $collection->get('field_ar_owner'));
-$this->assertReferences([
-  'DIGIT-CIPA-SUPPORT@ec.europa.eu',
-], $collection->get('field_ar_contact_information'));
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 
-$collection = $this->loadEntityByLabel('rdf_entity', 'More than one Community or Repository');
-$this->assertEquals('More than one Community or Repository', $collection->label());
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with erroneous items');
+$this->assertEquals('Collection with erroneous items', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1413718284), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1413718284), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
-$this->assertReferences([
-  'Italy',
-  'European Union',
-], $collection->field_spatial_coverage);
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Defence'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertTrue($collection->get('field_ar_owner')->isEmpty());
@@ -58,36 +45,30 @@ $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
-$this->assertEquals("<p>We started a free italian repository and we will present it on October 25th for the Italian GnuLinuxDay.</p>\r\n", $collection->field_ar_description->value);
-$this->assertEquals('content_editor', $collection->field_ar_description->format);
-$logo = File::load($collection->field_ar_logo->target_id);
-$this->assertEquals('public://collection/logo/SputnixLogo.jpg', $logo->getFileUri());
-$this->assertFileExists('public://collection/logo/SputnixLogo.jpg');
-$this->assertEquals(8069, filesize('public://collection/logo/SputnixLogo.jpg'));
-$this->assertEquals('http://www.sputnix.it/jit/index.php?option=com_content&view=article&id=138:repository', $collection->field_ar_access_url->uri);
+$this->assertTrue($collection->get('field_ar_description')->isEmpty());
 
-$collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Repository');
-$this->assertEquals('Collection from Repository', $collection->label());
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
+$this->assertEquals('Collection from Project', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1357303053), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1432113701), $collection->field_ar_modification_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462873423), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
-$this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
-$this->assertReferences(['Finland'], $collection->field_spatial_coverage);
+$this->assertReferences([
+  'Asset Description Metadata Schema (ADMS)',
+], $collection->get('field_ar_affiliates'));
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
-$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
-$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertReferences([
+  'Dark Side of The Force',
+], $collection->get('field_ar_owner'));
+$this->assertReferences(['contact@semic.eu'], $collection->get('field_ar_contact_information'));
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
-$this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
-$this->assertStringEndsWith("standards and different publications</span></p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('The Asset Description Metadata Schema (ADMS) is a metadata vocabulary to describe semantic interoperability assets.', $collection->get('field_ar_abstract')->value);
+$this->assertStringEndsWith("Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
-$logo = File::load($collection->field_ar_logo->target_id);
-$this->assertEquals('public://collection/logo/yhteentoimivuus_logo.PNG', $logo->getFileUri());
-$this->assertFileExists('public://collection/logo/yhteentoimivuus_logo.PNG');
-$this->assertEquals(10246, filesize('public://collection/logo/yhteentoimivuus_logo.PNG'));
-$this->assertEquals('https://www.avoindata.fi/', $collection->field_ar_access_url->uri);
+$this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
@@ -110,14 +91,13 @@ $this->assertEquals('content_editor', $collection->field_ar_description->format)
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
-$this->assertEquals(46068, filesize('public://collection/logo/epdp_final_logo1-01.png'));
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1435974264), $collection->field_ar_modification_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323263112), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1404313500), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Styles Layer Descriptor',
@@ -128,23 +108,66 @@ $this->assertReferences([
   'Common Reporting Framework XBRL Project',
   'Evaluation and Report Language (EARL) 1.0 Schema',
 ], $collection->field_ar_affiliates);
-$this->assertReferences(['Thailand'], $collection->field_spatial_coverage);
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertReferences([
-  'Geodetic Institute of Slovenia',
+  'La forja de Guadalinex',
+  'ACME University',
 ], $collection->get('field_ar_owner'));
-$this->assertReferences([
-  'Geodetic Institute of Slovenia',
-], $collection->get('field_ar_contact_information'));
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
-$this->assertEquals('ashi', $collection->field_ar_abstract->value);
-$this->assertEquals('content_editor', $collection->field_ar_abstract->format);
-$this->assertStringEndsWith("โตเกียว แนะนำในแต่ละแห่งว่ามีที่ไหนน่าสนใจบ้าง</p>\r\n", $collection->field_ar_description->value);
+$this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
+$this->assertStringEndsWith("suitable for old computers, and netbooks)</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);
-$this->assertEquals('public://collection/logo/girls_fans_33_resize.jpg', $logo->getFileUri());
-$this->assertFileExists('public://collection/logo/girls_fans_33_resize.jpg');
-$this->assertEquals(55543, filesize('public://collection/logo/girls_fans_33_resize.jpg'));
+$this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/guadalinex.JPG');
+$this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
+
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
+$this->assertEquals('Collection with 2 entities having custom section', $collection->label());
+$this->assertEquals('collection', $collection->bundle());
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1481725653), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1482240807), $collection->field_ar_modification_date->value);
+$this->assertEquals('default', $collection->graph->value);
+$this->assertReferences([
+  'Digital Signature Service',
+], $collection->get('field_ar_affiliates'));
+$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertReferences(['Open government'], $collection->field_policy_domain);
+$this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertEquals(1, $collection->field_ar_moderation->value);
+$this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('EIC (European Interoperability Catalogue)', $collection->get('field_ar_abstract')->value);
+$this->assertStringEndsWith("cross-sector setting.</p>\r\n<p>&nbsp;</p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
+$logo = File::load($collection->field_ar_logo->target_id);
+$this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/eic.jpg');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
+$this->assertEquals('Collection with 1 entity having custom section', $collection->label());
+$this->assertEquals('collection', $collection->bundle());
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1282400000), $collection->field_ar_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458318547), $collection->field_ar_modification_date->value);
+$this->assertEquals('default', $collection->graph->value);
+$this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
+$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertReferences(['Open government'], $collection->field_policy_domain);
+$this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
+$this->assertTrue($collection->get('field_ar_owner')->isEmpty());
+$this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
+$this->assertEquals(1, $collection->field_ar_moderation->value);
+$this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('<p>ISA</p>', $collection->get('field_ar_abstract')->value);
+$this->assertStringEndsWith("ISA<sup>2</sup> programme</span></a><span style=\"color:#0064a3;\">.</span></strong></p>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
+$logo = File::load($collection->field_ar_logo->target_id);
+$this->assertEquals('public://collection/logo/Logo_project-isa-logo-2.jpg', $logo->getFileUri());
+$this->assertFileExists('public://collection/logo/Logo_project-isa-logo-2.jpg');
+$this->assertEquals('http://ec.europa.eu/isa/', $collection->get('field_ar_access_url')->uri);
