@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_date
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_logo
     - field.field.node.event.field_event_start_date
@@ -28,6 +29,7 @@ dependencies:
   module:
     - comment
     - datetime
+    - datetime_range
     - ds
     - image
     - joinup_core
@@ -94,6 +96,16 @@ content:
       joinup:
         template_suggestion: fieldset
     type: basic_string
+    region: content
+  field_event_date:
+    weight: 14
+    label: hidden
+    settings:
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: daterange_default
     region: content
   field_event_end_date:
     weight: 5
@@ -227,4 +239,5 @@ hidden:
   field_scope: true
   field_short_title: true
   field_state: true
+  langcode: true
   og_audience: true
