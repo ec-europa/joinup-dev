@@ -52,7 +52,7 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
       return;
     }
 
-    $type = $node->{'file type'} ?? 'remote';
+    $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
     if ($type === 'remote') {
       $node->field_file = $node->file;
     }

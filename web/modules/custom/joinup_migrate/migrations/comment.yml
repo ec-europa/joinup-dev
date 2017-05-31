@@ -7,8 +7,6 @@ source:
   plugin: comment
   constants:
     entity_type: node
-    comment_type: comment
-    field_name: field_comments
 process:
   pid:
     plugin: migration
@@ -27,8 +25,8 @@ process:
     - plugin: skip_on_empty
       method: row
       message: 'No migrated parent node'
-  comment_type: constants/comment_type
-  field_name: constants/field_name
+  comment_type: comment_type
+  field_name: field_name
   subject:
     plugin: callback
     source: subject
@@ -37,6 +35,7 @@ process:
     - plugin: migration
       source: uid
       migration: user
+      no_stub: true
     - plugin: default_value
       default_value: 0
   name: name
@@ -50,12 +49,17 @@ process:
   field_body:
     plugin: html_to_plain_text
     source: comment
+  field_attachment:
+    plugin: migration
+    source: fids
+    migration: comment_file
+    no_stub: true
 destination:
   plugin: entity:comment
-  default_bundle: comment
 migration_dependencies:
   required:
     - discussion
     - document
     - event
     - news
+    - comment_file
