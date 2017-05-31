@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e11ebf7b71c78ae1299b1c3b7ba863e2",
+    "content-hash": "7c5073d1aa7217d26a9a4cbe4631d147",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1884,7 +1884,7 @@
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
                     "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
-                    "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-5.patch"
+                    "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-7.patch"
                 }
             },
             "autoload": {
