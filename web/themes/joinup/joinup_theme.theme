@@ -206,6 +206,10 @@ function joinup_theme_preprocess_block(&$variables) {
   if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
     $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
   }
+  // The front page is also shown as a listing of entities.
+  if ($variables['elements']['#id'] === 'frontpageblock') {
+    $variables['is_listing'] = TRUE;
+  }
 }
 
 /**

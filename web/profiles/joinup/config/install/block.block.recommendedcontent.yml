@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+    - system
+    - user
+  theme:
+    - joinup_theme
+id: recommendedcontent
+theme: joinup_theme
+region: content
+weight: 0
+provider: null
+plugin: recommended_content
+settings:
+  id: recommended_content
+  label: 'Recommended content'
+  provider: joinup
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
