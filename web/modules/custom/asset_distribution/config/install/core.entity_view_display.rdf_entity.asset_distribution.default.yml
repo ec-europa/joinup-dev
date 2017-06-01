@@ -32,7 +32,7 @@ content:
     label: hidden
     settings:
       hosted_files_title: Download
-      show_remote_files: '1'
+      show_remote_files: true
       remote_files_title: External
     third_party_settings:
       ds:
