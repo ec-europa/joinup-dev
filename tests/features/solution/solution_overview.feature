@@ -81,8 +81,7 @@ Feature: Solutions Overview
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    # The "Documentation" file field has an hidden label that we can target.
-    And I attach the file "text.pdf" to "File"
+    And I upload the file "text.pdf" to "Documentation"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Information example"

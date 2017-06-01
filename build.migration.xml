@@ -23,9 +23,10 @@
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${migration.ids}</param>
+            <option name="all" />
             <option name="feedback" value="1000" />
             <option name="force" />
+            <option name="timestamp" />
         </drush>
         <drush
              command="cset"

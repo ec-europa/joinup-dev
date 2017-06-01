@@ -55,5 +55,11 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       ]),
     ],
     '#access' => $url->access(),
+
+  ];
+  $build['#cache'] = [
+    'contexts' => [
+      'og_role',
+    ],
   ];
 }

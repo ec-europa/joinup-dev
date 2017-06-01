@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
  */
 class Event extends NodeBase {
 
+  use AttachmentTrait;
   use KeywordsTrait;
   use StateTrait;
 
@@ -115,6 +116,9 @@ class Event extends NodeBase {
 
     // State.
     $this->setState($row);
+
+    // Attachments.
+    $this->setAttachment($row);
 
     return parent::prepareRow($row);
   }

@@ -84,8 +84,10 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
       'publisher' => $this->t('Publisher'),
+      'owner_text_name' => $this->t('Text owner name'),
+      'owner_text_type' => $this->t('Text owner type'),
       'contact' => $this->t('Contact'),
-      'collection_owner' => $this->t('Collection owner'),
+      'contact_email' => $this->t('Contact E-mail'),
       'state' => $this->t('State'),
       'roles' => $this->t('Roles'),
     ];

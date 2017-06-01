@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('release', 8);
-$this->assertSuccessCount('release', 8);
+$this->assertTotalCount('release', 57);
+$this->assertSuccessCount('release', 57);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $release */
@@ -114,6 +114,54 @@ $this->assertReferences([
   'Quick start guide 3.2.0',
   'Release notes 3.2.0',
   'Pmodes Presentation (eDelivery)-v1.00',
+], $release->field_isr_distribution);
+$this->assertReferences(['Completed'], $release->get('field_status'));
+$this->assertEquals('draft', $release->field_isr_state->value);
+
+$release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.2', 'asset_release');
+$this->assertEquals('Core Location Vocabulary 0.2', $release->label());
+$this->assertEquals('asset_release', $release->bundle());
+$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1329468540), $release->field_isr_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458817654), $release->field_isr_modification_date->value);
+$this->assertReferences([
+  'core_vocabularies-location_issues_raised_within_working_group-v02zip',
+  'core_location_vocabulary_use-cases-v02zip',
+  'core_vocabularies-business_location_person-specification-v02zip',
+  'core_vocabularies-business_location_person-xml_schema-v02zip',
+  'location_rdf_schema-v01zip',
+], $release->field_isr_distribution);
+$this->assertReferences(['Deprecated'], $release->get('field_status'));
+$this->assertEquals('draft', $release->field_isr_state->value);
+
+$release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.3', 'asset_release');
+$this->assertEquals('Core Location Vocabulary 0.3', $release->label());
+$this->assertEquals('asset_release', $release->bundle());
+$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1335801026), $release->field_isr_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458840630), $release->field_isr_modification_date->value);
+$this->assertReferences([
+  'core_vocabularies-business_location_person-specification-v03zip',
+], $release->field_isr_distribution);
+$this->assertReferences(['Deprecated'], $release->get('field_status'));
+$this->assertEquals('draft', $release->field_isr_state->value);
+
+$release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 1.00', 'asset_release');
+$this->assertEquals('Core Location Vocabulary 1.00', $release->label());
+$this->assertEquals('asset_release', $release->bundle());
+$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1336376126), $release->field_isr_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467128099), $release->field_isr_modification_date->value);
+$this->assertReferences([
+  'Core_Vocabularies-Location_Issues_Raised_within_Working_Group-v1.00.zip',
+  'Core_Vocabularies-Business_Location_Person_v1.00_Conceptual_Model_0.zip',
+  'CoreLocation-v1.00.xsd.html',
+  'core_vocabularies-location_v100_specification_pdf',
+  'locn-v1.00.rdf.html',
+  'locn-v1.00.rdf',
+  'CoreLocation-v1.00.xsd',
+  'Core_Vocabularies-Business_Location_Person_v1.00_RDF_Schema_zip',
+  'Core_Vocabularies-Business_Location_Person_v1.00_Specification_zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Completed'], $release->get('field_status'));
 $this->assertEquals('draft', $release->field_isr_state->value);

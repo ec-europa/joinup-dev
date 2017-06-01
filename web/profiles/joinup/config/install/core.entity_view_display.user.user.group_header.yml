@@ -133,5 +133,6 @@ hidden:
   field_user_frequency: true
   field_user_group_types: true
   field_user_subscription_events: true
+  langcode: true
   simplenews: true
   user_field_user_content_top: true

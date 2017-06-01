@@ -206,6 +206,10 @@ function joinup_theme_preprocess_block(&$variables) {
   if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
     $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
   }
+  // The front page is also shown as a listing of entities.
+  if ($variables['elements']['#id'] === 'frontpageblock') {
+    $variables['is_listing'] = TRUE;
+  }
 }
 
 /**
@@ -503,17 +507,19 @@ function joinup_theme_preprocess_comment(&$variables) {
   if ($photo_target) {
     $photo_target = $photo_target[0]['target_id'];
     /** @var \Drupal\file\Entity\File $file */
-    $file = File::load($photo_target);
-    $uri = $file->getFileUri();
-    $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
-    $variables['profile_icon'] = [
-      '#markup' => $url,
-      '#cache' => [
-        'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()->getListCacheTags()),
-        'contexts' => $user->getCacheContexts(),
-        'max-age' => $user->getCacheMaxAge(),
-      ],
-    ];
+    if ($file = File::load($photo_target)) {
+      $uri = $file->getFileUri();
+      $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
+      $variables['profile_icon'] = [
+        '#markup' => $url,
+        '#cache' => [
+          'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()
+            ->getListCacheTags()),
+          'contexts' => $user->getCacheContexts(),
+          'max-age' => $user->getCacheMaxAge(),
+        ],
+      ];
+    }
   }
 }
 

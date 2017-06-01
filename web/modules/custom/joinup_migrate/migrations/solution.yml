@@ -14,14 +14,22 @@ process:
     source: nid
     migration: solution_banner
     no_stub: true
-
-  # Contact info imported from 'project_project' is handled in ISAICP-3103.
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3103
-  field_is_contact_information:
+  contact_from_node:
     plugin: migration
     source: contact
     migration: contact
     no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_is_contact_information:
+    plugin: merge
+    source:
+      - @contact_from_node
+      - @contact_from_email
+    unique: true
   field_is_creation_date: created_time
   field_is_description/value: body
   field_is_description/format:
@@ -42,17 +50,27 @@ process:
     no_stub: true
   field_is_metrics_page: metrics_page
   field_is_modification_date: changed_time
-  field_is_owner:
+  owner_from_publisher:
     plugin: migration
     source: owner
     migration: owner
     no_stub: true
+  owner_from_text:
+    plugin: migration
+    source:
+      - owner_name
+      - owner_type
+    migration: owner_text
+    no_stub: true
+  field_is_owner:
+    plugin: merge
+    source:
+      - @owner_from_publisher
+      - @owner_from_text
+    unique: true
   field_policy_domain:
     plugin: policy_domain
     source: policy2
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
-  # field_is_related_solutions:
 
   # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
   # field_is_solution_type:
@@ -63,10 +81,6 @@ process:
     vocabulary: spatial
   field_is_state: state
   field_status: status
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3019
-  # field_is_translation:
-
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution
@@ -77,4 +91,5 @@ migration_dependencies:
     - distribution
     - owner
     - contact
+    - contact_email
     - documentation_file

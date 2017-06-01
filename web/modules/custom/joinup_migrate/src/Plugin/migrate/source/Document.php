@@ -16,6 +16,7 @@ class Document extends NodeBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use LicenceTrait;
   use StateTrait;
 
   /**
@@ -48,7 +49,6 @@ class Document extends NodeBase {
       'document_type',
       'publication_date',
       'original_url',
-      'file_path',
       'policy_context',
       'desc_target_users_groups',
       'desc_implementation',
@@ -76,7 +76,12 @@ class Document extends NodeBase {
     $vid = $row->getSourceProperty('vid');
 
     // Resolve 'field_file'.
-    $this->setFileUrlTargetId($row, 'field_file', ['nid' => $nid], 'file_path', 'document_file', 'original_url');
+    $file_source_id_values = $this->select('d8_document_file', 'df')
+      ->fields('df', ['nid', 'delta'])
+      ->condition('df.nid', $nid)
+      ->execute()
+      ->fetchAll();
+    $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, 'document_file', 'original_url', JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
@@ -119,6 +124,20 @@ class Document extends NodeBase {
 
     // State.
     $this->setState($row);
+
+    // Licence.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $licence = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The License of document vocabulary vid is 56.
+      ->condition('td.vid', 56)
+      ->execute()
+      ->fetchField();
+    $row->setSourceProperty('licence', $licence ?: NULL);
+    $this->setLicence($row, 'document');
 
     return parent::prepareRow($row);
   }
