@@ -88,7 +88,7 @@ function joinup_community_content_form_node_form_alter(&$form, FormStateInterfac
 }
 
 /**
- * #process handler for the file attachment fields of community content forms.
+ * Form #process handler for the file fields of community content forms.
  *
  * @see \joinup_community_content_form_node_form_alter()
  */
