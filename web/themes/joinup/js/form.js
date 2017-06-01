@@ -45,6 +45,9 @@
       $(context).find('form').once('ajaxReload').each(function () {
         $(document).ajaxComplete(function (event, xhr, settings) {
           componentHandler.upgradeAllRegistered();
+          $('.mdl-js-checkbox').each(function (index, element) {
+            element.MaterialCheckbox.updateClasses_();
+          })
         });
       });
     }
