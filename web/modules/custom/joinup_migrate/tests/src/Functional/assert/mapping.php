@@ -190,7 +190,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'row_index' => '36',
   ],
-  26768 => [
+  66790 => [
     'type' => 'community',
     'collection' => 'Collection with 1 entity having custom section',
     'policy2' => 'Open government',

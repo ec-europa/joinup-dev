@@ -67,14 +67,6 @@ abstract class JoinupSqlBase extends SqlBase {
   protected function getLegacySiteWebRoot() {
     $webroot = Settings::get('joinup_migrate.source.root');
     $webroot = rtrim($webroot, '/');
-
-    try {
-      FileUtility::checkLegacySiteWebRoot($webroot);
-    }
-    catch (\Exception $exception) {
-      throw new MigrateException($exception->getMessage());
-    }
-
     return $webroot;
   }
 

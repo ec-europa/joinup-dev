@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\joinup_migrate\MockFileSystem;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -203,123 +204,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $migration = $this->manager->createInstance('prepare');
     $this->executeMigration($migration, $migration->id(), TRUE);
 
-    $this->createTestFiles($legacy_webroot);
-  }
-
-  /**
-   * Mocks a list of zero sized files to be imported during the test.
-   *
-   * @param string $base_dir
-   *   The base directory for referring testing files.
-   */
-  protected function createTestFiles($base_dir) {
-    $files = [];
-
-    // Add 'discussion', 'event', 'news' attachments.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_attachment', 'a')
-        ->fields('a', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'collection' logos.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_collection', 'c')
-        ->fields('c', ['logo'])
-        ->isNotNull('c.logo')
-        ->condition('c.logo', 'sites/default/files/%', 'LIKE')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'comment' files.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_comment_file', 'f')
-        ->fields('f', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'distribution' files.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_distribution', 'd')
-        ->fields('d', ['file_path'])
-        ->isNotNull('d.file_path')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'document' files.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_document_file', 'df')
-        ->fields('df', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'documentation' files.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_documentation_file', 'df')
-        ->fields('df', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'event' logos.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_event', 'e')
-        ->fields('e', ['file_path'])
-        ->isNotNull('e.file_path')
-        ->condition('e.file_path', '', '<>')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'solution' logos.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_solution', 's')
-        ->fields('s', ['logo'])
-        ->isNotNull('s.logo')
-        ->condition('s.logo', 'sites/default/files/%', 'LIKE')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'user' photos.
-    $files = array_merge(
-      $files,
-      $this->legacyDb->select('d8_user', 'u')
-        ->fields('u', ['photo_path'])
-        ->isNotNull('u.photo_path')
-        ->condition('u.photo_path', '', '<>')
-        ->execute()
-        ->fetchCol()
-    );
-
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = $this->container->get('file_system');
-
-    foreach ($files as $file) {
-      $path = $base_dir . DIRECTORY_SEPARATOR . pathinfo($file, PATHINFO_DIRNAME);
-      $file_name = pathinfo($file, PATHINFO_BASENAME);
-      if (!is_dir($path)) {
-        $file_system->mkdir($path, NULL, TRUE);
-      }
-      $file_path = $path . DIRECTORY_SEPARATOR . $file_name;
-      if (!file_exists($file_path)) {
-        // Create a '0 size' file.
-        touch($path . DIRECTORY_SEPARATOR . $file_name);
-      }
-    }
+    // For performance reasons we don't import real files from the Drupal 6
+    // platform but we create, locally, a fake copy of the source file system
+    // with "zero size" files.
+    MockFileSystem::createTestingFiles($legacy_webroot, $this->legacyDb);
   }
 
   /**
