@@ -9,7 +9,7 @@
   margin-left: 25px
 
 .form-table__cell
-  padding: 0 15px
+  padding: 15px
 
 thead th.form-table__header
   padding: 15px
@@ -25,13 +25,12 @@ thead th.form-table__header
   padding: 0
 
 #password-policy-status
+  @extend .form-wrapper
   table
-    font-size: 13px
-    margin: 15px 0 30px
+    th:first-child, td:first-child
+      display: none
 
-    .form-table__label
-      color: rgba(0,0,0, 0.87)
-      font-weight: 600
-
-    .form-table__cell
-      padding: 15px
+.form-type-password-confirm
+  @extend .form-wrapper
+  input.password-confirm
+    @extend .form-wrapper

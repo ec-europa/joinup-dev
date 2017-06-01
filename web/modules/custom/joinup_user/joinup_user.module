@@ -206,20 +206,6 @@ function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function joinup_user_form_user_form_alter(&$form, &$form_state) {
-  if (!empty($form['account']['password_policy_status'])) {
-    if ($form['account']['password_policy_status']['#header'][0] == t('Policy')) {
-      unset($form['account']['password_policy_status']['#header'][0]);
-    }
-    foreach ($form['account']['password_policy_status']['#rows'] as $key => $row) {
-      unset($form['account']['password_policy_status']['#rows'][$key]['policy']);
-    }
-  }
-}
-
-/**
  * Form validation callback: Keep track of the form being validated/submitted.
  */
 function joinup_user_form_alter_validate(&$form, FormStateInterface $form_state) {
