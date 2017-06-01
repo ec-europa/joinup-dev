@@ -634,6 +634,36 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Fills the date or time component of a date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I fill the :date :component of the :field widget with :value
+   */
+  public function fillDateRangeField($field, $date, $component, $value) {
+    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+
+    if (!$fieldset) {
+      throw new \Exception("The '$field' field was not found.");
+    }
+
+    $date = ucfirst($date) . ' date';
+    /** @var \Behat\Mink\Element\NodeElement $element */
+    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
+    $element->fillField(ucfirst($component), $value);
+  }
+
+  /**
    * Checks that the given node has the expected workflow state.
    *
    * @param string $title
