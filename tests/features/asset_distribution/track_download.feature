@@ -70,6 +70,14 @@ Feature: Asset distribution editing.
     When I press "No thanks" in the "Modal buttons" region
     Then the modal should be closed
 
+    # Verify that the modal also shows in the overview page.
+    When I click "Details" in the "Changelog" asset distribution
+    Then I should see the link "Download"
+    When I click "Download"
+    Then a modal should open
+    When I press "No thanks" in the "Modal buttons" region
+    Then the modal should be closed
+
     When I am logged in as a user with the moderator role
     And I go to the distribution downloads page
     Then I should see the following download entries:
