@@ -9,9 +9,8 @@ dependencies:
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
-    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
     - field.field.node.event.field_location
@@ -54,9 +53,8 @@ hidden:
   field_event_adtl_address_info: true
   field_event_agenda: true
   field_event_contact_email: true
-  field_event_end_date: true
+  field_event_date: true
   field_event_logo: true
-  field_event_start_date: true
   field_event_web_url: true
   field_keywords: true
   field_location: true

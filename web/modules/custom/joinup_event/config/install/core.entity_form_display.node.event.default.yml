@@ -9,9 +9,7 @@ dependencies:
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_date
-    - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
     - field.field.node.event.field_location
@@ -27,7 +25,6 @@ dependencies:
     - node.type.event
   module:
     - comment
-    - datetime
     - datetime_range
     - file
     - image
@@ -100,12 +97,6 @@ content:
     third_party_settings: {  }
     type: daterange_default
     region: content
-  field_event_end_date:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
   field_event_logo:
     weight: 5
     settings:
@@ -113,12 +104,6 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
-    region: content
-  field_event_start_date:
-    type: datetime_default
-    weight: 7
-    settings: {  }
-    third_party_settings: {  }
     region: content
   field_event_web_url:
     weight: 14
@@ -196,7 +181,6 @@ content:
 hidden:
   created: true
   field_shared_in: true
-  langcode: true
   og_audience: true
   path: true
   promote: true
