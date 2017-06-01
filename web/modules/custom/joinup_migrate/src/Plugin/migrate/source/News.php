@@ -13,7 +13,6 @@ use Drupal\migrate\Row;
  */
 class News extends NodeBase {
 
-  use AttachmentTrait;
   use CountryTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -57,7 +56,12 @@ class News extends NodeBase {
     $this->setState($row);
 
     // Attachments.
-    $this->setAttachment($row);
+    $fids = $this->select('content_field_documentation', 'a')
+      ->fields('a', ['field_documentation_fid'])
+      ->condition('a.vid', $row->getSourceProperty('vid'))
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('fids', $fids);
 
     return parent::prepareRow($row);
   }
