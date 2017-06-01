@@ -651,11 +651,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I fill the :date :component of the :field widget with :value
    */
   public function fillDateRangeField($field, $date, $component, $value) {
-    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
-
-    if (!$fieldset) {
-      throw new \Exception("The '$field' field was not found.");
-    }
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue($value);
+  }
 
     $date = ucfirst($date) . ' date';
     /** @var \Behat\Mink\Element\NodeElement $element */
