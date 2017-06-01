@@ -90,6 +90,7 @@ Feature: June 2016 demo
     Then I should see the following collection menu items in the specified order:
       | text               |
       | Overview           |
+      | Members            |
       | About              |
       | S.H.I.E.L.D. Home  |
       | About S.H.I.E.L.D. |
@@ -116,6 +117,7 @@ Feature: June 2016 demo
     And  I should see the following collection menu items in the specified order:
       | text               |
       | Overview           |
+      | Members            |
       | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |
@@ -191,6 +193,7 @@ Feature: June 2016 demo
     Then I should see the following collection menu items in the specified order:
       | text               |
       | Overview           |
+      | Members            |
       | About              |
     # @todo: When ISAICP-2369 is in, this menu item should be moved to the end of the list.
       | How to apply       |

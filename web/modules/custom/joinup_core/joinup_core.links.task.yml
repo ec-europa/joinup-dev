@@ -1,4 +1,0 @@
-joinup_core.members:
-  route_name: 'joinup_core.members'
-  title: 'Members'
-  base_route: entity.rdf_entity.canonical

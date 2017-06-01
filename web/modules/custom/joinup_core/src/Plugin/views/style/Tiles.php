@@ -7,6 +7,23 @@ use Drupal\views\Plugin\views\style\StylePluginBase;
 /**
  * A Views style that renders markup for Bootstrap tabs.
  *
+ * How to use this:
+ * 1. Create a view that uses the 'Tiles' style (called 'format' in the UI).
+ * 2. If needed implement a preprocess hook to massage the data. The following
+ *    preprocess hooks are available, in order of precedence:
+ *    - joinup_tiles__{view_name}__{display_name}
+ *    - joinup_tiles__{display_name}
+ *    - joinup_tiles__{view_name}
+ *    The default preprocess hook is `joinup_tiles` (ref.
+ *    template_preprocess_joinup_tiles()).
+ * 3. Override the Twig templates if needed. The default implementation is in
+ *    joinup-tiles.html.twig.
+ *
+ * For some examples see `joinup_theme_preprocess_joinup_tiles__*()` and the
+ * corresponding Twig templates.
+ *
+ * @see template_preprocess_joinup_tiles()
+ *
  * @ingroup views_style_plugins
  *
  * @ViewsStyle(
