@@ -48,7 +48,7 @@ Feature: "Add discussion" visibility options.
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution
-    And I click "Add discussion"
+    And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
 
@@ -56,11 +56,19 @@ Feature: "Add discussion" visibility options.
     And I should not see the text "Revision information"
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
 
+    # Check required fields.
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Upload"
+    And I press "Publish"
+    Then I should see the following lines of text:
+      | Title field is required.            |
+      | File description field is required. |
+      | Content field is required.          |
+
     When I fill in the following:
-      | Title          | Flight of Girlfriend                       |
-      | Content        | This is going to be an amazing discussion. |
-      | Add a new file | test.zip                                   |
-      | Add a new file | text.pdf                                   |
+      | Title            | Flight of Girlfriend                       |
+      | Content          | This is going to be an amazing discussion. |
+      | File description | A picture of a flying girlfriend.          |
     And I press "Publish"
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
