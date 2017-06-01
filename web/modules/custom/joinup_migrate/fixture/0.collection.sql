@@ -55,4 +55,3 @@ LEFT JOIN content_type_repository ctr ON n.vid = ctr.vid
 LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid
 LEFT JOIN files fr ON ctr.field_repository_logo_fid = fr.fid
 LEFT JOIN og o ON n.nid = o.nid
-ORDER BY p.collection ASC

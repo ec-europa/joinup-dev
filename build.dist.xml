@@ -129,7 +129,6 @@
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
-                legacyWebroot="${phpunit.migrate.legacy_site.webroot}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 

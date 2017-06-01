@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('discussion', 299);
-$this->assertSuccessCount('discussion', 299);
+$this->assertTotalCount('discussion', 455);
+$this->assertSuccessCount('discussion', 455);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */

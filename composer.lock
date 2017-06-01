@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.28.5",
+            "version": "3.28.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c0dfbcb1111104bbb970447484910611a4305b76"
+                "reference": "9c33b9dff5848adc25199f88487b1927edcfe074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c0dfbcb1111104bbb970447484910611a4305b76",
-                "reference": "c0dfbcb1111104bbb970447484910611a4305b76",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9c33b9dff5848adc25199f88487b1927edcfe074",
+                "reference": "9c33b9dff5848adc25199f88487b1927edcfe074",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-05-30T21:16:11+00:00"
+            "time": "2017-05-31T19:00:01+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
