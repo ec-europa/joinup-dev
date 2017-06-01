@@ -13,8 +13,6 @@ use Drupal\migrate\Row;
  */
 class Discussion extends NodeBase {
 
-  use AttachmentTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -38,7 +36,13 @@ class Discussion extends NodeBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $this->setAttachment($row);
+    $fids = $this->select('content_field_project_issues_attachement', 'a')
+      ->fields('a', ['field_project_issues_attachement_fid'])
+      ->condition('a.vid', $row->getSourceProperty('vid'))
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('fids', $fids);
+
     return parent::prepareRow($row);
   }
 

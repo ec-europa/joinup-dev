@@ -14,17 +14,12 @@ source:
     - Collection_Name
     - 'Policy domain 1'
     - 'Policy domain 2'
-    - 'New collection'
     - Migrate
-    - Abstract
     - Logo
     - Banner
     - Owner
     - 'Owner name'
     - 'Owner type'
-    - 'Collection Owner'
-    - 'Elibrary Creation'
-    - 'Collection state'
     - 'Content item state'
   row_index_column: row_index
   keys:
@@ -36,23 +31,11 @@ process:
   collection: Collection_Name
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
-  new_collection: 'New collection'
-  migrate:
-    plugin: static_map
-    source: Migrate
-    map:
-      'Yes': 1
-      'No': 0
-    default_value: 1
-  abstract: Abstract
   logo: Logo
   banner: Banner
   owner: Owner
   owner_name: 'Owner name'
   owner_type: 'Owner type'
-  collection_owner: 'Collection Owner'
-  elibrary: 'Elibrary Creation'
-  state: 'Collection state'
   content_item_state: 'Content item state'
   row_index: row_index
 destination:
