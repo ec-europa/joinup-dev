@@ -655,10 +655,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $element->setValue($value);
   }
 
-    $date = ucfirst($date) . ' date';
-    /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
-    $element->fillField(ucfirst($component), $value);
+  /**
+   * Clears the date or time component of date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I clear the :date :component of the :field widget
+   */
+  public function clearDateRangeField($field, $date, $component) {
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue('');
   }
 
   /**
