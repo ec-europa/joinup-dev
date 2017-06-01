@@ -4,8 +4,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Site\Settings;
-use Drupal\joinup_migrate\FileUtility;
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
