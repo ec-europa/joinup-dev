@@ -6,10 +6,11 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\joinup_migrate\FileUtility;
+use Drupal\joinup_migrate\MockFileSystem;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -56,13 +57,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected $legacyDb;
 
   /**
-   * Legacy site webroot.
-   *
-   * @var string
-   */
-  protected $legacyWebroot;
-
-  /**
    * Migration plugin manager.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManager
@@ -73,11 +67,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->legacyWebroot = rtrim(getenv('SIMPLETEST_LEGACY_WEBROOT'), '/');
-
-    // Check if we're able to access the legacy site files.
-    FileUtility::checkLegacySiteWebRoot($this->legacyWebroot);
-
     $this->setUpSparql();
     $this->setUpLegacyDb();
 
@@ -89,7 +78,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $this->setUpMigration();
 
     // Run test migrations.
-    $this->runMigrations();
+    $this->executeMigrations();
   }
 
   /**
@@ -117,18 +106,36 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   /**
    * Runs all available migrations.
    */
-  protected function runMigrations() {
+  protected function executeMigrations() {
     foreach ($this->manager->createInstances([]) as $id => $migration) {
-      // Force running the migration, even the prior migrations were incomplete.
-      $migration->set('requirements', []);
-      try {
-        (new MigrateExecutable($migration, $this))->import();
-      }
-      catch (\Exception $e) {
-        $class = get_class($e);
-        $this->display("$class: {$e->getMessage()} ({$e->getFile()}, {$e->getLine()})", 'error');
+      $this->executeMigration($migration, $id);
+    }
+  }
+
+  /**
+   * Executes a single migration.
+   *
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration to execute.
+   * @param string $migration_id
+   *   The migration ID (not used, just an artifact of array_walk()).
+   * @param bool $execute_dependencies
+   *   (optional) Whether to execute or not the dependent migrations. Defaults
+   *   to FALSE.
+   */
+  protected function executeMigration(MigrationInterface $migration, $migration_id, $execute_dependencies = FALSE) {
+    if ($execute_dependencies) {
+      $dependencies = $migration->getMigrationDependencies();
+      $required_ids = isset($dependencies['required']) ? $dependencies['required'] : NULL;
+      if ($required_ids) {
+        $required_migrations = $this->manager->createInstances($required_ids);
+        array_walk($required_migrations, [$this, 'executeMigration'], $execute_dependencies);
       }
     }
+    // Force running the migration, even the prior migrations were incomplete.
+    $migration->set('requirements', []);
+
+    (new MigrateExecutable($migration, $this))->import();
   }
 
   /**
@@ -166,9 +173,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   protected function setUpMigration() {
     // Set the legacy site webroot.
-    if (!$legacy_webroot = getenv('SIMPLETEST_LEGACY_WEBROOT')) {
-      throw new \Exception('The legacy site webroot is not set. You must provide a SIMPLETEST_LEGACY_WEBROOT environment variable.');
-    }
+    $public_directory = $this->container->get('stream_wrapper.public')->getDirectoryPath();
+    $legacy_webroot = "$public_directory/joinup_migrate/webroot";
 
     // Ensure settings.php settings.
     $settings['settings'] = [
@@ -191,6 +197,17 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     chmod($settings_file, 0444);
 
     $this->manager = $this->container->get('plugin.manager.migration');
+
+    // Run the 'prepare' migration to assure data for MySQL views, needed by
+    // self::createTestFiles() method.
+    // @see \Drupal\Tests\joinup_migrate\Functional\JoinupMigrateTest::executeMigration()
+    $migration = $this->manager->createInstance('prepare');
+    $this->executeMigration($migration, $migration->id(), TRUE);
+
+    // For performance reasons we don't import real files from the Drupal 6
+    // platform but we create, locally, a fake copy of the source file system
+    // with "zero size" files.
+    MockFileSystem::createTestingFiles($legacy_webroot, $this->legacyDb);
   }
 
   /**

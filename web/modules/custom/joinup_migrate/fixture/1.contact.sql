@@ -48,4 +48,3 @@ LEFT JOIN content_field_id_uri uri2 ON n2.vid = uri2.vid
 LEFT JOIN content_field_contact_point_mail cfcpm2 ON n2.vid = cfcpm2.vid
 LEFT JOIN content_field_contact_point_web_page cfcpwp2 ON n2.vid = cfcpwp2.vid
 WHERE n2.type = 'contact_point'
-ORDER BY nid

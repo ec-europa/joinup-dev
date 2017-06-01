@@ -1,0 +1,17 @@
+CREATE OR REPLACE VIEW d8_file_discussion (
+  fid,
+  path,
+  timestamp,
+  uid,
+  destination_uri
+) AS
+SELECT
+  f.fid,
+  f.filepath,
+  f.timestamp,
+  f.uid,
+  CONCAT('public://discussion/attachment/', SUBSTRING_INDEX(f.filepath, '/', -1))
+FROM content_field_project_issues_attachement cfpia
+INNER JOIN files f ON cfpia.field_project_issues_attachement_fid = f.fid
+INNER JOIN node n ON cfpia.vid = n.vid
+INNER JOIN d8_discussion d ON n.nid = d.nid

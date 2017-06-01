@@ -349,14 +349,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then I should see the download link in the :distribution( asset) distribution
    */
-  public function assertLinkDistribution($distribution) {
+  public function assertLinkPresentInCompactDistributionTile($distribution) {
     $distribution = $this->getAssetDistributionByName($distribution);
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
     $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
-    $promoted_link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
-    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$promoted_link}']");
+    $link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$link}']");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
     }
@@ -375,7 +375,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then the :distribution( asset) distribution should not have any download urls
    */
-  public function assertNotLinkDistribution($distribution) {
+  public function assertLinkNotPresentInCompactDistributionTile($distribution) {
     $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
     if (!empty($link)) {
       throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
@@ -470,6 +470,84 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     elseif ($type === 'remote') {
       $wrapper->fillField('Remote URL', $file_or_url);
     }
+  }
+
+  /**
+   * Clicks a link inside a distribution rendered with the compact view mode.
+   *
+   * @param string $link
+   *   The text of the link to click.
+   * @param string $heading
+   *   The distribution title.
+   *
+   * @throws \Exception
+   *   Thrown when the rendered distribution is not found.
+   *
+   * @When I click :link in the :heading asset distribution
+   */
+  public function clickLinkInCompactDistribution($link, $heading) {
+    $element = $this->getCompactDistributionByHeading($heading);
+
+    if (!$element) {
+      throw new \Exception("The tile '$heading' was not found on the page.");
+    }
+
+    $element->clickLink($link);
+  }
+
+  /**
+   * Asserts the entries in the download event table.
+   *
+   * Table format:
+   * @codingStandardsIgnoreStart
+   * | user                     | e-mail                | distribution |
+   * | Anonymous (not verified) | mail1@example.com     | Distro one   |
+   * | Nickolas Underwood       | underwood@example.com | Distro two   |
+   * @codingStandardsIgnoreEnd
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The entries list.
+   *
+   * @Then I should see the following download entries:
+   */
+  public function assertDownloadEventEntries(TableNode $table) {
+    $base_selector = '.distribution-download-table table > tbody > tr';
+    $count = 0;
+    foreach ($table->getColumnsHash() as $entry) {
+      $count++;
+      $selector = $base_selector . ":nth-child({$count})";
+
+      $this->assertSession()->elementTextContains('css', $selector, $entry['user']);
+      $this->assertSession()->elementTextContains('css', $selector, $entry['e-mail']);
+      $this->getSession()->getPage()->find('css', $selector)->hasLink($entry['distribution']);
+    }
+  }
+
+  /**
+   * Navigates to the distribution downloads statistics page.
+   *
+   * @When I go to the distribution downloads page
+   */
+  public function goToDistributionDownloadsPage() {
+    $this->visitPath('admin/statistics/distribution-downloads');
+  }
+
+  /**
+   * Finds a distribution rendered with the compact view mode by its heading.
+   *
+   * @param string $heading
+   *   The heading of the distribution to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The compact distribution element, or null if not found.
+   */
+  protected function getCompactDistributionByHeading($heading) {
+    // Locate all the elements.
+    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " timeline__listing-item ")]';
+    // That have a heading with the specified text.
+    $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " timeline__listing-title ")][normalize-space()="' . $heading . '"]]';
+
+    return $this->getSession()->getPage()->find('xpath', $xpath);
   }
 
 }

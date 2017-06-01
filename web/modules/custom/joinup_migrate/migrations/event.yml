@@ -65,7 +65,7 @@ process:
   field_state: state
   field_attachment:
     plugin: migration
-    migration: attachment
+    migration: file:event
     source: fids
     no_stub: true
   og_audience:
@@ -78,4 +78,4 @@ destination:
 migration_dependencies:
   required:
     - event_logo
-    - attachment
+    - file:event

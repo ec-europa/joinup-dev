@@ -45,4 +45,3 @@ LEFT JOIN node nl ON cfdl.field_distribution_licence_nid = nl.nid AND nl.type = 
 LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 WHERE n.type = 'distribution'
 AND ar.nid IN(SELECT nid FROM d8_solution UNION SELECT nid FROM d8_release)
-ORDER BY ar.nid ASC, n.nid ASC
