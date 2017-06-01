@@ -19,6 +19,7 @@ class OwnerText extends JoinupSqlBase {
       'name' => [
         'type' => 'string',
         'alias' => 'o',
+        'max_length' => 2048,
       ],
       'type' => [
         'type' => 'string',
