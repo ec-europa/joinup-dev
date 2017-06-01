@@ -606,7 +606,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $field_group
    *   The field component's label.
-   * @param string $field_name
+   * @param string $date_component
    *   The field to be filled.
    * @param string $value
    *   The value of the field.
@@ -615,9 +615,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *    Thrown when more than one elements match the given field in the given
    *    field group.
    *
-   * @When I fill in :field_group with the :field_name :value
+   * @When I fill in :field_group with the :date_component :value
    */
-  public function fillDateField($field_group, $field_name, $value) {
+  public function fillDateField($field_group, $date_component, $value) {
     // Get the datetime fields and check which one of them has the label
     // provided. This is because datetime fields have use a complex widget and
     // render their title as a simple header, not as a label for the field.
@@ -630,7 +630,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $field_selector = reset($field_selectors);
 
-    $field_selector->fillField(ucfirst($field_name), $value);
+    $field_selector->fillField(ucfirst($date_component), $value);
   }
 
   /**
