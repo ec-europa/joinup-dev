@@ -31,7 +31,9 @@ content:
     region: content
     label: hidden
     settings:
-      title: Download
+      hosted_files_title: Download
+      remote_files_title: External
+      show_remote_files: 0
     third_party_settings:
       ds:
         ft:

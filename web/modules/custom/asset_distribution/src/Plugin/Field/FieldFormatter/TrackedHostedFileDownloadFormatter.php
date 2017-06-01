@@ -14,7 +14,7 @@ use Drupal\file_url\FileUrlHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Plugin implementation of the 'file_default' formatter.
+ * Plugin implementation of the 'tracked_hosted_file_download' formatter.
  *
  * @FieldFormatter(
  *   id = "tracked_hosted_file_download",
@@ -80,7 +80,9 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
    */
   public static function defaultSettings() {
     return [
-      'title' => 'Download',
+      'hosted_files_title' => 'Download',
+      'show_remote_files' => FALSE,
+      'remote_files_title' => 'External',
     ] + parent::defaultSettings();
   }
 
@@ -90,11 +92,23 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
 
-    $elements['title'] = [
+    $elements['hosted_files_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
-      '#description' => $this->t('The title to use for the link.'),
-      '#default_value' => $this->getSetting('title'),
+      '#description' => $this->t('The title to use for hosted files links.'),
+      '#default_value' => $this->getSetting('hosted_files_title'),
+    ];
+    $elements['show_remote_files'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show remote files'),
+      '#description' => $this->t('Render also the remote files. <em>Note:</em> remote files are not tracked.'),
+      '#default_value' => $this->getSetting('show_remote_files'),
+    ];
+    $elements['remote_files_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title for remote files'),
+      '#description' => $this->t('The title to use for remote files links.'),
+      '#default_value' => $this->getSetting('remote_files_title'),
     ];
 
     return $elements;
@@ -106,7 +120,17 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
   public function settingsSummary() {
     $summary = parent::settingsSummary();
 
-    $summary[] = $this->t('Use "@title" as link title', ['@title' => $this->getSetting('title')]);
+    $summary[] = $this->t('Use "@title" as link title for local files', [
+      '@title' => $this->getSetting('hosted_files_title'),
+    ]);
+    if ($this->getSetting('show_remote_files')) {
+      $summary[] = $this->t('Use "@title" as link title for remote files', [
+        '@title' => $this->getSetting('remote_files_title'),
+      ]);
+    }
+    else {
+      $summary[] = $this->t('Do not show remote files');
+    }
 
     return $summary;
   }
@@ -119,34 +143,42 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
 
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $file) {
       /** @var \Drupal\file\FileInterface $file */
-      // Do not render remote files.
       if ($file instanceof RemoteFile) {
-        continue;
+        // Render the remote files only when the formatter is configured to do
+        // so.
+        if ($this->getSetting('show_remote_files')) {
+          $elements[$delta] = [
+            '#type' => 'link',
+            '#title' => $this->getSetting('remote_files_title'),
+            '#url' => Url::fromUri(file_create_url($file->getFileUri())),
+          ];
+        }
       }
+      else {
+        $elements[$delta] = [
+          '#type' => 'link',
+          '#title' => $this->getSetting('tracked_hosted_file_download'),
+          '#url' => Url::fromUri(file_create_url($file->getFileUri())),
+          '#attributes' => [
+            'id' => Html::getUniqueId('tracked-file-download'),
+            'class' => ['track-download'],
+            'data-tracking' => Url::fromRoute('asset_distribution.track_download', [
+              'file' => $file->id(),
+            ])->toString(),
+            // Force the download of the file in HTML5 compatible browsers.
+            'download' => $file->getFilename(),
+          ],
+        ];
 
-      $elements[$delta] = [
-        '#type' => 'link',
-        '#title' => $this->getSetting('title'),
-        '#url' => Url::fromUri(file_create_url($file->getFileUri())),
-        '#attributes' => [
-          'id' => Html::getUniqueId('tracked-file-download'),
-          'class' => ['track-download'],
-          'data-tracking' => Url::fromRoute('asset_distribution.track_download', [
-            'file' => $file->id(),
-          ])->toString(),
-          // Force the download of the file in HTML5 compatible browsers.
-          'download' => $file->getFilename(),
-        ],
-      ];
-
-      // Pass field item attributes to the theme function.
-      $item = $file->_referringItem;
-      if (isset($item->_attributes)) {
-        $elements[$delta] += ['#attributes' => []];
-        $elements[$delta]['#attributes'] += $item->_attributes;
-        // Unset field item attributes since they have been included in the
-        // formatter output and should not be rendered in the field template.
-        unset($item->_attributes);
+        // Pass field item attributes to the theme function.
+        $item = $file->_referringItem;
+        if (isset($item->_attributes)) {
+          $elements[$delta] += ['#attributes' => []];
+          $elements[$delta]['#attributes'] += $item->_attributes;
+          // Unset field item attributes since they have been included in the
+          // formatter output and should not be rendered in the field template.
+          unset($item->_attributes);
+        }
       }
     }
 

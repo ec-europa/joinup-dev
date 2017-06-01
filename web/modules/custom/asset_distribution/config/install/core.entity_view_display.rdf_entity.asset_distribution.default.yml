@@ -26,13 +26,24 @@ bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    type: file_url_default
+    type: tracked_hosted_file_download
     weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
-      mode: link
-    third_party_settings: {  }
+      hosted_files_title: Download
+      show_remote_files: '1'
+      remote_files_title: External
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_description:
     weight: 1
     label: hidden
