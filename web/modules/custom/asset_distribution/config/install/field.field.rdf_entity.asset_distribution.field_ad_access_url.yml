@@ -21,6 +21,7 @@ settings:
   file_extensions: 'zip tar tar.gz'
   max_filesize: ''
   description_field: false
+  description_field_required: false
   handler: 'file_url_default:file'
   handler_settings: {  }
 field_type: file_url
