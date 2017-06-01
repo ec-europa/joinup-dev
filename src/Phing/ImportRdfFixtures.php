@@ -57,7 +57,8 @@ class ImportRdfFixtures extends VirtuosoTaskBase {
     }
 
     foreach (glob($fixtures_path . '*.rdf') as $rdf_file_path) {
-      $filename = array_pop(explode('/', $rdf_file_path));
+      $parts = explode('/', $rdf_file_path);
+      $filename = array_pop($parts);
       $file = str_replace('.rdf', '', $filename);
       $graph_name = 'http://' . strtolower($file);
       // Delete the graph first...

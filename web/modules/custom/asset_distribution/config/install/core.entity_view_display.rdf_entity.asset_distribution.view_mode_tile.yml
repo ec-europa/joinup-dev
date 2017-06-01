@@ -16,9 +16,9 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - asset_distribution
     - digital_size_formatter
     - ds
-    - file_url
     - user
 id: rdf_entity.asset_distribution.view_mode_tile
 targetEntityType: rdf_entity
@@ -26,12 +26,24 @@ bundle: asset_distribution
 mode: view_mode_tile
 content:
   field_ad_access_url:
-    type: file_url_default
+    type: tracked_hosted_file_download
     weight: 3
     region: content
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
+    settings:
+      hosted_files_title: Download
+      remote_files_title: External
+      show_remote_files: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_file_size:
     type: digital_size
     weight: 10

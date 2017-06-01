@@ -14,7 +14,6 @@ use Drupal\migrate\Row;
  */
 class Event extends NodeBase {
 
-  use AttachmentTrait;
   use KeywordsTrait;
   use StateTrait;
 
@@ -118,7 +117,12 @@ class Event extends NodeBase {
     $this->setState($row);
 
     // Attachments.
-    $this->setAttachment($row);
+    $fids = $this->select('content_field_event_documentation', 'a')
+      ->fields('a', ['field_event_documentation_fid'])
+      ->condition('a.vid', $row->getSourceProperty('vid'))
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('fids', $fids);
 
     return parent::prepareRow($row);
   }

@@ -1,16 +1,15 @@
-joinup_core.members:
+entity.rdf_entity.member_overview:
   path: 'rdf_entity/{rdf_entity}/members'
   defaults:
-    _controller: '\Drupal\og\Controller\OgAdminMembersController::membersList'
+    _controller: '\Drupal\joinup_core\Controller\GroupMembersController::membersList'
     _title: 'Members'
   requirements:
-    _og_user_access_group: 'manage members'
+    _permission: 'access user profiles'
   options:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
-    _admin_route: TRUE
 entity.rdf_entity.about_page:
   path: 'rdf_entity/{rdf_entity}/about'
   defaults:

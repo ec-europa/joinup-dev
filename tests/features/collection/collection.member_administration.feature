@@ -34,9 +34,9 @@ Feature: Collection membership administration
     # Dr Cuddy promotes Dr House to facilitator.
     When I am logged in as "Lisa Cuddy"
     And I go to the "Medical diagnosis" collection
-    Then I click "Members" in the "Entity actions"
+    Then I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
-    Then I should not see the link "Group" in the "Entity actions"
+    Then I should not see the link "Group"
     Then I check the box "Update the member Gregory House"
     Then I select "Add the Collection facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
