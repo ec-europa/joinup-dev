@@ -157,7 +157,7 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
       else {
         $elements[$delta] = [
           '#type' => 'link',
-          '#title' => $this->getSetting('tracked_hosted_file_download'),
+          '#title' => $this->getSetting('hosted_files_title'),
           '#url' => Url::fromUri(file_create_url($file->getFileUri())),
           '#attributes' => [
             'id' => Html::getUniqueId('tracked-file-download'),
