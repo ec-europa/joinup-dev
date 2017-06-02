@@ -1,10 +1,7 @@
-id: attachment
-label: 'Attachment'
-migration_tags:
-  - file
-  - node
+id: file
+deriver: Drupal\joinup_migrate\Plugin\Deriver\FileDeriver
 source:
-  plugin: attachment
+  plugin: file
   track_changes: true
 process:
   uid:

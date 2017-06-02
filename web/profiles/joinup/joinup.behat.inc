@@ -30,6 +30,8 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
+use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * Behat step definitions that are generally useful for the Joinup project.
@@ -742,7 +744,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * The weight of the tiles are also taken into account.
    *
    * Table format:
-   * | title        |
    * | Tile title 1 |
    * | Tile title 2 |
    *
@@ -755,6 +756,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }, $results);
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
+  }
+
+  /**
+   * Checks that the given tiles are found in the correct order.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the correct order:
+   */
+  public function assertOrderedTilesPresent(TableNode $titles_table) {
+    $results = $this->getTiles();
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
 
   /**
@@ -1234,6 +1253,66 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $node = $this->getNodeByTitle($title);
     $uri = '/' . $node->toUrl()->getInternalPath();
     $this->assertSession()->fieldValueEquals($field, $uri);
+  }
+
+  /**
+   * Asserts that the default Drupal modal is opened.
+   *
+   * @throws \Exception
+   *   Thrown when the modal doesn't open within 5 seconds.
+   *
+   * @Then a modal should/will open
+   */
+  public function waitForDrupalModalToOpen() {
+    // A modal can be opened only in a Javascript-enabled browser.
+    self::assertJavaScriptEnabledBrowser();
+
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      // Retrieve again a fresh copy of the page element at each cycle.
+      $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
+
+      return $modal && $modal->isVisible();
+    });
+
+    if (!$result) {
+      throw new \Exception('The modal did not open.');
+    }
+  }
+
+  /**
+   * Asserts that the default Drupal modal is closed.
+   *
+   * @throws \Exception
+   *   Thrown when the modal doesn't close within 5 seconds.
+   *
+   * @Then the modal should be closed
+   */
+  public function waitForDrupalModalToClose() {
+    // A modal can be opened only in a Javascript-enabled browser.
+    self::assertJavaScriptEnabledBrowser();
+
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      try {
+        // Normally the modal should be completely removed from the DOM,
+        // but sometimes the markup is kept in the DOM as hidden.
+        // @see Drupal.AjaxCommands.prototype.closeDialog()
+        return !$this->getSession()->getDriver()->isVisible('//*[@id = "drupal-modal"]');
+      }
+      catch (NoSuchElement $e) {
+        // The modal has been completely removed from the DOM.
+        return TRUE;
+      }
+      catch (StaleElementReference $e) {
+        // The element went stale in the time between fetching it and actually
+        // checking its visibility. The next check should launch a NoSuchElement
+        // exception.
+        return FALSE;
+      }
+    });
+
+    if (!$result) {
+      throw new \Exception('The modal did not close.');
+    }
   }
 
 }

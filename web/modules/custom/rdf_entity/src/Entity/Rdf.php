@@ -231,7 +231,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
-      ->setSetting('max_length', 255)
+      ->setSetting('max_length', 2048)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'string',

@@ -16,6 +16,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -235,9 +236,15 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 
-  // Add the about page as link template, so the og context will be
-  // automatically solved.
-  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
+  // Add the about page and member overview as link templates, so the OG context
+  // will be automatically solved.
+  $link_templates = [
+    'about-page' => '/rdf_entity/{rdf_entity}/about',
+    'member-overview' => '/rdf_entity/{rdf_entity}/members',
+  ];
+  foreach ($link_templates as $key => $path) {
+    $entity_types['rdf_entity']->setLinkTemplate($key, $path);
+  }
 }
 
 /**
@@ -447,10 +454,18 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link->save();
 
     $link = MenuLinkContent::create([
+      'title' => t('Members'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('member-overview')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
       'title' => t('About'),
       'menu_name' => $menu_name,
       'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
-      'weight' => -9,
+      'weight' => -8,
     ]);
     $link->save();
   }
@@ -486,4 +501,58 @@ function joinup_core_rdf_entity_presave(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function joinup_core_token_info() {
+  return [
+    'types' => [
+      'joinup-current-page' => [
+        'name' => t('Joinup current page'),
+        'description' => t('Custom tokens that can be derived from the context of the current page.'),
+      ],
+    ],
+    'tokens' => [
+      'joinup-current-page' => [
+        'group-context' => [
+          'name' => t('Group context'),
+          'description' => t('The collection or solution a page belongs to.'),
+        ],
+        'page-type' => [
+          'name' => t('Page type'),
+          'description' => t('Human readable page type. Intended for analytics.'),
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function joinup_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  switch ($type) {
+    case 'joinup-current-page':
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          case 'group-context':
+            /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+            if ($group = \Drupal::service('og.context')->getGroup()) {
+              $replacements[$original] = $group->label();
+            }
+            break;
+
+          case 'page-type':
+            $replacements[$original] = \Drupal::service('joinup_core.page_type_determiner')->getType();
+            break;
+        }
+      }
+      break;
+  }
+
+  return $replacements;
 }

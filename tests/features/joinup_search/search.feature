@@ -153,10 +153,10 @@ Feature: Global search
 
     # Users should be found by first name, family name and organisation.
     When I enter "Jenessa" in the header search bar and hit enter
-    Then the page should show the tiles "Carlyle Jenessa"
+    Then the page should show the tiles "Jenessa Carlyle"
     When I enter "freeman" in the header search bar and hit enter
-    Then the page should show the tiles "Freeman Ulysses"
+    Then the page should show the tiles "Ulysses Freeman"
     When I enter "clyffco" in the header search bar and hit enter
-    Then the page should show the tiles "Carlyle Jenessa"
+    Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the header search bar and hit enter
-    Then the page should show the tiles "Freeman Ulysses"
+    Then the page should show the tiles "Ulysses Freeman"

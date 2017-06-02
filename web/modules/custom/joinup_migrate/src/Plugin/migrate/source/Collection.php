@@ -115,7 +115,6 @@ class Collection extends CollectionBase {
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))
         ->condition('n.type', ['asset_release'], 'IN')
-        ->condition('m.migrate', 1)
         ->isNotNull('m.nid');
       $query->join('node', 'n', 'm.nid = n.nid');
       $vids = $query->execute()->fetchCol();

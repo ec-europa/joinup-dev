@@ -49,4 +49,3 @@ LEFT JOIN files f ON ctp.field_photo_fid = f.fid
 WHERE u.uid > 0
 AND u.status = 1
 AND up.points >= 10
-ORDER BY u.uid ASC

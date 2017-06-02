@@ -206,6 +206,10 @@ function joinup_theme_preprocess_block(&$variables) {
   if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
     $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
   }
+  // The front page is also shown as a listing of entities.
+  if ($variables['elements']['#id'] === 'frontpageblock') {
+    $variables['is_listing'] = TRUE;
+  }
 }
 
 /**
@@ -644,6 +648,21 @@ function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
     '#title' => t('Create collection'),
     '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for joinup-tiles--members-overview.html.twig.
+ */
+function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
+  // The members overview is a view of OgMembership entities, but these have no
+  // view modes. Replace them with standard User tiles.
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  /** @var \Drupal\og\OgMembershipInterface $row */
+  foreach ($variables['rows'] as &$row) {
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    $membership = $row['content']['#og_membership'];
+    $row['content'] = $view_builder->view($membership->getUser(), 'view_mode_tile');
+  }
 }
 
 /**

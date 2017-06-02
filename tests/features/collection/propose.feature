@@ -62,6 +62,7 @@ Feature: Proposing a collection
     And I should see the following collection menu items in the specified order:
       | text     |
       | Overview |
+      | Members  |
       | About    |
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"

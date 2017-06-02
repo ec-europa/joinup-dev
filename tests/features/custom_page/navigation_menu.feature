@@ -14,11 +14,12 @@ Feature: Navigation menu for custom pages
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
     And I should see the following collection menu items in the specified order:
-      | text               |
-      | Overview           |
-      | About              |
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
     # Check that the 'Edit menu' local action is present.
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
@@ -34,18 +35,19 @@ Feature: Navigation menu for custom pages
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" collection should have 3 visible items
+    And the navigation menu of the "Rainbow tables" collection should have 4 visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" collection should have 3 items
+    Then the navigation menu of the "Rainbow tables" collection should have 4 items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
     When I disable "Overview" in the navigation menu of the "Rainbow tables" collection
+    And I disable "Members" in the navigation menu of the "Rainbow tables" collection
     And I disable "About" in the navigation menu of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
