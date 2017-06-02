@@ -49,8 +49,8 @@ third_party_settings:
           format: ''
       path: {  }
     graph:
-      default: 'http://standardizationLevel'
-      draft: 'http://standardizationLevel'
+      default: 'http://standardization_level'
+      draft: 'http://standardization_level'
 name: 'Standardization level'
 vid: standardization_level
 description: ''
