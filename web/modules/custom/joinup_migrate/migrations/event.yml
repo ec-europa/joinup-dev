@@ -28,8 +28,8 @@ process:
     source: nid
     migration: event_logo
     no_stub: true
-  field_event_date/start_date: start_date
-  field_event_date/end_date: end_date
+  field_event_date/value: start_date
+  field_event_date/end_value: end_date
   field_location: location
   field_organisation: organisation
   field_event_web_url: website
