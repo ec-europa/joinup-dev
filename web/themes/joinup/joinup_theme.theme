@@ -971,3 +971,18 @@ function joinup_theme_form_comment_form_alter(&$form, FormStateInterface $form_s
   $form['field_body']['widget'][0]['value']['#theme'] = 'textarea__comment';
   $form['field_body']['widget'][0]['value']['#theme_wrappers'] = ['form_element__textarea__comment'];
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for table--file-formatter-table.html.twig.
+ *
+ * Extracts the file extension and makes it available on the row level.
+ */
+function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
+  if (!empty($variables['rows'])) {
+    foreach ($variables['rows'] as $index => $row) {
+      /** @var \Drupal\file\Entity\File $file */
+      $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
+      $variables['rows'][$index]['#file_extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    }
+  }
+}

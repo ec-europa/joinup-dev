@@ -54,11 +54,7 @@
     <tbody class="form-table__body">
       {% for row in rows %}
         <tr{{ row.attributes.addClass('form-table__cell') }}>
-          {# It is placeholder value #}
-          {%
-            set extension = 'pdf'
-          %}
-          <td><span class="form-table_link-icon icon icon--mime-{{ extension }}"></span></td>
+          <td><span class="form-table_link-icon icon icon--mime-{{ row['#file_extension'] }}"></span></td>
           <td class="form-table__link-content">
             {% for cell in row.cells %}
                 <div class="form-table__link-item">
