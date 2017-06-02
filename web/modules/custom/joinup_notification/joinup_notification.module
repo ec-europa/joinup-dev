@@ -156,7 +156,7 @@ function joinup_notification_entity_update(EntityInterface $entity) {
   if (!$workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
     return;
   }
-  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity)->getName();
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
 
   // Skip cases where original version is not present or the original state
   // is empty.
