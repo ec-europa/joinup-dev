@@ -46,6 +46,13 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'suffix_text' => '',
       ],
     ],
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
     '404_not_found' => [
       'variables' => [
         'search' => [],
