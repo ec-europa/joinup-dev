@@ -53,7 +53,7 @@
   {% if rows %}
     <tbody class="form-table__body">
       {% for row in rows %}
-        <tr{{ row.attributes.addClass('form-table__cell') }}>
+        <tr{{ row.attributes }}>
           <td><span class="form-table_link-icon icon icon--mime-{{ row['#file_extension'] }}"></span></td>
           <td class="form-table__link-content">
             {% for cell in row.cells %}

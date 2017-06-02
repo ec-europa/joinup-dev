@@ -1,0 +1,70 @@
+// Share box
+//
+
+// Elements
+//
+.share-box__item-icon
+  +icon-size(50px)
+  color: $color-blue-dark
+  display: none
+
+.share-box__row
+  padding: 10px 50px 10px 10px
+  margin-bottom: 0 !important
+  position: relative
+  min-height: 70px
+  &:hover
+    cursor: pointer
+  &.already-shared
+    padding-right: 0
+    background: $color-grey-lighter
+    .share-box__item-icon
+      display: table-cell
+      vertical-align: middle
+  .form-type-checkbox
+    display: none
+
+.share-box__item-image
+  padding-right: 10px
+  img
+    max-width: 50px
+    max-height: 50px
+
+.share-box__item-image,
+.share-box__item-label,
+.share-box__item-social-icon
+  display: table-cell
+  vertical-align: middle
+
+.share-box__item-label
+  width: 100%
+
+.share-box__item-social-icon
+  padding-right: 10px
+  +icon-size(50px)
+  color: $color-blue-dark
+
+.share-box__container
+  max-width: $screen-sm
+  fieldset
+    margin-bottom: 0
+  +breakpoint(tablet)
+    min-width: $screen-sm
+
+.share-content-form
+  .form__legend
+    margin: 0
+
+// Modal box classes
+.ui-dialog
+  z-index: 600
+  .ui-dialog-titlebar
+    background: none
+    border: none
+  .ui-dialog-title
+    font-size: 16px
+    font-weight: 600
+    color: $color-blue-dark
+
+.ajax-progress-throbber .message
+  display: none

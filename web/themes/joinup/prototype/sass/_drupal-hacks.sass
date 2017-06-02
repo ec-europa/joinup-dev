@@ -32,6 +32,7 @@ textarea
   margin-bottom: 20px
   .form-table__cell
     height: 70px
+    padding: 0 15px
   .ief-entity-operations
     margin-bottom: 0
 
@@ -113,6 +114,19 @@ textarea
 .contextual-region.focus
   outline: none
   outline-offset: 0
+
+
+// Fix password policy table
+#password-policy-status
+  margin-bottom: $form-margin
+  table
+    th:first-child, td:first-child
+      display: none
+
+.form-type-password-confirm
+  margin-bottom: $form-margin
+  input.password-confirm
+    margin-bottom: $form-margin
 
 .is-only-placeholder
   background: repeating-linear-gradient(-45deg, red, red 25px, rgba(255,255,255,1) 25px, rgba(255,255,255,1) 50px)

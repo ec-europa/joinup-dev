@@ -9,9 +9,8 @@ dependencies:
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
-    - field.field.node.event.field_event_end_date
+    - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
-    - field.field.node.event.field_event_start_date
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
     - field.field.node.event.field_location
@@ -27,7 +26,6 @@ dependencies:
     - node.type.event
   module:
     - comment
-    - datetime
     - ds
     - file
     - image
@@ -112,12 +110,16 @@ content:
         template_suggestion: fieldset
     type: basic_string
     region: content
-  field_event_end_date:
-    weight: 5
+  field_event_date:
+    weight: 14
     label: hidden
     settings:
       timezone_override: ''
-      format_type: date_only_text_month
+      separator: to
+      day_diff_format: d
+      month_diff_format: 'd F'
+      year_diff_format: 'd F Y'
+      default_format: 'd m Y'
     third_party_settings:
       ds:
         ft:
@@ -128,7 +130,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
-    type: datetime_default
+    type: daterange_condensed
     region: content
   field_event_logo:
     weight: 3
@@ -138,24 +140,6 @@ content:
       image_link: content
     third_party_settings: {  }
     type: image
-    region: content
-  field_event_start_date:
-    weight: 4
-    label: hidden
-    settings:
-      timezone_override: ''
-      format_type: date_only_text_month
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: ''
-    type: datetime_default
     region: content
   field_event_web_url:
     weight: 8

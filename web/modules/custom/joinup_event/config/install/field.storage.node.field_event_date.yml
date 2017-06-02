@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
-    - datetime
+    - datetime_range
     - node
-id: node.field_event_end_date
-field_name: field_event_end_date
+id: node.field_event_date
+field_name: field_event_date
 entity_type: node
-type: datetime
+type: daterange
 settings:
   datetime_type: datetime
-module: datetime
+module: datetime_range
 locked: false
 cardinality: 1
-translatable: false
+translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

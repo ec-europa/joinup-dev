@@ -40,11 +40,31 @@
     }
   };
 
+  // Overridden MDL Checkbox classes.
+  MaterialCheckbox.prototype.CssClasses_ = {
+    INPUT: 'mdl-checkbox__input',
+    BOX_OUTLINE: 'mdl-checkbox__box-outline',
+    FOCUS_HELPER: 'mdl-checkbox__focus-helper',
+    TICK_OUTLINE: 'mdl-checkbox__tick-outline',
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE_CONTAINER: 'mdl-checkbox__ripple-container',
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE: 'mdl-ripple',
+    IS_FOCUSED: '', // Overridden line.
+    IS_DISABLED: 'is-disabled',
+    IS_CHECKED: 'is-checked',
+    IS_UPGRADED: 'is-upgraded'
+  };
+
   Drupal.behaviors.ajaxReload = {
     attach: function (context, settings) {
       $(context).find('form').once('ajaxReload').each(function () {
         $(document).ajaxComplete(function (event, xhr, settings) {
           componentHandler.upgradeAllRegistered();
+          $('.mdl-js-checkbox').each(function (index, element) {
+            element.MaterialCheckbox.updateClasses_();
+          })
         });
       });
     }
@@ -138,6 +158,22 @@
         // Synchronize mobile and desktop tabs.
         $(mobileTabSelected).addClass('is-selected');
         $('.vertical-tabs__menu-item--mobile').not(mobileTabSelected).removeClass('is-selected');
+      });
+    }
+  };
+
+  // Forwards a click on a share modal row to the related checkbox.
+  Drupal.behaviors.checkShareBoxRow = {
+    attach: function (context, settings) {
+      $(context).find('.share-box__row').once('checkShareBoxRow').each(function () {
+        $(this).on('click', function (event) {
+          // Avoid calling click() twice due to event propagation.
+          if ($(event.target).is('input[type="checkbox"]')) {
+            return;
+          }
+
+          $(this).find('input[type="checkbox"]').click();
+        });
       });
     }
   };

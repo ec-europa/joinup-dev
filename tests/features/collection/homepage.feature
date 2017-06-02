@@ -22,8 +22,8 @@ Feature: Collection homepage
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated |
       | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated |
     And event content:
-      | title                                    | short title      | body                                      | collection         | start date          | state     | policy domain     |
-      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | validated | Supplier exchange |
+      | title                                    | short title      | body                                      | collection         | start date          | end date            | state     | policy domain     |
+      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange |
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
