@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_event_start_date
+    - field.storage.node.field_event_date
     - node.type.event
   module:
-    - datetime
-id: node.event.field_event_start_date
-field_name: field_event_start_date
+    - datetime_range
+id: node.event.field_event_date
+field_name: field_event_date
 entity_type: node
 bundle: event
-label: 'Start date'
+label: Date
 description: ''
 required: true
 translatable: false
@@ -18,6 +18,8 @@ default_value:
   -
     default_date_type: now
     default_date: now
+    default_end_date_type: now
+    default_end_date: now
 default_value_callback: ''
 settings: {  }
-field_type: datetime
+field_type: daterange
