@@ -40,7 +40,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   An associative array of statistic types, each containing the entity type
    *   ID and bundles that are associated with this statistic type.
    */
-  protected static $statistics_data = [
+  protected static $statisticsData = [
     'collection' => [
       'entity_type_id' => 'rdf_entity',
       'bundle_ids' => ['collection'],
@@ -94,7 +94,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function build() {
     $build = ['#theme' => 'statistics_block'];
 
-    foreach (static::$statistics_data as $key => $data) {
+    foreach (static::$statisticsData as $key => $data) {
       $build["#{$key}_count"] = $this->getCount($data['entity_type_id'], $data['bundle_ids']);
     }
 
@@ -142,7 +142,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // deleted. This makes sure the count is always correct.
     $cache_contexts = parent::getCacheContexts();
 
-    foreach (static::$statistics_data as $data) {
+    foreach (static::$statisticsData as $data) {
       $entity_type = $this->entityTypeManager->getStorage($data['entity_type_id'])->getEntityType();
       $cache_contexts = Cache::mergeContexts($cache_contexts, $entity_type->getListCacheContexts());
     }
@@ -159,7 +159,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // deleted. This makes sure the count is always correct.
     $cache_tags = parent::getCacheTags();
 
-    foreach (static::$statistics_data as $data) {
+    foreach (static::$statisticsData as $data) {
       $entity_type = $this->entityTypeManager->getStorage($data['entity_type_id'])->getEntityType();
       $cache_tags = Cache::mergeTags($cache_tags, $entity_type->getListCacheTags());
     }
