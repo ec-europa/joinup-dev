@@ -7,6 +7,8 @@ use Drupal\Tests\system\Kernel\Token\TokenReplaceKernelTestBase;
 
 /**
  * Tests the tokens provided by the joinup_community_content module.
+ *
+ * @group joinup_community_content
  */
 class CustomTokensTest extends TokenReplaceKernelTestBase {
 
