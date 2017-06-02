@@ -120,9 +120,6 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       // $entity->get($field_name)->comment_count, but unpublished comments
       // should display if the user is an administrator.
       $elements['#cache']['contexts'][] = 'user.permissions';
-      // @todo Fix in ISAICP-2898.
-      $elements['#cache']['max-age'] = 0;
-
       if ($items->access('access comments') || $items->access('administer comments')) {
         $output['comments'] = [];
 
@@ -240,7 +237,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $query->setCountQuery($count_query);
     }
 
-    if ($items->access('administer comments')) {
+    if (!$items->access('administer comments')) {
       $query->condition('c.status', CommentInterface::PUBLISHED);
       if ($comments_per_page) {
         $count_query->condition('c.status', CommentInterface::PUBLISHED);

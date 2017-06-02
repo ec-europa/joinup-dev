@@ -91,7 +91,7 @@
     {% endif %}
     <div class="{{ content_classes|join(' ') }}">
       <div class="comment-item__field">
-        <p class="comment-item__teaser">{{ content.field_body|render|striptags }}</p>
+        <p class="comment-item__teaser">{{ content.field_body|render|striptags|raw }}</p>
       </div>
       <div class="comment-item__field comment-item__stats">
         <div class="comment-item__stat">

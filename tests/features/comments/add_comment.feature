@@ -26,12 +26,15 @@ Feature: Add comments
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should not see "I've heard this story..."
 
+    # Users with 'administer comments' permission can see the comment that is set for approval.
+    Given I am logged in as a facilitator of the "Gossip collection" collection
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    Then I should see "I've heard this story..."
+
     # The configuration options for comments should not be shown to
     # facilitators. Whether or not comments are available is managed on
     # collection level.
-    Given I am logged in as a facilitator of the "Gossip collection" collection
-    When I go to the content page of the type "<content type>" with the title "<title>"
-    And I click "Edit"
+    When I click "Edit"
     Then I should not see the text "Comment settings"
 
     Examples:
