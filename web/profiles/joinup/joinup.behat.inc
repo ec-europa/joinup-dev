@@ -299,6 +299,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given select field has the given optgroups.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param string $optgroups
+   *   The optgroups to be checked separated by comma.
+   *
+   * @Then (the ):select field should contain the :optgroups option group(s)
+   */
+  public function assertSelectContainsOptgroups($select, $optgroups) {
+    $field = $this->findSelect($select);
+    $available_optgroups = array_values($this->getSelectOptgroups($field));
+    $options = $this->explodeCommaSeparatedStepArgument($optgroups);
+
+    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, "The '{$select}' select doesn't contain all the wanted optgroups.");
+  }
+
+  /**
    * Commit the solr index for testing purposes.
    *
    * @Then I commit the solr index
