@@ -1,0 +1,58 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    rdf_type: 'http://joinup.eu/product-type#'
+    mapping:
+      uuid:
+        value:
+          predicate: ''
+          format: ''
+      vid:
+        target_id:
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+          format: resource
+      langcode:
+        value:
+          predicate: ''
+          format: ''
+      name:
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          format: t_literal
+      description:
+        value:
+          predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+          format: t_literal
+      format:
+        value:
+          predicate: ''
+          format: ''
+      weight:
+        value:
+          predicate: ''
+          format: ''
+      parent:
+        target_id:
+          predicate: ''
+          format: ''
+      changed:
+        value:
+          predicate: ''
+          format: ''
+      default_langcode:
+        value:
+          predicate: ''
+          format: ''
+      path: {  }
+    graph:
+      default: 'http://product_type'
+      draft: 'http://product_type'
+name: Product type
+vid: product_type
+description: ''
+hierarchy: 0
+weight: 0
