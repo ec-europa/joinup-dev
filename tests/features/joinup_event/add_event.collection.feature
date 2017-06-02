@@ -40,7 +40,7 @@ Feature: "Add event" visibility options.
     And I am logged in as a facilitator of the "Stream of Dreams" collection
 
     When I go to the homepage of the "Stream of Dreams" collection
-    And I click "Add event"
+    And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope"
     # The entity is new, so the current workflow state should not be shown.
@@ -50,13 +50,22 @@ Feature: "Add event" visibility options.
     And I should not see the text "Revision information"
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
 
+    # Check required fields.
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Upload"
+    And I press "Publish"
+    Then I should see the following lines of text:
+      | Title field is required.            |
+      | Description field is required.      |
+      | File description field is required. |
+      | Location field is required.         |
+
     When I fill in the following:
-      | Title          | An amazing event                      |
-      | Short title    | Amazing event                         |
-      | Description    | This is going to be an amazing event. |
-      | Location       | Rue Belliard, 28                      |
-      | Add a new file | test.zip                              |
-      | Add a new file | text.pdf                              |
+      | Title            | An amazing event                      |
+      | Short title      | Amazing event                         |
+      | Description      | This is going to be an amazing event. |
+      | Location         | Rue Belliard, 28                      |
+      | File description | Taxi discount voucher.                |
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
     And I fill the end date of the Date widget with "2018-08-30"

@@ -7,8 +7,11 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\joinup_community_content\CommunityContentHelper;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -57,4 +60,41 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       'og_role',
     ],
   ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function joinup_community_content_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Skip if we are not on a community content form.
+  $community_content_form_ids = [];
+  foreach (CommunityContentHelper::getBundles() as $bundle) {
+    $community_content_form_ids[] = "node_{$bundle}_form";
+    $community_content_form_ids[] = "node_{$bundle}_edit_form";
+  }
+  if (!in_array($form_id, $community_content_form_ids)) {
+    return;
+  }
+
+  // Attach a form process handler that will change the label of the description
+  // field for uploaded files on the community content forms. This would
+  // otherwise conflict with the already existing "Description" field on Events.
+  // The field label is changed on all community content types for consistency.
+  if (!empty($form['field_attachment']['widget'])) {
+    foreach (Element::children($form['field_attachment']['widget']) as $key) {
+      $form['field_attachment']['widget'][$key]['#process'][] = 'joinup_community_content_attachment_file_process';
+    }
+  }
+}
+
+/**
+ * Form #process handler for the file fields of community content forms.
+ *
+ * @see \joinup_community_content_form_node_form_alter()
+ */
+function joinup_community_content_attachment_file_process($element, FormStateInterface $form_state, $form) {
+  if (!empty($element['description']['#title'])) {
+    $element['description']['#title'] = t('File description');
+  }
+  return $element;
 }
