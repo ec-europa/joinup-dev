@@ -982,7 +982,29 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
     foreach ($variables['rows'] as $index => $row) {
       /** @var \Drupal\file\Entity\File $file */
       $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
-      $variables['rows'][$index]['#file_extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+      $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+
+      // List of available icons.
+      $available_icons = [
+        'doc',
+        'exe',
+        'gif',
+        'jpg',
+        'pdf',
+        'png',
+        'ppt',
+        'rar',
+        'xls',
+        'zip',
+      ];
+
+      // Check if icon exist, otherwise set default icon.
+      if (in_array($file_icon, $available_icons)) {
+        $variables['rows'][$index]['#file_extension'] = $file_icon;
+      }
+      else {
+        $variables['rows'][$index]['#file_extension'] = 'default';
+      }
     }
   }
 }
