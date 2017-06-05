@@ -180,6 +180,12 @@ class NodeWorkflowAccessControlHandler {
    */
   protected function entityViewAccess(EntityInterface $entity, AccountInterface $account) {
     $parent = $this->getEntityParent($entity);
+
+    // Let parentless nodes (e.g. newsletters) be handled by the core access.
+    if (empty($parent)) {
+      return AccessResult::neutral();
+    }
+
     $access_handler = $this->entityTypeManager->getAccessControlHandler('rdf_entity');
     if (!$access_handler->access($parent, 'view', $account)) {
       // Anonymous users do not have access to content of non published groups.
