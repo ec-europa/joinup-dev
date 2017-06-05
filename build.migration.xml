@@ -8,11 +8,6 @@
             description="Run the migrations."
             depends="enable-migration-modules">
         <echo message="Running migration IDs" />
-
-        <!-- Delete un-needed files to preserve space -->
-        <delete file="${migration.db.import_path}" quiet="true" />
-        <delete file="${phpunit.migrate.legacy_site.db_dump}" quiet="true" />
-
         <drush
              command="cset"
              assume="yes"
@@ -135,6 +130,10 @@
     <target name="acceptance-migration"
             description="Wrapper around execute-migration that gets executed only when the related property is set."
             if="migration.acceptance">
+        <!-- Delete un-needed files to preserve space -->
+        <delete file="${migration.db.import_path}" quiet="true" />
+        <delete file="${phpunit.migrate.legacy_site.db_dump}" quiet="true" />
+        <!-- Defer to normal migration run -->
         <phingcall target="execute-migration" />
     </target>
 
