@@ -6,8 +6,7 @@
  * Available variables:
  * - entity: the node entity.
  * - additional_content: extra elements to be rendered. It has the properties:
- *     * field_event_start_date: the start date of the event.
- *     * field_event_end_date: the end date of the event.
+ *     * field_event_date: the date of the event.
  *     * field_location: the event location.
  */
 #}
@@ -18,13 +17,7 @@
       <div class="details">
         <div class="details__element details__element--block">
           <div class="value gray">
-            {% set start_date = additional_content.field_event_start_date|render %}
-            {% set end_date = additional_content.field_event_end_date|render %}
-            {% if end_date %}
-              {% trans %}{{ start_date }} to {{ end_date }}{% endtrans %}
-            {% else %}
-              {{ start_date }}
-            {% endif %}
+            {{ additional_content.field_event_date }}
           </div>
         </div>
         <div class="details__element details__element--block">

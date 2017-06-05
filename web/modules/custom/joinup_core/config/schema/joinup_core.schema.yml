@@ -16,6 +16,26 @@ field.formatter.settings.image_url_formatter:
       type: string
       label: 'Image style'
 
+field.formatter.settings.daterange_condensed:
+  type: field.formatter.settings.datetime_base
+  label: 'Condensed date range formatter settings'
+  mapping:
+    separator:
+      type: string
+      label: 'Date separator'
+    default_format:
+      type: date_format
+      label: 'Default format'
+    day_diff_format:
+      type: date_format
+      label: 'Different days format'
+    month_diff_format:
+      type: date_format
+      label: 'Different months format'
+    year_diff_format:
+      type: date_format
+      label: 'Different years format'
+
 field.widget.settings.current_workflow_state_widget:
   type: mapping
   label: 'Field widget format settings for the current workflow state field.'

@@ -47,7 +47,7 @@ class ShareContentForm extends FormBase {
   /**
    * The RDF view builder.
    *
-   * @var \Drupal\rdf_entity\RdfEntityViewBuilder
+   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
    */
   protected $rdfBuilder;
 
@@ -108,6 +108,7 @@ class ShareContentForm extends FormBase {
     $form['collections'] = [
       '#theme_wrappers' => ['fieldset'],
       '#title' => $this->t('Collections'),
+      '#title_display' => 'invisible',
       '#tree' => TRUE,
     ];
 
@@ -119,6 +120,9 @@ class ShareContentForm extends FormBase {
       $form['collections'][$id] = [
         '#type' => 'container',
         '#id' => $wrapper_id,
+        '#attributes' => [
+          'class' => ['share-box__row'],
+        ],
         'entity' => $this->rdfBuilder->view($collection, 'compact'),
         'checkbox' => [
           '#type' => 'checkbox',
