@@ -8,7 +8,7 @@ CREATE OR REPLACE VIEW d8_comment_file (
 SELECT
   cu.cid,
   cu.fid,
-  TRIM(f.filepath),
+  SUBSTRING(TRIM(f.filepath), 21),
   f.timestamp,
   f.uid
 FROM comment_upload cu

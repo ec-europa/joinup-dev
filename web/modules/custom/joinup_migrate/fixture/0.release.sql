@@ -25,7 +25,7 @@ SELECT
   TRIM(uri.field_id_uri_value),
   g.nid,
   TRIM(ctd.field_documentation_access_url1_url),
-  fd.filepath,
+  SUBSTRING(fd.filepath, 21),
   fd.timestamp,
   fd.uid,
   ctar.field_language_multiple_value,
