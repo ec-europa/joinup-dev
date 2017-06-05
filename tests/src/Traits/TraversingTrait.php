@@ -52,6 +52,25 @@ trait TraversingTrait {
   }
 
   /**
+   * Retrieves the optgroups of a select field.
+   *
+   * @param \Behat\Mink\Element\NodeElement $select
+   *   The select element.
+   *
+   * @return array
+   *   The optgroups labels.
+   */
+  protected function getSelectOptgroups(NodeElement $select) {
+    $optgroups = [];
+    foreach ($select->findAll('xpath', '//optgroup') as $element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      $optgroups[] = trim($element->getAttribute('label'));
+    }
+
+    return $optgroups;
+  }
+
+  /**
    * Finds a vertical tab by its title.
    *
    * @param string $tab
