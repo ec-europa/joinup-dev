@@ -44,14 +44,22 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     'collection' => [
       'entity_type_id' => 'rdf_entity',
       'bundle_ids' => ['collection'],
+      'states' => [
+        'archived',
+        'archival_request',
+        'deletion_request',
+        'validated',
+      ],
     ],
     'solution' => [
       'entity_type_id' => 'rdf_entity',
       'bundle_ids' => ['solution'],
+      'states' => ['deletion_request', 'validated'],
     ],
     'content' => [
       'entity_type_id' => 'node',
       'bundle_ids' => ['discussion', 'event', 'news'],
+      'states' => ['archived', 'validated'],
     ],
   ];
 
@@ -95,7 +103,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $build = ['#theme' => 'statistics_block'];
 
     foreach (static::$statisticsData as $key => $data) {
-      $build["#{$key}_count"] = $this->getCount($data['entity_type_id'], $data['bundle_ids']);
+      $build["#{$key}_count"] = $this->getCount($data['entity_type_id'], $data['bundle_ids'], $data['states']);
     }
 
     return $build;
@@ -108,11 +116,13 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The entity type ID for which to return the count.
    * @param array $bundle_ids
    *   The bundle IDs for which to return the count.
+   * @param array $states
+   *   The workflow states for which to return the count.
    *
    * @return int
    *   The number of validated entities.
    */
-  protected function getCount($entity_type_id, array $bundle_ids) {
+  protected function getCount($entity_type_id, array $bundle_ids, array $states) {
     // Retrieve the list of workflow state fields for the given bundle.
     $state_field_names = [];
     foreach ($bundle_ids as $bundle_id) {
@@ -124,9 +134,9 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
     $query = $this->entityTypeManager->getStorage($entity_type_id)->getQuery();
     $query->condition($bundle_key, $bundle_ids, 'IN');
-    // Only show validated entities.
+    // Only show content that has the allowed state.
     foreach ($state_field_names as $state_field_name) {
-      $query->condition($state_field_name, 'validated');
+      $query->condition($state_field_name, $states, 'IN');
     }
     return $query
       ->count()
