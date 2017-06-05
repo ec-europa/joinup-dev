@@ -44,7 +44,7 @@ SELECT
   m.policy2,
   m.banner,
   nr.body,
-  IF(m.logo IS NOT NULL, m.logo, IF(m.type = 'asset_release' AND fl.filepath IS NOT NULL AND fl.filepath <> '', SUBSTRING(fl.filepath, 21), IF(fpl.filepath IS NOT NULL AND fpl.filepath <> '', SUBSTRING(fpl.filepath, 21), NULL))),
+  IF(m.logo IS NOT NULL, CONCAT('../resources/migrate/solution/logo/', m.logo), IF(m.type = 'asset_release' AND fl.filepath IS NOT NULL AND fl.filepath <> '', SUBSTRING(fl.filepath, 21), IF(fpl.filepath IS NOT NULL AND fpl.filepath <> '', SUBSTRING(fpl.filepath, 21), NULL))),
   IF(m.logo IS NOT NULL, UNIX_TIMESTAMP(), IF(m.type = 'asset_release' AND fl.timestamp IS NOT NULL AND fl.timestamp > 0, fl.timestamp, IF(fpl.timestamp IS NOT NULL AND fpl.timestamp > 0, fpl.timestamp, NULL))),
   IF(m.logo IS NOT NULL, -1, IF(m.type = 'asset_release', fl.uid, fpl.uid)),
   TRIM(cfu.field_id_uri_value),

@@ -41,7 +41,7 @@ SELECT
   p.owner_text_type,
   p.contact,
   p.banner,
-  IF(p.nid = 0, p.logo, IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', SUBSTRING(fc.filepath, 21), IF(fr.filepath IS NOT NULL AND fr.filepath <> '', SUBSTRING(fr.filepath, 21), NULL))),
+  IF(p.nid = 0, CONCAT('../resources/migrate/collection/logo/', p.logo), IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', SUBSTRING(fc.filepath, 21), IF(fr.filepath IS NOT NULL AND fr.filepath <> '', SUBSTRING(fr.filepath, 21), NULL))),
   IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL))),
   p.state,
   p.contact_email
