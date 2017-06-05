@@ -13,7 +13,7 @@ SELECT
   cfadf.delta,
   cfadf.vid,
   f1.fid,
-  TRIM(f1.filepath),
+  SUBSTRING(TRIM(f1.filepath), 21),
   IF(f1.timestamp > 0, f1.timestamp, NULL),
   IF(f1.uid > 0, f1.uid, -1)
 FROM content_field_additional_doc_file cfadf
@@ -29,7 +29,7 @@ SELECT
   cfcd.delta,
   cfcd.vid,
   f2.fid,
-  TRIM(f2.filepath),
+  SUBSTRING(TRIM(f2.filepath), 21),
   IF(f2.timestamp > 0, f2.timestamp, NULL),
   IF(f2.uid > 0, f2.uid, -1)
 FROM content_field_case_documentation cfcd
@@ -45,7 +45,7 @@ SELECT
   cfpuf.delta,
   cfpuf.vid,
   f3.fid,
-  TRIM(f3.filepath),
+  SUBSTRING(TRIM(f3.filepath), 21),
   IF(f3.timestamp > 0, f3.timestamp, NULL),
   IF(f3.uid > 0, f3.uid, -1)
 FROM content_field_presentation_upload_files cfpuf
@@ -61,7 +61,7 @@ SELECT
   cffuf.delta,
   cffuf.vid,
   f4.fid,
-  TRIM(f4.filepath),
+  SUBSTRING(TRIM(f4.filepath), 21),
   IF(f4.timestamp > 0, f4.timestamp, NULL),
   IF(f4.uid > 0, f4.uid, -1)
 FROM content_field_factsheet_upload_files cffuf
