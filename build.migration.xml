@@ -62,6 +62,7 @@
                     password="${migration.db.password}">
             <transaction src="${migration.db.import_path}"/>
         </pdosqlexec>
+        <delete file="${migration.db.import_path}" quiet="true" />
     </target>
 
     <!-- Add migration settings to Drupal settings file. -->
@@ -126,6 +127,7 @@
                 password="${drupal.db.password}">
             <transaction src="${phpunit.migrate.legacy_site.db_dump}"/>
         </pdosqlexec>
+        <delete file="${phpunit.migrate.legacy_site.db_dump}" quiet="true" />
     </target>
     <target name="acceptance-migration"
             description="Wrapper around execute-migration that gets executed only when the related property is set."
