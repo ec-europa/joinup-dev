@@ -11,8 +11,8 @@ process:
   label: title
   field_is_banner:
     plugin: migration
-    source: nid
-    migration: solution_banner
+    source: banner
+    migration: file:solution_banner
     no_stub: true
   contact_from_node:
     plugin: migration
@@ -45,8 +45,8 @@ process:
   field_is_landing_page: landing_page
   field_is_logo:
     plugin: migration
-    source: nid
-    migration: solution_logo
+    source: logo_id
+    migration: file:solution_logo
     no_stub: true
   field_is_metrics_page: metrics_page
   field_is_modification_date: changed_time
@@ -86,8 +86,8 @@ destination:
   default_bundle: solution
 migration_dependencies:
   required:
-    - solution_banner
-    - solution_logo
+    - file:solution_banner
+    - file:solution_logo
     - distribution
     - owner
     - contact

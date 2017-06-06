@@ -123,6 +123,8 @@ $expected_values = [
     'type' => 'asset_release',
     'collection' => 'Archived collection',
     'policy2' => 'Open government',
+    'logo' => 'acme.jpg',
+    'banner' => 'butterfly-wallpaper.jpg',
     'row_index' => '25',
   ],
   125548 => [

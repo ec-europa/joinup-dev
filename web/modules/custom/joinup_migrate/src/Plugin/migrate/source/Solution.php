@@ -11,7 +11,7 @@ use Drupal\migrate\Row;
  *   id = "solution"
  * )
  */
-class Solution extends SolutionBase {
+class Solution extends JoinupSqlBase {
 
   use CountryTrait;
   use FileUrlFieldTrait;
@@ -32,8 +32,21 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 's',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
       'created_time' => $this->t('Creation date'),
@@ -56,14 +69,15 @@ class Solution extends SolutionBase {
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
-    ] + parent::fields();
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('s', [
+    return $this->select('d8_solution', 's')->fields('s', [
+      'nid',
       'vid',
       'type',
       'title',
@@ -81,6 +95,8 @@ class Solution extends SolutionBase {
       'contact_email',
       'owner_name',
       'owner_type',
+      'logo_id',
+      'banner',
     ]);
   }
 

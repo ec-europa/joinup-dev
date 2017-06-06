@@ -45,9 +45,11 @@ class File extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    // Assure a full-qualified path.
-    $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
-    $row->setSourceProperty('path', $source_path);
+    // Assure a full-qualified path for managed files.
+    if (ctype_digit($row->getSourceProperty('fid'))) {
+      $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
+      $row->setSourceProperty('path', $source_path);
+    }
 
     return parent::prepareRow($row);
   }
