@@ -88,10 +88,12 @@
         <div class="value gray small truncated">{{ file_name }}</div>
       {% endif %}
     </div>
+    {%  if extension %}
     <div class="listing__field">
       <div class="label gray">{{ 'Type'|t }}:</div>
       <div class="value bold">{{ extension|upper }}</div>
     </div>
+    {%  endif %}
     {% if file_size %}
     <div class="listing__field">
       <div class="label gray">{{ 'Size'|t }}:</div>
@@ -107,7 +109,9 @@
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      <a href="{{ content.field_file.0|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
+      {% if content.field_file.0|render|striptags|trim %}
+        <a href="{{ content.field_file.0|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
+      {% endif %}
     </div>
   </div>
 </div>
