@@ -5,7 +5,7 @@ source:
   cache_counts: true
   track_changes: true
   worksheet: '5. Collections'
-  origin: S2
+  origin: A2
   header_row: 1
   columns:
     - Nid

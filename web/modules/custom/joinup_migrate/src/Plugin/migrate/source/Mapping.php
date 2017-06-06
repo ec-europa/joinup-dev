@@ -30,6 +30,13 @@ class Mapping extends TestableSpreadsheetBase {
   protected $nids;
 
   /**
+   * List of Drupal 6 node-types.
+   *
+   * @var string[]
+   */
+  protected $nodeTypes;
+
+  /**
    * {@inheritdoc}
    */
   public function fields() {
@@ -84,10 +91,17 @@ class Mapping extends TestableSpreadsheetBase {
       }
     }
 
-    $declared_type = static::$typeMapping[Unicode::strtolower($row['Type of content item'])];
+    $lower_type = Unicode::strtolower($row['Type of content item']);
+    if (isset(static::$typeMapping[$lower_type])) {
+      $declared_type = static::$typeMapping[$lower_type];
+    }
+    else {
+      throw new \Exception("Unknown type {$row['Type of content item']}. Add the mapping in " . __METHOD__ . '()');
+    }
 
     if (!empty($node) && ($type !== $declared_type)) {
-      $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$type' in Drupal 6";
+      $node_type = "{$this->getNodeType($type)} ($type)";
+      $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$node_type' in Drupal 6";
     }
 
     $row['type'] = $type;
@@ -107,6 +121,9 @@ class Mapping extends TestableSpreadsheetBase {
     }
     elseif ($row['type'] === 'project') {
       $messages[] = "Software (project) content should not be in the Excel file. Replace with Project (project_project)";
+    }
+    elseif (!empty($node) && !in_array($row['type'], static::$allowedNodeTypes)) {
+      $messages[] = "{$this->getNodeType($type)} ($type) is not allowed in the Excel file.";
     }
 
     if (!empty($row['Collection state']) && !in_array($row['Collection state'], ['validated', 'archived'])) {
@@ -162,11 +179,59 @@ class Mapping extends TestableSpreadsheetBase {
       unset($cells[1]);
 
       $this->collections = array_values(array_map(function (array $row) {
-        return $row['T'];
+        return $row['B'];
       }, $cells));
     }
     return $this->collections;
   }
+
+  /**
+   * Gets a content type label, given its ID.
+   *
+   * @param string $type
+   *   The node-type ID.
+   *
+   * @return string[]
+   *   Associative array keyed by node type and having the label as value.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   *   When a unknown type is passed.
+   */
+  protected function getNodeType($type) {
+    if (!isset($this->nodeTypes)) {
+      $this->nodeTypes = $this->db->select('node_type', 'nt')
+        ->fields('nt', ['type', 'name'])
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
+    if (!isset($this->nodeTypes[$type])) {
+      throw new MigrateException("Unknown node type '$type'.");
+    }
+
+    return $this->nodeTypes[$type];
+  }
+
+  /**
+   * Allowed node-types.
+   *
+   * @var string[]
+   */
+  protected static $allowedNodeTypes = [
+    'asset_release',
+    'case_epractice',
+    'community',
+    'document',
+    'event',
+    'factsheet',
+    'legaldocument',
+    'news',
+    'newsletter',
+    'presentation',
+    'project_project',
+    'repository',
+    'video',
+  ];
 
   /**
    * Map between Excel file declared types and Drupal 6 real types.
@@ -186,6 +251,7 @@ class Mapping extends TestableSpreadsheetBase {
     'presentation' => 'presentation',
     'project' => 'project_project',
     'repository' => 'repository',
+    'video' => 'video',
   ];
 
 }
