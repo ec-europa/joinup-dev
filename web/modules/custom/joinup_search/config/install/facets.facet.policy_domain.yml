@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.collections
+    - search_api.index.published
     - views.view.search
   module:
     - search_api
