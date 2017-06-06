@@ -99,7 +99,7 @@ class Mapping extends TestableSpreadsheetBase {
       throw new \Exception("Unknown type {$row['Type of content item']}. Add the mapping in " . __METHOD__ . '()');
     }
 
-    if (!empty($node) && ($type !== $declared_type)) {
+    if (!empty($node) && $type && ($type !== $declared_type)) {
       $node_type = "{$this->getNodeType($type)} ($type)";
       $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$node_type' in Drupal 6";
     }
@@ -122,7 +122,7 @@ class Mapping extends TestableSpreadsheetBase {
     elseif ($row['type'] === 'project') {
       $messages[] = "Software (project) content should not be in the Excel file. Replace with Project (project_project)";
     }
-    elseif (!empty($node) && !in_array($row['type'], static::$allowedNodeTypes)) {
+    elseif (!empty($node) && $type && !in_array($row['type'], static::$allowedNodeTypes)) {
       $messages[] = "{$this->getNodeType($type)} ($type) is not allowed in the Excel file.";
     }
 
@@ -203,10 +203,6 @@ class Mapping extends TestableSpreadsheetBase {
         ->fields('nt', ['type', 'name'])
         ->execute()
         ->fetchAllKeyed();
-    }
-
-    if (!isset($this->nodeTypes[$type])) {
-      throw new MigrateException("Unknown node type '$type'.");
     }
 
     return $this->nodeTypes[$type];
