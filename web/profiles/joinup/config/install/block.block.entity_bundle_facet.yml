@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.type
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: entity_bundle_facet
+theme: joinup_theme
+region: featured
+weight: 0
+provider: null
+plugin: 'facet_block:type'
+settings:
+  id: 'facet_block:type'
+  label: 'Entity bundle facet'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: view.search.page_1
+    negate: false
+    context_mapping: {  }
