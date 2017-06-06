@@ -97,7 +97,6 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.type
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
