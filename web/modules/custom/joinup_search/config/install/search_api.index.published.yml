@@ -27,14 +27,14 @@ dependencies:
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_organisation
-    - search_api.server.solr
+    - search_api.server.solr_published
   module:
     - rdf_entity
     - search_api
     - node
     - user
-id: collections
-name: 'Search index'
+id: published
+name: 'Published content index'
 description: ''
 read_only: false
 field_settings:
@@ -526,4 +526,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: solr
+server: solr_published

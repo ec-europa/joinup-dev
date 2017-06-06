@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.collections
+    - search_api.index.published
   module:
     - joinup_core
     - search_api
@@ -11,7 +11,7 @@ label: Search
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_collections
+base_table: search_api_index_published
 base_field: search_api_id
 core: 8.x
 display:
@@ -89,7 +89,7 @@ display:
               user: view_mode_tile
       fields:
         id:
-          table: search_api_index_collections
+          table: search_api_index_published
           field: id
           id: id
           entity_type: null
@@ -160,7 +160,7 @@ display:
       filters:
         search_api_fulltext:
           id: search_api_fulltext
-          table: search_api_index_collections
+          table: search_api_index_published
           field: search_api_fulltext
           relationship: none
           group_type: group
