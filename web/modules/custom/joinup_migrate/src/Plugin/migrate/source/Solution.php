@@ -88,6 +88,7 @@ class Solution extends JoinupSqlBase {
       'policy2',
       'landing_page',
       'metrics_page',
+      'docs_id',
       'docs_url',
       'docs_path',
       'state',
@@ -111,8 +112,8 @@ class Solution extends JoinupSqlBase {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['nid' => $nid]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'documentation_file', 'docs_url');
+    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_solution', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));

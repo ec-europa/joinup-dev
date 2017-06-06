@@ -424,7 +424,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   ];
 
   /**
-   * Migrations that are creating RDF objects.
+   * Migrations that are creating RDF objects or are writing in the source.
    *
    * @var string[]
    */
@@ -437,6 +437,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'policy_domain',
     'release',
     'solution',
+    'mapping',
+    'prepare',
   ];
 
 }
