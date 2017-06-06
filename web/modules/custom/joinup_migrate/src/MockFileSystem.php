@@ -20,115 +20,33 @@ class MockFileSystem {
    *   The database connection from where to read the data. It's the source DB.
    */
   public static function createTestingFiles($base_dir, Connection $db) {
+    $tables = [
+      'd8_file_discussion_attachment' => 'path',
+      'd8_file_event_attachment' => 'path',
+      'd8_file_news_attachment' => 'path',
+      'd8_file_collection_logo' => 'path',
+      'd8_file_solution_logo' => 'path',
+      'd8_comment_file' => 'path',
+      'd8_distribution' => 'file_path',
+      'd8_document_file' => 'path',
+      'd8_documentation_file' => 'path',
+      'd8_event' => 'file_path',
+      'd8_user' => 'photo_path',
+    ];
     $files = [];
 
-    // Add 'discussion' attachments.
-    $files = array_merge(
-      $files,
-      $db->select('d8_file_discussion', 'a')
-        ->fields('a', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'event' attachments.
-    $files = array_merge(
-      $files,
-      $db->select('d8_file_event', 'a')
-        ->fields('a', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'news' attachments.
-    $files = array_merge(
-      $files,
-      $db->select('d8_file_news', 'a')
-        ->fields('a', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'collection' logos.
-    $files = array_merge(
-      $files,
-      $db->select('d8_collection', 'c')
-        ->fields('c', ['logo'])
-        ->isNotNull('c.logo')
-        ->condition('c.logo', '../resources/migrate/collection/logo/%', 'NOT LIKE')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'comment' files.
-    $files = array_merge(
-      $files,
-      $db->select('d8_comment_file', 'f')
-        ->fields('f', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'distribution' files.
-    $files = array_merge(
-      $files,
-      $db->select('d8_distribution', 'd')
-        ->fields('d', ['file_path'])
-        ->isNotNull('d.file_path')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'document' files.
-    $files = array_merge(
-      $files,
-      $db->select('d8_document_file', 'df')
-        ->fields('df', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'documentation' files.
-    $files = array_merge(
-      $files,
-      $db->select('d8_documentation_file', 'df')
-        ->fields('df', ['path'])
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'event' logos.
-    $files = array_merge(
-      $files,
-      $db->select('d8_event', 'e')
-        ->fields('e', ['file_path'])
-        ->isNotNull('e.file_path')
-        ->condition('e.file_path', '', '<>')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'solution' logos.
-    $files = array_merge(
-      $files,
-      $db->select('d8_solution', 's')
-        ->fields('s', ['logo'])
-        ->isNotNull('s.logo')
-        ->condition('s.logo', '../resources/migrate/solution/logo/%', 'NOT LIKE')
-        ->execute()
-        ->fetchCol()
-    );
-
-    // Add 'user' photos.
-    $files = array_merge(
-      $files,
-      $db->select('d8_user', 'u')
-        ->fields('u', ['photo_path'])
-        ->isNotNull('u.photo_path')
-        ->condition('u.photo_path', '', '<>')
-        ->execute()
-        ->fetchCol()
-    );
+    foreach ($tables as $table => $field) {
+      $files = array_merge(
+        $files,
+        array_filter($db->select($table)
+          ->fields($table, [$field])
+          ->execute()
+          ->fetchCol(), function ($file) {
+            return !empty($file) && (strpos($file, '../') !== 0);
+          }
+        )
+      );
+    }
 
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = \Drupal::service('file_system');
