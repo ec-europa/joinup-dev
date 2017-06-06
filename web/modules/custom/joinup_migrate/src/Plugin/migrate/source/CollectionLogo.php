@@ -40,13 +40,9 @@ class CollectionLogo extends CollectionBase {
   public function prepareRow(Row $row) {
     $source_path = $row->getSourceProperty('logo');
     // Qualify the path.
-    if (Unicode::strpos($source_path, 'sites/default/files/') === 0) {
+    if (Unicode::strpos($source_path, '../resources/migrate/collection/logo/') !== 0) {
       // Existing logo. Prepend the path to legacy site root.
-      $source_path = "{$this->getLegacySiteWebRoot()}/$source_path";
-    }
-    else {
-      // New logo.
-      $source_path = "../resources/migrate/collection/logo/$source_path";
+      $source_path = "{$this->getLegacySiteFiles()}/$source_path";
     }
 
     $row->setSourceProperty('source_path', $source_path);

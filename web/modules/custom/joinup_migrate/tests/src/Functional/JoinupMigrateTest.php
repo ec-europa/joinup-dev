@@ -174,7 +174,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected function setUpMigration() {
     // Set the legacy site webroot.
     $public_directory = $this->container->get('stream_wrapper.public')->getDirectoryPath();
-    $legacy_webroot = "$public_directory/joinup_migrate/webroot";
+    $legacy_site_files = "$public_directory/joinup_migrate/files";
 
     // Ensure settings.php settings.
     $settings['settings'] = [
@@ -182,8 +182,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
         'value' => 'test',
         'required' => TRUE,
       ],
-      'joinup_migrate.source.root' => (object) [
-        'value' => $legacy_webroot,
+      'joinup_migrate.source.files' => (object) [
+        'value' => $legacy_site_files,
         'required' => TRUE,
       ],
     ];
@@ -207,7 +207,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     // For performance reasons we don't import real files from the Drupal 6
     // platform but we create, locally, a fake copy of the source file system
     // with "zero size" files.
-    MockFileSystem::createTestingFiles($legacy_webroot, $this->legacyDb);
+    MockFileSystem::createTestingFiles($legacy_site_files, $this->legacyDb);
   }
 
   /**

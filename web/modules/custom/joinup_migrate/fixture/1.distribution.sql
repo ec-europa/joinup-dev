@@ -24,7 +24,7 @@ SELECT
   TRIM(uri.field_id_uri_value),
   nr.body,
   f.fid,
-  f.filepath,
+  SUBSTRING(f.filepath, 21),
   f.timestamp,
   f.uid,
   cfdau1.field_distribution_access_url1_url,

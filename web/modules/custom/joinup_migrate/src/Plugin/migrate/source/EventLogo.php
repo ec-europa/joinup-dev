@@ -43,7 +43,7 @@ class EventLogo extends Event {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path.
-    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('file_path');
+    $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('file_path');
     $row->setSourceProperty('file_path', $source_path);
 
     // Build the destination URI.

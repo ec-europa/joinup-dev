@@ -7,7 +7,7 @@ CREATE OR REPLACE VIEW d8_file_news (
 ) AS
 SELECT
   f.fid,
-  f.filepath,
+  SUBSTRING(f.filepath, 21),
   f.timestamp,
   f.uid,
   CONCAT('public://news/attachment/', SUBSTRING_INDEX(f.filepath, '/', -1))
