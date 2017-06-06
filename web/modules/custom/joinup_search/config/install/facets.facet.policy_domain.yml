@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.collections
+    - views.view.search
+  module:
+    - search_api
+id: policy_domain
+name: 'Policy domain'
+url_alias: policy_domain
+weight: 0
+min_count: 1
+show_only_one_result: true
+field_identifier: policy_domain
+facet_source_id: 'search_api:views_page__search__page_1'
+widget:
+  type: links_inline
+  config:
+    show_numbers: true
+    all_text: 'all policy domains'
+    prefix_text: about
+    suffix_text: ''
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: -2
+    settings:
+      sort: DESC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
+    weights:
+      build: -1
+    settings: {  }
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: 0
+    settings:
+      minimum_items: 1
+      maximum_items: null
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: -1
+    settings:
+      sort: DESC
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 0
+    settings:
+      sort: ASC
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -2
+    settings: {  }
+empty_behavior:
+  behavior: none
