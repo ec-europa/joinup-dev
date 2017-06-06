@@ -83,7 +83,7 @@ Feature: Homepage
     # Check if the "Solutions" link leads to the pre-filtered search results.
     # This shows solutions in the states 'validated' and 'deletion request'.
     When I click "Solutions" in the "Header" region
-    Then I should see the heading "Search"
+    Then I should see the heading "Solutions"
     And I should see the following lines of text:
       | Laws of economics |
       | Econometrics      |
@@ -122,7 +122,7 @@ Feature: Homepage
     # 'archival request', and 'archived'.
     When I go to the homepage
     And I click "Collections" in the "Header" region
-    Then I should see the heading "Search"
+    Then I should see the heading "Collections"
     And I should see the following lines of text:
       | Social classes  |
       | Parliament      |
@@ -161,7 +161,7 @@ Feature: Homepage
     # This shows community content in the states 'validated' and 'archived'.
     When I go to the homepage
     And I click "Content" in the "Header" region
-    Then I should see the heading "Search"
+    Then I should see the heading "Content"
     And I should see the following lines of text:
       | Economic systems              |
       | Socialist schools before Marx |
