@@ -4,7 +4,7 @@ dependencies:
   module:
     - search_api_solr
 id: solr_published
-name: Published server
+name: 'Published server'
 description: ''
 backend: search_api_solr
 backend_config:

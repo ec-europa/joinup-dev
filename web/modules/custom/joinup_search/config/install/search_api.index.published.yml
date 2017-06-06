@@ -24,6 +24,7 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_status
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_organisation
@@ -300,6 +301,14 @@ field_settings:
         - field.storage.rdf_entity.field_owner_name
       module:
         - rdf_entity
+  field_status:
+    label: 'Status taxonomy'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_status
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_status
   uid:
     label: 'User ID'
     datasource_id: 'entity:user'

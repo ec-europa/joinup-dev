@@ -11,7 +11,7 @@ dependencies:
 id: policy_domain_facet
 theme: joinup_theme
 region: content_top
-weight: 0
+weight: -9
 provider: null
 plugin: 'facet_block:policy_domain'
 settings:

@@ -2,21 +2,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.spatial_coverage
+    - facets.facet.status_taxonomy
   module:
     - facets
     - joinup_core
   theme:
     - joinup_theme
-id: spatial_coverage_facet
+id: status_taxonomy_facet
 theme: joinup_theme
 region: content_top
-weight: -8
+weight: -7
 provider: null
-plugin: 'facet_block:spatial_coverage'
+plugin: 'facet_block:status_taxonomy'
 settings:
-  id: 'facet_block:spatial_coverage'
-  label: 'Spatial coverage facet'
+  id: 'facet_block:status_taxonomy'
+  label: 'Status taxonomy facet'
   provider: facets
   label_display: '0'
 visibility:
