@@ -211,8 +211,8 @@ $this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid nid 'ew56%43'");
 $this->assertMessage('mapping', "Row: 5, Nid: 157729: 'MOA-ID 3.2.1' is a release and shouldn't be in the Excel file. Releases are computed");
 $this->assertMessage('mapping', "Row: 6, Nid: 60736: Collection name empty");
 $this->assertMessage('mapping', "Row: 9, Nid: 87737: Software (project) content should not be in the Excel file. Replace with Project (project_project)");
-$this->assertMessage('mapping', "Row: 9, Nid: 87737: Type 'Project' declared, but nid 87737 is 'project' in Drupal 6");
-$this->assertMessage('mapping', "Row: 30, Nid: 156973: Type 'Newsletter' declared, but nid 156973 is 'news' in Drupal 6");
+$this->assertMessage('mapping', "Row: 9, Nid: 87737: Type 'Project' declared, but nid 87737 is 'Software (project)' in Drupal 6");
+$this->assertMessage('mapping', "Row: 30, Nid: 156973: Type 'Newsletter' declared, but nid 156973 is 'News (news)' in Drupal 6");
 
 // Imported content check.
 $imported = $this->legacyDb->select('d8_mapping')

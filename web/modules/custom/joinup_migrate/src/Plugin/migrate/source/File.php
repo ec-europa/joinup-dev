@@ -17,11 +17,7 @@ class File extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return [
-      'fid' => [
-        'type' => 'integer',
-      ],
-    ];
+    return ['fid' => ['type' => 'string']];
   }
 
   /**

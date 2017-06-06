@@ -134,11 +134,15 @@ class MockFileSystem {
     $file_system = \Drupal::service('file_system');
 
     foreach ($files as $file) {
-      $path = $base_dir . '/' . pathinfo($file, PATHINFO_DIRNAME);
-      $file_name = pathinfo($file, PATHINFO_BASENAME);
+      $path_parts = pathinfo($file);
+      $path = $base_dir;
+      if ($path_parts['dirname'] !== '.') {
+        $path .= '/' . $path_parts['dirname'];
+      }
       if (!is_dir($path)) {
         $file_system->mkdir($path, NULL, TRUE);
       }
+      $file_name = $path_parts['basename'];
       $file_path = "$path/$file_name";
       if (!file_exists($file_path)) {
         // Create a '0 size' file.
