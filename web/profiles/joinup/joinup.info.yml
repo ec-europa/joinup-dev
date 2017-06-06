@@ -88,6 +88,7 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.navigation
   - block.block.pagetitle
+  - block.block.policy_domain_facet
   - block.block.primaryadminactions
   - block.block.recommendedcontent
   - block.block.seven_breadcrumbs
