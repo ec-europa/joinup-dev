@@ -215,7 +215,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   public function tearDown() {
     // Rollback migrations to cleanup RDF data.
-    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+    foreach ($this->manager->createInstances(static::$rollingBackMigrations) as $id => $migration) {
       try {
         (new MigrateExecutable($migration, $this))->rollback();
       }
@@ -428,7 +428,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *
    * @var string[]
    */
-  protected static $rdfMigrations = [
+  protected static $rollingBackMigrations = [
     'collection',
     'contact',
     'distribution',

@@ -21,30 +21,29 @@ class MockFileSystem {
    */
   public static function createTestingFiles($base_dir, Connection $db) {
     $tables = [
-      'd8_file_collection_logo' => 'path',
-      'd8_file_comment_attachment' => 'path',
-      'd8_file_discussion_attachment' => 'path',
-      'd8_file_document_case' => 'path',
-      'd8_file_document_document' => 'path',
-      'd8_file_document_factsheet' => 'path',
-      'd8_file_document_presentation' => 'path',
-      'd8_file_documentation_release' => 'path',
-      'd8_file_documentation_solution' => 'path',
-      'd8_file_event_attachment' => 'path',
-      'd8_file_event_logo' => 'path',
-      'd8_file_news_attachment' => 'path',
-      'd8_file_solution_logo' => 'path',
-      'd8_file_user_photo' => 'path',
-      // Migrations not converted yet to 'file:*'.
-      'd8_distribution' => 'file_path',
+      'd8_file_collection_logo',
+      'd8_file_comment_attachment',
+      'd8_file_discussion_attachment',
+      'd8_file_distribution',
+      'd8_file_document_case',
+      'd8_file_document_document',
+      'd8_file_document_factsheet',
+      'd8_file_document_presentation',
+      'd8_file_documentation_release',
+      'd8_file_documentation_solution',
+      'd8_file_event_attachment',
+      'd8_file_event_logo',
+      'd8_file_news_attachment',
+      'd8_file_solution_logo',
+      'd8_file_user_photo',
     ];
-    $files = [];
 
-    foreach ($tables as $table => $field) {
+    $files = [];
+    foreach ($tables as $table) {
       $files = array_merge(
         $files,
         array_filter($db->select($table)
-          ->fields($table, [$field])
+          ->fields($table, ['path'])
           ->execute()
           ->fetchCol(), function ($file) {
             return !empty($file) && (strpos($file, '../') !== 0);
