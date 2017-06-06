@@ -59,7 +59,7 @@ field_settings:
         - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/field_isr_is_version_of'
   entity_author:
-    label: 'Aggregated field'
+    label: Author
     property_path: aggregated_field
     type: integer
     configuration:
