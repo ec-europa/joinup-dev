@@ -4,6 +4,7 @@ namespace Drupal\adms_validator\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -16,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AdmsValidatorForm extends FormBase {
   const VALIDATION_GRAPH = 'http://adms-validator/';
+  const SEMIC_VALIDATION_QUERY_PATH = "SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
 
   /**
    * The sparql endpoint.
@@ -56,13 +58,16 @@ class AdmsValidatorForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['adms_file'] = [
       '#type' => 'file',
-      '#title' => 'Rdf file to validate',
+      '#title' => $this->t('File'),
+      '#description' => $this->t('An RDF file you want to test for compliance.'),
       '#upload_validators'  => [
         'file_validate_extensions' => ['rdf ttl'],
       ],
     ];
-    $form['actions']['#type'] = 'actions';
-    $form['actions']['submit'] = [
+    $form['info'] = [
+      '#markup' => $this->t('This validator uses the <a href="https://github.com/SEMICeu/adms-ap_validator">SEMIC ADMS-AP ruleset</a>.'),
+    ];
+    $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
@@ -107,34 +112,83 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    // Make sure to clear the table.
+    $form_state->addBuildInfo('result', []);
     $form_state->setRebuild(TRUE);
+
+    $file = $this->uploadedFile();
+    if (!$file) {
+      $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
+      return;
+    }
+    if (!$this->storeInGraph($file)) {
+      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
+      return;
+    }
+    // Delete the uploaded file from disk.
+    $file->delete();
+    $form_state->addBuildInfo('result', $this->getValidationErrors());
+  }
+
+  /**
+   * Build the list of validation errors.
+   *
+   * @return \EasyRdf\Sparql\Result
+   *   The validation errors.
+   */
+  protected function getValidationErrors() {
+    $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
+    $query = file_get_contents($adms_ap_rules);
+    // Fill in our validation graph in the query.
+    $query = str_replace('GRAPH <@@@TOKEN-GRAPH@@@> {
+
+UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
+    // @todo Workaround for bug in validations query.
+    // See https://github.com/SEMICeu/adms-ap_validator/issues/1
+    $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
+    return $this->sparqlendpoint->query($query);
+  }
+
+  /**
+   * Store the triples in the temporary graph.
+   */
+  protected function storeInGraph(FileInterface $file) {
+    $connection_options = $this->sparqlendpoint->getConnectionOptions();
+    $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
+    // Use a local SPARQL 1.1 Graph Store.
+    $gs = new GraphStore($connect_string);
+    $graph = new Graph();
+    try {
+      $graph->parseFile($file->getFileUri());
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+    $gs->replace($graph, self::VALIDATION_GRAPH);
+    return TRUE;
+  }
+
+  /**
+   * Retrieves the uploaded file.
+   *
+   * @return \Drupal\file\FileInterface|null
+   *   File object, if one is uploaded.
+   */
+  protected function uploadedFile() {
     $files = file_save_upload('adms_file', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
     /** @var \Drupal\file\FileInterface $file */
     $file = $files[0];
     if (!is_object($file)) {
-      return;
+      return NULL;
     }
-
-    $uri = $file->getFileUri();
-    // Use a local SPARQL 1.1 Graph Store.
-    // @todo Inject connection.
-    $gs = new GraphStore('http://127.0.0.1:8890/sparql-graph-crud');
-
-    $graph = new Graph();
-    // @todo This will prob throw errors when not an rdf file...
-    $graph->parseFile($uri);
-    $gs->replace($graph, self::VALIDATION_GRAPH);
-    $adms_ap_rules = DRUPAL_ROOT . "/../vendor/SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
-    $query = file_get_contents($adms_ap_rules);
-    // @todo Workaround for bug in validations query. Fix upstream.
-    $query = str_replace('GRAPH <@@@TOKEN-GRAPH@@@> {
-
-UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
-    // @todo Workaround for bug in validations query. Fix upstream.
-    $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
-    $result = $this->sparqlendpoint->query($query);
-    $form_state->addBuildInfo('result', $result);
+    return $file;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {}
 
 }

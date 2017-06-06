@@ -1,5 +1,5 @@
 adms_validator.adms_validator_form:
-  path: 'admin/config/rdf_entity/adms-validator'
+  path: 'adms-validator'
   defaults:
     _form: '\Drupal\adms_validator\Form\AdmsValidatorForm'
     _title: 'ADMS-AP Validator'
