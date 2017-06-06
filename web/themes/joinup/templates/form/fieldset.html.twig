@@ -37,8 +37,8 @@
     ]
   %}
 
-  <legend class="form__legend">
-    <label{{ legend.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</label>
+  <legend{{ legend.attributes.addClass('form__legend') }}>
+    <label{{ legend_span.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</label>
   </legend>
   <div class="fieldset-wrapper">
     {% if errors %}

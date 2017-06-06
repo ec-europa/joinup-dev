@@ -41,7 +41,7 @@ class UserPhoto extends UserBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path.
-    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('photo_path');
+    $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('photo_path');
     $row->setSourceProperty('source_path', $source_path);
 
     // Build the destination URI.

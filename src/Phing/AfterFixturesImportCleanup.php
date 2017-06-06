@@ -37,9 +37,12 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // Remove any non english version of the taxonomy terms since we are only
     // supporting english version in the website. If more terms are needed, the
     // supported languages should be extended (the "en" below).
-    // This needs to repeat multiple times as the terms migh
-    $this->execute('sparql DELETE { GRAPH ?g { ?entity ?field ?value } } WHERE { GRAPH ?g { ?entity ?field ?value . FILTER (LANG(?value) != "" && LANG(?value) != "en") } };
-');
+    // This needs to repeat multiple times as the terms might.
+    $this->execute('sparql DELETE { GRAPH ?g { ?entity ?field ?value } } WHERE { GRAPH ?g { ?entity ?field ?value . FILTER (LANG(?value) != "" && LANG(?value) != "en") } };');
+
+    // @see ISAICP-3216
+    $this->execute('sparql INSERT INTO <http://eira_skos> { ?subject a skos:Concept . ?subject skos:topConceptOf <http://data.europa.eu/eira> } WHERE { ?subject a skos:Collection . };');
+    $this->execute('sparql INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
   }
 
 }

@@ -50,7 +50,7 @@ SELECT
   cte.field_event_contact_email_value,
   cte.field_event_agenda_value,
   f.fid,
-  IF(f.filepath IS NOT NULL AND TRIM(f.filepath) <> '', TRIM(f.filepath), NULL),
+  IF(f.filepath IS NOT NULL AND TRIM(f.filepath) <> '', SUBSTRING(TRIM(f.filepath), 21), NULL),
   IF(f.timestamp > 0, f.timestamp, NULL),
   IF(f.uid > 0, f.uid, -1),
   IFNULL(ws.state, 'validated')

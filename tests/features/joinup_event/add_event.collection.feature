@@ -66,11 +66,14 @@ Feature: "Add event" visibility options.
       | Description      | This is going to be an amazing event. |
       | Location         | Rue Belliard, 28                      |
       | File description | Taxi discount voucher.                |
-    And I fill in "Start date" with the date "2018-08-29"
-    And I fill in "Start date" with the time "23:59:00"
+    And I fill the start date of the Date widget with "2018-08-29"
+    And I fill the start time of the Date widget with "23:59:59"
+    And I fill the end date of the Date widget with "2018-08-30"
+    And I fill the end time of the Date widget with "12:57:00"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
+    And I should see the text "29 to 30 August 2018"
     And the "Stream of Dreams" collection has a event titled "An amazing event"
     # Check that the link to the event is visible on the collection page.
     When I go to the homepage of the "Stream of Dreams" collection

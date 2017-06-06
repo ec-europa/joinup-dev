@@ -52,6 +52,25 @@ trait TraversingTrait {
   }
 
   /**
+   * Retrieves the optgroups of a select field.
+   *
+   * @param \Behat\Mink\Element\NodeElement $select
+   *   The select element.
+   *
+   * @return array
+   *   The optgroups labels.
+   */
+  protected function getSelectOptgroups(NodeElement $select) {
+    $optgroups = [];
+    foreach ($select->findAll('xpath', '//optgroup') as $element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      $optgroups[] = trim($element->getAttribute('label'));
+    }
+
+    return $optgroups;
+  }
+
+  /**
    * Finds a vertical tab by its title.
    *
    * @param string $tab
@@ -187,6 +206,47 @@ trait TraversingTrait {
     }
 
     return $mappings[$alias];
+  }
+
+  /**
+   * Gets the date or time component of a date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The date or time component element.
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   */
+  protected function findDateRangeComponent($field, $date, $component) {
+    /** @var \Behat\Mink\Element\NodeElement $fieldset */
+    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+
+    if (!$fieldset) {
+      throw new \Exception("The '$field' field was not found.");
+    }
+
+    $date = ucfirst($date) . ' date';
+    /** @var \Behat\Mink\Element\NodeElement $element */
+    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
+
+    if (!$element) {
+      throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+    }
+
+    $component_node = $element->findField(ucfirst($component));
+
+    if (!$component_node) {
+      throw new \Exception("The '$component' component for the '$field' '$element' was not found.");
+    }
+
+    return $component_node;
   }
 
 }

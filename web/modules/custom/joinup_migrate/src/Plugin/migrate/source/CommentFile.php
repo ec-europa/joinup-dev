@@ -49,7 +49,7 @@ class CommentFile extends JoinupSqlBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path.
-    $source_path = $this->getLegacySiteWebRoot() . '/' . $row->getSourceProperty('path');
+    $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
     $row->setSourceProperty('path', $source_path);
 
     // Build the destination URI.

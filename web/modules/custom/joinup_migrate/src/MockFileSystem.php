@@ -55,7 +55,7 @@ class MockFileSystem {
       $db->select('d8_collection', 'c')
         ->fields('c', ['logo'])
         ->isNotNull('c.logo')
-        ->condition('c.logo', 'sites/default/files/%', 'LIKE')
+        ->condition('c.logo', '../resources/migrate/collection/logo/%', 'NOT LIKE')
         ->execute()
         ->fetchCol()
     );
@@ -114,7 +114,7 @@ class MockFileSystem {
       $db->select('d8_solution', 's')
         ->fields('s', ['logo'])
         ->isNotNull('s.logo')
-        ->condition('s.logo', 'sites/default/files/%', 'LIKE')
+        ->condition('s.logo', '../resources/migrate/solution/logo/%', 'NOT LIKE')
         ->execute()
         ->fetchCol()
     );

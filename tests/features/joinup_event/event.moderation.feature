@@ -86,10 +86,13 @@ Feature: Event moderation
       | Short title | Rainbow of Worlds                     |
       | Description | This is going to be an amazing event. |
       | Location    | Worlds crossroad                      |
-    And I fill in "Start date" with the date "2018-08-30"
-    And I fill in "Start date" with the time "23:59:00"
+    And I fill the start date of the Date widget with "2018-08-30"
+    And I fill the start time of the Date widget with "23:59:00"
+    And I fill the end date of the Date widget with "2018-09-01"
+    And I fill the end time of the Date widget with "00:30:00"
     And I press "Save as draft"
     Then I should see the success message "Event Rainbow of Worlds has been created"
+    And I should see the text "30 August to 01 September 2018"
 
     # Publish the content.
     When I click "Edit" in the "Entity actions" region

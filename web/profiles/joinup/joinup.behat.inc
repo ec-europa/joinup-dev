@@ -299,6 +299,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given select field has the given optgroups.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param string $optgroups
+   *   The optgroups to be checked separated by comma.
+   *
+   * @Then (the ):select field should contain the :optgroups option group(s)
+   */
+  public function assertSelectContainsOptgroups($select, $optgroups) {
+    $field = $this->findSelect($select);
+    $available_optgroups = array_values($this->getSelectOptgroups($field));
+    $options = $this->explodeCommaSeparatedStepArgument($optgroups);
+
+    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, "The '{$select}' select doesn't contain all the wanted optgroups.");
+  }
+
+  /**
    * Commit the solr index for testing purposes.
    *
    * @Then I commit the solr index
@@ -535,7 +553,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'event' => [
         'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
-        'start date' => 'field_start_date',
+        'start date' => 'field_event_date:value',
+        'end date' => 'field_event_date:end_value',
         'state' => 'field_state',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
@@ -606,7 +625,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $field_group
    *   The field component's label.
-   * @param string $field_name
+   * @param string $date_component
    *   The field to be filled.
    * @param string $value
    *   The value of the field.
@@ -615,9 +634,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *    Thrown when more than one elements match the given field in the given
    *    field group.
    *
-   * @When I fill in :field_group with the :field_name :value
+   * @When I fill in :field_group with the :date_component :value
    */
-  public function fillDateField($field_group, $field_name, $value) {
+  public function fillDateField($field_group, $date_component, $value) {
     // Get the datetime fields and check which one of them has the label
     // provided. This is because datetime fields have use a complex widget and
     // render their title as a simple header, not as a label for the field.
@@ -630,7 +649,49 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     $field_selector = reset($field_selectors);
 
-    $field_selector->fillField(ucfirst($field_name), $value);
+    $field_selector->fillField(ucfirst($date_component), $value);
+  }
+
+  /**
+   * Fills the date or time component of a date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I fill the :date :component of the :field widget with :value
+   */
+  public function fillDateRangeField($field, $date, $component, $value) {
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue($value);
+  }
+
+  /**
+   * Clears the date or time component of date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I clear the :date :component of the :field widget
+   */
+  public function clearDateRangeField($field, $date, $component) {
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue('');
   }
 
   /**
