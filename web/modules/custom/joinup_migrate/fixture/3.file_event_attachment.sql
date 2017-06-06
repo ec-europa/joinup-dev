@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW d8_file_event (
+CREATE OR REPLACE VIEW d8_file_event_attachment (
   fid,
   path,
   timestamp,

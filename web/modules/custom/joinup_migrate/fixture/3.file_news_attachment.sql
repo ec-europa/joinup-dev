@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW d8_file_news (
+CREATE OR REPLACE VIEW d8_file_news_attachment (
   fid,
   path,
   timestamp,

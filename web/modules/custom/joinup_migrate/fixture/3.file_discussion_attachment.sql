@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW d8_file_discussion (
+CREATE OR REPLACE VIEW d8_file_discussion_attachment (
   fid,
   path,
   timestamp,
