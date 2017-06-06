@@ -10,45 +10,33 @@ source:
   origin: A2
   header_row: 1
   columns:
+    - 'Type of content item'
     - Collection_Name
     - 'Policy domain 1'
     - 'Policy domain 2'
-    - 'New collection'
     - Migrate
-    - Abstract
     - Logo
     - Banner
     - Owner
-    - 'Collection Owner'
-    - 'Elibrary Creation'
-    - 'Collection status'
-    - 'Content item status'
+    - 'Owner name'
+    - 'Owner type'
+    - 'Content item state'
   row_index_column: row_index
   keys:
-    nid:
+    Nid:
       type: integer
 process:
-  nid: nid
+  nid: Nid
   type: type
   collection: Collection_Name
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
-  new_collection: 'New collection'
-  migrate:
-    plugin: static_map
-    source: Migrate
-    map:
-      'Yes': 1
-      'No': 0
-    default_value: 1
-  abstract: Abstract
   logo: Logo
   banner: Banner
   owner: Owner
-  collection_owner: 'Collection Owner'
-  elibrary: 'Elibrary Creation'
-  collection_status: 'Collection status'
-  content_item_status: 'Content item status'
+  owner_name: 'Owner name'
+  owner_type: 'Owner type'
+  content_item_state: 'Content item state'
   row_index: row_index
 destination:
   plugin: mapping

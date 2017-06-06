@@ -50,7 +50,6 @@ class CoreController extends ControllerBase {
     $page = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
 
     $page['#entity_type'] = 'rdf_entity';
-    $page['#rdf_entity'] = $rdf_entity;
 
     return $page;
   }
@@ -69,7 +68,7 @@ class CoreController extends ControllerBase {
   }
 
   /**
-   * Access check for the rdf entity "about" page.
+   * Additional access check for the rdf entity "about" page.
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The rdf entity being checked.
@@ -78,7 +77,7 @@ class CoreController extends ControllerBase {
    *   The access result.
    */
   public function aboutPageAccess(RdfInterface $rdf_entity) {
-    return AccessResult::allowedIf(in_array($rdf_entity->bundle(), ['collection']));
+    return AccessResult::allowedIf(in_array($rdf_entity->bundle(), ['collection', 'solution']));
   }
 
 }

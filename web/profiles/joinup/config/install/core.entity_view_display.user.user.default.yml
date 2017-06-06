@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -34,6 +36,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
   field_user_business_title: true
   field_user_family_name: true
   field_user_first_name: true
@@ -44,5 +48,6 @@ hidden:
   field_user_photo: true
   field_user_professional_domain: true
   field_user_subscription_events: true
+  langcode: true
   member_for: true
   simplenews: true

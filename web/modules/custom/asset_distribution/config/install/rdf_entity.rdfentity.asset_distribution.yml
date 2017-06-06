@@ -3,11 +3,24 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://www.w3.org/ns/adms#AssetDistribution'
     mapping:
       rid:
-        target_id: 'http://www.w3.org/ns/adms#AssetDistribution'
+        target_id:
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+          format: resource
       label:
-        value: 'http://purl.org/dc/terms/title'
+        value:
+          predicate: 'http://purl.org/dc/terms/title'
+          format: t_literal
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'

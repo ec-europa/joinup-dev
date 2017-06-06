@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.node.field_news_referenced_solution
     - node.type.news
-    - rdf_entity.rdfentity.collection
     - rdf_entity.rdfentity.solution
 id: node.news.field_news_referenced_solution
 field_name: field_news_referenced_solution

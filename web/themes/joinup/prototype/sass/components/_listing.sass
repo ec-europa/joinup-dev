@@ -11,9 +11,6 @@
 
 // Elements
 // --------------------------------------------------
-.listing--grid
-  padding: 0
-
 .listing__item
   position: relative
   background: #fff
@@ -44,11 +41,6 @@
   background-color: #fff
   +border-radius(50%)
 
-  img
-    width: auto
-    max-width: 100%
-    +border-radius(50%)
-
 .listing__metadata,
 .listing__wrapper
   padding: 20px
@@ -70,7 +62,7 @@
 
 .listing__teaser
   font-size: 14px
-  font-weight: 300
+  font-weight: $font-weight-thin
   margin: 0
   color: $color-grey-medium
   p
@@ -141,6 +133,7 @@
 .listing__action-link__wrapper
   padding: 0 20px
 
+
 // Modifiers
 // --------------------------------------------------
 .listing--separated
@@ -182,8 +175,6 @@
 .listing__title--link a
   color: $color-orange
 
-.listing--grid
-  padding: 0
 
 // Dependiencies
 // --------------------------------------------------

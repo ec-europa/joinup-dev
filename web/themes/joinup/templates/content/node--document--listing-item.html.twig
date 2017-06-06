@@ -71,18 +71,40 @@
   set classes = [
     'listing__card',
     'mdl-card',
-    'listing__card--stats-container',
+    view_mode == 'view_mode_tile' ? 'listing__card--detail-container',
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
 <div class="{{ classes|join(' ') }}">
+  {% if view_mode == 'view_mode_featured' %}
+    <div class="listing__image listing__image--default">
+      <span class="icon icon--mime-{{ extension }}"></span>
+    </div>
+  {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      {% if file_name %}
+        <div class="value gray small truncated">{{ file_name }}</div>
+      {% endif %}
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
+      <div class="label gray">{{ 'Type'|t }}:</div>
+      <div class="value bold">{{ extension|upper }}</div>
     </div>
+    {% if file_size %}
+    <div class="listing__field">
+      <div class="label gray">{{ 'Size'|t }}:</div>
+      <div class="value bold">{{ file_size }}</div>
+    </div>
+    {% endif %}
+    {% set licence = content.field_licence|render %}
+    {% if licence %}
+    <div class="listing__field">
+      <div class="label gray">{{ 'Licence'|t }}:</div>
+      <div class="value bold color-base">{{ licence }}</div>
+    </div>
+    {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
       <a href="{{ content.field_file|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>

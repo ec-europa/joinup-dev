@@ -14,8 +14,7 @@ Feature: Owner moderation
       | Good food eaters | Non-Profit Organisation |
 
     When I am logged in as "Raeburn Hibbert"
-    And I am on the homepage
-    And I click "Propose collection" in the plus button menu
+    And I go to the propose collection form
     And I fill in "Title" with "The healthy food European project"
     And I enter "Keep Europe healthy through healthy eating." in the "Description" wysiwyg editor
     And I attach the file "logo.png" to "Logo"

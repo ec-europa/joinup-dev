@@ -21,7 +21,7 @@ process:
     source: collection
     migration: collection_banner
     no_stub: true
-  field_ar_contact_information:
+  contact_from_node:
     - plugin: explode
       source: contact
       delimiter: ','
@@ -29,6 +29,17 @@ process:
     - plugin: migration
       migration: contact
       no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_ar_contact_information:
+    plugin: merge
+    source:
+      - @contact_from_node
+      - @contact_from_email
+    unique: true
   field_ar_creation_date: created_time
   field_ar_description/value: body
   field_ar_description/format:
@@ -44,7 +55,7 @@ process:
     plugin: default_value
     default_value: true
   field_ar_modification_date: changed_time
-  field_ar_owner:
+  owner_from_publisher:
     - plugin: explode
       source: owner
       delimiter: ','
@@ -52,6 +63,18 @@ process:
     - plugin: migration
       migration: owner
       no_stub: true
+  owner_from_text:
+    plugin: migration
+    migration: owner_text
+    source:
+      - owner_text_name
+      - owner_text_type
+    no_stub: true
+  field_ar_owner:
+    plugin: merge
+    source:
+      - @owner_from_publisher
+      - @owner_from_text
   field_policy_domain:
     plugin: policy_domain
     source: policy2
@@ -59,9 +82,7 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  field_ar_state:
-    plugin: default_value
-    default_value: validated
+  field_ar_state: state
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection

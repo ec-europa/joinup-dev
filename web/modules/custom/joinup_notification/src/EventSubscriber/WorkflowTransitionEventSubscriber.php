@@ -11,8 +11,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * The event subscriber that handles the message notifications in joinup.
- *
- * @package Drupal\joinup_notification
  */
 class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
 
@@ -97,6 +95,8 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
     $keys = [
       'solution.validate.post_transition',
       'solution.request_deletion.post_transition',
+      'asset_release.validate.post_transition',
+      'asset_release.update_published.post_transition',
     ];
 
     foreach ($keys as $key) {

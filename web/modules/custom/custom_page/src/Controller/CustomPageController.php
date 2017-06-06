@@ -14,8 +14,6 @@ use Drupal\rdf_entity\RdfInterface;
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\custom_page\Controller
  */
 class CustomPageController extends CommunityContentController {
 

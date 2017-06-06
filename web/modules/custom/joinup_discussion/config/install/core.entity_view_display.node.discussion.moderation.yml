@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.moderation
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - options
+    - text
+    - user
+id: node.discussion.moderation
+targetEntityType: node
+bundle: discussion
+mode: moderation
+content:
+  body:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    type: text_summary_or_trimmed
+    region: content
+  field_state:
+    weight: 1
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  field_attachment: true
+  field_policy_domain: true
+  field_replies: true
+  field_shared_in: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

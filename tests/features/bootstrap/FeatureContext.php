@@ -6,6 +6,9 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -423,6 +426,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if (!$input->isChecked()) {
       throw new \Exception("The radio '$radio' is not selected.");
+    }
+  }
+
+  /**
+   * @Then the :radio radio button should not be selected
+   */
+  public function assertRadioButtonNotChecked($radio) {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $radio = $page->find('named', ['radio', $radio]);
+    if ($radio->isChecked()) {
+      throw new ExpectationException($session->getDriver(), 'The radio button is checked but it should not be.');
     }
   }
 
@@ -847,6 +862,180 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       }
     }
     throw new \Exception(sprintf("The text '%s' was not found in any heading on the page %s", $heading, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Checks multiple headings on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I (should )see the following headings:
+   */
+  public function assertHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key === FALSE) {
+          continue;
+        }
+        unset($headings[$key]);
+      }
+    }
+    if (!empty($headings)) {
+      throw new \Exception(sprintf("The following headings were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $headings)));
+    }
+  }
+
+  /**
+   * Checks if multiple headings are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I should not see the following headings:
+   */
+  public function assertNoHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    $found_headings = [];
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key !== FALSE) {
+          $found_headings[] = $headings[$key];
+        }
+      }
+    }
+    if (!empty($found_headings)) {
+      throw new \Exception(sprintf("The following headings were found on the page %s, but they shouldn't have been: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $found_headings)));
+    }
+  }
+
+  /**
+   * Checks multiple lines of text on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I (should )see the following lines of text:
+   */
+  public function assertTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks that multiple lines of text are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I should not see the following lines of text:
+   */
+  public function assertNoTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextNotContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks multiple links on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I (should )see the following links:
+   */
+  public function assertLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks if multiple links are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I should not see the following links:
+   */
+  public function assertNoLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (!empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks that the page is cached.
+   *
+   * @Then the page should be cached
+   */
+  public function assertPageCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the page is not cached.
+   *
+   * @Then the page should not be cached
+   */
+  public function assertPageNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
   }
 
 }

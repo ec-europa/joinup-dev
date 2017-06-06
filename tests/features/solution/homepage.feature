@@ -1,19 +1,24 @@
-@api
+@api @terms
 Feature: Solution homepage
   In order find content around a topic
   As a user of the website
   I need to be able see all content related to a solution on the solution homepage
 
-  @terms
-  Scenario: The solution homepage shows related content.
-    Given the following solutions:
-      | title                        | description                           | logo     | banner     | state     |
-      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated |
-      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated |
+  Background:
+    Given the following owner:
+      | name          | type                  |
+      | Kostas Agathe | Private Individual(s) |
+    And the following contact:
+      | name  | Placebo             |
+      | email | Placebo@example.com |
+    And the following solutions:
+      | title                        | description                           | logo     | banner     | state     | owner         | contact information | solution type     | policy domain |
+      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
+      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
     And the following releases:
-      | title             | release number | release notes                               | is version of                | state     | spatial coverage                                                       |
-      | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                                                                        |
+      | title             | release number | release notes                               | is version of                | state     | spatial coverage |
+      | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium          |
+      | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
       | title           | description                                        | access url | solution                     | parent                       |
       | PDF version     | Pdf version of the paper.                          | text.pdf   | Information sharing protocol | IS protocol paper            |
@@ -30,6 +35,7 @@ Feature: Solution homepage
       | title               | type     | short title | body                    | spatial coverage | policy domain | solution                     | state     |
       | IS protocol draft 2 | Document | IS draft 2  | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
 
+  Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution
     # I should see only the related release.
     Then I should see the "IS protocol paper 1" tile
@@ -63,4 +69,30 @@ Feature: Solution homepage
     #Then I should see the text "Fireproof 0.1"
     And I should see the "Code of conduct" tile
     But I should not see the "IS protocol paper 1" tile
+    And I should not see the "Protocol draft" tile
+
+  # This is a regression test for the entities that include a hashmark on their Uri.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3225
+  Scenario: Regression test for Uris that include a '#'.
+    Given the following solution:
+      | uri         | http://solution/example1/test#        |
+      | title       | Information sharing protocols         |
+      | description | Handling information sharing securely |
+      | logo        | logo.png                              |
+      | banner      | banner.jpg                            |
+      | state       | validated                             |
+    When I go to the homepage of the "Information sharing protocols" solution
+    Then I should see the heading "Information sharing protocols"
+    And I should not see the text "Page not found"
+
+  # Regression test to ensure that related community content does not appear in the draft view.
+  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
+  Scenario: The related content should not be shown in the draft view version as part of the content.
+    When I am logged in as a facilitator of the "Information sharing protocol" solution
+    And I go to the homepage of the "Information sharing protocol" solution
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "Information sharing non paper"
+    And I press "Save as draft"
+    And I click "View draft" in the "Entity actions" region
+    Then I should not see the "IS protocol paper 1" tile
     And I should not see the "Protocol draft" tile

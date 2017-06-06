@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - joinup
+    - og
   theme:
     - joinup_theme
 id: joinup_add_content
@@ -16,4 +17,14 @@ settings:
   label: 'Add content'
   provider: joinup
   label_display: visible
-visibility: {  }
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

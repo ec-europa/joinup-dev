@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Piwik" default="help">
+
+    <!-- Checks if all required software to install Piwik is available. -->
+    <target name="check-piwik-requirements">
+        <echo message="Piwik installation requires git and docker-compose to be installed." />
+        <echo message="Checking if git is installed. Ref. https://git-scm.com/downloads" />
+        <exec
+            command='git --version'
+            dir="${project.basedir}"
+            passthru="true"
+            checkreturn="true" />
+        <echo message="Checking if docker-compose is installed. Ref. https://docs.docker.com/compose/install/" />
+        <exec
+            command='docker-compose --version'
+            dir="${project.basedir}"
+            passthru="true"
+            checkreturn="true" />
+    </target>
+
+    <!-- Downloads the repository that contains the Piwik docker configuration. -->
+    <target
+        name="download-piwik-repository"
+        depends="check-piwik-requirements">
+        <if>
+            <available file="${piwik.dir}/.git" type="dir" property="piwik.repo.available" />
+            <then>
+                <echo message="Piwik repository exists (${piwik.dir}), fetching latest changes." />
+                <gitfetch
+                    gitPath="${git.bin}"
+                    repository="${piwik.dir}"
+                    refspec="${piwik.branch}" />
+            </then>
+            <else>
+                <mkdir dir="${piwik.dir}" />
+                <gitclone
+                    gitPath="${git.bin}"
+                    repository="${piwik.repo}"
+                    branch="${piwik.branch}"
+                    targetPath="${piwik.dir}" />
+            </else>
+        </if>
+    </target>
+
+    <target
+        name="configure-piwik"
+        depends="download-piwik-repository">
+        <!-- Start by doing a clean checkout of the branch. -->
+        <gitcheckout
+            gitPath="${git.bin}"
+            repository="${piwik.dir}"
+            branchname="${piwik.branch}"
+            force="true" />
+        <!-- Configure docker. -->
+        <reflexive>
+            <fileset dir="${piwik.dir}">
+                <include pattern="${piwik.config}" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out references to the external network 'lb_web'. -->
+                <replaceregexp>
+                    <regexp
+                        pattern="^(.*lb_web.*)$"
+                        replace="#\1"
+                        modifiers="m" />
+                </replaceregexp>
+                <replaceregexp>
+                    <regexp
+                        pattern="^(.*external: true.*)$"
+                        replace="#\1"
+                        modifiers="m" />
+                </replaceregexp>
+                <!-- Insert the port configuration. -->
+                <replaceregexp>
+                    <regexp
+                        pattern="^(.*)(cron:.*)$"
+                        replace="\1  ports:${line.separator}\1    - &quot;${piwik.port}:80&quot;${line.separator}\1    - &quot;8443:443&quot;${line.separator}\1\2"
+                        modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <!-- Configure Drupal. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out previous configuration. -->
+                <replaceregexp>
+                    <regexp
+                        pattern="^(.*piwik\.settings.*)$"
+                        replace="#\1"
+                        modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+            destFile="${website.settings.local.php}"
+            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}/';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}" />
+    </target>
+
+    <target
+        name="download-piwik-containers"
+        depends="download-piwik-repository">
+        <exec
+            command='docker-compose create'
+            dir="${piwik.dir}"
+            passthru="true"
+            checkreturn="true" />
+    </target>
+
+    <target
+        name="start-piwik"
+        description="Start the containerized Piwik instance.">
+        <exec
+            command='MYSQL_ROOT_PASSWORD=${piwik.db.password} docker-compose up -d'
+            dir="${piwik.dir}"
+            passthru="true"
+            checkreturn="true" />
+        <echo message="Piwik is now running at http://localhost:${piwik.port}" />
+        <echo message="Use the following settings when configuring the instance through the web interface:${line.separator}
+            Database server: db${line.separator}
+            Login: root${line.separator}
+            Password: ${piwik.db.password}${line.separator}
+            Database name: piwik${line.separator}${line.separator}
+            Super user login and password: whatever you like${line.separator}${line.separator}
+            Website name: Joinup${line.separator}
+            Website URL: ${drupal.base_url}" />
+    </target>
+
+    <target
+        name="stop-piwik"
+        description="Stop the containerized Piwik instance.">
+        <exec
+            command='docker-compose down'
+            dir="${piwik.dir}"
+            passthru="true"
+            checkreturn="true" />
+    </target>
+
+    <target
+        name="restart-piwik"
+        depends="stop-piwik, start-piwik"
+        description="Restart the Piwik containers.">
+    </target>
+
+    <target
+        name="setup-piwik"
+        description="Set up and start Piwik."
+        depends="download-piwik-containers, configure-piwik, start-piwik" />
+
+</project>

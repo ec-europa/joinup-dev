@@ -27,6 +27,7 @@ config_devel:
   - core.entity_view_display.rdf_entity.collection.about
   - core.entity_view_display.rdf_entity.collection.compact
   - core.entity_view_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.rdf_draft
   - core.entity_view_display.rdf_entity.collection.group_header
   - core.entity_view_display.rdf_entity.collection.view_mode_featured
   - core.entity_view_display.rdf_entity.collection.view_mode_tile
@@ -65,4 +66,8 @@ config_devel:
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_state
   - field.storage.rdf_entity.field_collection_content
+  - og.og_role.rdf_entity-collection-administrator
+  - og.og_role.rdf_entity-collection-facilitator
+  - og.og_role.rdf_entity-collection-member
+  - og.og_role.rdf_entity-collection-non-member
   - rdf_entity.rdfentity.collection

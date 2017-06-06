@@ -13,10 +13,14 @@ CREATE OR REPLACE VIEW d8_collection (
   access_url,
   elibrary,
   owner,
+  owner_text_name,
+  owner_text_type,
   contact,
   banner,
   logo,
-  logo_timestamp
+  logo_timestamp,
+  state,
+  contact_email
 ) AS
 SELECT
   p.collection,
@@ -33,10 +37,14 @@ SELECT
   IF(n.type = 'community', ctc.field_community_url_url, cfru.field_repository_url_url),
   p.elibrary,
   p.publisher,
+  p.owner_text_name,
+  p.owner_text_type,
   p.contact,
   p.banner,
-  IF(p.nid = 0, p.logo, IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', fc.filepath, IF(fr.filepath IS NOT NULL AND fr.filepath <> '', fr.filepath, NULL))),
-  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL)))
+  IF(p.nid = 0, CONCAT('../resources/migrate/collection/logo/', p.logo), IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', SUBSTRING(fc.filepath, 21), IF(fr.filepath IS NOT NULL AND fr.filepath <> '', SUBSTRING(fr.filepath, 21), NULL))),
+  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL))),
+  p.state,
+  p.contact_email
 FROM d8_prepare p
 LEFT JOIN node n ON p.nid = n.nid
 LEFT JOIN node_revisions nr ON n.vid = nr.vid
@@ -47,4 +55,3 @@ LEFT JOIN content_type_repository ctr ON n.vid = ctr.vid
 LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid
 LEFT JOIN files fr ON ctr.field_repository_logo_fid = fr.fid
 LEFT JOIN og o ON n.nid = o.nid
-ORDER BY p.collection ASC

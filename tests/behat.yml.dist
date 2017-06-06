@@ -22,7 +22,8 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
-        Comment: '.comment'
+        Comment: '.comments-section'
+        Content: '.section--content-middle'
         Entity actions: '.block-local-tasks-block'
         Footer: '.section--footer'
         Header: '.section--featured'
@@ -33,6 +34,8 @@ default:
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
+        Modal content: '#drupal-modal'
+        Modal buttons: '.ui-dialog-buttonpane'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

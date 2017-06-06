@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.view_mode_tile
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -73,6 +75,8 @@ content:
     type: image
     region: content
 hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
   field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
@@ -80,6 +84,7 @@ hidden:
   field_user_organisation: true
   field_user_professional_domain: true
   field_user_subscription_events: true
+  langcode: true
   member_for: true
   simplenews: true
   user_field_user_content_top: true

@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -167,7 +168,7 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      $allowed_transitions = $entity->get('field_owner_state')->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
 
@@ -188,7 +189,7 @@ function owner_is_owner_referenced(EntityInterface $entity) {
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
 
   // Check in Sparql if the owner id is set as object in any triple.
-  return $sparql_endpoint->query("ASK { ?s ?p <{$entity->id()}> }")->isTrue();
+  return $sparql_endpoint->query("ASK { ?s ?p " . SparqlArg::uri($entity->id()) . " }")->isTrue();
 }
 
 /**

@@ -1,0 +1,80 @@
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.comment-item
+  position: relative
+  margin-top: 0
+  margin-bottom: 0
+  border-top: 2px solid $color-grey-bg
+  width: 100%
+  &:first-of-type
+    border-top: none
+
+.comment-item__field
+  margin-bottom: 15px
+  &:last-of-type
+    margin-bottom: 0
+
+.comment-item__blockquote
+  font-weight: $font-weight-thin
+  font-style: italic
+  padding-left: 26px
+  color: darken($color-grey-light, 8%)
+  border-left: 4px solid lighten($color-grey-light, 4%)
+
+.comment-item__stats
+  text-align: right
+
+.comment-item__text
+  @extend .listing__text
+
+.comment-item__icon
+  @extend .listing__icon
+
+.comment-form
+  margin-top: 70px
+  margin-bottom: 0
+  padding-top: 50px
+  padding-right: 20px
+  padding-bottom: 50px
+  padding-left: 20px
+  background-color: #fff
+  width: 100%
+  box-sizing: border-box
+  .form__actions-wrapper
+    width: 100%
+    text-align: right
+  .button
+    margin: 0
+  +breakpoint(tablet)
+    padding-right: 60px
+    padding-left: 60px
+
+// Modifiers
+// --------------------------------------------------
+.comment-item--default
+  padding: 7px
+  background-color: #fff
+
+.comment-item--load-more
+  min-height: 70px
+  border: 5px solid darken($color-grey-light, 1%)
+  background-color: $color-grey-bg
+
+.comment-form--unavailable
+  margin-top: 20px
+  padding-top: 40px
+  padding-bottom: 40px
+
+.comment-form--disabled
+  margin-top: 4px
+  padding-top: 40px
+  padding-bottom: 40px
+
+.comment-item, .comment-form
+  margin-left: 0
+  margin-right: 0
+  .details__element a
+    color: $color-grey-medium

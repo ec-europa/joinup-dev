@@ -13,11 +13,6 @@
       <div class="label gray">{{ 'Weight'|t }}:</div>
       <div class="value bold">{{ content.field_ad_file_size }}</div>
     </div>
-    <div class="listing__field is-only-placeholder">
-      <div class="label gray">{{ 'OS'|t }}:</div>
-      {# todo: It is only placeholder. #}
-      <div class="value bold underline">Linux</div>
-    </div>
     {% if (content.field_ad_licence|render) %}
     <div class="listing__field">
       <div class="label gray">{{ 'Licence'|t }}:</div>
@@ -26,8 +21,7 @@
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      {# todo: It is only placeholder. #}
-      <a href="/" class="listing__action-link action-link is-only-placeholder">{{ 'Download'|t }}</a>
+      {{ content.field_ad_access_url }}
     </div>
   </div>
 </div>

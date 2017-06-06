@@ -9,7 +9,7 @@
     width: 100%
 
 .form-wrapper
-  margin-bottom: 25px
+  margin-bottom: $form-margin
   &.form__actions-wrapper
     margin-bottom: 0
 
@@ -43,3 +43,10 @@ form .description
     color: #fff
   +breakpoint(tablet)
     display: none
+
+.mdl-textfield--floating-label
+  .field-prefix
+    display: none
+
+.mdl-layout
+  overflow: initial !important

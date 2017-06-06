@@ -3,17 +3,28 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://xmlns.com/foaf/spec/#term_Agent'
     mapping:
       rid:
-        target_id: 'http://xmlns.com/foaf/spec/#term_Agent'
+        target_id:
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+          format: resource
       uid:
-        target_id: 'http://joinup.eu/owner/uid'
+        target_id:
+          predicate: 'http://joinup.eu/owner/uid'
+          format: integer
       label:
-        value: 'http://purl.org/dc/terms/title'
-      uuid:
-        value: ''
-      graph:
-        value: ''
+        value:
+          predicate: 'http://purl.org/dc/terms/title'
+          format: t_literal
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
     graph:
       default: 'http://joinup.eu/owner/published'
       draft: 'http://joinup.eu/owner/draft'

@@ -4,8 +4,6 @@ dependencies:
   module:
     - og
     - user
-_core:
-  default_config_hash: 8BVuJfGvvtoB1XXZfAOzW50q7GH0_tQTlG0KIvnuSzI
 id: og_members_overview
 label: 'Members overview'
 module: views
@@ -412,7 +410,11 @@ display:
           hide_alter_empty: true
           action_title: Action
           include_exclude: exclude
-          selected_actions: {  }
+          selected_actions:
+            - og_membership_add_multiple_roles_action
+            - og_membership_add_single_role_action.administrator
+            - og_membership_remove_multiple_roles_action
+            - og_membership_remove_single_role_action.administrator
           entity_type: og_membership
           plugin_id: og_membership_bulk_form
       filters: {  }

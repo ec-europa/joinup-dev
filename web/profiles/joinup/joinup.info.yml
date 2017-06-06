@@ -13,11 +13,12 @@ dependencies:
   - ckeditor
   - collection
   - contact_form
+  - content_translation
   - contextual
   - custom_page
   - dashboard
-  - ds
   - diff
+  - ds
   - dynamic_page_cache
   - editor
   - field_group
@@ -37,14 +38,20 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - menu_ui
+  - moderation
   - node
   - og
   - og_menu
   - options
   - owner
   - page_cache
+  - password_policy
+  - password_policy_character_types
+  - password_policy_characters
+  - password_policy_length
   - path
   - persistent_login
+  - piwik
   - r4032login
   - rdf_draft
   - rdf_entity
@@ -66,9 +73,10 @@ themes:
   - joinup_theme
 
 config_devel:
-  - block.block.addcontent
   - block.block.footer_menu
+  - block.block.recommendedcontent
   - block.block.groupheader
+  - block.block.menusubpages
   - block.block.userheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
@@ -79,7 +87,6 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.navigation
   - block.block.pagetitle
-  - block.block.policydomain
   - block.block.primaryadminactions
   - block.block.seven_breadcrumbs
   - block.block.seven_content
@@ -90,8 +97,6 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.spatialcoverage
-  - block.block.status
   - block.block.type
   - core.date_format.date_only
   - core.date_format.date_only_text_month
@@ -116,10 +121,12 @@ config_devel:
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
   - core.entity_view_display.user.user.group_header
+  - core.entity_view_display.user.user.inline
   - core.entity_view_display.user.user.view_mode_featured
   - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.inline
   - core.entity_view_mode.user.view_mode_featured
   - core.entity_view_mode.user.view_mode_tile
   - ds.settings
@@ -127,29 +134,23 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - field.field.ogmenu_instance.navigation.og_audience
-  - field.field.user.user.field_user_business_title
-  - field.field.user.user.field_user_family_name
-  - field.field.user.user.field_user_first_name
-  - field.field.user.user.field_user_nationality
-  - field.field.user.user.field_user_organisation
-  - field.field.user.user.field_user_photo
-  - field.field.user.user.field_user_professional_domain
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
-  - field.storage.user.field_user_business_title
-  - field.storage.user.field_user_family_name
-  - field.storage.user.field_user_first_name
-  - field.storage.user.field_user_nationality
-  - field.storage.user.field_user_organisation
-  - field.storage.user.field_user_photo
-  - field.storage.user.field_user_professional_domain
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
   - image.style.profile_icon
-  - og.settings
+  - image.style.profile_icon_big
+  - language.content_settings.rdf_entity.asset_distribution
+  - language.content_settings.rdf_entity.asset_release
+  - language.content_settings.rdf_entity.collection
+  - language.content_settings.rdf_entity.licence
+  - language.content_settings.rdf_entity.solution
   - og_menu.ogmenu.navigation
+  - og.settings
+  - password_policy.password_policy.generic_policy
+  - piwik.settings
   - system.theme
   - user.flood
   - user.mail
@@ -157,5 +158,6 @@ config_devel:
   - views.view.collection_content
   - views.view.collections
   - views.view.content_overview
+  - views.view.members_overview
   - views.view.solutions
   - views.view.user_admin_people

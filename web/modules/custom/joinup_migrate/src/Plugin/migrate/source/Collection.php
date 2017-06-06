@@ -34,9 +34,13 @@ class Collection extends CollectionBase {
       'elibrary' => $this->t('eLibrary creation'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owner'),
+      'owner_text_name' => $this->t('Text owner name'),
+      'owner_text_type' => $this->t('Text owner type'),
       'country' => $this->t('Spatial coverage'),
       'affiliates' => $this->t('Affiliates'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
+      'state' => $this->t('Workflow state'),
     ];
   }
 
@@ -56,8 +60,12 @@ class Collection extends CollectionBase {
       'policy2',
       'elibrary',
       'owner',
+      'owner_text_name',
+      'owner_text_type',
       'contact',
+      'contact_email',
       'access_url',
+      'state',
     ]);
   }
 
@@ -107,7 +115,6 @@ class Collection extends CollectionBase {
         ->fields('n', ['vid'])
         ->condition('m.collection', $row->getSourceProperty('collection'))
         ->condition('n.type', ['asset_release'], 'IN')
-        ->condition('m.migrate', 1)
         ->isNotNull('m.nid');
       $query->join('node', 'n', 'm.nid = n.nid');
       $vids = $query->execute()->fetchCol();

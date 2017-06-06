@@ -29,11 +29,8 @@ Feature: Add distribution through the UI
 
       When I click "Add distribution"
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
+      And the following fields should not be present "Langcode, Translation"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
@@ -68,40 +65,41 @@ Feature: Add distribution through the UI
     # Test that unauthorized users cannot add a distribution, both for a release
     # and directly from the solution page.
     Scenario: "Add distribution" button should not be shown to unprivileged users.
-      When I am logged in as a "facilitator" of the "Solution random x name" solution
+      Given I am logged in as a "facilitator" of the "Solution random x name" solution
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
-      # Click the + button.
-      Then I click "Add"
+      When I open the plus button menu
       Then I should see the link "Add distribution"
 
-      When I am logged in as a "member" of the "Asset Distribution Test" collection
+      Given I am logged in as a "member" of the "Asset Distribution Test" collection
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
-      When I am logged in as an "authenticated user"
+      Given I am logged in as an "authenticated user"
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
-      When I am an anonymous user
+      Given I am an anonymous user
       And I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      When I open the plus button menu
       Then I should not see the link "Add distribution"
       When I go to the homepage of the "Solution random x name" solution
+      And I open the plus button menu
       Then I should not see the link "Add distribution"
 
     Scenario: Add a distribution to a release as a facilitator.
       When I am logged in as a "facilitator" of the "Solution random x name" solution
       When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
-      And I click "Add distribution"
+      And I click "Add distribution" in the plus button menu
       Then I should see the heading "Add Distribution"
-      And the following fields should be present "Title, Description, License, Format, Representation technique, GITB compliant"
-      # Field labels are implemented not consistently, so we are
-      # forced to check for the widget heading.
-      # @todo to be handled in ISAICP-2655
-      And I should see the text "Access URL"
+      And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
       # @todo: The link has to be changed to the legal contact form.
       # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
       And I should see the link "contacting us"
@@ -125,11 +123,7 @@ Feature: Add distribution through the UI
       And I should see the link "WTFPL"
       And I should see the text "The full source code."
 
-      # The solution group header is cached and the license is not updated.
-      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3198
-      When the cache has been cleared
       # The licence label should be shown also in the solution UI.
-      # @todo License is not shown anymore in the solution canonical page. Change this before merge.
       And I go to the homepage of the "Solution random x name" solution
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.

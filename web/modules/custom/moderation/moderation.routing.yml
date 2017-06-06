@@ -1,0 +1,11 @@
+moderation.content_moderation_overview:
+  path: '/rdf_entity/{rdf_entity}/moderate'
+  defaults:
+    _form: '\Drupal\moderation\Form\ContentModerationOverviewForm'
+    _title: 'Content moderation'
+  requirements:
+    _custom_access: '\Drupal\moderation\Form\ContentModerationOverviewForm::access'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

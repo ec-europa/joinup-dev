@@ -7,8 +7,12 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
-      format: ''
+      value:
+        predicate: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_isr_release_notes
 field_name: field_isr_release_notes
 entity_type: rdf_entity
@@ -17,7 +21,7 @@ settings: {  }
 module: text
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

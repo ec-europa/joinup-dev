@@ -89,10 +89,12 @@ use Drupal\user\UserInterface;
  *   base_table = null,
  *   admin_permission = "administer rdf entity",
  *   fieldable = TRUE,
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
  *     "uid" = "uid",
  *     "bundle" = "rid",
+ *     "langcode" = "langcode",
  *     "label" = "label",
  *     "uuid" = "uuid",
  *   },
@@ -100,7 +102,7 @@ use Drupal\user\UserInterface;
  *   links = {
  *     "canonical" = "/rdf_entity/{rdf_entity}",
  *     "edit-form" = "/rdf_entity/{rdf_entity}/edit",
- *     "delete-form" = "/rdf_enity/{rdf_entity}/delete",
+ *     "delete-form" = "/rdf_entity/{rdf_entity}/delete",
  *     "collection" = "/rdf_entity/list"
  *   },
  *   field_ui_base_route = "entity.rdf_type.edit_form",
@@ -203,7 +205,8 @@ class Rdf extends ContentEntityBase implements RdfInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('uri')
-      ->setLabel(t('ID'));
+      ->setLabel(t('ID'))
+      ->setTranslatable(FALSE);
 
     $fields['rid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Rdf Type'))
@@ -215,7 +218,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setDescription(t('The username of the content author.'))
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback('Drupal\rdf_entity\Entity\Rdf::getCurrentUserId')
-      ->setTranslatable(TRUE)
+      ->setTranslatable(FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
@@ -228,7 +231,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
-      ->setSetting('max_length', 255)
+      ->setSetting('max_length', 2048)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'string',
@@ -246,9 +249,21 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     $fields[$entity_type->getKey('uuid')] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('UUID'))
       ->setRevisionable(FALSE)
+      ->setTranslatable(FALSE)
       ->setReadOnly(TRUE)
       ->setComputed(TRUE)
       ->setCustomStorage(TRUE);
+
+    $fields['langcode'] = BaseFieldDefinition::create('language')
+      ->setLabel(new TranslatableMarkup('Langcode'))
+      ->setDisplayOptions('view', [
+        'region' => 'hidden',
+      ])
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'language_select',
+        'weight' => 2,
+      ]);
 
     return $fields;
   }
@@ -375,7 +390,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     }
     $bundle = $this->entityTypeManager()->getStorage('rdf_type')->load($this->bundle());
     $mapping = rdf_entity_get_third_party_property($bundle, 'mapping', 'uid');
-    return !empty($mapping['target_id']);
+    return !empty($mapping['target_id']['predicate']);
   }
 
   /**
@@ -413,7 +428,7 @@ class Rdf extends ContentEntityBase implements RdfInterface {
    * {@inheritdoc}
    */
   public function hasGraph($graph) {
-    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this->id(), $graph);
+    return $this->entityTypeManager()->getStorage($this->getEntityTypeId())->hasGraph($this, $graph);
   }
 
 }

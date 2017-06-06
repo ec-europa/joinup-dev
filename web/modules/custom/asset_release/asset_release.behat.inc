@@ -142,7 +142,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   protected function createAssetRelease(array $values) {
     if (!empty($values['field_isr_documentation'])) {
-      $values['field_isr_documentation'] = [$this->createFile($values['field_isr_documentation'])->id()];
+      foreach ($values['field_isr_documentation'] as &$filename) {
+        $filename = [$this->createFile($filename)->id()];
+      }
     }
 
     $values['rid'] = 'asset_release';
@@ -202,7 +204,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -268,16 +269,16 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *    Throws an exception when a mapped value is not found.
    */
   protected function convertValueAliases(array $fields) {
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
-
-    // Conver the name of the is version of field to an id.
-    // This is handled separatelly as it is not an entity reference but an
+    // Convert the name of the is version of field to an id.
+    // This is handled separately as it is not an entity reference but an
     // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
       $solution = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
       $fields['field_isr_is_version_of'] = $solution->id();
     }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }

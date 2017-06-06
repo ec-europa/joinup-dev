@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_bool
+    - rdf_entity.rdfentity.multifield
+id: rdf_entity.multifield.field_bool
+field_name: field_bool
+entity_type: rdf_entity
+bundle: multifield
+label: Boolean
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'True'
+  off_label: 'False'
+field_type: boolean

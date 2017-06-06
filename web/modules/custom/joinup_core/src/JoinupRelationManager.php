@@ -4,7 +4,6 @@ namespace Drupal\joinup_core;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\joinup_core\Exception\MissingRelationException;
 use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,7 +72,7 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   public function getParentModeration(EntityInterface $entity) {
     $parent = $this->getParent($entity);
     if (!$parent) {
-      throw new MissingRelationException('Cannot determine the moderation type on an entity that doesn\'t belong to a solution or collection.');
+      return NULL;
     }
     $field_array = [
       'collection' => 'field_ar_moderation',

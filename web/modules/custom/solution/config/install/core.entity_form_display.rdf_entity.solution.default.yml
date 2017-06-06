@@ -197,7 +197,7 @@ content:
     third_party_settings: {  }
     region: content
   field_status:
-    type: options_buttons
+    type: options_select
     weight: 11
     settings: {  }
     third_party_settings: {  }
@@ -238,4 +238,6 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  langcode: true
+  translation: true
   uid: true

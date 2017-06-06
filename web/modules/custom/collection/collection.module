@@ -13,13 +13,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
-use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -152,36 +149,6 @@ function collection_entity_insert(EntityInterface $entity) {
   }
   collection_entity_update($entity);
 
-  // Create a new navigation menu and associate it with the new collection. This
-  // menu can be used to link to custom pages for the collection.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && $entity->bundle() === 'collection') {
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
-    ];
-    $og_menu_instance = OgMenuInstance::create($values);
-    $og_menu_instance->save();
-
-    // Automatically add a link to the overview and about pages of the
-    // collection entity.
-    $menu_name = 'ogmenu-' . $og_menu_instance->id();
-    $link = MenuLinkContent::create([
-      'title' => t('Overview'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
-      'weight' => -10,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('About'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
-      'weight' => -9,
-    ]);
-    $link->save();
-  }
-
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
@@ -231,7 +198,7 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_ar_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:

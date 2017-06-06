@@ -13,8 +13,6 @@ use Drupal\user\Entity\User;
 
 /**
  * Confirmation form for users that want to revoke their collection membership.
- *
- * @package Drupal\collection\Form
  */
 class LeaveCollectionConfirmForm extends ConfirmFormBase {
 

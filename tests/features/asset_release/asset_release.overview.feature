@@ -13,14 +13,16 @@ Feature: Asset distribution overview on solution.
     # latest release created, even though it is not the latest in the version
     # number.
     And the following releases:
-      | title                 | documentation | release number | release notes | creation date    | is version of    |
-      | Thief in the Angels   | text.pdf      | 2              | Notes 2       | 28-01-1995 12:06 | Lovely Butterfly |
-      | The Child of the Past | text.pdf      | 1              | Notes 1       | 28-01-1996 12:05 | Lovely Butterfly |
+      | title                 | documentation | release number | release notes | creation date    | is version of    | state     |
+      | Hidden spies          | text.pdf      | 3              | Notes 3       | 28-01-1995 12:05 | Lovely Butterfly | draft     |
+      | Thief in the Angels   | text.pdf      | 2              | Notes 2       | 28-01-1995 12:06 | Lovely Butterfly | validated |
+      | The Child of the Past | text.pdf      | 1              | Notes 1       | 28-01-1996 12:05 | Lovely Butterfly | validated |
     And the following asset distributions:
-      | title       | access url | creation date    | parent                |
-      | Linux       | test.zip   | 28-01-1995 12:05 | Thief in the Angels   |
-      | Windows     |            | 28-01-1995 12:06 | The Child of the Past |
-      | User manual | test.zip   | 28-01-1995 11:07 | Lovely Butterfly      |
+      | title       | access url                          | creation date    | parent                |
+      | Linux       | test.zip                            | 28-01-1995 12:05 | Thief in the Angels   |
+      | Windows     | http://www.example.org/download.php | 28-01-1995 12:06 | The Child of the Past |
+      | User manual | test.zip                            | 28-01-1995 11:07 | Lovely Butterfly      |
+      | Solaris     | test.zip                            | 28-01-1995 12:08 | Hidden spies          |
     And the following collection:
       | title      | End of Past      |
       | affiliates | Lovely Butterfly |
@@ -29,6 +31,7 @@ Feature: Asset distribution overview on solution.
     When I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the heading "Releases for Lovely Butterfly solution"
+    # Only the published releases should be shown.
     # The release titles include the version as a suffix.
     And I should see the following releases in the exact order:
       | release                 |
@@ -37,8 +40,19 @@ Feature: Asset distribution overview on solution.
     # The standalone distribution should also be visible.
     And I should see the link "User manual"
     And I should see the text "Standalone distribution"
+    # Distributions of unpublished releases should not be shown.
+    But I should not see the text "Solaris"
 
     And I should see the download link in the "Linux" asset distribution
+    And I should see the download link in the "User manual" asset distribution
+    # When the distribution file is remote, the download link should not be shown.
     And the "Windows" asset distribution should not have any download urls
 
     And the "The Child of the Past" release should be marked as the latest release
+
+    # Verify that the releases titles link to the release page.
+    And I should see the link "The Child of the Past 1"
+    And I should see the link "Thief in the Angels 2"
+    When I click "The Child of the Past 1"
+    Then I should see the heading "The Child of the Past 1"
+    And I should see the text "Latest release"

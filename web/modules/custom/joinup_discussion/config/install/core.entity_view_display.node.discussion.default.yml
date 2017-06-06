@@ -2,16 +2,19 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_display.comment.comment.default
+    - core.entity_view_display.comment.reply.default
     - field.field.node.discussion.body
-    - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_attachment
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - comment
+    - ds
+    - file
     - link
     - options
     - text
@@ -23,28 +26,74 @@ mode: default
 content:
   body:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_comments:
-    type: comment_default
+  field_attachment:
+    type: file_table
+    weight: 9
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: with_label
+  field_policy_domain:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+    type: entity_reference_label
+    region: content
+  field_replies:
     weight: 4
     label: above
     settings:
-      pager_id: 0
       view_mode: default
+      pager_id: 0
     third_party_settings: {  }
+    type: comment_default
     region: content
-  field_policy_domain:
-    weight: 0
+  field_shared_in:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_state:
     weight: 5
     label: above
@@ -58,7 +107,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   og_audience:
-    label: above
+    label: hidden
     type: entity_reference_label
     settings:
       link: true
@@ -67,15 +116,24 @@ content:
     region: content
   report:
     label: hidden
-    weight: 50
+    weight: 7
     region: content
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: link
   share_link:
     weight: 6
@@ -83,4 +141,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_shared_in: true
+  langcode: true

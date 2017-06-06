@@ -17,10 +17,11 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: 'documentation'
+  file_directory: documentation
   file_extensions: 'txt doc docx pdf'
   max_filesize: ''
   description_field: false
+  description_field_required: false
   handler: 'file_url_default:file'
   handler_settings: {  }
 field_type: file_url

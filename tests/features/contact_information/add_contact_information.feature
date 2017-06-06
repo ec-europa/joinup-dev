@@ -6,7 +6,7 @@ Feature: Creation of contact information
 
   Scenario: Create a contact information
     Given I am logged in as an "authenticated user"
-    When I click "Propose collection" in the plus button menu
+    And I go to the propose collection form
     And I click the "Description" tab
     And I press "Add new" at the "Contact information" field
     # Also check that the help text for the website field is visible.
@@ -16,6 +16,7 @@ Feature: Creation of contact information
       | Name   | Contact information example |
       | URL    | http://www.example.org      |
     And I press "Create contact information"
+    Then the following fields should not be present "Langcode, Translation"
     Then I should see the error message "The e-mail foo@bar is not valid."
     When I fill in "E-mail address" with "foo@bar.com"
     And I press "Create contact information"

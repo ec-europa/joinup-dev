@@ -6,11 +6,13 @@ package: Joinup
 dependencies:
   - datetime
   - digital_size_formatter
+  - file_url
   - joinup_core
+  - joinup_user
   - link
   - rdf_entity
-  - file_url
   - text
+  - views
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_distribution.default
@@ -39,3 +41,4 @@ config_devel:
   - field.storage.rdf_entity.field_ad_modification_date
   - field.storage.rdf_entity.field_ad_repr_technique
   - rdf_entity.rdfentity.asset_distribution
+  - views.view.asset_distribution_downloads

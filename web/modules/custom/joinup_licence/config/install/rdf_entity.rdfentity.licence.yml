@@ -3,11 +3,44 @@ status: true
 dependencies: {  }
 third_party_settings:
   rdf_entity:
+    rdf_type: 'http://purl.org/dc/terms/LicenseDocument'
     mapping:
       rid:
-        target_id: 'http://purl.org/dc/terms/LicenseDocument'
+        target_id:
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+          format: resource
       label:
-        value: 'http://purl.org/dc/terms/title'
+        value:
+          predicate: 'http://purl.org/dc/terms/title'
+          format: t_literal
+      langcode:
+        value:
+          predicate: 'http://joinup.eu/language'
+          format: literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
+      content_translation_source:
+        value:
+          predicate: 'http://joinup.eu/language/source'
+          format: literal
+      content_translation_outdated:
+        value:
+          predicate: 'http://joinup.eu/language/outdated'
+          format: 'xsd:boolean'
+      content_translation_status:
+        value:
+          predicate: 'http://joinup.eu/language/status'
+          format: 'xsd:boolean'
+      content_translation_created:
+        value:
+          predicate: 'http://joinup.eu/language/created'
+          format: 'xsd:dateTime'
+      content_translation_changed:
+        value:
+          predicate: 'http://joinup.eu/language/changed'
+          format: 'xsd:dateTime'
     graph:
       default: 'http://joinup.eu/licence/published'
       draft: 'http://joinup.eu/licence/draft'

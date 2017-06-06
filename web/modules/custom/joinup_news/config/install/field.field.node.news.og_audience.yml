@@ -15,7 +15,7 @@ bundle: news
 label: Collection
 description: 'The collection this entity belongs to.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

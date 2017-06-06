@@ -30,9 +30,11 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3185
-  # field_licence
+  field_licence:
+    plugin: migration
+    source: licence
+    migration: licence
+    no_stub: true
 
   # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
   # field_policy_domain
@@ -41,16 +43,11 @@ process:
     plugin: migration
     source: collection
     migration: collection
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # Revisit this mapping in ISAICP-3068.
-  field_state:
-    plugin: default_value
-    default_value: validated
-
+  field_state: state
 destination:
   plugin: entity:node
   default_bundle: document
 migration_dependencies:
  required:
    - document_file
+   - collection

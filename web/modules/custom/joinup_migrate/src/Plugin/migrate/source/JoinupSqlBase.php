@@ -4,8 +4,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Site\Settings;
-use Drupal\joinup_migrate\FileUtility;
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
@@ -13,6 +11,16 @@ use Drupal\migrate\Row;
  * Provides a base class for SqlBase classes.
  */
 abstract class JoinupSqlBase extends SqlBase {
+
+  /**
+   * File URL mode: Cardinality is 1, file has priority over URL.
+   */
+  const FILE_URL_MODE_SINGLE = 0;
+
+  /**
+   * File URL mode: Cardinality is unlimited, URL and files are cumulated.
+   */
+  const FILE_URL_MODE_MULTIPLE = 1;
 
   /**
    * A list of source objects that should be checked for existing URIs.
@@ -46,26 +54,18 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $uriProperties = ['uri'];
 
   /**
-   * Gets the legacy site webroot directory.
+   * Gets the legacy site files directory.
    *
    * @return string
-   *   The legacy site webroot directory
+   *   The legacy site files directory
    *
    * @throws \Drupal\migrate\MigrateException
-   *   When the webroot was not configured.
+   *   When the site files directory was not configured.
    */
-  protected function getLegacySiteWebRoot() {
-    $webroot = Settings::get('joinup_migrate.source.root');
-    $webroot = rtrim($webroot, '/');
-
-    try {
-      FileUtility::checkLegacySiteWebRoot($webroot);
-    }
-    catch (\Exception $exception) {
-      throw new MigrateException($exception->getMessage());
-    }
-
-    return $webroot;
+  protected function getLegacySiteFiles() {
+    $files_dir = Settings::get('joinup_migrate.source.files');
+    $files_dir = rtrim($files_dir, '/');
+    return $files_dir;
   }
 
   /**

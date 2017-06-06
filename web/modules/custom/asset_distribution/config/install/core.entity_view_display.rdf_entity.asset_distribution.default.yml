@@ -15,14 +15,35 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - asset_distribution
     - digital_size_formatter
     - ds
     - text
+    - user
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
 bundle: asset_distribution
 mode: default
 content:
+  field_ad_access_url:
+    type: tracked_hosted_file_download
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      hosted_files_title: Download
+      show_remote_files: true
+      remote_files_title: External
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_description:
     weight: 1
     label: hidden
@@ -38,6 +59,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: text_default
+    region: content
   field_ad_file_size:
     type: digital_size
     weight: 3
@@ -53,6 +75,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
   field_ad_licence:
     weight: 2
     label: hidden
@@ -69,6 +92,7 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -85,12 +109,13 @@ content:
             classes: {  }
       joinup:
         template_suggestion: no_wrappers
+    region: content
 hidden:
-  field_ad_access_url: true
   field_ad_creation_date: true
   field_ad_format: true
   field_ad_gitb_compliant: true
   field_ad_modification_date: true
   field_ad_repr_technique: true
   field_status: true
+  langcode: true
   og_audience: true

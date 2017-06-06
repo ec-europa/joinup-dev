@@ -11,6 +11,9 @@
     <!-- Import Phing targets related to Apache Solr. -->
     <import file="${project.basedir}/build.solr.xml" optional="true" />
 
+    <!-- Import Phing targets related to Piwik. -->
+    <import file="${project.basedir}/build.piwik.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
@@ -93,7 +96,6 @@
                 dbUrl="${phpunit.db_url}"
                 sparqlUrl="${phpunit.sparql_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
-                legacyWebroot="${phpunit.migrate.legacy_site.webroot}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -141,16 +143,6 @@
             output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
-    <!-- Make services.yml writeable. -->
-    <target name="writable-services-yml">
-        <if>
-            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
-            <then>
-                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
-            </then>
-        </if>
-    </target>
-
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
     <target name="disable-persistent-session-cookies">
@@ -184,7 +176,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
 
     <target
         name="install-dev"
