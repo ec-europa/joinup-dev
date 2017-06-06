@@ -26,7 +26,8 @@ class MockFileSystem {
       'd8_file_news_attachment' => 'path',
       'd8_file_collection_logo' => 'path',
       'd8_file_solution_logo' => 'path',
-      'd8_comment_file' => 'path',
+      'd8_file_comment_attachment' => 'path',
+      // Migrations not converted yet to 'file:*'.
       'd8_distribution' => 'file_path',
       'd8_document_file' => 'path',
       'd8_documentation_file' => 'path',
