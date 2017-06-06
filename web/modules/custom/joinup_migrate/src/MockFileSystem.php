@@ -21,17 +21,17 @@ class MockFileSystem {
    */
   public static function createTestingFiles($base_dir, Connection $db) {
     $tables = [
+      'd8_file_collection_logo' => 'path',
+      'd8_file_comment_attachment' => 'path',
       'd8_file_discussion_attachment' => 'path',
       'd8_file_event_attachment' => 'path',
+      'd8_file_event_logo' => 'path',
       'd8_file_news_attachment' => 'path',
-      'd8_file_collection_logo' => 'path',
       'd8_file_solution_logo' => 'path',
-      'd8_file_comment_attachment' => 'path',
       // Migrations not converted yet to 'file:*'.
       'd8_distribution' => 'file_path',
       'd8_document_file' => 'path',
       'd8_documentation_file' => 'path',
-      'd8_event' => 'file_path',
       'd8_user' => 'photo_path',
     ];
     $files = [];

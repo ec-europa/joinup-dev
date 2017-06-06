@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('event_logo', 1);
-$this->assertSuccessCount('event_logo', 1);
+$this->assertTotalCount('file__event_logo', 1);
+$this->assertSuccessCount('file__event_logo', 1);
 $this->assertTotalCount('event', 2);
 $this->assertSuccessCount('event', 2);
 

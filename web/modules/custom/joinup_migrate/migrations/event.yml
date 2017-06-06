@@ -25,8 +25,8 @@ process:
   field_keywords: keywords
   field_event_logo:
     plugin: migration
-    source: nid
-    migration: event_logo
+    source: file_id
+    migration: file:event_logo
     no_stub: true
   field_event_date/value: start_date
   field_event_date/end_value: end_date
@@ -77,5 +77,5 @@ destination:
   default_bundle: event
 migration_dependencies:
   required:
-    - event_logo
+    - file:event_logo
     - file:event_attachment
