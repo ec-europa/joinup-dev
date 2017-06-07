@@ -54,15 +54,19 @@ WHERE {
 }
 QUERY;
     $endpoint->query($query);
-
-    $backend = Server::load('solr_published')->getBackend();
-    if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
-      $index = $backend->getServer()->getIndexes()['published'];
-      $backend->deleteAllIndexItems($index);
+    $search_api_instances = [
+      'solr_published' => 'published',
+      'solr_unpublished' => 'unpublished',
+    ];
+    foreach ($search_api_instances as $server => $index) {
+      $backend = Server::load($server)->getBackend();
+      if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
+        if ($index = $backend->getServer()->getIndexes()[$index]) {
+          $backend->deleteAllIndexItems($index);
+        }
+      }
     }
-
     drush_log('All triples have been removed.', LogLevel::INFO);
-
   }
   else {
     drush_log('Triple store is empty, nothing to delete.', LogLevel::INFO);
