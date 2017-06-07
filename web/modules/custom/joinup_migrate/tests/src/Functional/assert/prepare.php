@@ -119,6 +119,15 @@ foreach ($expected_values as $collection => $expected_value) {
     $roles = Json::decode($roles);
     $expected_roles = Json::decode($expected_roles);
 
+    // Order arrays by key in deep.
+    ksort($roles);
+    ksort($expected_roles);
+    foreach (['roles', 'expected_roles'] as $variable) {
+      foreach ($$variable as &$items) {
+        ksort($items);
+      }
+    }
+
     // Admin should be compared only as user IDs because the creation time is
     // the migration time and that we cannot predict.
     $this->assertTrue((isset($expected_roles['admin']) && isset($roles['admin'])) || (!isset($expected_roles['admin']) && !isset($roles['admin'])));
@@ -127,9 +136,6 @@ foreach ($expected_values as $collection => $expected_value) {
       unset($roles['admin']);
       unset($expected_roles['admin']);
     }
-
-    ksort($roles);
-    ksort($expected_roles);
     $this->assertSame($expected_roles, $roles);
   }
 }
