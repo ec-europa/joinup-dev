@@ -27,15 +27,15 @@ dependencies:
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_organisation
-    - search_api.server.solr_published
+    - search_api.server.solr_unpublished
   module:
     - rdf_entity
     - search_api
     - joinup_core
     - node
     - user
-id: published
-name: 'Published entities index'
+id: unpublished
+name: 'Unpublished entities index'
 description: ''
 read_only: false
 field_settings:
@@ -413,7 +413,6 @@ processor_settings:
     weights:
       preprocess_index: -48
       preprocess_query: -48
-  entity_status: {  }
   add_url: {  }
   rendered_item: {  }
   html_filter:
@@ -524,10 +523,10 @@ processor_settings:
       preprocess_index: -47
       preprocess_query: -47
   joinup_entity_status:
-    inverse: false
+    inverse: true
 tracker_settings:
   default: {  }
 options:
   index_directly: true
   cron_limit: 50
-server: solr_published
+server: solr_unpublished

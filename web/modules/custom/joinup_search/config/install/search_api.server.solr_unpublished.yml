@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - search_api_solr
-id: solr_published
-name: 'Server for published entities'
+id: solr_unpublished
+name: 'Server for unpublished entities'
 description: ''
 backend: search_api_solr
 backend_config:
@@ -14,7 +14,7 @@ backend_config:
     host: localhost
     port: '8983'
     path: /solr
-    core: drupal_published
+    core: drupal_unpublished
     timeout: 5
     index_timeout: 5
     optimize_timeout: 10
