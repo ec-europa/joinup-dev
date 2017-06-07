@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_core\Traits\LegacyMultipleCardinalitySupportingFieldWidgetTrait;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 
@@ -24,5 +25,17 @@ use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 class LegacyMultipleCardinalitySupportingLinkWidget extends LinkWidget {
 
   use LegacyMultipleCardinalitySupportingFieldWidgetTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    // The link widget expects to be passed an array of values. If we tricked it
+    // in becoming a single value widget, make sure it still gets what it wants.
+    if (!$this->hasMultipleValues) {
+      $values = [$values];
+    }
+    return parent::massageFormValues($values, $form, $form_state);
+  }
 
 }
