@@ -112,8 +112,6 @@ config_devel:
   - core.date_format.medium
   - core.date_format.short
   - core.entity_form_display.ogmenu_instance.navigation.default
-  - core.entity_form_display.rdf_entity.collection.propose
-  - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
