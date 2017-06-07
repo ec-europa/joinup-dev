@@ -9,7 +9,6 @@ dependencies:
     - rdf_entity.rdfentity.contact_information
   module:
     - joinup_core
-    - link
 id: rdf_entity.contact_information.default
 targetEntityType: rdf_entity
 bundle: contact_information
