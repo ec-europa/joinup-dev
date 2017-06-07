@@ -80,10 +80,10 @@ content:
       label_singular: 'contact information'
       label_plural: 'contact information'
       allow_new: true
-      allow_existing: true
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_existing: false
     third_party_settings: {  }
     region: content
   field_is_description:
