@@ -101,7 +101,7 @@
             </then>
         </if>
         <if>
-            <available file="${solr.core.published.dir}" type="dir" property="solr.core.dir.available" />
+            <available file="${solr.core.published.dir}" type="dir" property="solr.core.published.dir.available" />
             <then>
                 <echo message="A Solr core has already been configured at ${solr.core.published.dir}. Skipping." />
             </then>
@@ -118,7 +118,7 @@
             </else>
         </if>
         <if>
-            <available file="${solr.core.unpublished.dir}" type="dir" property="solr.core.dir.available" />
+            <available file="${solr.core.unpublished.dir}" type="dir" property="solr.core.unpublished.dir.available" />
             <then>
                 <echo message="A Solr core has already been configured at ${solr.core.unpublished.dir}. Skipping." />
             </then>
