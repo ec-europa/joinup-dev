@@ -13,3 +13,5 @@ SELECT
   CONCAT('public://collection/logo/', SUBSTRING_INDEX(logo, '/', -1))
 FROM d8_collection
 WHERE logo_id IS NOT NULL
+AND logo IS NOT NULL
+AND logo <> ''
