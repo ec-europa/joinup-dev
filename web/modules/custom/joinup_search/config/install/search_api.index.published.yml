@@ -31,7 +31,7 @@ dependencies:
   module:
     - rdf_entity
     - search_api
-    - joinup_core
+    - joinup_search
     - node
     - user
 id: published
@@ -352,6 +352,8 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
+  joinup_entity_status:
+    inverse: false
   tokenizer:
     fields:
       - keywords
@@ -523,8 +525,6 @@ processor_settings:
     weights:
       preprocess_index: -47
       preprocess_query: -47
-  joinup_entity_status:
-    inverse: false
 tracker_settings:
   default: {  }
 options:
