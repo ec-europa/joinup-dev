@@ -30,10 +30,10 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: email_default
+    type: email_legacy_multicardinality
     region: content
   field_ci_name:
-    type: string_textfield
+    type: string_textfield_legacy_multicardinality
     weight: 1
     settings:
       size: 60
@@ -53,7 +53,7 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_legacy_multicardinality
     region: content
 hidden:
   label: true
