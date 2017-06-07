@@ -14,6 +14,41 @@ use Drupal\Component\Serialization\Json;
 class Prepare extends TestableSpreadsheetBase {
 
   /**
+   * A list of 'community' node revision IDs with creation flags deactivated.
+   *
+   * @var int[]
+   */
+  protected $deactivatedCreationFlags;
+
+  /**
+   * A list of Email contacts.
+   *
+   * @var string[]
+   */
+  protected $emailContact;
+
+  /**
+   * A list of publishers.
+   *
+   * @var int[]
+   */
+  protected $publisher;
+
+  /**
+   * A list of contacts.
+   *
+   * @var int[]
+   */
+  protected $contact;
+
+  /**
+   * A list of imported users.
+   *
+   * @var int[]
+   */
+  protected $importedUser;
+
+  /**
    * {@inheritdoc}
    */
   public function getIds() {
@@ -67,77 +102,26 @@ class Prepare extends TestableSpreadsheetBase {
         $vid = $node->vid;
       }
       else {
-        $messages[] = "Node with ID '$nid' doesn't exit or is not of type 'project_project', 'community', 'repository'";
+        $messages[] = "Node with ID '$nid' doesn't exist or is not of type 'project_project', 'community', 'repository'";
       }
     }
 
-    // Elibrary on community should be computed.
-    if ($row['type'] === 'community') {
-      $deactivated = (bool) $this->db->select('content_type_community', 'c')
-        ->fields('c', ['vid'])
-        ->condition('c.vid', $vid)
-        ->condition('c.field_community_forum_creation_value', 'Deactivated')
-        ->condition('c.field_community_wiki_creation_value', 'Deactivated')
-        ->condition('c.field_community_news_creation_value', 'Deactivated')
-        ->condition('c.field_community_documents_creati_value', 'Deactivated')
-        ->execute()
-        ->fetchField();
-      if ($deactivated) {
-        $row['elibrary'] = 0;
-      }
-    }
+    // Elibrary on 'community' should be computed.
+    $this->setElibraryCreation($row, $vid);
 
     // Process the publisher and contact point for 'repository'.
-    if ($row['type'] === 'repository') {
-      $publishers = $this->db->select('content_field_repository_publisher', 'p')
-        ->fields('p', ['field_repository_publisher_nid'])
-        ->condition('p.vid', $vid)
-        ->execute()
-        ->fetchCol();
-      if ($publishers) {
-        $row['publisher'] = implode(',', $publishers);
-      }
-      $contacts = $this->db->select('content_type_repository', 'c')
-        ->fields('c', ['field_repository_contact_point_nid'])
-        ->condition('c.vid', $vid)
-        ->isNotNull('c.field_repository_contact_point_nid')
-        ->execute()
-        ->fetchCol();
-      if ($contacts) {
-        $row['contact'] = implode(',', $contacts);
-      }
-    }
+    $this->setPublisher($row, $vid);
+    $this->setContact($row, $vid);
 
     // Add E-mail contact, if case.
-    if ($row['type'] === 'project_project') {
-      $query = $this->db->select('node', 'n')
-        ->fields('c', ['field_project_common_contact_value'])
-        ->isNotNull('c.field_project_common_contact_value')
-        ->condition('n.nid', $nid);
-      $query->join('content_field_project_common_contact', 'c', 'n.vid = c.vid');
-      if ($contact_email = $query->execute()->fetchField()) {
-        $row['contact_email'] = $contact_email;
-      }
-    }
+    $this->setContactEmail($row, $nid);
 
     // OG roles.
     $roles = [];
 
     // The collection admin.
-    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $collection_owner = trim((string) $row['Collection Owner']);
-    if ($collection_owner) {
-      $collection_owner = array_filter(array_map('trim', explode(',', $collection_owner)));
-      $query = $this->db->select('users', 'u')
-        ->fields('u', ['uid'])
-        ->condition('u.mail', $collection_owner, 'IN');
-      // Only migrated users are allowed.
-      $query->join('d8_user', 'users', 'u.uid = users.uid');
-      if ($uids = $query->execute()->fetchCol()) {
-        $roles['admin'] = array_fill_keys($uids, \Drupal::time()->getRequestTime());
-      }
-    }
-
+    $this->setCollectionOwner($row, $roles);
+    // Collection facilitators and members.
     $query = $this->db->select('d8_mapping', 'm')
       ->fields('ur', ['uid', 'rid'])
       ->fields('u', ['is_admin', 'created'])
@@ -158,6 +142,7 @@ class Prepare extends TestableSpreadsheetBase {
         }
       }
     }
+    // Add roles to row.
     if ($roles) {
       $row['roles'] = Json::encode($roles);
     }
@@ -172,6 +157,157 @@ class Prepare extends TestableSpreadsheetBase {
     }
 
     return empty($messages);
+  }
+
+  /**
+   * Computes the elibrary creation.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setElibraryCreation(array &$row, $vid) {
+    if (($row['type'] !== 'community') || !$vid) {
+      return;
+    }
+
+    if (!isset($this->deactivatedCreationFlags)) {
+      $this->deactivatedCreationFlags = $this->db->select('content_type_community', 'c')
+        ->fields('c', ['vid'])
+        ->condition('c.field_community_forum_creation_value', 'Deactivated')
+        ->condition('c.field_community_wiki_creation_value', 'Deactivated')
+        ->condition('c.field_community_news_creation_value', 'Deactivated')
+        ->condition('c.field_community_documents_creati_value', 'Deactivated')
+        ->execute()
+        ->fetchCol();
+    }
+
+    if (in_array($vid, $this->deactivatedCreationFlags)) {
+      $row['elibrary'] = 0;
+    }
+  }
+
+  /**
+   * Sets the contact Email.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $nid
+   *   The node ID or NULL.
+   */
+  protected function setContactEmail(array &$row, $nid) {
+    if (!$nid || ($row['type'] !== 'project_project')) {
+      return;
+    }
+
+    if (!isset($this->emailContact)) {
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+      $query = $this->db->select('node', 'n')
+        ->fields('n', ['nid'])
+        ->fields('c', ['field_project_common_contact_value'])
+        ->isNotNull('c.field_project_common_contact_value');
+      $query->join('content_field_project_common_contact', 'c', 'n.vid = c.vid');
+      $this->emailContact = $query->execute()->fetchAllKeyed();
+    }
+
+    if (isset($this->emailContact[$nid])) {
+      $row['contact_email'] = $this->emailContact[$nid];
+    }
+  }
+
+  /**
+   * Sets the publishers.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setPublisher(array &$row, $vid) {
+    if (!$vid || ($row['type'] !== 'repository')) {
+      return;
+    }
+
+    if (!isset($this->publisher)) {
+      $result = $this->db->select('content_field_repository_publisher', 'p')
+        ->fields('p', ['vid'])
+        ->fields('p', ['field_repository_publisher_nid'])
+        ->execute()
+        ->fetchAll();
+      foreach ($result as $item) {
+        $this->publisher[(int) $item->vid][] = $item->field_repository_publisher_nid;
+      }
+    }
+
+    if (!empty($this->publisher[$vid])) {
+      $row['publisher'] = implode(',', $this->publisher[$vid]);
+    }
+  }
+
+  /**
+   * Sets the contact.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setContact(array &$row, $vid) {
+    if (!$vid || ($row['type'] !== 'repository')) {
+      return;
+    }
+
+    if (!isset($this->contact)) {
+      $result = $this->db->select('content_type_repository', 'c')
+        ->fields('c', ['vid'])
+        ->fields('c', ['field_repository_contact_point_nid'])
+        ->isNotNull('c.field_repository_contact_point_nid')
+        ->execute()
+        ->fetchAll();
+      foreach ($result as $item) {
+        $this->contact[(int) $item->vid][] = $item->field_repository_contact_point_nid;
+      }
+    }
+
+    if (!empty($this->contact[$vid])) {
+      $row['contact'] = implode(',', $this->contact[$vid]);
+    }
+  }
+
+  /**
+   * Sets the collection owner.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param array $roles
+   *   The list of roles.
+   */
+  protected function setCollectionOwner(array $row, array &$roles) {
+    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+    $collection_owner = trim((string) $row['Collection Owner']);
+    if (!$collection_owner) {
+      return;
+    }
+
+    if (!isset($this->importedUser)) {
+      $this->importedUser = $this->db->select('d8_user', 'u')
+        ->fields('u', ['mail', 'uid'])
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
+    $collection_owner = array_filter(array_map('trim', explode(',', $collection_owner)));
+    $uids = array_map(function ($mail) {
+      return $this->importedUser[$mail];
+    }, array_filter($collection_owner, function ($mail) {
+      return isset($this->importedUser[$mail]);
+    }));
+
+    if ($uids) {
+      $request_time = \Drupal::time()->getRequestTime();
+      $roles['admin'] = array_fill_keys($uids, $request_time);
+    }
   }
 
 }
