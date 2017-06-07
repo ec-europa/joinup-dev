@@ -535,6 +535,13 @@ function joinup_theme_preprocess_image(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_user().
+ */
+function joinup_theme_preprocess_user(&$variables) {
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
+}
+
+/**
  * Implements hook_preprocess_user__group_header().
  */
 function joinup_theme_preprocess_user__group_header(&$variables) {
