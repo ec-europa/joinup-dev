@@ -32,6 +32,11 @@ process:
     migration: file:custom_page_attachment
     source: fids
     no_stub: true
+  parent:
+    plugin: migration
+    source: group_nid
+    migration: custom_page_parent
+    no_stub: true
 destination:
   plugin: entity:node
   default_bundle: custom_page

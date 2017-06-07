@@ -1,0 +1,5 @@
+services:
+  joinup_migrate.og_menu_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\CustomPageOgMenuEntrySubscriber
+    tags:
+      - { name: event_subscriber }

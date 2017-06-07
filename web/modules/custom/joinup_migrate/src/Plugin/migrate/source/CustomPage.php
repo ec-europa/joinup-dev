@@ -57,6 +57,7 @@ class CustomPage extends JoinupSqlBase {
       'uid',
       'body',
       'collection',
+      'group_nid',
     ]);
   }
 
