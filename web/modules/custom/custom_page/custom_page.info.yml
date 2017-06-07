@@ -24,6 +24,7 @@ config_devel:
   - facets.facet.field_cp_content_listing_content_type
   - facets.facet_source.search_api_field__node.field_cp_content_listing
   - field.field.node.custom_page.body
+  - field.field.node.custom_page.field_attachment
   - field.field.node.custom_page.field_cp_content_listing
   - field.field.node.custom_page.og_audience
   - field.storage.node.field_cp_content_listing
