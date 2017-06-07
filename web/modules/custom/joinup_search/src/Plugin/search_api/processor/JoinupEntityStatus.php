@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_search\Plugin\search_api\processor;
 
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\joinup_core\JoinupRelationManager;
@@ -31,9 +30,9 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
   use PluginFormTrait;
 
   /**
-   * @var \Drupal\joinup_core\JoinupRelationManager
-   *
    * The relation manager service.
+   *
+   * @var \Drupal\joinup_core\JoinupRelationManager
    */
   protected $relationManager;
 
@@ -79,6 +78,9 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form['inverse'] = [
       '#type' => 'checkbox',
