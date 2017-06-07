@@ -51,4 +51,4 @@ destination:
 migration_dependencies:
   required:
     - licence
-    - distribution_file
+    - file:distribution

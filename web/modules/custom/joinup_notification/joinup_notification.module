@@ -46,7 +46,7 @@ function joinup_notification_entity_predelete(EntityInterface $entity) {
 
   // The asset distribution rdf entity does not have a workflow so it is
   // excluded from the following check.
-  if ($workflow_helper->hasEntityStateField($entity)) {
+  if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
     $state_field = $workflow_helper->getEntityStateField($entity);
     if (empty($state_field) || empty($state_field->value) || $state_field->value !== 'deletion_request') {
       return;
@@ -151,11 +151,12 @@ function joinup_notification_entity_update(EntityInterface $entity) {
     return;
   }
 
+  /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
   $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-  if (!$workflow_helper->hasEntityStateField($entity)) {
+  if (!$workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
     return;
   }
-  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity)->getName();
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
 
   // Skip cases where original version is not present or the original state
   // is empty.

@@ -40,3 +40,4 @@ destination:
 migration_dependencies:
   required:
     - solution
+    - file:documentation_release

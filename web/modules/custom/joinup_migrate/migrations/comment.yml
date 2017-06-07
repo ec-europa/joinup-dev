@@ -52,7 +52,7 @@ process:
   field_attachment:
     plugin: migration
     source: fids
-    migration: comment_file
+    migration: file:comment_attachment
     no_stub: true
 destination:
   plugin: entity:comment
@@ -62,4 +62,4 @@ migration_dependencies:
     - document
     - event
     - news
-    - comment_file
+    - file:comment_attachment

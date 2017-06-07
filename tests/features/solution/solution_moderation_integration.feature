@@ -20,8 +20,8 @@ Feature: As a user of the website
       | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | draft            | E-inclusion   |
       | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | proposed         | E-inclusion   |
       | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | validated        | E-inclusion   |
-      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion_request | E-inclusion   |
-      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs_update     | E-inclusion   |
+      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | deletion request | E-inclusion   |
+      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | needs update     | E-inclusion   |
       | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | [ABB169] Business | blacklisted      | E-inclusion   |
     And the following solution user memberships:
       | solution        | user | roles |
