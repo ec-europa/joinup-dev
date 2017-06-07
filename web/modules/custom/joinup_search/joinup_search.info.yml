@@ -25,3 +25,4 @@ config_devel:
  - search_api.server.solr_published
  - search_api.server.solr_unpublished
  - views.view.search
+ - views.view.unpublished_entities
