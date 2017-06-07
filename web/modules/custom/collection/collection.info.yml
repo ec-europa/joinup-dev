@@ -11,6 +11,7 @@ dependencies:
   - facets
   - field_group
   - image
+  - inline_entity_form
   - joinup_core
   - link
   - og
