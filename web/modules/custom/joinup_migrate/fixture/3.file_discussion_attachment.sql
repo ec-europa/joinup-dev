@@ -16,6 +16,6 @@ INNER JOIN files f ON cfpia.field_project_issues_attachement_fid = f.fid
 INNER JOIN node n ON cfpia.vid = n.vid
 INNER JOIN d8_discussion d ON n.nid = d.nid
 WHERE f.fid IS NOT NULL
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL
 

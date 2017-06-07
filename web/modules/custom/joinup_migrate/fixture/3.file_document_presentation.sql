@@ -18,5 +18,5 @@ INNER JOIN files f ON cfpuf.field_presentation_upload_files_fid = f.fid
 INNER JOIN node n ON cfpuf.vid = n.vid
 INNER JOIN d8_mapping m ON n.nid = m.nid
 WHERE n.type = 'presentation'
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL

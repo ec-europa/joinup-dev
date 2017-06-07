@@ -18,5 +18,5 @@ INNER JOIN files f ON cfadf.field_additional_doc_file_fid = f.fid
 INNER JOIN node n ON cfadf.vid = n.vid
 INNER JOIN d8_mapping m ON n.nid = m.nid
 WHERE n.type = 'document'
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL

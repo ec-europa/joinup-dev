@@ -18,5 +18,5 @@ INNER JOIN files f ON cfcd.field_case_documentation_fid = f.fid
 INNER JOIN node n ON cfcd.vid = n.vid
 INNER JOIN d8_mapping m ON n.nid = m.nid
 WHERE n.type = 'case_epractice'
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL

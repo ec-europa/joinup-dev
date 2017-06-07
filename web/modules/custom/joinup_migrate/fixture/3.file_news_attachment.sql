@@ -16,6 +16,6 @@ INNER JOIN files f ON cfd.field_documentation_fid = f.fid
 INNER JOIN node n ON cfd.vid = n.vid
 INNER JOIN d8_news news ON n.nid = news.nid
 WHERE f.fid IS NOT NULL
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL
 

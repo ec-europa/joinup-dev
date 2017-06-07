@@ -18,5 +18,5 @@ INNER JOIN files f ON cffuf.field_factsheet_upload_files_fid = f.fid
 INNER JOIN node n ON cffuf.vid = n.vid
 INNER JOIN d8_mapping m ON n.nid = m.nid
 WHERE n.type = 'factsheet'
-WHERE TRIM(f.filepath) <> ''
+AND TRIM(f.filepath) <> ''
 AND f.filepath IS NOT NULL
