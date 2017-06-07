@@ -72,40 +72,12 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
-
-    $rows = [];
-    $header = [
-      ['data' => t('Class name')],
-      ['data' => t('Message')],
-      ['data' => t('Object')],
-      ['data' => t('Predicate')],
-      ['data' => t('Rule description')],
-      ['data' => t('Rule ID')],
-      ['data' => t('Rule severity')],
-      ['data' => t('Subject')],
-    ];
     $info = $form_state->getBuildInfo();
-    if (!empty($info['result'])) {
-      foreach ($info['result'] as $error) {
-        $row = [
-          $error->Class_Name ?? '',
-          $error->Message ?? '',
-          $error->Object ?? '',
-          $error->Predicate ?? '',
-          $error->Rule_Description ?? '',
-          $error->Rule_ID ?? '',
-          $error->Rule_Severity ?? '',
-          $error->Subject ?? '',
-        ];
-        $row = array_map('strval', $row);
-        $rows[] = $row;
-      }
+    if (!empty($info['validation_errors'])) {
+      // The form was submitted, and validation errors have been set.
+      $form['table'] = $this->buildErrorTable($info['validation_errors']);
     }
-    $form['table'] = [
-      '#theme' => 'table',
-      '#header' => $header,
-      '#rows' => $rows,
-    ];
+
     return $form;
   }
 
@@ -115,7 +87,7 @@ class AdmsValidatorForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     // Make sure to clear the table.
-    $form_state->addBuildInfo('result', []);
+    $form_state->addBuildInfo('validation_errors', []);
     $form_state->setRebuild(TRUE);
 
     $file = $this->uploadedFile();
@@ -129,7 +101,42 @@ class AdmsValidatorForm extends FormBase {
     }
     // Delete the uploaded file from disk.
     $file->delete();
-    $form_state->addBuildInfo('result', $this->getValidationErrors());
+    $form_state->addBuildInfo('validation_errors', $this->getValidationErrors());
+  }
+
+  /**
+   * Render the table with validation errors.
+   */
+  protected function buildErrorTable($errors) {
+    $rows = [];
+    foreach ($errors as $error) {
+      $row = [
+        $error->Class_Name ?? '',
+        $error->Message ?? '',
+        $error->Object ?? '',
+        $error->Predicate ?? '',
+        $error->Rule_Description ?? '',
+        $error->Rule_ID ?? '',
+        $error->Rule_Severity ?? '',
+        $error->Subject ?? '',
+      ];
+      $row = array_map('strval', $row);
+      $rows[] = $row;
+    }
+    return [
+      '#theme' => 'table',
+      '#header' => [
+        ['data' => t('Class name')],
+        ['data' => t('Message')],
+        ['data' => t('Object')],
+        ['data' => t('Predicate')],
+        ['data' => t('Rule description')],
+        ['data' => t('Rule ID')],
+        ['data' => t('Rule severity')],
+        ['data' => t('Subject')],
+      ],
+      '#rows' => $rows,
+    ];
   }
 
   /**
