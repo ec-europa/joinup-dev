@@ -61,9 +61,8 @@ QUERY;
     foreach ($search_api_instances as $server => $index) {
       $backend = Server::load($server)->getBackend();
       if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
-        if ($index = $backend->getServer()->getIndexes()[$index]) {
-          $backend->deleteAllIndexItems($index);
-        }
+        $index = $backend->getServer()->getIndexes()[$index];
+        $backend->deleteAllIndexItems($index);
       }
     }
     drush_log('All triples have been removed.', LogLevel::INFO);
