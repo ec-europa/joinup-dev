@@ -20,7 +20,6 @@ dependencies:
 config_devel:
  - facets.facet.policy_domain
  - facets.facet.spatial_coverage
- - facets.facet.status_taxonomy
  - facets.facet.type
  - facets.facet_source.search_api_views__search__page_1
  - search_api.server.solr_published

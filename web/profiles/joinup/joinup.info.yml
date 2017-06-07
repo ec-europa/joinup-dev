@@ -102,7 +102,6 @@ config_devel:
   - block.block.seven_secondary_local_tasks
   - block.block.spatial_coverage_facet
   - block.block.statistics
-  - block.block.status_taxonomy_facet
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
