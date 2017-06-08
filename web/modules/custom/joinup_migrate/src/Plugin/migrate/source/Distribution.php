@@ -11,7 +11,7 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends DistributionBase {
+class Distribution extends JoinupSqlBase {
 
   use FileUrlFieldTrait;
   use LicenceTrait;
@@ -25,8 +25,21 @@ class Distribution extends DistributionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 'd',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('Node ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
       'access_url' => $this->t('Access URL'),
@@ -36,14 +49,15 @@ class Distribution extends DistributionBase {
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
       'status' => $this->t('Status'),
-    ] + parent::fields();
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('d', [
+    return $this->select('d8_distribution', 'd')->fields('d', [
+      'nid',
       'uri',
       'vid',
       'title',
