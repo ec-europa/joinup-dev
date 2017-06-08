@@ -525,6 +525,7 @@ processor_settings:
     weights:
       preprocess_index: -47
       preprocess_query: -47
+  joinup_entity_published_revision: {  }
 tracker_settings:
   default: {  }
 options:
