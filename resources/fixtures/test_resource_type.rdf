@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/test-resource-type#">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f0616111b">
+    <skos:prefLabel xml:lang="en">Test Bed</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f06162191">
+    <skos:prefLabel xml:lang="en">Test Suite</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f0616252b">
+    <skos:prefLabel xml:lang="en">Test Case</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f061628ec">
+    <skos:prefLabel xml:lang="en">Test Assertion</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f06162c71">
+    <skos:prefLabel xml:lang="en">Document Assertion Set</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f06162ff8">
+    <skos:prefLabel xml:lang="en">Messaging Adapter</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/test-resource-type#5937f0616337f">
+    <skos:prefLabel xml:lang="en">Document Validator</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://joinup.eu/test-resource-type#"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/test-resource-type#"/>
+  </skos:Concept>
+
+</rdf:RDF>
