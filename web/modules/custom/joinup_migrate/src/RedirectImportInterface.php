@@ -15,13 +15,13 @@ interface RedirectImportInterface {
    * @param \Drupal\migrate\Row $row
    *   The migrate row object.
    *
-   * @return array|null
-   *   A redirect source as an associative array with two keys: 'path' and
-   *  'query'. See \Drupal\redirect\Plugin\Field\FieldType\RedirectSourceItem
-   *  for the meaning of the two values.
+   * @return array[]|null
+   *   A list of redirect sources an an indexed array of associative arrays,
+   *   each one having two keys: 'path' and 'query'. See RedirectSourceItem for
+   *   the meaning of the two values.
    *
    * @see \Drupal\redirect\Plugin\Field\FieldType\RedirectSourceItem
    */
-  public function getRedirectSource(Row $row);
+  public function getRedirectSources(Row $row);
 
 }

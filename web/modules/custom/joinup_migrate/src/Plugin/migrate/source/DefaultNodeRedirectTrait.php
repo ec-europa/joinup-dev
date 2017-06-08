@@ -12,7 +12,7 @@ trait DefaultNodeRedirectTrait {
   /**
    * {@inheritdoc}
    */
-  public function getRedirectSource(Row $row) {
+  public function getRedirectSources(Row $row) {
     $nid = (int) $row->getSourceProperty('nid');
 
     // @see https://api.drupal.org/api/drupal/includes%21path.inc/function/drupal_lookup_path/6.x
@@ -22,7 +22,9 @@ trait DefaultNodeRedirectTrait {
       return NULL;
     }
 
-    return ['path' => $path, 'query' => NULL];
+    return [
+      ['path' => $path, 'query' => NULL],
+    ];
   }
 
 }
