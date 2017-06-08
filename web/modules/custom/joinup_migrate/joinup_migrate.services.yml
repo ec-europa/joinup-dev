@@ -3,3 +3,7 @@ services:
     class: Drupal\joinup_migrate\EventSubscriber\CustomPagePostSaveEventSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_migrate.rdirect_creation_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\CreateRedirectEventSubscriber
+    tags:
+      - { name: event_subscriber }
