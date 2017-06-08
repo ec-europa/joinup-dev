@@ -39,18 +39,16 @@ Feature: Solution editing.
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     When I fill in the following:
-      | Title       | Solution A   |
-      | Description | First letter |
+      | Title          | Solution A         |
+      | Description    | First letter       |
+      | Name           | Yancy Burton       |
+      | E-mail address | yancyb@example.com |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
     And I select "EU and European Policies" from "Policy domain"
     And I select "[ABB8] Citizen" from "Solution type"
 
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Seward Shawn"
-    And I press "Add contact information"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Acme inc."
@@ -84,7 +82,7 @@ Feature: Solution editing.
     Then I delete the "Solution A revised" solution
 
   Scenario: A solution facilitator can edit only the solutions he's associated with.
-    Given the following solution:
+    And the following solution:
       | title               | Solution B     |
       | description         | Second letter  |
       | logo                | logo.png       |
