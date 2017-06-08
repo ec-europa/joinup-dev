@@ -77,5 +77,6 @@ destination:
   default_bundle: event
 migration_dependencies:
   required:
+    - collection
     - file:event_logo
     - file:event_attachment
