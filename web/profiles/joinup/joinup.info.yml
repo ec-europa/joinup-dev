@@ -62,6 +62,7 @@ dependencies:
   - solution
   - state_machine
   - state_machine_revisions
+  - swiftmailer
   - text
   - toolbar
   - user
