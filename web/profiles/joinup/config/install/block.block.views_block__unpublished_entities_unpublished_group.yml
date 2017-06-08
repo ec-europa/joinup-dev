@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.unpublished_entities
+  module:
+    - ctools
+    - joinup_core
+    - views
+  theme:
+    - joinup_theme
+id: views_block__unpublished_entities_unpublished_group
+theme: joinup_theme
+region: content_bottom
+weight: 0
+provider: null
+plugin: 'views_block:unpublished_entities-unpublished_group'
+settings:
+  id: 'views_block:unpublished_entities-unpublished_group'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:rdf_entity':
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      collection: collection
+      solution: solution
+    negate: false
+    context_mapping:
+      rdf_entity: '@rdf_entity.rdf_entity_route_context:rdf_entity'
+  request_route:
+    id: request_route
+    routes: entity.rdf_entity.canonical
+    negate: false
+    context_mapping: {  }
