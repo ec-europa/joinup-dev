@@ -3,7 +3,6 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\joinup_migrate\HtmlUtility;
-use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -13,9 +12,8 @@ use Drupal\migrate\Row;
  *   id = "event"
  * )
  */
-class Event extends NodeBase implements RedirectImportInterface {
+class Event extends NodeBase {
 
-  use DefaultNodeRedirectTrait;
   use KeywordsTrait;
   use StateTrait;
 
