@@ -35,7 +35,7 @@ class AdmsValidatorForm extends FormBase {
    *
    * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
-  protected $sparqlendpoint;
+  protected $sparqlEndpoint;
 
   /**
    * {@inheritdoc}
@@ -53,7 +53,7 @@ class AdmsValidatorForm extends FormBase {
    *   The Sparql endpoint.
    */
   public function __construct(Connection $sparql_endpoint) {
-    $this->sparqlendpoint = $sparql_endpoint;
+    $this->sparqlEndpoint = $sparql_endpoint;
   }
 
   /**
@@ -172,7 +172,7 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
     // @todo Workaround for bug in validations query.
     // See https://github.com/SEMICeu/adms-ap_validator/issues/1
     $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
-    return $this->sparqlendpoint->query($query);
+    return $this->sparqlEndpoint->query($query);
   }
 
   /**
@@ -185,7 +185,7 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
    *   True if the store operation was successful, false otherwise.
    */
   protected function storeInGraph(FileInterface $file) {
-    $connection_options = $this->sparqlendpoint->getConnectionOptions();
+    $connection_options = $this->sparqlEndpoint->getConnectionOptions();
     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
     // Use a local SPARQL 1.1 Graph Store.
     $gs = new GraphStore($connect_string);
