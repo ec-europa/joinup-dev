@@ -8,19 +8,30 @@ use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
+use EasyRdf\Sparql\Result;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class AdmsValidatorForm.
- *
- * @package Drupal\adms_validator\Form
+ * Form to validate the ADMS compliance of a RDF or TTL file.
  */
 class AdmsValidatorForm extends FormBase {
+
+  /**
+   * The name of the graph used for validation.
+   *
+   * @var string
+   */
   const VALIDATION_GRAPH = 'http://adms-validator/';
+
+  /**
+   * The path of the file that contains the validation rules.
+   *
+   * @var string
+   */
   const SEMIC_VALIDATION_QUERY_PATH = "SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
 
   /**
-   * The sparql endpoint.
+   * The Sparql endpoint.
    *
    * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
@@ -39,7 +50,7 @@ class AdmsValidatorForm extends FormBase {
    * {@inheritdoc}
    *
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint
-   *   The connection.
+   *   The Sparql endpoint.
    */
   public function __construct(Connection $sparql_endpoint) {
     $this->sparqlendpoint = $sparql_endpoint;
@@ -106,8 +117,14 @@ class AdmsValidatorForm extends FormBase {
 
   /**
    * Render the table with validation errors.
+   *
+   * @param \EasyRdf\Sparql\Result $errors
+   *   The validation errors.
+   *
+   * @return array
+   *   The error table as render array.
    */
-  protected function buildErrorTable($errors) {
+  protected function buildErrorTable(Result $errors) {
     $rows = [];
     foreach ($errors as $error) {
       $row = [
@@ -160,6 +177,12 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
 
   /**
    * Store the triples in the temporary graph.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The file being processed.
+   *
+   * @return bool
+   *   True if the store operation was successful, false otherwise.
    */
   protected function storeInGraph(FileInterface $file) {
     $connection_options = $this->sparqlendpoint->getConnectionOptions();
