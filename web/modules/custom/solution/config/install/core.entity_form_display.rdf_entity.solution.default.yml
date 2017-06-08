@@ -43,12 +43,70 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
+    - field_group
     - file_url
     - image
     - inline_entity_form
     - joinup_core
     - link
     - text
+third_party_settings:
+  field_group:
+    group_general:
+      children:
+        - group_main
+        - group_management
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: General
+    group_main:
+      children:
+        - label
+        - field_is_description
+        - field_is_logo
+        - field_is_banner
+        - field_is_contact_information
+        - field_policy_domain
+        - field_is_owner
+        - field_is_documentation
+        - field_spatial_coverage
+        - field_is_related_solutions
+        - field_is_solution_type
+        - field_status
+        - field_is_elibrary_creation
+        - field_is_moderation
+        - field_is_language
+        - current_workflow_state
+        - field_is_state
+      parent_name: group_general
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: true
+      label: Main
+    group_management:
+      children:
+        - field_is_landing_page
+        - field_is_metrics_page
+      parent_name: group_general
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Management
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -56,7 +114,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 17
+    weight: 18
     region: content
     settings:
       title: 'Current workflow state'
@@ -64,7 +122,7 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_is_banner:
-    weight: 3
+    weight: 4
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -73,7 +131,7 @@ content:
     region: content
   field_is_contact_information:
     type: inline_entity_form_complex
-    weight: 4
+    weight: 5
     settings:
       form_mode: inline
       override_labels: true
@@ -87,7 +145,7 @@ content:
     third_party_settings: {  }
     region: content
   field_is_description:
-    weight: 1
+    weight: 2
     settings:
       rows: 5
       placeholder: ''
@@ -95,20 +153,21 @@ content:
     type: text_textarea
     region: content
   field_is_documentation:
-    weight: 7
+    weight: 8
     settings:
       progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
     region: content
   field_is_elibrary_creation:
-    weight: 12
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_is_landing_page:
-    weight: 14
+    weight: 15
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -117,12 +176,12 @@ content:
     region: content
   field_is_language:
     type: options_select
-    weight: 16
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     region: content
   field_is_logo:
-    weight: 2
+    weight: 3
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -130,7 +189,7 @@ content:
     type: image_image
     region: content
   field_is_metrics_page:
-    weight: 15
+    weight: 16
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -138,7 +197,7 @@ content:
     type: link_default
     region: content
   field_is_moderation:
-    weight: 13
+    weight: 14
     settings:
       display_label: false
     third_party_settings: {  }
@@ -146,7 +205,7 @@ content:
     region: content
   field_is_owner:
     type: inline_entity_form_complex
-    weight: 6
+    weight: 7
     settings:
       form_mode: inline
       override_labels: true
@@ -160,7 +219,7 @@ content:
     third_party_settings: {  }
     region: content
   field_is_related_solutions:
-    weight: 9
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -170,26 +229,26 @@ content:
     region: content
   field_is_solution_type:
     type: options_select
-    weight: 10
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     region: content
   field_is_state:
     type: state_machine_buttons
-    weight: 18
+    weight: 19
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     region: content
   field_policy_domain:
     type: options_select
-    weight: 5
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
-    weight: 8
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -198,7 +257,7 @@ content:
     region: content
   field_status:
     type: options_select
-    weight: 11
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -211,7 +270,7 @@ content:
     region: content
   label:
     type: string_textfield
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''
