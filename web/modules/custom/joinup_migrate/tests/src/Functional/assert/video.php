@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Assertions for 'video' migration.
+ */
+
+// Migration counts.
+$this->assertTotalCount('video', 1);
+$this->assertSuccessCount('video', 1);
+
+// Imported content check.
+/* @var \Drupal\node\NodeInterface $video */
+$video = $this->loadEntityByLabel('node', 'Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', 'video');
+$this->assertEquals('Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', $video->label());
+$this->assertEquals('video', $video->bundle());
+$this->assertEquals(1373885004, $video->created->value);
+$this->assertEquals(1373885004, $video->changed->value);
+$this->assertEquals('https://www.youtube.com/watch?v=va9bwuz2RSQ', $video->field_video->value);
+$this->assertStringEndsWith("online at the event website:http://www.epractice.eu/en/events/ehealthweek-eu-us-cooperation2013</p></div><div id=\"watch-description-extras\"></div>", $video->body->value);
+$this->assertKeywords([
+  'eGovernment',
+  'Other',
+  '6th Ministerial Conference on Borderless eGovernment',
+], $video);
+$this->assertReferences(['Poland'], $video->field_video_spatial_coverage);
+/* @var \Drupal\rdf_entity\RdfInterface $collection */
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
+$this->assertEquals($collection->id(), $video->og_audience->target_id);
+$this->assertRedirects(['community/epractice/video/eu-us-ehealth/health-it-cooperation-assembly-video'], $video);
