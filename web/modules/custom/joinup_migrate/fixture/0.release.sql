@@ -41,7 +41,7 @@ INNER JOIN node g ON o.group_nid = g.nid AND g.type = 'project_project'
 INNER JOIN d8_mapping m ON g.nid = m.nid
 INNER JOIN content_type_asset_release ctar ON n.vid = ctar.vid
 INNER JOIN content_field_asset_version cfav ON n.vid = cfav.vid
-LEFT JOIN content_field_asset_documentation cfad ON ctar.vid = cfad.vid
+LEFT JOIN content_field_asset_documentation cfad ON ctar.vid = cfad.vid AND cfad.delta = 0
 LEFT JOIN node nd ON cfad.field_asset_documentation_nid = nd.nid
 LEFT JOIN content_type_documentation ctd ON nd.vid = ctd.vid
 LEFT JOIN files fd ON ctd.field_documentation_access_url_fid = fd.fid
