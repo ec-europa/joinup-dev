@@ -23,6 +23,7 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link1 */
 $parent_link1 = $this->loadEntityByLabel('menu_link_content', 'Digital Signature Service');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link1->link->uri);
+$this->assertRedirects([], $custom_page);
 
 $custom_page = $this->loadEntityByLabel('node', 'European Interoperability Catalogue (EIC)', 'custom_page');
 $this->assertEquals('European Interoperability Catalogue (EIC)', $custom_page->label());
@@ -32,6 +33,7 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link2 */
 $parent_link2 = $this->loadEntityByLabel('menu_link_content', 'European Interoperability Catalogue (EIC)');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link2->link->uri);
+$this->assertRedirects([], $custom_page);
 
 // Children custom pages.
 $custom_page = $this->loadEntityByLabel('node', 'Roadmap 2016', 'custom_page');
@@ -45,6 +47,7 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'Roadmap 2016');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link1->uuid(), $link->getParentId());
+$this->assertRedirects(['asset/sd-dss/og_page/roadmap-2016'], $custom_page);
 
 $custom_page = $this->loadEntityByLabel('node', 'Solutions per domain', 'custom_page');
 $this->assertEquals('Solutions per domain', $custom_page->label());
@@ -56,6 +59,7 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'Solutions per domain');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
+$this->assertRedirects(['community/eic/og_page/solutions-domain'], $custom_page);
 
 $custom_page = $this->loadEntityByLabel('node', 'Eligibility criteria', 'custom_page');
 $this->assertEquals('Eligibility criteria', $custom_page->label());
@@ -67,6 +71,7 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'Eligibility criteria');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
+$this->assertRedirects(['community/eic/og_page/eligibility-criteria'], $custom_page);
 
 // Orphan custom pages. We test only 1 of 5.
 $custom_page = $this->loadEntityByLabel('node', 'CAMSS Tools', 'custom_page');
@@ -80,3 +85,4 @@ $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'CAMSS Tools');
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEmpty($link->getParentId());
+$this->assertRedirects(['community/camss/og_page/camss-tools'], $custom_page);

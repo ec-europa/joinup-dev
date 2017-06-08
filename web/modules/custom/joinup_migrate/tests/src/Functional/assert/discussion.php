@@ -25,6 +25,7 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
+$this->assertRedirects(['software/cipaedelivery/issue/url-sml-and-smk'], $discussion);
 
 $discussion = $this->loadEntityByLabel('node', "Spaces in 'Apache Tomcat 6.0.16' cause problems under linux");
 $this->assertEquals("Spaces in 'Apache Tomcat 6.0.16' cause problems under linux", $discussion->label());
@@ -37,6 +38,7 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
+$this->assertRedirects(['software/cipaedelivery/issue/spaces-apache-tomcat-6016-cause-problems-under-linux'], $discussion);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-webapp is not thread safe');
 $this->assertEquals('cipa-smp-webapp is not thread safe', $discussion->label());
@@ -49,6 +51,7 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
+$this->assertRedirects(['software/cipaedelivery/issue/cipa-smp-webapp-not-thread-safe'], $discussion);
 
 $discussion = $this->loadEntityByLabel('node', 'cipa-smp-client-console still only use START protocol');
 $this->assertEquals('cipa-smp-client-console still only use START protocol', $discussion->label());
@@ -61,6 +64,7 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
+$this->assertRedirects(['software/cipaedelivery/issue/cipa-smp-client-console-still-only-use-start-protocol'], $discussion);
 
 // There are 44 discussions in Solution 'Core Location Vocabulary' but we test
 // only 'Format issue (release 1.00)' because we want to check how attachments
@@ -84,3 +88,4 @@ $this->assertReferences([
   'CoreLocTBCProblem.png',
   'locn-v1.00-afterTBC load.rdf_.txt',
 ], $discussion->field_attachment);
+$this->assertRedirects(['asset/core_location/issue/format-issue-release-100'], $discussion);
