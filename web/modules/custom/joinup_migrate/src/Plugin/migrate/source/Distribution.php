@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,8 +12,9 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends JoinupSqlBase {
+class Distribution extends JoinupSqlBase implements RedirectImportInterface {
 
+  use DefaultNodeRedirectTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
   use StatusTrait;
