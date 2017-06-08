@@ -29,6 +29,9 @@ class LegacyMultipleCardinalitySupportingLinkWidget extends LinkWidget {
     form as traitForm;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function form(FieldItemListInterface $items, array &$form, FormStateInterface $form_state, $get_delta = NULL) {
     $built_form = $this->traitForm($items, $form, $form_state, $get_delta);
 
