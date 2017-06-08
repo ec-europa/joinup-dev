@@ -33,7 +33,7 @@ process:
     no_stub: true
   field_attachment:
     plugin: migration
-    migration: file:discussion
+    migration: file:discussion_attachment
     source: fids
     no_stub: true
 destination:
@@ -42,4 +42,4 @@ destination:
 migration_dependencies:
   required:
     - solution
-    - file:discussion
+    - file:discussion_attachment

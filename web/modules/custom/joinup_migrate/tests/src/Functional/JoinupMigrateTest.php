@@ -205,8 +205,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $this->executeMigration($migration, $migration->id(), TRUE);
 
     // For performance reasons we don't import real files from the Drupal 6
-    // platform but we create, locally, a fake copy of the source file system
-    // with "zero size" files.
+    // platform but we create locally a fake copy of the source file system with
+    // "zero size" files.
     MockFileSystem::createTestingFiles($legacy_site_files, $this->legacyDb);
   }
 
@@ -215,7 +215,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   public function tearDown() {
     // Rollback migrations to cleanup RDF data.
-    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+    foreach ($this->manager->createInstances(static::$rollingBackMigrations) as $id => $migration) {
       try {
         (new MigrateExecutable($migration, $this))->rollback();
       }
@@ -424,11 +424,11 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   ];
 
   /**
-   * Migrations that are creating RDF objects.
+   * Migrations that are creating RDF objects or are writing in the source.
    *
    * @var string[]
    */
-  protected static $rdfMigrations = [
+  protected static $rollingBackMigrations = [
     'collection',
     'contact',
     'distribution',
@@ -437,6 +437,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'policy_domain',
     'release',
     'solution',
+    'mapping',
+    'prepare',
   ];
 
 }

@@ -18,7 +18,7 @@ Feature: Solution notification system
     And the following solutions:
       | title                 | description           | logo     | banner     | owner          | contact information | state            |
       | The Time of the Child | The Time of the Child | logo.png | banner.jpg | The Red Search | Jody Buchanan       | proposed         |
-      | Some Scent            | Some Scent            | logo.png | banner.jpg | The Red Search | Jody Buchanan       | deletion_request |
+      | Some Scent            | Some Scent            | logo.png | banner.jpg | The Red Search | Jody Buchanan       | deletion request |
     And the following solution user memberships:
       | solution              | user             | roles |
       | The Time of the Child | Benjamin Stevens | owner |

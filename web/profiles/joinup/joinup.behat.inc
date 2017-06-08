@@ -2,12 +2,13 @@
 
 /**
  * @file
- * Contains \UserSubContext.
+ * Contains \JoinupSubContext.
  */
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -1373,6 +1374,30 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     if (!$result) {
       throw new \Exception('The modal did not close.');
+    }
+  }
+
+  /**
+   * Checks the numbers in the 'statistics block' on the homepage.
+   *
+   * Table format:
+   * | Solutions | Collections | Content |
+   * | 89        | 41          | 25      |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $statistics_table
+   *   The table containing the expected values for the statistics.
+   *
+   * @throws \UnexpectedValueException
+   *   Thrown when at least one of the expected values is not found.
+   *
+   * @Then I should see the following statistics:
+   */
+  public function assertHomepageStatistics(TableNode $statistics_table) {
+    foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
+      $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
+      $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+      PHPUnit_Framework_Assert::assertEquals($expected_value, $element->getText());
     }
   }
 

@@ -75,6 +75,7 @@ class Release extends JoinupSqlBase {
       'language',
       'version_notes',
       'version_number',
+      'docs_id',
       'docs_path',
       'docs_url',
       'state',
@@ -123,8 +124,8 @@ class Release extends JoinupSqlBase {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['nid' => $nid]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'documentation_file', 'docs_url');
+    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_release', 'docs_url');
 
     // Status.
     $this->setStatus($vid, $row);
