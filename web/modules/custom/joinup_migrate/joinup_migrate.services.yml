@@ -1,5 +1,5 @@
 services:
-  joinup_migrate.og_menu_subscriber:
-    class: Drupal\joinup_migrate\EventSubscriber\CustomPageOgMenuEntrySubscriber
+  joinup_migrate.custom_page_post_save_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\CustomPagePostSaveEventSubscriber
     tags:
       - { name: event_subscriber }

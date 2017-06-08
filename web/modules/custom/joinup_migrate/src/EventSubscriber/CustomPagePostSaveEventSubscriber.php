@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * A subscriber adding parent reference to OG menu entries for custom pages.
  */
-class CustomPageOgMenuEntrySubscriber implements EventSubscriberInterface {
+class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
 
   /**
    * A list of 'ogmenu_instance' entities.
@@ -52,7 +52,7 @@ class CustomPageOgMenuEntrySubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    return [MigrateEvents::POST_ROW_SAVE => 'createOgMenuEntry'];
+    return [MigrateEvents::POST_ROW_SAVE => 'createParentMenuLink'];
   }
 
   /**
@@ -61,7 +61,7 @@ class CustomPageOgMenuEntrySubscriber implements EventSubscriberInterface {
    * @param \Drupal\migrate\Event\MigratePostRowSaveEvent $event
    *   The event object.
    */
-  public function createOgMenuEntry(MigratePostRowSaveEvent $event) {
+  public function createParentMenuLink(MigratePostRowSaveEvent $event) {
     if ($event->getMigration()->id() !== 'custom_page') {
       return;
     }
