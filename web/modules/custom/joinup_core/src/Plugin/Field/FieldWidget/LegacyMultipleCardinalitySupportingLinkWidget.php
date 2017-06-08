@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_core\Traits\LegacyMultipleCardinalitySupportingFieldWidgetTrait;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
@@ -24,7 +25,22 @@ use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
  */
 class LegacyMultipleCardinalitySupportingLinkWidget extends LinkWidget {
 
-  use LegacyMultipleCardinalitySupportingFieldWidgetTrait;
+  use LegacyMultipleCardinalitySupportingFieldWidgetTrait {
+    form as traitForm;
+  }
+
+  public function form(FieldItemListInterface $items, array &$form, FormStateInterface $form_state, $get_delta = NULL) {
+    $built_form = $this->traitForm($items, $form, $form_state, $get_delta);
+
+    // Apply the title of the field directly to the URI part if we are showing a
+    // single value field. Normally this is put in place by the #title part of
+    // the 'field_multiple_value_form' template.
+    if (!$this->hasMultipleValues) {
+      $built_form['widget']['uri']['#title'] = $this->fieldDefinition->getLabel();
+    }
+
+    return $built_form;
+  }
 
   /**
    * {@inheritdoc}
