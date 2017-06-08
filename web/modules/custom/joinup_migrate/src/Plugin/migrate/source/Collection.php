@@ -11,7 +11,7 @@ use Drupal\migrate\Row;
  *   id = "collection"
  * )
  */
-class Collection extends CollectionBase {
+class Collection extends JoinupSqlBase {
 
   use CountryTrait;
 
@@ -23,8 +23,21 @@ class Collection extends CollectionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'collection' => [
+        'type' => 'string',
+        'alias' => 'c',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
-    return parent::fields() + [
+    return [
+      'collection' => $this->t('Collection'),
       'uri' => $this->t('URI'),
       'policy2' => $this->t('Policy domain'),
       'abstract' => $this->t('Abstract'),
@@ -50,7 +63,8 @@ class Collection extends CollectionBase {
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('c', [
+    return $this->select('d8_collection', 'c')->fields('c', [
+      'collection',
       'nid',
       'vid',
       'type',
