@@ -146,9 +146,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @BeforeScenario @email
    */
   public function beforeEmailScenario() {
-    $this->mailConfig = \Drupal::configFactory()->getEditable('system.mail');
-    $this->savedMailDefaults = $this->mailConfig->get('interface.default');
-    $this->mailConfig->set('interface.default', 'test_mail_collector')->save();
+    $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+    $this->savedMailDefaults = $this->mailConfig->get('defaults');
+    $this->mailConfig
+      ->set('defaults', [
+        'formatter' => 'test_mail_collector',
+        'sender' => 'test_mail_collector',
+      ])
+      ->save();
     \Drupal::state()->set('system.test_mail_collector', []);
   }
 
@@ -158,7 +163,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @AfterScenario @email
    */
   public function afterEmailScenario() {
-    $this->mailConfig->set('interface.default', $this->savedMailDefaults)->save();
+    $this->mailConfig->set('defaults', $this->savedMailDefaults)->save();
   }
 
 }
