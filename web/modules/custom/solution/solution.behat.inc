@@ -342,7 +342,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
     }
   }
 
