@@ -142,4 +142,13 @@
     }
   };
 
+  /**
+   * Sets the fullscreen progress indicator.
+   */
+  Drupal.Ajax.prototype.setProgressIndicatorFullscreen = function () {
+    this.progress.element = $('<div class="mdl-spinner mdl-js-spinner mdl-spinner--single-color is-active"></div>');
+    $('body').after(this.progress.element);
+    componentHandler.upgradeAllRegistered();
+  };
+
 })(jQuery, Drupal);
