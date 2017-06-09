@@ -9,7 +9,7 @@ field_name: field_user_content
 entity_type: user
 type: search_api_field
 settings:
-  index: collections
+  index: published
   facet_regions:
     top: 'Collection content top'
   view_modes:

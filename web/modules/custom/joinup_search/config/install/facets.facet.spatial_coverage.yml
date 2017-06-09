@@ -1,19 +1,26 @@
 langcode: en
 status: true
-dependencies: {  }
-id: field_cp_content_listing_content_type
-name: 'Content type'
-url_alias: field_cp_content_listing_content_type
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.search
+  module:
+    - search_api
+id: spatial_coverage
+name: 'Spatial coverage'
+url_alias: spatial_coverage
 weight: 0
 min_count: 1
 show_only_one_result: true
-field_identifier: entity_bundle
-facet_source_id: 'search_api_field:node.field_cp_content_listing'
+field_identifier: spatial_coverage
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: type
+  type: links_inline
   config:
     show_numbers: true
-    tabs: 3
+    all_text: everywhere
+    prefix_text: 'Located in:'
+    suffix_text: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -27,7 +34,7 @@ processor_configs:
     weights:
       sort: -2
     settings:
-      sort: ASC
+      sort: DESC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
