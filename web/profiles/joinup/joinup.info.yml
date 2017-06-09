@@ -37,6 +37,7 @@ dependencies:
   - joinup_search
   - joinup_subscription
   - joinup_user
+  - joinup_video
   - menu_ui
   - moderation
   - node
