@@ -205,6 +205,12 @@ $expected_values = [
     'policy2' => 'Open government',
     'row_index' => '38',
   ],
+  42464 => [
+    'type' => 'event',
+    'collection' => 'Collection with 1 entity having custom section',
+    'policy2' => 'Open government',
+    'row_index' => '39',
+  ],
 ];
 
 // Migration counts.
