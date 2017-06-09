@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_spatial_coverage
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
     - field.field.node.event.field_location
@@ -29,6 +30,7 @@ dependencies:
     - ds
     - file
     - image
+    - joinup_core
     - link
     - text
     - user
@@ -46,7 +48,7 @@ content:
     region: content
   field_attachment:
     type: file_table
-    weight: 14
+    weight: 13
     region: content
     label: above
     settings: {  }
@@ -62,7 +64,7 @@ content:
       joinup:
         template_suggestion: with_label
   field_comments:
-    weight: 11
+    weight: 9
     label: above
     settings:
       pager_id: 0
@@ -71,7 +73,7 @@ content:
     type: comment_default
     region: content
   field_event_adtl_address_info:
-    weight: 6
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings:
@@ -94,7 +96,7 @@ content:
     type: text_default
     region: content
   field_event_contact_email:
-    weight: 7
+    weight: 5
     label: above
     settings: {  }
     third_party_settings:
@@ -111,7 +113,7 @@ content:
     type: basic_string
     region: content
   field_event_date:
-    weight: 14
+    weight: 12
     label: hidden
     settings:
       timezone_override: ''
@@ -142,7 +144,7 @@ content:
     type: image
     region: content
   field_event_web_url:
-    weight: 8
+    weight: 6
     label: above
     settings:
       trim_length: 80
@@ -163,7 +165,7 @@ content:
     type: link
     region: content
   field_location:
-    weight: 9
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -171,7 +173,7 @@ content:
     region: content
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 10
+    weight: 8
     region: content
     label: above
     settings:
@@ -195,7 +197,7 @@ content:
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 13
+    weight: 11
     region: content
     settings:
       trim_length: 80
@@ -215,11 +217,12 @@ content:
         template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 12
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_event_spatial_coverage: true
   field_keywords: true
   field_organisation: true
   field_organisation_type: true
