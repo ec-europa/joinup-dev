@@ -7,7 +7,7 @@
 
 // Component
 // --------------------------------------------------
-.listing
+// .listing
 
 // Elements
 // --------------------------------------------------
@@ -100,7 +100,8 @@
 
 .listing__icon
   color: lighten($color-grey-medium, 10%)
-  +icon-size(26px)
+  margin-left: 6px
+  +icon-size(16px)
 
 .listing__text
   font-size: $font-size-xsmall
@@ -145,7 +146,7 @@
   background-color: #f0f7f7
   .icon
     color: #5d5e5f
-    +icon-size(90px)
+    +icon-size(50px)
     +centered
 
 .listing__card--inline-containers
@@ -182,8 +183,9 @@
 .listing__title
   .icon
     position: relative
-    top: 7px
-    +icon-size(32px)
+    top: 1px
+    margin-left: 6px
+    +icon-size(16px)
 
 .listing__card--detail-container
   .listing__metadata
@@ -336,15 +338,6 @@
   cursor: pointer
   .load-more
     text-decoration: none
-  .load-more__wrapper
-    margin-top: -10px
-    text-align: center
-    +centered
   .load-more__icon
-    color: darken($color-grey-light, 10%)
-    +icon-size(60px)
-
-  .load-more__text
-    font-size: $font-size-base
-    font-weight: $font-weight-medium
-    color: $color-base
+    margin-bottom: 10px
+    +icon-size(36px)
