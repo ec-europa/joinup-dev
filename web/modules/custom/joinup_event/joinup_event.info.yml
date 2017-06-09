@@ -30,6 +30,7 @@ config_devel:
   - field.field.node.event.field_scope
   - field.field.node.event.field_shared_in
   - field.field.node.event.field_short_title
+  - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_state
   - field.field.node.event.og_audience
   - field.storage.node.field_event_adtl_address_info
@@ -37,6 +38,7 @@ config_devel:
   - field.storage.node.field_event_contact_email
   - field.storage.node.field_event_date
   - field.storage.node.field_event_logo
+  - field.storage.node.field_event_spatial_coverage
   - field.storage.node.field_event_web_url
   - field.storage.node.field_location
   - field.storage.node.field_organisation

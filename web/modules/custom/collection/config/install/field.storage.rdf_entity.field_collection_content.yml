@@ -15,7 +15,7 @@ field_name: field_collection_content
 entity_type: rdf_entity
 type: search_api_field
 settings:
-  index: collections
+  index: published
   facet_regions:
     top: 'Collection content top'
     inline_facets: 'Inline facets'
