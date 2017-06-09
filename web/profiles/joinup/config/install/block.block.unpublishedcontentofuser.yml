@@ -1,26 +1,23 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - views.view.unpublished_entities
   module:
     - joinup_core
-    - views
   theme:
     - joinup_theme
-id: views_block__unpublished_entities_unpublished_user
+id: unpublishedcontentofuser
 theme: joinup_theme
 region: content_bottom
-weight: 0
+weight: -8
 provider: null
-plugin: 'views_block:unpublished_entities-unpublished_user'
+plugin: user_unpublished
 settings:
-  id: 'views_block:unpublished_entities-unpublished_user'
-  label: ''
-  provider: views
+  id: user_unpublished
+  label: 'My unpublished content'
+  provider: joinup_core
   label_display: visible
-  views_label: ''
-  items_per_page: none
+  context_mapping:
+    user_route: '@joinup_user.user_route_context:user_route'
 visibility:
   request_route:
     id: request_route

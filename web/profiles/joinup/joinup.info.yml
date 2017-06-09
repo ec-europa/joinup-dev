@@ -98,9 +98,9 @@ config_devel:
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
   - block.block.statistics
-  - block.block.views_block__unpublished_entities_unpublished_group
-  - block.block.views_block__unpublished_entities_unpublished_user
   - block.block.type
+  - block.block.unpublishedcontentofgroup
+  - block.block.unpublishedcontentofuser
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
