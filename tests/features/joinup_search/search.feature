@@ -58,10 +58,10 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Reset the search by visiting again the search page.
-    When I am at "/search"
+    Given I am at "/search"
 
     # Select link in the 'type' facet.
-    Then I click the Solution content tab
+    When I click the Solution content tab
     Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
     And I should not see the "Molecular cooking collection" tile
