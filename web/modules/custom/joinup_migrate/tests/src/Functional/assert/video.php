@@ -27,4 +27,4 @@ $this->assertReferences(['Poland'], $video->field_video_spatial_coverage);
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $this->assertEquals($collection->id(), $video->og_audience->target_id);
-$this->assertRedirects(['community/epractice/video/eu-us-ehealth/health-it-cooperation-assembly-video'], $video);
+$this->assertRedirects(['community/epractice/video/poznan-event-epractice-tv-interview-wojciech-cellary-poznan-university-eco'], $video);

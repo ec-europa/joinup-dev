@@ -203,7 +203,6 @@ $expected_values = [
     'type' => 'video',
     'collection' => 'Collection with 1 entity having custom section',
     'policy2' => 'Open government',
-    'owner' => 'Y',
     'row_index' => '38',
   ],
 ];
