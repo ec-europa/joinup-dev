@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display statistics about content on the site.
+ *
+ * Available variables:
+ * - collection_count: the number of validated collections on the site.
+ * - solution_count: the number of validated solutions on the site.
+ * - content_count: the number of validated news articles, discussions and
+ *   events on the site.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="featured-lg__stats">
+  <div class="stats__wrapper stats__wrapper__solutions">
+    <div class="stats__icon icon icon--solutions"></div>
+    <div class="stats__text">
+      <div class="stats__text--upper">{{ solution_count }}</div>
+      <div class="stats__text--lower"><a href="/solutions">Solutions</a></div>
+    </div>
+    <div class="stats__description">Interoperability solutions ready to use</div>
+  </div>
+  <div class="stats__wrapper stats__wrapper__collections">
+    <div class="stats__icon icon icon--collections"></div>
+    <div class="stats__text">
+      <div class="stats__text--upper">{{ collection_count }}</div>
+      <div class="stats__text--lower"><a href="/collections">Collections</a></div>
+    </div>
+    <div class="stats__description">Collaborate around thematics</div>
+  </div>
+  <div class="stats__wrapper stats__wrapper__content">
+    <div class="stats__icon icon icon--events"></div>
+    <div class="stats__text">
+      <div class="stats__text--upper">{{ content_count }}</div>
+      <div class="stats__text--lower"><a href="/content">Content</a></div>
+    </div>
+    <div class="stats__description">Events, discussions and news</div>
+  </div>
+</div>
+

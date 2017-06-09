@@ -45,13 +45,6 @@
                 verbose="${drush.verbose}">
             <option name="batch-size" value="500" />
         </drush>
-        <drush
-            command="migrate-report-generate"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-        </drush>
     </target>
 
     <target name="import-legacy-db"
@@ -83,7 +76,7 @@
  'init_commands' => [${line.separator}
    'set_timezone_to_utc' => &quot;SET time_zone='+00:00';&quot;,${line.separator}
  ],${line.separator}];${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.files'] = '${migration.source.files}';${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
     </target>
 

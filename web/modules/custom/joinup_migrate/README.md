@@ -54,17 +54,14 @@ In order to start a migration we will need to do some preparation:
    * Mount the S3 Bucket files:
      ```bash
      $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs \
-       -o use_cache=/tmp -o allow_other -o umask=0002
+       -o allow_other -o umask=0002
      ```
      You can use a dedicated directory for cache in `-o use_cache=`.
    * Test the mount. Legacy D6 files should be under `joinupv2.0/` directory:
      ```bash
      $ ls /path/to/mount/point/joinupv2.0
-     sites
-     $ ls /path/to/mount/point/joinupv2.0/sites/default
-     files
      ```
-     This should contain the `sites/default/files` directory.
+     This directory should be the same as the `sites/default/files` directory.
    * Unmount the S3 Bucket:
      ```bash
      $ umount -f /path/to/mount/point
@@ -80,8 +77,8 @@ In order to start a migration we will need to do some preparation:
     migration.db.name = my_db_name
     migration.db.import_path = /my/path/to/d6-joinup.sql
 
-    # Files path. Point to the webroot of legacy site.
-    migration.source.root = /path/to/mount/point/joinupv2.0
+    # Files path. Point to the files directory of the legacy site.
+    migration.source.files = /path/to/mount/point/joinupv2.0/files
 
     # How the migration will run: 'production' or 'test' mode.
     migration.mode = production

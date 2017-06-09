@@ -110,16 +110,21 @@
   +breakpoint(mobile)
     margin: 0 10px
   .stats__column
-    float: left
+    display: inline-block
+    vertical-align: middle
     padding: 15px
     min-width: 0
+  .stats__wrapper
+    margin-bottom: 4px
+    &:last-child
+      margin-bottom: 0
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
-    line-height: 30px
   .stats__icon
-    +icon-size(30px)
+    margin-right: 4px
+    +icon-size(20px)
 
 .featured__action
   display: inline-block

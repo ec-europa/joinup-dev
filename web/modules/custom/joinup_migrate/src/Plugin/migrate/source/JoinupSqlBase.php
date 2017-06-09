@@ -54,18 +54,18 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $uriProperties = ['uri'];
 
   /**
-   * Gets the legacy site webroot directory.
+   * Gets the legacy site files directory.
    *
    * @return string
-   *   The legacy site webroot directory
+   *   The legacy site files directory
    *
    * @throws \Drupal\migrate\MigrateException
-   *   When the webroot was not configured.
+   *   When the site files directory was not configured.
    */
-  protected function getLegacySiteWebRoot() {
-    $webroot = Settings::get('joinup_migrate.source.root');
-    $webroot = rtrim($webroot, '/');
-    return $webroot;
+  protected function getLegacySiteFiles() {
+    $files_dir = Settings::get('joinup_migrate.source.files');
+    $files_dir = rtrim($files_dir, '/');
+    return $files_dir;
   }
 
   /**

@@ -22,13 +22,23 @@ Feature: Creation of news through the UI.
 
     When I am logged in as a "facilitator" of the "Density catalogue project" solution
     And I go to the homepage of the "Density catalogue project" solution
-    And I click "Add news"
-    And I fill in the following:
-      | Kicker         | Ytterbium metal of the year                                                                   |
-      | Headline       | Strong request for this rare metal that is on the mouth of everybody                          |
-      | Content        | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
-      | Add a new file | test.zip                                                                                      |
-      | Add a new file | text.pdf                                                                                      |
+    And I click "Add news" in the plus button menu
+
+    # Check required fields.
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Upload"
+    And I press "Publish"
+    Then I should see the following lines of text:
+      | Headline field is required.         |
+      | Kicker field is required.           |
+      | Content field is required.          |
+      | File description field is required. |
+
+    When I fill in the following:
+      | Kicker           | Ytterbium metal of the year                                                                   |
+      | Headline         | Strong request for this rare metal that is on the mouth of everybody                          |
+      | Content          | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+      | File description | Comparison materials                                                                          |
 
     # Share the content in another solution.
     When I fill in "Referenced solution" with "Dig do's and don'ts"

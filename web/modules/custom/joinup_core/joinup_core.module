@@ -46,6 +46,13 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'suffix_text' => '',
       ],
     ],
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
     '404_not_found' => [
       'variables' => [
         'search' => [],
@@ -397,7 +404,7 @@ function joinup_core_entity_create(EntityInterface $entity) {
   if ($entity instanceof EntityPublishedInterface) {
     /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
     $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-    if ($workflow_helper->hasEntityStateField($entity)) {
+    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
       $state_field = $workflow_helper->getEntityStateField($entity);
       $workflow = $state_field->getWorkflow();
       $state_id = $state_field->getValue()['value'];

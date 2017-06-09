@@ -25,7 +25,7 @@ function joinup_migrate_drush_command() {
  */
 function drush_joinup_migrate_mock_file_system() {
   $public_directory = \Drupal::service('stream_wrapper.public')->getDirectoryPath();
-  $base_dir = "$public_directory/joinup_migrate/webroot";
+  $base_dir = "$public_directory/joinup_migrate/files";
   $db = Database::getConnection('default', 'migrate');
 
   MockFileSystem::createTestingFiles($base_dir, $db);

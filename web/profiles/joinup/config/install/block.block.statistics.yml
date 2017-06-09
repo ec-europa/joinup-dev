@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - system
+    - user
+  theme:
+    - joinup_theme
+id: statistics
+theme: joinup_theme
+region: featured
+weight: 0
+provider: null
+plugin: statistics
+settings:
+  id: broken
+  label: 'Statistics block'
+  provider: joinup_core
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

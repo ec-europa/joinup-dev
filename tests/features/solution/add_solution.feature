@@ -84,6 +84,7 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Documentation, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
+    And the "Solution type" field should contain the "IOP specification underpinning View, Technical View - Application, Technical View - Infrastructure" option groups
     When I fill in the following:
       | Title            | Espresso is the solution                                      |
       | Description      | This is a test text                                           |

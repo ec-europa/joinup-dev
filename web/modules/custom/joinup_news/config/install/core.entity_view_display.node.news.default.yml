@@ -19,7 +19,7 @@ dependencies:
   module:
     - comment
     - ds
-    - joinup_core
+    - file
     - link
     - options
     - text
@@ -36,6 +36,23 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_attachment:
+    type: file_table
+    weight: 12
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: with_label
   field_comments:
     weight: 8
     label: hidden
@@ -97,7 +114,17 @@ content:
     label: hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: entity_reference_label
     region: content
   field_state:
@@ -148,6 +175,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_attachment: true
   field_keywords: true
   field_shared_in: true
+  langcode: true
