@@ -20,8 +20,11 @@ use Drupal\Core\Session\AccountProxy;
  * Provides a block with the recommended community content for the current user.
  *
  * @Block(
- *  id = "user_unpublished",
- *  admin_label = @Translation("Unpublished content of user"),
+ *   id = "user_unpublished",
+ *   admin_label = @Translation("Unpublished content of user"),
+ *   context = {
+ *     "user_route" = @ContextDefinition("entity:user", label = @Translation("User from URL"))
+ *   }
  * )
  */
 class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginInterface {

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "add_content_block",
  *   admin_label = @Translation("Add content"),
  *   context = {
- *     "og" = @ContextDefinition("og", label = @Translation("Organic group"))
+ *     "og" = @ContextDefinition("entity", label = @Translation("Organic group"))
  *   }
  * )
  */

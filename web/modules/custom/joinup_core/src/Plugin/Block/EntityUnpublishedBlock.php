@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "entity_unpublished",
  *   admin_label = @Translation("Unpublished content of group"),
  *   context = {
- *     "og" = @ContextDefinition("og", label = @Translation("Organic group"))
+ *     "og" = @ContextDefinition("entity:rdf_entity", label = @Translation("Organic group"))
  *   }
  * )
  */
