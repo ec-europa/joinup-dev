@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * The TRR module.
+ */
+
+const TRR_COLLECTION_ID = 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8';
+
+/**
+ * Implements hook_field_group_pre_render_alter().
+ */
+function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) {
+
+  if ($group->group_name != 'group_trr') {
+    return;
+  }
+  $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $id = NULL;
+  $bundle = $rdf_entity->bundle();
+  // Adding a solution.
+  if ($bundle == 'collection') {
+    $id = $rdf_entity->id();
+  }
+  // Editing a solution.
+  if ($bundle == 'solution') {
+    $id = $rdf_entity->get('collection')->getValue()[0]['target_id'];
+  }
+  if ($id == TRR_COLLECTION_ID) {
+    return;
+  }
+  $element['#access'] = FALSE;
+
+}
