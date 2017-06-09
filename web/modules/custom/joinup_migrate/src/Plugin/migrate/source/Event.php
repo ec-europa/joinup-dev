@@ -14,6 +14,7 @@ use Drupal\migrate\Row;
  */
 class Event extends NodeBase {
 
+  use CountryTrait;
   use KeywordsTrait;
   use StateTrait;
 
@@ -87,6 +88,9 @@ class Event extends NodeBase {
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
+
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Scope.
     $query = $this->select('term_node', 'tn');

@@ -68,6 +68,10 @@ process:
     migration: file:event_attachment
     source: fids
     no_stub: true
+  field_event_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
   og_audience:
     plugin: migration
     source: collection
