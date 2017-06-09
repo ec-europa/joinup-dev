@@ -13,6 +13,7 @@ dependencies:
   - search_api
   - search_api_field
   - search_api_solr
+  - state_machine_revisions
   - taxonomy
   - text
   - views
