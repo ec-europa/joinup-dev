@@ -82,7 +82,6 @@ $this->assertEquals('5th International Workshop on e-Health in Emerging Economie
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1323441667, $event->created->value);
 $this->assertEquals(1323806587, $event->changed->value);
-$this->assertEquals(1, $event->uid->target_id);
 $this->assertTrue($event->get('field_event_agenda')->isEmpty());
 $this->assertEquals('info@iweee.org', $event->get('field_event_contact_email')->value);
 $this->assertStringEndsWith("<p>Thymbra</p>\r\n</div>\n", $event->body->value);

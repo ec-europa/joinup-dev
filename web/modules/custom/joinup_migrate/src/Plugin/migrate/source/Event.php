@@ -21,6 +21,11 @@ class Event extends NodeBase {
   /**
    * {@inheritdoc}
    */
+  protected $uriProperties = ['uri', 'website'];
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
       'start_date' => $this->t('Start date'),
