@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.collections
+    - search_api.index.published
   module:
     - joinup_core
     - search_api
@@ -11,7 +11,7 @@ label: Content
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_collections
+base_table: search_api_index_published
 base_field: search_api_id
 core: 8.x
 display:
@@ -89,7 +89,7 @@ display:
               solution: view_mode_tile
       fields:
         search_api_language:
-          table: search_api_index_collections
+          table: search_api_index_published
           field: search_api_language
           id: search_api_language
           entity_type: null
@@ -144,7 +144,7 @@ display:
           multi_separator: ', '
         search_api_id:
           id: search_api_id
-          table: search_api_index_collections
+          table: search_api_index_published
           field: search_api_id
           relationship: none
           group_type: group
@@ -201,7 +201,7 @@ display:
           plugin_id: numeric
         label:
           id: label
-          table: search_api_datasource_collections_entity_rdf_entity
+          table: search_api_datasource_published_entity_rdf_entity
           field: label
           relationship: none
           group_type: group
@@ -318,7 +318,7 @@ display:
           plugin_id: search_api_field
         field_ar_description:
           id: field_ar_description
-          table: search_api_index_collections
+          table: search_api_index_published
           field: field_ar_description
           relationship: none
           group_type: group
@@ -434,7 +434,7 @@ display:
       filters:
         entity_bundle:
           id: entity_bundle
-          table: search_api_index_collections
+          table: search_api_index_published
           field: entity_bundle
           relationship: none
           group_type: group
@@ -473,7 +473,7 @@ display:
           plugin_id: search_api_string
         entity_bundle_1:
           id: entity_bundle_1
-          table: search_api_index_collections
+          table: search_api_index_published
           field: entity_bundle
           relationship: none
           group_type: group
@@ -512,7 +512,7 @@ display:
           plugin_id: search_api_string
         entity_bundle_2:
           id: entity_bundle_2
-          table: search_api_index_collections
+          table: search_api_index_published
           field: entity_bundle
           relationship: none
           group_type: group
@@ -551,7 +551,7 @@ display:
           plugin_id: search_api_string
         entity_bundle_3:
           id: entity_bundle_3
-          table: search_api_index_collections
+          table: search_api_index_published
           field: entity_bundle
           relationship: none
           group_type: group
