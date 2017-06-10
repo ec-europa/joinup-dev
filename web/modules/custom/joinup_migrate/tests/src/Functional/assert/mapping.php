@@ -211,6 +211,13 @@ $expected_values = [
     'policy2' => 'Open government',
     'row_index' => '39',
   ],
+  27026 => [
+    'type' => 'project_project',
+    'collection' => 'Membership testing',
+    'policy2' => 'Open government',
+    'owner' => 'Y',
+    'row_index' => '40',
+  ],
 ];
 
 // Migration counts.

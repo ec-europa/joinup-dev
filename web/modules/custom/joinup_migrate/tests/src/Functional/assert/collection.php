@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('collection', 7);
-$this->assertSuccessCount('collection', 7);
+$this->assertTotalCount('collection', 8);
+$this->assertSuccessCount('collection', 8);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */

@@ -6,8 +6,8 @@
  */
 
 // Migration counts.
-$this->assertTotalCount('release', 57);
-$this->assertSuccessCount('release', 57);
+$this->assertTotalCount('release', 83);
+$this->assertSuccessCount('release', 83);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $release */

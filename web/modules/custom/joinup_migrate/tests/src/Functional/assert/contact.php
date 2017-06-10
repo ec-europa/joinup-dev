@@ -8,8 +8,8 @@
 // Migration counts.
 $this->assertTotalCount('contact', 3);
 $this->assertSuccessCount('contact', 3);
-$this->assertTotalCount('contact_email', 4);
-$this->assertSuccessCount('contact_email', 4);
+$this->assertTotalCount('contact_email', 5);
+$this->assertSuccessCount('contact_email', 5);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $contact */
