@@ -9,8 +9,8 @@ use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
 // Migration counts.
-$this->assertTotalCount('solution', 11);
-$this->assertSuccessCount('solution', 11);
+$this->assertTotalCount('solution', 12);
+$this->assertSuccessCount('solution', 12);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */

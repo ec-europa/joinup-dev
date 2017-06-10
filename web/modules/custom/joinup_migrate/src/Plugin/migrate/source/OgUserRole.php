@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Migrates collection OG user-roles.
@@ -38,6 +39,7 @@ class OgUserRole extends SourcePluginBase {
       'collection' => $this->t('Collection'),
       'roles' => $this->t('OG roles'),
       'created' => $this->t('Created'),
+      'state' => $this->t('State'),
     ];
   }
 
@@ -59,11 +61,12 @@ class OgUserRole extends SourcePluginBase {
 
     $info = [];
     foreach ($query->execute()->fetchAll() as $data) {
-      $roles = Json::decode($data->roles);
-      if ($roles) {
+      if ($data->roles) {
+        $roles = Json::decode($data->roles);
         foreach ($roles as $type => $uids) {
-          foreach ($uids as $uid => $created) {
+          foreach ($uids as $uid => list($is_active, $created)) {
             $info[$data->collection][$uid]['created'] = $created;
+            $info[$data->collection][$uid]['state'][] = $is_active ? OgMembershipInterface::STATE_ACTIVE : OgMembershipInterface::STATE_PENDING;
             $info[$data->collection][$uid]['roles'][] = $role_type[$type];
           }
         }
@@ -77,6 +80,7 @@ class OgUserRole extends SourcePluginBase {
           'collection' => $collection,
           'roles' => $data['roles'],
           'created' => $data['created'],
+          'state' => $data['state'],
         ];
       }
     }
@@ -88,7 +92,7 @@ class OgUserRole extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function __toString() {
-    return 'collection-user-role';
+    return 'collection_user_role';
   }
 
 }
