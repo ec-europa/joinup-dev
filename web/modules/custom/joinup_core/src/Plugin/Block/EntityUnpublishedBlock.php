@@ -78,16 +78,28 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function build() {
     $group = $this->getContext('og')->getContextValue();
-    $rows = [];
-    if (!empty($groups['rdf_entity'])) {
-      $rows = $this->getRows($group);
+    if (empty($group)) {
+      return [];
     }
 
-    $build['#attributes'] = [
-      'class' => ['listing', 'listing--grid', 'mdl-grid'],
+    $rows = $this->getRows($group);
+    if (empty($rows)) {
+      return [];
+    }
+
+    $build = [
+      // The 'listing' child key is needed to avoid copying the #attributes to
+      // the parent block.
+      // @see \Drupal\block\BlockViewBuilder::preRender()
+      'listing' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['listing', 'listing--grid', 'mdl-grid'],
+        ],
+      ],
     ];
 
-    $build += $rows;
+    $build['listing'] += $rows;
     return $build;
   }
 
@@ -111,12 +123,20 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     $entities = $this->getResultEntities($results);
     $rows = [];
 
-    foreach ($entities as $entity) {
+    foreach ($entities as $weight => $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
-      $rows[] = [
-        '#theme' => 'search_api_field_result',
-        '#item' => $view,
-        '#entity' => $entity,
+      $rows[$weight] = [
+        '#type' => 'container',
+        '#weight' => $weight,
+        '#attributes' => [
+          'class' => [
+            'listing__item',
+            'listing__item--tile',
+            'mdl-cell',
+            'mdl-cell--4-col',
+          ],
+        ],
+        $weight => $view,
       ];
     }
     return $rows;
@@ -169,7 +189,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     $revision_ids = $storage->getQuery()
       ->allRevisions()
       ->condition('nid', $entity_id)
-      ->sort('revision_id', 'DESC')
+      ->sort('vid', 'DESC')
       ->range(0, 1)
       ->execute();
     if (empty($revision_ids)) {

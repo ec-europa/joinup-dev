@@ -9,6 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
@@ -103,14 +105,23 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function build() {
-
     $rows = $this->getRows();
-
-    $build['#attributes'] = [
-      'class' => ['listing', 'listing--grid', 'mdl-grid'],
+    if (empty($rows)) {
+      return [];
+    }
+    $build = [
+      // The 'listing' child key is needed to avoid copying the #attributes to
+      // the parent block.
+      // @see \Drupal\block\BlockViewBuilder::preRender()
+      'listing' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['listing', 'listing--grid', 'mdl-grid'],
+        ],
+      ],
     ];
 
-    $build += $rows;
+    $build['listing'] += $rows;
     return $build;
   }
 
@@ -121,23 +132,29 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   An array of rows to render.
    */
   protected function getRows() {
-    $index = Index::load('published');
+    $index = Index::load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
-    $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
-    $query->addCondition('authored_by', $this->currentUser->id(), 'IN');
-    $query->sort('created', 'DESC');
+    $query->addCondition('entity_author', [$this->currentUser->id()], 'IN');
     $query->range(0, 9);
     $results = $query->execute();
     $entities = $this->getResultEntities($results);
     $rows = [];
 
-    foreach ($entities as $entity) {
+    foreach ($entities as $weight => $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
-      $rows[] = [
-        '#theme' => 'search_api_field_result',
-        '#item' => $view,
-        '#entity' => $entity,
+      $rows[$weight] = [
+        '#type' => 'container',
+        '#weight' => $weight,
+        '#attributes' => [
+          'class' => [
+            'listing__item',
+            'listing__item--tile',
+            'mdl-cell',
+            'mdl-cell--4-col',
+          ],
+        ],
+        $weight => $view,
       ];
     }
     return $rows;
@@ -151,14 +168,26 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *
    * @return array
    *   The render array for the search results.
+   *
+   * @throws \Exception
+   *    Thrown if the item loaded is not a node or an rdf entity.
    */
   protected function getResultEntities(ResultSetInterface $result) {
     $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
       try {
+        $entity = $item->getOriginalObject()->getValue();
         $entity_id = $item->getOriginalObject()->getValue()->id();
-        $entity = $this->getLatestRevision($entity_id);
+        if ($entity instanceof NodeInterface) {
+          $entity = $this->getLatestContentRevision($entity_id);
+        }
+        elseif ($entity instanceof RdfInterface) {
+          $entity = $this->getDraftRdf($entity_id);
+        }
+        else {
+          throw new \Exception("Only nodes and Rdf entities should be loaded.");
+        }
       }
       catch (SearchApiException $e) {
         $entity = NULL;
@@ -177,7 +206,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Loads the latest revision on an entity.
+   * Loads the latest revision on a node entity.
    *
    * @param int $entity_id
    *   The content id.
@@ -185,12 +214,12 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    * @return \Drupal\node\NodeInterface
    *   The loaded node.
    */
-  protected function getLatestRevision($entity_id) {
+  protected function getLatestContentRevision($entity_id) {
     $storage = $this->entityTypeManager->getStorage('node');
     $revision_ids = $storage->getQuery()
       ->allRevisions()
       ->condition('nid', $entity_id)
-      ->sort('revision_id', 'DESC')
+      ->sort('vid', 'DESC')
       ->range(0, 1)
       ->execute();
     if (empty($revision_ids)) {
@@ -201,6 +230,24 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $storage->loadRevision($revision_id);
     return $entity;
+  }
+
+  /**
+   * Loads the latest revision on an rdf entity.
+   *
+   * @param int $entity_id
+   *   The content id.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The loaded node.
+   */
+  protected function getDraftRdf($entity_id) {
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
+    $rdf_storage->setRequestGraphs($entity_id, ['draft']);
+    /** @var \Drupal\rdf_entity\RdfInterface $draft */
+    $draft = $rdf_storage->load($entity_id);
+    $rdf_storage->getGraphHandler()->resetRequestGraphs([$entity_id]);
+    return $draft;
   }
 
   /**
@@ -230,9 +277,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
         return parent::blockAccess($account);
       }
     }
-    else {
-      return AccessResult::forbidden();
-    }
+    return AccessResult::forbidden();
   }
 
 }

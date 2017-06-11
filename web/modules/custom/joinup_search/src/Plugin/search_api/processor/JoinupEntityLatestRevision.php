@@ -92,7 +92,7 @@ class JoinupEntityLatestRevision extends ProcessorPluginBase {
         }
       }
       elseif ($object instanceof RdfInterface) {
-        if (!$object->isPublished()) {
+        if ($object->isPublished()) {
           /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
           $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
           $rdf_storage->setRequestGraphs($object->id(), ['draft']);
