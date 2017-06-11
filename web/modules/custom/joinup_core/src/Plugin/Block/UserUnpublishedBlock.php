@@ -263,7 +263,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list']);
+    return Cache::mergeTags(parent::getCacheTags(), ['rdf_list', 'node_list']);
   }
 
   /**
