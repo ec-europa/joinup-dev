@@ -69,21 +69,21 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_entity_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
  * creates the solution.
  *
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
-function solution_rdf_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() !== 'solution') {
+function solution_entity_insert(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'solution') {
     return;
   }
 
   // When a new solution is created, give the current user the 'group owner'
   // role, if it is not the anonymous user.
-  if (!\Drupal::currentUser()->isAnonymous()) {
+  if (!empty($entity->getOwner())) {
     // The group owner inherits all roles of a solution facilitator and
     // administrator.
     $roles = [
@@ -92,12 +92,19 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create();
-    $membership
-      ->setUser(\Drupal::currentUser())
-      ->setGroup($entity)
-      ->setRoles(array_values(OgRole::loadMultiple($roles)))
-      ->save();
+    $membership = Og::getMembership($entity, $entity->getOwner());
+    if (empty($membership)) {
+      $membership = OgMembership::create();
+      $membership
+        ->setUser(\Drupal::currentUser())
+        ->setGroup($entity)
+        ->setRoles(array_values(OgRole::loadMultiple($roles)))
+        ->save();
+    }
+    else {
+      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+      $membership->save();
+    }
   }
 }
 
