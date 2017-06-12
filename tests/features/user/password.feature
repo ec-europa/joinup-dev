@@ -20,19 +20,19 @@ Feature: Password management
     And I press the "Save" button
     Then I should see the error message "The password does not satisfy the password policies"
     Examples:
-      | password  |
+      | password   |
       # Less than 8 characters.
-      | tEst1     |
+      | tEst1      |
       # Contains only lowercase and uppercase.
-      | tEsttest  |
+      | tEsttest   |
       # Contains only lowercase and uppercase.
-      | t3sttest  |
+      | t3sttest   |
       # Contains only lowercase and special characters.
-      | testtest! |
+      | testtest!  |
       # Contains only numeric and special characters.
       | 123456789! |
       # Contains only uppercase and special characters.
-      | TESTTEST! |
+      | TESTTEST!  |
 
   Scenario: A logged-in user can navigate to his profile and change his password.
     When I am logged in as "Charlie Change"
