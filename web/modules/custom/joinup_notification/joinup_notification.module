@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\og\Og;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 
@@ -187,4 +188,21 @@ function joinup_notification_entity_update(EntityInterface $entity) {
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
   $event_dispatcher->dispatch($event_id, $event);
   $event_dispatcher->dispatch('state_machine.post_transition', $event);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Converts in HTML the mails sent by the user and joinup_user modules.
+ */
+function joinup_notification_mail_alter(&$message) {
+  if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    // Convert new lines to paragraphs and line breaks. Also transform the body
+    // to markup.
+    // @see swiftmailer_mail()
+    $message['body'] = array_map(function ($text) {
+      return Markup::create(_filter_autop($text));
+    }, $message['body']);
+  }
 }
