@@ -17,7 +17,7 @@ use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
  *
  * @FieldWidget(
  *   id = "link_legacy_multicardinality",
- *   label = @Translation("With legacy multivalue support"),
+ *   label = @Translation("Link with legacy multivalue support"),
  *   field_types = {
  *     "link"
  *   }

@@ -15,7 +15,7 @@ use Drupal\joinup_core\Traits\LegacyMultipleCardinalitySupportingFieldWidgetTrai
  *
  * @FieldWidget(
  *   id = "string_textfield_legacy_multicardinality",
- *   label = @Translation("With legacy multivalue support"),
+ *   label = @Translation("Textfield with legacy multivalue support"),
  *   field_types = {
  *     "string"
  *   }
