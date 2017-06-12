@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "70bac7a39be4734fbc7cc41ab9f5b7f1",
+    "content-hash": "06dde9b9d260f3b5379599117be62a82",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2714,27 +2714,22 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-3258",
+            "version": "dev-ISAICP-2709",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "71ca79e677d84f34a360095a80e17db8db6aee30"
+                "reference": "6294a747c0483c67aaa9769ae49666a522c0ae39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/71ca79e677d84f34a360095a80e17db8db6aee30",
-                "reference": "71ca79e677d84f34a360095a80e17db8db6aee30",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/6294a747c0483c67aaa9769ae49666a522c0ae39",
+                "reference": "6294a747c0483c67aaa9769ae49666a522c0ae39",
                 "shasum": ""
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
-            "extra": {
-                "patches_applied": {
-                    "API breaks for entities without an owner. @https://github.com/Gizra/og/pull/278": "https://github.com/Gizra/og/pull/278.patch"
-                }
-            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -2745,7 +2740,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-22 12:43:40"
+            "time": "2017-06-12 12:56:04"
         },
         {
             "name": "drupal/og_menu",
@@ -3218,7 +3213,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc3",
-                    "datestamp": "1495024986"
+                    "datestamp": "1497007742"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8578,7 +8573,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-05-19 10:27:18"
+            "time": "2017-05-19T10:27:18+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -9935,7 +9930,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-3258",
+            "version": "dev-ISAICP-2709",
             "package": "drupal/og"
         },
         {

@@ -24,7 +24,7 @@
         "drupal/migrate_report": "~1.0-alpha2",
         "drupal/migrate_run": "~1.0-alpha1",
         "drupal/migrate_spreadsheet": "~1.0-beta2",
-        "drupal/og": "dev-ISAICP-3258 as dev-1.x",
+        "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/persistent_login": "dev-1.x#1320f841da3c",
         "drupal/phingdrushtask": "dev-7.x-2.x#6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
@@ -129,9 +129,6 @@
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
-            },
-            "drupal/og": {
-                "API breaks for entities without an owner. @https://github.com/Gizra/og/pull/278": "https://github.com/Gizra/og/pull/278.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
