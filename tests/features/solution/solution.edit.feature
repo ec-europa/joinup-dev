@@ -82,7 +82,7 @@ Feature: Solution editing.
     Then I delete the "Solution A revised" solution
 
   Scenario: A solution facilitator can edit only the solutions he's associated with.
-    And the following solution:
+    Given the following solution:
       | title               | Solution B     |
       | description         | Second letter  |
       | logo                | logo.png       |
