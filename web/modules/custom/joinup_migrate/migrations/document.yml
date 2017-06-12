@@ -49,5 +49,8 @@ destination:
   default_bundle: document
 migration_dependencies:
  required:
-   - document_file
+   - file:document_case
+   - file:document_document
+   - file:document_factsheet
+   - file:document_presentation
    - collection

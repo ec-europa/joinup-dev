@@ -29,7 +29,7 @@
   {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ content.field_user_first_name|render|trim }} {{ content.field_user_family_name|render|trim }}</a></h2>
+      <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{- full_name -}}</a></h2>
     </div>
     {% if (content.field_user_business_title|render) %}
       <div class="listing__field">

@@ -1,43 +1,81 @@
-@api
+@api @terms
 Feature: Global search
   As a user of the site I can find content through the global search.
 
   Scenario: Anonymous user can find items
     Given the following solutions:
-      | title          | description                                                                                                                          | state     |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                              | validated |
-      | Foam           | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" | validated |
-      # Taxonomies are not yet implemented, so uncomment this after #ISAICP-2545 is done
-      # | spatial coverage | http://publications.europa.eu/resource/authority/country/EUR            |
+      | title          | description                                                                                                                          | policy domain | spatial coverage | state     |
+      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
+      | Foam           | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
     And the following collection:
-      | title      | Molecular cooking collection |
-      | logo       | logo.png                     |
-      | moderation | no                           |
-      | affiliates | Spherification, Foam         |
-      | state      | validated                    |
+      | title            | Molecular cooking collection |
+      | logo             | logo.png                     |
+      | moderation       | no                           |
+      | affiliates       | Spherification, Foam         |
+      | policy domain    | Demography                   |
+      | spatial coverage | Belgium                      |
+      | state            | validated                    |
     And news content:
-      | title                 | body             | collection                   | state     |
-      | El Celler de Can Roca | The best in town | Molecular cooking collection | validated |
+      | title                 | body             | collection                   | policy domain           | spatial coverage | state     |
+      | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
 
     Given I am logged in as a user with the "authenticated" role
     # @todo The search page cache should be cleared when new content is added.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
     When I am at "/search"
-    # All content visible
-    Then I should see the text "Molecular cooking collection"
-    Then I should see the text "El Celler de Can Roca"
-    Then I should see the text "Spherification"
-    Then I should see the text "Foam"
+    # All content is visible.
+    Then I should see the "Molecular cooking collection" tile
+    And I should see the "El Celler de Can Roca" tile
+    And I should see the "Spherification" tile
+    And I should see the "Foam" tile
+    # Inline facets should be in place.
+    And "all policy domains" should be selected in the "policy domain" inline facet
+    And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
+    And "everywhere" should be selected in the "spatial coverage" inline facet
+    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+
+    # Test the policy domain facet.
+    When I click "Demography" in the "policy domain" inline facet
+    Then "Demography (2)" should be selected in the "policy domain" inline facet
+    And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
+    And "everywhere" should be selected in the "spatial coverage" inline facet
+    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1)"
+    And I should see the "Molecular cooking collection" tile
+    And I should see the "Spherification" tile
+    But I should not see the "El Celler de Can Roca" tile
+    And I should not see the "Foam" tile
+
+    # Test the spatial coverage facet.
+    When I click "Belgium" in the "spatial coverage" inline facet
+    Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
+    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
+    And "Demography (1)" should be selected in the "policy domain" inline facet
+    And the "policy domain" inline facet should allow selecting the following values "all policy domains"
+    And I should see the "Molecular cooking collection" tile
+    But I should not see the "El Celler de Can Roca" tile
+    And I should not see the "Spherification" tile
+    And I should not see the "Foam" tile
+
+    # Reset the search by visiting again the search page.
+    Given I am at "/search"
 
     # Select link in the 'type' facet.
-    Then I click "solution" in the "Left sidebar" region
-    # @todo Re-enable this check when the tile view mode created.
-    # (The default view mode of solutions holds a link to it's collection)
-    # Then I should not see the text "Molecular cooking collection"
-    Then I should not see the text "El Celler de Can Roca"
-    Then I should see the text "Spherification"
-    Then I should see the text "Foam"
+    When I click the Solution content tab
+    Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
+    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
+    And I should not see the "Molecular cooking collection" tile
+    And I should not see the "El Celler de Can Roca" tile
+    But I should see the "Spherification" tile
+    And I should see the "Foam" tile
+
+    # Launch a text search.
+    When I fill in "Search" with "Cooking"
+    And I press "Search"
+    Then I should see the "Molecular cooking collection" tile
+    And I should see the "Foam" tile
+    But I should not see the "Spherification" tile
+    And I should not see the "El Celler de Can Roca" tile
 
   @terms
   Scenario: Content can be found with a full-text search.

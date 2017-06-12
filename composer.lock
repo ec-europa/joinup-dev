@@ -3477,6 +3477,63 @@
             }
         },
         {
+            "name": "drupal/video_embed_field",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/video_embed_field",
+                "reference": "8.x-1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
+                "reference": null,
+                "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "require-dev": {
+                "drupal/colorbox": "*",
+                "drupal/media_entity": "*",
+                "drupal/media_entity_embeddable_video": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x",
+                    "datestamp": "1493246342",
+                    "package": "Field types"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "jec006",
+                    "homepage": "https://www.drupal.org/user/855980"
+                },
+                {
+                    "name": "plopesc",
+                    "homepage": "https://www.drupal.org/user/282415"
+                }
+            ],
+            "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
+            "homepage": "https://www.drupal.org/project/video_embed_field",
+            "support": {
+                "source": "http://cgit.drupalcode.org/video_embed_field"
+            }
+        },
+        {
             "name": "drupal/view_unpublished",
             "version": "1.0.0-alpha1",
             "source": {
@@ -3709,12 +3766,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "5bf41d9be3656b7dc4bfffd20003f926528b30f9"
+                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/5bf41d9be3656b7dc4bfffd20003f926528b30f9",
-                "reference": "5bf41d9be3656b7dc4bfffd20003f926528b30f9",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
+                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
                 "shasum": ""
             },
             "require": {
@@ -3739,7 +3796,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-06-06 08:14:52"
+            "time": "2017-06-07 07:51:39"
         },
         {
             "name": "egulias/email-validator",

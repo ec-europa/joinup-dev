@@ -19,6 +19,8 @@ $expected_values = [
     'abstract' => 'Abstract for a new collection',
     'owner_text_name' => 'Dark Side of The Force',
     'owner_text_type' => 'SupraNationalAuthority',
+    'banner' => 'Banner_1.png',
+    'logo' => 'Logo_1.png',
     'roles' => '{"admin":{"7098":1495635879},"member":{"6842":1378476956}}',
   ],
   'Collection from Project' => [

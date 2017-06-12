@@ -32,6 +32,7 @@ class Event extends NodeBase {
       'scope' => $this->t('Scope'),
       'organisation_type' => $this->t('Organisation type'),
       'state' => $this->t('State'),
+      'file_id' => $this->t('Logo ID'),
     ] + parent::fields();
   }
 
@@ -51,6 +52,7 @@ class Event extends NodeBase {
       'mail',
       'agenda',
       'state',
+      'file_id',
     ]);
   }
 
