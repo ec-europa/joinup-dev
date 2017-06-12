@@ -115,7 +115,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['rdf_list']);
+    return Cache::mergeTags(parent::getCacheTags(), ['rdf_entity_list']);
   }
 
 }
