@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_is_standardization_level
     - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.standardization_level
 id: rdf_entity.solution.field_is_standardization_level
 field_name: field_is_standardization_level
 entity_type: rdf_entity
@@ -15,6 +16,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      standardization_level: standardization_level
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

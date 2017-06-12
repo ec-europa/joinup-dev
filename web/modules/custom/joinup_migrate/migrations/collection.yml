@@ -18,8 +18,8 @@ process:
     no_stub: true
   field_ar_banner:
     plugin: migration
-    source: collection
-    migration: collection_banner
+    source: banner
+    migration: file:collection_banner
     no_stub: true
   contact_from_node:
     - plugin: explode
@@ -48,8 +48,8 @@ process:
   field_ar_elibrary_creation: elibrary
   field_ar_logo:
     plugin: migration
-    source: collection
-    migration: collection_logo
+    source: logo_id
+    migration: file:collection_logo
     no_stub: true
   field_ar_moderation:
     plugin: default_value
@@ -88,6 +88,6 @@ destination:
   default_bundle: collection
 migration_dependencies:
  required:
-   - collection_logo
-   - collection_banner
+   - file:collection_logo
+   - file:collection_banner
    - solution

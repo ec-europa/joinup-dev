@@ -162,4 +162,29 @@
     }
   };
 
+  /**
+   * Sets the fullscreen progress indicator.
+   */
+  Drupal.Ajax.prototype.setProgressIndicatorFullscreen = function () {
+    this.progress.element = $('<div class="mdl-spinner mdl-js-spinner mdl-spinner--single-color is-active"></div>');
+    $('body').after(this.progress.element);
+    componentHandler.upgradeAllRegistered();
+  }
+  
+  // Forwards a click on a share modal row to the related checkbox.
+  Drupal.behaviors.checkShareBoxRow = {
+    attach: function (context, settings) {
+      $(context).find('.share-box__row').once('checkShareBoxRow').each(function () {
+        $(this).on('click', function (event) {
+          // Avoid calling click() twice due to event propagation.
+          if ($(event.target).is('input[type="checkbox"]')) {
+            return;
+          }
+
+          $(this).find('input[type="checkbox"]').click();
+        });
+      });
+    }
+  };
+
 })(jQuery, Drupal);

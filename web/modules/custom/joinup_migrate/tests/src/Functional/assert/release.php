@@ -133,6 +133,9 @@ $this->assertReferences([
 ], $release->field_isr_distribution);
 $this->assertReferences(['Deprecated'], $release->get('field_status'));
 $this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertReferences([
+  'Core_Vocabularies-Business_Location_Person-Specification-v0.2.pdf',
+], $release->get('field_isr_documentation'));
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.3', 'asset_release');
 $this->assertEquals('Core Location Vocabulary 0.3', $release->label());

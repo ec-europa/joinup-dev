@@ -4,6 +4,7 @@ description: Events content type for joinup.
 core: 8.x
 package: Joinup
 dependencies:
+  - datetime_range
   - joinup_community_content
   - joinup_core
 
@@ -18,9 +19,8 @@ config_devel:
   - field.field.node.event.field_event_adtl_address_info
   - field.field.node.event.field_event_agenda
   - field.field.node.event.field_event_contact_email
-  - field.field.node.event.field_event_end_date
+  - field.field.node.event.field_event_date
   - field.field.node.event.field_event_logo
-  - field.field.node.event.field_event_start_date
   - field.field.node.event.field_event_web_url
   - field.field.node.event.field_keywords
   - field.field.node.event.field_location
@@ -35,9 +35,8 @@ config_devel:
   - field.storage.node.field_event_adtl_address_info
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email
-  - field.storage.node.field_event_end_date
+  - field.storage.node.field_event_date
   - field.storage.node.field_event_logo
-  - field.storage.node.field_event_start_date
   - field.storage.node.field_event_web_url
   - field.storage.node.field_location
   - field.storage.node.field_organisation
