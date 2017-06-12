@@ -9,7 +9,7 @@ field_name: field_cp_content_listing
 entity_type: node
 type: search_api_field
 settings:
-  index: collections
+  index: published
   facet_regions:
     top: Top
   view_modes:

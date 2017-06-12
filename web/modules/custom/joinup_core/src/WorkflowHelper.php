@@ -3,6 +3,7 @@
 namespace Drupal\joinup_core;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -31,16 +32,26 @@ class WorkflowHelper implements WorkflowHelperInterface {
   protected $currentUser;
 
   /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
    * Constructs a WorkflowHelper.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current user.
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account switcher interface.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
+   *   The entity field manager.
    */
-  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher) {
+  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager) {
     $this->accountSwitcher = $accountSwitcher;
     $this->currentUser = $currentUser;
+    $this->entityFieldManager = $entityFieldManager;
   }
 
   /**
@@ -93,8 +104,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getEntityStateFieldDefinitions(FieldableEntityInterface $entity) {
-    return array_filter($entity->getFieldDefinitions(), function (FieldDefinitionInterface $field_definition) {
+  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id) {
+    return array_filter($this->entityFieldManager->getFieldDefinitions($entity_type_id, $bundle_id), function (FieldDefinitionInterface $field_definition) {
       return $field_definition->getType() == 'state';
     });
   }
@@ -102,8 +113,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getEntityStateFieldDefinition(FieldableEntityInterface $entity) {
-    if ($field_definitions = static::getEntityStateFieldDefinitions($entity)) {
+  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
+    if ($field_definitions = static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
       return reset($field_definitions);
     }
 
@@ -114,7 +125,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getEntityStateField(FieldableEntityInterface $entity) {
-    $field_definition = $this->getEntityStateFieldDefinition($entity);
+    $field_definition = $this->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle());
     if ($field_definition === NULL) {
       throw new \Exception('No state fields were found in the entity.');
     }
@@ -124,8 +135,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField(FieldableEntityInterface $entity) {
-    return (bool) static::getEntityStateFieldDefinitions($entity);
+  public function hasEntityStateField($entity_type_id, $bundle_id) {
+    return (bool) static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**

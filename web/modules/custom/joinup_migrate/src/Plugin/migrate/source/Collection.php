@@ -41,6 +41,8 @@ class Collection extends CollectionBase {
       'contact' => $this->t('Contact info'),
       'contact_email' => $this->t('Contact E-mail'),
       'state' => $this->t('Workflow state'),
+      'banner' => $this->t('Banner'),
+      'logo_id' => $this->t('Logo ID'),
     ];
   }
 
@@ -66,6 +68,8 @@ class Collection extends CollectionBase {
       'contact_email',
       'access_url',
       'state',
+      'banner',
+      'logo_id',
     ]);
   }
 

@@ -63,9 +63,9 @@ class Comment extends JoinupSqlBase {
   public function prepareRow(Row $row) {
     // Comment attachments, if case.
     if ($row->getSourceProperty('type') === 'project_issue') {
-      $fids = $this->select('d8_comment_file', 'f')
-        ->fields('f', ['fid'])
-        ->condition('cid', $row->getSourceProperty('cid'))
+      $fids = $this->select('comment_upload', 'u')
+        ->fields('u', ['fid'])
+        ->condition('u.cid', $row->getSourceProperty('cid'))
         ->execute()
         ->fetchCol();
       if ($fids) {

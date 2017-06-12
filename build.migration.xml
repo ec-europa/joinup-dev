@@ -45,13 +45,6 @@
                 verbose="${drush.verbose}">
             <option name="batch-size" value="500" />
         </drush>
-        <drush
-            command="migrate-report-generate"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-        </drush>
     </target>
 
     <target name="import-legacy-db"

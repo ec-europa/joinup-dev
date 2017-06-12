@@ -21,11 +21,11 @@ trait FileUrlFieldTrait {
   protected $migrationPluginManager;
 
   /**
-   * The migration used to lookup for file ID.
+   * A list of migrations used to lookup for file ID.
    *
-   * @var \Drupal\migrate\Plugin\MigrationInterface
+   * @var \Drupal\migrate\Plugin\MigrationInterface[]
    */
-  protected $fileMigration;
+  protected $fileMigration = [];
 
   /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
@@ -78,7 +78,7 @@ trait FileUrlFieldTrait {
    *   The source property corresponding to the file URL field to be set.
    * @param array[] $file_source_id_values
    *   A list of source ID values corresponding to all the files attached to
-   *   this entity. Example [['nid' => 123], ['nid' => 789]].
+   *   this entity. Example [['fid' => 123], ['fid' => 789]].
    * @param string $file_migration_id
    *   The ID of the file migration to be used for file ID lookup.
    * @param string $url_property
@@ -127,13 +127,13 @@ trait FileUrlFieldTrait {
    *   The file migration ID.
    *
    * @return \Drupal\migrate\Plugin\MigrationInterface
-   *   The 'documentation_file' migration.
+   *   The file migration.
    */
   protected function getFileMigration($file_migration_id) {
-    if (!isset($this->fileMigration)) {
-      $this->fileMigration = $this->migrationPluginManager->createInstance($file_migration_id);
+    if (!isset($this->fileMigration[$file_migration_id])) {
+      $this->fileMigration[$file_migration_id] = $this->migrationPluginManager->createInstance($file_migration_id);
     }
-    return $this->fileMigration;
+    return $this->fileMigration[$file_migration_id];
   }
 
 }

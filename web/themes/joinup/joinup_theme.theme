@@ -150,7 +150,6 @@ function joinup_theme_preprocess_block(&$variables) {
   if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
-
     // Indicate if page contains listing
     // and should not have white background.
     $is_listing = FALSE;
@@ -193,6 +192,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.collections.page_1':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':
+      case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
         $is_listing = TRUE;
         break;
@@ -532,6 +532,13 @@ function joinup_theme_preprocess_image(&$variables) {
     $variables['attributes']['class'][] = 'avatar';
     $variables['attributes']['class'][] = 'avatar--25';
   }
+}
+
+/**
+ * Implements hook_preprocess_user().
+ */
+function joinup_theme_preprocess_user(&$variables) {
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
 }
 
 /**
