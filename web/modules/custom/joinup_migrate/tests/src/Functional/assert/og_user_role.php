@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Assertions for 'og_user_role' migration.
+ * Assertions for 'og_user_role' and 'og_user_role_solution' migration.
  */
 
 use Drupal\og\Entity\OgRole;
@@ -15,6 +15,7 @@ $assert_og_roles = function ($entity_id, $user_name, $expected_state, array $exp
   /* @var \Drupal\og\OgMembershipInterface[] $memberships */
   $memberships = \Drupal::entityTypeManager()->getStorage('og_membership')
     ->loadByProperties([
+      'entity_type' => 'rdf_entity',
       'entity_id' => $entity_id,
       'uid' => $account->id(),
     ]);
@@ -35,7 +36,7 @@ $assert_og_roles = function ($entity_id, $user_name, $expected_state, array $exp
   $this->assertSame($expected_roles, $actual_roles);
 };
 
-// Members of 'Membership testing' collection.
+// Collection: Members of 'Membership testing'.
 $assert_og_roles('http://health.gnu.org', 'meanmicio', OgMembershipInterface::STATE_ACTIVE, [
   'rdf_entity-collection-member',
   'rdf_entity-collection-administrator',
@@ -47,10 +48,22 @@ $assert_og_roles('http://health.gnu.org', 'ThomasU1', OgMembershipInterface::STA
   'rdf_entity-collection-member',
 ]);
 
-// Members of 'Collection with 1 entity having custom section' collection.
+// Collection: Members of 'Collection with 1 entity having custom section'.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $assert_og_roles($collection->id(), 'joinup_editor', OgMembershipInterface::STATE_ACTIVE, [
   'rdf_entity-collection-member',
   'rdf_entity-collection-facilitator',
+]);
+
+// Solution: Members of 'DCAT application profile for data portals in Europe'.
+/* @var \Drupal\rdf_entity\RdfInterface $solution */
+$solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
+$assert_og_roles($solution->id(), 'joinup_semantic_editor', OgMembershipInterface::STATE_ACTIVE, [
+  'rdf_entity-solution-member',
+  'rdf_entity-solution-administrator',
+]);
+$assert_og_roles($solution->id(), 'sszekacs', OgMembershipInterface::STATE_ACTIVE, [
+  'rdf_entity-solution-member',
+  'rdf_entity-solution-facilitator',
 ]);
