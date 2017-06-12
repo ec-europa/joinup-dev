@@ -200,6 +200,21 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase {
   }
 
   /**
+   * Set the graph type to use for multiple ids.
+   *
+   * @param array $data
+   *    An associative array with Ids for indexes and graph types in an array
+   *    for values.
+   *
+   * @see \Drupal\rdf_entity\RdfGraphHandler::setRequestGraphs
+   */
+  public function setRequestGraphsMultiple(array $data) {
+    foreach ($data as $entity_id => $graph_types) {
+      $this->getGraphHandler()->setRequestGraphs($entity_id, $this->entityTypeId, $graph_types);
+    }
+  }
+
+  /**
    * Returns the active graphs.
    *
    * @param string $entity_id
