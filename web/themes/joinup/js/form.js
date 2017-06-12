@@ -170,7 +170,7 @@
     $('body').after(this.progress.element);
     componentHandler.upgradeAllRegistered();
   }
-  
+
   // Forwards a click on a share modal row to the related checkbox.
   Drupal.behaviors.checkShareBoxRow = {
     attach: function (context, settings) {
