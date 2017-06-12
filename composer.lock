@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8acef03ae07a796324b28226961696c4",
+    "content-hash": "70bac7a39be4734fbc7cc41ab9f5b7f1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2225,7 +2225,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1492681579"
+                    "datestamp": "1491851643"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -2730,6 +2730,11 @@
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "API breaks for entities without an owner. @https://github.com/Gizra/og/pull/278": "https://github.com/Gizra/og/pull/278.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
