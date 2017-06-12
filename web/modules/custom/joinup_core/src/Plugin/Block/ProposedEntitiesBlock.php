@@ -86,10 +86,23 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
    *   An array of rows to render.
    */
   protected function getRows() {
-    $query = $this->entityTypeManager->getStorage('rdf_entity')->getQuery();
-    $query->condition('field_state', 'proposed');
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    $storage = $this->entityTypeManager->getStorage('rdf_entity');
+    $query = $storage->getQuery('OR');
+    $solution_sub_condition = $query->andConditionGroup();
+    $solution_sub_condition->condition('rid', 'solution');
+    $solution_sub_condition->condition('field_is_state', 'proposed');
+    $collection_sub_condition = $query->andConditionGroup();
+    $collection_sub_condition->condition('rid', 'collection');
+    $collection_sub_condition->condition('field_ar_state', 'proposed');
+    $query->condition($solution_sub_condition);
+    $query->condition($collection_sub_condition);
     $results = $query->execute();
+
+    $data = array_fill_keys($results, ['draft']);
+    $storage->setRequestGraphsMultiple($data);
     $entities = Rdf::loadMultiple($results);
+    $storage->getGraphHandler()->resetRequestGraphs($results);
     $rows = [];
 
     foreach ($entities as $weight => $entity) {
