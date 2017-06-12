@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -56,6 +57,7 @@ third_party_settings:
       children:
         - group_main
         - group_management
+        - group_trr
       parent_name: ''
       weight: 0
       format_type: tabs
@@ -107,6 +109,24 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Management
+    group_trr:
+      children:
+        - field_is_solution_category
+        - field_is_test_resource_type
+        - field_is_actor
+        - field_is_business_process
+        - field_is_product_type
+        - field_is_standardization_level
+      parent_name: group_general
+      weight: 22
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: TRR
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -121,6 +141,15 @@ content:
       title_display: before
       show_for_new_entities: false
     third_party_settings: {  }
+  field_is_actor:
+    type: entity_reference_autocomplete
+    weight: 25
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_banner:
     weight: 4
     settings:
@@ -129,6 +158,15 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
+  field_is_business_process:
+    type: entity_reference_autocomplete
+    weight: 26
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_contact_information:
     type: inline_entity_form_complex
     weight: 5
@@ -218,8 +256,26 @@ content:
       collapsed: false
     third_party_settings: {  }
     region: content
+  field_is_product_type:
+    type: entity_reference_autocomplete
+    weight: 27
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_related_solutions:
     weight: 10
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_is_solution_category:
+    weight: 23
     settings:
       match_operator: CONTAINS
       size: 60
@@ -233,6 +289,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_is_standardization_level:
+    type: entity_reference_autocomplete
+    weight: 28
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_is_state:
     type: state_machine_buttons
     weight: 19
@@ -240,6 +305,15 @@ content:
       use_transition_label: 1
     third_party_settings: {  }
     region: content
+  field_is_test_resource_type:
+    type: entity_reference_autocomplete
+    weight: 24
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_policy_domain:
     type: options_select
     weight: 6
@@ -277,9 +351,7 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  field_is_actor: true
   field_is_affiliations_requests: true
-  field_is_business_process: true
   field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
@@ -287,10 +359,7 @@ hidden:
   field_is_included_asset: true
   field_is_issue_tracker: true
   field_is_modification_date: true
-  field_is_product_type: true
   field_is_source_code_repository: true
-  field_is_standardization_level: true
-  field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
   field_is_webdav_creation: true
