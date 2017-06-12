@@ -155,9 +155,11 @@ Feature: "Add solution" visibility options.
     # The name of the solution should exist in the block of the relative content in a collection.
     When I go to the homepage of the "Belgian barista's" collection
     Then I should see the heading "Belgian barista's"
-    Then I should see the link "Espresso is the solution"
-    Then I should see the link "V60 filter coffee solution"
+    And I should see the link "Espresso is the solution"
+    But I should not see the link "V60 filter coffee solution"
 
+    When I visit "/user"
+    Then I should see the link "V60 filter coffee solution"
     # Clean up the solution that was created through the UI.
     Then I delete the "V60 filter coffee solution" solution
     Then I delete the "Espresso is the solution" solution
