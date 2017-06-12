@@ -37,12 +37,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * | recipient | username0123     |
    * | subject   | The mail subject |
    * | body      | The message body |
+   * | html      | yes/no           |
    *
    * The 'template' can be either the name or the description of the message
    * template. If the template row is not present, no matching on template will
    * be done. This is needed for system mails (like the ones sent by the user
    * module).
    * The 'body' is a partial text based match.
+   * The 'html' can be 'yes' or 'no'. When not present, 'no' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -58,6 +60,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $subject */
     /** @var string $template */
     extract($table->getRowsHash());
+
+    // If the 'html' row is not present, assume a 'no'. Convert 'yes' to TRUE
+    // and 'no' to FALSE.
+    $html = (isset($html) ? $html : 'no') === 'yes';
 
     $user = user_load_by_name($recipient);
     if (empty($user)) {
@@ -111,6 +117,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     }
 
     PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient' with subject '$subject'.");
+
+    // If the previous assertion passed, the $mail variable contains the correct
+    // mail.
+    $expected_format = $html ? SWIFTMAILER_FORMAT_HTML : SWIFTMAILER_FORMAT_PLAIN;
+    /** @var array $mail */
+    PHPUnit_Framework_Assert::assertEquals($expected_format, $mail['headers']['Content-Type'], 'The mail format is not of the expected type.');
   }
 
   /**

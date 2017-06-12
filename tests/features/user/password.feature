@@ -45,6 +45,7 @@ Feature: Password management
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
 
+  @email
   Scenario: A user can request a one-time-login link.
     When I am an anonymous user
     And I am on the homepage
@@ -53,3 +54,8 @@ Feature: Password management
     And I fill in "Username or email address" with "Charlie Change"
     And I press the "Submit" button
     Then I should see the success message "Further instructions have been sent to your email address."
+    And the following email should have been sent:
+      | recipient | Charlie Change                                                           |
+      | subject   | Replacement login information for Charlie Change at Joinup               |
+      | body      | A request to reset the password for your account has been made at Joinup |
+      | html      | yes                                                                      |
