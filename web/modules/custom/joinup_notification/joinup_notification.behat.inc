@@ -38,9 +38,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * | subject   | The mail subject |
    * | body      | The message body |
    *
-   * - The 'template' can be either the name or the description of the message
-   *   template.
-   * - The 'body' is a partial text based match.
+   * The 'template' can be either the name or the description of the message
+   * template. If the template row is not present, no matching on template will
+   * be done. This is needed for system mails (like the ones sent by the user
+   * module).
+   * The 'body' is a partial text based match.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -94,10 +96,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         continue;
       }
 
-      $message_template = MessageTemplate::load($mail['key']);
-      if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
-        continue;
-      };
+      // If the template is present, try to load the related message template
+      // entity.
+      if (isset($template)) {
+        $message_template = MessageTemplate::load($mail['key']);
+        if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
+          continue;
+        };
+      }
 
       // We found a match. Stop searching.
       $email_found = TRUE;
