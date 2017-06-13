@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - joinup_core
+  - language
   - link
   - rdf_entity
   - state_machine
