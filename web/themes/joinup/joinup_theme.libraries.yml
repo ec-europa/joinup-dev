@@ -25,7 +25,6 @@ form-components:
     - core/jquery.ui.slider
     - core/drupal
     - core/drupalSettings
-    - core/drupal.ajax
 
 fonts:
   css:
