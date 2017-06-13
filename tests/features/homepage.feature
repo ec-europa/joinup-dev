@@ -165,9 +165,9 @@ Feature: Homepage
     And I should see the following lines of text:
       | Economic systems              |
       | Socialist schools before Marx |
+      | Socialist economics           |
       | Corporative economic theories |
       | Economic cooperation          |
-      | Socialist economics           |
     But I should not see the following lines of text:
       | Political sciences    |
       | Forms of government   |
