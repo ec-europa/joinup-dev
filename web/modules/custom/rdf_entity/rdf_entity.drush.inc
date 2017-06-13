@@ -55,9 +55,9 @@ WHERE {
 QUERY;
     $endpoint->query($query);
 
-    $backend = Server::load('solr')->getBackend();
+    $backend = Server::load('solr_published')->getBackend();
     if ($backend instanceof SearchApiSolrBackend && $backend->getSolrConnector()->pingCore()) {
-      $index = $backend->getServer()->getIndexes()['collections'];
+      $index = $backend->getServer()->getIndexes()['published'];
       $backend->deleteAllIndexItems($index);
     }
 
