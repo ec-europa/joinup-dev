@@ -6,6 +6,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\message\Entity\MessageTemplate;
@@ -95,6 +96,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
       $mail_body = str_replace("\n", ' ', $mail['body']);
       $mail_body = trim($mail_body);
+
+      // If the original mail body is markup, we need to undo the encoding
+      // done by Twig.
+      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
+      if ($mail['body'] instanceof MarkupInterface) {
+        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
+      }
+
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.
