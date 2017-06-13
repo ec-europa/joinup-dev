@@ -140,6 +140,9 @@
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
                 "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             },
+            "drupal/og": {
+                "Membership manager static cache missbehaves. @see https://github.com/Gizra/og/pull/279": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/279.patch"
+            },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             }
