@@ -204,11 +204,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     // @see \Drupal\Tests\joinup_migrate\Functional\JoinupMigrateTest::executeMigration()
     $migration = $this->manager->createInstance('prepare');
     $this->executeMigration($migration, $migration->id(), TRUE);
-
-    // For performance reasons we don't import real files from the Drupal 6
-    // platform but we create locally a fake copy of the source file system with
-    // "zero size" files.
-    MockFileSystem::createTestingFiles($legacy_site_files, $this->legacyDb);
   }
 
   /**
