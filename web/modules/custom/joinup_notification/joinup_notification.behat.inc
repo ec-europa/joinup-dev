@@ -97,11 +97,13 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       $mail_body = str_replace("\n", ' ', $mail['body']);
       $mail_body = trim($mail_body);
 
-      // If the original mail body is markup, we need to undo the encoding
-      // done by Twig.
+      // If the original mail body is markup, we need to:
+      // - undo the encoding done by Twig to quotes;
+      // - remove the HTML to simplify the matching on the body text.
       // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
       if ($mail['body'] instanceof MarkupInterface) {
         $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
+        $mail_body = strip_tags($mail_body);
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
