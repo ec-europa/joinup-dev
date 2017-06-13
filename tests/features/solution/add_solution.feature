@@ -82,7 +82,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
-    And the following fields should be present "Title, Description, Documentation, Logo, Banner"
+    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
     And the "Solution type" field should contain the "IOP specification underpinning View, Technical View - Application, Technical View - Infrastructure" option groups
     When I fill in the following:
@@ -93,7 +93,7 @@ Feature: "Add solution" visibility options.
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
-    And I upload the file "text.pdf" to "Documentation"
+    And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # Click the button to select an existing contact information.
     And I press "Add existing" at the "Contact information" field
     And I fill in "Contact information" with "Contact information example"
@@ -139,7 +139,7 @@ Feature: "Add solution" visibility options.
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
-    And I upload the file "text.pdf" to "Documentation"
+    And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing contact information.
