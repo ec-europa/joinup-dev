@@ -67,7 +67,7 @@ Feature: Homepage
     Then I should see the following statistics:
       | Solutions   | 2 |
       | Collections | 4 |
-      | Content     | 4 |
+      | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
     # The page should still be cacheable.
@@ -167,6 +167,7 @@ Feature: Homepage
       | Socialist schools before Marx |
       | Corporative economic theories |
       | Economic cooperation          |
+      | Socialist economics           |
     But I should not see the following lines of text:
       | Political sciences    |
       | Forms of government   |
@@ -183,9 +184,6 @@ Feature: Homepage
       | Developing economics  |
       | Prosperity economics  |
       | Cost-benefit analysis |
-      | title                 |
-      | Socialist economics   |
-      | title                 |
       | Trotskism             |
       | Social economics      |
       | Labour theory         |
