@@ -129,9 +129,21 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
-    $expected_format = $html ? SWIFTMAILER_FORMAT_HTML : SWIFTMAILER_FORMAT_PLAIN;
     /** @var array $mail */
-    PHPUnit_Framework_Assert::assertEquals($expected_format, $mail['headers']['Content-Type'], 'The mail format is not of the expected type.');
+    if ($html) {
+      PHPUnit_Framework_Assert::assertEquals(
+        SWIFTMAILER_FORMAT_HTML,
+        $mail['headers']['Content-Type'],
+        'The mail is not sent as HTML.'
+      );
+    }
+    else {
+      PHPUnit_Framework_Assert::assertStringStartsWith(
+        SWIFTMAILER_FORMAT_PLAIN,
+        $mail['headers']['Content-Type'],
+        'The mail is not sent as plain text.'
+      );
+    }
   }
 
   /**
