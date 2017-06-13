@@ -45,7 +45,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * be done. This is needed for system mails (like the ones sent by the user
    * module).
    * The 'body' is a partial text based match.
-   * The 'html' can be 'yes' or 'no'. When not present, 'no' is assumed.
+   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -62,9 +62,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $template */
     extract($table->getRowsHash());
 
-    // If the 'html' row is not present, assume a 'no'. Convert 'yes' to TRUE
+    // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
-    $html = (isset($html) ? $html : 'no') === 'yes';
+    $html = (isset($html) ? $html : 'yes') === 'yes';
 
     $user = user_load_by_name($recipient);
     if (empty($user)) {

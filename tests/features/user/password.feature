@@ -58,4 +58,3 @@ Feature: Password management
       | recipient | Charlie Change                                                           |
       | subject   | Replacement login information for Charlie Change at Joinup               |
       | body      | A request to reset the password for your account has been made at Joinup |
-      | html      | yes                                                                      |
