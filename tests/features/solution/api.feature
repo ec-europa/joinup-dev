@@ -46,9 +46,6 @@ Feature: Solution API
     Given the following owner:
       | name      | type            |
       | Leechidna | Local Authority |
-    And the following contact:
-      | name  | Gopheadow               |
-      | email | solutionAPI@example.com |
     And users:
       | Username          | Password |
       | Solution API user | pass     |
@@ -69,14 +66,12 @@ Feature: Solution API
     Then I should see the link "Add solution"
     And I click "Add solution"
     When I fill in the following:
-      | Title       | Solution API example                         |
-      | Description | We do not care that much about descriptions. |
+      | Title          | Solution API example                         |
+      | Description    | We do not care that much about descriptions. |
+      | Name           | Gopheadow                                    |
+      | E-mail address | solutionAPI@example.com                      |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    And I press "Add existing" at the "Contact information" field
-    # Then I wait for AJAX to finish
-    And I fill in "Contact information" with "Gopheadow"
-    And I press "Add contact information"
     And I press "Add existing" at the "Owner" field
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"

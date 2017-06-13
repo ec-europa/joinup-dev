@@ -28,9 +28,6 @@ Feature: Solutions Overview
     And the following owner:
       | name              | type                    |
       | NonProfit example | Non-Profit Organisation |
-    And the following contact:
-      | email | foo@bar.com         |
-      | name  | Information example |
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
     And I am on the homepage
@@ -77,15 +74,13 @@ Feature: Solutions Overview
       | Description      | Some space mumbo jumbo description.                                    |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name             | Ambrosio Morison                                                       |
+      | E-mail address   | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Information example"
-    And I press "Add contact information"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NonProfit example"

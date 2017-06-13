@@ -71,9 +71,6 @@ Feature: "Add solution" visibility options.
       | title | Belgian barista's |
       | logo  | logo.png          |
       | state | validated         |
-    And the following contact:
-      | email | foo@bar.com                 |
-      | name  | Contact information example |
     And the following owner:
       | name                 | type                         |
       | Organisation example | Company, Industry consortium |
@@ -82,7 +79,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
-    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner"
+    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
     And the "Solution type" field should contain the "IOP specification underpinning View, Technical View - Application, Technical View - Infrastructure" option groups
     When I fill in the following:
@@ -90,14 +87,12 @@ Feature: "Add solution" visibility options.
       | Description      | This is a test text                                           |
       | Spatial coverage | Belgium                                                       |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
+      | Name             | Ernst Brice                                                   |
+      | E-mail address   | ernsy1999@gmail.com                                           |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Contact information example"
-    And I press "Add contact information"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
@@ -136,16 +131,14 @@ Feature: "Add solution" visibility options.
       | Description      | This is a test text                                                    |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name             | Ajit Tamboli                                                           |
+      | E-mail address   | tambotamboli@gocloud.in                                                |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Contact information example"
-    And I press "Add contact information"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
@@ -158,7 +151,7 @@ Feature: "Add solution" visibility options.
     Then I should see the link "Espresso is the solution"
     Then I should see the link "V60 filter coffee solution"
 
-    # Clean up the solution that was created through the UI.
+    # Clean up the solutions that were created through the UI.
     Then I delete the "V60 filter coffee solution" solution
     Then I delete the "Espresso is the solution" solution
 
@@ -180,18 +173,21 @@ Feature: "Add solution" visibility options.
     And I select "Data gathering, data processing" from "Policy domain"
     And I select "[ABB117] Implementing Guideline" from "Solution type"
 
-    # Fill the owner inline form, but don't submit it.
-    And I press "Add new" at the "Owner" field
-    And I fill in "Name" with "Azure Tennison"
-
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
     When I press "Propose"
     Then I should see the following error message:
-      | error messages                         |
-      | Contact information field is required. |
+      | error messages                    |
+      | Name field is required.           |
+      | E-mail address field is required. |
+
+    # Fill the owner inline form, but don't submit it.
+    When I press "Add new" at the "Owner" field
+    And I fill in "Name" with "Azure Tennison"
+
     # Buttons should be shown for the allowed solution transitions.
-    And I should see the button "Save as draft"
+    When I press "Propose"
+    Then I should see the button "Save as draft"
     And I should see the button "Propose"
     # The owner entity state buttons should not be shown.
     But I should not see the button "Request deletion"
