@@ -128,6 +128,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_isr_banner: true
   field_isr_contact_information: true
@@ -141,6 +147,5 @@ hidden:
   field_isr_solution_type: true
   field_isr_translation: true
   field_policy_domain: true
-  langcode: true
   translation: true
   uid: true

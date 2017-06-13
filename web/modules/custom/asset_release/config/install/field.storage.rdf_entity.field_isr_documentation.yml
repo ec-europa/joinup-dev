@@ -13,10 +13,10 @@ third_party_settings:
         format: 'xsd:string'
       display:
         predicate: ''
-        format: ''
+        format: no_format
       description:
         predicate: ''
-        format: ''
+        format: no_format
 id: rdf_entity.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity
@@ -28,7 +28,7 @@ settings:
   target_type: file
 module: file_url
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: false
 indexes: {  }
 persist_with_no_fields: false
