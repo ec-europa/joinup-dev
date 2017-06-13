@@ -43,8 +43,8 @@ Feature: Homepage
       | Economic systems              | validated    | Social classes |
       | Socialist schools before Marx | archived     | Social classes |
     And document content:
-      | title               | state     |
-      | Socialist economics | validated |
+      | title               | state     | collection     |
+      | Socialist economics | validated | Social classes |
     And event content:
       | title                         | state        | collection     |
       | Trotskism                     | draft        | Social classes |
