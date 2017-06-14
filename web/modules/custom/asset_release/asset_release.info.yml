@@ -13,6 +13,7 @@ dependencies:
   - inline_entity_form
   - joinup_core
   - joinup_user
+  - language
   - link
   - og
   - options
