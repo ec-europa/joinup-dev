@@ -80,7 +80,3 @@ $this->assertContains('<h2>Category</h2>', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
-$this->assertReferences([
-  'CoreLocTBCProblem.png',
-  'locn-v1.00-afterTBC load.rdf_.txt',
-], $discussion->field_attachment);
