@@ -13,10 +13,10 @@ third_party_settings:
         format: 'xsd:string'
       display:
         predicate: ''
-        format: no_format
+        format: ''
       description:
         predicate: ''
-        format: no_format
+        format: ''
 id: rdf_entity.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity
