@@ -37,7 +37,6 @@ third_party_settings:
       children:
         - group_main
         - group_description
-        - group_categorisation
       parent_name: ''
       weight: 0
       label: General
@@ -142,10 +141,10 @@ content:
       label_singular: 'contact information'
       label_plural: 'contact information'
       allow_new: true
-      allow_existing: true
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_existing: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -246,6 +245,8 @@ content:
   translation:
     weight: 10
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   current_workflow_state: true
   field_collection_content: true
