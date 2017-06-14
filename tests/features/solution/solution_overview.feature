@@ -80,7 +80,7 @@ Feature: Solutions Overview
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    And I upload the file "text.pdf" to "Documentation"
+    And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NonProfit example"
