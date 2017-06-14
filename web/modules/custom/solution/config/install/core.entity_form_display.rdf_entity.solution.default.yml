@@ -142,13 +142,10 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_is_actor:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 25
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_is_banner:
     weight: 4
@@ -276,12 +273,9 @@ content:
     region: content
   field_is_solution_category:
     weight: 23
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_buttons
     region: content
   field_is_solution_type:
     type: options_select
@@ -290,13 +284,10 @@ content:
     third_party_settings: {  }
     region: content
   field_is_standardization_level:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 28
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_is_state:
     type: state_machine_buttons
@@ -306,13 +297,10 @@ content:
     third_party_settings: {  }
     region: content
   field_is_test_resource_type:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 24
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_policy_domain:
     type: options_select
