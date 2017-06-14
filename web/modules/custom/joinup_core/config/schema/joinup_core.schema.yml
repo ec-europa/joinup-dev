@@ -50,12 +50,21 @@ field.widget.settings.current_workflow_state_widget:
       type: boolean
       label: 'The setting that allows to show the widget on entity creation forms.'
 
+field.widget.settings.email_legacy_multicardinality:
+  type: field.widget.settings.email_default
+
+field.widget.settings.link_legacy_multicardinality:
+  type: field.widget.settings.link_default
+
 field.widget.settings.state_machine_buttons:
   type: mapping
   label: 'Theme settings for Joinup project.'
   mapping:
     use_transition_label:
       type: integer
+
+field.widget.settings.string_textfield_legacy_multicardinality:
+  type: field.widget.settings.string_textfield
 
 facet.widget.config.type:
   type: facet.widget.default_config
