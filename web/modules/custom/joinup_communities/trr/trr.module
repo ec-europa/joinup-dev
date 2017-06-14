@@ -5,6 +5,9 @@
  * The TRR module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
+// @todo Change this in ISAICP-3493
 const TRR_COLLECTION_ID = 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8';
 
 /**
@@ -31,4 +34,49 @@ function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) 
   }
   $element['#access'] = FALSE;
 
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function trr_form_rdf_entity_solution_edit_form_alter(&$form, FormStateInterface $form_state) {
+  // Delegate the edit form alteration to the same alter hook
+  // as the create form.
+  trr_form_rdf_entity_solution_form_alter($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function trr_form_rdf_entity_solution_form_alter(&$form, FormStateInterface $form_state) {
+  // Only when the solution category 'Test resource' is selected,
+  // a test resource type can be selected.
+  $form['field_is_test_resource_type']['#states']['visible'] = [
+    ':input[name="field_is_solution_category"]' => ['value' => 'http://joinup.eu/taxonomy/solutionCategory#2'],
+  ];
+  $form['#validate'][] = 'trr_form_rdf_entity_solution_form_alter_validate';
+}
+
+/**
+ * Apply the TRR validation rules.
+ */
+function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInterface $form_state) {
+  // Category set to 'test resource'.
+  $test_resource = ($form_state->getValue([
+      'field_is_solution_category',
+      0,
+      'target_id',
+    ]) === 'http://joinup.eu/taxonomy/solutionCategory#2');
+  // A 'test resource type' is selected.
+  $test_resource_type = $form_state->getValue([
+      'field_is_test_resource_type',
+      0,
+      'target_id',
+    ]) !== NULL;
+  if ($test_resource && !$test_resource_type) {
+    $form_state->setError($form['field_is_test_resource_type'], t('Test resources require a test resource type.'));
+  }
+  if ($test_resource_type && !$test_resource) {
+    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution caltegory is set to "Test resource".'));
+  }
 }
