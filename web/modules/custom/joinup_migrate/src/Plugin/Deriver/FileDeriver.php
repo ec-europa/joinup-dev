@@ -21,8 +21,6 @@ class FileDeriver extends DeriverBase {
     foreach ($tables as $table) {
       $derivative_id = substr($table, 8);
       $this->derivatives[$derivative_id] = $base_plugin_definition;
-      // Add the derivative ID in the source plugin configuration.
-      $this->derivatives[$derivative_id]['source']['derivative'] = $derivative_id;
     }
 
     return parent::getDerivativeDefinitions($base_plugin_definition);

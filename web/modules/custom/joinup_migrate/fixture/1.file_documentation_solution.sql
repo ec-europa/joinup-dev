@@ -13,3 +13,5 @@ SELECT
   CONCAT('public://documentation/', SUBSTRING_INDEX(docs_path, '/', -1))
 FROM d8_solution
 WHERE docs_id IS NOT NULL
+AND docs_path IS NOT NULL
+AND docs_path <> ''

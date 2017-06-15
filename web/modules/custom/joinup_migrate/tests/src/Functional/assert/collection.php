@@ -8,8 +8,8 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('collection', 7);
-$this->assertSuccessCount('collection', 7);
+$this->assertTotalCount('collection', 8);
+$this->assertSuccessCount('collection', 8);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -31,6 +31,7 @@ $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
+$this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with erroneous items');
 $this->assertEquals('Collection with erroneous items', $collection->label());
@@ -46,6 +47,7 @@ $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
 $this->assertTrue($collection->get('field_ar_description')->isEmpty());
+$this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
 $this->assertEquals('Collection from Project', $collection->label());
@@ -69,6 +71,7 @@ $this->assertEquals('The Asset Description Metadata Schema (ADMS) is a metadata 
 $this->assertStringEndsWith("Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
@@ -92,6 +95,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertRedirects(['community/edp/description'], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
@@ -125,6 +129,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
+$this->assertRedirects(['catalogue/repository/la-forja-de-guadalinex'], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());
@@ -149,6 +154,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/eic.jpg');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertRedirects(['community/eic/description'], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
 $this->assertEquals('Collection with 1 entity having custom section', $collection->label());
@@ -171,3 +177,4 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/CAMSS_70_3_1.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/CAMSS_70_3_1.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertRedirects(['community/camss/description'], $collection);

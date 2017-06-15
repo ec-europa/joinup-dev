@@ -39,7 +39,7 @@ SELECT
   ctp.field_firstname_value,
   ctp.field_company_name_value,
   f.fid,
-  SUBSTRING(f.filepath, 21),
+  SUBSTRING(TRIM(f.filepath), 21),
   f.timestamp,
   IF(f.uid IS NOT NULL AND f.uid > 0, f.uid, -1),
   (SELECT GROUP_CONCAT(DISTINCT ur.rid ORDER BY ur.rid) FROM users_roles ur WHERE ur.uid = u.uid AND ur.rid IN(3, 6))
