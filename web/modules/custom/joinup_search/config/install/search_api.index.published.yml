@@ -415,7 +415,6 @@ processor_settings:
     weights:
       preprocess_index: -48
       preprocess_query: -48
-  entity_status: {  }
   add_url: {  }
   rendered_item: {  }
   html_filter:

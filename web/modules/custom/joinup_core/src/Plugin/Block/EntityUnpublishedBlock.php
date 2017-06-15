@@ -7,7 +7,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
 use Drupal\state_machine_revisions\RevisionManagerInterface;
@@ -126,7 +125,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *   An array of rows to render.
    */
   protected function getRows(RdfInterface $group) {
-    $index = Index::load('unpublished');
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
     $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
