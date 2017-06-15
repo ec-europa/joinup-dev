@@ -10,7 +10,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a block with the recommended community content for the current user.
+ * Provides a block with the proposed collections and solutions.
  *
  * @Block(
  *   id = "proposed_entities",
@@ -101,7 +101,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
 
     $data = array_fill_keys($results, ['draft']);
     $storage->setRequestGraphsMultiple($data);
-    $entities = Rdf::loadMultiple($results);
+    $entities = $storage->loadMultiple($results);
     $storage->getGraphHandler()->resetRequestGraphs($results);
     $rows = [];
 
@@ -128,7 +128,8 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['rdf_entity_list']);
+    $rdf_type = $this->entityTypeManager->getStorage('rdf_entity')->getEntityType();
+    return Cache::mergeTags(parent::getCacheTags(), $rdf_type->getListCacheTags());
   }
 
 }

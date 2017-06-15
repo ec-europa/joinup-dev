@@ -102,7 +102,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The number of validated entities.
    */
   protected function getCount($type) {
-    $index = Index::load('published');
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
     switch ($type) {
@@ -131,7 +131,11 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // so that the cache is invalidated whenever an entity is created or
     // deleted. This makes sure the count is always correct.
     $cache_tags = parent::getCacheTags();
-    return Cache::mergeTags($cache_tags, ['node_list', 'rdf_entity_list']);
+    foreach (['node', 'rdf_entity'] as $type) {
+      $entity_type = $this->entityTypeManager->getStorage($type)->getEntityType();
+      $cache_tags = Cache::mergeTags($cache_tags, $entity_type->getListCacheTags());
+    }
+    return $cache_tags;
   }
 
 }

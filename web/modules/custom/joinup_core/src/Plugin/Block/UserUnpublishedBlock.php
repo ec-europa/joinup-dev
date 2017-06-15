@@ -14,12 +14,13 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxy;
 
 /**
- * Provides a block with the recommended community content for the current user.
+ * Provides a block with the unpublished community content owned by the user.
  *
  * @Block(
  *   id = "user_unpublished",
@@ -65,6 +66,13 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $entityTypeManager;
 
   /**
+   * The revision manager service.
+   *
+   * @var RevisionManagerInterface
+   */
+  protected $revisionManager;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -79,12 +87,15 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The current route match service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param RevisionManagerInterface $revision_manager
+   *   The revision manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->currentRouteMatch = $current_route_match;
     $this->entityTypeManager = $entity_type_manager;
+    $this->revisionManager = $revision_manager;
   }
 
   /**
@@ -132,11 +143,10 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   An array of rows to render.
    */
   protected function getRows() {
-    $index = Index::load('unpublished');
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
     $query->addCondition('entity_author', [$this->currentUser->id()], 'IN');
-    $query->range(0, 9);
     $results = $query->execute();
     $entities = $this->getResultEntities($results);
     $rows = [];
@@ -178,15 +188,15 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
     foreach ($result->getResultItems() as $item) {
       try {
         $entity = $item->getOriginalObject()->getValue();
-        $entity_id = $item->getOriginalObject()->getValue()->id();
         if ($entity instanceof NodeInterface) {
-          $entity = $this->getLatestContentRevision($entity_id);
+          $entity = $this->revisionManager->loadLatestRevision($entity);
         }
         elseif ($entity instanceof RdfInterface) {
+          $entity_id = $item->getOriginalObject()->getValue()->id();
           $entity = $this->getDraftRdf($entity_id);
         }
         else {
-          throw new \Exception("Only nodes and Rdf entities should be loaded.");
+          throw new \Exception('Only nodes and Rdf entities should be loaded.');
         }
       }
       catch (SearchApiException $e) {
@@ -203,33 +213,6 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
       $results[] = $entity;
     }
     return $results;
-  }
-
-  /**
-   * Loads the latest revision on a node entity.
-   *
-   * @param int $entity_id
-   *   The content id.
-   *
-   * @return \Drupal\node\NodeInterface
-   *   The loaded node.
-   */
-  protected function getLatestContentRevision($entity_id) {
-    $storage = $this->entityTypeManager->getStorage('node');
-    $revision_ids = $storage->getQuery()
-      ->allRevisions()
-      ->condition('nid', $entity_id)
-      ->sort('vid', 'DESC')
-      ->range(0, 1)
-      ->execute();
-    if (empty($revision_ids)) {
-      return NULL;
-    }
-
-    $revision_id = array_keys($revision_ids)[0];
-    /** @var \Drupal\node\NodeInterface $entity */
-    $entity = $storage->loadRevision($revision_id);
-    return $entity;
   }
 
   /**
@@ -263,7 +246,12 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['rdf_entity_list', 'node_list']);
+    $cache_tags = parent::getCacheTags();
+    foreach (['node', 'rdf_entity'] as $type) {
+      $entity_type = $this->entityTypeManager->getStorage($type)->getEntityType();
+      $cache_tags = Cache::mergeTags($cache_tags, $entity_type->getListCacheTags());
+    }
+    return $cache_tags;
   }
 
   /**

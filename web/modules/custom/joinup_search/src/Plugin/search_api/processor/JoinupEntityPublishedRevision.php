@@ -32,19 +32,11 @@ class JoinupEntityPublishedRevision extends ProcessorPluginBase {
   protected $entityTypeManager;
 
   /**
-   * The state machine revisions manager service.
-   *
-   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
-   */
-  protected $revisionManager;
-
-  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
-    $this->revisionManager = $revision_manager;
   }
 
   /**
@@ -55,8 +47,7 @@ class JoinupEntityPublishedRevision extends ProcessorPluginBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('state_machine_revisions.revision_manager')
+      $container->get('entity_type.manager')
     );
   }
 

@@ -10,10 +10,11 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a block with the recommended community content for the current user.
+ * Provides a block with the unpublished community content of the entity.
  *
  * @Block(
  *   id = "entity_unpublished",
@@ -46,6 +47,13 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   protected $entityTypeManager;
 
   /**
+   * The revision manager service.
+   *
+   * @var RevisionManagerInterface
+   */
+  protected $revisionManager;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -56,10 +64,13 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *   The og membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param RevisionManagerInterface $revision_manager
+   *   The revision manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
+    $this->revisionManager = $revision_manager;
   }
 
   /**
@@ -70,7 +81,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('state_machine_revisions.revision_manager')
     );
   }
 
@@ -157,8 +169,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
       try {
-        $entity_id = $item->getOriginalObject()->getValue()->id();
-        $entity = $this->getLatestRevision($entity_id);
+        $entity = $this->revisionManager->loadLatestRevision($item->getOriginalObject()->getValue());
       }
       catch (SearchApiException $e) {
         $entity = NULL;
@@ -177,33 +188,6 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   }
 
   /**
-   * Loads the latest revision on an entity.
-   *
-   * @param int $entity_id
-   *   The content id.
-   *
-   * @return \Drupal\node\NodeInterface
-   *   The loaded node.
-   */
-  protected function getLatestRevision($entity_id) {
-    $storage = $this->entityTypeManager->getStorage('node');
-    $revision_ids = $storage->getQuery()
-      ->allRevisions()
-      ->condition('nid', $entity_id)
-      ->sort('vid', 'DESC')
-      ->range(0, 1)
-      ->execute();
-    if (empty($revision_ids)) {
-      return NULL;
-    }
-
-    $revision_id = array_keys($revision_ids)[0];
-    /** @var \Drupal\node\NodeInterface $entity */
-    $entity = $storage->loadRevision($revision_id);
-    return $entity;
-  }
-
-  /**
    * {@inheritdoc}
    *
    * The page should be dependent on the user's groups.
@@ -216,7 +200,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list']);
+    $node_type = $this->entityTypeManager->getStorage('node')->getEntityType();
+    return Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
   }
 
 }
