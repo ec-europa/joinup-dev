@@ -11,7 +11,6 @@ use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
 use Drupal\state_machine_revisions\RevisionManagerInterface;
@@ -68,7 +67,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * The revision manager service.
    *
-   * @var RevisionManagerInterface
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
    */
   protected $revisionManager;
 
@@ -87,7 +86,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The current route match service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param RevisionManagerInterface $revision_manager
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {

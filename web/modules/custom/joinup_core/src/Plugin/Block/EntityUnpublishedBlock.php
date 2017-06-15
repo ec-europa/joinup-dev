@@ -49,7 +49,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * The revision manager service.
    *
-   * @var RevisionManagerInterface
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
    */
   protected $revisionManager;
 
@@ -64,7 +64,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *   The og membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param RevisionManagerInterface $revision_manager
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {

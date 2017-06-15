@@ -7,7 +7,6 @@ use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
