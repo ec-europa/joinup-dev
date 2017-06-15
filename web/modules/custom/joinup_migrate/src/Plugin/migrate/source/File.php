@@ -37,7 +37,7 @@ class File extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $table = 'd8_file_' . $this->configuration['derivative'];
+    $table = 'd8_file_' . $this->migration->getDerivativeId();
     return $this->select($table)->fields($table);
   }
 
