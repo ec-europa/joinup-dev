@@ -27,3 +27,6 @@ Feature:
     And I enter "About" in the header search bar and hit enter
     Then I should see the "About places" tile
     And I should not see the "About means" tile
+
+    When I go to the homepage of the "Drafty things" collection
+    Then I should see the "About means" tile

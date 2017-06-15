@@ -31,6 +31,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * @var array
    */
   const COMMUNITY_BUNDLES = [
+    'custom_page',
     'discussion',
     'document',
     'event',
