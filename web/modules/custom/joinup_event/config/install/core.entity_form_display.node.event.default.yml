@@ -56,7 +56,7 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_attachment:
-    weight: 16
+    weight: 15
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -154,7 +154,7 @@ content:
     type: options_select
     region: content
   field_policy_domain:
-    weight: 15
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_select

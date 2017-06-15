@@ -197,6 +197,7 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
  *   can be used to expose this information.
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
+ * - Provides a 'path' field only for the 'rdf_entity' entities.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
@@ -229,6 +230,14 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
           'target' => '',
         ],
       ]);
+  }
+
+  // Allow alias features for RDF entities.
+  if (($entity_type->id() === 'rdf_entity') && \Drupal::moduleHandler()->moduleExists('path')) {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE);
   }
 
   return $fields;

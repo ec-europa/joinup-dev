@@ -21,9 +21,8 @@ process:
     migration: collection
     default_value: rdf_entity
     no_stub: true
-  state:
-    plugin: default_value
-    default_value: active
+  state: state
+  created: created
   roles: roles
 destination:
   plugin: entity:og_membership

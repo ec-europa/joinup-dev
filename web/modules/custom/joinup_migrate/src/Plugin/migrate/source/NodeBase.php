@@ -2,10 +2,14 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
+
 /**
  * Provides a base class for node migrations.
  */
-abstract class NodeBase extends JoinupSqlBase {
+abstract class NodeBase extends JoinupSqlBase implements RedirectImportInterface {
+
+  use DefaultNodeRedirectTrait;
 
   /**
    * {@inheritdoc}

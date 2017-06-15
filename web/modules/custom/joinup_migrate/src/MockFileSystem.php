@@ -23,6 +23,7 @@ class MockFileSystem {
     $tables = [
       'd8_file_collection_logo',
       'd8_file_comment_attachment',
+      'd8_file_custom_page_attachment',
       'd8_file_discussion_attachment',
       'd8_file_distribution',
       'd8_file_document_case',
