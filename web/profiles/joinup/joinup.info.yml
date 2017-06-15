@@ -65,6 +65,7 @@ dependencies:
   - state_machine_revisions
   - text
   - toolbar
+  - trr
   - user
   - view_unpublished
   - views

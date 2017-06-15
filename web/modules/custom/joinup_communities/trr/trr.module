@@ -14,7 +14,6 @@ const TRR_COLLECTION_ID = 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9
  * Implements hook_field_group_pre_render_alter().
  */
 function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) {
-
   if ($group->group_name != 'group_trr') {
     return;
   }
@@ -29,11 +28,10 @@ function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) 
   if ($bundle == 'solution') {
     $id = $rdf_entity->get('collection')->getValue()[0]['target_id'];
   }
+  // @see solution_field_group_pre_render_alter()
   if ($id == TRR_COLLECTION_ID) {
-    return;
+    $element['#access'] = TRUE;
   }
-  $element['#access'] = FALSE;
-
 }
 
 /**
@@ -63,16 +61,16 @@ function trr_form_rdf_entity_solution_form_alter(&$form, FormStateInterface $for
 function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInterface $form_state) {
   // Category set to 'test resource'.
   $test_resource = ($form_state->getValue([
-      'field_is_solution_category',
-      0,
-      'target_id',
-    ]) === 'http://joinup.eu/taxonomy/solutionCategory#2');
+    'field_is_solution_category',
+    0,
+    'target_id',
+  ]) === 'http://joinup.eu/taxonomy/solutionCategory#2');
   // A 'test resource type' is selected.
   $test_resource_type = $form_state->getValue([
-      'field_is_test_resource_type',
-      0,
-      'target_id',
-    ]) !== NULL;
+    'field_is_test_resource_type',
+    0,
+    'target_id',
+  ]) !== NULL;
   if ($test_resource && !$test_resource_type) {
     $form_state->setError($form['field_is_test_resource_type'], t('Test resources require a test resource type.'));
   }
