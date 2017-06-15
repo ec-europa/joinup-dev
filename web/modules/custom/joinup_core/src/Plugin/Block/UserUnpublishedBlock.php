@@ -13,6 +13,7 @@ use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxy;
@@ -64,6 +65,13 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $entityTypeManager;
 
   /**
+   * The revision manager service.
+   *
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
+   */
+  protected $revisionManager;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -78,12 +86,15 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The current route match service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
+   *   The revision manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, CurrentRouteMatch $current_route_match, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->currentRouteMatch = $current_route_match;
     $this->entityTypeManager = $entity_type_manager;
+    $this->revisionManager = $revision_manager;
   }
 
   /**
@@ -96,7 +107,8 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
       $plugin_definition,
       $container->get('current_user'),
       $container->get('current_route_match'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('state_machine_revisions.revision_manager')
     );
   }
 
