@@ -6,7 +6,7 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-id: unpublishedcontentofgroup
+id: unpublished_content_of_group
 theme: joinup_theme
 region: content_bottom
 weight: -7

@@ -6,7 +6,7 @@ dependencies:
     - user
   theme:
     - joinup_theme
-id: rdfentitiesinproposedstate
+id: rdf_entities_in_proposed_state
 theme: joinup_theme
 region: content_bottom
 weight: 0

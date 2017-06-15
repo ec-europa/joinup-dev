@@ -77,8 +77,8 @@ config_devel:
   - block.block.entity_bundle_facet
   - block.block.exposed_form_search_page
   - block.block.footer_menu
-  - block.block.rdfentitiesinproposedstate
-  - block.block.recommendedcontent
+  - block.block.rdf_entities_in_proposed_state
+  - block.block.recommended_content
   - block.block.groupheader
   - block.block.menusubpages
   - block.block.userheader
@@ -93,7 +93,6 @@ config_devel:
   - block.block.pagetitle
   - block.block.policy_domain_facet
   - block.block.primaryadminactions
-  - block.block.recommendedcontent
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -106,8 +105,8 @@ config_devel:
   - block.block.spatial_coverage_facet
   - block.block.statistics
   - block.block.type
-  - block.block.unpublishedcontentofgroup
-  - block.block.unpublishedcontentofuser
+  - block.block.unpublished_content_of_group
+  - block.block.unpublished_content_of_user
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
