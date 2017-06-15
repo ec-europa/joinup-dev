@@ -63,6 +63,7 @@ dependencies:
   - solution
   - state_machine
   - state_machine_revisions
+  - swiftmailer
   - text
   - toolbar
   - user
@@ -155,11 +156,14 @@ config_devel:
   - language.content_settings.rdf_entity.collection
   - language.content_settings.rdf_entity.licence
   - language.content_settings.rdf_entity.solution
+  - mailsystem.settings
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy
   - piwik.settings
   - system.theme
+  - swiftmailer.transport
+  - swiftmailer.message
   - user.flood
   - user.mail
   - user.settings
