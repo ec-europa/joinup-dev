@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
+
 /**
  * Migrates contact info.
  *
@@ -9,7 +11,9 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
  *   id = "contact"
  * )
  */
-class Contact extends JoinupSqlBase {
+class Contact extends JoinupSqlBase implements RedirectImportInterface {
+
+  use DefaultNodeRedirectTrait;
 
   /**
    * {@inheritdoc}

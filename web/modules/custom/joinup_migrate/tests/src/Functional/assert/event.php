@@ -8,10 +8,10 @@
 use Drupal\file\Entity\File;
 
 // Migration counts.
-$this->assertTotalCount('file__event_logo', 1);
-$this->assertSuccessCount('file__event_logo', 1);
-$this->assertTotalCount('event', 2);
-$this->assertSuccessCount('event', 2);
+$this->assertTotalCount('file__event_logo', 2);
+$this->assertSuccessCount('file__event_logo', 2);
+$this->assertTotalCount('event', 3);
+$this->assertSuccessCount('event', 3);
 
 // Imported content check.
 /* @var \Drupal\node\NodeInterface $event */
@@ -48,6 +48,8 @@ $this->assertEquals('Euritas', $event->field_organisation->value);
 $this->assertEquals('public', $event->field_organisation_type->value);
 $this->assertEquals('http://www.euritas.eu/euritas-summit-2015', $event->field_event_web_url->uri);
 $this->assertEquals('proposed', $event->field_state->value);
+$this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
+$this->assertRedirects(['community/egovernment/event/euritas-summit-2015-“innovate-cooperate-take-challenge”-0'], $event);
 
 $event = $this->loadEntityByLabel('node', 'CPSV-AP Revision WG Virtual Meeting 3', 'event');
 $this->assertEquals('CPSV-AP Revision WG Virtual Meeting 3', $event->label());
@@ -72,3 +74,34 @@ $this->assertEquals('Virtual Meeting', $event->field_location->value);
 $this->assertEquals('ISA Programme', $event->field_organisation->value);
 $this->assertTrue($event->get('field_event_web_url')->isEmpty());
 $this->assertEquals('proposed', $event->field_state->value);
+$this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
+$this->assertRedirects(['asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0'], $event);
+
+$event = $this->loadEntityByLabel('node', '5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', 'event');
+$this->assertEquals('5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', $event->label());
+$this->assertEquals('event', $event->bundle());
+$this->assertEquals(1323441667, $event->created->value);
+$this->assertEquals(1323806587, $event->changed->value);
+$this->assertTrue($event->get('field_event_agenda')->isEmpty());
+$this->assertEquals('info@iweee.org', $event->get('field_event_contact_email')->value);
+$this->assertStringEndsWith("<p>Thymbra</p>\r\n</div>\n", $event->body->value);
+$this->assertEquals('2012-01-11T09:00:00', $event->field_event_date->value);
+$this->assertEquals('2012-01-11T18:00:00', $event->field_event_date->end_value);
+$collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
+$this->assertEquals($collection->id(), $event->og_audience->target_id);
+$this->assertKeywords([
+  'e-health',
+  'emerging economies',
+  'free software',
+  'Health',
+  'open source',
+], $event);
+$this->assertKeywords(['international'], $event, 'field_scope');
+$this->assertEquals('Granada, Spain', $event->field_location->value);
+$image = File::load($event->field_event_logo->target_id);
+$this->assertEquals('public://event/logo/logo_gnu_solidario.png', $image->getFileUri());
+$this->assertEquals('GNU Solidario', $event->field_organisation->value);
+$this->assertEquals('http://www.iweee.org', $event->get('field_event_web_url')->uri);
+$this->assertEquals('validated', $event->field_state->value);
+$this->assertReferences(['Spain'], $event->field_event_spatial_coverage);
+$this->assertRedirects(['event/5th-international-workshop-e-health-emerging-economies-iweee-granada'], $event);

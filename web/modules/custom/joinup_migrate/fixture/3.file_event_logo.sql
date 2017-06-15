@@ -13,3 +13,4 @@ SELECT
   CONCAT('public://event/logo/', SUBSTRING_INDEX(file_path, '/', -1))
 FROM d8_event
 WHERE file_path IS NOT NULL
+AND file_path <> ''
