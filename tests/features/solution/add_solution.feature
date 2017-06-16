@@ -17,53 +17,13 @@ Feature: "Add solution" visibility options.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
+    # Regression test to ensure that the user has not access to the 'Propose solution' page.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2842
+    And I should not see the link "Propose solution"
 
     When I am an anonymous user
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
-
-  Scenario: "Propose solution" button should be shown to everyone.
-    Given the following collection:
-      | title | Collection propose solution test |
-      | logo  | logo.png                         |
-      | state | validated                        |
-
-    When I am an anonymous user
-    # The link to propose a solution should no longer be accessible on the
-    # homepage. It should only be shown in context of a collection.
-    And I go to the homepage
-    Then I should not see the link "Propose solution"
-    When I go to the homepage of the "Collection propose solution test" collection
-    Then I should see the link "Propose solution"
-    When I click "Propose solution"
-    # Anonymous users are prompted to login.
-    Then I should see the error message "Access denied. You must log in to view this page."
-
-    When I am logged in as an "authenticated user"
-    And I go to the homepage
-    Then I should not see the link "Propose solution"
-    When I go to the homepage of the "Collection propose solution test" collection
-    Then I should see the link "Propose solution"
-    When I click "Propose solution"
-    # Authenticated users can propose solutions.
-    Then I should not see the heading "Access denied"
-
-    When I am logged in as a user with the "moderator" role
-    And I go to the homepage
-    Then I should not see the link "Propose solution"
-    When I go to the homepage of the "Collection propose solution test" collection
-    Then I should see the link "Propose solution"
-    When I click "Propose solution"
-    # Authenticated users can propose solutions.
-    Then I should not see the heading "Access denied"
-
-    When I am logged in as a "facilitator" of the "Collection propose solution test" collection
-    And I go to the homepage
-    Then I should not see the link "Propose solution"
-    When I go to the homepage of the "Collection propose solution test" collection
-    # For facilitators of a collection, the button changes to 'Add solution'.
-    Then I should not see the link "Propose solution"
-    But I should see the link "Add solution"
 
   @terms
   Scenario: Add solution as a collection facilitator.
