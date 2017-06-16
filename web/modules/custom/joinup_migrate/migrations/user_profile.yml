@@ -19,12 +19,11 @@ process:
   field_user_organisation: company_name
   field_user_photo:
     plugin: migration
-    migration: user_photo
-    source: uid
+    migration: file:user_photo
+    source: photo_id
     no_stub: true
-
 destination:
   plugin: entity:user
 migration_dependencies:
   required:
-    - user_photo
+    - file:user_photo

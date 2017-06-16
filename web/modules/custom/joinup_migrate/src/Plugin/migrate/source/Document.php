@@ -74,14 +74,19 @@ class Document extends NodeBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
+    $document_type = $row->getSourceProperty('document_type');
 
     // Resolve 'field_file'.
-    $file_source_id_values = $this->select('d8_document_file', 'df')
-      ->fields('df', ['nid', 'delta'])
-      ->condition('df.nid', $nid)
-      ->execute()
-      ->fetchAll();
-    $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, 'document_file', 'original_url', JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
+    $table = "d8_file_document_{$document_type}";
+    if ($this->getDatabase()->schema()->tableExists($table)) {
+      $file_source_id_values = $this->select($table)
+        ->fields($table, ['fid'])
+        ->condition("$table.nid", $nid)
+        ->execute()
+        ->fetchAll();
+      $file_migration = "file:document_{$document_type}";
+      $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, $file_migration, 'original_url', JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
+    }
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);

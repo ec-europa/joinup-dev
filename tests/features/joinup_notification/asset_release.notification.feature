@@ -38,10 +38,10 @@ Feature: Asset release notification system
     And I press "Publish"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to solution facilitators when a release is updated                                                                                          |
-      | recipient | Copernicus                                                                                                                                          |
-      | subject   | Joinup: The release "1" of your solution "My awesome solution abc" was successfully updated                                                         |
-      | body      | Dear Copernicus,  Your release "1" for the "My awesome solution abc" solution was uploaded succesfully.  Kind regards,  The Joinup Moderation Team. |
+      | template  | Message to solution facilitators when a release is updated                                                                                       |
+      | recipient | Copernicus                                                                                                                                       |
+      | subject   | Joinup: The release "1" of your solution "My awesome solution abc" was successfully updated                                                      |
+      | body      | Dear Copernicus, Your release "1" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Moderation Team. |
 
     # Update an existing release.
     When all e-mails have been sent
@@ -51,10 +51,10 @@ Feature: Asset release notification system
     And I press "Update"
     Then 1 e-mail should have been sent
     And the following email should have been sent:
-      | template  | Message to solution facilitators when a release is updated                                                                                           |
-      | recipient | Copernicus                                                                                                                                           |
-      | subject   | Joinup: The release "v2" of your solution "My awesome solution abc" was successfully updated                                                         |
-      | body      | Dear Copernicus,  Your release "v2" for the "My awesome solution abc" solution was uploaded succesfully.  Kind regards,  The Joinup Moderation Team. |
+      | template  | Message to solution facilitators when a release is updated                                                                                        |
+      | recipient | Copernicus                                                                                                                                        |
+      | subject   | Joinup: The release "v2" of your solution "My awesome solution abc" was successfully updated                                                      |
+      | body      | Dear Copernicus, Your release "v2" for the "My awesome solution abc" solution was uploaded succesfully. Kind regards, The Joinup Moderation Team. |
 
     # Debug step.
     And I delete the "My awesome release abc" release

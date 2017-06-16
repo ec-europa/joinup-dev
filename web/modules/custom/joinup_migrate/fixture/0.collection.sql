@@ -17,8 +17,10 @@ CREATE OR REPLACE VIEW d8_collection (
   owner_text_type,
   contact,
   banner,
+  logo_id,
   logo,
   logo_timestamp,
+  logo_uid,
   state,
   contact_email
 ) AS
@@ -40,9 +42,11 @@ SELECT
   p.owner_text_name,
   p.owner_text_type,
   p.contact,
-  p.banner,
-  IF(p.nid = 0, CONCAT('../resources/migrate/collection/logo/', p.logo), IF(n.type = 'community' AND fc.filepath IS NOT NULL AND fc.filepath <> '', SUBSTRING(fc.filepath, 21), IF(fr.filepath IS NOT NULL AND fr.filepath <> '', SUBSTRING(fr.filepath, 21), NULL))),
-  IF(p.nid = 0, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL))),
+  IF(p.banner IS NOT NULL, CONCAT('../resources/migrate/collection/banner/', p.banner), NULL),
+  IF(p.nid IS NULL, CONCAT('../resources/migrate/collection/logo/', p.logo), IF(n.type = 'community' AND fc.filepath IS NOT NULL AND TRIM(fc.filepath) <> '', fc.fid, IF(fr.filepath IS NOT NULL AND TRIM(fr.filepath) <> '', fr.fid, NULL))),
+  IF(p.nid IS NULL, CONCAT('../resources/migrate/collection/logo/', p.logo), IF(n.type = 'community' AND fc.filepath IS NOT NULL AND TRIM(fc.filepath) <> '', SUBSTRING(TRIM(fc.filepath), 21), IF(fr.filepath IS NOT NULL AND TRIM(fr.filepath) <> '', SUBSTRING(TRIM(fr.filepath), 21), NULL))),
+  IF(p.nid IS NULL, NULL, IF(n.type = 'community' AND fc.timestamp IS NOT NULL AND fc.timestamp > 0, fc.timestamp, IF(fr.timestamp IS NOT NULL AND fr.timestamp > 0, fr.timestamp, NULL))),
+  IF(p.nid IS NOT NULL, -1, IF(n.type = 'community', fc.uid, fr.uid)),
   p.state,
   p.contact_email
 FROM d8_prepare p

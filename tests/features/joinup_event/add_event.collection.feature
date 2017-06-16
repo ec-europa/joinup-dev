@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 

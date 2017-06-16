@@ -6,6 +6,7 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\message\Entity\MessageTemplate;
@@ -37,10 +38,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * | recipient | username0123     |
    * | subject   | The mail subject |
    * | body      | The message body |
+   * | html      | yes/no           |
    *
-   * - The 'template' can be either the name or the description of the message
-   *   template.
-   * - The 'body' is a partial text based match.
+   * The 'template' can be either the name or the description of the message
+   * template. If the template row is not present, no matching on template will
+   * be done. This is needed for system mails (like the ones sent by the user
+   * module).
+   * The 'body' is a partial text based match.
+   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -56,6 +61,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $subject */
     /** @var string $template */
     extract($table->getRowsHash());
+
+    // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
+    // and 'no' to FALSE.
+    $html = (isset($html) ? $html : 'yes') === 'yes';
 
     $user = user_load_by_name($recipient);
     if (empty($user)) {
@@ -87,6 +96,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
       $mail_body = str_replace("\n", ' ', $mail['body']);
       $mail_body = trim($mail_body);
+
+      // If the original mail body is markup, we need to:
+      // - undo the encoding done by Twig to quotes;
+      // - remove the HTML to simplify the matching on the body text.
+      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
+      if ($mail['body'] instanceof MarkupInterface) {
+        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
+        $mail_body = strip_tags($mail_body);
+      }
+
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.
@@ -94,10 +113,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         continue;
       }
 
-      $message_template = MessageTemplate::load($mail['key']);
-      if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
-        continue;
-      };
+      // If the template is present, try to load the related message template
+      // entity.
+      if (isset($template)) {
+        $message_template = MessageTemplate::load($mail['key']);
+        if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
+          continue;
+        };
+      }
 
       // We found a match. Stop searching.
       $email_found = TRUE;
@@ -105,6 +128,24 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     }
 
     PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient' with subject '$subject'.");
+
+    // If the previous assertion passed, the $mail variable contains the correct
+    // mail.
+    /** @var array $mail */
+    if ($html) {
+      PHPUnit_Framework_Assert::assertEquals(
+        SWIFTMAILER_FORMAT_HTML,
+        $mail['headers']['Content-Type'],
+        'The mail is not sent as HTML.'
+      );
+    }
+    else {
+      PHPUnit_Framework_Assert::assertStringStartsWith(
+        SWIFTMAILER_FORMAT_PLAIN,
+        $mail['headers']['Content-Type'],
+        'The mail is not sent as plain text.'
+      );
+    }
   }
 
   /**
@@ -146,9 +187,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @BeforeScenario @email
    */
   public function beforeEmailScenario() {
-    $this->mailConfig = \Drupal::configFactory()->getEditable('system.mail');
-    $this->savedMailDefaults = $this->mailConfig->get('interface.default');
-    $this->mailConfig->set('interface.default', 'test_mail_collector')->save();
+    $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+    $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
+    $this->mailConfig
+      ->set('defaults.sender', 'test_mail_collector')
+      ->save();
     \Drupal::state()->set('system.test_mail_collector', []);
   }
 
@@ -158,7 +201,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @AfterScenario @email
    */
   public function afterEmailScenario() {
-    $this->mailConfig->set('interface.default', $this->savedMailDefaults)->save();
+    $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
   }
 
 }

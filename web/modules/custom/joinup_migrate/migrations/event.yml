@@ -25,8 +25,8 @@ process:
   field_keywords: keywords
   field_event_logo:
     plugin: migration
-    source: nid
-    migration: event_logo
+    source: file_id
+    migration: file:event_logo
     no_stub: true
   field_event_date/value: start_date
   field_event_date/end_value: end_date
@@ -65,9 +65,13 @@ process:
   field_state: state
   field_attachment:
     plugin: migration
-    migration: file:event
+    migration: file:event_attachment
     source: fids
     no_stub: true
+  field_event_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
   og_audience:
     plugin: migration
     source: collection
@@ -77,5 +81,6 @@ destination:
   default_bundle: event
 migration_dependencies:
   required:
-    - event_logo
-    - file:event
+    - collection
+    - file:event_logo
+    - file:event_attachment

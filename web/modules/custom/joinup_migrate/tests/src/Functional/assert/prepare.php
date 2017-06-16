@@ -11,7 +11,7 @@ $expected_values = [
   'Collection with erroneous items' => [
     'policy' => 'Defence',
     'policy2' => 'Defence',
-    'roles' => '{"admin":{"7143":1495635879}}',
+    'roles' => '{"admin":{"7143":[1,1497117946]}}',
   ],
   'New collection' => [
     'policy' => 'eGovernment',
@@ -19,7 +19,9 @@ $expected_values = [
     'abstract' => 'Abstract for a new collection',
     'owner_text_name' => 'Dark Side of The Force',
     'owner_text_type' => 'SupraNationalAuthority',
-    'roles' => '{"admin":{"7098":1495635879},"member":{"6842":1378476956}}',
+    'banner' => 'Banner_1.png',
+    'logo' => 'Logo_1.png',
+    'roles' => '{"admin":{"7098":[1,1497117946]},"member":{"6842":[1,1378476956]}}',
   ],
   'Collection from Project' => [
     'type' => 'project_project',
@@ -29,7 +31,7 @@ $expected_values = [
     'policy2' => 'Open government',
     'owner_text_name' => 'Dark Side of The Force',
     'owner_text_type' => 'SupraNationalAuthority',
-    'roles' => '{"admin":{"7160":1495635879},"facilitator":{"6364":1462873423},"member":{"6364":1462873423,"6422":1323365434,"6737":1334762598,"7077":1325795086}}',
+    'roles' => '{"admin":{"7160":[1,1497117946]},"facilitator":{"6364":[1,1462873423]},"member":{"6422":[1,1323365434],"6737":[1,1334762598],"7077":[1,1325795086]}}',
   ],
   'Collection from Community' => [
     'type' => 'community',
@@ -37,7 +39,7 @@ $expected_values = [
     'policy' => 'eGovernment',
     'policy2' => 'Collaboration',
     'elibrary' => '0',
-    'roles' => '{"admin":{"6416":1495635879,"7287":1495635879}}',
+    'roles' => '{"admin":{"7287":[1,1497119643],"6416":[1,1497119643]}}',
   ],
   'Archived collection' => [
     'type' => 'repository',
@@ -48,7 +50,7 @@ $expected_values = [
     'owner_text_type' => 'Academia-ScientificOrganisation',
     'state' => 'archived',
     'publisher' => '89762',
-    'roles' => '{"admin":{"7051":1495635879}}',
+    'roles' => '{"admin":{"7051":[1,1497119643]}}',
   ],
   'Collection with 2 entities having custom section' => [
     'type' => 'community',
@@ -61,7 +63,15 @@ $expected_values = [
     'nid' => '66790',
     'policy' => 'eGovernment',
     'policy2' => 'Open government',
-    'roles' => '{"member":{"1":1457690413,"6363":1415370002,"6549":1452879353,"6822":1422532565,"7077":1434103096,"7355":1418224163},"facilitator":{"6363":1415370002}}',
+    'roles' => '{"member":{"1":[1,1457690413],"6549":[1,1452879353],"6822":[1,1422532565],"7077":[1,1434103096],"7355":[1,1418224163]},"facilitator":{"6363":[1,1415370002]}}',
+  ],
+  'Membership testing' => [
+    'type' => 'project_project',
+    'nid' => '27026',
+    'policy' => 'eGovernment',
+    'policy2' => 'Open government',
+    'contact_email' => 'health@gnusolidario.org',
+    'roles' => '{"admin":{"9351":[1,1497119643]},"member":{"15741":[1,1344037319],"16077":[0,1347301489]}}',
   ],
 ];
 
@@ -117,6 +127,15 @@ foreach ($expected_values as $collection => $expected_value) {
     $roles = Json::decode($roles);
     $expected_roles = Json::decode($expected_roles);
 
+    // Order arrays by key in deep.
+    ksort($roles);
+    ksort($expected_roles);
+    foreach (['roles', 'expected_roles'] as $variable) {
+      foreach ($$variable as &$items) {
+        ksort($items);
+      }
+    }
+
     // Admin should be compared only as user IDs because the creation time is
     // the migration time and that we cannot predict.
     $this->assertTrue((isset($expected_roles['admin']) && isset($roles['admin'])) || (!isset($expected_roles['admin']) && !isset($roles['admin'])));
@@ -125,9 +144,6 @@ foreach ($expected_values as $collection => $expected_value) {
       unset($roles['admin']);
       unset($expected_roles['admin']);
     }
-
-    ksort($roles);
-    ksort($expected_roles);
     $this->assertSame($expected_roles, $roles);
   }
 }

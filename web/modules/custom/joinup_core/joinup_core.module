@@ -46,6 +46,13 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'suffix_text' => '',
       ],
     ],
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
     '404_not_found' => [
       'variables' => [
         'search' => [],
@@ -190,6 +197,7 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
  *   can be used to expose this information.
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
+ * - Provides a 'path' field only for the 'rdf_entity' entities.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
@@ -222,6 +230,14 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
           'target' => '',
         ],
       ]);
+  }
+
+  // Allow alias features for RDF entities.
+  if (($entity_type->id() === 'rdf_entity') && \Drupal::moduleHandler()->moduleExists('path')) {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE);
   }
 
   return $fields;
@@ -397,7 +413,7 @@ function joinup_core_entity_create(EntityInterface $entity) {
   if ($entity instanceof EntityPublishedInterface) {
     /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
     $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-    if ($workflow_helper->hasEntityStateField($entity)) {
+    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
       $state_field = $workflow_helper->getEntityStateField($entity);
       $workflow = $state_field->getWorkflow();
       $state_id = $state_field->getValue()['value'];

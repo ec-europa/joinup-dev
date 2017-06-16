@@ -14,8 +14,14 @@ use Drupal\migrate\Row;
  */
 class Event extends NodeBase {
 
+  use CountryTrait;
   use KeywordsTrait;
   use StateTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $uriProperties = ['uri', 'website'];
 
   /**
    * {@inheritdoc}
@@ -32,6 +38,7 @@ class Event extends NodeBase {
       'scope' => $this->t('Scope'),
       'organisation_type' => $this->t('Organisation type'),
       'state' => $this->t('State'),
+      'file_id' => $this->t('Logo ID'),
     ] + parent::fields();
   }
 
@@ -51,6 +58,7 @@ class Event extends NodeBase {
       'mail',
       'agenda',
       'state',
+      'file_id',
     ]);
   }
 
@@ -85,6 +93,9 @@ class Event extends NodeBase {
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
+
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Scope.
     $query = $this->select('term_node', 'tn');
@@ -124,7 +135,18 @@ class Event extends NodeBase {
       ->fetchCol();
     $row->setSourceProperty('fids', $fids);
 
-    return parent::prepareRow($row);
+    // Save the initial website value, before is validated by the parent method,
+    // in order to compare it, later, with the parsed value.
+    $website = $row->getSourceProperty('website');
+
+    $return = parent::prepareRow($row);
+
+    // If the website URL is malformed, log a message entry.
+    if (!$row->getSourceProperty('website') && $website) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Malformed website URL ''");
+    }
+
+    return $return;
   }
 
   /**

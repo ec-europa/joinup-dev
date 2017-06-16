@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,8 +12,9 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends DistributionBase {
+class Distribution extends JoinupSqlBase implements RedirectImportInterface {
 
+  use DefaultNodeRedirectTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
   use StatusTrait;
@@ -25,8 +27,21 @@ class Distribution extends DistributionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 'd',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('Node ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
       'access_url' => $this->t('Access URL'),
@@ -36,14 +51,15 @@ class Distribution extends DistributionBase {
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
       'status' => $this->t('Status'),
-    ] + parent::fields();
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('d', [
+    return $this->select('d8_distribution', 'd')->fields('d', [
+      'nid',
       'uri',
       'vid',
       'title',
@@ -77,8 +93,9 @@ class Distribution extends DistributionBase {
     $row->setSourceProperty('technique', $representation_technique);
 
     // Resolve 'access_url'.
-    $file_source_id_values = $row->getSourceProperty('file_id') ? [['nid' => $nid]] : [];
-    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'distribution_file', 'access_url');
+    $fid = $row->getSourceProperty('file_id');
+    $file_source_id_values = $fid ? [['fid' => $fid]] : [];
+    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', 'access_url');
 
     // Status.
     $this->setStatus($vid, $row);

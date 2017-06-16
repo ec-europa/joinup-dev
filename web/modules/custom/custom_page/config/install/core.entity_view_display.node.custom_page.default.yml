@@ -3,10 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - file
     - link
     - search_api_field
     - text
@@ -22,6 +24,13 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_attachment:
+    weight: 51
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_table
     region: content
   field_cp_content_listing:
     type: search_api_field
@@ -53,4 +62,5 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  langcode: true
   og_audience: true

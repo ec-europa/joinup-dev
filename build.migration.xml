@@ -14,7 +14,7 @@
              root="${website.drupal.dir}"
              bin="${drush.bin}"
              verbose="${drush.verbose}">
-            <param>search_api.index.collections</param>
+            <param>search_api.index.published</param>
             <param>options.index_directly 0</param>
         </drush>
         <drush
@@ -34,7 +34,7 @@
              root="${website.drupal.dir}"
              bin="${drush.bin}"
              verbose="${drush.verbose}">
-            <param>search_api.index.collections</param>
+            <param>search_api.index.published</param>
             <param>options.index_directly 1</param>
         </drush>
         <drush
@@ -44,13 +44,6 @@
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
             <option name="batch-size" value="500" />
-        </drush>
-        <drush
-            command="migrate-report-generate"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
         </drush>
     </target>
 

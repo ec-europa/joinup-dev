@@ -11,6 +11,7 @@ use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -205,8 +206,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $this->executeMigration($migration, $migration->id(), TRUE);
 
     // For performance reasons we don't import real files from the Drupal 6
-    // platform but we create, locally, a fake copy of the source file system
-    // with "zero size" files.
+    // platform but we create locally a fake copy of the source file system with
+    // "zero size" files.
     MockFileSystem::createTestingFiles($legacy_site_files, $this->legacyDb);
   }
 
@@ -215,7 +216,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   public function tearDown() {
     // Rollback migrations to cleanup RDF data.
-    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+    foreach ($this->manager->createInstances(static::$rollingBackMigrations) as $id => $migration) {
       try {
         (new MigrateExecutable($migration, $this))->rollback();
       }
@@ -362,6 +363,28 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   }
 
   /**
+   * Asserts that an entity has a list od certain redirects.
+   *
+   * @param string[] $expected_sources
+   *   A list of expected source redirects.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   */
+  protected function assertRedirects(array $expected_sources, ContentEntityInterface $entity) {
+    /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
+    $redirect_repository = \Drupal::service('redirect.repository');
+    $redirects = $redirect_repository->findByDestinationUri('internal:/' . $entity->toUrl()->getInternalPath());
+    $actual_sources = array_map(function (Redirect $redirect) {
+      return $redirect->get('redirect_source')->path;
+    }, $redirects);
+
+    sort($expected_sources);
+    sort($actual_sources);
+
+    $this->assertSame($expected_sources, $actual_sources);
+  }
+
+  /**
    * List of Europe countries.
    *
    * Used to test spatial coverage from Drupal 6 'Europe' term.
@@ -424,11 +447,11 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   ];
 
   /**
-   * Migrations that are creating RDF objects.
+   * Migrations that are creating RDF objects or are writing in the source.
    *
    * @var string[]
    */
-  protected static $rdfMigrations = [
+  protected static $rollingBackMigrations = [
     'collection',
     'contact',
     'distribution',
@@ -437,6 +460,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'policy_domain',
     'release',
     'solution',
+    'mapping',
+    'prepare',
   ];
 
 }

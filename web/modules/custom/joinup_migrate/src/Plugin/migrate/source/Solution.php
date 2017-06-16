@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,9 +12,10 @@ use Drupal\migrate\Row;
  *   id = "solution"
  * )
  */
-class Solution extends SolutionBase {
+class Solution extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
+  use DefaultNodeRedirectTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -32,8 +34,21 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 's',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
       'created_time' => $this->t('Creation date'),
@@ -56,14 +71,15 @@ class Solution extends SolutionBase {
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
-    ] + parent::fields();
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('s', [
+    return $this->select('d8_solution', 's')->fields('s', [
+      'nid',
       'vid',
       'type',
       'title',
@@ -74,6 +90,7 @@ class Solution extends SolutionBase {
       'policy2',
       'landing_page',
       'metrics_page',
+      'docs_id',
       'docs_url',
       'docs_path',
       'state',
@@ -81,6 +98,8 @@ class Solution extends SolutionBase {
       'contact_email',
       'owner_name',
       'owner_type',
+      'logo_id',
+      'banner',
     ]);
   }
 
@@ -95,8 +114,8 @@ class Solution extends SolutionBase {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['nid' => $nid]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'documentation_file', 'docs_url');
+    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_solution', 'docs_url');
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));

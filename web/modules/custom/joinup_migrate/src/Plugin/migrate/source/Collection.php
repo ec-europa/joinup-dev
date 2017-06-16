@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,9 +12,12 @@ use Drupal\migrate\Row;
  *   id = "collection"
  * )
  */
-class Collection extends CollectionBase {
+class Collection extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
+  use DefaultNodeRedirectTrait {
+    getRedirectSources as nodeGetRedirectSources;
+  }
 
   /**
    * {@inheritdoc}
@@ -23,8 +27,21 @@ class Collection extends CollectionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'collection' => [
+        'type' => 'string',
+        'alias' => 'c',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
-    return parent::fields() + [
+    return [
+      'collection' => $this->t('Collection'),
       'uri' => $this->t('URI'),
       'policy2' => $this->t('Policy domain'),
       'abstract' => $this->t('Abstract'),
@@ -41,6 +58,8 @@ class Collection extends CollectionBase {
       'contact' => $this->t('Contact info'),
       'contact_email' => $this->t('Contact E-mail'),
       'state' => $this->t('Workflow state'),
+      'banner' => $this->t('Banner'),
+      'logo_id' => $this->t('Logo ID'),
     ];
   }
 
@@ -48,7 +67,8 @@ class Collection extends CollectionBase {
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('c', [
+    return $this->select('d8_collection', 'c')->fields('c', [
+      'collection',
       'nid',
       'vid',
       'type',
@@ -66,6 +86,8 @@ class Collection extends CollectionBase {
       'contact_email',
       'access_url',
       'state',
+      'banner',
+      'logo_id',
     ]);
   }
 
@@ -121,6 +143,34 @@ class Collection extends CollectionBase {
     }
 
     return $vids ? $this->getCountries($vids) : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedirectSources(Row $row) {
+    if (empty($row->getSourceProperty('nid'))) {
+      return NULL;
+    }
+
+    // We collect the aliases from all collection components, as 'community' and
+    // 'repository', omitting 'project_project' and 'asset_release' because
+    // these are creating redirects to solutions.
+    $nids = $this->select('d8_mapping', 'm')
+      ->fields('m', ['nid'])
+      ->condition('m.collection', $row->getSourceProperty('collection'))
+      ->condition('m.type', ['community', 'repository'], 'IN')
+      ->execute()
+      ->fetchCol();
+
+    $redirect_sources = [];
+    foreach ($nids as $nid) {
+      // Mock a fake row, just to reuse the parent method.
+      $fake_row = new Row(['nid' => $nid], ['nid' => $nid]);
+      $redirect_sources = array_merge($redirect_sources, $this->nodeGetRedirectSources($fake_row));
+    }
+
+    return $redirect_sources;
   }
 
 }

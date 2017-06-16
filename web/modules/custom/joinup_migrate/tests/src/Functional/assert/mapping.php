@@ -123,6 +123,8 @@ $expected_values = [
     'type' => 'asset_release',
     'collection' => 'Archived collection',
     'policy2' => 'Open government',
+    'logo' => 'acme.jpg',
+    'banner' => 'butterfly-wallpaper.jpg',
     'row_index' => '25',
   ],
   125548 => [
@@ -197,6 +199,25 @@ $expected_values = [
     'owner' => 'Y',
     'row_index' => '37',
   ],
+  125838 => [
+    'type' => 'video',
+    'collection' => 'Collection with 1 entity having custom section',
+    'policy2' => 'Open government',
+    'row_index' => '38',
+  ],
+  42464 => [
+    'type' => 'event',
+    'collection' => 'Collection with 1 entity having custom section',
+    'policy2' => 'Open government',
+    'row_index' => '39',
+  ],
+  27026 => [
+    'type' => 'project_project',
+    'collection' => 'Membership testing',
+    'policy2' => 'Open government',
+    'owner' => 'Y',
+    'row_index' => '40',
+  ],
 ];
 
 // Migration counts.
@@ -211,8 +232,8 @@ $this->assertMessage('mapping', "Row: 4, Nid: ew56%43: Invalid nid 'ew56%43'");
 $this->assertMessage('mapping', "Row: 5, Nid: 157729: 'MOA-ID 3.2.1' is a release and shouldn't be in the Excel file. Releases are computed");
 $this->assertMessage('mapping', "Row: 6, Nid: 60736: Collection name empty");
 $this->assertMessage('mapping', "Row: 9, Nid: 87737: Software (project) content should not be in the Excel file. Replace with Project (project_project)");
-$this->assertMessage('mapping', "Row: 9, Nid: 87737: Type 'Project' declared, but nid 87737 is 'project' in Drupal 6");
-$this->assertMessage('mapping', "Row: 30, Nid: 156973: Type 'Newsletter' declared, but nid 156973 is 'news' in Drupal 6");
+$this->assertMessage('mapping', "Row: 9, Nid: 87737: Type 'Project' declared, but nid 87737 is 'Software (project)' in Drupal 6");
+$this->assertMessage('mapping', "Row: 30, Nid: 156973: Type 'Newsletter' declared, but nid 156973 is 'News (news)' in Drupal 6");
 
 // Imported content check.
 $imported = $this->legacyDb->select('d8_mapping')
