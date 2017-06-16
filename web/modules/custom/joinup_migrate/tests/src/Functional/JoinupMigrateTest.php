@@ -11,6 +11,7 @@ use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -359,6 +360,28 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     sort($keywords);
 
     $this->assertSame($expected_keywords, $keywords);
+  }
+
+  /**
+   * Asserts that an entity has a list od certain redirects.
+   *
+   * @param string[] $expected_sources
+   *   A list of expected source redirects.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   */
+  protected function assertRedirects(array $expected_sources, ContentEntityInterface $entity) {
+    /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
+    $redirect_repository = \Drupal::service('redirect.repository');
+    $redirects = $redirect_repository->findByDestinationUri('internal:/' . $entity->toUrl()->getInternalPath());
+    $actual_sources = array_map(function (Redirect $redirect) {
+      return $redirect->get('redirect_source')->path;
+    }, $redirects);
+
+    sort($expected_sources);
+    sort($actual_sources);
+
+    $this->assertSame($expected_sources, $actual_sources);
   }
 
   /**

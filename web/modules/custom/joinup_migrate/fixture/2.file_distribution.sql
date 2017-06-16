@@ -13,3 +13,5 @@ SELECT
   CONCAT('public://distribution/', DATE_FORMAT(FROM_UNIXTIME(file_timestamp), '%Y-%m'), '/', SUBSTRING_INDEX(file_path, '/', -1))
 FROM d8_distribution
 WHERE file_id IS NOT NULL
+AND file_path <> ''
+AND file_path IS NOT NULL

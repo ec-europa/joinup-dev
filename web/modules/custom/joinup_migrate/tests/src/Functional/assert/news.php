@@ -24,6 +24,7 @@ $this->assertKeywords([], $news);
 $this->assertReferences(static::$europeCountries, $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
+$this->assertRedirects(['news/mobile-age-project-co-created-personalised-mobile-access-public-services-senior-citizens-–-2nd-'], $news);
 
 $news = $this->loadEntityByLabel('node', 'BE, NL: governments will not use ISO OOXML');
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->label());
@@ -42,6 +43,7 @@ $this->assertKeywords([
 $this->assertReferences(['Belgium', 'Netherlands'], $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
+$this->assertRedirects(['osor/news/be-nl-governments-will-not-use-iso-ooxml'], $news);
 
 $news = $this->loadEntityByLabel('node', 'Public workshop to discuss ways to sustain governmental open standards', 'news');
 $this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->label());
@@ -57,3 +59,4 @@ $this->assertReferences(['Netherlands', 'European Union'], $news->field_news_spa
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');
 $this->assertEquals($collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
+$this->assertRedirects(['community/osor/news/public-workshop-discuss-ways-sustain-governmental-open-standards'], $news);
