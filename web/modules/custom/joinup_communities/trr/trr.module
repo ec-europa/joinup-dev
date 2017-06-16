@@ -18,6 +18,9 @@ function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) 
     return;
   }
   $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+  if (!$rdf_entity) {
+    return;
+  }
   $id = NULL;
   $bundle = $rdf_entity->bundle();
   // Adding a solution.
