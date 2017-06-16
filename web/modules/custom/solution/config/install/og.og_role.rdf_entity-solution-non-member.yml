@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.rdfentity.solution
 id: rdf_entity-solution-non-member
 label: Non-member
 weight: 3

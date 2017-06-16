@@ -3,10 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - file
     - search_api_field
     - text
 id: node.custom_page.default
@@ -23,12 +25,25 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  field_attachment:
+    weight: 27
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
   field_cp_content_listing:
     weight: 26
     settings: {  }
     third_party_settings: {  }
     type: search_api_field_default
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0

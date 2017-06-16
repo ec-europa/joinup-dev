@@ -38,6 +38,7 @@ dependencies:
   - joinup_search
   - joinup_subscription
   - joinup_user
+  - joinup_video
   - menu_ui
   - moderation
   - node
@@ -63,6 +64,7 @@ dependencies:
   - solution
   - state_machine
   - state_machine_revisions
+  - swiftmailer
   - text
   - toolbar
   - user
@@ -74,8 +76,9 @@ themes:
   - joinup_theme
 
 config_devel:
+  - block.block.entity_bundle_facet
+  - block.block.exposed_form_search_page
   - block.block.footer_menu
-  - block.block.recommendedcontent
   - block.block.groupheader
   - block.block.menusubpages
   - block.block.userheader
@@ -88,7 +91,9 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.navigation
   - block.block.pagetitle
+  - block.block.policy_domain_facet
   - block.block.primaryadminactions
+  - block.block.recommendedcontent
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -98,8 +103,8 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - block.block.spatial_coverage_facet
   - block.block.statistics
-  - block.block.type
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -114,7 +119,6 @@ config_devel:
   - core.date_format.medium
   - core.date_format.short
   - core.entity_form_display.ogmenu_instance.navigation.default
-  - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
@@ -149,11 +153,14 @@ config_devel:
   - language.content_settings.rdf_entity.collection
   - language.content_settings.rdf_entity.licence
   - language.content_settings.rdf_entity.solution
+  - mailsystem.settings
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy
   - piwik.settings
   - system.theme
+  - swiftmailer.transport
+  - swiftmailer.message
   - user.flood
   - user.mail
   - user.settings

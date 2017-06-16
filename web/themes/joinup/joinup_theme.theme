@@ -603,6 +603,9 @@ function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
     '#type' => 'link',
     '#title' => t('Create collection'),
     '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'collection']),
+    '#attributes' => [
+      'class' => ['listing__create-tile'],
+    ],
   ];
 }
 

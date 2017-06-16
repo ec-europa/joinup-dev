@@ -18,8 +18,10 @@ dependencies:
   - views
 
 config_devel:
+ - facets.facet.policy_domain
+ - facets.facet.spatial_coverage
  - facets.facet.type
  - facets.facet_source.search_api_views__search__page_1
- - search_api.server.solr
- - search_api.index.collections
+ - search_api.server.solr_published
+ - search_api.index.published
  - views.view.search

@@ -136,7 +136,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       return $rdf_entity->id();
     }, $rdf_entities);
 
-    $index = Index::load('collections');
+    $index = Index::load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
     $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
