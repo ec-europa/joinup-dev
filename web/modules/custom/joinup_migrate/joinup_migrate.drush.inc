@@ -5,7 +5,6 @@
  * Drush commands for Joinup Migrate module.
  */
 
-use Drupal\Core\Database\Database;
 use Drupal\joinup_migrate\MockFileSystem;
 
 /**

@@ -16,6 +16,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
   use DefaultNodeRedirectTrait;
+  use DocumentationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -77,9 +78,6 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'language',
       'version_notes',
       'version_number',
-      'docs_id',
-      'docs_path',
-      'docs_url',
       'state',
       'item_state',
     ]);
@@ -126,8 +124,8 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_release', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Status.
     $this->setStatus($vid, $row);

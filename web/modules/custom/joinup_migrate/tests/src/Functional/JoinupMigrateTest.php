@@ -6,7 +6,6 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\joinup_migrate\MockFileSystem;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -202,6 +201,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     // Run the 'prepare' migration to assure data for MySQL views, needed by
     // self::createTestFiles() method.
     // @see \Drupal\Tests\joinup_migrate\Functional\JoinupMigrateTest::executeMigration()
+    // @todo Re-evaluate this. It should be redundant.
     $migration = $this->manager->createInstance('prepare');
     $this->executeMigration($migration, $migration->id(), TRUE);
   }
