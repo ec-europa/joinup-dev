@@ -21,8 +21,8 @@ Feature: Solutions Overview
       | Madam Shirley | i.dont.see.the.future@example.com |
     And the following collection:
       | title | Pikachu, I choose you |
-      | logo  | logo.png                      |
-      | state | validated                     |
+      | logo  | logo.png              |
+      | state | validated             |
     And solutions:
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |

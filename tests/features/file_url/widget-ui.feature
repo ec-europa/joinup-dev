@@ -8,8 +8,8 @@ Feature: User interface for the File URL field
   Scenario: Interact with both the 'File upload' and 'External URL' options
     Given the following collection:
       | title | Caterpillar, use headbutt |
-      | logo  | logo.png                   |
-      | state | validated                  |
+      | logo  | logo.png                  |
+      | state | validated                 |
 
     Given I am logged in as a member of the "Caterpillar, use headbutt" collection
     # An example of the File URL field is the "Documentation" field in the
