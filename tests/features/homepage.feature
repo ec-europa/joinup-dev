@@ -192,3 +192,12 @@ Feature: Homepage
       | Economic dynamics     |
       | Economic cycles       |
       | Labour relations      |
+
+  Scenario: the small homepage header should be shown only to logged in users.
+    When I am an anonymous user
+    And I go to the homepage
+    Then I should not see the small header
+
+    When I am logged in as a user with the "authenticated" role
+    And I go to the homepage
+    Then I should see the small header
