@@ -37,7 +37,16 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
   protected $relationManager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a JoinupEntityLatestRevision object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param array $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   *   The relation manager service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManager $relation_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);

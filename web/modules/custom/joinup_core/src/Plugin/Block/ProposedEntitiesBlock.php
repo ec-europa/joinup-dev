@@ -26,7 +26,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
   protected $entityTypeManager;
 
   /**
-   * Constructs a new RecommendedContentBlock object.
+   * Constructs a new ProposedEntitiesBlock object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

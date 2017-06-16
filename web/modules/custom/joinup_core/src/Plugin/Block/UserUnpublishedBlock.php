@@ -72,7 +72,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $revisionManager;
 
   /**
-   * Constructs a new RecommendedContentBlock object.
+   * Constructs a new UserUnpublishedBlock object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

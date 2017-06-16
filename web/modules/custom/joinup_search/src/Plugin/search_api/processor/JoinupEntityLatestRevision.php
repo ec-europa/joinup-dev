@@ -39,7 +39,18 @@ class JoinupEntityLatestRevision extends ProcessorPluginBase {
   protected $revisionManager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a JoinupEntityLatestRevision object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param array $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
+   *   The state machine revisions manager service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
