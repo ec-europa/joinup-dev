@@ -104,11 +104,10 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
     $storage->getGraphHandler()->resetRequestGraphs($results);
     $rows = [];
 
-    foreach ($entities as $weight => $entity) {
+    foreach ($entities as $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
-      $rows[$weight] = [
+      $rows[] = [
         '#type' => 'container',
-        '#weight' => $weight,
         '#attributes' => [
           'class' => [
             'listing__item',
@@ -117,7 +116,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
             'mdl-cell--4-col',
           ],
         ],
-        $weight => $view,
+        'entity' => $view,
       ];
     }
     return $rows;
