@@ -7,6 +7,7 @@ dependencies:
   - datetime_range
   - joinup_community_content
   - joinup_core
+  - language
 
 config_devel:
   - core.entity_form_display.node.event.default

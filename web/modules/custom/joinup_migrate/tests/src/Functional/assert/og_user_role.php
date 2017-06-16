@@ -2,7 +2,11 @@
 
 /**
  * @file
+<<<<<<< HEAD
  * Assertions for 'og_user_role' and 'og_user_role_solution' migration.
+=======
+ * Assertions for 'og_user_role' migration.
+>>>>>>> origin/develop
  */
 
 use Drupal\og\Entity\OgRole;

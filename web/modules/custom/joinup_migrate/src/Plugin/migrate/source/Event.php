@@ -135,7 +135,18 @@ class Event extends NodeBase {
       ->fetchCol();
     $row->setSourceProperty('fids', $fids);
 
-    return parent::prepareRow($row);
+    // Save the initial website value, before is validated by the parent method,
+    // in order to compare it, later, with the parsed value.
+    $website = $row->getSourceProperty('website');
+
+    $return = parent::prepareRow($row);
+
+    // If the website URL is malformed, log a message entry.
+    if (!$row->getSourceProperty('website') && $website) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Malformed website URL ''");
+    }
+
+    return $return;
   }
 
   /**

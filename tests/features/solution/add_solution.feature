@@ -81,6 +81,8 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation"
+    # The TRR fieldgroup should only be visible inside the TRR collection.
+    And I should not see the text "TRR"
     And the "Solution type" field should contain the "IOP specification underpinning View, Technical View - Application, Technical View - Infrastructure" option groups
     When I fill in the following:
       | Title            | Espresso is the solution                                      |
