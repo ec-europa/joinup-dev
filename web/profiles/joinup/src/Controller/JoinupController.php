@@ -45,7 +45,7 @@ class JoinupController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfEntityTypeInterface $rdf_type) {
-    if (!in_array($rdf_type->id(), ['collection'])) {
+    if ($rdf_type->id() !== 'collection') {
       return AccessResult::forbidden();
     }
     return AccessResult::allowedIf($this->currentUser()->hasPermission("propose {$rdf_type->id()} rdf entity"));
