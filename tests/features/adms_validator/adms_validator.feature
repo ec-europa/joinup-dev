@@ -15,4 +15,11 @@ Feature: Validate an ADMS-AP file through the UI
       When I attach the file "invalid_adms.rdf" to "File"
       And I press "Upload"
 
+      # Check validations.
       And I should see the text "The mandatory class dcat:Dataset does not exist" in the "dcat:Dataset does not exist." row
+
+      # Check incorrect file.
+      When I attach the file "empty.rdf" to "File"
+      And I press "Upload"
+      Then I should see the following warning messages:
+        | The provided file is not a valid RDF file. |

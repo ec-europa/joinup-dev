@@ -3,6 +3,7 @@
 namespace Drupal\adms_validator\Form;
 
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -83,10 +84,10 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
-    $info = $form_state->getBuildInfo();
-    if (!empty($info['validation_errors'])) {
+    $validation_errors = $form_state->get('validation_errors');
+    if (!empty($validation_errors)) {
       // The form was submitted, and validation errors have been set.
-      $form['table'] = $this->buildErrorTable($info['validation_errors']);
+      $form['table'] = $this->buildErrorTable($validation_errors);
     }
 
     return $form;
@@ -98,21 +99,24 @@ class AdmsValidatorForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     // Make sure to clear the table.
-    $form_state->addBuildInfo('validation_errors', []);
-    $form_state->setRebuild(TRUE);
+    $form_state->set('validation_errors', []);
+    $form['table'] = [];
+    $form_state->setRebuild();
 
     $file = $this->uploadedFile();
     if (!$file) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
-    if (!$this->storeInGraph($file)) {
+    $count = $this->storeInGraph($file);
+    // Delete the uploaded file from disk.
+    $file->delete();
+    if (!$count) {
       $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
       return;
     }
-    // Delete the uploaded file from disk.
-    $file->delete();
-    $form_state->addBuildInfo('validation_errors', $this->getValidationErrors());
+    drupal_set_message($this->t('Checking %count triples for schema errors.', ['%count' => $count]));
+    $form_state->set('validation_errors', $this->getValidationErrors());
   }
 
   /**
@@ -196,8 +200,11 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
     catch (\Exception $e) {
       return FALSE;
     }
-    $gs->replace($graph, self::VALIDATION_GRAPH);
-    return TRUE;
+    $out = $gs->replace($graph, self::VALIDATION_GRAPH);
+    if (!$out->isSuccessful()) {
+      return FALSE;
+    }
+    return $graph->countTriples();
   }
 
   /**
