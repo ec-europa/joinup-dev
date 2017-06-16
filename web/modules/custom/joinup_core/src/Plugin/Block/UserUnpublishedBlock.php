@@ -164,7 +164,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
             'mdl-cell--4-col',
           ],
         ],
-        $weight => $view,
+        'entity' => $view,
       ];
     }
     return $rows;
