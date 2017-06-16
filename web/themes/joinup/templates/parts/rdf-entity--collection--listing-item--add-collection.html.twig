@@ -6,19 +6,9 @@
 #}
 {%
   set classes = [
-    'listing__card',
-    'mdl-card',
-    'listing__card--stats-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+    'mdl-cell--middle'
   ]
 %}
 <div class="{{ classes|join(' ') }}">
-  <div class="listing__metadata">
-    <div class="listing__field">
-      <h2 class="listing__title">+</h2>
-    </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ add_collection_link }}</p>
-    </div>
-  </div>
+  {{ add_collection_link }}
 </div>
