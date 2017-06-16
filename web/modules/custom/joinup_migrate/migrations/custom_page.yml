@@ -1,0 +1,46 @@
+id: custom_page
+label: 'Custom page'
+migration_tags:
+  - node
+  - og
+  - custom_page
+source:
+  plugin: custom_page
+  track_changes: true
+process:
+  title: title
+  created: created
+  changed: changed
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+    no_stub: true
+  field_attachment:
+    plugin: migration
+    migration: file:custom_page_attachment
+    source: fids
+    no_stub: true
+  parent:
+    plugin: migration
+    source: group_nid
+    migration: custom_page_parent
+    no_stub: true
+destination:
+  plugin: entity:node
+  default_bundle: custom_page
+migration_dependencies:
+ required:
+   - custom_page_parent
+   - file:custom_page_attachment

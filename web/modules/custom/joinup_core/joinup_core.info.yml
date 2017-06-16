@@ -17,6 +17,7 @@ dependencies:
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
+  - redirect
   - search_api
   - search_api_solr
   - state_machine

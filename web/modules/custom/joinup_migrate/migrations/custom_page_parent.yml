@@ -1,0 +1,25 @@
+id: custom_page_parent
+label: 'Custom page parent'
+migration_tags:
+  - node
+  - og
+  - custom_page
+source:
+  plugin: custom_page_parent
+  track_changes: true
+process:
+  title: group_title
+  uid:
+    plugin: default_value
+    default_value: 1
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+    no_stub: true
+destination:
+  plugin: entity:node
+  default_bundle: custom_page
+migration_dependencies:
+ required:
+   - collection

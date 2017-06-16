@@ -146,6 +146,10 @@ abstract class JoinupSqlBase extends SqlBase {
     if (empty($url['scheme'])) {
       // Needs a full-qualified URL. The URI might be 'www.example.com'.
       $uri = "http://$uri";
+      // Re-parse URL parts.
+      if (!$url = parse_url($uri)) {
+        return NULL;
+      }
     }
 
     // Check for a valid URI pattern.

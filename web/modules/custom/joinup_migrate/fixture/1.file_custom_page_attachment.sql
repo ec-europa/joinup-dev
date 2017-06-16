@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW d8_file_custom_page (
+CREATE OR REPLACE VIEW d8_file_custom_page_attachment (
   fid,
   path,
   timestamp,
@@ -7,11 +7,13 @@ CREATE OR REPLACE VIEW d8_file_custom_page (
 ) AS
 SELECT
   f.fid,
-  SUBSTRING(f.filepath, 21),
+  SUBSTRING(TRIM(f.filepath), 21),
   f.timestamp,
   f.uid,
   CONCAT('public://custom-page/attachment/', SUBSTRING_INDEX(f.filepath, '/', -1))
 FROM upload u
-INNER JOIN files f ON u.fid = f.fid
 INNER JOIN node n ON u.vid = n.vid
+INNER JOIN files f ON u.fid = f.fid
 INNER JOIN d8_custom_page cp ON n.nid = cp.nid
+WHERE TRIM(f.filepath) <> ''
+AND f.filepath IS NOT NULL
