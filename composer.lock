@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "86ea343d9c7510fc9b3cc9efa5a34da1",
+    "content-hash": "412a9ea542388dac1d149ad52f8e3211",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2614,6 +2614,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -4589,7 +4597,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5310,7 +5318,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2016-10-03T08:18:38+00:00"
+            "time": "2016-10-03 08:18:38"
         },
         {
             "name": "psr/http-message",
