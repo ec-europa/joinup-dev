@@ -42,7 +42,7 @@
 #}
 <div class="mdl-layout mdl-js-layout">
 
-  {% if logged_in %}
+  {% if not is_front or logged_in %}
     {% include directory ~ '/templates/parts/header.html.twig' %}
   {% endif %}
 

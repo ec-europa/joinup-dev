@@ -83,7 +83,18 @@ class RdfExportController extends ControllerBase {
    * Converts an rdf entity id into its serialized rdf form.
    */
   protected function serializeRdfEntity($entity_id, $format = 'turtle') {
-    $query = "DESCRIBE <$entity_id>";
+    $query = "CONSTRUCT {
+  ?s ?p ?o .
+}
+WHERE {
+  {
+    ?s ?p ?o .
+    VALUES ?s { <$entity_id> }
+  } UNION {
+     ?s ?p ?o .
+     VALUES ?o { <$entity_id> }
+  }
+}";
     $sparql = \Drupal::getContainer()->get('sparql_endpoint');
     /** @var \EasyRdf\Graph $graph */
     $graph = $sparql->query($query);

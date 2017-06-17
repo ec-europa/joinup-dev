@@ -198,6 +198,14 @@ Feature: Homepage
     And I go to the homepage
     Then I should not see the small header
 
+    # The header should still be shown in the other pages.
+    When I click "Collections"
+    Then I should see the small header
+
     When I am logged in as a user with the "authenticated" role
     And I go to the homepage
+    Then I should see the small header
+
+    # The header should still be shown in the other pages.
+    When I click "Collections"
     Then I should see the small header

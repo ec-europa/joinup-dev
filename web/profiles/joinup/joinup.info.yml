@@ -66,6 +66,7 @@ dependencies:
   - swiftmailer
   - text
   - toolbar
+  - trr
   - user
   - view_unpublished
   - views
