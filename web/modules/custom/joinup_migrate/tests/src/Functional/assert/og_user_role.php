@@ -39,6 +39,7 @@ $assert_og_roles = function ($entity_id, $user_name, $expected_state, array $exp
 // Collection: Members of 'Membership testing'.
 $assert_og_roles('http://health.gnu.org', 'meanmicio', OgMembershipInterface::STATE_ACTIVE, [
   'rdf_entity-collection-member',
+  'rdf_entity-collection-facilitator',
   'rdf_entity-collection-administrator',
 ]);
 $assert_og_roles('http://health.gnu.org', 'ggonzalezpp', OgMembershipInterface::STATE_ACTIVE, [
@@ -61,6 +62,7 @@ $assert_og_roles($collection->id(), 'joinup_editor', OgMembershipInterface::STAT
 $solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
 $assert_og_roles($solution->id(), 'joinup_semantic_editor', OgMembershipInterface::STATE_ACTIVE, [
   'rdf_entity-solution-member',
+  'rdf_entity-solution-facilitator',
   'rdf_entity-solution-administrator',
 ]);
 $assert_og_roles($solution->id(), 'sszekacs', OgMembershipInterface::STATE_ACTIVE, [
