@@ -74,6 +74,8 @@ class OgUserRoleSolution extends SourcePluginBase {
       // Add the solution owner.
       if ($data->is_admin && !in_array('rdf_entity-solution-administrator', $rows[$key]['roles'])) {
         $rows[$key]['roles'][] = 'rdf_entity-solution-administrator';
+        // The facilitator role is complementary with the administrator role.
+        $rows[$key]['roles'][] = 'rdf_entity-solution-facilitator';
       }
       // Add the facilitator only if the user is not yet an administrator.
       if (!in_array('rdf_entity-solution-administrator', $rows[$key]['roles']) && !in_array('rdf_entity-solution-facilitator', $rows[$key]['roles'])) {
