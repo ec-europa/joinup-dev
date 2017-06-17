@@ -180,6 +180,10 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => TRUE,
         ],
+        'description' => [
+          'description' => 'Description',
+          'type' => 'text',
+        ],
         'abstract' => [
           'description' => 'Abstract',
           'type' => 'text',
