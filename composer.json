@@ -15,6 +15,7 @@
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^3.0",
+        "drupal/editor_file": "~1.0",
         "drupal/facets": "~1.0@alpha",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
