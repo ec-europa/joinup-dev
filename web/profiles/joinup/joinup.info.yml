@@ -22,6 +22,7 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - editor_file
   - field_group
   - file
   - help
