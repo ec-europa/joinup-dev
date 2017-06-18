@@ -197,13 +197,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     chmod($settings_file, 0444);
 
     $this->manager = $this->container->get('plugin.manager.migration');
-
-    // Run the 'prepare' migration to assure data for MySQL views, needed by
-    // self::createTestFiles() method.
-    // @see \Drupal\Tests\joinup_migrate\Functional\JoinupMigrateTest::executeMigration()
-    // @todo Re-evaluate this. It should be redundant.
-    $migration = $this->manager->createInstance('prepare');
-    $this->executeMigration($migration, $migration->id(), TRUE);
   }
 
   /**

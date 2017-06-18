@@ -63,7 +63,7 @@ abstract class JoinupSqlBase extends SqlBase {
    * @throws \Drupal\migrate\MigrateException
    *   When the site files directory was not configured.
    */
-  protected function getLegacySiteFiles() {
+  public static function getLegacySiteFiles() {
     $files_dir = Settings::get('joinup_migrate.source.files');
     $files_dir = rtrim($files_dir, '/');
     return $files_dir;
