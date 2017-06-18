@@ -2,6 +2,7 @@ CREATE OR REPLACE VIEW d8_release (
   nid,
   vid,
   title,
+  body,
   created_time,
   changed_time,
   uri,
@@ -16,6 +17,7 @@ SELECT
   n.nid,
   n.vid,
   n.title,
+  TRIM(nr.body),
   FROM_UNIXTIME(n.created, '%Y-%m-%dT%H:%i:%s'),
   FROM_UNIXTIME(n.changed, '%Y-%m-%dT%H:%i:%s'),
   TRIM(uri.field_id_uri_value),
@@ -26,6 +28,7 @@ SELECT
   ws.state,
   m.content_item_state
 FROM node n
+INNER JOIN node_revisions nr ON n.vid = nr.vid
 INNER JOIN og_ancestry o ON n.nid = o.nid
 INNER JOIN node g ON o.group_nid = g.nid AND g.type = 'project_project'
 INNER JOIN d8_mapping m ON g.nid = m.nid
