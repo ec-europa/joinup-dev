@@ -2,7 +2,7 @@
 
 namespace Drupal\joinup_migrate;
 
-use Drupal\Core\Database\Database;
+use Drupal\joinup_migrate\Plugin\migrate\source\JoinupSqlBase;
 
 /**
  * Helper method to create a fake file system to import from (used for testing).
@@ -20,28 +20,33 @@ class MockFileSystem {
   public static function createTestingFiles() {
     /** @var \Drupal\Core\File\FileSystemInterface $file_system */
     $file_system = \Drupal::service('file_system');
+    /** @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migration_manager */
+    $migration_manager = \Drupal::service('plugin.manager.migration');
+
     $public_directory = \Drupal::service('stream_wrapper.public')->getDirectoryPath();
     $base_dir = "$public_directory/joinup_migrate/files";
-    $db = Database::getConnection('default', 'migrate');
-    $tables = $db->query("SHOW TABLES LIKE 'd8\_file\_%'")->fetchCol();
-
-    $files = [];
-    foreach ($tables as $table) {
-      $files = array_merge(
-        $files,
-        array_filter($db->select($table)
-          ->fields($table, ['path'])
-          ->execute()
-          ->fetchCol(), function ($file) {
-            return !empty($file) && (strpos($file, '../') !== 0);
-          }
-        )
-      );
-    }
-
     // Delete the base dir, if exists.
     if (is_dir($base_dir)) {
       file_unmanaged_delete_recursive($base_dir);
+    }
+
+    $files = [];
+    foreach ($migration_manager->createInstances([]) as $migration) {
+      if ($migration->getBaseId() === 'file') {
+        /** @var \Drupal\migrate\Plugin\migrate\source\SourcePluginBase $source */
+        $source = $migration->getSourcePlugin();
+        $source->rewind();
+        while ($source->valid()) {
+          $row = $source->current();
+          $file = $row->getSourceProperty('path');
+          if (strpos($file, '../') !== 0) {
+            // Make relative path.
+            $pos = strlen(JoinupSqlBase::getLegacySiteFiles());
+            $files[] = substr($file, $pos);
+          }
+          $source->next();
+        }
+      }
     }
 
     foreach ($files as $file) {
