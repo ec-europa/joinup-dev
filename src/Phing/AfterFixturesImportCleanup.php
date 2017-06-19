@@ -27,6 +27,9 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
     $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(isBlank(?entity)) };');
 
+    // @see ISAICP-3084
+    $this->execute('sparql INSERT INTO <http://adms-sw-v1.00> { <http://purl.org/adms/licencetype/ViralEffect-ShareAlike>  <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.1> };');
+
     // The licences are defined in both the adms-sw and the adms-skos files.
     // In adms-sw the version 1.1 is included while the adms-skos has the
     // version 1.0. As a bundle can have only one uri mapped, the 1.0 version
