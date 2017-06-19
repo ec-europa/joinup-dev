@@ -4,8 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "412a9ea542388dac1d149ad52f8e3211",
+    "content-hash": "bd5c91592452cdb39cbd10696ab433e0",
     "packages": [
+        {
+            "name": "SEMICeu/adms-ap_validator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:SEMICeu/adms-ap_validator.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2017-03-23 16:26:10"
+        },
         {
             "name": "alchemy/zippy",
             "version": "0.4.3",
@@ -10269,6 +10280,7 @@
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
+        "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/default_content": 20,
         "drupal/devel": 15,

@@ -48,6 +48,7 @@
         "minimaxir/big-list-of-naughty-strings": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
+        "SEMICeu/adms-ap_validator": "dev-master",
         "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0"
     },
@@ -214,6 +215,18 @@
                 "version": "dev-master",
                 "source": {
                     "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "SEMICeu/adms-ap_validator",
+                "version": "dev-master",
+                "source": {
+                    "url": "git@github.com:SEMICeu/adms-ap_validator.git",
                     "type": "git",
                     "reference": "master"
                 }
