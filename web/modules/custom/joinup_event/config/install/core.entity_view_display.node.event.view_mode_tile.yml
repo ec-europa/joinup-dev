@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_contact_email
     - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_spatial_coverage
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
     - field.field.node.event.field_location
@@ -80,6 +81,7 @@ hidden:
   field_event_agenda: true
   field_event_contact_email: true
   field_event_date: true
+  field_event_spatial_coverage: true
   field_event_web_url: true
   field_keywords: true
   field_location: true

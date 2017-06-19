@@ -997,6 +997,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that the plus button menu is empty.
+   *
+   * @When the plus button menu should be empty
+   */
+  public function assertEmptyPlusButtonMenu() {
+    if ($this->browserSupportsJavascript()) {
+      if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
+        throw new \Exception("The plus button menu is not empty.");
+      }
+    }
+  }
+
+  /**
    * Enters the given text in the given WYSIWYG editor.
    *
    * If this is running on a JavaScript enabled browser it will first click the

@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
@@ -45,11 +46,19 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Navigates to the add solution form.
    *
-   * @When (I )go to the add solution form
-   * @When (I )visit the add solution form
+   * @param string $collection
+   *   The parent collection.
+   *
+   * @When (I )go to the add solution form of the :collection collection
+   * @When (I )visit the add solution form of the :collection collection
    */
-  public function visitAddSolutionForm() {
-    $this->visitPath('/propose/solution');
+  public function visitAddSolutionForm($collection) {
+    $collection = $this->getRdfEntityByLabel($collection);
+    $solution_url = Url::fromRoute('solution.collection_solution.add', [
+      'rdf_entity' => $collection->id(),
+    ]);
+
+    $this->visitPath($solution_url->getInternalPath());
   }
 
   /**
