@@ -11,7 +11,9 @@ process:
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -53,4 +55,5 @@ migration_dependencies:
    - file:document_document
    - file:document_factsheet
    - file:document_presentation
+   - file:inline
    - collection

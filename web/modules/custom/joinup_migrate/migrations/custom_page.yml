@@ -11,7 +11,9 @@ process:
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -44,3 +46,4 @@ migration_dependencies:
  required:
    - custom_page_parent
    - file:custom_page_attachment
+   - file:inline

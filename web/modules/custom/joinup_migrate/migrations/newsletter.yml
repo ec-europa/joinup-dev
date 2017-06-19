@@ -10,7 +10,9 @@ process:
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -32,3 +34,4 @@ destination:
 migration_dependencies:
   required:
     - newsletter_type
+    - file:inline

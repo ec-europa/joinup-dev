@@ -50,7 +50,7 @@ $this->assertReferences([
   'cipaedelivery 1.0.0',
 ], $solution->field_is_has_version);
 $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
-$this->assertStringEndsWith("and the <a href=\"http://www.esens.eu/technical-solutions/e-sens-competence-clusters/e-delivery/\">eSENS eDelivery</a> building blocks.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('eSENS eDelivery', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -75,7 +75,7 @@ $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1424438316), $solution->field_is_modi
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Styles Layer Descriptor'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertStringEndsWith("user-defined symbols and colors to be used in geographic information.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('user-defined symbols and colors to be used in geographic information.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -95,7 +95,7 @@ $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1423650568), $solution->field_is_modi
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['KASPeR - Mapping application of statistical data e-dimensions'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertStringEndsWith("The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -124,7 +124,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences([
   'digit-semic-team@ec.europa.eu',
 ], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("Virtual Meeting 2012.04.03</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Virtual Meeting 2012.04.03', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
@@ -153,7 +153,7 @@ $this->assertReferences([
 ], $solution->get('field_is_has_version'));
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
-$this->assertStringEndsWith("Open Data Support Community</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Open Data Support Community', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -182,7 +182,7 @@ $this->assertReferences([
   'GHGghg',
 ], $solution->get('field_is_has_version'));$this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['contact@semic.eu'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("Towards Open Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Towards Open Government Metadata', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -205,7 +205,7 @@ $this->assertReferences(['1.4.1.corep.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Ignacio Boixo'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("XBRL+Taxonomy+v2.0.0.pdf</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('XBRL+Taxonomy+v2.0.0.pdf', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -229,7 +229,7 @@ $this->assertReferences(['1.3.1.core.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Romain Loth'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("EU capital requirements regime.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('EU capital requirements regime.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -251,7 +251,7 @@ $this->assertReferences([
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
-$this->assertStringEndsWith("assurance and\nvalidation purposes.", $solution->field_is_description->value);
+$this->assertContains('validation purposes.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -299,7 +299,7 @@ $this->assertReferences([
 ], $solution->get('field_is_has_version'));
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['david.naramski@nowina.lu'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("release note and support, can be found at: https://joinup.ec.europa.eu/asset/sd-dss/asset_release/all</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('release note and support, can be found at:', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertTrue($solution->get('field_is_owner')->isEmpty());

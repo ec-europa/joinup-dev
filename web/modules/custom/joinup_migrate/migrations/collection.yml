@@ -41,7 +41,9 @@ process:
       - @contact_from_email
     unique: true
   field_ar_creation_date: created_time
-  field_ar_description/value: body
+  field_ar_description/value:
+    plugin: file_inline
+    source: body
   field_ar_description/format:
     plugin: default_value
     default_value: content_editor
@@ -90,4 +92,5 @@ migration_dependencies:
  required:
    - file:collection_logo
    - file:collection_banner
+   - file:inline
    - solution

@@ -19,7 +19,7 @@ $this->assertEquals(1475759242, $news->created->value);
 $this->assertEquals(1475763134, $news->changed->value);
 $this->assertEquals(1, $news->uid->target_id);
 $this->assertEquals('http://www.mobile-age.eu/newsletters-issues/newsletter-issue-no-2-october-2016.html', $news->field_news_source_url->uri);
-$this->assertStringEndsWith("<p>City/Location: Athens</p>\n", $news->body->value);
+$this->assertContains('City/Location: Athens', $news->body->value);
 $this->assertKeywords([], $news);
 $this->assertReferences(static::$europeCountries, $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
@@ -34,7 +34,7 @@ $this->assertEquals(1207612800, $news->created->value);
 $this->assertEquals(1455199428, $news->changed->value);
 $this->assertEquals(1, $news->uid->target_id);
 $this->assertTrue($news->get('field_news_source_url')->isEmpty());
-$this->assertStringEndsWith("<a href=\"http://www.pcworld.com/article/id,144036-pg,1/article.html\">IDG News item</a></div>\r\n\t</li>\r\n</ul>\r\n", $news->body->value);
+$this->assertContains('IDG News item', $news->body->value);
 $this->assertKeywords([
   '[GL] Belgium',
   '[GL] The Netherlands',
@@ -53,7 +53,7 @@ $this->assertEquals(1366966462, $news->created->value);
 $this->assertEquals(1366966650, $news->changed->value);
 $this->assertEquals(1, $news->uid->target_id);
 $this->assertTrue($news->get('field_news_source_url')->isEmpty());
-$this->assertStringEndsWith("Bomos2i (English, pdf)</a><br />\r\n\t<a href=\"http://www.logius.nl/\" target=\"_blank\">Logius</a></p>\r\n", $news->body->value);
+$this->assertContains('Bomos2i (English, pdf)', $news->body->value);
 $this->assertTrue($news->get('field_keywords')->isEmpty());
 $this->assertReferences(['Netherlands', 'European Union'], $news->field_news_spatial_coverage);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');

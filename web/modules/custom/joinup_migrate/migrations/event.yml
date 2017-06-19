@@ -11,7 +11,9 @@ process:
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -34,7 +36,9 @@ process:
   field_organisation: organisation
   field_event_web_url: website
   field_event_contact_email: mail
-  field_event_agenda/value: agenda
+  field_event_agenda/value:
+    plugin: file_inline
+    source: agenda
   field_event_agenda/format:
     plugin: default_value
     default_value: content_editor
@@ -84,3 +88,4 @@ migration_dependencies:
     - collection
     - file:event_logo
     - file:event_attachment
+    - file:inline

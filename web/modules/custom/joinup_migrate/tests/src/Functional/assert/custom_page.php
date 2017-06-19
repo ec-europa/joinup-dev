@@ -41,7 +41,7 @@ $this->assertEquals('Roadmap 2016', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1389264097, $custom_page->created->value);
 $this->assertEquals(1469178680, $custom_page->changed->value);
-$this->assertContains('<p>An indicative timeline is provided below, with planned', $custom_page->get('body')->value);
+$this->assertContains('An indicative timeline is provided below, with planned', $custom_page->get('body')->value);
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
 $link = $this->loadEntityByLabel('menu_link_content', 'Roadmap 2016');
@@ -79,7 +79,7 @@ $this->assertEquals('CAMSS Tools', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1390378400, $custom_page->created->value);
 $this->assertEquals(1444307343, $custom_page->changed->value);
-$this->assertContains('<p><strong>Last update:</strong> Dec, 2014</p>', $custom_page->get('body')->value);
+$this->assertContains('An assessment of a technical specification or a standard for adoption by public administrations', $custom_page->get('body')->value);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'CAMSS Tools');
