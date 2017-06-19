@@ -29,7 +29,6 @@ function joinup_user_install() {
     'manage own subscriptions',
     'post comments',
     'propose collection rdf entity',
-    'propose solution rdf entity',
     'skip comment approval',
     'update own document content',
     'use text format basic_html',

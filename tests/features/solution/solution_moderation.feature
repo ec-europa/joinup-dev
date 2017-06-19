@@ -11,13 +11,13 @@ Feature: Solution moderation
       | logo  | logo.png                      |
       | state | validated                     |
 
-    When I am logged in as an "authenticated user"
-    And I go to the add solution form
+    When I am logged in as a member of the "Collection propose state test" collection
+    And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist, Request deletion"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the add solution form
+    And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist, Request deletion"
 
