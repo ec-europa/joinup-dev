@@ -131,7 +131,7 @@ $this->assertReferences([
   'NIFO - Factsheet The Netherlands 2011.pdf',
   'NIFO – Factsheet United Kingdom 11-2012.pdf',
 ], $document->get('field_file'));
-$this->assertContains('"interoperability in each of the Countries in scope.', $document->body->value);
+$this->assertContains('interoperability in each of the Countries in scope.', $document->body->value);
 $this->assertKeywords([
   'Country profile',
   'Government Interoperability Frameworks',
