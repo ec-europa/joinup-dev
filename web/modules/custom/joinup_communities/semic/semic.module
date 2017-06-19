@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * The SEMIC module.
+ */
+
+use Drupal\Core\Render\Markup;
+
+const SEMIC_COLLECTION_ID = 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1';
+
+/**
+ * Render the semic map.
+ *
+ * The map get rendered on top of the description field on the about page of
+ * the semic collection.
+ *
+ * Implements hook_preprocess_HOOK().
+ */
+function semic_preprocess_field(&$variables) {
+  if ($variables['entity_type'] != 'rdf_entity') {
+    return;
+  }
+  if ($variables['field_name'] != 'field_ar_description') {
+    return;
+  }
+  if (empty($variables['items'][0])) {
+    return;
+  }
+  if (empty($variables['element']['#object'])) {
+    return;
+  }
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['element']['#object'];
+  // On the semic collection?
+  if ($entity->id() != SEMIC_COLLECTION_ID) {
+    return;
+  }
+  $content = &$variables['items'][0]['content'];
+  $content['#prefix'] = semic_map_markup();
+}
+
+/**
+ * Builds the markup to render the semic 'adopters' map.
+ *
+ * @return \Drupal\Component\Render\MarkupInterface|string
+ *   The markup object, with the map.
+ */
+function semic_map_markup() {
+  global $base_url;
+  $semic_js = $base_url . drupal_get_path('module', 'semic') . '/js/semic_community.js';
+  $map = $base_url . drupal_get_path('module', 'semic') . '/adopters.xml';
+  // @todo Remove the next line after go live. Useful for QA/testing now.
+  // $map = 'https://joinup.ec.europa.eu/sites/default/files/adopters_of_data_standards_developed_by_semic_in_europe_v0.02.xml';
+  $markup = <<<EOD
+<script async src="//europa.eu/webtools/load.js" type="text/javascript"></script>
+<div id="semic-map-kml" style="display: none">$map</div>
+<script type="application/json">{
+  "service" 	: "map",
+  "custom"	: "$semic_js"
+}</script>
+EOD;
+  return Markup::create($markup);
+}
