@@ -10,7 +10,7 @@ id: user.user.field_user_business_title
 field_name: field_user_business_title
 entity_type: user
 bundle: user
-label: 'Business title'
+label: 'Description of your business title'
 description: 'Brief description business title.'
 required: false
 translatable: false
