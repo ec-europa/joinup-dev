@@ -19,6 +19,10 @@ Feature: Solutions Overview
     Given users:
       | Username      | E-mail                            |
       | Madam Shirley | i.dont.see.the.future@example.com |
+    And the following collection:
+      | title | Pikachu, I choose you |
+      | logo  | logo.png              |
+      | state | validated             |
     And solutions:
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |
@@ -41,7 +45,7 @@ Feature: Solutions Overview
     Then I should see the "Non electronic health" tile
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
-    And I should see the "Uniting Europe" tile
+    And I should not see the "Uniting Europe" tile
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
@@ -66,9 +70,9 @@ Feature: Solutions Overview
     Then I should see the heading "Non electronic health"
 
     # Add new solution as a moderator to directly publish it.
-    Given I am logged in as a moderator
-    When I go to the add solution form
-    Then I should see the heading "Propose solution"
+    And I am logged in as a moderator
+    When I go to the add solution form of the "Pikachu, I choose you" collection
+    Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title            | Colonies in Earth                                                      |
       | Description      | Some space mumbo jumbo description.                                    |

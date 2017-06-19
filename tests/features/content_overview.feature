@@ -42,7 +42,7 @@ Feature: Content Overview
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
     And I should not see the "Rumble collection" tile
-    And I should see the "Night of Shadow" tile
+    And I should not see the "Night of Shadow" tile
 
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role

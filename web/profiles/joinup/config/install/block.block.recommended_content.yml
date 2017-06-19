@@ -7,7 +7,7 @@ dependencies:
     - user
   theme:
     - joinup_theme
-id: recommendedcontent
+id: recommended_content
 theme: joinup_theme
 region: content
 weight: 0

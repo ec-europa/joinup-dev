@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  id = "menu_sub_pages",
  *  admin_label = @Translation("Menu subpages"),
  *   context = {
- *     "og" = @ContextDefinition("og", label = @Translation("Organic group"))
+ *     "og" = @ContextDefinition("entity", label = @Translation("Organic group"))
  *   }
  * )
  */

@@ -20,6 +20,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The community content bundle ids.
+   *
+   * @var array
+   */
+  const COMMUNITY_BUNDLES = [
+    'discussion',
+    'document',
+    'event',
+    'news',
+  ];
+
+  /**
    * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -32,36 +44,6 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * @var \Drupal\joinup_core\WorkflowHelperInterface
    */
   protected $workflowHelper;
-
-  /**
-   * Data about the statistics to show in the block.
-   *
-   * @var array
-   *   An associative array of statistic types, each containing the entity type
-   *   ID and bundles that are associated with this statistic type.
-   */
-  protected static $statisticsData = [
-    'collection' => [
-      'entity_type_id' => 'rdf_entity',
-      'bundle_ids' => ['collection'],
-      'states' => [
-        'archived',
-        'archival_request',
-        'deletion_request',
-        'validated',
-      ],
-    ],
-    'solution' => [
-      'entity_type_id' => 'rdf_entity',
-      'bundle_ids' => ['solution'],
-      'states' => ['deletion_request', 'validated'],
-    ],
-    'content' => [
-      'entity_type_id' => 'node',
-      'bundle_ids' => ['discussion', 'event', 'news'],
-      'states' => ['archived', 'validated'],
-    ],
-  ];
 
   /**
    * Constructs a new StatisticsBlock.
@@ -102,62 +84,42 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function build() {
     $build = ['#theme' => 'statistics_block'];
 
-    foreach (static::$statisticsData as $key => $data) {
-      $build["#{$key}_count"] = $this->getCount($data['entity_type_id'], $data['bundle_ids'], $data['states']);
+    foreach (['collection', 'solution', 'content'] as $type) {
+      $build["#{$type}_count"] = $this->getCount($type);
     }
 
     return $build;
   }
 
   /**
-   * Returns the number of validated entities of the given type and bundles.
+   * Returns the number of published entities of the given type.
    *
-   * @param string $entity_type_id
-   *   The entity type ID for which to return the count.
-   * @param array $bundle_ids
-   *   The bundle IDs for which to return the count.
-   * @param array $states
-   *   The workflow states for which to return the count.
+   * @param string $type
+   *   One of 'collection', 'solution' or 'content'.
    *
    * @return int
    *   The number of validated entities.
    */
-  protected function getCount($entity_type_id, array $bundle_ids, array $states) {
-    // Retrieve the list of workflow state fields for the given bundle.
-    $state_field_names = [];
-    foreach ($bundle_ids as $bundle_id) {
-      $state_field_definition = $this->workflowHelper->getEntityStateFieldDefinition($entity_type_id, $bundle_id);
-      $state_field_name = $state_field_definition->getName();
-      $state_field_names[$state_field_name] = $state_field_name;
+  protected function getCount($type) {
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('published');
+    /** @var \Drupal\search_api\Query\QueryInterface $query */
+    $query = $index->query();
+    switch ($type) {
+      case 'collection':
+        $query->addCondition('entity_bundle', 'collection');
+        break;
+
+      case 'solution':
+        $query->addCondition('entity_bundle', 'solution');
+        break;
+
+      case 'content':
+        $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+        break;
+
     }
-    $bundle_key = $this->entityTypeManager->getDefinition($entity_type_id)->getKey('bundle');
-
-    $query = $this->entityTypeManager->getStorage($entity_type_id)->getQuery();
-    $query->condition($bundle_key, $bundle_ids, 'IN');
-    // Only show content that has the allowed state.
-    foreach ($state_field_names as $state_field_name) {
-      $query->condition($state_field_name, $states, 'IN');
-    }
-    return $query
-      ->count()
-      ->execute();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheContexts() {
-    // Add the list cache contexts of the entity types that are shown in the
-    // block, so that the cache is invalidated whenever an entity is created or
-    // deleted. This makes sure the count is always correct.
-    $cache_contexts = parent::getCacheContexts();
-
-    foreach (static::$statisticsData as $data) {
-      $entity_type = $this->entityTypeManager->getStorage($data['entity_type_id'])->getEntityType();
-      $cache_contexts = Cache::mergeContexts($cache_contexts, $entity_type->getListCacheContexts());
-    }
-
-    return $cache_contexts;
+    $results = $query->execute();
+    return $results->getResultCount();
   }
 
   /**
@@ -168,12 +130,10 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // so that the cache is invalidated whenever an entity is created or
     // deleted. This makes sure the count is always correct.
     $cache_tags = parent::getCacheTags();
-
-    foreach (static::$statisticsData as $data) {
-      $entity_type = $this->entityTypeManager->getStorage($data['entity_type_id'])->getEntityType();
+    foreach (['node', 'rdf_entity'] as $type) {
+      $entity_type = $this->entityTypeManager->getStorage($type)->getEntityType();
       $cache_tags = Cache::mergeTags($cache_tags, $entity_type->getListCacheTags());
     }
-
     return $cache_tags;
   }
 

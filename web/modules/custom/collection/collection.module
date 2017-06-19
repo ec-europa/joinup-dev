@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
@@ -144,7 +143,7 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
  * Implements hook_entity_insert().
  */
 function collection_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
+  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'collection') {
     return;
   }
   collection_entity_update($entity);
@@ -152,7 +151,7 @@ function collection_entity_insert(EntityInterface $entity) {
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !\Drupal::currentUser()->isAnonymous()) {
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !empty($entity->getOwner())) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
@@ -162,12 +161,11 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create();
-    $membership
-      ->setUser(\Drupal::currentUser())
-      ->setGroup($entity)
-      ->setRoles(array_values(OgRole::loadMultiple($roles)))
-      ->save();
+    $membership = Og::getMembership($entity, $entity->getOwner());
+    if (!empty($membership)) {
+      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+      $membership->save();
+    }
   }
 }
 

@@ -13,19 +13,15 @@ use Drupal\rdf_entity\RdfEntityTypeInterface;
 class JoinupController extends ControllerBase {
 
   /**
-   * Provides propose forms for various RDF entities.
+   * Provides propose forms for rdf entities.
    *
-   * This is used for the propose form of collections and solutions.
+   * This is used for the propose form of collections.
    *
    * @param \Drupal\rdf_entity\RdfEntityTypeInterface $rdf_type
    *   The RDF bundle entity for which to generate the propose form.
    *
    * @return array
    *   A render array for the propose form.
-   *
-   * @throws \Exception
-   *   Thrown when an attempt is made to propose an rdf_entity that is not a
-   *   solution or a collection.
    */
   public function proposeRdfEntity(RdfEntityTypeInterface $rdf_type) {
     $rdf_entity = $this->entityTypeManager()->getStorage('rdf_entity')->create([
@@ -49,7 +45,7 @@ class JoinupController extends ControllerBase {
    *   The access result object.
    */
   public function createAssetReleaseAccess(RdfEntityTypeInterface $rdf_type) {
-    if (!in_array($rdf_type->id(), ['collection', 'solution'])) {
+    if ($rdf_type->id() !== 'collection') {
       return AccessResult::forbidden();
     }
     return AccessResult::allowedIf($this->currentUser()->hasPermission("propose {$rdf_type->id()} rdf entity"));

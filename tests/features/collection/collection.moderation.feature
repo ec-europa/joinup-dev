@@ -152,9 +152,10 @@ Feature: Collection moderation
     When I am logged in as a moderator
     And I am on the homepage
     And I click "Collections"
-    # Tile view modes in the "Collections" page are not using heading markup
-    # for titles.
-    Then I should see the text "Some berry pie"
+    Then I should not see the text "Some berry pie"
+
+    When I go to my dashboard
+    Then I should see the "Some berry pie" tile
     When I go to the homepage of the "Some berry pie" collection
     And I click "Edit"
     And I fill in "Title" with "No berry pie"

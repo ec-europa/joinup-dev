@@ -74,8 +74,7 @@ Feature: Event moderation
     # Non-members should not be able to create events anymore.
     When I am logged in as "Salvador Thomas"
     And I go to the homepage of the "Wet Lords" collection
-    And I open the plus button menu
-    Then I should not see the link "Add event"
+    Then the plus button menu should be empty
 
   Scenario: Transit events from one state to another.
     When I am logged in as "Rosa Vaughn"
