@@ -75,12 +75,6 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $route_parameters = ['rdf_entity' => $group->id()];
 
     if ($group_type === 'collection') {
-      // Add a link to propose a solution.
-      $links['solution'] = [
-        '#title' => $this->t('Propose solution'),
-        '#url' => Url::fromRoute('rdf_entity.propose_form', ['rdf_type' => 'solution']),
-      ];
-
       // Add a link to add a custom page.
       $page_url = Url::fromRoute('custom_page.collection_custom_page.add', $route_parameters);
       if ($page_url->access()) {

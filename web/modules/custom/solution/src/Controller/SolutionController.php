@@ -57,6 +57,13 @@ class SolutionController extends ControllerBase {
     if (empty($rdf_entity) && !$user->isAnonymous()) {
       return AccessResult::neutral();
     }
+
+    // Users with 'administer group' permission should have access since this
+    // page can only be called from within a group.
+    if ($user->hasPermission('administer group')) {
+      return AccessResult::allowed();
+    }
+
     $membership = Og::getMembership($rdf_entity, $user);
     return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
