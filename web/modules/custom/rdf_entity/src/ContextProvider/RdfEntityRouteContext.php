@@ -48,7 +48,7 @@ class RdfEntityRouteContext implements ContextProviderInterface {
     }
     elseif ($this->routeMatch->getRouteName() == 'rdf_entity.rdf_add') {
       $rdf_type = $this->routeMatch->getParameter('rdf_type');
-      $value = Rdf::create(['rid' => $rdf_type]);
+      $value = Rdf::create(['rid' => $rdf_type->id()]);
     }
 
     $cacheability = new CacheableMetadata();

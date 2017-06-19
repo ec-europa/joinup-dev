@@ -34,30 +34,30 @@ Feature: Homepage
       | Planned economy   | needs update     |
       | Economic growth   | blacklisted      |
     And custom_page content:
-      | title                | state     |
-      | Developing economics | validated |
+      | title                | state     | collection     |
+      | Developing economics | validated | Social classes |
     And discussion content:
-      | title                         | state        |
-      | Prosperity economics          | needs update |
-      | Cost-benefit analysis         | proposed     |
-      | Economic systems              | validated    |
-      | Socialist schools before Marx | archived     |
+      | title                         | state        | collection     |
+      | Prosperity economics          | needs update | Social classes |
+      | Cost-benefit analysis         | proposed     | Social classes |
+      | Economic systems              | validated    | Social classes |
+      | Socialist schools before Marx | archived     | Social classes |
     And document content:
-      | title               | state     |
-      | Socialist economics | validated |
+      | title               | state     | collection     |
+      | Socialist economics | validated | Social classes |
     And event content:
-      | title                         | state        |
-      | Trotskism                     | draft        |
-      | Corporative economic theories | validated    |
-      | Social economics              | needs update |
-      | Labour theory                 | proposed     |
+      | title                         | state        | collection     |
+      | Trotskism                     | draft        | Social classes |
+      | Corporative economic theories | validated    | Social classes |
+      | Social economics              | needs update | Social classes |
+      | Labour theory                 | proposed     | Social classes |
     And news content:
-      | title                | state            |
-      | Regional economy     | draft            |
-      | World economy        | proposed         |
-      | Economic cooperation | validated        |
-      | Economic dynamics    | deletion request |
-      | Economic cycles      | needs update     |
+      | title                | state            | collection     |
+      | Regional economy     | draft            | Social classes |
+      | World economy        | proposed         | Social classes |
+      | Economic cooperation | validated        | Social classes |
+      | Economic dynamics    | deletion request | Social classes |
+      | Economic cycles      | needs update     | Social classes |
     And newsletter content:
       | title            |
       | Labour relations |
@@ -67,7 +67,7 @@ Feature: Homepage
     Then I should see the following statistics:
       | Solutions   | 2 |
       | Collections | 4 |
-      | Content     | 4 |
+      | Content     | 5 |
     # The cache should have been cleared when new content is created.
     And the page should not be cached
     # The page should still be cacheable.
@@ -165,37 +165,33 @@ Feature: Homepage
     And I should see the following lines of text:
       | Economic systems              |
       | Socialist schools before Marx |
+      | Socialist economics           |
       | Corporative economic theories |
-# The following will work when ISAICP-3169 is in and only published entities are indexed.
-# @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3169
-#      | Economic cooperation          |
-#    But I should not see the following lines of text:
-#      | Political sciences    |
-#      | Forms of government   |
-#      | Social classes        |
-#      | Elections             |
-#      | Parliament            |
-#      | Party structure       |
-#      | Economic theory       |
-#      | Economic history      |
-#      | Laws of economics     |
-#      | Econometrics          |
-#      | Planned economy       |
-#      | Economic growth       |
-#      | Developing economics  |
-#      | Prosperity economics  |
-#      | Cost-benefit analysis |
-#      | title                 |
-#      | Socialist economics   |
-#      | title                 |
-#      | Trotskism             |
-#      | Social economics      |
-#      | Labour theory         |
-#      | Regional economy      |
-#      | World economy         |
-#      | Economic dynamics     |
-#      | Economic cycles       |
-#      | Labour relations      |
+      | Economic cooperation          |
+    But I should not see the following lines of text:
+      | Political sciences    |
+      | Forms of government   |
+      | Social classes        |
+      | Elections             |
+      | Parliament            |
+      | Party structure       |
+      | Economic theory       |
+      | Economic history      |
+      | Laws of economics     |
+      | Econometrics          |
+      | Planned economy       |
+      | Economic growth       |
+      | Developing economics  |
+      | Prosperity economics  |
+      | Cost-benefit analysis |
+      | Trotskism             |
+      | Social economics      |
+      | Labour theory         |
+      | Regional economy      |
+      | World economy         |
+      | Economic dynamics     |
+      | Economic cycles       |
+      | Labour relations      |
 
   Scenario: the small homepage header should be shown only to logged in users.
     When I am an anonymous user

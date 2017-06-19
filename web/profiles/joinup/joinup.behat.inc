@@ -378,6 +378,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Navigates to the dashboard page of the user.
+   *
+   * @When I go to the dashboard
+   * @When I go to my dashboard
+   */
+  public function visitDashboard() {
+    $this->visitPath('/dashboard');
+  }
+
+  /**
    * Checks if a content entity is published.
    *
    * @param string $bundle

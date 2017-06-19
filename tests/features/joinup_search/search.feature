@@ -117,8 +117,8 @@ Feature: Global search
     # Ignore all steps related to newsletters in this test in UAT.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2256
     And newsletter content:
-      | title            | body                                  |
-      | Newsletter omega | Talking about these epsilon contents. |
+      | title            | body                                  | status    |
+      | Newsletter omega | Talking about these epsilon contents. | published |
     And custom_page content:
       | title      | body                                     | collection       |
       | Page omega | This is just an epsilon but should work. | Collection alpha |
@@ -136,7 +136,8 @@ Feature: Global search
     # "Omega" is used in all the node entities titles.
     When I enter "omega" in the header search bar and hit enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
-    And I should see the text "Newsletter omega"
+    # Orphaned entities are not indexed.
+    # And I should see the text "Newsletter omega"
     And I should not see the text "Licence Alpha"
 
     # "Beta" is used in all the rdf entities body fields.
@@ -148,7 +149,8 @@ Feature: Global search
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the header search bar and hit enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
-    And I should see the text "Newsletter omega"
+    # Orphaned entities are not indexed.
+    # And I should see the text "Newsletter omega"
     And I should not see the text "Licence Alpha"
 
     # "Alphabet" is used in all the keywords fields.

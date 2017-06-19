@@ -45,7 +45,7 @@ Feature: Solutions Overview
     Then I should see the "Non electronic health" tile
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
-    And I should see the "Uniting Europe" tile
+    And I should not see the "Uniting Europe" tile
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"

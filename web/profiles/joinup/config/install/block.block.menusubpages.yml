@@ -10,7 +10,7 @@ dependencies:
 id: menusubpages
 theme: joinup_theme
 region: content_bottom
-weight: 0
+weight: -9
 provider: null
 plugin: menu_sub_pages
 settings:

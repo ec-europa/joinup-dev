@@ -6,16 +6,16 @@ Feature:
 
   Background:
     Given the following collections:
-      | title      | logo     | banner     | state |
-      | Nintendo64 | logo.png | banner.jpg | draft |
-      | Emulators  | logo.png | banner.jpg | draft |
+      | title      | logo     | banner     | state     |
+      | Nintendo64 | logo.png | banner.jpg | validated |
+      | Emulators  | logo.png | banner.jpg | validated |
     And news content:
-      | title                                 | collection | content                          |
-      | Rare Nintendo64 disk drive discovered | Nintendo64 | Magnetic drive called 64DD.      |
-      | NEC VR4300 CPU                        | Emulators  | Update of the emulation library. |
+      | title                                 | collection | content                          | state     |
+      | Rare Nintendo64 disk drive discovered | Nintendo64 | Magnetic drive called 64DD.      | validated |
+      | NEC VR4300 CPU                        | Emulators  | Update of the emulation library. | validated |
     And event content:
-      | title               | collection | body                                        |
-      | 20 year anniversary | Nintendo64 | The console was released in September 1996. |
+      | title               | collection | body                                        | state     |
+      | 20 year anniversary | Nintendo64 | The console was released in September 1996. | validated |
 
     Scenario: Community content listing widget should be shown only to moderators
       Given I am logged in as a facilitator of the "Nintendo64" collection

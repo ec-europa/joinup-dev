@@ -2773,16 +2773,16 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-3258",
+            "version": "dev-ISAICP-2709",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "71ca79e677d84f34a360095a80e17db8db6aee30"
+                "reference": "c46eef96f26073371bc7bcd99a2b550a83989362"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/71ca79e677d84f34a360095a80e17db8db6aee30",
-                "reference": "71ca79e677d84f34a360095a80e17db8db6aee30",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/c46eef96f26073371bc7bcd99a2b550a83989362",
+                "reference": "c46eef96f26073371bc7bcd99a2b550a83989362",
                 "shasum": ""
             },
             "require-dev": {
@@ -2799,7 +2799,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-05-22 12:43:40"
+            "time": "2017-06-14 08:54:08"
         },
         {
             "name": "drupal/og_menu",
@@ -10241,7 +10241,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-3258",
+            "version": "dev-ISAICP-2709",
             "package": "drupal/og"
         },
         {
