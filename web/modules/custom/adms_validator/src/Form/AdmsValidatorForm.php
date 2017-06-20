@@ -131,14 +131,14 @@ class AdmsValidatorForm extends FormBase {
     $rows = [];
     foreach ($errors as $error) {
       $row = [
-        $error->Class_Name ?? '',
-        $error->Message ?? '',
-        $error->Object ?? '',
-        $error->Predicate ?? '',
-        $error->Rule_Description ?? '',
-        $error->Rule_ID ?? '',
-        $error->Rule_Severity ?? '',
-        $error->Subject ?? '',
+        $error->Class_Name ? $error->Class_Name : '',
+        $error->Message ? $error->Message : '',
+        $error->Object ? $error->Message : '',
+        $error->Predicate ? $error->Predicate : '',
+        $error->Rule_Description ? $error->Rule_Description : '',
+        $error->Rule_ID ? $error->Rule_ID : '',
+        $error->Rule_Severity ? $error->Rule_Severity : '',
+        $error->Subject ? $error->Subject : '',
       ];
       $row = array_map('strval', $row);
       $rows[] = $row;
