@@ -89,8 +89,8 @@ destination:
   plugin: entity:rdf_entity
   default_bundle: collection
 migration_dependencies:
- required:
-   - file:collection_logo
-   - file:collection_banner
-   - file:inline
-   - solution
+  required:
+    - file:collection_logo
+    - file:collection_banner
+    - file:inline
+    - solution
