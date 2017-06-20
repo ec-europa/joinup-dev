@@ -19,11 +19,9 @@ trait StateTrait {
     $state = NULL;
     $migration_id = $row->getSourceProperty('plugin');
 
-    if (!in_array($migration_id, ['release', 'owner'])) {
+    if (!in_array($migration_id, ['release', 'owner']) && ($item_state = $row->getSourceProperty('item_state'))) {
       // If there's an explicit value enforced in the mapping table, use it.
-      if ($item_state = $row->getSourceProperty('item_state')) {
-        $state = $item_state;
-      }
+      $state = $item_state;
     }
     // Otherwise use the mapped Drupal 6 value.
     else {
