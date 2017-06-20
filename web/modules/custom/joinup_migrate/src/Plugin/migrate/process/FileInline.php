@@ -50,7 +50,7 @@ class FileInline extends ProcessPluginBase {
             }
 
             $file = reset($files);
-            $element->setAttribute($attribute, "$base_path$public_dir/inline-{$found[3]}");
+            $element->setAttribute($attribute, "{$found[1]}$base_path$public_dir/inline-{$found[3]}");
             $element->setAttribute('data-entity-type', 'file');
             $element->setAttribute('data-entity-uuid', $file->uuid());
             $changed = TRUE;
