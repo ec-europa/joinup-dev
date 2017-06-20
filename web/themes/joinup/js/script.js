@@ -10,7 +10,7 @@
     });
 
     // Always use the fullscreen indicator for ajax throbbers in the frontend.
-    if (Drupal && Drupal.Ajax) {
+    if (typeof Drupal !== 'undefined' && Drupal.Ajax) {
       // Sets the fullscreen progress indicator.
       Drupal.Ajax.prototype.setProgressIndicatorFullscreen = function () {
         this.progress.element = $(
