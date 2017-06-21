@@ -18,7 +18,6 @@ dependencies:
     - node.type.news
   module:
     - ds
-    - joinup
     - text
     - user
 id: node.news.view_mode_tile
