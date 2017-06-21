@@ -114,26 +114,27 @@ function contact_information_entity_auto_label(EntityInterface $entity) {
 function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // Access being checked for a contact information.
   if ($entity->getEntityTypeId() != 'rdf_entity') {
-    return;
+    return AccessResult::neutral();
   }
   if ($entity->bundle() != 'contact_information') {
-    return;
+    return AccessResult::neutral();
   }
   // Only revoke access for anonymous users.
   if ($account->isAuthenticated()) {
-    return;
+    return AccessResult::neutral();
   }
   // Get entity from route.
   $route = \Drupal::routeMatch();
   $route_name = $route->getRouteName();
   if ($route_name != 'entity.rdf_entity.canonical') {
-    return;
+    return AccessResult::neutral();
   }
   $route_entity = $route->getParameter('rdf_entity');
   if (empty($route_entity)) {
-    return;
+    return AccessResult::neutral();
   }
   if ($entity->id() == $route_entity->id()) {
     return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
   }
+  return AccessResult::neutral();
 }
