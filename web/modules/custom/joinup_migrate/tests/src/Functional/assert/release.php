@@ -25,7 +25,7 @@ $this->assertReferences([
   'CIPAPnPAp.zip',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-100'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.0', 'asset_release');
@@ -39,7 +39,7 @@ $this->assertReferences([
   'CIPATestSuite.zip',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-110'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 2.0.0-Access point Beta', 'asset_release');
@@ -53,7 +53,7 @@ $this->assertReferences([
   'OpenPEPPOL_AP_CA_production.pem',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.1-Certificate issue hot fix', 'asset_release');
@@ -64,7 +64,7 @@ $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1381330119), $release->field_isr_crea
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042164), $release->field_isr_modification_date->value);
 $this->assertReferences(['cipa-start-client-1.1.0_patched.jar'], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-111-certificate-issue-hot-fix'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 2.0.0-Access Point Beta2', 'asset_release');
@@ -78,7 +78,7 @@ $this->assertReferences([
   'OpenPEPPOL_AP_CA_production.pem',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta2'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Cipa e-Delivery', 'asset_release');
@@ -92,7 +92,7 @@ $this->assertReferences([
   'Cipa Access Point 2.2.3',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipa-e-delivery'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery 2.2.4', 'asset_release');
@@ -108,7 +108,7 @@ $this->assertReferences([
   'Quick Start Guide',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cipa-e-delivery-224'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'CEF e-Delivery 3.2.0', 'asset_release');
@@ -125,7 +125,7 @@ $this->assertReferences([
   'Pmodes Presentation (eDelivery)-v1.00',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Completed'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['software/cipaedelivery/asset_release/cef-e-delivery-320'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.2', 'asset_release');
@@ -142,7 +142,7 @@ $this->assertReferences([
   'location_rdf_schema-v01zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Deprecated'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertReferences([
   'Core_Vocabularies-Business_Location_Person-Specification-v0.2.pdf',
 ], $release->get('field_isr_documentation'));
@@ -158,7 +158,7 @@ $this->assertReferences([
   'core_vocabularies-business_location_person-specification-v03zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Deprecated'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-03'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 1.00', 'asset_release');
@@ -179,7 +179,7 @@ $this->assertReferences([
   'Core_Vocabularies-Business_Location_Person_v1.00_Specification_zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Completed'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-100'], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'signature-verification 1.8.0', 'asset_release');
