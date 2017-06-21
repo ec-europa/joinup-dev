@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ad_licence
     - rdf_entity.rdfentity.asset_distribution
-    - rdf_entity.rdfentity.licence
 id: rdf_entity.asset_distribution.field_ad_licence
 field_name: field_ad_licence
 entity_type: rdf_entity
