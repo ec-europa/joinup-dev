@@ -31,8 +31,12 @@
     padding: 40px 0 80px 0
   +breakpoint(tablet)
     padding: 20px 0
+  @media print
+    padding: 0
+    padding-bottom: 20px
 
 .featured__menu-wrapper
+  +hidden-print
   position: relative
   z-index: 2
   max-width: 1200px
@@ -131,6 +135,7 @@
   vertical-align: middle
 
 .featured__form-button
+  +hidden-print
   position: relative
   display: inline-block
   margin: 10px
