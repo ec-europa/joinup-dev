@@ -5,8 +5,6 @@ type: theme
 core: 8.x
 
 libraries:
-  - joinup_theme/icons
-  - joinup_theme/fonts
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
@@ -23,3 +21,4 @@ regions:
   content: Content  # the content region is required
   content_bottom: 'Content bottom'
   footer: Footer
+
