@@ -20,6 +20,7 @@
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
+        "drupal/linkit": "~5.0",
         "drupal/message": "dev-8.x-1.x#7d4c6039adae8afc09d37bc6be60709a3caa2e26 as 1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -127,13 +128,17 @@
                 "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                 "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
                 "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
-                "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch"
+                "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
+                "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-28.patch"
             },
             "drupal/facets": {
                 "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+            },
+            "drupal/linkit": {
+                "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
