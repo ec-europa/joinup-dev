@@ -326,6 +326,9 @@ class Rdf extends ContentEntityBase implements RdfInterface {
     $storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
     $published_graph = $storage->getBundleGraphUri($this->bundle(), 'default');
     $entity_graph_name = $this->get('graph')->first()->getValue()['value'];
+    if (empty($entity_graph_name)) {
+      return FALSE;
+    }
     $entity_graph = $storage->getBundleGraphUri($this->bundle(), $entity_graph_name);
     return ($entity_graph === $published_graph);
   }
