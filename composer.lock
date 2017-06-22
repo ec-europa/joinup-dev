@@ -2279,7 +2279,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1492681579"
+                    "datestamp": "1491851643"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -2667,14 +2667,6 @@
                 "GPL-2.0+"
             ],
             "authors": [
-                {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -3313,7 +3305,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1494495709"
+                    "datestamp": "1494413585"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -3983,12 +3975,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c"
+                "reference": "9c063e2717ea28fdc407a8c706872ef3a310ccc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/9c063e2717ea28fdc407a8c706872ef3a310ccc1",
+                "reference": "9c063e2717ea28fdc407a8c706872ef3a310ccc1",
                 "shasum": ""
             },
             "require": {
@@ -4013,7 +4005,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-06-07 07:51:39"
+            "time": "2017-06-20 09:36:12"
         },
         {
             "name": "egulias/email-validator",
@@ -4651,7 +4643,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
