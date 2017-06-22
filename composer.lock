@@ -3940,12 +3940,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "9c063e2717ea28fdc407a8c706872ef3a310ccc1"
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/9c063e2717ea28fdc407a8c706872ef3a310ccc1",
-                "reference": "9c063e2717ea28fdc407a8c706872ef3a310ccc1",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/2a43f713b6af897cde8ade42c2a46dd8186a3187",
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187",
                 "shasum": ""
             },
             "require": {
@@ -3970,7 +3970,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-06-20 09:36:12"
+            "time": "2017-06-22 14:44:00"
         },
         {
             "name": "egulias/email-validator",
