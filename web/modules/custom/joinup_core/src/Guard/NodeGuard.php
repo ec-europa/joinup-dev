@@ -61,9 +61,9 @@ class NodeGuard implements GuardInterface {
   protected $transitions;
 
   /**
-   * The 'update' operation permission scheme.
+   * The permission scheme stored in configuration.
    *
-   * @var array
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
   protected $permissionScheme;
 
@@ -100,13 +100,40 @@ class NodeGuard implements GuardInterface {
     $this->configFactory = $configFactory;
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;
-    $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme')->get('update');
+    $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme');
   }
 
   /**
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
+    if ($entity->isNew()) {
+      return $this->allowedCreate($transition, $workflow, $entity);
+    }
+    else {
+      return $this->allowedUpdate($transition, $workflow, $entity);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
+    $permission_scheme = $this->permissionScheme->get('create');
+    $workflow_id = $workflow->getId();
+    $e_library = $this->relationManager->getParentElibrary($entity);
+
+    if (!isset($permission_scheme[$workflow_id][$e_library][$transition->getId()])) {
+      return FALSE;
+    }
+    return $this->workflowHelper->userHasRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$e_library][$transition->getId()]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
+    $this->permissionScheme = $this->permissionScheme->get('update');
     $access = FALSE;
 
     $workflow_id = $workflow->getId();
