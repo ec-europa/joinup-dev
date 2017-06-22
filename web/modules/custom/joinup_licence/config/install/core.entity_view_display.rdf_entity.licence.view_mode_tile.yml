@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_tile
+    - field.field.rdf_entity.licence.field_licence_description
+    - field.field.rdf_entity.licence.field_licence_type
+    - rdf_entity.rdfentity.licence
+  module:
+    - ds
+    - joinup
+    - text
+    - user
+id: rdf_entity.licence.view_mode_tile
+targetEntityType: rdf_entity
+bundle: licence
+mode: view_mode_tile
+content:
+  field_licence_description:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: text_trimmed
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  field_licence_type: true
+  langcode: true
