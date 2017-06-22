@@ -124,9 +124,9 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  *    community content.
  */
 function joinup_community_content_workflow_selector(EntityInterface $entity) {
-  $bundles = ['discussion', 'document', 'event', 'news'];
+  $bundles = ['document', 'event', 'news'];
   if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
-    throw new Exception('This function can only be called for community content.');
+    throw new Exception('This function can only be called for community content apart from discussion.');
   }
 
   /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
