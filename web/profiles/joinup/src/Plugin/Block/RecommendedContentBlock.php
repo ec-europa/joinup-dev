@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
@@ -22,18 +23,6 @@ use Drupal\og\MembershipManager;
  * )
  */
 class RecommendedContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * The community content bundle ids.
-   *
-   * @var array
-   */
-  const COMMUNITY_BUNDLES = [
-    'discussion',
-    'document',
-    'event',
-    'news',
-  ];
 
   /**
    * The current user.
@@ -139,7 +128,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $index = Index::load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
-    $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+    $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
     $query->sort('created', 'DESC');
     $query->range(0, 9);
