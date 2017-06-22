@@ -133,7 +133,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             $this->assertTransitionsEqual($expected_transitions, $allowed_transitions);
           }
           foreach ($non_allowed_roles as $user_var) {
-            $access = $this->entityAccess->access($content, $operation, $this->$user_var);
+            $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
             $this->assertEquals(FALSE, $access);
           }
         }
@@ -165,11 +165,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         $allowed_roles = $state_data['any'];
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
         foreach ($state_data as $user_var => $expected_transitions) {
-          $access = $this->entityAccess->access($content, $operation, $this->$user_var);
+          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $this->assertEquals(TRUE, $access);
         }
         foreach ($non_allowed_roles as $user_var) {
-          $access = $this->entityAccess->access($content, $operation, $this->$user_var);
+          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
           $this->assertEquals(FALSE, $access);
         }
       }
