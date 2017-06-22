@@ -21,4 +21,3 @@ regions:
   content: Content  # the content region is required
   content_bottom: 'Content bottom'
   footer: Footer
-
