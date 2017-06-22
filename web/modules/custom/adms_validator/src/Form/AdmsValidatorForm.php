@@ -107,7 +107,14 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
-    $count = $this->storeInGraph($file);
+    $count = FALSE;
+    try {
+      $count = $this->storeInGraph($file);
+    }
+    catch (\Exception $e) {
+      $form_state->setError($form['adms_file'], $e->getMessage());
+    }
+
     // Delete the uploaded file from disk.
     $file->delete();
     if (!$count) {
@@ -130,16 +137,23 @@ class AdmsValidatorForm extends FormBase {
   protected function buildErrorTable(Result $errors) {
     $rows = [];
     foreach ($errors as $error) {
-      $row = [
-        $error->Class_Name ? $error->Class_Name : '',
-        $error->Message ? $error->Message : '',
-        $error->Object ? $error->Message : '',
-        $error->Predicate ? $error->Predicate : '',
-        $error->Rule_Description ? $error->Rule_Description : '',
-        $error->Rule_ID ? $error->Rule_ID : '',
-        $error->Rule_Severity ? $error->Rule_Severity : '',
-        $error->Subject ? $error->Subject : '',
+      $properties = [
+        'Class_Name',
+        'Message',
+        'Object',
+        'Predicate',
+        'Rule_Description',
+        'Rule_ID',
+        'Rule_Severity',
+        'Subject',
       ];
+      $row = [];
+      foreach ($properties as $property) {
+        $row[$property] = '';
+        if (!empty($error->{$property})) {
+          $row[$property] = $error->{$property};
+        }
+      }
       $row = array_map('strval', $row);
       $rows[] = $row;
     }
@@ -197,7 +211,7 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
       $graph->parseFile($file->getFileUri());
     }
     catch (\Exception $e) {
-      return FALSE;
+      throw $e;
     }
     $out = $gs->replace($graph, self::VALIDATION_GRAPH);
     if (!$out->isSuccessful()) {
