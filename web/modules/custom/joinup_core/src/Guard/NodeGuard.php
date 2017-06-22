@@ -6,18 +6,17 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
-use Drupal\user\RoleInterface;
 
 /**
  * Guard class for the transitions of nodes.
  */
-abstract class NodeGuard implements GuardInterface {
+class NodeGuard implements GuardInterface {
 
   /**
    * The config factory.
@@ -62,6 +61,20 @@ abstract class NodeGuard implements GuardInterface {
   protected $transitions;
 
   /**
+   * The 'update' operation permission scheme.
+   *
+   * @var array
+   */
+  protected $permissionScheme;
+
+  /**
+   * The workflow helper class.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
    * Instantiates the NodeGuard service.
    *
    * The classes inheriting this class, should also ensure that they set the
@@ -77,56 +90,38 @@ abstract class NodeGuard implements GuardInterface {
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
+   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entityTypeManager;
     $this->relationManager = $relationManager;
     $this->ogMembershipManager = $ogMembershipManager;
     $this->configFactory = $configFactory;
     $this->currentUser = $currentUser;
+    $this->workflowHelper = $workflow_helper;
+    $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme')->get('update');
   }
 
   /**
    * {@inheritdoc}
    */
   public function allowed(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    if (empty($this->transitions)) {
-      return FALSE;
+    $access = FALSE;
+
+    $workflow_id = $workflow->getId();
+    if ($this->workflowHelper->userHasOwnAnyRoles($entity, $this->currentUser, $this->permissionScheme[$workflow_id][$transition->getId()])) {
+      $access = TRUE;
     }
 
-    if ($this->currentUser->hasPermission($entity->getEntityType()->getAdminPermission())) {
-      return TRUE;
+    // If the user has access to the 'request_deletion' transition but also has
+    // delete permission to the entity, revoke the permission to request
+    // deletion.
+    if ($transition->getId() === 'request_deletion') {
+      $access = !$entity->access('delete');
     }
 
-    $allowed_conditions = $this->transitions[$workflow->getId()];
-
-    // Check if the user has one of the allowed system roles.
-    $from_state = $this->getState($entity);
-    $transition_id = $transition->getId();
-    $authorized_roles = isset($allowed_conditions[$transition_id][$from_state]) ? $allowed_conditions[$transition_id][$from_state] : [];
-
-    // If the entity is new, check the eLibrary roles.
-    if ($entity->isNew()) {
-      // Get the roles according to the eLibrary creation.
-      $elibrary_authorized_roles = $this->getElibraryAllowedRoles($entity);
-      $authorized_roles = array_intersect($authorized_roles, $elibrary_authorized_roles);
-    }
-
-    // If the owner is still allowed, check for ownership.
-    if (in_array('owner', $authorized_roles)) {
-      if ($entity->getOwnerId() === $this->currentUser->id()) {
-        return TRUE;
-      }
-    }
-    $authorized_roles = array_diff($authorized_roles, ['owner']);
-
-    if (array_intersect($authorized_roles, $this->currentUser->getRoles())) {
-      return TRUE;
-    }
-
-    $parent = $this->relationManager->getParent($entity);
-    $membership = $this->ogMembershipManager->getMembership($parent, $this->currentUser);
-    return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
+    return $access;
   }
 
   /**
@@ -142,67 +137,6 @@ abstract class NodeGuard implements GuardInterface {
    */
   protected function getState(EntityInterface $entity) {
     return $entity->get('field_state')->first()->value;
-  }
-
-  /**
-   * Returns allowed roles according to the eLibrary creation field.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return array
-   *   An array of roles that are allowed.
-   */
-  protected function getElibraryAllowedRoles(EntityInterface $entity) {
-    $roles_array = [
-      ELibraryCreationOptions::FACILITATORS => [
-        'rdf_entity-collection-facilitator',
-        'rdf_entity-solution-facilitator',
-        'moderator',
-      ],
-      ELibraryCreationOptions::MEMBERS => [
-        'rdf_entity-collection-facilitator',
-        'rdf_entity-solution-facilitator',
-        'rdf_entity-collection-member',
-        'moderator',
-      ],
-      ELibraryCreationOptions::REGISTERED_USERS => [
-        'rdf_entity-collection-facilitator',
-        'rdf_entity-solution-facilitator',
-        'rdf_entity-collection-member',
-        RoleInterface::AUTHENTICATED_ID,
-        'moderator',
-      ],
-    ];
-
-    $parent = $this->relationManager->getParent($entity);
-    if (empty($parent)) {
-      // For security reasons, if no parent is returned, return the strictest
-      // option.
-      return $roles_array[ELibraryCreationOptions::FACILITATORS];
-    }
-
-    $e_library_name = $this->getParentElibraryName($parent);
-    $e_library_creation = $parent->{$e_library_name}->value;
-    return $roles_array[$e_library_creation];
-  }
-
-  /**
-   * Returns the eLibrary creation machine name.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The parent entity.
-   *
-   * @return string
-   *   The machine name of the eLibrary creation field.
-   */
-  protected function getParentElibraryName(EntityInterface $entity) {
-    $field_array = [
-      'collection' => 'field_ar_elibrary_creation',
-      'solution' => 'field_is_elibrary_creation',
-    ];
-
-    return $field_array[$entity->bundle()];
   }
 
 }
