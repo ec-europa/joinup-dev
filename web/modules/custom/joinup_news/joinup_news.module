@@ -5,7 +5,6 @@
  * Provides functionality for the news content entity.
  */
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
@@ -23,29 +22,4 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
       $fields['field_news_referenced_solution']->addConstraint('UniqueFieldValue');
     }
   }
-}
-
-/**
- * Returns the appropriate workflow to use for the news entity.
- *
- * The callback ensures that even if the parent is updated and the moderation
- * status changes, it will still use the proper workflow.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The news entity.
- *
- * @return string
- *   The id of the workflow to use.
- *
- * @throws Exception
- *    Thrown when the function is called for a different bundle.
- */
-function joinup_news_workflow_selector(EntityInterface $entity) {
-  if ($entity->bundle() != 'news') {
-    throw new Exception('This method can only be called for news entities.');
-  }
-  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == 1 ? 'node:news:pre_moderated' : 'node:news:post_moderated';
 }
