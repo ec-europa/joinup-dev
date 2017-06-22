@@ -52,6 +52,7 @@ hidden:
   field_shared_in: true
   field_short_title: true
   field_type: true
+  langcode: true
   links: true
   og_audience: true
   report: true

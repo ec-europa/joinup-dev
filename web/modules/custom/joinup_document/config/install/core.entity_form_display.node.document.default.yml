@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.document.field_short_title
     - field.field.node.document.field_state
     - field.field.node.document.field_type
+    - field.field.node.document.field_visit_count
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -117,6 +118,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_visit_count:
+    weight: 26
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   title:
     type: string_textfield
     weight: 0

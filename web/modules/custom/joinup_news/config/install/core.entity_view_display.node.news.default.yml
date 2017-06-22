@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_state
+    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -133,6 +134,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_visit_count:
+    weight: 13
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
     region: content
   links:
     weight: 0

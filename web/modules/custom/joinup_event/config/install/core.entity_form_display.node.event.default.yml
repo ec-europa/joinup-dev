@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
+    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -180,6 +181,13 @@ content:
     settings:
       use_transition_label: 1
     third_party_settings: {  }
+  field_visit_count:
+    weight: 26
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
   langcode:
     type: language_select
     weight: 2
