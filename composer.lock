@@ -2236,7 +2236,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1492681579"
+                    "datestamp": "1491851643"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -3940,12 +3940,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c"
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/2a43f713b6af897cde8ade42c2a46dd8186a3187",
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187",
                 "shasum": ""
             },
             "require": {
@@ -3970,7 +3970,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-06-07 07:51:39"
+            "time": "2017-06-22 14:44:00"
         },
         {
             "name": "egulias/email-validator",
@@ -8754,7 +8754,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-05-01 21:54:12"
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
