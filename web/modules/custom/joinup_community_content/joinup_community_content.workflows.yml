@@ -114,6 +114,7 @@ node:discussion:post_moderated:
       label: Proposed
     archived:
       label: Archived
+      published: true
   transitions:
     save_as_draft:
       label: 'Save as draft'
