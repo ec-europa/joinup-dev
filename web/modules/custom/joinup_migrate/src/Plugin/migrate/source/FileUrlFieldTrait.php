@@ -81,14 +81,14 @@ trait FileUrlFieldTrait {
    *   this entity. Example [['fid' => 123], ['fid' => 789]].
    * @param string $file_migration_id
    *   The ID of the file migration to be used for file ID lookup.
-   * @param string $url_property
-   *   The source property of the remote URL to be set.
+   * @param string[] $urls
+   *   A list of URLs to be set.
    * @param int $mode
    *   (optional) Indicates how file uploads and remote URL are composing the
    *   file URL field. Possible values JoinupSqlBase::FILE_URL_MODE_*. Defaults
    *   to JoinupSqlBase::FILE_URL_MODE_SINGLE.
    */
-  protected function setFileUrlTargetId(Row &$row, $file_url_field_property, array $file_source_id_values, $file_migration_id, $url_property, $mode = JoinupSqlBase::FILE_URL_MODE_SINGLE) {
+  protected function setFileUrlTargetId(Row &$row, $file_url_field_property, array $file_source_id_values, $file_migration_id, array $urls, $mode = JoinupSqlBase::FILE_URL_MODE_SINGLE) {
     $items = [];
     if ($file_source_id_values) {
       global $base_url;
@@ -110,10 +110,11 @@ trait FileUrlFieldTrait {
     // Only add the remote URL if it's a multiple cardinality field or no file
     // reference has been added in the previous step.
     if (($mode === JoinupSqlBase::FILE_URL_MODE_MULTIPLE) || empty($items)) {
-      // The URI might be a reference to a remote file or NULL.
-      if ($url = $this->normalizeUri($row->getSourceProperty($url_property))) {
-        $items[] = $url;
+      if ($mode === JoinupSqlBase::FILE_URL_MODE_SINGLE) {
+        // Cut off the first element in case of single value fields.
+        $urls = [$urls[0]];
       }
+      $items = array_merge($items, $urls);
     }
 
     // Store file URL items in the row under passed property.

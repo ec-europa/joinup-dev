@@ -29,6 +29,8 @@ $this->assertReferences([
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('Description for a new collection', $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertRedirects([], $collection);
@@ -46,7 +48,9 @@ $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
+$this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing an Abstract");
 $this->assertTrue($collection->get('field_ar_description')->isEmpty());
+$this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing a Description");
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
@@ -68,6 +72,7 @@ $this->assertReferences(['contact@semic.eu'], $collection->get('field_ar_contact
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('The Asset Description Metadata Schema (ADMS) is a metadata vocabulary to describe semantic interoperability assets.', $collection->get('field_ar_abstract')->value);
+$this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertStringEndsWith("Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
@@ -87,7 +92,7 @@ $this->assertTrue($collection->get('field_ar_owner')->isEmpty());
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
-$this->assertStringEndsWith('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal. ', $collection->field_ar_abstract->value);
+$this->assertEquals('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal.', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertStringEndsWith("Discover the portal <a href=\"http://www.europeandataportal.eu\">www.europeandataportal.eu</a></p>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
@@ -122,7 +127,10 @@ $this->assertReferences([
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
+// Repositories doesn't have abstract and no abstract has been provided in the
+// mapping Excel file. We log such inconsistencies.
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
+$this->assertMessage('collection', "Collection 'Archived collection' is missing an Abstract");
 $this->assertStringEndsWith("suitable for old computers, and netbooks)</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);

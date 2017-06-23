@@ -79,6 +79,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'nid' => $this->t('Node ID'),
       'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
+      'description' => $this->t('Description'),
       'abstract' => $this->t('Abstract'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),

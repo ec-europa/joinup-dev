@@ -38,7 +38,11 @@ class File extends JoinupSqlBase {
    */
   public function query() {
     $table = 'd8_file_' . $this->migration->getDerivativeId();
-    return $this->select($table)->fields($table);
+    return $this->select($table)
+      ->fields($table)
+      // Extra precaution for views that are returning also non-file records.
+      // @see web/modules/custom/joinup_migrate/fixture/1.file_documentation.sql
+      ->isNotNull("$table.fid");
   }
 
   /**
