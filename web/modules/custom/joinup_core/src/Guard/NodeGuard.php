@@ -133,11 +133,11 @@ class NodeGuard implements GuardInterface {
    * {@inheritdoc}
    */
   public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $this->permissionScheme = $this->permissionScheme->get('update');
+    $permission_scheme = $this->permissionScheme->get('update');
     $access = FALSE;
 
     $workflow_id = $workflow->getId();
-    if ($this->workflowHelper->userHasOwnAnyRoles($entity, $this->currentUser, $this->permissionScheme[$workflow_id][$transition->getId()])) {
+    if ($this->workflowHelper->userHasOwnAnyRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$transition->getId()])) {
       $access = TRUE;
     }
 
