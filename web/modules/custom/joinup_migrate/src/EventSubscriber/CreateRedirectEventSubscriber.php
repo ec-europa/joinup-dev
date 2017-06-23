@@ -54,6 +54,7 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
           $this->storage[$entity_type_id] = \Drupal::entityTypeManager()->getStorage($entity_type_id);
         }
         $entity = $this->storage[$entity_type_id]->load($entity_id);
+        $uri = $source_plugin->getRedirectUri($entity);
 
         /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
         $redirect_repository = \Drupal::service('redirect.repository');
@@ -66,7 +67,7 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
               'uid' => 1,
               'redirect_source' => ['path' => $source, 'query' => NULL],
               'redirect_redirect' => [
-                'uri' => $source_plugin->getRedirectUri($entity),
+                'uri' => $uri,
                 'title' => '',
               ],
               'status_code' => 301,

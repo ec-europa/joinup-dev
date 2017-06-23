@@ -587,10 +587,7 @@ function joinup_core_file_delete(EntityInterface $entity) {
     return;
   }
 
-  /** @var \Drupal\Core\StreamWrapper\PublicStream $stream_wrapper */
-  $stream_wrapper = \Drupal::service('stream_wrapper.public');
-  $stream_wrapper->setUri($uri);
-  $path = 'base:/' . $stream_wrapper->getDirectoryPath() . '/' . file_uri_target($uri);
+  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . file_uri_target($uri);
 
   // Delete all redirects targeting this path.
   redirect_delete_by_path($path);
