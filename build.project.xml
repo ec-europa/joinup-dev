@@ -29,6 +29,9 @@
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
+    <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
+    <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
         <drush
@@ -49,6 +52,8 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+        <!-- Set the auto-increment default values for some tables. -->
+        <setmysqlautoincrement />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
