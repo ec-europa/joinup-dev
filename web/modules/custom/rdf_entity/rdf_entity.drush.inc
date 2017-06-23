@@ -5,6 +5,7 @@
  * Purge the triple store from the CLI.
  */
 
+use Drupal\rdf_entity\UriEncoder;
 use Drush\Log\LogLevel;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend;
@@ -22,6 +23,17 @@ function rdf_entity_drush_command() {
       'drush rep' => dt('Alias to purge the triple store.'),
     ],
     'aliases' => ['rep'],
+  ];
+  $items['rdf-uri-encode'] = [
+    'description' => 'Encodes a URI into an URL parameter',
+    'arguments' => [
+      'uri'    => 'The URI to encode.',
+    ],
+    'examples' => [
+      'drush rdf-uri-encode' => dt('Encode a URI to a URL part.'),
+      'drush rue' => dt('Alias to encode a URI to a URL part.'),
+    ],
+    'aliases' => ['rue'],
   ];
   return $items;
 }
@@ -70,4 +82,11 @@ QUERY;
   else {
     drush_log('Triple store is empty, nothing to delete.', LogLevel::INFO);
   }
+}
+
+/**
+ * Encodes a URI into an URL parameter.
+ */
+function drush_rdf_entity_rdf_uri_encode($uri) {
+  drush_print(UriEncoder::encodeUrl($uri));
 }
