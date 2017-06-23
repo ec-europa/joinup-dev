@@ -31,7 +31,10 @@ $this->assertReferences(['Ordnance Survey'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/administrative-geography-and-civil-voting-area-ontology'], $solution);
+$this->assertRedirects([
+  'node/58694',
+  'catalogue/asset_release/administrative-geography-and-civil-voting-area-ontology',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 $this->assertEquals('CIPA e-Delivery', $solution->label());
@@ -64,7 +67,10 @@ $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->g
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('proposed', $solution->field_is_state->value);
-$this->assertRedirects(['software/cipaedelivery/description'], $solution);
+$this->assertRedirects([
+  'node/49860',
+  'software/cipaedelivery/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Styles Layer Descriptor', 'solution');
 $this->assertEquals('Styles Layer Descriptor', $solution->label());
@@ -84,7 +90,10 @@ $this->assertReferences([
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/styles-layer-descriptor'], $solution);
+$this->assertRedirects([
+  'node/76726',
+  'catalogue/asset_release/styles-layer-descriptor',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'KASPeR - Mapping application of statistical data e-dimensions', 'solution');
 $this->assertEquals('KASPeR - Mapping application of statistical data e-dimensions', $solution->label());
@@ -106,7 +115,10 @@ $this->assertReferences([
 ], $solution->field_is_contact_information);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/kasper-mapping-application-statistical-data-e-dimensions'], $solution);
+$this->assertRedirects([
+  'node/102713',
+  'catalogue/asset_release/kasper-mapping-application-statistical-data-e-dimensions',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
 $this->assertEquals('Core Location Vocabulary', $solution->label());
@@ -130,7 +142,10 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/core_location/description'], $solution);
+$this->assertRedirects([
+  'node/42444',
+  'asset/core_location/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
 $this->assertEquals('DCAT application profile for data portals in Europe', $solution->label());
@@ -161,7 +176,10 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/dcat_application_profile/description'], $solution);
+$this->assertRedirects([
+  'node/63567',
+  'asset/dcat_application_profile/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Asset Description Metadata Schema (ADMS)', 'solution');
 $this->assertEquals('Asset Description Metadata Schema (ADMS)', $solution->label());
@@ -190,7 +208,10 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/adms/description'], $solution);
+$this->assertRedirects([
+  'node/42438',
+  'asset/adms/description',
+], $solution);
 
 // There are 2 solutions with the same title, so we cannot load by title. We are
 // interested in inspecting the solution migrated from node 59180. So, we'll use
@@ -217,7 +238,10 @@ $this->assertReferences([
 $this->assertEquals('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1', $solution->get('field_is_translation')->target_id);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/common-reporting-framework-xbrl-project-0'], $solution);
+$this->assertRedirects([
+  'node/59180',
+  'catalogue/asset_release/common-reporting-framework-xbrl-project-0',
+], $solution);
 
 $solution = Rdf::load('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1');
 $this->assertEquals('Common Reporting Framework XBRL Project', $solution->label());
@@ -237,7 +261,10 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/common-reporting-framework-xbrl-project-1'], $solution);
+$this->assertRedirects([
+  'node/59183',
+  'catalogue/asset_release/common-reporting-framework-xbrl-project-1',
+], $solution);
 
 $solution = Rdf::load('http://www.w3.org/TR/2011/WD-EARL10-Schema-20110510');
 $this->assertEquals('Evaluation and Report Language (EARL) 1.0 Schema', $solution->label());
@@ -259,7 +286,10 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/evaluation-and-report-language-earl-10-schema'], $solution);
+$this->assertRedirects([
+  'node/60208',
+  'catalogue/asset_release/evaluation-and-report-language-earl-10-schema',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Digital Signature Service', 'solution');
 $this->assertEquals('Digital Signature Service', $solution->label());
@@ -305,4 +335,7 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertTrue($solution->get('field_is_owner')->isEmpty());
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/sd-dss/description'], $solution);
+$this->assertRedirects([
+  'node/27024',
+  'asset/sd-dss/description',
+], $solution);

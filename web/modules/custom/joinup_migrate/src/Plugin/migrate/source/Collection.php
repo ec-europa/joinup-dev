@@ -15,8 +15,8 @@ use Drupal\migrate\Row;
 class Collection extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait {
-    getRedirectSources as nodeGetRedirectSources;
+  use DefaultRdfRedirectTrait {
+    getRedirectSources as rdfGetRedirectSources;
   }
 
   /**
@@ -163,7 +163,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
 
     // We collect the aliases from all collection components, as 'community' and
     // 'repository', omitting 'project_project' and 'asset_release' because
-    // these are creating redirects to solutions.
+    // these are creating more specific redirects to solutions.
     $nids = $this->select('d8_mapping', 'm')
       ->fields('m', ['nid'])
       ->condition('m.collection', $row->getSourceProperty('collection'))
@@ -171,14 +171,14 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       ->execute()
       ->fetchCol();
 
-    $redirect_sources = [];
+    $sources = [];
     foreach ($nids as $nid) {
-      // Mock a fake row, just to reuse the parent method.
+      // Mock a row, just to reuse the parent method.
       $fake_row = new Row(['nid' => $nid], ['nid' => $nid]);
-      $redirect_sources = array_merge($redirect_sources, $this->nodeGetRedirectSources($fake_row));
+      $sources = array_merge($sources, $this->rdfGetRedirectSources($fake_row));
     }
 
-    return $redirect_sources;
+    return $sources;
   }
 
 }

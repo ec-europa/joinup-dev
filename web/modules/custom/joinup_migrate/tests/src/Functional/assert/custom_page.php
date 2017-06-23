@@ -5,6 +5,8 @@
  * Assertions for 'custom_page' and 'custom_page_parent' migrations.
  */
 
+use Drupal\node\Entity\Node;
+
 // Migration counts.
 $this->assertTotalCount('custom_page_parent', 2);
 $this->assertSuccessCount('custom_page_parent', 2);
@@ -36,7 +38,7 @@ $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $pa
 $this->assertRedirects([], $custom_page);
 
 // Children custom pages.
-$custom_page = $this->loadEntityByLabel('node', 'Roadmap 2016', 'custom_page');
+$custom_page = Node::load(74530);
 $this->assertEquals('Roadmap 2016', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1389264097, $custom_page->created->value);
@@ -49,7 +51,7 @@ $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $li
 $this->assertEquals('menu_link_content:' . $parent_link1->uuid(), $link->getParentId());
 $this->assertRedirects(['asset/sd-dss/og_page/roadmap-2016'], $custom_page);
 
-$custom_page = $this->loadEntityByLabel('node', 'Solutions per domain', 'custom_page');
+$custom_page = Node::load(157896);
 $this->assertEquals('Solutions per domain', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1482238075, $custom_page->created->value);
@@ -61,7 +63,7 @@ $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $li
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
 $this->assertRedirects(['community/eic/og_page/solutions-domain'], $custom_page);
 
-$custom_page = $this->loadEntityByLabel('node', 'Eligibility criteria', 'custom_page');
+$custom_page = Node::load(157897);
 $this->assertEquals('Eligibility criteria', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1482238234, $custom_page->created->value);
@@ -74,7 +76,7 @@ $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getPare
 $this->assertRedirects(['community/eic/og_page/eligibility-criteria'], $custom_page);
 
 // Orphan custom pages. We test only 1 of 5.
-$custom_page = $this->loadEntityByLabel('node', 'CAMSS Tools', 'custom_page');
+$custom_page = Node::load(74988);
 $this->assertEquals('CAMSS Tools', $custom_page->label());
 $this->assertEquals('custom_page', $custom_page->bundle());
 $this->assertEquals(1390378400, $custom_page->created->value);

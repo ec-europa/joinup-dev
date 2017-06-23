@@ -5,13 +5,14 @@
  * Assertions for 'video' migration.
  */
 
+use Drupal\node\Entity\Node;
+
 // Migration counts.
 $this->assertTotalCount('video', 1);
 $this->assertSuccessCount('video', 1);
 
 // Imported content check.
-/* @var \Drupal\node\NodeInterface $video */
-$video = $this->loadEntityByLabel('node', 'Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', 'video');
+$video = Node::load(125838);
 $this->assertEquals('Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', $video->label());
 $this->assertEquals('video', $video->bundle());
 $this->assertEquals(1325763434, $video->created->value);

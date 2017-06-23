@@ -5,13 +5,14 @@
  * Assertions for 'news' migration.
  */
 
+use Drupal\node\Entity\Node;
+
 // Migration counts.
 $this->assertTotalCount('news', 3);
 $this->assertSuccessCount('news', 3);
 
 // Imported content check.
-/* @var \Drupal\node\NodeInterface $news */
-$news = $this->loadEntityByLabel('node', 'Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!');
+$news = Node::load(155894);
 $this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->label());
 $this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
@@ -26,7 +27,7 @@ $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['news/mobile-age-project-co-created-personalised-mobile-access-public-services-senior-citizens-–-2nd-'], $news);
 
-$news = $this->loadEntityByLabel('node', 'BE, NL: governments will not use ISO OOXML');
+$news = Node::load(27607);
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->label());
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
@@ -45,7 +46,7 @@ $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['osor/news/be-nl-governments-will-not-use-iso-ooxml'], $news);
 
-$news = $this->loadEntityByLabel('node', 'Public workshop to discuss ways to sustain governmental open standards', 'news');
+$news = Node::load(65803);
 $this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->label());
 $this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());

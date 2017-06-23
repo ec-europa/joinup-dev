@@ -2,12 +2,13 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\migrate\Row;
 
 /**
  * Implements \Drupal\joinup_migrate\RedirectImportInterface methods for nodes.
  */
-trait DefaultNodeRedirectTrait {
+trait DefaultRedirectTrait {
 
   /**
    * {@inheritdoc}
@@ -23,6 +24,13 @@ trait DefaultNodeRedirectTrait {
     }
 
     return $sources;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedirectUri(EntityInterface $entity) {
+    return 'internal:/' . $entity->toUrl()->getInternalPath();
   }
 
 }

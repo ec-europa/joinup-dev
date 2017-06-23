@@ -100,7 +100,10 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/edp/description'], $collection);
+$this->assertRedirects([
+  'node/149141',
+  'community/edp/description',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
@@ -137,7 +140,10 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
-$this->assertRedirects(['catalogue/repository/la-forja-de-guadalinex'], $collection);
+$this->assertRedirects([
+  'node/82307',
+  'catalogue/repository/la-forja-de-guadalinex',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());
@@ -162,7 +168,10 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/eic.jpg');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/eic/description'], $collection);
+$this->assertRedirects([
+  'node/157710',
+  'community/eic/description',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
 $this->assertEquals('Collection with 1 entity having custom section', $collection->label());
@@ -185,4 +194,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/CAMSS_70_3_1.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/CAMSS_70_3_1.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/camss/description'], $collection);
+$this->assertRedirects([
+  'node/66790',
+  'community/camss/description',
+], $collection);

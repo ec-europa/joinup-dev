@@ -15,7 +15,7 @@ use Drupal\migrate\Row;
 class Release extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
   use DocumentationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;

@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -15,13 +16,22 @@ interface RedirectImportInterface {
    * @param \Drupal\migrate\Row $row
    *   The migrate row object.
    *
-   * @return array[]|null
-   *   A list of redirect sources an an indexed array of associative arrays,
-   *   each one having two keys: 'path' and 'query'. See RedirectSourceItem for
-   *   the meaning of the two values.
+   * @return string[]
+   *   A list of redirect paths.
    *
    * @see \Drupal\redirect\Plugin\Field\FieldType\RedirectSourceItem
    */
   public function getRedirectSources(Row $row);
+
+  /**
+   * Gets the redirect URI for a given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The migrate row object.
+   *
+   * @return string
+   *   The redirect URI.
+   */
+  public function getRedirectUri(EntityInterface $entity);
 
 }

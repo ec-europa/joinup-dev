@@ -5,13 +5,15 @@
  * Assertions for 'newsletter' migration.
  */
 
+use Drupal\node\Entity\Node;
+
 // Migration counts.
 $this->assertTotalCount('newsletter', 1);
 $this->assertSuccessCount('newsletter', 1);
 
 // Imported content check.
 /* @var \Drupal\node\NodeInterface $newsletter */
-$newsletter = $this->loadEntityByLabel('node', 'Joinup Open Source News Service - June 2016');
+$newsletter = Node::load(152066);
 $this->assertEquals('Joinup Open Source News Service - June 2016', $newsletter->label());
 $this->assertEquals('newsletter', $newsletter->bundle());
 $this->assertEquals(1465386690, $newsletter->created->value);

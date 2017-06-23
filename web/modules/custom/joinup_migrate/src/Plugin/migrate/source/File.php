@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,7 +13,7 @@ use Drupal\migrate\Row;
  *   id = "file"
  * )
  */
-class File extends JoinupSqlBase {
+class File extends JoinupSqlBase implements RedirectImportInterface {
 
   /**
    * {@inheritdoc}
@@ -60,6 +62,35 @@ class File extends JoinupSqlBase {
     }
 
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedirectSources(Row $row) {
+    $sources = [];
+    $fid = (int) $row->getSourceProperty('numeric_fid');
+
+    if ($fid) {
+      $sql = "SELECT filepath FROM files WHERE fid = :fid";
+      if ($path = $this->getDatabase()->query($sql, [':fid' => $fid])->fetchField()) {
+        $sources[] = $path;
+      }
+    }
+
+    return $sources;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedirectUri(EntityInterface $entity) {
+    /** @var \Drupal\file\FileInterface $entity */
+    // Such redirects are not cleared automatically by the Redirect module, on
+    // the source file entity deletion. Thus, we are fulfilling this task in our
+    // custom module, in joinup_core_file_delete().
+    // @see joinup_core_file_delete()
+    return 'base:/sites/default/files/' . file_uri_target($entity->getFileUri());
   }
 
 }

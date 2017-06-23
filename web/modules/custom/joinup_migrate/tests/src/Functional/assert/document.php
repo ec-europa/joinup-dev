@@ -6,14 +6,14 @@
  */
 
 use Drupal\file_url\FileUrlHandler;
+use Drupal\node\Entity\Node;
 
 // Migration counts.
 $this->assertTotalCount('document', 8);
 $this->assertSuccessCount('document', 8);
 
 // Imported content check.
-/* @var \Drupal\node\NodeInterface $document */
-$document = $this->loadEntityByLabel('node', 'BAA');
+$document = Node::load(139528);
 $this->assertEquals('BAA', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('document', $document->field_type->value);
@@ -30,7 +30,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/baa'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'Good Practice Study');
+$document = Node::load(42233);
 $this->assertEquals('Good Practice Study', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('document', $document->field_type->value);
@@ -48,7 +48,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/good-practice-study'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'CAMSS method (v1.0) scenario 2 - SMEF');
+$document = Node::load(138766);
 $this->assertEquals('CAMSS method (v1.0) scenario 2 - SMEF', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('document', $document->field_type->value);
@@ -66,7 +66,7 @@ $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-smef'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'The Irish ePassport');
+$document = Node::load(133560);
 $this->assertEquals('The Irish ePassport', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('case', $document->field_type->value);
@@ -90,7 +90,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['community/epractice/case/irish-epassport'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'National Interoperability Framework Observatory (NIFO) Factsheets');
+$document = Node::load(53012);
 $this->assertEquals('National Interoperability Framework Observatory (NIFO) Factsheets', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('factsheet', $document->field_type->value);
@@ -143,7 +143,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/factsheet/national-interoperability-framework-observatory-nifo-factsheets'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'ISA Contributor Agreement v1.1');
+$document = Node::load(63578);
 $this->assertEquals('ISA Contributor Agreement v1.1', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('legal', $document->field_type->value);
@@ -159,7 +159,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['asset/dcat_application_profile/legaldocument/isa-contributor-agreement-v11'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', 'E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson');
+$document = Node::load(155691);
 $this->assertEquals('E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('presentation', $document->field_type->value);
@@ -177,7 +177,7 @@ $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['elibrary/presentation/e-government-action-plan-2016-2020-opinion-european-committee-regions-martin-a'], $document);
 // @todo Test also the licence when the final excel mapping table is in.
 
-$document = $this->loadEntityByLabel('node', "FR: 6th Edition of 'Words of Elected Representatives'");
+$document = Node::load(125548);
 $this->assertEquals("FR: 6th Edition of 'Words of Elected Representatives'", $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('document', $document->field_type->value);

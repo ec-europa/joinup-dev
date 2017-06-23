@@ -13,7 +13,7 @@ use Drupal\joinup_migrate\RedirectImportInterface;
  */
 class Contact extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
 
   /**
    * {@inheritdoc}

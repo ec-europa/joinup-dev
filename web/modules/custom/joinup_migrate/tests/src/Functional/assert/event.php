@@ -6,6 +6,7 @@
  */
 
 use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 
 // Migration counts.
 $this->assertTotalCount('file__event_logo', 2);
@@ -14,8 +15,7 @@ $this->assertTotalCount('event', 3);
 $this->assertSuccessCount('event', 3);
 
 // Imported content check.
-/* @var \Drupal\node\NodeInterface $event */
-$event = $this->loadEntityByLabel('node', 'Euritas summit 2015: “Innovate, cooperate, take the challenge!”', 'event');
+$event = Node::load(145278);
 $this->assertEquals('Euritas summit 2015: “Innovate, cooperate, take the challenge!”', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1440160716, $event->created->value);
@@ -51,7 +51,7 @@ $this->assertEquals('proposed', $event->field_state->value);
 $this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
 $this->assertRedirects(['community/egovernment/event/euritas-summit-2015-“innovate-cooperate-take-challenge”-0'], $event);
 
-$event = $this->loadEntityByLabel('node', 'CPSV-AP Revision WG Virtual Meeting 3', 'event');
+$event = Node::load(150255);
 $this->assertEquals('CPSV-AP Revision WG Virtual Meeting 3', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1458817102, $event->created->value);
@@ -77,7 +77,7 @@ $this->assertEquals('proposed', $event->field_state->value);
 $this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
 $this->assertRedirects(['asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0'], $event);
 
-$event = $this->loadEntityByLabel('node', '5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', 'event');
+$event = Node::load(42464);
 $this->assertEquals('5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1323441667, $event->created->value);
