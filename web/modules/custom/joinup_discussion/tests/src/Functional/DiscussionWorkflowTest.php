@@ -15,7 +15,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
    * {@inheritdoc}
    */
   protected function getPublishedStates($state) {
-    return ['published', 'archived'];
+    return ['validated', 'archived'];
   }
 
   /**

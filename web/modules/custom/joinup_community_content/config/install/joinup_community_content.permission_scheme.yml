@@ -11,7 +11,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       any:
         roles:
           - anonymous
@@ -57,7 +57,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       any:
         roles:
           - anonymous
@@ -103,7 +103,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       any:
         roles:
           - anonymous
@@ -590,7 +590,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       any:
         roles:
           - moderator
@@ -632,7 +632,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       own:
         roles:
           - authenticated
@@ -673,7 +673,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    published:
+    validated:
       own:
         roles:
           - authenticated

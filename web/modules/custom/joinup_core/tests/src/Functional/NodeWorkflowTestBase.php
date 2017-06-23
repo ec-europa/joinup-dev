@@ -524,7 +524,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           'own' => TRUE,
           'any' => [],
         ],
-        'published' => [
+        'validated' => [
           'own' => TRUE,
           'any' => [
             'userAnonymous',
@@ -562,7 +562,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           'own' => TRUE,
           'any' => [],
         ],
-        'published' => [
+        'validated' => [
           'own' => TRUE,
           'any' => [
             'userAnonymous',
@@ -653,7 +653,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             ],
           ],
         ],
-        'published' => [
+        'validated' => [
           'own' => [
             'save_new_draft',
             'request_deletion',
@@ -729,7 +729,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             ],
           ],
         ],
-        'published' => [
+        'validated' => [
           'own' => [
             'update_published',
             'save_new_draft',
@@ -811,7 +811,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               'userOgFacilitator',
             ],
           ],
-          'published' => [
+          'validated' => [
             'any' => [
               'userModerator',
               'userOgFacilitator',
@@ -842,7 +842,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               'userOgFacilitator',
             ],
           ],
-          'published' => [
+          'validated' => [
             'own' => TRUE,
             'any' => [
               'userModerator',
@@ -870,7 +870,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               'userOgFacilitator',
             ],
           ],
-          'published' => [
+          'validated' => [
             'any' => [
               'userModerator',
               'userOgFacilitator',
@@ -901,7 +901,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               'userOgFacilitator',
             ],
           ],
-          'published' => [
+          'validated' => [
             'own' => TRUE,
             'any' => [
               'userModerator',
@@ -1052,7 +1052,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    *   An array of workflow states.
    */
   protected function getPublishedStates() {
-    return ['published'];
+    return ['validated'];
   }
 
 }
