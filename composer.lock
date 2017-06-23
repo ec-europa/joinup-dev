@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3186e2d8ee743fd7dd83946ad1d19b4",
+    "content-hash": "2e4ba93a8441ffe8e2fe7478066b26fc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2280,7 +2280,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha9",
-                    "datestamp": "1491851643"
+                    "datestamp": "1492681579"
                 },
                 "patches_applied": {
                     "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
@@ -2750,7 +2750,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "eca1d7edac198ddea5fe831948b9cdfe999db435"
             },
             "require": {
@@ -8752,7 +8752,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-05-01T21:54:12+00:00"
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
