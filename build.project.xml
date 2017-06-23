@@ -33,7 +33,8 @@
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
     <!-- Install the website. -->
-    <target name="install" depends="writable-settings-folder, writable-settings-php">
+    <target name="install"
+            depends="create-d6-db, writable-settings-folder, writable-settings-php">
         <drush
             command="site-install"
             assume="yes"
