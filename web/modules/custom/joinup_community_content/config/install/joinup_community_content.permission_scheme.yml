@@ -307,7 +307,24 @@ update:
       any:
         roles:
           - moderator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     publish:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
       any:
         roles:
           - moderator
@@ -335,6 +352,13 @@ update:
       own:
         roles:
           - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
       any:
         roles:
           - moderator
@@ -367,6 +391,9 @@ update:
       any:
         roles:
           - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     save_new_draft:
       own:
         roles:
@@ -387,6 +414,23 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     update_proposed:
       own:
         roles:
@@ -398,6 +442,16 @@ update:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
     update_published:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
       any:
         roles:
           - moderator
@@ -430,6 +484,9 @@ update:
       any:
         roles:
           - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     save_new_draft:
       own:
         roles:
@@ -450,6 +507,23 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     update_proposed:
       own:
         roles:
@@ -461,6 +535,16 @@ update:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
     update_published:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
       any:
         roles:
           - moderator

@@ -304,7 +304,7 @@ class NodeWorkflowAccessControlHandler {
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
 
-    if (isset($delete_scheme[$state]) && $this->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
+    if (isset($delete_scheme[$workflow_id][$state]) && $this->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
       return AccessResult::allowed();
     }
 

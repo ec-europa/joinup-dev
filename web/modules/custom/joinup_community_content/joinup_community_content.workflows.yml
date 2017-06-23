@@ -26,11 +26,19 @@ node:pre_moderated:
       to: draft
     propose:
       label: 'Propose'
-      from: [draft, needs_update]
+      from: [draft]
+      to: proposed
+    propose_from_reported:
+      label: 'Propose'
+      from: [needs_update]
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft, proposed]
+      from: [draft]
+      to: published
+    approve_proposed:
+      label: 'Publish'
+      from: [proposed]
       to: published
     update_proposed:
       label: 'Update'
@@ -40,6 +48,10 @@ node:pre_moderated:
       label: 'Update'
       from: [published]
       to: published
+    report:
+      label: 'Report'
+      from: [published]
+      to: needs_update
     request_changes:
       label: 'Request changes'
       from: [published]
@@ -76,13 +88,17 @@ node:post_moderated:
       label: 'Save new draft'
       from: [published]
       to: draft
-    propose:
+    propose_from_reported:
       label: 'Propose'
       from: [needs_update]
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft, proposed]
+      from: [draft]
+      to: published
+    approve_proposed:
+      label: 'Publish'
+      from: [proposed]
       to: published
     update_proposed:
       label: 'Update'
@@ -92,6 +108,10 @@ node:post_moderated:
       label: 'Update'
       from: [published]
       to: published
+    report:
+      label: 'Report'
+      from: [published]
+      to: needs_update
     request_changes:
       label: 'Request changes'
       from: [published]
@@ -124,13 +144,17 @@ node:discussion:post_moderated:
       label: 'Save new draft'
       from: [published]
       to: draft
-    propose:
+    propose_from_reported:
       label: 'Propose'
       from: [needs_update]
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft, proposed]
+      from: [draft]
+      to: published
+    approve_proposed:
+      label: 'Publish'
+      from: [proposed]
       to: published
     update_proposed:
       label: 'Update'
@@ -140,6 +164,10 @@ node:discussion:post_moderated:
       label: 'Update'
       from: [published]
       to: published
+    report:
+      label: 'Report'
+      from: [published]
+      to: needs_update
     request_changes:
       label: 'Request changes'
       from: [published]

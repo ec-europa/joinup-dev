@@ -130,12 +130,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
           foreach ($allowed_roles as $user_var => $expected_transitions) {
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions);
+            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(FALSE, $access);
+            $this->assertEquals(FALSE, $access, $message);
           }
         }
       }
@@ -202,23 +204,27 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             'field_state' => $content_state,
             'status' => $this->isPublishedState($content_state),
           ]);
+          $content->save();
 
-          $own_access = isset($state_data['own']) && !empty($state_data['own']);
+          $own_access = isset($ownership_data['own']) && !empty($ownership_data['own']);
           if ($own_access) {
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
             $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->userOwner);
-            $expected_transitions = $state_data['own'];
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions);
+            $expected_transitions = $ownership_data['own'];
+            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
           }
           else {
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->userOwner);
-            $this->assertEquals(FALSE, $access);
+            $this->assertEquals(FALSE, $access, $message);
           }
 
-          $allowed_roles = array_keys($state_data['any']);
+          $allowed_roles = array_keys($ownership_data['any']);
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
-          foreach ($state_data as $user_var => $expected_transitions) {
+          foreach ($ownership_data['any'] as $user_var => $expected_transitions) {
+            $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions);
+            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
@@ -248,15 +254,15 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             'status' => $this->isPublishedState($content_state),
           ]);
 
-          $expected_own_access = isset($state_data['own']) && $state_data['own'] === TRUE;
+          $expected_own_access = isset($ownership_data['own']) && $ownership_data['own'] === TRUE;
           $access = $this->entityAccess->access($content, $operation, $this->userOwner);
           $this->assertEquals($expected_own_access, $access);
 
-          $allowed_roles = array_keys($state_data['any']);
+          $allowed_roles = $ownership_data['any'];
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
-          foreach ($state_data as $user_var => $expected_transitions) {
-            $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions);
+          foreach ($allowed_roles as $user_var) {
+            $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+            $this->assertEquals(TRUE, $access);
           }
           foreach ($non_allowed_roles as $user_var) {
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
@@ -623,289 +629,147 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * to create document.
    */
   protected function updateAccessProvider() {
-    return [
-      'collection' => [
-        self::PRE_MODERATION => [
-          'draft' => [
-            'own' => [
-              'save_as_draft',
-              'propose',
-            ],
-            'any' => [],
+    $data = [
+      self::PRE_MODERATION => [
+        'draft' => [
+          'own' => [
+            'save_as_draft',
+            'propose',
           ],
-          'proposed' => [
-            'own' => [
+          'any' => [],
+        ],
+        'proposed' => [
+          'own' => [
+            'update_proposed',
+          ],
+          'any' => [
+            'userModerator' => [
               'update_proposed',
+              'approve_proposed',
             ],
-            'any' => [
-              'userModerator' => [
-                'update_proposed',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'update_proposed',
-                'publish',
-              ],
-            ],
-          ],
-          'published' => [
-            'own' => [
-              'save_new_draft',
-              'request_deletion',
-            ],
-            'any' => [
-              'userModerator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-              'userOgFacilitator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-            ],
-          ],
-          'needs_update' => [
-            'own' => [
-              'propose',
-            ],
-            'any' => [
-              'userModerator' => [
-                'propose',
-              ],
-              'userOgFacilitator' => [
-                'propose',
-              ],
-            ],
-          ],
-          'deletion_request' => [
-            'any' => [
-              'userModerator' => [
-                'reject_deletion',
-              ],
-              'userOgFacilitator' => [
-                'reject_deletion',
-              ],
+            'userOgFacilitator' => [
+              'update_proposed',
+              'approve_proposed',
             ],
           ],
         ],
-        self::POST_MODERATION => [
-          'draft' => [
-            'own' => [
-              'save_as_draft',
-              'publish',
-            ],
-            'any' => [
-              'userModerator' => [
-                'save_as_draft',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'save_as_draft',
-                'publish',
-              ],
-            ],
+        'published' => [
+          'own' => [
+            'save_new_draft',
+            'request_deletion',
           ],
-          'proposed' => [
-            'own' => [
-              'update_proposed',
-            ],
-            'any' => [
-              'userModerator' => [
-                'update_proposed',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'update_proposed',
-                'publish',
-              ],
-            ],
-          ],
-          'published' => [
-            'own' => [
+          'any' => [
+            'userModerator' => [
               'update_published',
               'save_new_draft',
+              'request_changes',
+              'report',
             ],
-            'any' => [
-              'userModerator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-              'userOgFacilitator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
+            'userOgFacilitator' => [
+              'update_published',
+              'save_new_draft',
+              'request_changes',
+              'report',
             ],
           ],
-          'needs_update' => [
-            'own' => [
-              'propose',
+        ],
+        'needs_update' => [
+          'own' => [
+            'propose_from_reported',
+          ],
+          'any' => [
+            'userModerator' => [
+              'propose_from_reported',
             ],
-            'any' => [
-              'userModerator' => [
-                'propose',
-              ],
-              'userOgFacilitator' => [
-                'propose',
-              ],
+            'userOgFacilitator' => [
+              'propose_from_reported',
+            ],
+          ],
+        ],
+        'deletion_request' => [
+          'any' => [
+            'userModerator' => [
+              'reject_deletion',
+            ],
+            'userOgFacilitator' => [
+              'reject_deletion',
             ],
           ],
         ],
       ],
-      'solution' => [
-        self::PRE_MODERATION => [
-          'draft' => [
-            'own' => [
-              'save_as_draft',
-              'propose',
-            ],
-            'any' => [
-              'userModerator' => [
-                'save_as_draft',
-                'propose',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'save_as_draft',
-                'propose',
-                'publish',
-              ],
-            ],
+      self::POST_MODERATION => [
+        'draft' => [
+          'own' => [
+            'save_as_draft',
+            'publish',
           ],
-          'proposed' => [
-            'own' => [
-              'update_proposed',
-            ],
-            'any' => [
-              'userModerator' => [
-                'update_proposed',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'update_proposed',
-                'publish',
-              ],
-            ],
-          ],
-          'published' => [
-            'own' => [
-              'save_new_draft',
-              'request_deletion',
-            ],
-            'any' => [
-              'userModerator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-              'userOgFacilitator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-            ],
-          ],
-          'needs_update' => [
-            'own' => [
-              'propose',
-            ],
-            'any' => [
-              'userModerator' => [
-                'propose',
-              ],
-              'userOgFacilitator' => [
-                'propose',
-              ],
-            ],
-          ],
-          'deletion_request' => [
-            'any' => [
-              'userModerator' => [
-                'reject_deletion',
-              ],
-              'userOgFacilitator' => [
-                'reject_deletion',
-              ],
-            ],
-          ],
-        ],
-        self::POST_MODERATION => [
-          'draft' => [
-            'own' => [
+          'any' => [
+            'userModerator' => [
               'save_as_draft',
               'publish',
             ],
-            'any' => [
-              'userModerator' => [
-                'save_as_draft',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'save_as_draft',
-                'publish',
-              ],
+            'userOgFacilitator' => [
+              'save_as_draft',
+              'publish',
             ],
           ],
-          'proposed' => [
-            'own' => [
+        ],
+        'proposed' => [
+          'own' => [
+            'update_proposed',
+          ],
+          'any' => [
+            'userModerator' => [
               'update_proposed',
+              'approve_proposed',
             ],
-            'any' => [
-              'userModerator' => [
-                'update_proposed',
-                'publish',
-              ],
-              'userOgFacilitator' => [
-                'update_proposed',
-                'publish',
-              ],
+            'userOgFacilitator' => [
+              'update_proposed',
+              'approve_proposed',
             ],
           ],
-          'published' => [
-            'own' => [
+        ],
+        'published' => [
+          'own' => [
+            'update_published',
+            'save_new_draft',
+          ],
+          'any' => [
+            'userModerator' => [
               'update_published',
               'save_new_draft',
+              'request_changes',
+              'report',
             ],
-            'any' => [
-              'userModerator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
-              'userOgFacilitator' => [
-                'update_published',
-                'save_new_draft',
-                'request_changes',
-                'report',
-              ],
+            'userOgFacilitator' => [
+              'update_published',
+              'save_new_draft',
+              'request_changes',
+              'report',
             ],
           ],
-          'needs_update' => [
-            'own' => [
-              'propose',
+        ],
+        'needs_update' => [
+          'own' => [
+            'propose_from_reported',
+          ],
+          'any' => [
+            'userModerator' => [
+              'propose_from_reported',
             ],
-            'any' => [
-              'userModerator' => [
-                'propose',
-              ],
-              'userOgFacilitator' => [
-                'propose',
-              ],
+            'userOgFacilitator' => [
+              'propose_from_reported',
             ],
           ],
         ],
       ],
     ];
+    $return = [];
+    foreach (['collection', 'solution'] as $bundle) {
+      $return[$bundle] = $data;
+    }
+
+    return $return;
   }
 
   /**
@@ -1106,7 +970,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
-      $field_identifier[$bundle] . 'elibrary_creation' => $e_library,
+      $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
     ]);
     $parent->save();
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
@@ -1149,8 +1013,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    *   The expected transitions as a list of Ids.
    * @param \Drupal\state_machine\Plugin\Workflow\WorkflowTransition[] $actual
    *   The actual transitions.
+   * @param string $message
+   *   A message to show to the assertion.
    */
-  protected function assertTransitionsEqual(array $expected, array $actual) {
+  protected function assertTransitionsEqual(array $expected, array $actual, $message = '') {
     $actual = array_map(function (WorkflowTransition $transition) {
       return $transition->getId();
     }, $actual);
@@ -1158,7 +1024,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
     sort($actual);
     sort($expected);
 
-    $this->assertEquals($expected, $actual);
+    $this->assertEquals($expected, $actual, $message);
   }
 
   /**
@@ -1175,7 +1041,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @return bool
    *   If the state is published or not.
    */
-  protected function isPublishedState($state){
+  protected function isPublishedState($state) {
     return in_array($state, $this->getPublishedStates());
   }
 
@@ -1183,7 +1049,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * Returns the published states.
    *
    * @return array
-   *    An array of workflow states.
+   *   An array of workflow states.
    */
   protected function getPublishedStates() {
     return ['published'];

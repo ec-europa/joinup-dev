@@ -144,7 +144,7 @@ class NodeGuard implements GuardInterface {
     // If the user has access to the 'request_deletion' transition but also has
     // delete permission to the entity, revoke the permission to request
     // deletion.
-    if ($transition->getId() === 'request_deletion') {
+    if ($access && $transition->getId() === 'request_deletion') {
       $access = !$entity->access('delete');
     }
 
