@@ -55,18 +55,23 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
         $entity = $this->storage[$entity_type_id]->load($entity_id);
         $uri = 'internal:/' . $entity->toUrl()->getInternalPath();
 
+        /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
+        $redirect_repository = \Drupal::service('redirect.repository');
+
         foreach ($redirect_sources as $redirect_source) {
-          // Create the redirect.
-          Redirect::create([
-            'type' => 'redirect',
-            'uid' => 1,
-            'redirect_source' => $redirect_source,
-            'redirect_redirect' => [
-              'uri' => $uri,
-              'title' => '',
-            ],
-            'status_code' => 301,
-          ])->save();
+          if (!$redirect_repository->findMatchingRedirect($redirect_source['path'], [])) {
+            // Create the redirect.
+            Redirect::create([
+              'type' => 'redirect',
+              'uid' => 1,
+              'redirect_source' => $redirect_source,
+              'redirect_redirect' => [
+                'uri' => $uri,
+                'title' => '',
+              ],
+              'status_code' => 301,
+            ])->save();
+          }
         }
       }
     }

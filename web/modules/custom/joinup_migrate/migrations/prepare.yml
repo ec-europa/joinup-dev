@@ -11,6 +11,7 @@ source:
     - Nid
     - 'Policy domain 1'
     - 'Policy domain 2'
+    - Description
     - Abstract
     - Logo
     - Banner
@@ -28,6 +29,7 @@ process:
   nid: Nid
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
+  description: Description
   abstract: Abstract
   logo: Logo
   banner: Banner
