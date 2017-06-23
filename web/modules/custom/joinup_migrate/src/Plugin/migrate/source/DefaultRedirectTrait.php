@@ -13,18 +13,16 @@ trait DefaultNodeRedirectTrait {
    * {@inheritdoc}
    */
   public function getRedirectSources(Row $row) {
+    $sources = [];
     $nid = (int) $row->getSourceProperty('nid');
 
     // @see https://api.drupal.org/api/drupal/includes%21path.inc/function/drupal_lookup_path/6.x
     $sql = "SELECT dst FROM {url_alias} WHERE language IN ('', 'en') AND src = :src ORDER BY pid DESC";
-    $path = $this->getDatabase()->queryRange($sql, 0, 1, [':src' => "node/$nid"])->fetchField();
-    if (!$path) {
-      return NULL;
+    if ($path = $this->getDatabase()->queryRange($sql, 0, 1, [':src' => "node/$nid"])->fetchField()) {
+      $sources[] = $path;
     }
 
-    return [
-      ['path' => $path, 'query' => NULL],
-    ];
+    return $sources;
   }
 
 }
