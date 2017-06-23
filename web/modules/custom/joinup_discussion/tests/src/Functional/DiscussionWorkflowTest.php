@@ -14,13 +14,8 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function isPublishedState($state) {
-    $states = [
-      'validated',
-      'archived',
-    ];
-
-    return in_array($state, $states);
+  protected function getPublishedStates($state) {
+    return ['published', 'archived'];
   }
 
   /**
@@ -80,6 +75,8 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
         ];
       }
     }
+
+    return $data;
   }
 
 }

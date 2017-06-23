@@ -14,19 +14,6 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function isPublishedState($state) {
-    $states = [
-      'validated',
-      'needs_update',
-      'request_deletion',
-    ];
-
-    return in_array($state, $states);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getEntityBundle() {
     return 'event';
   }

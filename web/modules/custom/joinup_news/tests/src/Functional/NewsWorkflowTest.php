@@ -14,19 +14,6 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function isPublishedState($state) {
-    $states = [
-      'validated',
-      'needs_update',
-      'deletion_request',
-    ];
-
-    return in_array($state, $states);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getEntityBundle() {
     return 'news';
   }

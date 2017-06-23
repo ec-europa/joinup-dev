@@ -122,6 +122,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         foreach ($elibrary_data as $elibrary => $allowed_roles) {
           $parent = $this->createParent($parent_bundle, 'validated', $moderation, $elibrary);
           $content = Node::create([
+            'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'uid' => $this->userOwner->id(),
@@ -151,26 +152,33 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
     $operation = 'view';
     foreach ($this->viewAccessProvider() as $parent_bundle => $state_data) {
       $parent = $this->createParent($parent_bundle, 'validated');
-      foreach ($state_data as $state => $ownership_data) {
+      foreach ($state_data as $content_state => $ownership_data) {
         $content = Node::create([
+          'title' => $this->randomMachineName(),
           'type' => $this->getEntityBundle(),
           OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
           'uid' => $this->userOwner->id(),
+          'field_state' => $content_state,
+          'status' => $this->isPublishedState($content_state),
         ]);
+        $content->save();
 
-        $expected_own_access = isset($state_data['own']) && $state_data['own'] === TRUE;
+        $expected_own_access = isset($ownership_data['own']) && $ownership_data['own'] === TRUE;
+        $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
         $access = $this->entityAccess->access($content, $operation, $this->userOwner);
-        $this->assertEquals($expected_own_access, $access);
+        $this->assertEquals($expected_own_access, $access, $message);
 
-        $allowed_roles = $state_data['any'];
+        $allowed_roles = $ownership_data['any'];
         $non_allowed_roles = array_diff($test_roles, $allowed_roles);
-        foreach ($state_data as $user_var => $expected_transitions) {
+        foreach ($allowed_roles as $user_var) {
+          $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-          $this->assertEquals(TRUE, $access);
+          $this->assertEquals(TRUE, $access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
+          $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-          $this->assertEquals(FALSE, $access);
+          $this->assertEquals(FALSE, $access, $message);
         }
       }
     }
@@ -187,6 +195,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         $parent = $this->createParent($parent_bundle, 'validated', $moderation);
         foreach ($state_data as $content_state => $ownership_data) {
           $content = Node::create([
+            'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'uid' => $this->userOwner->id(),
@@ -231,6 +240,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         $parent = $this->createParent($parent_bundle, 'validated', $moderation);
         foreach ($state_data as $content_state => $ownership_data) {
           $content = Node::create([
+            'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
             'uid' => $this->userOwner->id(),
@@ -1165,6 +1175,18 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @return bool
    *   If the state is published or not.
    */
-  abstract protected function isPublishedState($state);
+  protected function isPublishedState($state){
+    return in_array($state, $this->getPublishedStates());
+  }
+
+  /**
+   * Returns the published states.
+   *
+   * @return array
+   *    An array of workflow states.
+   */
+  protected function getPublishedStates() {
+    return ['published'];
+  }
 
 }
