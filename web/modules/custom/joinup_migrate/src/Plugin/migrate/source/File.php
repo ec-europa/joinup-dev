@@ -30,6 +30,7 @@ class File extends JoinupSqlBase {
       'timestamp' => $this->t('Created time'),
       'uid' => $this->t('File owner'),
       'destination_uri' => $this->t('Destination URI'),
+      'numeric_fid' => $this->t('Numeric file ID'),
     ];
   }
 
@@ -50,9 +51,12 @@ class File extends JoinupSqlBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path for managed files.
-    if (ctype_digit($row->getSourceProperty('fid'))) {
+    $fid = $row->getSourceProperty('fid');
+    if (ctype_digit($fid)) {
       $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
       $row->setSourceProperty('path', $source_path);
+      // If there's a migrated managed file, we use this to assign the same FID.
+      $row->setSourceProperty('numeric_fid', (int) $fid);
     }
 
     return parent::prepareRow($row);

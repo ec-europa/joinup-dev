@@ -8,6 +8,7 @@ source:
   plugin: news
   track_changes: true
 process:
+  nid: nid
   title: title
   field_news_headline: title
   created: created

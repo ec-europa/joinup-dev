@@ -8,6 +8,7 @@ source:
   plugin: video
   track_changes: true
 process:
+  nid: nid
   title: title
   created: created
   changed: changed

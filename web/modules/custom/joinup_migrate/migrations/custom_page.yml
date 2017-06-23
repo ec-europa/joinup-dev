@@ -8,6 +8,7 @@ source:
   plugin: custom_page
   track_changes: true
 process:
+  nid: nid
   title: title
   created: created
   changed: changed
