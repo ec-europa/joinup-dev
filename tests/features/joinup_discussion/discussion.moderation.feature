@@ -71,7 +71,7 @@ Feature: Discussion moderation
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Discussion Best method to cut Eucalyptus wood logs"
-    And I press "Approve proposed"
+    And I press "Publish"
     # The published is updated.
     Then I should see the heading "Best method to cut Eucalyptus wood logs"
 

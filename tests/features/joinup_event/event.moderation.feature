@@ -124,7 +124,7 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the button "Approve proposed"
+    Then I should see the button "Publish"
     And the current workflow state should be "Proposed"
-    And I press "Approve proposed"
+    And I press "Publish"
     Then I should see the heading "The event is amazing"

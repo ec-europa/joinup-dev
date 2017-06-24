@@ -121,6 +121,6 @@ Feature: Document moderation
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
-    And I should see the button "Approve proposed"
-    When I press "Approve proposed"
+    And I should see the button "Publish"
+    When I press "Publish"
     Then I should see the heading "The document is amazing"
