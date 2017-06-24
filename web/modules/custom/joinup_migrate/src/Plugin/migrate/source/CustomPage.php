@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
  */
 class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultRdfRedirectTrait;
+  use DefaultRedirectTrait;
 
   /**
    * {@inheritdoc}

@@ -6,7 +6,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\migrate\Row;
 
 /**
- * Implements \Drupal\joinup_migrate\RedirectImportInterface methods for nodes.
+ * Default implementation of RedirectImportInterface methods.
+ *
+ * @see \Drupal\joinup_migrate\RedirectImportInterface
  */
 trait DefaultRedirectTrait {
 
