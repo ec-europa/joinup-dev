@@ -36,7 +36,7 @@ Feature: Discussion moderation
     And I go to the "Best method to cut logs" discussion
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Discussion Best method to cut logs"
-    And the current workflow state should be "Validated"
+    And the current workflow state should be "Published"
     When I press "Report"
     # The published version does not change.
     Then I should see the heading "Best method to cut logs"
@@ -44,7 +44,7 @@ Feature: Discussion moderation
     # Further changes to the discussion are not allowed to the owner anymore.
     When I am logged in as "Gabe Rogers"
     And I go to the "Best method to cut logs" discussion
-    And I should not see the link "Edit" in the "Entity actions" region
+    And I should see the link "Edit" in the "Entity actions" region
 
     # Approve report and ask for changes.
     When I am logged in as "Brigham Salvage"
@@ -79,7 +79,7 @@ Feature: Discussion moderation
     When I am logged in as "Brigham Salvage"
     And I go to the "Best method to cut Eucalyptus wood logs" discussion
     And I click "Edit" in the "Entity actions" region
-    Then the current workflow state should be "Validated"
+    Then the current workflow state should be "Published"
     When I press "Disable"
     # The discussion is kept published.
     Then I should see the heading "Best method to cut Eucalyptus wood logs"
