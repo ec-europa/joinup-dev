@@ -157,13 +157,9 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
    * {@inheritdoc}
    */
   public function getRedirectSources(Row $row) {
-    if (empty($row->getSourceProperty('nid'))) {
-      return NULL;
-    }
-
-    // We collect the aliases from all collection components, as 'community' and
+    // We collect the aliases from all collection components, as 'community' or
     // 'repository', omitting 'project_project' and 'asset_release' because
-    // these are creating more specific redirects to solutions.
+    // these are creating more specific redirects for solutions.
     $nids = $this->select('d8_mapping', 'm')
       ->fields('m', ['nid'])
       ->condition('m.collection', $row->getSourceProperty('collection'))
