@@ -101,7 +101,7 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
-    Then the current workflow state should be "Validated"
+    Then the current workflow state should be "Published"
     And I should see the button "Request changes"
     Then I press "Request changes"
 
@@ -112,7 +112,7 @@ Feature: Document moderation
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The document is amazing"
-    And I press "Update proposed"
+    And I press "Update"
     Then I should see the heading "A not so amazing document"
 
     # Approve changes as facilitator.

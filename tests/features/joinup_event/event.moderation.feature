@@ -106,7 +106,7 @@ Feature: Event moderation
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
-    And the current workflow state should be "Validated"
+    And the current workflow state should be "Published"
     Then I press "Request changes"
 
     # Implement changes as owner of the event.
@@ -116,7 +116,7 @@ Feature: Event moderation
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The event is amazing"
-    And I press "Update proposed"
+    And I press "Update"
     Then I should see the heading "The Fire of the Nothing"
 
     # Approve changes as facilitator.
