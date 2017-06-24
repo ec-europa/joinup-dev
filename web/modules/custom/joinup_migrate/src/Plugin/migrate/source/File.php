@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\joinup_migrate\FileUtility;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -55,7 +56,7 @@ class File extends JoinupSqlBase implements RedirectImportInterface {
     // Assure a full-qualified path for managed files.
     $fid = $row->getSourceProperty('fid');
     if (ctype_digit($fid)) {
-      $source_path = $this->getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
+      $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
       $row->setSourceProperty('path', $source_path);
       // If there's a migrated managed file, we use this to assign the same FID.
       $row->setSourceProperty('numeric_fid', (int) $fid);

@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
+use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
 
@@ -104,7 +105,7 @@ class FileInline extends SourcePluginBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path for managed files.
-    $source_path = JoinupSqlBase::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
+    $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
     $row->setSourceProperty('path', $source_path);
     return parent::prepareRow($row);
   }
