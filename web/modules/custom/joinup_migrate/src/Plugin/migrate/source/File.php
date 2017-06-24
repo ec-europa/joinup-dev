@@ -69,9 +69,8 @@ class File extends JoinupSqlBase implements RedirectImportInterface {
    */
   public function getRedirectSources(Row $row) {
     $sources = [];
-    $fid = (int) $row->getSourceProperty('numeric_fid');
 
-    if ($fid) {
+    if ($fid = (int) $row->getSourceProperty('numeric_fid')) {
       $sql = "SELECT filepath FROM files WHERE fid = :fid";
       if ($path = $this->getDatabase()->query($sql, [':fid' => $fid])->fetchField()) {
         $sources[] = $path;
@@ -86,9 +85,9 @@ class File extends JoinupSqlBase implements RedirectImportInterface {
    */
   public function getRedirectUri(EntityInterface $entity) {
     /** @var \Drupal\file\FileInterface $entity */
-    // Such redirects are not cleared automatically by the Redirect module, on
-    // the source file entity deletion. Thus, we are fulfilling this task in our
-    // custom module, in joinup_core_file_delete().
+    // Such redirects are not cleared automatically by the Redirect module, when
+    // the source file entity is deleted. Thus, we are fulfilling this task in
+    // our custom module, in joinup_core_file_delete().
     // @see joinup_core_file_delete()
     return 'base:/sites/default/files/' . file_uri_target($entity->getFileUri());
   }

@@ -12,14 +12,14 @@ use Drupal\migrate\Row;
 trait DefaultRdfRedirectTrait {
 
   use DefaultRedirectTrait {
-    getRedirectSources as nodeGetRedirectSources;
+    getRedirectSources as defaultGetRedirectSources;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getRedirects(Row $row) {
-    $sources = $this->nodeGetRedirectSources($row);
+  public function getRedirectSources(Row $row) {
+    $sources = $this->defaultGetRedirectSources($row);
 
     // Add also the canonical link of the source node.
     if ($nid = $row->getSourceProperty('nid')) {

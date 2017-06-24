@@ -50,15 +50,18 @@ class User extends UserBase implements RedirectImportInterface {
     $uid = $row->getSourceProperty('uid');
     $db = $this->getDatabase();
 
+    // The old profile node ID, from (Drupal 6) Content Profile module.
     $sql = "SELECT nid FROM {node} WHERE type = 'profile' AND uid = :uid";
     if ($nid = $db->query($sql, [':uid' => $uid])->fetchField()) {
       $sources[] = "node/$nid";
+      // The profile node used to have its own alias.
       $sql = "SELECT dst FROM {url_alias} WHERE language IN ('', 'en') AND src = :src ORDER BY pid DESC";
       if ($path = $db->queryRange($sql, 0, 1, [':src' => "node/$nid"])->fetchField()) {
         $sources[] = $path;
       }
     }
 
+    // Current alias to user view page.
     $sql = "SELECT dst FROM {url_alias} WHERE language IN ('', 'en') AND src = :src ORDER BY pid DESC";
     if ($path = $db->queryRange($sql, 0, 1, [':src' => "user/$uid"])->fetchField()) {
       $sources[] = $path;

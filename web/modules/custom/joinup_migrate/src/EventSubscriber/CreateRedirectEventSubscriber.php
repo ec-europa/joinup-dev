@@ -46,26 +46,29 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    if ($sources = $source_plugin->getRedirectSources($event->getRow())) {
+    if ($source_paths = $source_plugin->getRedirectSources($event->getRow())) {
       if (!empty($event->getDestinationIdValues()[0])) {
         $entity_id = $event->getDestinationIdValues()[0];
         $entity_type_id = $destination->getDerivativeId();
         if (!isset($this->storage[$entity_type_id])) {
           $this->storage[$entity_type_id] = \Drupal::entityTypeManager()->getStorage($entity_type_id);
         }
-        $entity = $this->storage[$entity_type_id]->load($entity_id);
+
+        if (!$entity = $this->storage[$entity_type_id]->load($entity_id)) {
+          return;
+        }
         $uri = $source_plugin->getRedirectUri($entity);
 
         /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
         $redirect_repository = \Drupal::service('redirect.repository');
 
-        foreach ($sources as $source) {
-          if (!$redirect_repository->findMatchingRedirect($source, [])) {
+        foreach ($source_paths as $source_path) {
+          if (!$redirect_repository->findMatchingRedirect($source_path, [])) {
             // Create the redirect.
             Redirect::create([
               'type' => 'redirect',
               'uid' => 1,
-              'redirect_source' => ['path' => $source, 'query' => NULL],
+              'redirect_source' => ['path' => $source_path, 'query' => NULL],
               'redirect_redirect' => [
                 'uri' => $uri,
                 'title' => '',
