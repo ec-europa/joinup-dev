@@ -178,8 +178,9 @@ class NodeWorkflowAccessControlHandler {
 
       case 'post comments':
         $parent_state = $this->relationManager->getParentState($entity);
+        $entity_state = $this->getEntityState($entity);
         // Commenting on content of an archived group is not allowed.
-        if ($parent_state === 'archived') {
+        if ($parent_state === 'archived' || $entity_state === 'archived') {
           return AccessResult::forbidden();
         }
         else {
