@@ -33,6 +33,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     foreach (['collection', 'solution'] as $bundle) {
       unset($return[$bundle][self::PRE_MODERATION]);
     }
+    return $return;
   }
 
   /**
@@ -42,7 +43,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     $data = parent::viewAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       $data[$bundle]['archived']['own'] = TRUE;
-      $data[$bundle]['archived']['own'] = [
+      $data[$bundle]['archived']['any'] = [
         'userAnonymous',
         'userAuthenticated',
         'userModerator',
