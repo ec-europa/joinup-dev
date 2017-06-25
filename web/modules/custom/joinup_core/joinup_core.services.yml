@@ -2,6 +2,8 @@ services:
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
     arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']
+    tags:
+      - { name: state_machine.guard, group: community_content }
   joinup_core.node_workflow_access:
     class: Drupal\joinup_core\NodeWorkflowAccessControlHandler
     arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user', '@config.factory', '@joinup_core.workflow.helper']

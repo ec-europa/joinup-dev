@@ -4,8 +4,3 @@ services:
     arguments: ['@entity_type.bundle.info']
     tags:
       - { name: 'event_subscriber' }
-  joinup_community_content.fulfillment_guard:
-    class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']
-    tags:
-      - { name: state_machine.guard, group: community_content }
