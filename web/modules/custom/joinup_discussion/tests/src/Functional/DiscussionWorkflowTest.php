@@ -28,6 +28,16 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function createAccessProvider() {
+    $return = parent::createAccessProvider();
+    foreach (['collection', 'solution'] as $bundle) {
+      unset($return[$bundle][self::PRE_MODERATION]);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function viewAccessProvider() {
     $data = parent::viewAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
