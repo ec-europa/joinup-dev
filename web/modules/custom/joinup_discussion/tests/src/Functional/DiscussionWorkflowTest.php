@@ -62,10 +62,9 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function updateAccessProvider() {
     $data = parent::updateAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      foreach ([self::PRE_MODERATION, self::POST_MODERATION] as $moderation) {
-        foreach (['userModerator', 'userOgFacilitator'] as $user) {
-          $data[$bundle][$moderation]['published']['any'][$user][] = 'disable';
-        }
+      unset($data[$bundle][self::PRE_MODERATION]);
+      foreach (['userModerator', 'userOgFacilitator'] as $user) {
+        $data[$bundle][self::POST_MODERATION]['validated']['any'][$user][] = 'disable';
       }
     }
 
@@ -78,13 +77,12 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function deleteAccessProvider() {
     $data = parent::deleteAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      foreach ([self::PRE_MODERATION, self::POST_MODERATION] as $moderation) {
-        $data[$bundle][$moderation]['archived']['own'] = TRUE;
-        $data[$bundle][$moderation]['archived']['any'] = [
-          'userModerator',
-          'userOgFacilitator',
-        ];
-      }
+      unset($data[$bundle][self::PRE_MODERATION]);
+      $data[$bundle][self::POST_MODERATION]['archived']['own'] = TRUE;
+      $data[$bundle][self::POST_MODERATION]['archived']['any'] = [
+        'userModerator',
+        'userOgFacilitator',
+      ];
     }
 
     return $data;
