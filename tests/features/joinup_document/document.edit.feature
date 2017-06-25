@@ -4,9 +4,6 @@ Feature: "Document page" editing.
   As an owner of the document
   I need to be able to edit it.
 
-  # This is a smokescreen test as the full behaviour should be tested in workflows.
-  # @todo: To be removed after ISAICP-2266 is implemented.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2266
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
       | Username |
