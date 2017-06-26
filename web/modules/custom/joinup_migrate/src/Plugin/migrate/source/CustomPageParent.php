@@ -5,7 +5,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\migrate\Row;
 
 /**
  * Migrates parent custom pages.
@@ -72,14 +71,14 @@ class CustomPageParent extends SourcePluginBase {
         'group_nid',
         'group_title',
       ])
+      ->condition('n.exclude', 0)
       ->execute()
       ->fetchAll(\PDO::FETCH_ASSOC);
 
     $rows = [];
     foreach ($items as $row) {
       $nid = (int) $row['group_nid'];
-      $collection = $row['collection'];
-      if ($this->getCardinality($nid, $collection) > 1) {
+      if ($this->getCardinality($nid) > 1) {
         $rows[] = $row;
       }
     }
@@ -88,43 +87,19 @@ class CustomPageParent extends SourcePluginBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function count($refresh = FALSE) {
-    return $this->initializeIterator()->count();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-    $nid = (int) $row->getSourceProperty('group_nid');
-    $collection = $row->getSourceProperty('collection');
-    $cardinality = $this->getCardinality($nid, $collection);
-
-    if ($cardinality == 1) {
-      // Don't create a parent custom page.
-      return FALSE;
-    }
-
-    return parent::prepareRow($row);
-  }
-
-  /**
    * Gets the cardinality of the collection for a give collection and component.
    *
    * @param int $nid
    *   The component node ID.
-   * @param string $collection
-   *   The collection.
    *
    * @return int
    *   The cardinality.
    */
-  protected function getCardinality($nid, $collection) {
+  protected function getCardinality($nid) {
     if (!isset($this->cardinality)) {
       $result = $this->db->select('d8_custom_page', 'n')
         ->fields('n', ['collection', 'group_nid'])
+        ->condition('n.exclude', 0)
         ->execute()->fetchAll(\PDO::FETCH_ASSOC);
       $cardinality = [];
       foreach ($result as $item) {
@@ -139,7 +114,7 @@ class CustomPageParent extends SourcePluginBase {
       }
     }
 
-    return $this->cardinality[$nid];
+    return isset($this->cardinality[$nid]) ? $this->cardinality[$nid] : 0;
   }
 
   /**

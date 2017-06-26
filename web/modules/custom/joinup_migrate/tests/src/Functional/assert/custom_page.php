@@ -24,6 +24,7 @@ $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link1 */
 $parent_link1 = $this->loadEntityByLabel('menu_link_content', 'Digital Signature Service');
+$this->assertTrue($parent_link1->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link1->link->uri);
 $this->assertRedirects([], $custom_page);
 
@@ -34,6 +35,7 @@ $this->assertTrue($custom_page->get('body')->isEmpty());
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link2 */
 $parent_link2 = $this->loadEntityByLabel('menu_link_content', 'European Interoperability Catalogue (EIC)');
+$this->assertTrue($parent_link2->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link2->link->uri);
 $this->assertRedirects([], $custom_page);
 
@@ -47,6 +49,7 @@ $this->assertContains('An indicative timeline is provided below, with planned', 
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 /* @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
 $link = $this->loadEntityByLabel('menu_link_content', 'Roadmap 2016');
+$this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link1->uuid(), $link->getParentId());
 $this->assertRedirects(['asset/sd-dss/og_page/roadmap-2016'], $custom_page);
@@ -59,6 +62,7 @@ $this->assertEquals(1482244418, $custom_page->changed->value);
 $this->assertContains('quality solutions that are relevant for public administrations and can be used to provide EU public', $custom_page->get('body')->value);
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'Solutions per domain');
+$this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
 $this->assertRedirects(['community/eic/og_page/solutions-domain'], $custom_page);
@@ -71,6 +75,7 @@ $this->assertEquals(1482245258, $custom_page->changed->value);
 $this->assertContains('This table summarises the scoping criteria that will allow', $custom_page->get('body')->value);
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'Eligibility criteria');
+$this->assertFalse($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
 $this->assertRedirects(['community/eic/og_page/eligibility-criteria'], $custom_page);
@@ -85,6 +90,7 @@ $this->assertContains('An assessment of a technical specification or a standard 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'CAMSS Tools');
+$this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEmpty($link->getParentId());
 $this->assertRedirects(['community/camss/og_page/camss-tools'], $custom_page);
