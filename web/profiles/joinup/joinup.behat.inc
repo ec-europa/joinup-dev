@@ -887,10 +887,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTileDoesNotContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
-    if (!$element) {
-      throw new \Exception("The tile '$heading' was not found on the page.");
-    }
-
     if (strpos(trim($element->getText()), $text) !== FALSE) {
       throw new \Exception("The text '$text' was found in the tile '$heading'.");
     }
