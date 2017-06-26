@@ -246,6 +246,12 @@ function joinup_migrate_source_db_schema($table) {
           'description' => 'Roles',
           'type' => 'text',
         ],
+        'url' => [
+          'description' => 'Collection ID as URL',
+          'type' => 'varchar',
+          'length' => 3048,
+          'not null' => FALSE,
+        ],
       ],
       'indexes' => [
         'collection' => ['collection'],
