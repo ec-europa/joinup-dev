@@ -82,6 +82,19 @@ class UnshareContentForm extends ShareContentFormBase {
   }
 
   /**
+   * Gets the title for the form route.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The entity being shared.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The page/modal title.
+   */
+  public function getTitle(NodeInterface $node) {
+    return $this->t('Unshare %title from', ['%title' => $node->label()]);
+  }
+
+  /**
    * Gets a list of collections where the content can be unshared from the user.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]

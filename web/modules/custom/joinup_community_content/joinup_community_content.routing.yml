@@ -14,7 +14,7 @@ joinup_community_content.unshare_content_form:
   path: '/unshare/{node}'
   defaults:
     _form: '\Drupal\joinup_community_content\Form\UnShareContentForm'
-    _title: Banana
+    _title_callback: '\Drupal\joinup_community_content\Form\UnShareContentForm::getTitle'
   requirements:
     _custom_access: '\Drupal\joinup_community_content\Form\UnShareContentForm::access'
   options:
