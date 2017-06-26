@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
+use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
 
@@ -45,7 +46,7 @@ class FileInline extends SourcePluginBase {
     foreach ($this->getInlineFiles() as $file) {
       list($type, $basename) = explode('/', $file, 2);
       $path = "ckeditor_files/$file";
-      $rows[] = [
+      $rows[$path] = [
         'fid' => $path,
         'path' => $path,
         'timestamp' => $timestamp,
@@ -104,7 +105,7 @@ class FileInline extends SourcePluginBase {
    */
   public function prepareRow(Row $row) {
     // Assure a full-qualified path for managed files.
-    $source_path = JoinupSqlBase::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
+    $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
     $row->setSourceProperty('path', $source_path);
     return parent::prepareRow($row);
   }
@@ -116,7 +117,9 @@ class FileInline extends SourcePluginBase {
    */
   protected static $bodyFields = [
     'd8_collection' => ['body'],
-    'd8_comment' => ['comment'],
+    // @todo Disable till ISAICP-3514 gets clarified.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3514
+    // 'd8_comment' => ['comment'],
     'd8_custom_page' => ['body'],
     'd8_discussion' => ['body'],
     'd8_distribution' => ['body'],

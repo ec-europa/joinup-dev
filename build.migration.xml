@@ -3,11 +3,8 @@
 <project name="Joinup migration" default="help">
     <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
 
-    <!-- Run the migration IDs specified in the configuration. -->
-    <target name="run-migrations"
-            description="Run the migrations."
-            depends="enable-migration-modules">
-        <echo message="Running migration IDs" />
+    <target name="disable-solr-index"
+        description="Disable immediate indexing in Solr index.">
         <drush
                 command="cset"
                 assume="yes"
@@ -26,6 +23,13 @@
             <param>search_api.index.unpublished</param>
             <param>options.index_directly 0</param>
         </drush>
+    </target>
+
+    <!-- Run the migration IDs specified in the configuration. -->
+    <target name="run-migrations"
+            description="Run the migrations."
+            depends="enable-migration-modules, disable-solr-index">
+        <echo message="Running migration IDs" />
         <drush
             command="migrate-import"
             assume="yes"
