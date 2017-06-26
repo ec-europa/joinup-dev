@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2378612d059ece50116a9d10840a177",
+    "content-hash": "524d32b8abe2048d7f7709d3e35a0fc9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2497,17 +2497,11 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "5.0.0-beta5",
+            "version": "dev-5.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/linkit",
-                "reference": "8.x-5.0-beta5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta5.zip",
-                "reference": "8.x-5.0-beta5",
-                "shasum": "8dcbd9c8c162e9801a699ef5717ab291b65bae8e"
+                "reference": "e595d05a622f5ab75758dce5f11ae5208b991f91"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2521,8 +2515,8 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta5",
-                    "datestamp": "1490224383"
+                    "version": "8.x-5.0-beta5+3-dev",
+                    "datestamp": "1492788242"
                 },
                 "patches_applied": {
                     "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
@@ -2545,7 +2539,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
-            }
+            },
+            "time": "2017-05-29 21:27:56"
         },
         {
             "name": "drupal/mailsystem",
@@ -10322,6 +10317,7 @@
         "drupal/diff": 5,
         "drupal/facets": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/linkit": 20,
         "drupal/message": 20,
         "drupal/og": 20,
         "drupal/og_menu": 15,
