@@ -23,6 +23,10 @@ class FileDeriver extends DeriverBase {
       $this->derivatives[$derivative_id] = $base_plugin_definition;
     }
 
+    // Inline files is a special case, with its own source plugin.
+    $this->derivatives['inline'] = $base_plugin_definition;
+    $this->derivatives['inline']['source']['plugin'] = 'file_inline';
+
     return parent::getDerivativeDefinitions($base_plugin_definition);
   }
 

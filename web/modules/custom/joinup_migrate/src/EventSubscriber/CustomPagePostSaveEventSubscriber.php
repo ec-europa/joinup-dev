@@ -71,15 +71,17 @@ class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
       if ($node = Node::load($nid)) {
         $parent_nid = (int) $event->getRow()->getDestinationProperty('parent');
         if (!empty($parent_nid)) {
-          if (!isset($this->weight[$parent_nid])) {
-            $this->weight[$parent_nid] = 0;
+          if ($parent_link = $this->getMenuLinkByNodeId($parent_nid)) {
+            if ($link = $this->getMenuLinkByNodeId($nid)) {
+              if (!isset($this->weight[$parent_nid])) {
+                $this->weight[$parent_nid] = 0;
+              }
+              $link->parent->value = "menu_link_content:{$parent_link->uuid()}";
+              $link->weight->value = $this->weight[$parent_nid];
+              $link->save();
+              $this->weight[$parent_nid]++;
+            }
           }
-          $parent_link = $this->getMenuLinkByNodeId($parent_nid);
-          $link = $this->getMenuLinkByNodeId($nid);
-          $link->parent->value = "menu_link_content:{$parent_link->uuid()}";
-          $link->weight->value = $this->weight[$parent_nid];
-          $link->save();
-          $this->weight[$parent_nid]++;
         }
       }
     }
