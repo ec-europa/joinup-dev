@@ -75,6 +75,10 @@ class OgUserRole extends SourcePluginBase {
 
     foreach ($info as $collection => $users) {
       foreach ($users as $uid => $data) {
+        // The facilitator role is complementary with the administrator role.
+        if (in_array('rdf_entity-collection-administrator', $data['roles'])) {
+          $data['roles'][] = 'rdf_entity-collection-facilitator';
+        }
         $rows[] = [
           'uid' => $uid,
           'collection' => $collection,

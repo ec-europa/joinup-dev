@@ -92,4 +92,4 @@ migration_dependencies:
     - owner
     - contact
     - contact_email
-    - file:documentation_solution
+    - file:documentation
