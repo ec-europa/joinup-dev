@@ -88,7 +88,7 @@ function custom_page_entity_insert(EntityInterface $entity) {
     'title' => $entity->getTitle(),
     'menu_name' => 'ogmenu-' . $instance->id(),
     'link' => ['uri' => 'internal:/node/' . $entity->id()],
-    // The 'exclude_from_menu' property is used as an hidden API trick to allow
+    // The 'exclude_from_menu' property is used as a hidden API trick to allow
     // a disabled menu item.
     'enabled' => empty($entity->exclude_from_menu),
   ]);
