@@ -44,7 +44,8 @@ trait ContextualLinksTrait {
     // need to make sure the current user service is up to date. It might still
     // contain the user from a previous API call.
     /** @var \Drupal\DrupalExtension\Context\RawDrupalContext $this */
-    $account = User::load($this->getUserManager()->getCurrentUser()->uid);
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user ? $current_user->uid : 0);
     \Drupal::currentUser()->setAccount($account);
 
     $links = [];
