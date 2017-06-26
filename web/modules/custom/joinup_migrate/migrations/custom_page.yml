@@ -40,6 +40,7 @@ process:
     source: group_nid
     migration: custom_page_parent
     no_stub: true
+  exclude_from_menu: exclude
 destination:
   plugin: entity:node
   default_bundle: custom_page
