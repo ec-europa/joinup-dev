@@ -237,23 +237,22 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I :operation :title in the :menu menu of the :label :type
    */
   public function switchItemInMenu($operation, $title, $menu, $label, $type) {
-    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager_service */
-    $menu_link_manager_service = \Drupal::service('plugin.manager.menu.link');
+    $group = $this->getRdfEntityByLabel($label, $type);
+    $og_menu_instance = $this->getOgMenuInstance($group->id(), $menu);
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $properties = [
+      'title' => $title,
+      'menu_name' => $menu_name,
+    ];
 
-    $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
-
-    foreach ($tree as $item) {
-      /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $link */
-      $link = $item->link;
-      if ((string) $link->getTitle() === $title) {
-        $menu_link_manager_service->updateDefinition($link->getPluginId(), [
-          'enabled' => (string) ($operation === 'enable'),
-        ]);
-        return;
-      }
+    $menu_link = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties($properties);
+    if (empty($menu_link)) {
+      throw new \InvalidArgumentException("No menu link with title $title exists in the $menu menu for the $label $type.");
     }
-
-    throw new \InvalidArgumentException("No menu link with title $title exists in the $menu menu for the $label $type.");
+    $menu_link = reset($menu_link);
+    $enabled = (string) ($operation === 'enable');
+    $menu_link->set('enabled', $enabled);
+    $menu_link->save();
   }
 
   /**
