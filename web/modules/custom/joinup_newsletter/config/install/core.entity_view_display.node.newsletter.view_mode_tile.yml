@@ -8,7 +8,6 @@ dependencies:
     - node.type.newsletter
   module:
     - ds
-    - joinup
     - text
     - user
 id: node.newsletter.view_mode_tile
