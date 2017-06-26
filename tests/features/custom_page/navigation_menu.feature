@@ -159,20 +159,42 @@ Feature: Navigation menu for custom pages
       | banner | banner.jpg  |
       | state  | validated   |
     And custom_page content:
-      | title                    | body      | collection  |
-      | The Burning Angel        | Test body | Hidden Ship |
-      | Snake of Pleasure        | Test body | Hidden Ship |
-      | The Slaves of the Shores | Test body | Hidden Ship |
+      | title                       | body      | collection  |
+      | The Burning Angel           | Test body | Hidden Ship |
+      | Snake of Pleasure           | Test body | Hidden Ship |
+      | The Slaves of the Shores    | Test body | Hidden Ship |
+      | The Slaves of the Sea       | Test body | Hidden Ship |
+      | The Slaves of the Mountains | Test body | Hidden Ship |
+      | The Slaves of the Air       | Test body | Hidden Ship |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
-      | title                    | parent            | weight |
-      | Snake of Pleasure        | The Burning Angel | 2      |
-      | The Slaves of the Shores | The Burning Angel | 1      |
+      | title                       | parent            | weight |
+      | Snake of Pleasure           | The Burning Angel | 2      |
+      | The Slaves of the Shores    | The Burning Angel | 1      |
+      | The Slaves of the Sea       | The Burning Angel | 4      |
+      | The Slaves of the Mountains | The Burning Angel | 3      |
+      | The Slaves of the Air       | The Burning Angel | 5      |
     And I go to the "Hidden Ship" collection
     When I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the link "The Burning Angel" in the "Navigation menu block" region
     But I should not see the link "Snake of Pleasure" in the "Navigation menu block" region
     And I should not see the link "The Slaves of the Shores" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores    |
+      | Snake of Pleasure           |
+      | The Slaves of the Mountains |
+      | The Slaves of the Sea       |
+      | The Slaves of the Air       |
+
+    # Disabled links should not be shown in the sub pages menu.
+    When I am logged in as a facilitator of the "Hidden Ship" collection
+    And I disable "The Slaves of the Mountains" in the navigation menu of the "Rainbow tables" collection
+    And I disable "The Slaves of the Air" in the navigation menu of the "Rainbow tables" collection
+    And I go to the homepage of the "The Burning Angel" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
       | Snake of Pleasure        |
+      | The Slaves of the Sea    |
+    But I should not see the "The Slaves of the Mountains" tile
+    But I should not see the "The Slaves of the Air" tile
