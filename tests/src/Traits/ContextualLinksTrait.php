@@ -48,11 +48,14 @@ trait ContextualLinksTrait {
     $account = User::load($current_user ? $current_user->uid : 0);
     \Drupal::currentUser()->setAccount($account);
 
-    $links = [];
+    // Clear the statically cached entities, to ensure that the route parameters
+    // will be up to date.
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
 
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
 
+    $links = [];
     /** @var \Behat\Mink\Element\NodeElement $item */
     foreach ($element->findAll('xpath', '//*[@data-contextual-id]') as $item) {
       $contextual_id = $item->getAttribute('data-contextual-id');
