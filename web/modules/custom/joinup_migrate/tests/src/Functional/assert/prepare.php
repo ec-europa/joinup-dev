@@ -41,6 +41,7 @@ $expected_values = [
     'policy2' => 'Collaboration',
     'elibrary' => '0',
     'roles' => '{"admin":{"7287":[1,1497119643],"6416":[1,1497119643]}}',
+    'url' => 'http://example.com/this_collection',
   ],
   'Archived collection' => [
     'type' => 'repository',
@@ -109,6 +110,7 @@ foreach ($expected_values as $collection => $expected_value) {
     'contact_email' => NULL,
     'state' => 'validated',
     'roles' => NULL,
+    'url' => NULL,
   ];
   ksort($expected_value);
   ksort($import);

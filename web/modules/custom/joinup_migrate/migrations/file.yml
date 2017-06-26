@@ -4,6 +4,7 @@ source:
   plugin: file
   track_changes: true
 process:
+  fid: numeric_fid
   uid:
     - plugin: migration
       migration: user

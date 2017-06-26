@@ -5,6 +5,8 @@
  * Assertions for 'discussion' migration.
  */
 
+use Drupal\node\Entity\Node;
+
 // Migration counts.
 $this->assertTotalCount('discussion', 455);
 $this->assertSuccessCount('discussion', 455);
@@ -13,54 +15,53 @@ $this->assertSuccessCount('discussion', 455);
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 
-/* @var \Drupal\node\NodeInterface $discussion */
-$discussion = $this->loadEntityByLabel('node', 'URL for SML and SMK');
+$discussion = Node::load(148683);
 $this->assertEquals('URL for SML and SMK', $discussion->label());
 $this->assertEquals('discussion', $discussion->bundle());
 $this->assertEquals(1453193673, $discussion->created->value);
 $this->assertEquals(1453193673, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
-$this->assertContains('<h2>Component</h2>', $discussion->body->value);
-$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertContains('Component', $discussion->body->value);
+$this->assertContains('Category', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
 $this->assertRedirects(['software/cipaedelivery/issue/url-sml-and-smk'], $discussion);
 
-$discussion = $this->loadEntityByLabel('node', "Spaces in 'Apache Tomcat 6.0.16' cause problems under linux");
+$discussion = Node::load(66888);
 $this->assertEquals("Spaces in 'Apache Tomcat 6.0.16' cause problems under linux", $discussion->label());
 $this->assertEquals('discussion', $discussion->bundle());
 $this->assertEquals(1370316710, $discussion->created->value);
 $this->assertEquals(1372268368, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
-$this->assertContains('<h2>Component</h2>', $discussion->body->value);
-$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertContains('Component', $discussion->body->value);
+$this->assertContains('Category', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
 $this->assertRedirects(['software/cipaedelivery/issue/spaces-apache-tomcat-6016-cause-problems-under-linux'], $discussion);
 
-$discussion = $this->loadEntityByLabel('node', 'cipa-smp-webapp is not thread safe');
+$discussion = Node::load(64595);
 $this->assertEquals('cipa-smp-webapp is not thread safe', $discussion->label());
 $this->assertEquals('discussion', $discussion->bundle());
 $this->assertEquals(1364378601, $discussion->created->value);
 $this->assertEquals(1373569684, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
-$this->assertContains('<h2>Component</h2>', $discussion->body->value);
-$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertContains('Component', $discussion->body->value);
+$this->assertContains('Category', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
 $this->assertRedirects(['software/cipaedelivery/issue/cipa-smp-webapp-not-thread-safe'], $discussion);
 
-$discussion = $this->loadEntityByLabel('node', 'cipa-smp-client-console still only use START protocol');
+$discussion = Node::load(142848);
 $this->assertEquals('cipa-smp-client-console still only use START protocol', $discussion->label());
 $this->assertEquals('discussion', $discussion->bundle());
 $this->assertEquals(1431075859, $discussion->created->value);
 $this->assertEquals(1431075989, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
-$this->assertContains('<h2>Component</h2>', $discussion->body->value);
-$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertContains('Component', $discussion->body->value);
+$this->assertContains('Category', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);
@@ -73,14 +74,14 @@ $this->assertRedirects(['software/cipaedelivery/issue/cipa-smp-client-console-st
 // they are valuable for 'comment' and 'comment_file' migration, they contain
 // comments with attachments.
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
-$discussion = $this->loadEntityByLabel('node', 'Format issue (release 1.00)', 'discussion');
+$discussion = Node::load(53934);
 $this->assertEquals('Format issue (release 1.00)', $discussion->label());
 $this->assertEquals('discussion', $discussion->bundle());
 $this->assertEquals(1356010265, $discussion->created->value);
 $this->assertEquals(1360231478, $discussion->changed->value);
 $this->assertEquals(1, $discussion->uid->target_id);
-$this->assertContains('<h2>Component</h2>', $discussion->body->value);
-$this->assertContains('<h2>Category</h2>', $discussion->body->value);
+$this->assertContains('Component', $discussion->body->value);
+$this->assertContains('Category', $discussion->body->value);
 $this->assertTrue($discussion->isPublished());
 $this->assertEquals($solution->id(), $discussion->og_audience->target_id);
 $this->assertEquals('validated', $discussion->field_state->value);

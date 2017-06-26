@@ -11,7 +11,7 @@ third_party_settings:
     status: true
     scheme: public
     directory: inline-files
-    extensions: 'txt pdf doc docx xls xslx ods odt ppt pptx vsd zip tar gz png jpg jpeg mp4 avi'
+    extensions: 'txt pdf doc docx xls xlsx ods odt ppt pptx vsd zip tar gz png jpg jpeg mp4 avi'
 format: content_editor
 editor: ckeditor
 settings:
@@ -64,6 +64,9 @@ settings:
           items:
             - Source
   plugins:
+    drupallink:
+      linkit_enabled: true
+      linkit_profile: default
     stylescombo:
       styles: ''
 image_upload:

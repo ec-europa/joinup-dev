@@ -10,7 +10,8 @@ CREATE OR REPLACE VIEW d8_custom_page (
   uid,
   group_type,
   group_nid,
-  group_title
+  group_title,
+  exclude
 ) AS
 SELECT
   p.collection,
@@ -24,9 +25,11 @@ SELECT
   n.uid,
   g.type,
   g.nid,
-  g.title
+  g.title,
+  ctop.field_og_page_exclude_menu_value
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
+INNER JOIN content_type_og_page ctop ON n.vid = ctop.vid
 INNER JOIN og_ancestry o ON n.nid = o.nid
 INNER JOIN node g ON o.group_nid = g.nid
 INNER JOIN d8_mapping m ON g.nid = m.nid

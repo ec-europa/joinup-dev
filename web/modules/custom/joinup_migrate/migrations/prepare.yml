@@ -19,6 +19,7 @@ source:
     - 'Owner type'
     - 'Collection Owner'
     - 'Collection state'
+    - URL
   row_index_column: row_index
   keys:
     Collection_name:
@@ -44,6 +45,7 @@ process:
     source: 'Collection state'
     default_value: validated
   roles: roles
+  url: URL
 destination:
   plugin: prepare
   fast_rollback: true
