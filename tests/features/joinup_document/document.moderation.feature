@@ -74,8 +74,7 @@ Feature: Document moderation
     # Non-members should not be able to create documents anymore.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
-    When I open the plus button menu
-    Then I should not see the link "Add document"
+    Then the plus button menu should be empty
 
   Scenario: Transit documents from one state to another.
     When I am logged in as "Gretchen Greene"

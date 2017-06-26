@@ -113,6 +113,14 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
 
+    // Log inconsistencies.
+    if (!$row->getSourceProperty('abstract')) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing an Abstract");
+    }
+    if (!$row->getSourceProperty('body')) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing a Description");
+    }
+
     return parent::prepareRow($row);
   }
 

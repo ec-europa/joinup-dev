@@ -24,6 +24,9 @@
     padding: 40px 30px
   +breakpoint(desktop)
     padding: 40px 60px
+  @media print
+    padding: 0
+    padding-bottom: 20px
 
 .page__content-image
   img
@@ -45,3 +48,7 @@
     margin: 0
     display: inline-block
     vertical-align: middle
+
+.page__title-wrapper
+  @media print
+    margin: 0

@@ -378,6 +378,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Navigates to the dashboard page of the user.
+   *
+   * @When I go to the dashboard
+   * @When I go to my dashboard
+   */
+  public function visitDashboard() {
+    $this->visitPath('/dashboard');
+  }
+
+  /**
    * Checks if a content entity is published.
    *
    * @param string $bundle
@@ -997,6 +1007,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that the plus button menu is empty.
+   *
+   * @When the plus button menu should be empty
+   */
+  public function assertEmptyPlusButtonMenu() {
+    if ($this->browserSupportsJavascript()) {
+      if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
+        throw new \Exception("The plus button menu is not empty.");
+      }
+    }
+  }
+
+  /**
    * Enters the given text in the given WYSIWYG editor.
    *
    * If this is running on a JavaScript enabled browser it will first click the
@@ -1398,6 +1421,38 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
       PHPUnit_Framework_Assert::assertEquals($expected_value, $element->getText());
+    }
+  }
+
+  /**
+   * Asserts that the small header is present in the page.
+   *
+   * @throws \Exception
+   *   Thrown when the small header is not found.
+   *
+   * @Then I should see the small header
+   */
+  public function assertSmallHeaderIsPresent() {
+    $element = $this->getSession()->getPage()->find('css', '.section--header');
+
+    if (!$element) {
+      throw new \Exception('The small header was not found in the page.');
+    }
+  }
+
+  /**
+   * Asserts that the small header is not present in the page.
+   *
+   * @throws \Exception
+   *   Thrown when the small header is found.
+   *
+   * @Then I should not see the small header
+   */
+  public function assertSmallHeaderIsNotPresent() {
+    $element = $this->getSession()->getPage()->find('css', '.section--header');
+
+    if ($element) {
+      throw new \Exception('The small header was fount in the page, but it should not.');
     }
   }
 

@@ -8,7 +8,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'http://joinup.eu/is/product_type'
+        predicate: 'http://joinup.ec.europa.eu/trr#productType'
         format: resource
 id: rdf_entity.field_is_product_type
 field_name: field_is_product_type
@@ -18,7 +18,7 @@ settings:
   target_type: taxonomy_term
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: false
 indexes: {  }
 persist_with_no_fields: false

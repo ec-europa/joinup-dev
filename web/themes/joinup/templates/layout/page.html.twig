@@ -42,8 +42,9 @@
 #}
 <div class="mdl-layout mdl-js-layout">
 
-  {# @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639. #}
-  {% include directory ~ '/templates/parts/header.html.twig' %}
+  {% if not is_front or logged_in %}
+    {% include directory ~ '/templates/parts/header.html.twig' %}
+  {% endif %}
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}

@@ -18,7 +18,7 @@ Feature: User profile
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leoke"
     And I fill in "Family name" with "di ser Piero da Vinci"
-    And I fill in "Professional domain" with "Supplier exchange"
+    And I select "Supplier exchange" from "Professional domain"
     And I fill in "Nationality" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
@@ -53,7 +53,7 @@ Feature: User profile
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leo"
     And I fill in "Family name" with "di ser Piero da Vinci"
-    And I fill in "Professional domain" with "Finance in EU"
+    And I select "Finance in EU" from "Professional domain"
     And I fill in "Nationality" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."

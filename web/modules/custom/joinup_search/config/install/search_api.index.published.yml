@@ -24,7 +24,6 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_owner
-    - field.storage.rdf_entity.field_status
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_organisation
@@ -32,10 +31,11 @@ dependencies:
   module:
     - rdf_entity
     - search_api
+    - joinup_search
     - node
     - user
 id: published
-name: 'Published content index'
+name: 'Published entities index'
 description: ''
 read_only: false
 field_settings:
@@ -60,7 +60,7 @@ field_settings:
         - 'entity:rdf_entity/og_audience'
         - 'entity:rdf_entity/field_isr_is_version_of'
   entity_author:
-    label: Author
+    label: 'Author'
     property_path: aggregated_field
     type: integer
     configuration:
@@ -301,14 +301,6 @@ field_settings:
         - field.storage.rdf_entity.field_owner_name
       module:
         - rdf_entity
-  field_status:
-    label: 'Status taxonomy'
-    datasource_id: 'entity:rdf_entity'
-    property_path: field_status
-    type: string
-    dependencies:
-      config:
-        - field.storage.rdf_entity.field_status
   uid:
     label: 'User ID'
     datasource_id: 'entity:user'
@@ -360,115 +352,8 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
-  add_url: {  }
-  aggregated_field: {  }
-  html_filter:
-    fields:
-      - body
-      - field_event_agenda
-      - field_isr_release_notes
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-    title: true
-    alt: true
-    tags:
-      h1: 5
-      h2: 3
-      h3: 2
-      strong: 2
-      b: 2
-    weights:
-      preprocess_index: -46
-      preprocess_query: -46
-  ignorecase:
-    fields:
-      - title
-      - body
-      - field_short_title
-      - field_news_headline
-      - field_event_agenda
-      - field_location
-      - field_event_adtl_address_info
-      - field_organisation
-      - label
-      - field_isr_release_notes
-      - isr_field_ci_name
-      - isr_field_owner_name
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-      - field_user_first_name
-      - field_user_family_name
-      - field_user_organisation
-    weights:
-      preprocess_index: -50
-      preprocess_query: -50
-  rendered_item: {  }
-  stopwords:
-    fields:
-      - keywords
-      - title
-      - body
-      - field_short_title
-      - field_news_headline
-      - field_event_agenda
-      - field_location
-      - field_event_adtl_address_info
-      - field_scope
-      - label
-      - field_isr_release_notes
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-    stopwords:
-      - a
-      - an
-      - and
-      - are
-      - as
-      - at
-      - be
-      - but
-      - by
-      - for
-      - if
-      - in
-      - into
-      - is
-      - it
-      - 'no'
-      - not
-      - of
-      - 'on'
-      - or
-      - s
-      - such
-      - t
-      - that
-      - the
-      - their
-      - then
-      - there
-      - these
-      - they
-      - this
-      - to
-      - was
-      - will
-      - with
-    weights:
-      preprocess_index: -47
-      preprocess_query: -47
+  joinup_entity_status:
+    inverse: false
   tokenizer:
     fields:
       - keywords
@@ -530,6 +415,116 @@ processor_settings:
     weights:
       preprocess_index: -48
       preprocess_query: -48
+  add_url: {  }
+  rendered_item: {  }
+  html_filter:
+    fields:
+      - body
+      - field_event_agenda
+      - field_isr_release_notes
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+    title: true
+    alt: true
+    tags:
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      b: 2
+    weights:
+      preprocess_index: -46
+      preprocess_query: -46
+  ignorecase:
+    fields:
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - label
+      - field_isr_release_notes
+      - isr_field_ci_name
+      - isr_field_owner_name
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
+    weights:
+      preprocess_index: -50
+      preprocess_query: -50
+  aggregated_field: {  }
+  stopwords:
+    fields:
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_scope
+      - label
+      - field_isr_release_notes
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+    stopwords:
+      - a
+      - an
+      - and
+      - are
+      - as
+      - at
+      - be
+      - but
+      - by
+      - for
+      - if
+      - in
+      - into
+      - is
+      - it
+      - 'no'
+      - not
+      - of
+      - 'on'
+      - or
+      - s
+      - such
+      - t
+      - that
+      - the
+      - their
+      - then
+      - there
+      - these
+      - they
+      - this
+      - to
+      - was
+      - will
+      - with
+    weights:
+      preprocess_index: -47
+      preprocess_query: -47
+  joinup_entity_published_revision: {  }
 tracker_settings:
   default: {  }
 options:

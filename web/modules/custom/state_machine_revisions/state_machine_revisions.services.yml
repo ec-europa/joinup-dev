@@ -6,7 +6,7 @@ services:
       - { name: paramconverter, priority: 5 }
   state_machine_revisions.workflow_transition:
     class: Drupal\state_machine_revisions\EventSubscriber\WorkflowTransitionEventSubscriber
-    arguments: ['@state_machine_revisions.revision_manager', '@joinup_core.workflow.helper']
+    arguments: ['@state_machine_revisions.revision_manager']
     tags:
       - { name: event_subscriber }
   state_machine_revisions.revision_manager:

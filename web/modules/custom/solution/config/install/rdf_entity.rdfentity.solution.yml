@@ -13,6 +13,10 @@ third_party_settings:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: t_literal
+      uid:
+        target_id:
+          predicate: 'http://joinup.eu/owner/uid'
+          format: integer
       langcode:
         value:
           predicate: 'http://joinup.eu/language'

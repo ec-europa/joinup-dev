@@ -18,48 +18,8 @@ dependencies:
     - node.type.news
   module:
     - ds
-    - joinup_core
     - text
     - user
-third_party_settings:
-  ds:
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: ''
-          class: ''
-        ft:
-          id: expert
-          settings:
-            lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
-            lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
 id: node.news.view_mode_tile
 targetEntityType: node
 bundle: news
@@ -97,7 +57,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: comma_separated
 hidden:
   field_attachment: true
   field_comments: true

@@ -69,16 +69,8 @@
   p
     margin-bottom: 0
 
-.listing__tags
-  span
-    font-size: 12px
-    margin-right: 6px
-    &:after
-      content: ','
-    &:last-of-type
-      margin-right: 0
-      &:after
-        content: none
+.listing__tags, .listing__tags a
+  font-size: $font-size-xsmall
 
 .listing__stats
   position: absolute
@@ -135,6 +127,24 @@
 .listing__action-link__wrapper
   padding: 0 20px
 
+.listing__item--create-tile
+  .mdl-cell--middle
+    width: 100%
+
+.listing__create-tile
+  color: $color-base
+  display: block
+  text-align: center
+  text-decoration: none
+  text-transform: uppercase
+  width: 100%
+
+  &:before
+    display: block
+    font-size: 200px
+    line-height: 0.5em
+    margin-bottom: 30px
+    content: "+"
 
 // Modifiers
 // --------------------------------------------------
