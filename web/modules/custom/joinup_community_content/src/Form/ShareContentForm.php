@@ -134,6 +134,10 @@ class ShareContentForm extends ShareContentFormBase {
       $this->shareInCollection($collection);
     }
 
+    if (!$this->isAjaxForm()) {
+      drupal_set_message('Sharing updated.');
+    }
+
     $form_state->setRedirectUrl($this->node->toUrl());
   }
 
