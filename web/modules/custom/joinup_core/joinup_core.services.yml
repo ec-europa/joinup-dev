@@ -8,6 +8,11 @@ services:
   joinup_core.page_type_determiner:
     class: Drupal\joinup_core\PageTypeDeterminer
     arguments: ['@current_route_match', '@entity_type.bundle.info']
+  joinup_core.refresh_visit_count:
+    class: Drupal\joinup_core\EventSubscriber\RefreshVisitCountEventSubscriber
+    arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory']
+    tags:
+      - { name: 'event_subscriber' }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager']
