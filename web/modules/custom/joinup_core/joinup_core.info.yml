@@ -15,6 +15,7 @@ dependencies:
   - message
   - message_notify
   - og
+  - piwik_reporting_api
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
