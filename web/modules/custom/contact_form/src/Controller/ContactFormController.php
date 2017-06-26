@@ -39,6 +39,11 @@ class ContactFormController extends ControllerBase {
       }
     }
 
+    // Prepopulate the subject if it was passed as a query argument.
+    if ($request->query->has('subject')) {
+      $values['field_contact_subject'] = $request->query->get('subject');
+    }
+
     $contact_message = $this->entityTypeManager()->getStorage('message')->create($values);
     $form = $this->entityFormBuilder()->getForm($contact_message);
 
