@@ -188,9 +188,9 @@ Feature: Navigation menu for custom pages
 
     # Disabled links should not be shown in the sub pages menu.
     When I am logged in as a facilitator of the "Hidden Ship" collection
-    And I disable "The Slaves of the Mountains" in the navigation menu of the "Rainbow tables" collection
-    And I disable "The Slaves of the Air" in the navigation menu of the "Rainbow tables" collection
-    And I go to the homepage of the "The Burning Angel" collection
+    And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
+    And I disable "The Slaves of the Air" in the navigation menu of the "Hidden Ship" collection
+    And I go to the homepage of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
