@@ -81,6 +81,7 @@ $this->assertRedirects([], $collection);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
+$this->assertEquals('http://example.com/this_collection', $collection->id());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);

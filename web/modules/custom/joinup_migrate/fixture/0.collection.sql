@@ -29,7 +29,7 @@ SELECT
   p.nid,
   n.vid,
   n.type,
-  TRIM(uri.field_id_uri_value),
+  IFNULL(p.url, TRIM(uri.field_id_uri_value)),
   FROM_UNIXTIME(n.created, '%Y-%m-%dT%H:%i:%s'),
   FROM_UNIXTIME(n.changed, '%Y-%m-%dT%H:%i:%s'),
   p.policy,
