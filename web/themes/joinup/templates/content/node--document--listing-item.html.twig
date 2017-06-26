@@ -69,6 +69,7 @@
 #}
 {%
   set classes = [
+    'contextual-region',
     'listing__card',
     'mdl-card',
     view_mode == 'view_mode_tile' ? 'listing__card--detail-container',
@@ -83,7 +84,9 @@
   {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
+      {{ title_prefix }}
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      {{ title_suffix }}
       {% if file_name %}
         <div class="value gray small truncated">{{ file_name }}</div>
       {% endif %}
