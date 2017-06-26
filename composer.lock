@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "97d017e457da334fb6eb343cba3378ae",
+    "content-hash": "fba81cc55eda59efb877d9aa5d1dea22",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -124,16 +124,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.29.5",
+            "version": "3.30.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a6b48c2526ecc14cfb3410b88b9a21f75442eb9b"
+                "reference": "20539a38dc643a2700f80ae8647dbd1a05d3f7a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a6b48c2526ecc14cfb3410b88b9a21f75442eb9b",
-                "reference": "a6b48c2526ecc14cfb3410b88b9a21f75442eb9b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/20539a38dc643a2700f80ae8647dbd1a05d3f7a9",
+                "reference": "20539a38dc643a2700f80ae8647dbd1a05d3f7a9",
                 "shasum": ""
             },
             "require": {
@@ -200,7 +200,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-06-14T20:58:25+00:00"
+            "time": "2017-06-23T18:54:40+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1460,6 +1460,29 @@
             "time": "2017-05-05T21:26:28+00:00"
         },
         {
+            "name": "drupal/cached_computed_field",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/cached_computed_field.git",
+                "reference": "1041476bb3299e01ede39a607f45816bde4ccc43"
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "A field that allows to cache computationally expensive computed data in field storage.",
+            "homepage": "https://www.drupal.org/project/cached_computed_field",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/cached_computed_field",
+                "source": "http://cgit.drupalcode.org/cached_computed_field"
+            },
+            "time": "2017-06-26 13:38:14"
+        },
+        {
             "name": "drupal/console",
             "version": "1.0.0-rc21",
             "source": {
@@ -2610,17 +2633,17 @@
         },
         {
             "name": "drupal/migrate_run",
-            "version": "1.0.0-alpha3",
+            "version": "1.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_run",
-                "reference": "8.x-1.0-alpha3"
+                "reference": "8.x-1.0-alpha4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "a80a9eaf98a9416e842814cd78acf2219dc195f5"
+                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha4.zip",
+                "reference": null,
+                "shasum": "eca1d7edac198ddea5fe831948b9cdfe999db435"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -2631,8 +2654,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1486473783"
+                    "version": "8.x-1.0-alpha4",
+                    "datestamp": "1498129143"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3051,7 +3074,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/piwik_reporting_api.git",
-                "reference": "f21b541874f0da21e075f99888a118981031d86f"
+                "reference": "39082db755f5e03b3121a6fc4f746105ee1e4f16"
             },
             "require": {
                 "pfrenssen/piwik-reporting-api": "dev-master"
@@ -3069,7 +3092,7 @@
                 "issues": "https://www.drupal.org/project/issues/piwik_reporting_api",
                 "source": "http://cgit.drupalcode.org/piwik_reporting_api"
             },
-            "time": "2017-06-15 11:17:48"
+            "time": "2017-06-26 13:14:54"
         },
         {
             "name": "drupal/r4032login",
@@ -3193,20 +3216,20 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.1.zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.2.zip",
                 "reference": null,
-                "shasum": "896d21a8b0dee0bea6e49fb0b2ac38315f4b52fe"
+                "shasum": "c6359692a220321ee8b4d6c61970b1c846afebe2"
             },
             "require": {
-                "drupal/core": "^8.2"
+                "drupal/core": "^8.3"
             },
             "require-dev": {
                 "drupal/search_api_db": "*"
@@ -3217,8 +3240,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1494495709"
+                    "version": "8.x-1.2",
+                    "datestamp": "1498403342"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -3834,12 +3857,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c"
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
-                "reference": "0a16a4c38d49e75e003cae9c0bd9c4d7afb3893c",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/2a43f713b6af897cde8ade42c2a46dd8186a3187",
+                "reference": "2a43f713b6af897cde8ade42c2a46dd8186a3187",
                 "shasum": ""
             },
             "require": {
@@ -3864,7 +3887,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-06-07 07:51:39"
+            "time": "2017-06-22 14:44:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4019,16 +4042,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.3",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8d6c6cc55186db87b7dc5009827429ba4e9dc006",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
@@ -4038,8 +4061,11 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0",
                 "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -4077,7 +4103,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+00:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -4975,12 +5001,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/piwik-reporting-api.git",
-                "reference": "bc50422a3e79ec511e9dbc03104d048cfc9d861f"
+                "reference": "9073901214c86687366660c3af2befc3ac878427"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/bc50422a3e79ec511e9dbc03104d048cfc9d861f",
-                "reference": "bc50422a3e79ec511e9dbc03104d048cfc9d861f",
+                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/9073901214c86687366660c3af2befc3ac878427",
+                "reference": "9073901214c86687366660c3af2befc3ac878427",
                 "shasum": ""
             },
             "require": {
@@ -5006,7 +5032,7 @@
                 "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/master",
                 "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
             },
-            "time": "2017-06-15 12:28:42"
+            "time": "2017-06-26 13:08:00"
         },
         {
             "name": "phing/phing",
@@ -5326,16 +5352,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.6",
+            "version": "v0.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "7028d6d525fb183d50b249b7c07598e3d386b27d"
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/7028d6d525fb183d50b249b7c07598e3d386b27d",
-                "reference": "7028d6d525fb183d50b249b7c07598e3d386b27d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
                 "shasum": ""
             },
             "require": {
@@ -5395,7 +5421,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-06-04T10:34:20+00:00"
+            "time": "2017-06-24T06:16:19+00:00"
         },
         {
             "name": "seld/cli-prompt",
@@ -5447,16 +5473,16 @@
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "791f8c594f300d246cdf01c6b3e1e19611e301d8"
+                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/791f8c594f300d246cdf01c6b3e1e19611e301d8",
-                "reference": "791f8c594f300d246cdf01c6b3e1e19611e301d8",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
+                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
                 "shasum": ""
             },
             "require": {
@@ -5492,7 +5518,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2017-03-06T16:42:24+00:00"
+            "time": "2017-06-18T15:11:04+00:00"
         },
         {
             "name": "seld/phar-utils",
@@ -8721,12 +8747,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "c6b8992f361d2725cfb7344cc292ec6a8c83d5be"
+                "reference": "3edafd99b204b99626255c0eb935c0273519059e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/c6b8992f361d2725cfb7344cc292ec6a8c83d5be",
-                "reference": "c6b8992f361d2725cfb7344cc292ec6a8c83d5be",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/3edafd99b204b99626255c0eb935c0273519059e",
+                "reference": "3edafd99b204b99626255c0eb935c0273519059e",
                 "shasum": ""
             },
             "require": {
@@ -8774,7 +8800,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-06-08 18:31:07"
+            "time": "2017-06-16T09:45:18+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -9487,16 +9513,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.35",
+            "version": "4.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "791b1a67c25af50e230f841ee7a9c6eba507dc87"
+                "reference": "46023de9a91eec7dfb06cc56cb4e260017298517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/791b1a67c25af50e230f841ee7a9c6eba507dc87",
-                "reference": "791b1a67c25af50e230f841ee7a9c6eba507dc87",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/46023de9a91eec7dfb06cc56cb4e260017298517",
+                "reference": "46023de9a91eec7dfb06cc56cb4e260017298517",
                 "shasum": ""
             },
             "require": {
@@ -9555,7 +9581,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-06T05:18:07+00:00"
+            "time": "2017-06-21T08:07:12+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -10192,6 +10218,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/cached_computed_field": 20,
         "drupal/core": 20,
         "drupal/diff": 5,
         "drupal/facets": 15,

@@ -9,6 +9,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/cached_computed_field": "dev-8.x-1.x",
         "drupal/console": "~1.0",
         "drupal/core": "8.3.x-dev#4c6a12eb9549d357cce88ad6a352187e456068c8",
         "drupal/diff": "^1.0@RC",
@@ -151,6 +152,10 @@
         }
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git.drupal.org/project/cached_computed_field.git"
+        },
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/phingdrushtask.git"
