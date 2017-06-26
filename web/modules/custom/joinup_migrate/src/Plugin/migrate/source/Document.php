@@ -85,7 +85,8 @@ class Document extends NodeBase {
         ->execute()
         ->fetchAll();
       $file_migration = "file:document_{$document_type}";
-      $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, $file_migration, 'original_url', JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
+      $urls = $row->getSourceProperty('original_url') ? [$row->getSourceProperty('original_url')] : [];
+      $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, $file_migration, $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
     }
 
     // Keywords.
