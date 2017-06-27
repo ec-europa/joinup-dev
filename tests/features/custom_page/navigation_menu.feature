@@ -197,4 +197,4 @@ Feature: Navigation menu for custom pages
       | Snake of Pleasure        |
       | The Slaves of the Sea    |
     But I should not see the "The Slaves of the Mountains" tile
-    But I should not see the "The Slaves of the Air" tile
+    And I should not see the "The Slaves of the Air" tile
