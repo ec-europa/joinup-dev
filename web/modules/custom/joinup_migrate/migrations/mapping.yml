@@ -34,8 +34,14 @@ process:
   logo: Logo
   banner: Banner
   owner: Owner
-  owner_name: 'Owner name'
-  owner_type: 'Owner type'
+  owner_name:
+    plugin: callback
+    callable: trim
+    source: 'Owner name'
+  owner_type:
+    plugin: callback
+    callable: trim
+    source: 'Owner type'
   content_item_state: 'Content item state'
   row_index: row_index
 destination:

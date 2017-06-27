@@ -256,8 +256,8 @@ foreach ($expected_values as $nid => $expected_value) {
     'logo' => NULL,
     'banner' => NULL,
     'owner' => NULL,
-    'owner_name' => NULL,
-    'owner_type' => NULL,
+    'owner_name' => '',
+    'owner_type' => '',
     'content_item_state' => NULL,
   ];
   ksort($expected_value);

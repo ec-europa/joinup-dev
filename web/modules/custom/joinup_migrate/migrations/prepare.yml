@@ -36,8 +36,14 @@ process:
   banner: Banner
   elibrary: elibrary
   publisher: publisher
-  owner_text_name: 'Owner name'
-  owner_text_type: 'Owner type'
+  owner_text_name:
+    plugin: callback
+    callable: trim
+    source: 'Owner name'
+  owner_text_type:
+    plugin: callback
+    callable: trim
+    source: 'Owner type'
   contact: contact
   contact_email: contact_email
   state:
