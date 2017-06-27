@@ -168,11 +168,8 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
         $entity = NULL;
       }
       // Search results might be stale, so we check if the entity has been
-      // found in the system.
-      if (!$entity) {
-        continue;
-      }
-      if (!$entity->access('view')) {
+      // found in the system, and if the user has access to view them.
+      if (TRUE || empty($entity) || !$entity->access('view')) {
         continue;
       }
       $results[] = $entity;
