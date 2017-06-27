@@ -148,20 +148,20 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   }
 
   /**
-   * Builds a renderable array for the search results.
+   * Filters the search results, throwing away stale and inaccessible results.
    *
    * @param \Drupal\search_api\Query\ResultSetInterface $result
    *   The query results object.
    *
-   * @return array
-   *   The render array for the search results.
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   The valid results, as loaded entities.
    */
   protected function getResultEntities(ResultSetInterface $result) {
     $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
       try {
-        /** @var \Drupal\Core\Entity\EntityInterface $entity */
+        /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
         $entity = $item->getOriginalObject()->getValue();
       }
       catch (SearchApiException $e) {
