@@ -72,13 +72,6 @@ content:
     third_party_settings: {  }
     type: state_machine_buttons
     region: content
-  field_visit_count:
-    weight: 26
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   path:
     type: path
     weight: 8
@@ -118,4 +111,5 @@ content:
     region: content
 hidden:
   field_shared_in: true
+  field_visit_count: true
   og_audience: true

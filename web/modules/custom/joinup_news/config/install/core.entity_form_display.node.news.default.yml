@@ -113,13 +113,6 @@ content:
     third_party_settings: {  }
     type: state_machine_buttons
     region: content
-  field_visit_count:
-    weight: 26
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   langcode:
     type: language_select
     weight: 2
@@ -137,6 +130,7 @@ content:
 hidden:
   created: true
   field_shared_in: true
+  field_visit_count: true
   og_audience: true
   path: true
   promote: true
