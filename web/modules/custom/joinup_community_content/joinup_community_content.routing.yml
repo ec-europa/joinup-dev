@@ -13,10 +13,10 @@ joinup_community_content.share_content_form:
 joinup_community_content.unshare_content_form:
   path: '/unshare/{node}'
   defaults:
-    _form: '\Drupal\joinup_community_content\Form\UnShareContentForm'
-    _title_callback: '\Drupal\joinup_community_content\Form\UnShareContentForm::getTitle'
+    _form: '\Drupal\joinup_community_content\Form\UnshareContentForm'
+    _title_callback: '\Drupal\joinup_community_content\Form\UnshareContentForm::getTitle'
   requirements:
-    _custom_access: '\Drupal\joinup_community_content\Form\UnShareContentForm::access'
+    _custom_access: '\Drupal\joinup_community_content\Form\UnshareContentForm::access'
   options:
     parameters:
       node:
