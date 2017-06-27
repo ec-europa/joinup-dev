@@ -579,6 +579,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
         'state' => 'field_state',
+        'visits' => 'field_visit_count',
       ],
     ];
 
