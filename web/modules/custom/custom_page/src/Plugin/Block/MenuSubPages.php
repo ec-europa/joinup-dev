@@ -182,7 +182,9 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
         list(, $uuid) = explode(':', $child_plugin_id, 2);
         /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link_content */
         $menu_link_content = $this->entityRepository->loadEntityByUuid('menu_link_content', $uuid);
-        $links[$menu_link_content->getWeight()] = $menu_link_content;
+        if ($menu_link_content->isEnabled()) {
+          $links[$menu_link_content->getWeight()] = $menu_link_content;
+        }
       }
     }
 
