@@ -45,7 +45,9 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @BeforeNodeCreate
    */
-  public function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+    /** @var \Drupal\joinup\Context\DrupalContext $context */
+    $context = $scope->getContext();
     $node = $scope->getEntity();
 
     if ($node->type !== 'document' || empty($node->file)) {
@@ -57,7 +59,7 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
       $node->field_file = $node->file;
     }
     else {
-      $node->field_file = $this->createFile($node->file, $this->getMinkParameter('files_path'))->id();
+      $node->field_file = $context->createFile($node->file, $context->getMinkParameter('files_path'))->id();
     }
 
     unset($node->file);
