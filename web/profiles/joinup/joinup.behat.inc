@@ -548,43 +548,37 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
       'discussion' => [
-        'state' => 'field_state',
         'content' => 'body',
-        'shared in' => 'field_shared_in',
       ],
       'document' => [
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
-        'state' => 'field_state',
         'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
-        'shared in' => 'field_shared_in',
       ],
       'event' => [
         'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
-        'state' => 'field_state',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
         'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
-        'shared in' => 'field_shared_in',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
-        'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
-        'shared in' => 'field_shared_in',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
+        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
     ];
 
