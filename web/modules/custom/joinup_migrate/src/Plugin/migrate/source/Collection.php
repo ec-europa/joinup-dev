@@ -106,8 +106,9 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('affiliates', $affiliates);
 
     // Log missed owner values.
-    if (!$row->getSourceProperty('owner')) {
-      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
+    $no_owner = !$row->getSourceProperty('owner') && !$row->getSourceProperty('owner_text_name');
+    if ($no_owner) {
+      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "Collection '$collection': missing mandatory content-type owner");
     }
 
     // Spatial coverage.
