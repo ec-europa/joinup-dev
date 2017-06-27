@@ -5,9 +5,11 @@
  * Assertions for 'release' migration.
  */
 
+use Drupal\file_url\FileUrlHandler;
+
 // Migration counts.
-$this->assertTotalCount('release', 83);
-$this->assertSuccessCount('release', 83);
+$this->assertTotalCount('release', 86);
+$this->assertSuccessCount('release', 86);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $release */
@@ -179,3 +181,26 @@ $this->assertReferences([
 $this->assertReferences(['Completed'], $release->get('field_status'));
 $this->assertEquals('draft', $release->field_isr_state->value);
 $this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-100'], $release);
+
+$release = $this->loadEntityByLabel('rdf_entity', 'signature-verification 1.8.0', 'asset_release');
+$this->assertEquals('signature-verification 1.8.0', $release->label());
+$this->assertEquals('asset_release', $release->bundle());
+$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1431701196), $release->field_isr_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1441205042), $release->field_isr_modification_date->value);
+$this->assertReferences([
+  'signature-verification 1.8.0',
+], $release->field_isr_distribution);
+// Test documentation with multiple cardinality.
+$this->assertReferences([
+  'signaturpruefservice_dokumentation_v1.8.pdf',
+  'dokumentation_-_webservice_schnittstelle_v1.3_0.pdf',
+], $release->get('field_isr_documentation'));
+// Check for documentation as remote URL.
+$urls = [];
+foreach ($release->get('field_isr_documentation') as $item) {
+  if (FileUrlHandler::isRemote(FileUrlHandler::urlToFile($item->target_id))) {
+    $urls[] = $item->target_id;
+  }
+}
+$this->assertSame(['http://wwww.eun.org'], $urls);

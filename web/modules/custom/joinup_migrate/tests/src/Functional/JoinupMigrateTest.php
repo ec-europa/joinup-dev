@@ -6,7 +6,6 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\joinup_migrate\MockFileSystem;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
@@ -198,17 +197,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     chmod($settings_file, 0444);
 
     $this->manager = $this->container->get('plugin.manager.migration');
-
-    // Run the 'prepare' migration to assure data for MySQL views, needed by
-    // self::createTestFiles() method.
-    // @see \Drupal\Tests\joinup_migrate\Functional\JoinupMigrateTest::executeMigration()
-    $migration = $this->manager->createInstance('prepare');
-    $this->executeMigration($migration, $migration->id(), TRUE);
-
-    // For performance reasons we don't import real files from the Drupal 6
-    // platform but we create locally a fake copy of the source file system with
-    // "zero size" files.
-    MockFileSystem::createTestingFiles($legacy_site_files, $this->legacyDb);
   }
 
   /**
