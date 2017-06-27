@@ -239,6 +239,8 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function switchItemInMenu($operation, $title, $menu, $label, $type) {
     // This is used to invalidate cache through og_menu instead of manually
     // building information.
+    // @todo: To be fixed by properly invalidating cache in og_menu.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3546
     $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
 
     $group = $this->getRdfEntityByLabel($label, $type);
