@@ -551,10 +551,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'content' => 'body',
       ],
       'document' => [
+        'document type' => 'field_type',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
-        'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
       ],
       'event' => [

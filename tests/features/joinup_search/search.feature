@@ -108,8 +108,8 @@ Feature: Global search
       | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet |                  | Solution alpha | validated |
       | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha |                | validated |
     And document content:
-      | title          | type     | short title          | body                                    | keywords | collection       | state     |
-      | Document omega | Document | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
+      | title          | document type | short title          | body                                    | keywords | collection       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
     And discussion content:
       | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
