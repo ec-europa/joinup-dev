@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
  */
 class Owner extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
   use StateTrait;
 
   /**

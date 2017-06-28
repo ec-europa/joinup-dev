@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
  */
 class Distribution extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
   use StatusTrait;
@@ -95,7 +95,8 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface {
     // Resolve 'access_url'.
     $fid = $row->getSourceProperty('file_id');
     $file_source_id_values = $fid ? [['fid' => $fid]] : [];
-    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', 'access_url');
+    $urls = $row->getSourceProperty('access_url') ? [$row->getSourceProperty('access_url')] : [];
+    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', $urls);
 
     // Status.
     $this->setStatus($vid, $row);

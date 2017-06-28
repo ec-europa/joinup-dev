@@ -31,7 +31,9 @@ process:
       - @contact_from_email
     unique: true
   field_is_creation_date: created_time
-  field_is_description/value: body
+  field_is_description/value:
+    plugin: file_inline
+    source: body
   field_is_description/format:
     plugin: default_value
     default_value: content_editor
@@ -92,4 +94,5 @@ migration_dependencies:
     - owner
     - contact
     - contact_email
-    - file:documentation_solution
+    - file:documentation
+    - file:inline

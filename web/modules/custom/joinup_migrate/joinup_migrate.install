@@ -30,11 +30,6 @@ function joinup_migrate_install() {
   foreach ($views as $view) {
     $db->query(file_get_contents($view->uri))->execute();
   }
-
-  // Fix the migrate_report path.
-  \Drupal::configFactory()->getEditable('migrate_report.config')
-    ->set('report_dir', 'public://migration')
-    ->save();
 }
 
 /**
@@ -180,6 +175,10 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 255,
           'not null' => TRUE,
         ],
+        'description' => [
+          'description' => 'Description',
+          'type' => 'text',
+        ],
         'abstract' => [
           'description' => 'Abstract',
           'type' => 'text',
@@ -241,6 +240,12 @@ function joinup_migrate_source_db_schema($table) {
         'roles' => [
           'description' => 'Roles',
           'type' => 'text',
+        ],
+        'url' => [
+          'description' => 'Collection ID as URL',
+          'type' => 'varchar',
+          'length' => 3048,
+          'not null' => FALSE,
         ],
       ],
       'indexes' => [

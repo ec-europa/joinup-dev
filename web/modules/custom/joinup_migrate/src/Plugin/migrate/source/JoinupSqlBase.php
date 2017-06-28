@@ -2,8 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Site\Settings;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
@@ -54,29 +54,20 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $uriProperties = ['uri'];
 
   /**
-   * Gets the legacy site files directory.
-   *
-   * @return string
-   *   The legacy site files directory
-   *
-   * @throws \Drupal\migrate\MigrateException
-   *   When the site files directory was not configured.
-   */
-  protected function getLegacySiteFiles() {
-    $files_dir = Settings::get('joinup_migrate.source.files');
-    $files_dir = rtrim($files_dir, '/');
-    return $files_dir;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if ($this->reservedUriTables && $row->hasSourceProperty('uri') && ($uri = $row->getSourceProperty('uri'))) {
-      $reserved = $this->getUrisToExclude();
-      if (in_array($uri, $reserved)) {
-        // This URI is in the reserved list. Generate a new one.
+    if ($row->hasSourceProperty('uri') && ($uri = $row->getSourceProperty('uri'))) {
+      if (Unicode::strlen($uri) > 255) {
+        // Limit the URI to 255 characters.
         $row->setSourceProperty('uri', NULL);
+      }
+      elseif ($this->reservedUriTables) {
+        $reserved = $this->getUrisToExclude();
+        if (in_array($uri, $reserved)) {
+          // This URI is in the reserved list. Generate a new one.
+          $row->setSourceProperty('uri', NULL);
+        }
       }
     }
 

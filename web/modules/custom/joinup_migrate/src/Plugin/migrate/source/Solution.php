@@ -15,7 +15,8 @@ use Drupal\migrate\Row;
 class Solution extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -90,9 +91,6 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
       'policy2',
       'landing_page',
       'metrics_page',
-      'docs_id',
-      'docs_url',
-      'docs_path',
       'state',
       'item_state',
       'contact_email',
@@ -114,8 +112,8 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_solution', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
@@ -151,6 +149,36 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
     $this->setState($row);
 
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Gets the (D6) 'asset_release' documentation given its node revision ID.
+   *
+   * @param int $vid
+   *   The (D6) 'asset_release' node revision ID.
+   *
+   * @return array[]
+   *   An indexed array where the first item is a list of file IDs, each one
+   *   represented as source IDs (example [['fid' => 123, 'fid' => 987]]) and
+   *   the second item is a simple array of URLs.
+   */
+  protected function getAssetReleaseDocumentation($vid) {
+    $items = $this->select('d8_file_documentation', 'd')->fields('d')
+      ->condition('d.vid', $vid)
+      ->execute()
+      ->fetchAll();
+
+    $return = [[], []];
+    foreach ($items as $item) {
+      if (!empty($item['fid'])) {
+        $return[0][] = ['fid' => $item['fid']];
+      }
+      if (!empty($item['url'])) {
+        $return[1][] = $item['url'];
+      }
+    }
+
+    return $return;
   }
 
 }

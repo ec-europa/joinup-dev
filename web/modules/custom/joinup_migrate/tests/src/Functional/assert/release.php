@@ -5,16 +5,18 @@
  * Assertions for 'release' migration.
  */
 
+use Drupal\file_url\FileUrlHandler;
+
 // Migration counts.
-$this->assertTotalCount('release', 83);
-$this->assertSuccessCount('release', 83);
+$this->assertTotalCount('release', 86);
+$this->assertSuccessCount('release', 86);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $release */
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.0.0', 'asset_release');
 $this->assertEquals('cipaedelivery 1.0.0', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1354298005), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042243), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -23,13 +25,16 @@ $this->assertReferences([
   'CIPAPnPAp.zip',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-100'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/86062',
+  'software/cipaedelivery/asset_release/cipaedelivery-100',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.0', 'asset_release');
 $this->assertEquals('cipaedelivery 1.1.0', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1370005132), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042209), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -37,13 +42,16 @@ $this->assertReferences([
   'CIPATestSuite.zip',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-110'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/86186',
+  'software/cipaedelivery/asset_release/cipaedelivery-110',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 2.0.0-Access point Beta', 'asset_release');
 $this->assertEquals('cipaedelivery 2.0.0-Access point Beta', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1379514961), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042186), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -51,24 +59,30 @@ $this->assertReferences([
   'OpenPEPPOL_AP_CA_production.pem',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/86261',
+  'software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.1-Certificate issue hot fix', 'asset_release');
 $this->assertEquals('cipaedelivery 1.1.1-Certificate issue hot fix', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1381330119), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042164), $release->field_isr_modification_date->value);
 $this->assertReferences(['cipa-start-client-1.1.0_patched.jar'], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-111-certificate-issue-hot-fix'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/86277',
+  'software/cipaedelivery/asset_release/cipaedelivery-111-certificate-issue-hot-fix',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 2.0.0-Access Point Beta2', 'asset_release');
 $this->assertEquals('cipaedelivery 2.0.0-Access Point Beta2', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1385739020), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042138), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -76,13 +90,16 @@ $this->assertReferences([
   'OpenPEPPOL_AP_CA_production.pem',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta2'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/86331',
+  'software/cipaedelivery/asset_release/cipaedelivery-200-access-point-beta2',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Cipa e-Delivery', 'asset_release');
 $this->assertEquals('Cipa e-Delivery', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1415270105), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042113), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -90,13 +107,16 @@ $this->assertReferences([
   'Cipa Access Point 2.2.3',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipa-e-delivery'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/108335',
+  'software/cipaedelivery/asset_release/cipa-e-delivery',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery 2.2.4', 'asset_release');
 $this->assertEquals('CIPA e-Delivery 2.2.4', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1426068052), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042087), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -106,13 +126,16 @@ $this->assertReferences([
   'Quick Start Guide',
 ], $release->field_isr_distribution);
 $this->assertTrue($release->get('field_status')->isEmpty());
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cipa-e-delivery-224'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/139286',
+  'software/cipaedelivery/asset_release/cipa-e-delivery-224',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'CEF e-Delivery 3.2.0', 'asset_release');
 $this->assertEquals('CEF e-Delivery 3.2.0', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449843736), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1470042058), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -123,13 +146,16 @@ $this->assertReferences([
   'Pmodes Presentation (eDelivery)-v1.00',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Completed'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['software/cipaedelivery/asset_release/cef-e-delivery-320'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/148080',
+  'software/cipaedelivery/asset_release/cef-e-delivery-320',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.2', 'asset_release');
 $this->assertEquals('Core Location Vocabulary 0.2', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1329468540), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458817654), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -140,29 +166,35 @@ $this->assertReferences([
   'location_rdf_schema-v01zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Deprecated'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
+$this->assertEquals('validated', $release->field_isr_state->value);
 $this->assertReferences([
   'Core_Vocabularies-Business_Location_Person-Specification-v0.2.pdf',
 ], $release->get('field_isr_documentation'));
-$this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-02'], $release);
+$this->assertRedirects([
+  'node/55776',
+  'asset/core_location/asset_release/core-location-vocabulary-02',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.3', 'asset_release');
 $this->assertEquals('Core Location Vocabulary 0.3', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1335801026), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1458840630), $release->field_isr_modification_date->value);
 $this->assertReferences([
   'core_vocabularies-business_location_person-specification-v03zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Deprecated'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-03'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/55826',
+  'asset/core_location/asset_release/core-location-vocabulary-03',
+], $release);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 1.00', 'asset_release');
 $this->assertEquals('Core Location Vocabulary 1.00', $release->label());
 $this->assertEquals('asset_release', $release->bundle());
-$this->assertEquals('draft', $release->graph->value);
+$this->assertEquals('default', $release->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1336376126), $release->field_isr_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467128099), $release->field_isr_modification_date->value);
 $this->assertReferences([
@@ -177,5 +209,35 @@ $this->assertReferences([
   'Core_Vocabularies-Business_Location_Person_v1.00_Specification_zip',
 ], $release->field_isr_distribution);
 $this->assertReferences(['Completed'], $release->get('field_status'));
-$this->assertEquals('draft', $release->field_isr_state->value);
-$this->assertRedirects(['asset/core_location/asset_release/core-location-vocabulary-100'], $release);
+$this->assertEquals('validated', $release->field_isr_state->value);
+$this->assertRedirects([
+  'node/55858',
+  'asset/core_location/asset_release/core-location-vocabulary-100',
+], $release);
+
+$release = $this->loadEntityByLabel('rdf_entity', 'signature-verification 1.8.0', 'asset_release');
+$this->assertEquals('signature-verification 1.8.0', $release->label());
+$this->assertEquals('asset_release', $release->bundle());
+$this->assertEquals('default', $release->graph->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1431701196), $release->field_isr_creation_date->value);
+$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1441205042), $release->field_isr_modification_date->value);
+$this->assertReferences([
+  'signature-verification 1.8.0',
+], $release->field_isr_distribution);
+// Test documentation with multiple cardinality.
+$this->assertReferences([
+  'signaturpruefservice_dokumentation_v1.8.pdf',
+  'dokumentation_-_webservice_schnittstelle_v1.3_0.pdf',
+], $release->get('field_isr_documentation'));
+// Check for documentation as remote URL.
+$urls = [];
+foreach ($release->get('field_isr_documentation') as $item) {
+  if (FileUrlHandler::isRemote(FileUrlHandler::urlToFile($item->target_id))) {
+    $urls[] = $item->target_id;
+  }
+}
+$this->assertSame(['http://wwww.eun.org'], $urls);
+$this->assertRedirects([
+  'node/142975',
+  'software/signature-verification/asset_release/signature-verification-180',
+], $release);

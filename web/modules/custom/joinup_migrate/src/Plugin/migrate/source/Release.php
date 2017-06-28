@@ -15,7 +15,8 @@ use Drupal\migrate\Row;
 class Release extends JoinupSqlBase implements RedirectImportInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -46,6 +47,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
+      'body' => $this->t('Description'),
       'created_time' => $this->t('Creation date'),
       'distribution' => $this->t('Distribution'),
       'solution' => $this->t('Solution ID'),
@@ -70,6 +72,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'nid',
       'vid',
       'title',
+      'body',
       'created_time',
       'changed_time',
       'uri',
@@ -77,9 +80,6 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'language',
       'version_notes',
       'version_number',
-      'docs_id',
-      'docs_path',
-      'docs_url',
       'state',
       'item_state',
     ]);
@@ -126,8 +126,8 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_release', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Status.
     $this->setStatus($vid, $row);

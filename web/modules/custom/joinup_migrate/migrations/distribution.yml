@@ -9,7 +9,9 @@ process:
   label: title
   field_ad_access_url: access_url
   field_ad_creation_date: created_time
-  field_ad_description/value: body
+  field_ad_description/value:
+    plugin: file_inline
+    source: body
   field_ad_description/format:
     plugin: default_value
     default_value: content_editor
@@ -52,3 +54,4 @@ migration_dependencies:
   required:
     - licence
     - file:distribution
+    - file:inline

@@ -29,6 +29,8 @@ $this->assertReferences([
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
+$this->assertEquals('Description for a new collection', $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertRedirects([], $collection);
@@ -46,7 +48,9 @@ $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
+$this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing an Abstract");
 $this->assertTrue($collection->get('field_ar_description')->isEmpty());
+$this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing a Description");
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
@@ -68,7 +72,8 @@ $this->assertReferences(['contact@semic.eu'], $collection->get('field_ar_contact
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('The Asset Description Metadata Schema (ADMS) is a metadata vocabulary to describe semantic interoperability assets.', $collection->get('field_ar_abstract')->value);
-$this->assertStringEndsWith("Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
+$this->assertEquals('content_editor', $collection->field_ar_abstract->format);
+$this->assertContains('Government Metadata', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
 $this->assertRedirects([], $collection);
@@ -87,15 +92,18 @@ $this->assertTrue($collection->get('field_ar_owner')->isEmpty());
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
-$this->assertStringEndsWith('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal. ', $collection->field_ar_abstract->value);
+$this->assertEquals('This group will offer Open Data stakeholders a possibility to find out more about the latest developments around the European Data Portal.', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
-$this->assertStringEndsWith("Discover the portal <a href=\"http://www.europeandataportal.eu\">www.europeandataportal.eu</a></p>\r\n", $collection->field_ar_description->value);
+$this->assertContains('Discover the portal', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/edp/description'], $collection);
+$this->assertRedirects([
+  'node/149141',
+  'community/edp/description',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
@@ -122,14 +130,20 @@ $this->assertReferences([
 $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
+// Repositories doesn't have abstract and no abstract has been provided in the
+// mapping Excel file. We log such inconsistencies.
 $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
-$this->assertStringEndsWith("suitable for old computers, and netbooks)</li>\r\n</ul>\r\n", $collection->field_ar_description->value);
+$this->assertMessage('collection', "Collection 'Archived collection' is missing an Abstract");
+$this->assertContains('suitable for old computers, and netbooks)', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
-$this->assertRedirects(['catalogue/repository/la-forja-de-guadalinex'], $collection);
+$this->assertRedirects([
+  'node/82307',
+  'catalogue/repository/la-forja-de-guadalinex',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());
@@ -148,13 +162,16 @@ $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('EIC (European Interoperability Catalogue)', $collection->get('field_ar_abstract')->value);
-$this->assertStringEndsWith("cross-sector setting.</p>\r\n<p>&nbsp;</p>\r\n", $collection->field_ar_description->value);
+$this->assertContains('cross-sector setting.', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/eic.jpg');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/eic/description'], $collection);
+$this->assertRedirects([
+  'node/157710',
+  'community/eic/description',
+], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
 $this->assertEquals('Collection with 1 entity having custom section', $collection->label());
@@ -171,10 +188,13 @@ $this->assertTrue($collection->get('field_ar_contact_information')->isEmpty());
 $this->assertEquals(1, $collection->field_ar_moderation->value);
 $this->assertEquals(0, $collection->field_ar_closed->value);
 $this->assertEquals('The objective of CAMSS is to establish a neutral and unbiased method for the assessment of technical specifications and standards in the field of ICT.', $collection->get('field_ar_abstract')->value);
-$this->assertStringEndsWith("European Public Administrations - ISA programme website</span></a>.&quot;<o:p></o:p></p>\r\n<p>&nbsp;</p>\r\n", $collection->field_ar_description->value);
+$this->assertContains('European Public Administrations - ISA programme website', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/CAMSS_70_3_1.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/CAMSS_70_3_1.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertRedirects(['community/camss/description'], $collection);
+$this->assertRedirects([
+  'node/66790',
+  'community/camss/description',
+], $collection);
