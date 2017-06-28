@@ -11,3 +11,7 @@ services:
     class: Drupal\joinup_migrate\EventSubscriber\PostPrepareSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_migrate.translate_field_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\TranslateFieldSubscriber
+    tags:
+      - { name: event_subscriber }
