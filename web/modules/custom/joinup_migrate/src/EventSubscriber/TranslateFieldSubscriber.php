@@ -21,7 +21,7 @@ class TranslateFieldSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Reacts after the 'prepare' migration has run.
+   * Reacts  before an entity is saved.
    *
    * @param \Drupal\migrate\Event\MigratePreEntitySaveEvent $event
    *   The event object.
