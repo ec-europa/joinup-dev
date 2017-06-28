@@ -108,6 +108,10 @@ abstract class ShareContentFormBase extends FormBase {
    *   A list of collection ids where the current node is already shared in.
    */
   protected function getAlreadySharedCollectionIds() {
+    if (!$this->node->hasField('field_shared_in')) {
+      return [];
+    }
+
     return array_column($this->node->get('field_shared_in')->getValue(), 'target_id');
   }
 
