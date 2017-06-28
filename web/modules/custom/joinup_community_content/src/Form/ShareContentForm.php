@@ -74,6 +74,8 @@ class ShareContentForm extends ShareContentFormBase {
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
     $form = parent::buildForm($form, $form_state, $node);
 
+    $collections = $this->getShareableCollections();
+
     // Wrap all the elements with a fieldset, like the "checkboxes" element
     // does. So we can use a label for all the elements.
     // @see CompositeFormElementTrait::preRenderCompositeFormElement()
@@ -82,9 +84,9 @@ class ShareContentForm extends ShareContentFormBase {
       '#title' => $this->t('Collections'),
       '#title_display' => 'invisible',
       '#tree' => TRUE,
+      '#access' => !empty($collections),
     ];
 
-    $collections = $this->getShareableCollections();
     foreach ($collections as $id => $collection) {
       $form['collections'][$id] = [
         '#type' => 'container',
@@ -134,7 +136,8 @@ class ShareContentForm extends ShareContentFormBase {
       $this->shareInCollection($collection);
     }
 
-    if (!$this->isAjaxForm()) {
+    // Show a message if the content was shared in at least one collection.
+    if (!$this->isAjaxForm() && !empty($collections)) {
       drupal_set_message('Sharing updated.');
     }
 
@@ -184,6 +187,11 @@ class ShareContentForm extends ShareContentFormBase {
    *   A list of collections where the current node can be shared.
    */
   protected function getShareableCollections() {
+    // If the node has no field, it's not shareable anywhere.
+    if (!$this->node->hasField('field_shared_in')) {
+      return [];
+    }
+
     $user_collections = $this->getUserCollections();
     $node_parent = $this->relationManager->getParent($this->node);
 
