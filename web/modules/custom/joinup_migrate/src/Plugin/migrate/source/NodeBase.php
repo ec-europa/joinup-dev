@@ -9,7 +9,7 @@ use Drupal\joinup_migrate\RedirectImportInterface;
  */
 abstract class NodeBase extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRedirectTrait;
 
   /**
    * {@inheritdoc}

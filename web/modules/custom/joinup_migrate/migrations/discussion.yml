@@ -8,10 +8,13 @@ source:
   plugin: discussion
   track_changes: true
 process:
+  nid: nid
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -43,3 +46,4 @@ migration_dependencies:
   required:
     - solution
     - file:discussion_attachment
+    - file:inline

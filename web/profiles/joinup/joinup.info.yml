@@ -40,6 +40,7 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - joinup_video
+  - linkit
   - menu_ui
   - moderation
   - node
@@ -158,6 +159,7 @@ config_devel:
   - language.content_settings.rdf_entity.collection
   - language.content_settings.rdf_entity.licence
   - language.content_settings.rdf_entity.solution
+  - linkit.linkit_profile.default
   - mailsystem.settings
   - og_menu.ogmenu.navigation
   - og.settings
