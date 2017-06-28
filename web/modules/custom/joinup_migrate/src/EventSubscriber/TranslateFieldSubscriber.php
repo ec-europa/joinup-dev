@@ -21,40 +21,44 @@ class TranslateFieldSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Reacts  before an entity is saved.
+   * Reacts before an entity is saved.
    *
    * @param \Drupal\migrate\Event\MigratePreEntitySaveEvent $event
    *   The event object.
    */
   public function translateField(MigratePreEntitySaveEvent $event) {
     $row = $event->getRow();
-    if ($row->hasDestinationProperty('i18n') && ($i18n = $row->getDestinationProperty('i18n'))) {
-      /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-      $entity = $event->getEntity();
+    if (!$row->hasDestinationProperty('i18n') || !($i18n = $row->getDestinationProperty('i18n'))) {
+      return;
+    }
 
-      /** @var \Drupal\Core\Language\LanguageManagerInterface $language_manager */
-      $language_manager = \Drupal::service('language_manager');
-      /** @var \Drupal\content_translation\ContentTranslationManagerInterface $content_translation_manager */
-      $content_translation_manager = \Drupal::service('content_translation.manager');
-
-      foreach (array_keys($i18n) as $langcode) {
-        if (!in_array($langcode, array_keys($language_manager->getLanguages()))) {
-          ConfigurableLanguage::createFromLangcode($langcode)->save();
-        }
+    // Create first all needed languages. We do this before the iteration where
+    // we save the translations, otherwise the entity language static cache is
+    // initialized with the initial languages list and that cannot be changed.
+    $language_manager = \Drupal::languageManager();
+    foreach (array_keys($i18n) as $langcode) {
+      if (!$language_manager->getLanguage($langcode)) {
+        ConfigurableLanguage::createFromLangcode($langcode)->save();
       }
+    }
 
-      if (!$entity->isTranslatable()) {
-        return;
-      }
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    $entity = $event->getEntity();
+    if (!$entity->isTranslatable()) {
+      return;
+    }
 
-      foreach ($i18n as $langcode => $values) {
-        $values += $entity->toArray();
-        $values['content_translation_source'] = LanguageInterface::LANGCODE_NOT_SPECIFIED;
-        $values['content_translation_status'] = TRUE;
-        $values['content_translation_uid'] = 1;
-        $values['content_translation_outdated'] = FALSE;
-        $entity->addTranslation($langcode, $values);
-      }
+    foreach ($i18n as $langcode => $values) {
+      // Fill with the specific content translation fields and fall-back to
+      // the remaining values from the base translation.
+      $values += [
+        'content_translation_source' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+        'content_translation_status' => TRUE,
+        'content_translation_uid' => 1,
+        'content_translation_outdated' => FALSE,
+      ] + $entity->toArray();
+      // Create the translation.
+      $entity->addTranslation($langcode, $values);
     }
   }
 
