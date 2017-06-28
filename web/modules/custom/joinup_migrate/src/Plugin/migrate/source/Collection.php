@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Language\LanguageManager;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -60,6 +61,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       'state' => $this->t('Workflow state'),
       'banner' => $this->t('Banner'),
       'logo_id' => $this->t('Logo ID'),
+      'i18n' => $this->t('Field translations'),
     ];
   }
 
@@ -122,6 +124,33 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing a Description");
     }
 
+    $i18n = [];
+    $vid = (int) $row->getSourceProperty('vid');
+
+    // Only repositories provide field translation.
+    if ($vid && ($row->getSourceProperty('type') === 'repository')) {
+      foreach (static::getTranslatableFields() as $destination => $info) {
+        $translations = $this->select($info['table'])
+          ->fields($info['table'], [$info['field']])
+          ->condition('vid', $vid)
+          ->isNotNull($info['field'])
+          ->condition($info['field'], '', '<>')
+          ->execute()
+          ->fetchCol();
+        foreach ($translations as $translation) {
+          $translation = unserialize($translation);
+          if ($translation && !empty($translation['field_language_textfield_lang'][0]['value']) && !empty($translation[$info['sub_field']][0]['value'])) {
+            $langcode = $translation['field_language_textfield_lang'][0]['value'];
+            if (isset(LanguageManager::getStandardLanguageList()[$langcode])) {
+              $value =& $translation[$info['sub_field']][0]['value'];
+              $i18n[$langcode][$destination] = $value;
+            }
+          }
+        }
+      }
+    }
+    $row->setSourceProperty('i18n', $i18n);
+
     return parent::prepareRow($row);
   }
 
@@ -176,6 +205,22 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     }
 
     return $sources;
+  }
+
+  /**
+   * Returns the fields that need translation in a structured way.
+   *
+   * @return array
+   *   Array keyed by destination field.
+   */
+  protected static function getTranslatableFields() {
+    return [
+      'field_ar_description' => [
+        'table' => 'content_field_repository_description',
+        'field' => 'field_repository_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }
