@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "336604b6060355d5f67c26cdf9430415",
+    "content-hash": "cda6f9b8cff35e0f1cc7fafe048e53c7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1471,15 +1471,40 @@
         },
         {
             "name": "drupal/cached_computed_field",
-            "version": "dev-8.x-1.x",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/cached_computed_field.git",
-                "reference": "539ba0f2c1c63836e7445fb9ad54c9d72132d6c6"
+                "url": "https://git.drupal.org/project/cached_computed_field",
+                "reference": "8.x-1.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta2.zip",
+                "reference": null,
+                "shasum": "273fc694723be24107161ae778a01000eecefe3d"
+            },
+            "require": {
+                "drupal/core": "~8.0"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1498660742"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
             ],
             "description": "A field that allows to cache computationally expensive computed data in field storage.",
             "homepage": "https://www.drupal.org/project/cached_computed_field",
@@ -1487,10 +1512,9 @@
                 "Drupal"
             ],
             "support": {
-                "issues": "https://www.drupal.org/project/issues/cached_computed_field",
-                "source": "http://cgit.drupalcode.org/cached_computed_field"
-            },
-            "time": "2017-06-27 16:34:44"
+                "source": "http://cgit.drupalcode.org/cached_computed_field",
+                "issues": "https://www.drupal.org/project/issues/cached_computed_field"
+            }
         },
         {
             "name": "drupal/console",
@@ -3228,18 +3252,42 @@
         },
         {
             "name": "drupal/piwik_reporting_api",
-            "version": "dev-8.x-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/piwik_reporting_api.git",
-                "reference": "39082db755f5e03b3121a6fc4f746105ee1e4f16"
+                "url": "https://git.drupal.org/project/piwik_reporting_api",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta1.zip",
+                "reference": null,
+                "shasum": "83df273155769598f1d6c5ac9b15a74b2f3d430e"
             },
             "require": {
+                "drupal/core": "~8.0",
+                "drupal/piwik": "*",
                 "pfrenssen/piwik-reporting-api": "dev-master"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1498583042"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
             ],
             "description": "Allows to retrieve reports from the Piwik API.",
             "homepage": "https://www.drupal.org/project/piwik_reporting_api",
@@ -3247,10 +3295,9 @@
                 "Drupal"
             ],
             "support": {
-                "issues": "https://www.drupal.org/project/issues/piwik_reporting_api",
-                "source": "http://cgit.drupalcode.org/piwik_reporting_api"
-            },
-            "time": "2017-06-26 13:14:54"
+                "source": "http://cgit.drupalcode.org/piwik_reporting_api",
+                "issues": "https://www.drupal.org/project/issues/piwik_reporting_api"
+            }
         },
         {
             "name": "drupal/r4032login",
@@ -10578,7 +10625,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/cached_computed_field": 20,
         "drupal/core": 20,
         "drupal/diff": 5,
         "drupal/facets": 15,
@@ -10590,7 +10636,7 @@
         "drupal/password_policy": 20,
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/piwik_reporting_api": 20,
+        "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
