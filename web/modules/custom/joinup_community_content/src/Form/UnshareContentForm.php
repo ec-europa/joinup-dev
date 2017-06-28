@@ -102,7 +102,12 @@ class UnshareContentForm extends ShareContentFormBase {
    *   shared.
    */
   protected function getCollections() {
-    return array_intersect_key($this->getUserCollectionsWhereFacilitator(), array_flip($this->getAlreadySharedCollectionIds()));
+    $collections = $this->getAlreadySharedCollectionIds();
+    if (empty($collections)) {
+      return [];
+    }
+
+    return array_intersect_key($this->getUserCollectionsWhereFacilitator(), array_flip($collections));
   }
 
   /**
