@@ -203,7 +203,13 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
         continue;
       }
 
-      $view_access = $this->revisionAccessCheck->checkOgAccess($entity, $this->currentUser, 'view');
+      if ($entity->isDefaultRevision()) {
+        $view_access = $entity->access('view', $this->currentUser, TRUE);
+      }
+      else {
+        $view_access = $this->revisionAccessCheck->checkOgAccess($entity, $this->currentUser, 'view');
+      }
+
       if (!$view_access->isAllowed()) {
         continue;
       }
