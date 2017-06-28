@@ -17,9 +17,9 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  min: ''
-  max: ''
+  min: null
+  max: null
   prefix: ''
   suffix: ''
-  cache-max-age: '86400'
+  cache-max-age: 86400
 field_type: cached_computed_integer
