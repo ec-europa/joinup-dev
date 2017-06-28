@@ -547,8 +547,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'custom_page' => [
+      ],
       'discussion' => [
         'content' => 'body',
+        'state' => 'field_state',
       ],
       'document' => [
         'document type' => 'field_type',
@@ -557,6 +560,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
+        'state' => 'field_state',
       ],
       'event' => [
         'keywords' => 'field_keywords',
@@ -568,18 +572,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
         'spatial coverage' => 'field_news_spatial_coverage',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
-        'state' => 'field_state',
         'visits' => 'field_visit_count',
       ],
     ];
