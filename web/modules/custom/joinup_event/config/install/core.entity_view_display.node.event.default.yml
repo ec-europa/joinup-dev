@@ -191,15 +191,6 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
-  field_visit_count:
-    weight: 14
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   links:
     weight: 0
     region: content
@@ -240,5 +231,6 @@ hidden:
   field_scope: true
   field_short_title: true
   field_state: true
+  field_visit_count: true
   langcode: true
   og_audience: true

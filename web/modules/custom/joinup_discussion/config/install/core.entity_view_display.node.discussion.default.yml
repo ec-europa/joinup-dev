@@ -102,15 +102,6 @@ content:
     third_party_settings: {  }
     type: list_default
     region: content
-  field_visit_count:
-    weight: 10
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   links:
     weight: 3
     region: content
@@ -151,4 +142,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_visit_count: true
   langcode: true

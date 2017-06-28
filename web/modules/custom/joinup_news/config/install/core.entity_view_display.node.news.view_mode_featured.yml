@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_state
+    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - node.type.news
   module:
@@ -62,6 +63,7 @@ hidden:
   field_news_spatial_coverage: true
   field_shared_in: true
   field_state: true
+  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

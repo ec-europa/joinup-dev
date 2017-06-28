@@ -79,15 +79,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_visit_count:
-    weight: 51
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   report:
     label: hidden
     weight: 50
@@ -112,6 +103,7 @@ hidden:
   field_shared_in: true
   field_state: true
   field_type: true
+  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

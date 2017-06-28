@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
@@ -40,6 +41,7 @@ hidden:
   field_policy_domain: true
   field_replies: true
   field_shared_in: true
+  field_visit_count: true
   langcode: true
   links: true
   og_audience: true
