@@ -16,8 +16,8 @@ dependencies:
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_distribution.default
-  - core.entity_view_display.rdf_entity.asset_distribution.default
   - core.entity_view_display.rdf_entity.asset_distribution.compact
+  - core.entity_view_display.rdf_entity.asset_distribution.default
   - core.entity_view_display.rdf_entity.asset_distribution.view_mode_featured
   - core.entity_view_display.rdf_entity.asset_distribution.view_mode_tile
   - field.field.rdf_entity.asset_distribution.field_ad_access_url
