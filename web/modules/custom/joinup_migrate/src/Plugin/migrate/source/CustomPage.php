@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
  */
 class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRedirectTrait;
 
   /**
    * {@inheritdoc}
@@ -43,6 +43,7 @@ class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
       'body' => $this->t('Body'),
       'collection' => $this->t('Collection'),
       'fids' => $this->t('Attachments'),
+      'exclude' => $this->t('Exclude from menu'),
     ];
   }
 
@@ -61,6 +62,7 @@ class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
       'body',
       'collection',
       'group_nid',
+      'exclude',
     ]);
   }
 

@@ -14,7 +14,7 @@ use Drupal\migrate\Row;
  */
 class Distribution extends JoinupSqlBase implements RedirectImportInterface {
 
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
   use StatusTrait;
