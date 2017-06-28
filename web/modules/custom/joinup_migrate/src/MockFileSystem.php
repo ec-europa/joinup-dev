@@ -2,8 +2,6 @@
 
 namespace Drupal\joinup_migrate;
 
-use Drupal\joinup_migrate\Plugin\migrate\source\JoinupSqlBase;
-
 /**
  * Helper method to create a fake file system to import from (used for testing).
  */
@@ -41,8 +39,8 @@ class MockFileSystem {
           $file = $row->getSourceProperty('path');
           if (strpos($file, '../') !== 0) {
             // Make relative path.
-            $pos = strlen(JoinupSqlBase::getLegacySiteFiles());
-            $files[] = substr($file, $pos);
+            $length = strlen(FileUtility::getLegacySiteFiles());
+            $files[] = substr($file, $length);
           }
           $source->next();
         }
