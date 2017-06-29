@@ -7,6 +7,7 @@
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -18,6 +19,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Drupal\rdf_entity\RdfFieldHandler;
 use Drupal\rdf_entity\RdfInterface;
+use EasyRdf\Http;
 
 /**
  * Implements hook_entity_base_field_info_alter().
@@ -397,4 +399,87 @@ function rdf_entity_theme_suggestions_rdf_entity(array $variables) {
   $suggestions[] = 'rdf_entity__' . $rdf_entity->id() . '__' . $sanitized_view_mode;
 
   return $suggestions;
+}
+
+/**
+ * Returns the requirements related to virtuoso version.
+ *
+ * @return array
+ *   The virtuoso version requirements.
+ */
+function rdf_entity_virtuoso_version_requirements() {
+  $minimum_version = '07.00.0000';
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection */
+  $connection = Database::getConnection('default', 'sparql_default');
+  $client = Http::getDefaultHttpClient();
+  $client->resetParameters(TRUE);
+  $client->setUri($connection->getQueryUri());
+  $client->setMethod('GET');
+  $response = $client->request();
+  $server_header = $response->getHeader('Server');
+  preg_match('/Virtuoso\/(.*?)\s/', $server_header, $matches);
+  $version = (is_array($matches) && count($matches) === 2) ? $matches[1] : [];
+
+  $requirements = [
+    'rdf_entity_virtuoso_version' => [
+      'title' => t('Virtuoso version'),
+      'description' => t('Virtuoso version meets minimum requirements.'),
+      'value' => $version,
+    ],
+  ];
+
+  if (empty($version)) {
+    $requirements['rdf_entity_virtuoso_version'] += [
+      'description' => t('Virtuoso version could not be detected.'),
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+  if (version_compare($version, $minimum_version, 'lt')) {
+    $requirements['rdf_entity_virtuoso_version'] += [
+      'description' => t('The minimum virtuoso version supported is :version', [
+        ':version' => $minimum_version,
+      ]),
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $requirements;
+}
+
+/**
+ * Returns the requirements related to virtuoso query permissions.
+ *
+ * @return array
+ *   The virtuoso query requirements.
+ */
+function rdf_entity_virtuoso_permission_requirements() {
+  $rand = random_int(10000, 50000);
+  $uri = 'http://example.com/id/rdf_entity_' . $rand;
+  $query = <<<QUERY
+    WITH <{$uri}>
+    INSERT { <{$uri}> <http://example.com/predicate> "test value" }
+    CLEAR GRAPH <{$uri}>
+QUERY;
+
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection */
+  $connection = Database::getConnection('default', 'sparql_default');
+  $requirements = [
+    'rdf_entity_virtuoso_query' => [
+      'title' => t('Virtuoso permissions'),
+      'description' => t('Virtuoso update/delete permissions are properly set.'),
+      'value' => $query,
+    ],
+  ];
+
+  try {
+    $connection->query($query);
+  }
+  catch (Exception $e) {
+    $requirements['rdf_entity_virtuoso_query'] += [
+      'description' => $e->getMessage(),
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $requirements;
 }
