@@ -69,6 +69,7 @@ dependencies:
   - swiftmailer
   - text
   - toolbar
+  - tour
   - trr
   - user
   - view_unpublished
