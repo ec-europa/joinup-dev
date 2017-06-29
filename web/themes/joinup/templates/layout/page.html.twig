@@ -98,7 +98,11 @@
 
   {% if page.footer %}
     <footer class="section section--footer" role="contentinfo">
-      {{ page.footer }}
+      <div class="footer-container mdl-grid">
+        <div class="mdl-cell mdl-cell--8-offset">
+          {{ page.footer }}
+        </div>
+      </div>
     </footer>
   {% endif %}
 
