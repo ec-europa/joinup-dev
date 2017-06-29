@@ -287,7 +287,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       if ($entity_type_id === 'rdf_entity') {
         $entity_id = UriEncoder::decodeUrl($entity_id);
       }
-      if ($entity = $this->getStorage($entity_type_id)->load($entity_id)) {
+      if (!$entity = $this->getStorage($entity_type_id)->load($entity_id)) {
         return NULL;
       }
     }
@@ -369,7 +369,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
   }
 
   /**
-   * Preforms a bird-eye check on the markup to see if process is needed.
+   * Preforms a bird-eye check on the markup to see if processing is needed.
    *
    * This method is called just to avoid processing on markup that doesn't
    * really need processing and improving the performance.
