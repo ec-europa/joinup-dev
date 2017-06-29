@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Traits;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 
@@ -23,21 +24,40 @@ trait ContextualLinksTrait {
    *   When the region is not found in the page.
    */
   protected function findContextualLinksInRegion($region) {
+    return $this->findContextualLinksInElement($this->getRegion($region));
+  }
+
+  /**
+   * Find all the contextual links in an element.
+   *
+   * Contextual links are retrieved on the browser side through the use
+   * of javascript, but that is not applicable for non-javascript browsers.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The name of the element to check.
+   *
+   * @return array
+   *   An array of links found keyed by title.
+   */
+  protected function findContextualLinksInElement(NodeElement $element) {
     // Since we are calling API functions that depend on the current user, we
     // need to make sure the current user service is up to date. It might still
     // contain the user from a previous API call.
     /** @var \Drupal\DrupalExtension\Context\RawDrupalContext $this */
-    $account = User::load($this->getUserManager()->getCurrentUser()->uid);
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user ? $current_user->uid : 0);
     \Drupal::currentUser()->setAccount($account);
 
-    $links = [];
+    // Clear the statically cached entities, to ensure that the route parameters
+    // will be up to date.
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
 
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
-    $regionObj = $this->getRegion($region);
 
+    $links = [];
     /** @var \Behat\Mink\Element\NodeElement $item */
-    foreach ($regionObj->findAll('xpath', '//*[@data-contextual-id]') as $item) {
+    foreach ($element->findAll('xpath', '//*[@data-contextual-id]') as $item) {
       $contextual_id = $item->getAttribute('data-contextual-id');
       foreach (_contextual_id_to_links($contextual_id) as $group_name => $link) {
         $route_parameters = $link['route_parameters'];

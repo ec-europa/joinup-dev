@@ -33,28 +33,36 @@ Feature: Sharing content between collections
       | title               | collection | state     |
       | Interesting content | Hip-Hop    | validated |
 
-    # Anonymous users cannot share anything.
+    # Anonymous users can share only in social networks.
     When I am an anonymous user
     And I go to the content page of the type "<content type>" with the title "Interesting content"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
-    Then I should not see the link "Share"
-    # This "authenticated user" is not member of any collections.
+    And I click "Share"
+    Then I should see the heading "Share Interesting content in"
+    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
+
+    # This "authenticated user" is not member of any collections, so he can
+    # share only in social networks.
     When I am logged in as an "authenticated user"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
-    Then I should not see the link "Share"
+    And I click "Share"
+    Then I should see the heading "Share Interesting content in"
+    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
-    # A member of a single collection shouldn't see the link.
+    # A member of a single collection which is the one where the content was
+    # created can share in social networks only.
     When I am logged in as "Marjolein Rye"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
-    Then I should not see the link "Share"
+    And I click "Share"
+    Then I should see the heading "Share Interesting content in"
+    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
     # A collection member should see the link.
     When I am logged in as "Sara Barber"
     And I go to the "Rockabilly is still rocking" discussion
     Then I should see the heading "Rockabilly is still rocking"
-    Then I should see the link "Share"
     When I click "Share"
-    Then I should see the heading "Share"
+    Then I should see the heading "Share Rockabilly is still rocking in"
     # Collections the user is member of should be available.
     And the following fields should be present "Hip-Hop, Drum'n'Bass"
     # While the original content collection and collections the user is not
@@ -64,7 +72,7 @@ Feature: Sharing content between collections
     # Verify on another node the correctness of the share tool.
     When I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
-    Then I should see the heading "Share"
+    Then I should see the heading "Share Interesting content in"
     And the following fields should be present "Classic Rock, Drum'n'Bass"
     And the following fields should not be present "Hip-Hop, Power ballad"
 
@@ -72,8 +80,12 @@ Feature: Sharing content between collections
     When I check "Classic Rock"
     And I press "Save"
     Then I should see the success message "Sharing updated."
-    And the "Classic Rock" checkbox should be checked
-    And the "Drum'n'Bass" checkbox should not be checked
+    # Verify that the collections where the content has already been shared are
+    # not shown anymore in the list.
+    When I click "Share"
+    Then I should see the heading "Share Interesting content in"
+    Then the following fields should be present "Drum'n'Bass"
+    And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad"
 
     # The shared content should be shown amongst the other content tiles.
     When I go to the homepage of the "Classic Rock" collection
@@ -85,19 +97,55 @@ Feature: Sharing content between collections
     When I go to the homepage of the "Drum'n'Bass" collection
     Then I should not see the "Interesting content" tile
 
-    # Un-share the content.
-    When I go to the content page of the type "<content type>" with the title "Interesting content"
-    And I click "Share"
-    Then I should see the heading "Share"
-    And I uncheck "Classic Rock"
+    # Content can be un-shared only by facilitators of the collections they
+    # have been shared in.
+    When I am an anonymous user
+    And I go to the homepage of the "Classic Rock" collection
+    Then I should see the "Interesting content" tile
+    And I should not see the contextual link "Unshare" in the "Interesting content" tile
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage of the "Classic Rock" collection
+    Then I should see the "Interesting content" tile
+    And I should not see the contextual link "Unshare" in the "Interesting content" tile
+
+    When I am logged in as a facilitator of the "Power ballad" collection
+    And I go to the homepage of the "Classic Rock" collection
+    Then I should see the "Interesting content" tile
+    And I should not see the contextual link "Unshare" in the "Interesting content" tile
+
+    When I am logged in as a facilitator of the "Classic Rock" collection
+    And I go to the homepage of the "Classic Rock" collection
+    Then I should see the "Interesting content" tile
+    And I should see the contextual link "Unshare" in the "Interesting content" tile
+    When I click the contextual link "Unshare" in the "Interesting content" tile
+    Then I should see the heading "Unshare Interesting content from"
+    Then the following fields should be present "Classic Rock"
+    And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
+
+    # Unshare the content.
+    When I uncheck "Classic Rock"
     And I press "Save"
-    Then I should see the success message "Sharing updated."
+    Then I should see the heading "Interesting content"
+    And I should see the success message "Sharing updated."
+
+    # Verify that the content is again shareable.
+    When I click "Share"
+    Then I should see the heading "Share Interesting content in"
+    And the following fields should be present "Classic Rock"
+    And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
 
     # Verify that the collection content has been updated.
     When I go to the homepage of the "Classic Rock" collection
     Then I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
     But I should not see the "Interesting content" tile
+
+    # Verify that the unshare link is not present when the content is not
+    # shared anywhere.
+    When I go to the homepage of the "Hip-Hop" collection
+    Then I should see the "Interesting content" tile
+    And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
     # The content should obviously not shared in the other collection too.
     When I go to the homepage of the "Drum'n'Bass" collection

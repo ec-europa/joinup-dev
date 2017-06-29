@@ -16,6 +16,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -40,6 +41,7 @@ use WebDriver\Exception\StaleElementReference;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
   use NodeTrait;
@@ -864,10 +866,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTileContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
-    if (!$element) {
-      throw new \Exception("The tile '$heading' was not found on the page.");
-    }
-
     if (strpos(trim($element->getText()), $text) === FALSE) {
       throw new \Exception("The text '$text' was not found in the tile '$heading'.");
     }
@@ -889,13 +887,79 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTileDoesNotContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
-    if (!$element) {
-      throw new \Exception("The tile '$heading' was not found on the page.");
-    }
-
     if (strpos(trim($element->getText()), $text) !== FALSE) {
       throw new \Exception("The text '$text' was found in the tile '$heading'.");
     }
+  }
+
+  /**
+   * Asserts the presence of a contextual link in a specific tile.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I (should )see the contextual link :link in the :heading tile
+   */
+  public function assertContextualLinkPresentInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (!isset($links[$link])) {
+      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    }
+  }
+
+  /**
+   * Asserts the presence of a contextual link in a specific tile.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I should not see the contextual link :link in the :heading tile
+   */
+  public function assertContextualLinkNotPresentInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (isset($links[$link])) {
+      throw new \Exception("Unexpected contextual link '$link' found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Clicks a specific contextual link in a tile.
+   *
+   * The click is simulated by visiting the URL of the link route.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I click the contextual link :link in the :heading tile
+   */
+  public function iClickTheContextualLinkInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (!isset($links[$link])) {
+      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    }
+
+    $this->getSession()->visit($this->locatePath($links[$link]));
   }
 
   /**
