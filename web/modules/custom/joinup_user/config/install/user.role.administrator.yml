@@ -7,6 +7,6 @@ weight: 4
 is_admin: false
 permissions:
   - 'administer account settings'
-  - 'administer nodes'
   - 'administer group'
+  - 'administer nodes'
   - 'edit collection rdf entity'
