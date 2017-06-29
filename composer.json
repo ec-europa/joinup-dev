@@ -162,10 +162,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://git.drupal.org/project/phingdrushtask.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/ec-europa/og.git"
         },
         {
