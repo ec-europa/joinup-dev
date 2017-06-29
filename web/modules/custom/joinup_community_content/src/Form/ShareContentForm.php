@@ -2,12 +2,10 @@
 
 namespace Drupal\joinup_community_content\Form;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -21,42 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Form to share a community content inside collections.
  */
-class ShareContentForm extends FormBase {
-
-  /**
-   * The current user account.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $currentUser;
-
-  /**
-   * The OG membership manager.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
-
-  /**
-   * The node being shared.
-   *
-   * @var \Drupal\node\NodeInterface
-   */
-  protected $node;
-
-  /**
-   * The RDF view builder.
-   *
-   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
-   */
-  protected $rdfBuilder;
-
-  /**
-   * The RDF entity storage.
-   *
-   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
-   */
-  protected $rdfStorage;
+class ShareContentForm extends ShareContentFormBase {
 
   /**
    * The Joinup relation manager.
@@ -66,14 +29,23 @@ class ShareContentForm extends FormBase {
   protected $relationManager;
 
   /**
-   * {@inheritdoc}
+   * Constructs a new ShareContentFormBase object.
+   *
+   * @param \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage
+   *   The RDF entity storage.
+   * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
+   *   The RDF view builder.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user account.
+   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   *   The Joinup relation manager.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, JoinupRelationManager $relation_manager, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
-    $this->rdfStorage = $rdf_storage;
-    $this->rdfBuilder = $rdf_builder;
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManager $relation_manager) {
+    parent::__construct($rdf_storage, $rdf_builder, $membership_manager, $current_user);
+
     $this->relationManager = $relation_manager;
-    $this->membershipManager = $membership_manager;
-    $this->currentUser = $current_user;
   }
 
   /**
@@ -83,9 +55,9 @@ class ShareContentForm extends FormBase {
     return new static(
       $container->get('entity_type.manager')->getStorage('rdf_entity'),
       $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
-      $container->get('joinup_core.relations_manager'),
       $container->get('og.membership_manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('joinup_core.relations_manager')
     );
   }
 
@@ -100,7 +72,9 @@ class ShareContentForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $this->node = $node;
+    $form = parent::buildForm($form, $form_state, $node);
+
+    $collections = $this->getShareableCollections();
 
     // Wrap all the elements with a fieldset, like the "checkboxes" element
     // does. So we can use a label for all the elements.
@@ -110,16 +84,12 @@ class ShareContentForm extends FormBase {
       '#title' => $this->t('Collections'),
       '#title_display' => 'invisible',
       '#tree' => TRUE,
+      '#access' => !empty($collections),
     ];
 
-    $already_shared = $this->getAlreadySharedCollectionIds();
-    foreach ($this->getShareableCollections() as $id => $collection) {
-      $wrapper_id = Html::getId($id) . '--wrapper';
-      $is_shared = in_array($id, $already_shared);
-
+    foreach ($collections as $id => $collection) {
       $form['collections'][$id] = [
         '#type' => 'container',
-        '#id' => $wrapper_id,
         '#attributes' => [
           'class' => ['share-box__row'],
         ],
@@ -130,104 +100,84 @@ class ShareContentForm extends FormBase {
           // Replicate the behaviour of the "checkboxes" element again.
           // @see \Drupal\Core\Render\Element\Checkboxes::processCheckboxes
           '#return_value' => $id,
-          '#default_value' => $is_shared ? $id : NULL,
-          '#ajax' => [
-            'callback' => '::checkboxChange',
-            'wrapper' => $wrapper_id,
-          ],
+          '#default_value' => FALSE,
           // Drop the extra "checkbox" key.
           '#parents' => ['collections', $id],
-          // Transform the checkbox into a submit-enabled input.
-          '#executes_submit_callback' => TRUE,
         ],
       ];
-
-      // Add a class when the collection is already shared.
-      if ($is_shared) {
-        $form['collections'][$id]['#attributes']['class'][] = 'already-shared';
-      }
     }
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Save'),
-      '#access' => !$this->isModal(),
+      '#value' => empty($collections) ? $this->t('Close') : $this->t('Save'),
     ];
 
+    if ($this->isModal() || $this->isAjaxForm()) {
+      $form['actions']['submit']['#ajax'] = [
+        'callback' => '::ajaxSubmit',
+      ];
+    }
+
     return $form;
-  }
-
-  /**
-   * Returns the updated row for the checkbox element.
-   */
-  public function checkboxChange(array &$form, FormStateInterface $form_state) {
-    // Fetch the checkbox that triggered the ajax, and return its wrapper.
-    $trigger = $form_state->getTriggeringElement();
-    $parents = $trigger['#array_parents'];
-    array_pop($parents);
-    $element = NestedArray::getValue($form, $parents);
-
-    return $element;
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $collections = $form_state->getValue('collections');
+    // Keep only the checked entries.
+    $collections = array_filter($form_state->getValue('collections'));
 
     // We can safely loop through these ids, as unvalid options are handled
     // already by Drupal.
     foreach ($collections as $id => $value) {
       $collection = $this->rdfStorage->load($id);
-      $value !== $id ? $this->removeFromCollection($collection) : $this->shareInCollection($collection);
+      $this->shareInCollection($collection);
     }
 
-    $form_state->setRebuild();
-
-    // Provide an extra visual clue that the options have been saved, but only
-    // when Javascript is disabled. The form will have visual clues that
-    // indicate that the content is already shared for the remaining cases.
-    if (!$this->isModal() && !$this->isAjaxForm()) {
-      drupal_set_message($this->t('Sharing updated.'));
+    // Show a message if the content was shared in at least one collection.
+    if (!$this->isAjaxForm() && !empty($collections)) {
+      drupal_set_message('Sharing updated.');
     }
+
+    $form_state->setRedirectUrl($this->node->toUrl());
   }
 
   /**
-   * Access check for the form route.
+   * Ajax callback to close the modal.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   An ajax response that will close the modal.
+   */
+  public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $response->addCommand(new CloseModalDialogCommand());
+
+    return $response;
+  }
+
+  /**
+   * Gets the title for the form route.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The entity being shared.
    *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Allowed if there is at least one collection where the node can be shared.
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The page/modal title.
    */
-  public function access(NodeInterface $node) {
-    $this->node = $node;
-
-    return AccessResult::allowedIf(!empty($this->getShareableCollections()));
-  }
-
-  /**
-   * Retrieves the collections a user is member of.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections the current user is member of.
-   */
-  protected function getUserCollections() {
-    $groups = $this->membershipManager->getUserGroups($this->currentUser);
-
-    if (empty($groups['rdf_entity'])) {
-      return [];
+  public function getTitle(NodeInterface $node) {
+    if ($this->isModal() || $this->isAjaxForm()) {
+      return $this->t('Share in');
     }
-
-    $collections = array_filter($groups['rdf_entity'], function ($entity) {
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      return $entity->bundle() === 'collection';
-    });
-
-    return $collections;
+    else {
+      return $this->t('Share %title in', ['%title' => $node->label()]);
+    }
   }
 
   /**
@@ -237,6 +187,11 @@ class ShareContentForm extends FormBase {
    *   A list of collections where the current node can be shared.
    */
   protected function getShareableCollections() {
+    // If the node has no field, it's not shareable anywhere.
+    if (!$this->node->hasField('field_shared_in')) {
+      return [];
+    }
+
     $user_collections = $this->getUserCollections();
     $node_parent = $this->relationManager->getParent($this->node);
 
@@ -245,17 +200,7 @@ class ShareContentForm extends FormBase {
       unset($user_collections[$node_parent->id()]);
     }
 
-    return $user_collections;
-  }
-
-  /**
-   * Gets a list of collection ids where the current node is already shared.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collection ids where the current node is already shared in.
-   */
-  protected function getAlreadySharedCollectionIds() {
-    return array_column($this->node->get('field_shared_in')->getValue(), 'target_id');
+    return array_diff_key($user_collections, array_flip($this->getAlreadySharedCollectionIds()));
   }
 
   /**
@@ -272,20 +217,6 @@ class ShareContentForm extends FormBase {
     $current_ids = array_unique($current_ids);
 
     $this->node->get('field_shared_in')->setValue($current_ids);
-    $this->node->save();
-  }
-
-  /**
-   * Removes the current node from being shared inside a collection.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to remove the node.
-   */
-  protected function removeFromCollection(RdfInterface $collection) {
-    // Flipping is needed to easily unset the value.
-    $current_ids = array_flip($this->getAlreadySharedCollectionIds());
-    unset($current_ids[$collection->id()]);
-    $this->node->get('field_shared_in')->setValue(array_flip($current_ids));
     $this->node->save();
   }
 

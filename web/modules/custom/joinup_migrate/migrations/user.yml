@@ -6,6 +6,7 @@ source:
   plugin: user
   track_changes: true
 process:
+  uid: uid
   status: status
   name: name
   pass: pass

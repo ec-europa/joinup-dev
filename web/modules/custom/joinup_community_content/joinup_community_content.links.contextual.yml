@@ -1,0 +1,4 @@
+joinup_community_content.unshare:
+  route_name: joinup_community_content.unshare_content_form
+  title: Unshare
+  group: node
