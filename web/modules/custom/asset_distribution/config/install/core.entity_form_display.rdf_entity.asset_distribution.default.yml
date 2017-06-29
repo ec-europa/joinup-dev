@@ -27,6 +27,7 @@ content:
     weight: 2
     settings:
       progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
     region: content
@@ -47,12 +48,9 @@ content:
     region: content
   field_ad_format:
     weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   field_ad_gitb_compliant:
     type: options_select
@@ -75,12 +73,9 @@ content:
     region: content
   field_ad_repr_technique:
     weight: 5
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   label:
     type: string_textfield

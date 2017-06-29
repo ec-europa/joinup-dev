@@ -38,8 +38,18 @@ class SetMysqlAutoincrement extends \Task {
     $d8_passwd = $project->getProperty('drupal.db.password');
     $d8_dbname = $project->getProperty('drupal.db.name');
 
-    // $d6 = new \mysqli($d6_host, $d6_username, $d6_passwd, $d6_dbname, $d6_port);
-    $d8 = new \mysqli($d8_host, $d8_username, $d8_passwd, $d8_dbname, $d8_port);
+    // PHP 7.x uses the pdo_mysql extension by default, while PHP 5.x defaults
+    // to mysqli.
+    if (class_exists('\mysqli')) {
+      // $d6 = new \mysqli($d6_host, $d6_username, $d6_passwd, $d6_dbname, $d6_port);
+      $d8 = new \mysqli($d8_host, $d8_username, $d8_passwd, $d8_dbname, $d8_port);
+    }
+    elseif (class_exists('\PDO')) {
+      $d8 = new \PDO("mysql:host=$d8_host;port=$d8_port;dbname=$d8_dbname", $d8_username, $d8_passwd);
+    }
+    else {
+      throw new \Exception('No supported MySQL extension found.');
+    }
 
     $safety_margin = 500000;
 

@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
  * Helper methods to deal with traversing of page elements.
@@ -147,6 +148,9 @@ trait TraversingTrait {
    *
    * @return \Behat\Mink\Element\NodeElement|null
    *   The tile element, or null if not found.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the tile is not found.
    */
   protected function getTileByHeading($heading) {
     // Locate all the tiles.
@@ -154,7 +158,15 @@ trait TraversingTrait {
     // That have a heading with the specified text.
     $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
 
-    return $this->getSession()->getPage()->find('xpath', $xpath);
+    $tile = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (!$tile) {
+      // Throw a specific exception, so it can be catched by steps that need to
+      // assert that a tile is not present.
+      throw new ElementNotFoundException($this->getDriver(), "Tile '$heading'");
+    }
+
+    return $tile;
   }
 
   /**
