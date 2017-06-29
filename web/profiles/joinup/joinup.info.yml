@@ -40,6 +40,7 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - joinup_video
+  - language
   - linkit
   - menu_ui
   - moderation
