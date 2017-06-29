@@ -69,20 +69,20 @@
     <main class="{{ main_classes|join(' ') }}" role="main">
       <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-      {% if page.sidebar_left and not is_propose_collection %}
+      {% if page.sidebar_left and not has_vertical_tabs %}
         <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
           {{ page.sidebar_left }}
         </aside>
       {% endif %}
 
-      <div class="section section--main mdl-cell {{ is_propose_collection ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
+      <div class="section section--main mdl-cell {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
         {% if page.content_top %}
-          <div class="section section--content-top {{ is_propose_collection ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
+          <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
             {{ page.content_top }}
           </div>
         {% endif %}
 
-        <div class="section section--content-middle {{ is_propose_collection ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+        <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
           {{ page.content }}
         </div>
 
