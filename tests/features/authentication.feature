@@ -37,6 +37,7 @@ Feature: User authentication
       | admin/content/rdf                  |
       | admin/people                       |
       | admin/structure                    |
+      | admin/structure/views              |
       | propose/collection                 |
       | propose/solution                   |
       | dashboard                          |
@@ -83,6 +84,7 @@ Feature: User authentication
       | admin/content/rdf                  |
       | admin/people                       |
       | admin/structure                    |
+      | admin/structure/views              |
       | propose/solution                   |
       | licence                            |
       | licence/add                        |
@@ -128,6 +130,7 @@ Feature: User authentication
       | admin/config                       |
       | admin/content                      |
       | admin/structure                    |
+      | admin/structure/views              |
       | propose/solution                   |
       | node                               |
       | node/add                           |
