@@ -409,38 +409,43 @@ function rdf_entity_theme_suggestions_rdf_entity(array $variables) {
  */
 function rdf_entity_virtuoso_version_requirements() {
   $minimum_version = '07.00.0000';
+  $requirements = [
+    'rdf_entity_endpoint' => [
+      'title' => t('Virtuoso endpoint availability'),
+      'description' => t('Virtuoso endpoint is available.'),
+    ],
+    'rdf_entity_virtuoso_version' => [
+      'title' => t('Virtuoso version'),
+      'description' => t('Virtuoso version meets minimum requirements.'),
+    ],
+  ];
+
   /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection */
   $connection = Database::getConnection('default', 'sparql_default');
   $client = Http::getDefaultHttpClient();
   $client->resetParameters(TRUE);
   $client->setUri($connection->getQueryUri());
   $client->setMethod('GET');
-  $response = $client->request();
+
+  try {
+    $response = $client->request();
+  } catch (Exception $e) {
+    // If the endpoint could not be reached, return early.
+    $requirements['rdf_entity_endpoint']['description'] = t('Virtuoso endpoint could not be reached.');
+    $requirements['rdf_entity_endpoint']['severity'] = REQUIREMENT_ERROR;
+    return $requirements;
+  }
+
   $server_header = $response->getHeader('Server');
   preg_match('/Virtuoso\/(.*?)\s/', $server_header, $matches);
   $version = (is_array($matches) && count($matches) === 2) ? $matches[1] : [];
-
-  $requirements = [
-    'rdf_entity_virtuoso_version' => [
-      'title' => t('Virtuoso version'),
-      'description' => t('Virtuoso version meets minimum requirements.'),
-      'value' => $version,
-    ],
-  ];
-
-  if (empty($version)) {
-    $requirements['rdf_entity_virtuoso_version'] += [
-      'description' => t('Virtuoso version could not be detected.'),
-      'severity' => REQUIREMENT_ERROR,
-    ];
-  }
   if (version_compare($version, $minimum_version, 'lt')) {
-    $requirements['rdf_entity_virtuoso_version'] += [
-      'description' => t('The minimum virtuoso version supported is :version', [
-        ':version' => $minimum_version,
-      ]),
-      'severity' => REQUIREMENT_ERROR,
-    ];
+    $description = t('The minimum virtuoso version supported is :version', [
+      ':version' => $minimum_version,
+    ]);
+    $requirements['rdf_entity_virtuoso_version']['description'] = $description;
+    $requirements['rdf_entity_virtuoso_version']['severity'] = REQUIREMENT_ERROR;
+    $requirements['rdf_entity_virtuoso_version']['value'] = $version;
   }
 
   return $requirements;
@@ -448,6 +453,10 @@ function rdf_entity_virtuoso_version_requirements() {
 
 /**
  * Returns the requirements related to virtuoso query permissions.
+ *
+ * Since there is no direct way to draw information from the virtuoso instace
+ * the function simply tries to create a triple in a random graph and then
+ * delete the whole graph.
  *
  * @return array
  *   The virtuoso query requirements.
@@ -475,10 +484,8 @@ QUERY;
     $connection->query($query);
   }
   catch (Exception $e) {
-    $requirements['rdf_entity_virtuoso_query'] += [
-      'description' => $e->getMessage(),
-      'severity' => REQUIREMENT_ERROR,
-    ];
+    $requirements['rdf_entity_virtuoso_query']['description'] = $e->getMessage();
+    $requirements['rdf_entity_virtuoso_query']['severity'] = REQUIREMENT_ERROR;
   }
 
   return $requirements;
