@@ -52,6 +52,7 @@ config_devel:
   - field.storage.taxonomy_term.extension
   - field.storage.taxonomy_term.mime_type
   - image.style.banner
+  - joinup_core.piwik_settings
   - rdf_draft.settings
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira

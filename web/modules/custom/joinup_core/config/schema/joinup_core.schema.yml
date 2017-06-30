@@ -88,3 +88,32 @@ plugin.plugin_configuration.search_api_processor.joinup_entity_status:
       type: boolean
       label: 'Inverse'
     roles:
+
+joinup_core.piwik_settings:
+  type: config_object
+  label: 'Piwik integration settings'
+  mapping:
+    visit_counts:
+      type: sequence
+      sequence:
+        type: joinup_core.piwik_settings.visit_counts.[%key]
+    download_counts:
+      type: sequence
+      sequence:
+        type: joinup_core.piwik_settings.download_counts.[%key]
+
+joinup_core.piwik_settings.*.*:
+  type: sequence
+  label: 'Bundles'
+  sequence:
+    type: string
+    label: 'Bundle'
+
+joinup_core.piwik_settings.*.*.period:
+  type: integer
+  label: 'Time period, in days'
+
+joinup_core.piwik_settings.*.*.type:
+  type: string
+  label: 'The type of metric to use'
+

@@ -1,0 +1,17 @@
+visit_counts:
+  discussion:
+    period: 30
+    type: visits
+  document:
+    period: 30
+    type: visits
+  event:
+    period: 30
+    type: visits
+  news:
+    period: 30
+    type: visits
+download_counts:
+  asset_distribution:
+    period: 0
+    type: hits

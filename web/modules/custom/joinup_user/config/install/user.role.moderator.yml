@@ -12,6 +12,7 @@ permissions:
   - 'administer comments'
   - 'administer group'
   - 'administer nodes'
+  - 'administer piwik integration'
   - 'administer search fields'
   - 'administer users'
   - 'administer views'
