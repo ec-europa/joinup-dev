@@ -6,6 +6,8 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\joinup_community_content\Access\NodeRevisionAccessCheck;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
@@ -53,6 +55,20 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   protected $revisionManager;
 
   /**
+   * The revision access check service.
+   *
+   * @var \Drupal\joinup_community_content\Access\NodeRevisionAccessCheck
+   */
+  protected $revisionAccessCheck;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -65,11 +81,17 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *   The entity type manager service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
+   * @param \Drupal\joinup_community_content\Access\NodeRevisionAccessCheck $revision_access_check
+   *   The revision access check service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, RevisionManagerInterface $revision_manager, NodeRevisionAccessCheck $revision_access_check, AccountProxyInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->revisionManager = $revision_manager;
+    $this->revisionAccessCheck = $revision_access_check;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -81,7 +103,9 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('state_machine_revisions.revision_manager')
+      $container->get('state_machine_revisions.revision_manager'),
+      $container->get('access_check.node.revision'),
+      $container->get('current_user')
     );
   }
 
@@ -178,7 +202,15 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       if (!$entity) {
         continue;
       }
-      if (!$entity->access('view')) {
+
+      if ($entity->isDefaultRevision()) {
+        $view_access = $entity->access('view', $this->currentUser, TRUE);
+      }
+      else {
+        $view_access = $this->revisionAccessCheck->checkOgAccess($entity, $this->currentUser, 'view');
+      }
+
+      if (!$view_access->isAllowed()) {
         continue;
       }
       $results[] = $entity;

@@ -49,6 +49,23 @@ Feature: Unpublished content of the website
     But I should not see the "The Ragged Streams" tile
     And I should not see the "Mists in the Thought" tile
 
+    # Regression test: Ensure that if there is an entity with both published and unpublished versions
+    # members and authenticated cannot access the unpublished version.
+    When I am logged in as "Phillip Shaw"
+    And I go to the "The Male of the Gift" event
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "The Gift of the Female"
+    And I fill in "Description" with "Some random description"
+    And I fill in "Location" with "Somewhere"
+    And I press "Request changes"
+    And I go to the homepage of the "Invisible Boyfriend" collection
+    Then I should see the "The Male of the Gift" tile
+    And I should see the "The Gift of the Female" tile
+    When I am logged in as "<user>"
+    And I go to the "Invisible Boyfriend" collection
+    Then I should see the "The Male of the Gift" tile
+    But I should not see the "The Gift of the Female" tile
+
     Examples:
       | user           |
       | Preston Fields |
