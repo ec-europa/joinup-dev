@@ -33,7 +33,7 @@ function drush_joinup_core_joinup_status_check() {
   });
   if (!empty($requirements)) {
     foreach ($requirements as $requirement) {
-      drush_set_error($requirements['title'], $requirement['description']);
+      drush_set_error($requirements['title'], drush_render($requirement['description']));
     }
   }
 }

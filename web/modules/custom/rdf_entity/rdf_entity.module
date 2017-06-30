@@ -455,7 +455,7 @@ function rdf_entity_virtuoso_version_requirements() {
 /**
  * Returns the requirements related to virtuoso query permissions.
  *
- * Since there is no direct way to draw information from the virtuoso instace
+ * Since there is no direct way to draw information from the virtuoso instance
  * the function simply tries to create a triple in a random graph and then
  * delete the whole graph.
  *
