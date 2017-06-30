@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * This allows to control at which time intervals data about visit and download
  * counts are retrieved from the Piwik server.
  *
- * @see \Drupal\joinup_core\EventSubscriber\RefreshVisitCountEventSubscriber
+ * @see \Drupal\joinup_core\EventSubscriber\RefreshCachedPiwikDataEventSubscriber
  */
 class PiwikIntegrationSettingsForm extends ConfigFormBase {
 
