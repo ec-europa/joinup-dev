@@ -112,8 +112,8 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
           '#type' => 'radios',
           '#title' => $this->t('Type'),
           '#options' => [
-            'visits' => $this->t('Visits'),
-            'hits' => $this->t('Hits'),
+            'nb_visits' => $this->t('Visits'),
+            'nb_hits' => $this->t('Hits'),
           ],
           '#default_value' => $config->get("visit_counts.$bundle.type"),
         ];
@@ -149,8 +149,8 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
           '#type' => 'radios',
           '#title' => $this->t('Type'),
           '#options' => [
-            'unique' => $this->t('Unique hits'),
-            'hits' => $this->t('Hits'),
+            'nb_uniq_visitors' => $this->t('Unique hits'),
+            'nb_hits' => $this->t('Hits'),
           ],
           '#default_value' => $config->get("download_counts.$bundle.type"),
         ];
