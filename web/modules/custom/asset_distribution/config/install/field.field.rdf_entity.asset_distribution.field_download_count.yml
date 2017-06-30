@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_download_count
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - cached_computed_field
+id: rdf_entity.asset_distribution.field_download_count
+field_name: field_download_count
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'Download count'
+description: 'The number of times the file attached to this distribution has been downloaded. This data is retrieved from the Piwik analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+  cache-max-age: 86400
+field_type: cached_computed_integer
