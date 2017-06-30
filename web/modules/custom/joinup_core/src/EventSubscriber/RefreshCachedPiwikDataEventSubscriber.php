@@ -217,7 +217,7 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
    *
    * @param \Piwik\ReportingApi\QueryInterface $query
    *   The Piwik reporting API query object.
-   * @param ContentEntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity from which to prune the URL.
    */
   protected function setUrlParameter(QueryInterface $query, ContentEntityInterface $entity) {
@@ -233,10 +233,28 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
     }
   }
 
+  /**
+   * Returns the absolute URL to the canonical page of the given entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity for which to return the URL.
+   *
+   * @return string
+   *   The URL.
+   */
   protected function getEntityUrl(ContentEntityInterface $entity) {
     return $entity->toUrl()->setAbsolute()->toString();
   }
 
+  /**
+   * Returns the URL of the first file that is referenced in the given entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity for which to retrieve the URL.
+   *
+   * @throws \Exception
+   *   Thrown when the functionality has not yet been implemented.
+   */
   protected function getFileUrl(ContentEntityInterface $entity) {
     // We only support download counts for distribution entities at the moment.
     // @todo Make this more generic using the EntityFieldManager if we support
@@ -245,7 +263,7 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
       throw new \InvalidArgumentException('Retrieving files from entities other than distributions has not been implemented yet.');
     }
 
-    // @see TrackedHostedFileDownloadFormatter::viewElements()
+    // @todo ref. TrackedHostedFileDownloadFormatter::viewElements()
     throw new \Exception('todo');
   }
 

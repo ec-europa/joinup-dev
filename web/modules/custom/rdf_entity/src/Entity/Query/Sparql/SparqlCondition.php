@@ -704,7 +704,7 @@ class SparqlCondition extends ConditionFundamentals implements ConditionInterfac
    * Implements \Drupal\Core\Entity\Query\ConditionInterface::notExists().
    */
   public function notExists($field, $lang = NULL) {
-    $this->condition($field, NULL, 'NOT EXISTS');
+    return $this->condition($field, NULL, 'NOT EXISTS');
   }
 
   /**
