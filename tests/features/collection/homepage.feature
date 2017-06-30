@@ -99,3 +99,10 @@ Feature: Collection homepage
     But I should not see the "Rohirrim make extraordinary deal" tile
     And I should not see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should not see the "Big hobbit feast - fireworks at midnight" tile
+
+  Scenario: The collection homepage should be cacheable for anonymous users.
+    Given I am an anonymous user
+    When I go to the homepage of the "Middle earth daily" collection
+    Then the page should not be cached
+    When I reload the page
+    Then the page should be cached
