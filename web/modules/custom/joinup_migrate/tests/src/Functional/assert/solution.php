@@ -19,7 +19,6 @@ $this->assertEquals('The administrative geography and civil voting area ontology
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1270080000), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449493447), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'The administrative geography and civil voting area ontology',
 ], $solution->field_is_distribution);
@@ -41,7 +40,6 @@ $this->assertEquals('CIPA e-Delivery', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('draft', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1341505914), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467363502), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'CEF e-Delivery 3.2.0',
   'CIPA e-Delivery 2.2.4',
@@ -77,7 +75,6 @@ $this->assertEquals('Styles Layer Descriptor', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1393346353), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1424438316), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Styles Layer Descriptor'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
@@ -100,7 +97,6 @@ $this->assertEquals('KASPeR - Mapping application of statistical data e-dimensio
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1419007124), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1423650568), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['KASPeR - Mapping application of statistical data e-dimensions'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
@@ -129,7 +125,6 @@ $this->assertEquals('Core Location Vocabulary', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1329465556), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462891660), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'Core Location Vocabulary 0.2',
   'Core Location Vocabulary 0.3',
@@ -156,7 +151,6 @@ $this->assertEquals('DCAT application profile for data portals in Europe', $solu
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1445872685), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1472543614), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'DCAT Application Profile for Data Portals in Europe - Draft 1',
@@ -190,7 +184,6 @@ $this->assertEquals('Asset Description Metadata Schema (ADMS)', $solution->label
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462873423), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'ADMS 0.6',
@@ -225,7 +218,6 @@ $this->assertEquals('Common Reporting Framework XBRL Project', $solution->label(
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1320274800), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675309), $solution->field_is_modification_date->value);
 $this->assertReferences(['1.4.1.corep.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
@@ -252,7 +244,6 @@ $this->assertEquals('Common Reporting Framework XBRL Project', $solution->label(
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1262732400), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675322), $solution->field_is_modification_date->value);
 $this->assertReferences(['1.3.1.core.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
@@ -275,7 +266,6 @@ $this->assertEquals('Evaluation and Report Language (EARL) 1.0 Schema', $solutio
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1304985600), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1455802561), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'Evaluation and Report Language (EARL) 1.0 Schema',
 ], $solution->field_is_distribution);
@@ -300,7 +290,6 @@ $this->assertEquals('Digital Signature Service', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1312882209), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467281398), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'sd-dss 1.00',
