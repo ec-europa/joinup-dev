@@ -200,7 +200,14 @@
 
     <!-- Enable development modules. -->
     <target name="enable-dev-modules">
-        <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${drupal.modules.dev}</param>
+        </drush>
     </target>
 
     <!-- Enable a module. -->

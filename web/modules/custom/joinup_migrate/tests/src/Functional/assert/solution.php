@@ -119,6 +119,10 @@ $this->assertRedirects([
   'node/102713',
   'catalogue/asset_release/kasper-mapping-application-statistical-data-e-dimensions',
 ], $solution);
+$translation = $solution->getTranslation('ro');
+$this->assertEquals('RO variant for name', $translation->label());
+$translation = $solution->getTranslation('et');
+$this->assertContains('Lastiliigi liigid on kooskõlas', $translation->field_is_description->value);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
 $this->assertEquals('Core Location Vocabulary', $solution->label());

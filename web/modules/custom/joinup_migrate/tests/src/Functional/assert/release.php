@@ -30,6 +30,9 @@ $this->assertRedirects([
   'node/86062',
   'software/cipaedelivery/asset_release/cipaedelivery-100',
 ], $release);
+$translation = $release->getTranslation('de');
+$this->assetEquals('Wunderbar', $translation->label());
+$this->assetContains('Verwendungszwecke (VZW), die einem privaten', $translation->content_field_asset_description->value);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.0', 'asset_release');
 $this->assertEquals('cipaedelivery 1.1.0', $release->label());

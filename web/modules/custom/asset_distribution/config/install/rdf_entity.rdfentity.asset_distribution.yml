@@ -9,10 +9,18 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: t_literal
+      uuid:
+        value:
+          predicate: ''
+          format: ''
       langcode:
         value:
           predicate: 'http://joinup.eu/language'
@@ -21,9 +29,38 @@ third_party_settings:
         value:
           predicate: 'http://joinup.eu/language/default'
           format: literal
+      content_translation_source:
+        value:
+          predicate: 'http://joinup.eu/language/translation_source'
+          format: t_literal
+      content_translation_outdated:
+        value:
+          predicate: 'http://joinup.eu/language/translation_outdated'
+          format: t_literal
+      content_translation_uid:
+        target_id:
+          predicate: 'http://joinup.eu/language/translation_author'
+          format: t_literal
+      content_translation_status:
+        value:
+          predicate: 'http://joinup.eu/language/translation_status'
+          format: t_literal
+      content_translation_created:
+        value:
+          predicate: 'http://joinup.eu/language/translation_created_time'
+          format: t_literal
+      content_translation_changed:
+        value:
+          predicate: 'http://joinup.eu/language/translation_changed_time'
+          format: t_literal
+      graph:
+        value:
+          predicate: ''
+          format: ''
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'
+    entity_id_plugin: default
 name: Distribution
 rid: asset_distribution
 description: ''

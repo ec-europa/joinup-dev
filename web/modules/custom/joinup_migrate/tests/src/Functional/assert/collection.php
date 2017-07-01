@@ -81,6 +81,7 @@ $this->assertRedirects([], $collection);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
+$this->assertEquals('http://example.com/this_collection', $collection->id());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_creation_date->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
@@ -144,6 +145,10 @@ $this->assertRedirects([
   'node/82307',
   'catalogue/repository/la-forja-de-guadalinex',
 ], $collection);
+$translation = $collection->getTranslation('fr');
+$this->assertContains("Guadalinex est un système d'exploitation à", $translation->field_ar_description->value);
+$translation = $collection->getTranslation('es');
+$this->assertContains('Hola', $translation->field_ar_description->value);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());

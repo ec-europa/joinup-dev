@@ -9,7 +9,6 @@ dependencies:
   - ds
   - facets
   - image
-  - language
   - link
   - message
   - message_notify

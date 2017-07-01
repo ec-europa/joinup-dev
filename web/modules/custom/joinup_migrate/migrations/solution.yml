@@ -83,6 +83,7 @@ process:
     vocabulary: spatial
   field_is_state: state
   field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: solution

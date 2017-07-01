@@ -12,7 +12,7 @@ third_party_settings:
       uid:
         target_id:
           predicate: 'http://joinup.eu/owner/uid'
-          format: integer
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
@@ -29,6 +29,30 @@ third_party_settings:
         value:
           predicate: 'http://joinup.eu/language/default'
           format: literal
+      content_translation_source:
+        value:
+          predicate: 'http://joinup.eu/language/translation_source'
+          format: t_literal
+      content_translation_outdated:
+        value:
+          predicate: 'http://joinup.eu/language/translation_outdated'
+          format: t_literal
+      content_translation_uid:
+        target_id:
+          predicate: 'http://joinup.eu/language/translation_author'
+          format: t_literal
+      content_translation_status:
+        value:
+          predicate: 'http://joinup.eu/language/translation_status'
+          format: t_literal
+      content_translation_created:
+        value:
+          predicate: 'http://joinup.eu/language/translation_created_time'
+          format: t_literal
+      content_translation_changed:
+        value:
+          predicate: 'http://joinup.eu/language/translation_changed_time'
+          format: t_literal
       graph:
         value:
           predicate: ''
