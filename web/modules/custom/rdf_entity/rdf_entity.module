@@ -429,7 +429,8 @@ function rdf_entity_virtuoso_version_requirements() {
 
   try {
     $response = $client->request();
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
     // If the endpoint could not be reached, return early.
     $requirements['rdf_entity_endpoint']['description'] = t('Virtuoso endpoint could not be reached.');
     $requirements['rdf_entity_endpoint']['severity'] = REQUIREMENT_ERROR;
