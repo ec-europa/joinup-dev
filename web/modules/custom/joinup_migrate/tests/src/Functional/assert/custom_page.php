@@ -90,7 +90,8 @@ $this->assertContains('An assessment of a technical specification or a standard 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'CAMSS Tools');
-$this->assertTrue($link->isEnabled());
+// Disabled because the source node is unpublished.
+$this->assertFalse($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEmpty($link->getParentId());
 $this->assertRedirects(['community/camss/og_page/camss-tools'], $custom_page);
