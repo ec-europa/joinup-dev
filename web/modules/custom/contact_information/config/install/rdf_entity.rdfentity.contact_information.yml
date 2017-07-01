@@ -16,7 +16,7 @@ third_party_settings:
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
-          format: literal
+          format: t_literal
       langcode:
         value:
           predicate: 'http://joinup.eu/language'
