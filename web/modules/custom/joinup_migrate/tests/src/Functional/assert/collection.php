@@ -143,7 +143,7 @@ $this->assertRedirects([
   'catalogue/repository/la-forja-de-guadalinex',
 ], $collection);
 $translation = $collection->getTranslation('fr');
-$this->assertContains("Guadalinex est un système d'exploitation à", $translation->field_ar_description->value);
+$this->assertContains('Guadalinex est un syst&egrave;me d&#39;exploitation', $translation->field_ar_description->value);
 $translation = $collection->getTranslation('es');
 $this->assertContains('Hola', $translation->field_ar_description->value);
 
