@@ -34,6 +34,9 @@ Feature: Proposing a collection
     Then I should see the heading "Propose collection"
     And the following fields should not be present "Current workflow state, Langcode, Translation"
     And the following field widgets should be present "Contact information, Owner"
+    # Ensure that the description for the "Access url" is shown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    And I should see the text "Web page for the external Repository"
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
