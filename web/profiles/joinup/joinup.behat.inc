@@ -1400,7 +1400,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertFieldContainsLinkToPage($field, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title);
-    $uri = '/' . $node->toUrl()->getInternalPath();
+    $uri = $node->toUrl()->toString();
     $this->assertSession()->fieldValueEquals($field, $uri);
   }
 
