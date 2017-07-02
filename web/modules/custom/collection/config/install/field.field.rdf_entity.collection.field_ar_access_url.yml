@@ -11,7 +11,7 @@ field_name: field_ar_access_url
 entity_type: rdf_entity
 bundle: collection
 label: 'Access URL'
-description: ''
+description: 'Web page for the external Repository'
 required: false
 translatable: false
 default_value: {  }
