@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: community_content
+label: 'Community content'
+type: 'canonical_entities:node'
+pattern: '[node:content-type]/[node:title]'
+selection_criteria:
+  b20b4893-a509-4d39-87af-e9046f2d2cdc:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+    negate: false
+    context_mapping:
+      node: node
+    uuid: b20b4893-a509-4d39-87af-e9046f2d2cdc
+selection_logic: and
+weight: -5
+relationships: {  }
