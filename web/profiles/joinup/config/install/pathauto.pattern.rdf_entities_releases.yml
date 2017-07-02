@@ -7,7 +7,7 @@ dependencies:
 id: rdf_entities_releases
 label: 'Rdf entities - releases'
 type: 'canonical_entities:rdf_entity'
-pattern: '[rdf_entity:rid:target_id]/[rdf_entity:label]/[rdf_entity:field_isr_release_number]'
+pattern: 'release/[rdf_entity:label]/[rdf_entity:field_isr_release_number]'
 selection_criteria:
   5a8a721e-7acc-46ac-8822-90b177ed44e3:
     id: 'entity_bundle:rdf_entity'
