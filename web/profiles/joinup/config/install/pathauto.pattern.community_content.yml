@@ -8,10 +8,9 @@ label: 'Community content'
 type: 'canonical_entities:node'
 pattern: '[node:content-type]/[node:title]'
 selection_criteria:
-  b20b4893-a509-4d39-87af-e9046f2d2cdc:
+  68832b83-2ccd-45eb-ac1e-fce770ca3185:
     id: node_type
     bundles:
-      custom_page: custom_page
       discussion: discussion
       document: document
       event: event
@@ -19,7 +18,7 @@ selection_criteria:
     negate: false
     context_mapping:
       node: node
-    uuid: b20b4893-a509-4d39-87af-e9046f2d2cdc
+    uuid: 68832b83-2ccd-45eb-ac1e-fce770ca3185
 selection_logic: and
 weight: -5
 relationships: {  }

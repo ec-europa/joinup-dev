@@ -167,6 +167,7 @@ config_devel:
   - og.settings
   - password_policy.password_policy.generic_policy
   - pathauto.pattern.community_content
+  - pathauto.pattern.custom_page
   - pathauto.pattern.rdf_entities_generic
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
