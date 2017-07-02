@@ -35,6 +35,9 @@ Feature:
     And news content:
       | title         | body          | collection          | state     |
       | Pathauto news | Pathauto news | Pathauto collection | validated |
+    And custom_page content:
+      | title         | body          | collection          | state     |
+      | Pathauto page | Pathauto page | Pathauto collection | validated |
 
     When I go to the "Pathauto collection" collection
     Then the url should match "collection/pathauto-collection"
@@ -50,3 +53,5 @@ Feature:
     Then the url should match "event/pathauto-event"
     When I visit the "Pathauto news" news
     Then the url should match "news/pathauto-news"
+    When I visit the "Pathauto page" custom page
+    Then the url should match "page/pathauto-page"
