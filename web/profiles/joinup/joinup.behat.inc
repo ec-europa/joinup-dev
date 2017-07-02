@@ -1259,7 +1259,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        $contains_text = strpos(trim($element->getText()), $description);
+        \PHPUnit_Framework_Assert::assertTrue($contains_text !== FALSE);
         // The description was found, stop searching.
         return;
       }
