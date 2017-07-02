@@ -28,7 +28,7 @@ class ModerationSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertModerationPreviewContainsText($title, $text) {
     $node = $this->getEntityByLabel('node', $title);
-    $xpath = '//h2/a[@href = "/node/' . $node->id() . '"]/ancestor::article';
+    $xpath = '//h2/a[@href = "' . $node->toUrl()->toString() . '"]/ancestor::article';
     $this->assertSession()->elementTextContains('xpath', $xpath, $text);
   }
 
@@ -44,7 +44,7 @@ class ModerationSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function clickLinkInModerationPreview($link_text, $title) {
     $node = $this->getEntityByLabel('node', $title);
-    $xpath = '//h2/a[@href = "/node/' . $node->id() . '"]/ancestor::article//a[text() = "' . $link_text . '"]';
+    $xpath = '//h2/a[@href = "' . $node->toUrl()->toString() . '"]/ancestor::article//a[text() = "' . $link_text . '"]';
     $this->assertSession()->elementExists('xpath', $xpath)->click();
   }
 
