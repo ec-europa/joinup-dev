@@ -7,7 +7,7 @@ dependencies:
 id: rdf_entities_generic
 label: 'Rdf entities - generic'
 type: 'canonical_entities:rdf_entity'
-pattern: '[rdf_entity:rid]/[rdf_entity:label]'
+pattern: '[rdf_entity:rid:target_id]/[rdf_entity:label]'
 selection_criteria:
   aec62a1f-fe49-4d80-9736-cda6bdffcce1:
     id: 'entity_bundle:rdf_entity'
