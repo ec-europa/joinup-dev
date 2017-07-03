@@ -1,6 +1,0 @@
-services:
-  joinup_event.fulfillment_guard:
-    class: Drupal\joinup_event\Guard\JoinupEventFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
-    tags:
-      - { name: state_machine.guard, group: event }
