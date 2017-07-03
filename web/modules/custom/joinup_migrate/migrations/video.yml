@@ -1,5 +1,5 @@
 id: video
-label: 'Video'
+label: Video
 migration_tags:
   - node
   - video
@@ -8,10 +8,13 @@ source:
   plugin: video
   track_changes: true
 process:
+  nid: nid
   title: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -38,3 +41,4 @@ destination:
 migration_dependencies:
   required:
     - collection
+    - file:inline

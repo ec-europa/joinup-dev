@@ -29,6 +29,9 @@
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
+    <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
+    <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
         <drush
@@ -49,6 +52,8 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+        <!-- Set the auto-increment default values for some tables. -->
+        <setmysqlautoincrement />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
@@ -182,5 +187,42 @@
         name="install-dev"
         description="Install the website and set up the development environment."
         depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
+
+    <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
+    <target name="redirect-outgoing-email">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="devel" />
+                </phingcall>
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="${line.separator}$config['system.mail']['interface']['default'] = 'devel_mail_log';${line.separator}" />
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';${line.separator}" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
 
 </project>
