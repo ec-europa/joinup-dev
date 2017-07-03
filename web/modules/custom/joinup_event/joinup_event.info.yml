@@ -3,7 +3,9 @@ type: module
 description: Events content type for joinup.
 core: 8.x
 package: Joinup
+
 dependencies:
+  - cached_computed_field
   - datetime_range
   - joinup_community_content
   - joinup_core
@@ -33,6 +35,7 @@ config_devel:
   - field.field.node.event.field_short_title
   - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_state
+  - field.field.node.event.field_visit_count
   - field.field.node.event.og_audience
   - field.storage.node.field_event_adtl_address_info
   - field.storage.node.field_event_agenda

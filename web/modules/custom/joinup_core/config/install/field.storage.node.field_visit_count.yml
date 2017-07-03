@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - cached_computed_field
+    - node
+id: node.field_visit_count
+field_name: field_visit_count
+entity_type: node
+type: cached_computed_integer
+settings:
+  unsigned: false
+  size: normal
+module: cached_computed_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
