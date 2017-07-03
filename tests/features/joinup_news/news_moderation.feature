@@ -186,7 +186,7 @@ Feature: News moderation.
     # Check reference to news page.
     # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761
     Then I should not see the success message "News <em>Cheetah kills WonderWoman</em> has been created."
-    Then I should see the heading "Cheetah kills WonderWoman"
+    And I should see the heading "Cheetah kills WonderWoman"
     And the "Cheetah kills WonderWoman" news content should not be published
     And I should see the text "Collection"
     And I should see the text "Legion of Doom"
@@ -198,8 +198,8 @@ Feature: News moderation.
     Then I should see the link "Edit"
     When I click "Edit"
     Then I should not see the heading "Access denied"
-    And the following buttons should be present "Update, Request changes, Publish"
-    And the following buttons should not be present "Save as draft, Request deletion, Preview"
+    And the following buttons should be present "Update, Publish"
+    And the following buttons should not be present "Save as draft, Request changes, Request deletion, Preview"
     And I press "Publish"
     And the "Cheetah kills WonderWoman" news content should be published
     When I click "Legion of Doom"
@@ -243,7 +243,7 @@ Feature: News moderation.
       # State: deletion request, owned
       | Mirror Master | Kill the sun            |
 
-  Scenario Outline: Facilitators have access on content regardless of state.
+  Scenario Outline: Facilitators have access to all content except from draft content without published version.
     Given I am logged in as "<user>"
     And I go to the "<title>" news page
     Then I should see the link "Edit"
@@ -252,22 +252,18 @@ Feature: News moderation.
     And the following buttons should be present "<available buttons>"
     And the following buttons should not be present "<unavailable buttons>"
     Examples:
-      | user     | title                         | available buttons                                | unavailable buttons                                                |
+      | user     | title                         | available buttons                       | unavailable buttons                                                |
       # Post moderated
       # News article in 'proposed' state.
-      | Hawkgirl | Hawkgirl is a spy             | Update, Publish, Request changes                 | Save as draft, Request deletion, Preview                           |
+      | Hawkgirl | Hawkgirl is a spy             | Update, Publish                         | Save as draft, Request changes, Request deletion, Preview          |
       # Published content can be moved back to 'Proposed', 'Draft' or to 'Needs update' state by a facilitator. It can also be updated.
-      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Propose, Update, Request changes | Save as draft, Publish, Request deletion, Preview                  |
-      | Hawkgirl | Space cannon fired            | Propose                                          | Save as draft, Publish, Request changes, Request deletion, Preview |
+      | Hawkgirl | Hawkgirl helped Green Lantern | Save new draft, Update, Request changes | Save as draft, Propose, Publish, Request deletion, Preview         |
+      | Hawkgirl | Space cannon fired            | Propose                                 | Save as draft, Publish, Request changes, Request deletion, Preview |
       # Pre moderated
-      # Facilitators have access to create news and directly put it to validate. For created and proposed, member role should be used.
-      | Metallo  | Creating Legion of Doom       | Save as draft, Publish                           | Request changes, Propose, Request deletion, Preview                |
       # Published content can be moved back to 'Proposed' or 'Draft' state by a facilitator. It can also be updated.
-      | Metallo  | Stealing from Batman          | Save new draft, Request changes, Update          | Propose, Request deletion, Preview                                 |
-      # Members can move to 'needs update' state.
-      | Metallo  | Learn batman's secret         | Update, Request changes, Publish                 | Save as draft, Request deletion, Preview                           |
-      | Metallo  | Stealing complete             | Propose                                          | Save as draft, Request deletion, Preview                           |
-      | Metallo  | Kill the sun                  | Reject deletion                                  | Save as draft, Propose, Request changes, Request deletion, Preview |
+      | Metallo  | Stealing from Batman          | Save new draft, Request changes, Update | Propose, Request deletion, Preview                                 |
+      | Metallo  | Stealing complete             | Propose                                 | Save as draft, Request deletion, Preview                           |
+      | Metallo  | Kill the sun                  | Reject deletion                         | Save as draft, Propose, Request changes, Request deletion, Preview |
 
   Scenario Outline: Facilitators cannot view unpublished content of another collection.
     Given I am logged in as "<user>"
@@ -312,7 +308,7 @@ Feature: News moderation.
     And I should see the link "Edit"
     When I click "Edit"
     And for "Kicker" I enter "Hawkgirl saves the planet again"
-    And I press "Propose"
+    And I press "Request changes"
     Then I should see the success message "News Hawkgirl saves the planet again has been updated."
     # A new draft has been created with a new title. The previously validated
     # revision (with the original title) should still be published.
