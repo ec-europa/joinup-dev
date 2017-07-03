@@ -34,6 +34,10 @@ Feature: Proposing a collection
     Then I should see the heading "Propose collection"
     And the following fields should not be present "Current workflow state, Langcode, Translation"
     And the following field widgets should be present "Contact information, Owner"
+    # Ensure that the description for the "Access url" is shown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    And I should see the description "Web page for the external Repository." for the "Access URL" field
+    And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
@@ -157,8 +161,6 @@ Feature: Proposing a collection
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
     And the following field widgets should be visible "Contact information"
-    # There should be a help text for the 'Access URL' field.
-    Then I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
