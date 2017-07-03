@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - cached_computed_field
   - comment
   - ds
   - facets
@@ -13,6 +14,7 @@ dependencies:
   - message
   - message_notify
   - og
+  - piwik_reporting_api
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
@@ -37,6 +39,7 @@ config_devel:
   - field.field.taxonomy_term.file_type.mime_type
   - field.storage.node.field_shared_in
   - field.storage.comment.field_body
+  - field.storage.node.field_visit_count
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain

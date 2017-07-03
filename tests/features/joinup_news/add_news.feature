@@ -7,7 +7,7 @@ Feature: Creation of news through the UI.
   Scenario: Share the news in other collections/solutions.
     Given the following collections:
       | title            | description                                 | logo     | banner     | state     |
-      | Metal fans       | Share the love for nickel, tungsten & co.   | logo.png | banner.jpg | validated |
+      | Metal fans       | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
       | Hardcore diggers | We dig up stuff hidden beneath the earth.   | logo.png | banner.jpg | validated |
       | Cool blacksmiths | Keeping it cool while working on hot stuff. | logo.png | banner.jpg | validated |
     And solutions:
