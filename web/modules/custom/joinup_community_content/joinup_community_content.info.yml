@@ -20,3 +20,4 @@ config_devel:
   - field.storage.node.field_policy_domain
   - field.storage.node.field_short_title
   - field.storage.node.field_state
+  - joinup_community_content.permission_scheme

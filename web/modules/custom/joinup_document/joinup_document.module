@@ -5,7 +5,6 @@
  * Contains joinup_document.module.
  */
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
@@ -22,32 +21,4 @@ function joinup_document_entity_bundle_field_info_alter(&$fields, EntityTypeInte
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['document']]);
     }
   }
-}
-
-/**
- * Returns the appropriate workflow to use for the document entity.
- *
- * The callback ensures that even if the parent is updated and the moderation
- * status changes, it will still use the proper workflow.
- * The fact that both pre and post moderated workflow use the same states
- * ensures that there are not going to be any issues as we only change
- * transitions.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The document entity.
- *
- * @return string
- *   The id of the workflow to use.
- *
- * @throws Exception
- *    Thrown when the function is called for a different bundle.
- */
-function joinup_document_workflow_selector(EntityInterface $entity) {
-  if ($entity->bundle() != 'document') {
-    throw new Exception('This method can only be called for document entities.');
-  }
-  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == 1 ? 'node:document:pre_moderated' : 'node:document:post_moderated';
 }

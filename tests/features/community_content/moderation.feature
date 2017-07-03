@@ -167,7 +167,7 @@ Feature: Moderate community content
     Then I should see the heading "Edit Discussion Black-body spectrum radiation"
 
     # Approve the content, and check that it no longer shows up in the moderation overview.
-    When I press "Approve proposed"
+    When I press "Publish"
     Then I should see the success message "Discussion Black-body spectrum radiation has been updated."
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
@@ -273,7 +273,7 @@ Feature: Moderate community content
     Then I should see the heading "Edit Discussion Cataclysmic variables"
 
     # Approve the content, and check that it no longer shows up in the moderation overview.
-    When I press "Approve proposed"
+    When I press "Publish"
     Then I should see the success message "Discussion Cataclysmic variables has been updated."
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"

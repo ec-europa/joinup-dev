@@ -26,12 +26,12 @@ Feature: Revision permissions support in OG
       | Mechanics FAQ | Common questions and answers. | Mechanics 101 |
     # Create a discussion in the collection.
     And discussion content:
-      | title                             | body           | collection    | author       |
-      | Open-ended or open-ring spanners? | Pros and cons. | Mechanics 101 | Ainslee Hext |
+      | title                             | body           | collection    | author       | state     |
+      | Open-ended or open-ring spanners? | Pros and cons. | Mechanics 101 | Ainslee Hext | validated |
     # And one in the solution.
     And discussion content:
-      | title                                | body                            | solution       | author     |
-      | Orbital sander tearing off too fast? | Any tricks to improve lifespan? | Carpenters DIY | Erik Quick |
+      | title                                | body                            | solution       | author     | state     |
+      | Orbital sander tearing off too fast? | Any tricks to improve lifespan? | Carpenters DIY | Erik Quick | validated |
     And discussion revisions:
       | current title                        | body                                               |
       | Open-ended or open-ring spanners?    | Positive and negative aspects.                     |

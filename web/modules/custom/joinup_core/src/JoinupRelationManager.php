@@ -103,4 +103,24 @@ class JoinupRelationManager implements ContainerInjectionInterface {
     return $state;
   }
 
+  /**
+   * Retrieves the eLibrary settings of the parent.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   *
+   * @return string
+   *   The state of the parent entity.
+   */
+  public function getParentElibrary(EntityInterface $entity) {
+    $parent = $this->getParent($entity);
+    $field_array = [
+      'collection' => 'field_ar_elibrary_creation',
+      'solution' => 'field_is_elibrary_creation',
+    ];
+
+    $e_library = $parent->{$field_array[$parent->bundle()]}->first()->value;
+    return $e_library;
+  }
+
 }
