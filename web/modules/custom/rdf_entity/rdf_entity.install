@@ -16,7 +16,10 @@ function rdf_entity_requirements($phase) {
 
   $requirements += rdf_entity_virtuoso_version_requirements();
   // If the endpoint is not available, return early.
-  if ($requirements['rdf_entity_endpoint']['severity'] === REQUIREMENT_ERROR) {
+  if (
+    isset($requirements['rdf_entity_endpoint']['severity']) &&
+    $requirements['rdf_entity_endpoint']['severity'] === REQUIREMENT_ERROR
+  ) {
     return $requirements;
   }
 

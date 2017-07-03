@@ -28,18 +28,21 @@ Feature: Unpublished content of the website
       | The Male of the Gift | Ed Abbott | Invisible Boyfriend | validated |
       | Mists in the Thought | Ed Abbott | Invisible Boyfriend | draft     |
 
-  Scenario Outline: Both the owner and the authenticated users should be able to see all content.
-    When I am logged in as "<user>"
+  Scenario: The owner should be able to see all content.
+    When I am logged in as "Ed Abbott"
     And I go to the "Invisible Boyfriend" collection
     Then I should see the "The Ragged Streams" tile
     And I should see the "Storms of Touch" tile
     And I should see the "The Male of the Gift" tile
     And I should see the "Mists in the Thought" tile
 
-    Examples:
-      | user         |
-      | Ed Abbott    |
-      | Phillip Shaw |
+  Scenario: The facilitator should not be able to see content that only have a draft state.
+    When I am logged in as "Phillip Shaw"
+    And I go to the "Invisible Boyfriend" collection
+    Then I should see the "The Ragged Streams" tile
+    And I should see the "Storms of Touch" tile
+    And I should see the "The Male of the Gift" tile
+    But I should not see the "Mists in the Thought" tile
 
   Scenario Outline: Other members and authenticated users should only see the published items.
     When I am logged in as "<user>"

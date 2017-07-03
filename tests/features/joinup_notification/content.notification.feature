@@ -28,8 +28,8 @@ Feature: Content notification system
       | title                              | headline                            | body                                 | state     | collection          |
       | Infrared long-range communications | Prototype built by a young student. | Bringing Internet access through IR. | validated | Communication tools |
     And event content:
-      | title                              | short title         | body                                  | solution                    | start date          | end date            |
-      | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | Smoke signals code standard | 2017-03-31T16:43:13 | 2017-03-31T16:43:13 |
+      | title                              | short title         | body                                  | state    | solution                    | start date          | end date            |
+      | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | proposed | Smoke signals code standard | 2017-03-31T16:43:13 | 2017-03-31T16:43:13 |
     And all e-mails have been sent
 
   Scenario: Send emails on content update.
