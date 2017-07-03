@@ -52,8 +52,9 @@ class OgCommentFieldItemList extends CommentFieldItemList {
       // takes care of showing the thread and form based on individual
       // permissions, so if a user only has ‘post comments’ access, only the
       // form will be shown and not the comments.
-      $result = $this->hasPermission('access comments', $host_entity, $account)
-        ->orIf($this->hasPermission('post comments', $host_entity, $account));
+      $has_access = $this->hasPermission('access comments', $host_entity, $account);
+      $has_update = $this->hasPermission('post comments', $host_entity, $account);
+      $result = ($has_access->isAllowed() || $has_update->isAllowed()) ? AccessResult::allowed() : AccessResult::forbidden();
       return $return_as_object ? $result : $result->isAllowed();
     }
 

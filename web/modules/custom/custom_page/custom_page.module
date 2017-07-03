@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
+use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
@@ -176,5 +177,23 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::neutral();
   }
 
-  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($node, $op, $account);
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $parent = $relation_manager->getParent($node);
+  // Let parentless nodes (e.g. newsletters) be handled by the core access.
+  if (empty($parent)) {
+    return AccessResult::neutral();
+  }
+  if (!$parent->access('view', $account)) {
+    // Anonymous users do not have access to content of non published groups.
+    return AccessResult::forbiddenIf($account->isAnonymous() || $node->getOwnerId() !== $account->id());
+  }
+  $membership = Og::getMembership($parent, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+  if (!$node->isPublished() && $membership->hasPermission("view any unpublished content")) {
+    return AccessResult::allowed();
+  }
+  return AccessResult::neutral();
 }

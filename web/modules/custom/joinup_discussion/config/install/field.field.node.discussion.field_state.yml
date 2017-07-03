@@ -16,7 +16,7 @@ required: true
 translatable: false
 default_value:
   -
-    value: __new__
+    value: draft
 default_value_callback: ''
 settings:
   workflow: 'node:discussion:post_moderated'

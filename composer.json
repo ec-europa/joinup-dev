@@ -62,6 +62,7 @@
         "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "~8.2.9",
         "drupal/config_devel": "~1.0",
+        "drupal/config_inspector": "^1.0@beta",
         "drupal/config_update": "~1.2",
         "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
         "drupal/devel": "~1.0@alpha",
