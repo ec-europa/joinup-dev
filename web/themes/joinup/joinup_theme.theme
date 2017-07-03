@@ -65,7 +65,7 @@ function joinup_theme_preprocess_page(&$variables) {
       $rdf_type = $rdf_type->id();
     }
 
-    if ($rdf_type === 'collection') {
+    if (in_array($rdf_type, ['collection', 'solution'])) {
       $variables['has_vertical_tabs'] = TRUE;
     }
   }
