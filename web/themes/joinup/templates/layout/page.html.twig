@@ -40,7 +40,7 @@
  * @see html.html.twig
  */
 #}
-<div class="mdl-layout mdl-js-layout">
+<div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
 
   {% if not is_front or logged_in %}
     {% include directory ~ '/templates/parts/header.html.twig' %}
