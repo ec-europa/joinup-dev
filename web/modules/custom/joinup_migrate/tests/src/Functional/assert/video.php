@@ -16,7 +16,6 @@ $video = Node::load(125838);
 $this->assertEquals('Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', $video->label());
 $this->assertEquals('video', $video->bundle());
 $this->assertEquals(1325763434, $video->created->value);
-$this->assertEquals(1326443718, $video->changed->value);
 $this->assertEquals('https://www.youtube.com/watch?v=VFvkKvSg4Ek', $video->field_video->value);
 $this->assertContains('Interviewer: Vassilia Orfanou', $video->body->value);
 $this->assertKeywords([

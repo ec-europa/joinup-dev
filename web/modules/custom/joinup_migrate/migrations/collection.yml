@@ -85,6 +85,7 @@ process:
     source: country
     vocabulary: spatial
   field_ar_state: state
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection
