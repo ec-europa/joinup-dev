@@ -76,7 +76,7 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.setAttribute('class', classes) }}>
   {% if content.field_event_logo|render %}
     <div class="listing__image">{{ content.field_event_logo }}</div>
   {% endif %}
