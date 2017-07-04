@@ -145,7 +145,7 @@ function joinup_community_content_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
 
-  // Apply the visual clue only on the tile view mode.
+  // Apply the visual cue only on the tile view mode.
   if ($variables['view_mode'] !== 'view_mode_tile') {
     return;
   }
