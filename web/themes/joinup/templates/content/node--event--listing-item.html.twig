@@ -69,6 +69,7 @@
 #}
 {%
   set classes = [
+    'contextual-region',
     'listing__card',
     'mdl-card',
     'listing__card--stats-container',
@@ -81,7 +82,9 @@
   {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
+      {{ title_prefix }}
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      {{ title_suffix }}
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body }}</p>

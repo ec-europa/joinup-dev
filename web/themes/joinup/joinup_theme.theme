@@ -39,6 +39,7 @@ function joinup_theme_preprocess_page(&$variables) {
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
+    'solution.collection_solution.add',
     'user.login',
     'user.pass',
     'user.register',
@@ -54,11 +55,12 @@ function joinup_theme_preprocess_page(&$variables) {
     $variables['is_navy_header'] = TRUE;
   }
 
-  // Check if page is collection propose form.
+  // Check if page is form with vertical tabs.
   // It is needed for proper display of vertical tabs.
   $tabs_routes = [
-    'rdf_entity.propose_form',
     'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'solution.collection_solution.add',
   ];
 
   if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
@@ -74,7 +76,7 @@ function joinup_theme_preprocess_page(&$variables) {
     }
 
     if ($rdf_type === 'collection') {
-      $variables['is_propose_collection'] = TRUE;
+      $variables['has_vertical_tabs'] = TRUE;
     }
   }
 
@@ -114,12 +116,13 @@ function joinup_theme_preprocess_page_title(&$variables) {
 
   // Array contains create pages.
   $create_content_routes = [
+    'collection.propose_form',
     'node.add',
     'node.add_page',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'rdf_entity.rdf_add_page',
-    'collection.propose_form',
+    'solution.collection_solution.add',
   ];
 
   // Set a flag when we are on content creation routes
@@ -281,6 +284,7 @@ function joinup_theme_preprocess_container(&$variables) {
     'entity.node.edit_form',
     'collection.propose_form',
     'entity.rdf_entity.edit_form',
+    'solution.collection_solution.add',
   ];
 
   // Check if container is field element - it has only one parent.
@@ -296,8 +300,9 @@ function joinup_theme_preprocess_container(&$variables) {
   // It is needed for proper display buttons
   // on forms with vertical tabs.
   $tabs_routes = [
-    'rdf_entity.propose_form',
     'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'solution.collection_solution.add',
   ];
 
   $rdf_type = '';

@@ -79,14 +79,13 @@ display:
               document: view_mode_tile
               event: view_mode_tile
               news: view_mode_tile
-              newsletter: default
+              newsletter: view_mode_tile
+              video: default
             'entity:rdf_entity':
               asset_distribution: view_mode_tile
               asset_release: view_mode_tile
               collection: view_mode_tile
-              contact_information: default
-              licence: default
-              owner: ''
+              licence: view_mode_tile
               solution: view_mode_tile
             'entity:user':
               user: view_mode_tile

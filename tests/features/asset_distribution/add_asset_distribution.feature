@@ -36,8 +36,9 @@ Feature: Add distribution through the UI
       And I should see the link "contacting us"
       When I fill in "Title" with "Linux x86-64 SDK"
       And I enter "<p>The full software development kit for systems based on the x86-64 architecture.</p>" in the "Description" wysiwyg editor
-      Given I upload the file "test.zip" to "Access URL"
-      And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
+      And I upload the file "test.zip" to "Access URL"
+      And I select "GNU zip" from "Format"
+      And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
       And I press "Save"
       # Regression test for required field.
       # @see: https://webgate.ec.europa/eu/CITnet/jira/browse/ISAICP-3064
@@ -107,7 +108,7 @@ Feature: Add distribution through the UI
       And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor
       Given I upload the file "test.zip" to "Access URL"
       And I select "WTFPL" from "License"
-      And I fill in "Representation technique" with "Web Ontology Language Full/DL/Lite"
+      And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
       And I press "Save"
       Then I should have 1 distribution
 

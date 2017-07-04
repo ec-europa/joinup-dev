@@ -19,4 +19,5 @@ content:
     region: content
 hidden:
   field_attachment: true
+  langcode: true
   links: true

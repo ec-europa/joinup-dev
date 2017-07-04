@@ -16,6 +16,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -40,6 +41,7 @@ use WebDriver\Exception\StaleElementReference;
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
+  use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
   use NodeTrait;
@@ -492,7 +494,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach (get_object_vars($node) as $alias => $value) {
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
-        unset($node->alias);
+        unset($node->$alias);
         // Don't set empty values, since we can have multiple aliases that point
         // to the same field (e.g. 'collection' and 'solution' both use the same
         // 'og_audience' field).
@@ -547,44 +549,44 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'custom_page' => [],
       'discussion' => [
-        'state' => 'field_state',
         'content' => 'body',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'document' => [
+        'document type' => 'field_type',
+        'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
-        'state' => 'field_state',
-        'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'event' => [
         'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
-        'state' => 'field_state',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
         'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
-        'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
+        'shared in' => 'field_shared_in',
+        'visits' => 'field_visit_count',
       ],
     ];
 
@@ -864,10 +866,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTileContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
-    if (!$element) {
-      throw new \Exception("The tile '$heading' was not found on the page.");
-    }
-
     if (strpos(trim($element->getText()), $text) === FALSE) {
       throw new \Exception("The text '$text' was not found in the tile '$heading'.");
     }
@@ -889,13 +887,79 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTileDoesNotContainsText($heading, $text) {
     $element = $this->getTileByHeading($heading);
 
-    if (!$element) {
-      throw new \Exception("The tile '$heading' was not found on the page.");
-    }
-
     if (strpos(trim($element->getText()), $text) !== FALSE) {
       throw new \Exception("The text '$text' was found in the tile '$heading'.");
     }
+  }
+
+  /**
+   * Asserts the presence of a contextual link in a specific tile.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I (should )see the contextual link :link in the :heading tile
+   */
+  public function assertContextualLinkPresentInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (!isset($links[$link])) {
+      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    }
+  }
+
+  /**
+   * Asserts the presence of a contextual link in a specific tile.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I should not see the contextual link :link in the :heading tile
+   */
+  public function assertContextualLinkNotPresentInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (isset($links[$link])) {
+      throw new \Exception("Unexpected contextual link '$link' found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Clicks a specific contextual link in a tile.
+   *
+   * The click is simulated by visiting the URL of the link route.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I click the contextual link :link in the :heading tile
+   */
+  public function iClickTheContextualLinkInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $links = $this->findContextualLinksInElement($element);
+
+    if (!isset($links[$link])) {
+      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    }
+
+    $this->getSession()->visit($this->locatePath($links[$link]));
   }
 
   /**
@@ -1195,7 +1259,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        \PHPUnit_Framework_Assert::assertContains($description, $element->getText());
         // The description was found, stop searching.
         return;
       }

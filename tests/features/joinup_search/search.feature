@@ -108,8 +108,8 @@ Feature: Global search
       | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet |                  | Solution alpha | validated |
       | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha |                | validated |
     And document content:
-      | title          | type     | short title          | body                                    | keywords | collection       | state     |
-      | Document omega | Document | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
+      | title          | document type | short title          | body                                    | keywords | collection       | state     |
+      | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
     And discussion content:
       | title            | body                                                              | solution       | state     |
       | Discussion omega | <p>Does anybody has idea why this <em>epsilon</em> is everywhere? | Solution alpha | validated |
@@ -129,8 +129,7 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha"
-    And I should see the text "Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
@@ -138,12 +137,10 @@ Feature: Global search
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
-    And I should not see the text "Licence Alpha"
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha"
-    And I should see the text "Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
@@ -151,25 +148,21 @@ Feature: Global search
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
-    And I should not see the text "Licence Alpha"
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the header search bar and hit enter
     Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
-    And I should not see the text "Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
     When I enter "gamma" in the header search bar and hit enter
     Then the page should show the tiles "Collection alpha"
-    And I should not see the text "Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
     When I enter "delta" in the header search bar and hit enter
     Then the page should show the tiles "News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
-    And I should not see the text "Licence Alpha"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
     When I enter "agenda" in the header search bar and hit enter
