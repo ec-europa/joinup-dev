@@ -40,7 +40,7 @@ Feature: "Add release" visibility options.
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Spatial coverage, Keyword, Status, Language"
     # The entity is new, so the current workflow state should not be shown.
-    And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode"
+    And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode, Motivation"
     When I fill in "Name" with "Release Test 2"
     And I fill in "Release number" with "1.1"
     And I fill in "Release notes" with "Changed release."
