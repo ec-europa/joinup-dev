@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,9 +13,10 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends JoinupSqlBase implements RedirectImportInterface {
+class Distribution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use DefaultRdfRedirectTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
   use StatusTrait;
@@ -51,6 +53,7 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface {
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
       'status' => $this->t('Status'),
+      'i18n' => $this->t('Field translations'),
     ];
   }
 
@@ -104,7 +107,28 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface {
     // Licence.
     $this->setLicence($row, 'distribution');
 
+    // Translations.
+    $this->setFieldTranslations($row);
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_distribution_name',
+        'field' => 'field_distribution_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_ad_description' => [
+        'table' => 'content_field_distribution_description',
+        'field' => 'field_distribution_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

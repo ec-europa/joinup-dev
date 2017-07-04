@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,11 +13,12 @@ use Drupal\migrate\Row;
  *   id = "solution"
  * )
  */
-class Solution extends JoinupSqlBase implements RedirectImportInterface {
+class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
   use DefaultRdfRedirectTrait;
   use DocumentationTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -72,6 +74,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
+      'i18n' => $this->t('Field translations'),
     ];
   }
 
@@ -148,6 +151,11 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
     // State.
     $this->setState($row);
 
+    // Only 'asset_release' type provides field translation.
+    if ($row->getSourceProperty('type') === 'asset_release') {
+      $this->setFieldTranslations($row);
+    }
+
     return parent::prepareRow($row);
   }
 
@@ -179,6 +187,24 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface {
     }
 
     return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_is_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }
