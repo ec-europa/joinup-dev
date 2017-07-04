@@ -157,3 +157,47 @@ Feature: Sharing content between collections
       | document     |
       | discussion   |
       | news         |
+
+  @javascript
+  Scenario Outline: Shared content should show visual cues in the collections they are shared.
+    Given collections:
+      | title        | state     |
+      | Collection 1 | validated |
+      | Collection 2 | validated |
+      | Collection 3 | validated |
+    And <content type> content:
+      | title     | collection   | shared in                  | state     |
+      | Content 1 | Collection 1 | Collection 2               | validated |
+      | Content 2 | Collection 2 |                            | validated |
+      | Content 3 | Collection 3 | Collection 1, Collection 2 | validated |
+
+    When I go to the homepage of the "Collection 1" collection
+    Then I should see the "Content 1" tile
+    And I should see the "Content 3" tile
+    And the "Content 3" tile should be marked as shared from "Collection 3"
+    And the "Content 1" tile should not be marked as shared
+
+    When I go to the homepage of the "Collection 2" collection
+    Then I should see the "Content 1" tile
+    And I should see the "Content 2" tile
+    And I should see the "Content 3" tile
+    And the "Content 1" tile should be marked as shared from "Collection 1"
+    And the "Content 3" tile should be marked as shared from "Collection 3"
+    But the "Content 2" tile should not be marked as shared
+
+    When I go to the homepage of the "Collection 3" collection
+    Then I should see the "Content 3" tile
+    And the "Content 3" tile should not be marked as shared
+
+    When I go to the homepage
+    And I click "Content"
+    And the "Content 1" tile should not be marked as shared
+    And the "Content 2" tile should not be marked as shared
+    And the "Content 3" tile should not be marked as shared
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
