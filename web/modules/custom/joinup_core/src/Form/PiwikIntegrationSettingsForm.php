@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_core\Form;
 
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
