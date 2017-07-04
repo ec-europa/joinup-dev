@@ -145,6 +145,12 @@ function joinup_community_content_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
 
+  // Apply the visual clue only on the tile view mode.
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  // If the node cannot be shared or isn't shared anywhere, bail out.
   if (!$node->hasField('field_shared_in') || $node->get('field_shared_in')->isEmpty()) {
     return;
   }
