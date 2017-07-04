@@ -15,7 +15,9 @@
    *   The HTML for the shared content visual cue.
    */
   Drupal.theme.sharedContentCue = function (collection) {
-    return '<div class="listing__stat" title="Shared from ' + collection + '"><div class="listing__icon icon icon--share"></div></div>'
+    var label = Drupal.t('Shared from @collection', { '@collection': collection });
+
+    return '<div class="listing__stat" title="' + label + '"><div class="listing__icon icon icon--share"></div></div>'
   };
 
   /**
