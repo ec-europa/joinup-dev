@@ -134,3 +134,24 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
   $moderation = $relation_manager->getParentModeration($entity);
   return $moderation == 1 ? 'node:pre_moderated' : 'node:post_moderated';
 }
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * For shared nodes, adds an attribute with the id of the parent entity where
+ * they have been shared from.
+ */
+function joinup_community_content_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  if (!$node->hasField('field_shared_in') || $node->get('field_shared_in')->isEmpty()) {
+    return;
+  }
+
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+
+  if ($parent) {
+    $variables['attributes']['data-shared-from'] = $parent->id();
+  }
+}
