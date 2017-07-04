@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core\Form;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -162,6 +163,13 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
       '#value' => $this->t('Download counts are for files and attachments. Typically the time period will be set to "All time" to get the complete download count since the site was launched.<br />The difference between "unique hits" and "hits" is that "unique hits" only count each download by a single visitor once. If a visitor downloads a file multiple times, it still only counts as 1 unique hit. This can be used to deter abuse by repeated downloads to artificially increase the download count.'),
     ];
 
+    $form['launch_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Launch date'),
+      '#description' => $this->t('The date when the website was launched. This is used as the start date for the "All time" option.'),
+      '#default_value' => $config->get('launch_date'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -237,6 +245,7 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
     $this->config('joinup_core.piwik_settings')
       ->set('visit_counts', $values['visit_counts'])
       ->set('download_counts', $values['download_counts'])
+      ->set('launch_date', $values['launch_date'])
       ->save();
   }
 
