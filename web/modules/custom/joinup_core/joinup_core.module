@@ -628,6 +628,20 @@ function joinup_core_entity_extra_field_info() {
  * Implements hook_form_alter().
  */
 function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $motivation_form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_asset_release_edit_form',
+    'node_discussion_edit_form',
+    'node_document_edit_form',
+    'node_event_edit_form',
+    'node_news_edit_form',
+  ];
+
+  if (!in_array($form_id, $motivation_form_ids)) {
+    return;
+  }
+
   $form['transition_motivation'] = [
     '#type' => 'textarea',
     '#title' => t('Motivation'),
