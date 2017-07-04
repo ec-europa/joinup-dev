@@ -156,9 +156,10 @@ function joinup_community_content_preprocess_node(&$variables) {
   }
 
   $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-
   if ($parent) {
-    $variables['attributes']['data-shared-from'] = $parent->id();
+    $variables['attributes']['data-drupal-shared-from-id'] = $parent->id();
+    $variables['attributes']['data-drupal-shared-from-label'] = $parent->label();
+    $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
   }
 }
 
