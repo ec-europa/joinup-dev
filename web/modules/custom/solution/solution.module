@@ -324,7 +324,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     $build['downloads'] = [
       '#type' => 'container',
       '#stats_topic' => t('Downloads'),
-      0 => ['#markup' => (string) $total]
+      0 => ['#markup' => (string) $total],
     ];
   }
 }
