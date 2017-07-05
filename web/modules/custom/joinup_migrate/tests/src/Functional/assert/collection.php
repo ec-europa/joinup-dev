@@ -57,7 +57,6 @@ $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
 $this->assertEquals('Collection from Project', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462873423), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Asset Description Metadata Schema (ADMS)',
@@ -81,8 +80,8 @@ $this->assertRedirects([], $collection);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
+$this->assertEquals('http://example.com/this_collection', $collection->id());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->field_spatial_coverage);
@@ -109,7 +108,6 @@ $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323263112), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1404313500), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Styles Layer Descriptor',
@@ -144,12 +142,15 @@ $this->assertRedirects([
   'node/82307',
   'catalogue/repository/la-forja-de-guadalinex',
 ], $collection);
+$translation = $collection->getTranslation('fr');
+$this->assertContains('Guadalinex est un syst&egrave;me d&#39;exploitation', $translation->field_ar_description->value);
+$translation = $collection->getTranslation('es');
+$this->assertContains('Hola', $translation->field_ar_description->value);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1481725653), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1482240807), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Digital Signature Service',
@@ -177,7 +178,6 @@ $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity h
 $this->assertEquals('Collection with 1 entity having custom section', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1370001810), $collection->field_ar_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462265976), $collection->field_ar_modification_date->value);
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
