@@ -165,6 +165,7 @@ Feature: News moderation.
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Publish"
     And the following buttons should not be present "Propose, Request changes, Request deletion, Preview"
+    And the following fields should be present "Motivation"
     And I press "Publish"
     Then I should see the success message "News Eagle joins the JL has been updated."
     And the "Eagle joins the JL" news content should be published

@@ -102,6 +102,7 @@ Feature: Document moderation
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Published"
+    And the following fields should be present "Motivation"
     And I should see the button "Request changes"
     Then I press "Request changes"
 

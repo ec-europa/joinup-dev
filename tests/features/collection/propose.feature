@@ -32,7 +32,7 @@ Feature: Proposing a collection
     And I am logged in as an "authenticated user"
     When I go to the propose collection form
     Then I should see the heading "Propose collection"
-    And the following fields should not be present "Current workflow state, Langcode, Translation"
+    And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196

@@ -96,6 +96,7 @@ Feature: Event moderation
     # Publish the content.
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    And the following fields should be present "Motivation"
     When I fill in "Title" with "The Fire of the Nothing"
     And I press "Publish"
     Then I should see the heading "The Fire of the Nothing"
