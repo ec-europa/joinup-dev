@@ -23,4 +23,5 @@ content:
     type: string_textarea
     region: content
 hidden:
+  langcode: true
   subject: true
