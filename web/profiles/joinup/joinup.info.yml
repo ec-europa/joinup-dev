@@ -40,6 +40,7 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - joinup_video
+  - language
   - linkit
   - menu_ui
   - moderation
@@ -54,6 +55,7 @@ dependencies:
   - password_policy_characters
   - password_policy_length
   - path
+  - pathauto
   - persistent_login
   - piwik
   - r4032login
@@ -69,6 +71,7 @@ dependencies:
   - swiftmailer
   - text
   - toolbar
+  - tour
   - trr
   - user
   - view_unpublished
@@ -164,6 +167,10 @@ config_devel:
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy
+  - pathauto.pattern.community_content
+  - pathauto.pattern.custom_page
+  - pathauto.pattern.rdf_entities_generic
+  - pathauto.pattern.rdf_entities_releases
   - piwik.settings
   - system.theme
   - swiftmailer.transport

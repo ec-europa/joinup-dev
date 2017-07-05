@@ -4,6 +4,7 @@ description: Handles notifications for joinup project.
 core: 8.x
 package: Joinup
 dependencies:
+  - joinup_core
   - message
   - message_notify
   - solution

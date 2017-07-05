@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -134,5 +135,38 @@ interface WorkflowHelperInterface {
    *   retrieve the publication state from the workflow states.
    */
   public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow);
+
+  /**
+   * Checks whether the user has at least one of the provided roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param array $roles
+   *   A list of role ids indexed by keys 'own' and 'any' which represents
+   *   ownership and a second level of 'roles' for system roles and
+   *   'og_roles' for og roles.
+   *
+   * @return bool
+   *   True if the user has at least one of the roles provided.
+   */
+  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles);
+
+  /**
+   * Checks whether the user has at least one of the provided roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param array $roles
+   *   A list of role ids indexed by 'roles' for system roles and
+   *   'og_roles' for og roles.
+   *
+   * @return bool
+   *   True if the user has at least one of the roles provided.
+   */
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles);
 
 }

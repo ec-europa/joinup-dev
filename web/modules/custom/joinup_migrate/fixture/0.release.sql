@@ -33,7 +33,7 @@ INNER JOIN og_ancestry o ON n.nid = o.nid
 INNER JOIN node g ON o.group_nid = g.nid AND g.type = 'project_project'
 INNER JOIN d8_mapping m ON g.nid = m.nid
 INNER JOIN content_type_asset_release ctar ON n.vid = ctar.vid
-INNER JOIN content_field_asset_version cfav ON n.vid = cfav.vid
+INNER JOIN content_field_asset_version cfav ON n.vid = cfav.vid AND cfav.delta = 0
 LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 LEFT JOIN workflow_node w ON m.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid

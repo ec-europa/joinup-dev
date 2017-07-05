@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Includes installation functions for the rdf_entity module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function rdf_entity_requirements($phase) {
+  $requirements = [];
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  $requirements += rdf_entity_virtuoso_version_requirements();
+  // If the endpoint is not available, return early.
+  if (
+    isset($requirements['rdf_entity_endpoint']['severity']) &&
+    $requirements['rdf_entity_endpoint']['severity'] === REQUIREMENT_ERROR
+  ) {
+    return $requirements;
+  }
+
+  $requirements += rdf_entity_virtuoso_permission_requirements();
+  return $requirements;
+}

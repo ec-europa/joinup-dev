@@ -96,6 +96,7 @@ Feature: Event moderation
     # Publish the content.
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    And the following fields should be present "Motivation"
     When I fill in "Title" with "The Fire of the Nothing"
     And I press "Publish"
     Then I should see the heading "The Fire of the Nothing"
@@ -106,7 +107,7 @@ Feature: Event moderation
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
-    And the current workflow state should be "Validated"
+    And the current workflow state should be "Published"
     Then I press "Request changes"
 
     # Implement changes as owner of the event.
@@ -116,7 +117,7 @@ Feature: Event moderation
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The event is amazing"
-    And I press "Update proposed"
+    And I press "Update"
     Then I should see the heading "The Fire of the Nothing"
 
     # Approve changes as facilitator.
@@ -124,7 +125,7 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the button "Approve proposed"
+    Then I should see the button "Publish"
     And the current workflow state should be "Proposed"
-    And I press "Approve proposed"
+    And I press "Publish"
     Then I should see the heading "The event is amazing"

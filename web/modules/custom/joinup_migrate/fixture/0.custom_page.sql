@@ -26,7 +26,7 @@ SELECT
   g.type,
   g.nid,
   g.title,
-  ctop.field_og_page_exclude_menu_value
+  IF(ctop.field_og_page_exclude_menu_value = 0 AND n.status = 1, 0, 1)
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 INNER JOIN content_type_og_page ctop ON n.vid = ctop.vid

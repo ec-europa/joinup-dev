@@ -40,6 +40,7 @@ process:
     vocabulary: spatial
   field_isr_state: state
   field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_release

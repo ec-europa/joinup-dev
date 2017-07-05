@@ -59,7 +59,7 @@ Feature: Solution editing.
     And I should see the link "Edit"
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
-    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Related Solutions, Moderated, Landing page, Metrics page"
+    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Related Solutions, Moderated, Landing page, Metrics page, Motivation"
     And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
     And the following field widgets should be present "Contact information, Owner, eLibrary creation"
     # Logo and banner fields are required, so they are filled up during

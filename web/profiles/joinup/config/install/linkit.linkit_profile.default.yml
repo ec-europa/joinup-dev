@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - node
-    - rdf_entity
 id: default
 label: Default
 description: 'A default Linkit profile'

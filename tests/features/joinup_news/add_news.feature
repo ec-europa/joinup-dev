@@ -18,7 +18,7 @@ Feature: Creation of news through the UI.
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
-    Then the following fields should not be present "Shared in"
+    Then the following fields should not be present "Shared in, Motivation"
 
     When I am logged in as a "facilitator" of the "Density catalogue project" solution
     And I go to the homepage of the "Density catalogue project" solution

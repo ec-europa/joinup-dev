@@ -1259,7 +1259,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        \PHPUnit_Framework_Assert::assertContains($description, $element->getText());
         // The description was found, stop searching.
         return;
       }
@@ -1400,7 +1400,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertFieldContainsLinkToPage($field, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title);
-    $uri = '/' . $node->toUrl()->getInternalPath();
+    $uri = $node->toUrl()->toString();
     $this->assertSession()->fieldValueEquals($field, $uri);
   }
 
