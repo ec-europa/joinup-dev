@@ -45,7 +45,7 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @BeforeNodeCreate
    */
-  public function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     if ($node->type !== 'document' || empty($node->file)) {
@@ -53,14 +53,19 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
-    if ($type === 'remote') {
-      $node->field_file = $node->file;
-    }
-    else {
-      $node->field_file = $this->createFile($node->file, $this->getMinkParameter('files_path'))->id();
+    if ($type !== 'remote') {
+      // If the file is local we want to copy it from the fixtures into the file
+      // system and register it in the DocumentSubContext so it can be cleaned
+      // up after the scenario ends. Perform a small dance to get access to the
+      // context class from inside this static callback.
+      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+      $environment = $scope->getEnvironment();
+      /** @var \DocumentSubContext $context */
+      $context = $environment->getContext(self::class);
+      $node->file = $context->createFile($node->file)->id();
     }
 
-    unset($node->file);
+    unset($node->{'file type'});
   }
 
   /**

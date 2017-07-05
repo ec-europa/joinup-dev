@@ -44,7 +44,7 @@ trait FileTrait {
     // entity before linking it to the collection.
     $uri = 'public://' . $filename;
     $destination = file_unmanaged_copy($path, $uri);
-    $file = File::create(['uri' => $destination]);
+    $file = File::create(['uri' => $destination, 'filename' => $filename]);
     $file->save();
 
     $this->files[$file->id()] = $file;

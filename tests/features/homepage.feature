@@ -34,8 +34,8 @@ Feature: Homepage
       | Planned economy   | needs update     |
       | Economic growth   | blacklisted      |
     And custom_page content:
-      | title                | state     | collection     |
-      | Developing economics | validated | Social classes |
+      | title                | collection     |
+      | Developing economics | Social classes |
     And discussion content:
       | title                         | state        | collection     |
       | Prosperity economics          | needs update | Social classes |

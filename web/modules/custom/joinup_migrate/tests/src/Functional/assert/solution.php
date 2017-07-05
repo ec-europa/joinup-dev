@@ -9,8 +9,8 @@ use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
 // Migration counts.
-$this->assertTotalCount('solution', 12);
-$this->assertSuccessCount('solution', 12);
+$this->assertTotalCount('solution', 13);
+$this->assertSuccessCount('solution', 13);
 
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
@@ -19,7 +19,6 @@ $this->assertEquals('The administrative geography and civil voting area ontology
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1270080000), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449493447), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'The administrative geography and civil voting area ontology',
 ], $solution->field_is_distribution);
@@ -31,14 +30,16 @@ $this->assertReferences(['Ordnance Survey'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/administrative-geography-and-civil-voting-area-ontology'], $solution);
+$this->assertRedirects([
+  'node/58694',
+  'catalogue/asset_release/administrative-geography-and-civil-voting-area-ontology',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');
 $this->assertEquals('CIPA e-Delivery', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('draft', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1341505914), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467363502), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'CEF e-Delivery 3.2.0',
   'CIPA e-Delivery 2.2.4',
@@ -50,7 +51,7 @@ $this->assertReferences([
   'cipaedelivery 1.0.0',
 ], $solution->field_is_has_version);
 $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
-$this->assertStringEndsWith("and the <a href=\"http://www.esens.eu/technical-solutions/e-sens-competence-clusters/e-delivery/\">eSENS eDelivery</a> building blocks.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('eSENS eDelivery', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -64,18 +65,20 @@ $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->g
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('proposed', $solution->field_is_state->value);
-$this->assertRedirects(['software/cipaedelivery/description'], $solution);
+$this->assertRedirects([
+  'node/49860',
+  'software/cipaedelivery/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Styles Layer Descriptor', 'solution');
 $this->assertEquals('Styles Layer Descriptor', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1393346353), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1424438316), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Styles Layer Descriptor'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertStringEndsWith("user-defined symbols and colors to be used in geographic information.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('user-defined symbols and colors to be used in geographic information.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -84,18 +87,20 @@ $this->assertReferences([
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/styles-layer-descriptor'], $solution);
+$this->assertRedirects([
+  'node/76726',
+  'catalogue/asset_release/styles-layer-descriptor',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'KASPeR - Mapping application of statistical data e-dimensions', 'solution');
 $this->assertEquals('KASPeR - Mapping application of statistical data e-dimensions', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1419007124), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1423650568), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['KASPeR - Mapping application of statistical data e-dimensions'], $solution->field_is_distribution);
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
-$this->assertStringEndsWith("The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -106,14 +111,20 @@ $this->assertReferences([
 ], $solution->field_is_contact_information);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/kasper-mapping-application-statistical-data-e-dimensions'], $solution);
+$this->assertRedirects([
+  'node/102713',
+  'catalogue/asset_release/kasper-mapping-application-statistical-data-e-dimensions',
+], $solution);
+$translation = $solution->getTranslation('ro');
+$this->assertEquals('RO variant for name', $translation->label());
+$translation = $solution->getTranslation('et');
+$this->assertContains('Lastiliigi liigid on kooskõlas', $translation->field_is_description->value);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
 $this->assertEquals('Core Location Vocabulary', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1329465556), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462891660), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'Core Location Vocabulary 0.2',
   'Core Location Vocabulary 0.3',
@@ -124,20 +135,22 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences([
   'digit-semic-team@ec.europa.eu',
 ], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("Virtual Meeting 2012.04.03</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Virtual Meeting 2012.04.03', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/core_location/description'], $solution);
+$this->assertRedirects([
+  'node/42444',
+  'asset/core_location/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
 $this->assertEquals('DCAT application profile for data portals in Europe', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1445872685), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1472543614), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'DCAT Application Profile for Data Portals in Europe - Draft 1',
@@ -153,7 +166,7 @@ $this->assertReferences([
 ], $solution->get('field_is_has_version'));
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
-$this->assertStringEndsWith("Open Data Support Community</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Open Data Support Community', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -161,14 +174,16 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/dcat_application_profile/description'], $solution);
+$this->assertRedirects([
+  'node/63567',
+  'asset/dcat_application_profile/description',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Asset Description Metadata Schema (ADMS)', 'solution');
 $this->assertEquals('Asset Description Metadata Schema (ADMS)', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1462873423), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'ADMS 0.6',
@@ -182,7 +197,7 @@ $this->assertReferences([
   'GHGghg',
 ], $solution->get('field_is_has_version'));$this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['contact@semic.eu'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("Towards Open Government Metadata</a></div>\r\n\t</li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('Towards Open Government Metadata', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -190,7 +205,10 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/adms/description'], $solution);
+$this->assertRedirects([
+  'node/42438',
+  'asset/adms/description',
+], $solution);
 
 // There are 2 solutions with the same title, so we cannot load by title. We are
 // interested in inspecting the solution migrated from node 59180. So, we'll use
@@ -200,12 +218,11 @@ $this->assertEquals('Common Reporting Framework XBRL Project', $solution->label(
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1320274800), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675309), $solution->field_is_modification_date->value);
 $this->assertReferences(['1.4.1.corep.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Ignacio Boixo'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("XBRL+Taxonomy+v2.0.0.pdf</a></li>\r\n</ul>\r\n", $solution->field_is_description->value);
+$this->assertContains('XBRL+Taxonomy+v2.0.0.pdf', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -217,19 +234,21 @@ $this->assertReferences([
 $this->assertEquals('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1', $solution->get('field_is_translation')->target_id);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/common-reporting-framework-xbrl-project-0'], $solution);
+$this->assertRedirects([
+  'node/59180',
+  'catalogue/asset_release/common-reporting-framework-xbrl-project-0',
+], $solution);
 
 $solution = Rdf::load('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1');
 $this->assertEquals('Common Reporting Framework XBRL Project', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1262732400), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1449675322), $solution->field_is_modification_date->value);
 $this->assertReferences(['1.3.1.core.zip'], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Romain Loth'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("EU capital requirements regime.</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('EU capital requirements regime.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -237,21 +256,23 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/common-reporting-framework-xbrl-project-1'], $solution);
+$this->assertRedirects([
+  'node/59183',
+  'catalogue/asset_release/common-reporting-framework-xbrl-project-1',
+], $solution);
 
 $solution = Rdf::load('http://www.w3.org/TR/2011/WD-EARL10-Schema-20110510');
 $this->assertEquals('Evaluation and Report Language (EARL) 1.0 Schema', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1304985600), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1455802561), $solution->field_is_modification_date->value);
 $this->assertReferences([
   'Evaluation and Report Language (EARL) 1.0 Schema',
 ], $solution->field_is_distribution);
 $this->assertTrue($solution->get('field_is_has_version')->isEmpty());
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
-$this->assertStringEndsWith("assurance and\nvalidation purposes.", $solution->field_is_description->value);
+$this->assertContains('validation purposes.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
@@ -259,14 +280,16 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['catalogue/asset_release/evaluation-and-report-language-earl-10-schema'], $solution);
+$this->assertRedirects([
+  'node/60208',
+  'catalogue/asset_release/evaluation-and-report-language-earl-10-schema',
+], $solution);
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Digital Signature Service', 'solution');
 $this->assertEquals('Digital Signature Service', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
 $this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1312882209), $solution->field_is_creation_date->value);
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1467281398), $solution->field_is_modification_date->value);
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
   'sd-dss 1.00',
@@ -299,10 +322,13 @@ $this->assertReferences([
 ], $solution->get('field_is_has_version'));
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['david.naramski@nowina.lu'], $solution->get('field_is_contact_information'));
-$this->assertStringEndsWith("release note and support, can be found at: https://joinup.ec.europa.eu/asset/sd-dss/asset_release/all</p>\r\n", $solution->field_is_description->value);
+$this->assertContains('release note and support, can be found at:', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
 $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertTrue($solution->get('field_is_owner')->isEmpty());
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertRedirects(['asset/sd-dss/description'], $solution);
+$this->assertRedirects([
+  'node/27024',
+  'asset/sd-dss/description',
+], $solution);

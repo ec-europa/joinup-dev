@@ -22,6 +22,7 @@ dependencies:
   - ds
   - dynamic_page_cache
   - editor
+  - editor_file
   - field_group
   - file
   - help
@@ -39,6 +40,8 @@ dependencies:
   - joinup_subscription
   - joinup_user
   - joinup_video
+  - language
+  - linkit
   - menu_ui
   - moderation
   - node
@@ -67,6 +70,7 @@ dependencies:
   - swiftmailer
   - text
   - toolbar
+  - tour
   - trr
   - user
   - view_unpublished
@@ -157,6 +161,7 @@ config_devel:
   - language.content_settings.rdf_entity.collection
   - language.content_settings.rdf_entity.licence
   - language.content_settings.rdf_entity.solution
+  - linkit.linkit_profile.default
   - mailsystem.settings
   - og_menu.ogmenu.navigation
   - og.settings

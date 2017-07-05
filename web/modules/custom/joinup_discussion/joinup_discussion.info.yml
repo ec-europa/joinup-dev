@@ -3,7 +3,9 @@ type: module
 description: A discussion content bundle for the Joinup project.
 core: 8.x
 package: Joinup
+
 dependencies:
+  - cached_computed_field
   - comment
   - joinup_community_content
   - joinup_core
@@ -27,6 +29,7 @@ config_devel:
   - field.field.node.discussion.field_policy_domain
   - field.field.node.discussion.field_shared_in
   - field.field.node.discussion.field_state
+  - field.field.node.discussion.field_visit_count
   - field.field.node.discussion.og_audience
   - field.storage.node.field_replies
   - field.storage.comment.field_attachment

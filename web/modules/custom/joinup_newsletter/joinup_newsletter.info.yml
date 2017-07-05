@@ -10,6 +10,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.node.newsletter.default
   - core.entity_view_display.node.newsletter.default
+  - core.entity_view_display.node.newsletter.view_mode_tile
   - core.entity_view_display.node.newsletter.email_html
   - core.entity_view_display.node.newsletter.email_plain
   - core.entity_view_display.node.newsletter.email_textalt

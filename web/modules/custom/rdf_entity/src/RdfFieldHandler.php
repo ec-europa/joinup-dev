@@ -467,17 +467,21 @@ class RdfFieldHandler {
    *   The value to convert.
    * @param string $lang
    *   Optional. Pass the language if one exists. This should be null if the
-   *    format is not t_literal.
+   *   format is not t_literal.
    * @param string $column
    *   The column for which to calculate the value. If null, the field's main
-   *    column will be used.
+   *   column will be used.
+   * @param string $bundle
+   *   (optional) The same field of an entity type might use different value
+   *   formats, depending on how is mapped on each bundle. Pass the bundle, when
+   *   is available, for a better determination of the value format.
    *
    * @return mixed
    *   The calculated value.
    */
-  public function getOutboundValue($entity_type_id, $field, $value, $lang = NULL, $column = NULL) {
+  public function getOutboundValue($entity_type_id, $field, $value, $lang = NULL, $column = NULL, $bundle = NULL) {
     $outbound_map = $this->getOutboundMap($entity_type_id);
-    $format = $this->getFieldFormat($entity_type_id, $field, $column);
+    $format = $this->getFieldFormat($entity_type_id, $field, $column, $bundle);
     $format = reset($format);
     $serialize = $this->isFieldSerializable($entity_type_id, $field, $column);
     if ($serialize) {

@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,10 +13,12 @@ use Drupal\migrate\Row;
  *   id = "release"
  * )
  */
-class Release extends JoinupSqlBase implements RedirectImportInterface {
+class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -46,6 +49,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
+      'body' => $this->t('Description'),
       'created_time' => $this->t('Creation date'),
       'distribution' => $this->t('Distribution'),
       'solution' => $this->t('Solution ID'),
@@ -70,6 +74,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'nid',
       'vid',
       'title',
+      'body',
       'created_time',
       'changed_time',
       'uri',
@@ -77,9 +82,6 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
       'language',
       'version_notes',
       'version_number',
-      'docs_id',
-      'docs_path',
-      'docs_url',
       'state',
       'item_state',
     ]);
@@ -126,8 +128,8 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $file_source_id_values = $row->getSourceProperty('docs_path') ? [['fid' => $row->getSourceProperty('docs_id')]] : [];
-    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation_release', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Status.
     $this->setStatus($vid, $row);
@@ -140,7 +142,28 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('type', 'asset_release');
     $this->setState($row);
 
+    // Set field translations.
+    $this->setFieldTranslations($row);
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_isr_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
   /**

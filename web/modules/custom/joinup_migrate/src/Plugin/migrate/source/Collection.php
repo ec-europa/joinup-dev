@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,12 +13,13 @@ use Drupal\migrate\Row;
  *   id = "collection"
  * )
  */
-class Collection extends JoinupSqlBase implements RedirectImportInterface {
+class Collection extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
-  use DefaultNodeRedirectTrait {
-    getRedirectSources as nodeGetRedirectSources;
+  use DefaultRdfRedirectTrait {
+    getRedirectSources as rdfGetRedirectSources;
   }
+  use FieldTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -60,6 +62,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       'state' => $this->t('Workflow state'),
       'banner' => $this->t('Banner'),
       'logo_id' => $this->t('Logo ID'),
+      'i18n' => $this->t('Field translations'),
     ];
   }
 
@@ -106,12 +109,26 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('affiliates', $affiliates);
 
     // Log missed owner values.
-    if (!$row->getSourceProperty('owner')) {
-      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
+    $no_owner = !$row->getSourceProperty('owner') && !$row->getSourceProperty('owner_text_name');
+    if ($no_owner) {
+      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "Collection '$collection': missing mandatory content-type owner");
     }
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getSpatialCoverage($row));
+
+    // Log inconsistencies.
+    if (!$row->getSourceProperty('abstract')) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing an Abstract");
+    }
+    if (!$row->getSourceProperty('body')) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing a Description");
+    }
+
+    // Only repositories provide field translation.
+    if ($row->getSourceProperty('type') === 'repository') {
+      $this->setFieldTranslations($row);
+    }
 
     return parent::prepareRow($row);
   }
@@ -149,13 +166,9 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
    * {@inheritdoc}
    */
   public function getRedirectSources(Row $row) {
-    if (empty($row->getSourceProperty('nid'))) {
-      return NULL;
-    }
-
-    // We collect the aliases from all collection components, as 'community' and
+    // We collect the aliases from all collection components, as 'community' or
     // 'repository', omitting 'project_project' and 'asset_release' because
-    // these are creating redirects to solutions.
+    // these are creating more specific redirects for solutions.
     $nids = $this->select('d8_mapping', 'm')
       ->fields('m', ['nid'])
       ->condition('m.collection', $row->getSourceProperty('collection'))
@@ -163,14 +176,27 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       ->execute()
       ->fetchCol();
 
-    $redirect_sources = [];
+    $sources = [];
     foreach ($nids as $nid) {
-      // Mock a fake row, just to reuse the parent method.
+      // Mock a row, just to reuse the parent method.
       $fake_row = new Row(['nid' => $nid], ['nid' => $nid]);
-      $redirect_sources = array_merge($redirect_sources, $this->nodeGetRedirectSources($fake_row));
+      $sources = array_merge($sources, $this->rdfGetRedirectSources($fake_row));
     }
 
-    return $redirect_sources;
+    return $sources;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'field_ar_description' => [
+        'table' => 'content_field_repository_description',
+        'field' => 'field_repository_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

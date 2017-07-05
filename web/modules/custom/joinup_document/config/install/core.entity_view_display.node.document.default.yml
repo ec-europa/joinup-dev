@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.document.field_short_title
     - field.field.node.document.field_state
     - field.field.node.document.field_type
+    - field.field.node.document.field_visit_count
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -102,5 +103,7 @@ hidden:
   field_shared_in: true
   field_state: true
   field_type: true
+  field_visit_count: true
+  langcode: true
   links: true
   og_audience: true

@@ -16,6 +16,7 @@ $expected_values = [
   'New collection' => [
     'policy' => 'eGovernment',
     'policy2' => 'eProcurement',
+    'description' => 'Description for a new collection',
     'abstract' => 'Abstract for a new collection',
     'owner_text_name' => 'Dark Side of The Force',
     'owner_text_type' => 'SupraNationalAuthority',
@@ -40,6 +41,7 @@ $expected_values = [
     'policy2' => 'Collaboration',
     'elibrary' => '0',
     'roles' => '{"admin":{"7287":[1,1497119643],"6416":[1,1497119643]}}',
+    'url' => 'http://example.com/this_collection',
   ],
   'Archived collection' => [
     'type' => 'repository',
@@ -96,17 +98,19 @@ foreach ($expected_values as $collection => $expected_value) {
     'nid' => NULL,
     'policy2' => NULL,
     'policy' => NULL,
+    'description' => NULL,
     'abstract' => NULL,
     'logo' => NULL,
     'banner' => NULL,
     'elibrary' => NULL,
-    'owner_text_name' => NULL,
-    'owner_text_type' => NULL,
+    'owner_text_name' => '',
+    'owner_text_type' => '',
     'publisher' => NULL,
     'contact' => NULL,
     'contact_email' => NULL,
     'state' => 'validated',
     'roles' => NULL,
+    'url' => NULL,
   ];
   ksort($expected_value);
   ksort($import);

@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
+    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -56,7 +57,7 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_attachment:
-    weight: 14
+    weight: 16
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -107,7 +108,7 @@ content:
     type: image_image
     region: content
   field_event_spatial_coverage:
-    weight: 16
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60
@@ -124,7 +125,7 @@ content:
     type: link_default
     region: content
   field_keywords:
-    weight: 15
+    weight: 14
     settings:
       size: 60
       placeholder: ''
@@ -191,6 +192,7 @@ content:
 hidden:
   created: true
   field_shared_in: true
+  field_visit_count: true
   langcode: true
   og_audience: true
   path: true

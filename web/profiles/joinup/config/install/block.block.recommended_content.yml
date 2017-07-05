@@ -4,7 +4,6 @@ dependencies:
   module:
     - joinup
     - system
-    - user
   theme:
     - joinup_theme
 id: recommended_content
@@ -18,16 +17,10 @@ settings:
   label: 'Recommended content'
   provider: joinup
   label_display: '0'
+  count: 9
 visibility:
   request_path:
     id: request_path
     pages: '<front>'
     negate: false
     context_mapping: {  }
-  user_role:
-    id: user_role
-    roles:
-      authenticated: authenticated
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'

@@ -98,7 +98,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  protected function checkOgAccess(NodeInterface $node, AccountInterface $account, $operation) {
+  public function checkOgAccess(NodeInterface $node, AccountInterface $account, $operation) {
     if (!$this->groupTypeManager->isGroupContent('node', $node->bundle())) {
       return AccessResult::neutral();
     }

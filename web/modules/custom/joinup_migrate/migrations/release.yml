@@ -23,6 +23,12 @@ process:
   field_keywords: keywords
   field_isr_language: language
   field_isr_modification_date: changed_time
+  field_isr_description/value:
+    plugin: file_inline
+    source: body
+  field_isr_description/format:
+    plugin: default_value
+    default_value: content_editor
   field_isr_release_notes/value: version_notes
   field_isr_release_notes/format:
     plugin: default_value
@@ -34,10 +40,12 @@ process:
     vocabulary: spatial
   field_isr_state: state
   field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_release
 migration_dependencies:
   required:
     - solution
-    - file:documentation_release
+    - file:documentation
+    - file:inline

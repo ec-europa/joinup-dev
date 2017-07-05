@@ -10,14 +10,7 @@ use Drupal\file\Entity\File;
 
 // Imported content check. There are more comments imported but we're interested
 // only in this, in order to check the attached file.
-$cids = \Drupal::entityQuery('comment')
-  ->condition('comment_type', 'reply')
-  ->condition('subject', '#11')
-  ->condition('created', 1433885762)
-  ->condition('hostname', '83.99.4.2')
-  ->execute();
-$cid = reset($cids);
-$comment = Comment::load($cid);
+$comment = Comment::load(16832);
 $this->assertEquals('#11', $comment->label());
 $this->assertEquals('reply', $comment->bundle());
 $this->assertEquals(1433885762, $comment->getCreatedTime());

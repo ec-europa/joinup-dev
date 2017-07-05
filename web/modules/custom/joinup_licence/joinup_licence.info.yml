@@ -8,6 +8,7 @@ config_devel:
   - core.base_field_override.rdf_entity.licence.label
   - core.entity_form_display.rdf_entity.licence.default
   - core.entity_view_display.rdf_entity.licence.default
+  - core.entity_view_display.rdf_entity.licence.view_mode_tile
   - field.field.rdf_entity.licence.field_licence_description
   - field.field.rdf_entity.licence.field_licence_type
   - field.storage.rdf_entity.field_licence_description

@@ -8,11 +8,14 @@ source:
   plugin: news
   track_changes: true
 process:
+  nid: nid
   title: title
   field_news_headline: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -46,3 +49,4 @@ migration_dependencies:
   required:
     - collection
     - file:news_attachment
+    - file:inline
