@@ -1,0 +1,23 @@
+id: collection-overview
+module: joinup
+label: An overview of collections
+langcode: en
+status: true
+routes:
+  -
+    route_name: view.collections.page_1
+tips:
+  introduction:
+    id: introduction
+    plugin: text
+    label: Collections
+    body: This page lists the collections that are present on Joinup. Each collection has multiple interoperability solutions that are related to a specific subject.
+    weight: 1
+  add-collection:
+    id: add-collection
+    plugin: text
+    label: Create a collection
+    body: If you have an idea for a new collection, you can press the "Create collection" button below.
+    weight: 2
+    attributes:
+      data-class: listing__item--create-tile

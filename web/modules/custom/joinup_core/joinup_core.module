@@ -572,3 +572,31 @@ function joinup_core_tokens($type, $tokens, array $data, array $options, Bubblea
 
   return $replacements;
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * File entities might have file system redirects coming from previous platform
+ * versions, following this pattern (relative to files directory):
+ * @code
+ * legacy/path/to/image.png -> actual/path/to/image.png
+ * @endcode
+ * Such redirects are not cleared automatically by the Redirect module, when the
+ * source file entity is deleted, thus we're fulfilling this task here.
+ */
+function joinup_core_file_delete(EntityInterface $entity) {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+
+  /** @var \Drupal\file\FileInterface $entity */
+  $uri = $entity->getFileUri();
+  $scheme = $file_system->uriScheme($uri);
+  if ($scheme !== 'public') {
+    return;
+  }
+
+  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . file_uri_target($uri);
+
+  // Delete all redirects targeting this path.
+  redirect_delete_by_path($path);
+}

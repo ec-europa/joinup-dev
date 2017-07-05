@@ -11,6 +11,7 @@ source:
     - Nid
     - 'Policy domain 1'
     - 'Policy domain 2'
+    - Description
     - Abstract
     - Logo
     - Banner
@@ -18,6 +19,7 @@ source:
     - 'Owner type'
     - 'Collection Owner'
     - 'Collection state'
+    - URL
   row_index_column: row_index
   keys:
     Collection_name:
@@ -28,13 +30,20 @@ process:
   nid: Nid
   policy: 'Policy domain 1'
   policy2: 'Policy domain 2'
+  description: Description
   abstract: Abstract
   logo: Logo
   banner: Banner
   elibrary: elibrary
   publisher: publisher
-  owner_text_name: 'Owner name'
-  owner_text_type: 'Owner type'
+  owner_text_name:
+    plugin: callback
+    callable: trim
+    source: 'Owner name'
+  owner_text_type:
+    plugin: callback
+    callable: trim
+    source: 'Owner type'
   contact: contact
   contact_email: contact_email
   state:
@@ -42,6 +51,7 @@ process:
     source: 'Collection state'
     default_value: validated
   roles: roles
+  url: URL
 destination:
   plugin: prepare
   fast_rollback: true

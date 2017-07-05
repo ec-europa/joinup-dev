@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
+    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -191,6 +192,7 @@ content:
 hidden:
   created: true
   field_shared_in: true
+  field_visit_count: true
   langcode: true
   og_audience: true
   path: true

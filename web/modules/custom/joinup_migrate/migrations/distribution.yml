@@ -9,7 +9,9 @@ process:
   label: title
   field_ad_access_url: access_url
   field_ad_creation_date: created_time
-  field_ad_description/value: body
+  field_ad_description/value:
+    plugin: file_inline
+    source: body
   field_ad_description/format:
     plugin: default_value
     default_value: content_editor
@@ -45,6 +47,7 @@ process:
     - plugin: term_reference
       vocabulary: representation_technique
   field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_distribution
@@ -52,3 +55,4 @@ migration_dependencies:
   required:
     - licence
     - file:distribution
+    - file:inline

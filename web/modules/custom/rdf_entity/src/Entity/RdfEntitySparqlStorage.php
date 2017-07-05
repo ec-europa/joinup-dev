@@ -782,7 +782,7 @@ QUERY;
             }
             $predicate = $this->fieldHandler->getFieldPredicates($this->getEntityTypeId(), $field_name, $column, $bundle);
             $predicate = reset($predicate);
-            $value = $this->fieldHandler->getOutboundValue($this->getEntityTypeId(), $field_name, $value, $langcode, $column);
+            $value = $this->fieldHandler->getOutboundValue($this->getEntityTypeId(), $field_name, $value, $langcode, $column, $bundle);
             $graph->add((string) $id, $predicate, $value);
           }
         }

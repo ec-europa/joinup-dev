@@ -1,16 +1,23 @@
 services:
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']
+    tags:
+      - { name: state_machine.guard, group: community_content }
   joinup_core.node_workflow_access:
     class: Drupal\joinup_core\NodeWorkflowAccessControlHandler
-    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user']
+    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user', '@config.factory', '@joinup_core.workflow.helper']
   joinup_core.page_type_determiner:
     class: Drupal\joinup_core\PageTypeDeterminer
     arguments: ['@current_route_match', '@entity_type.bundle.info']
+  joinup_core.refresh_visit_count:
+    class: Drupal\joinup_core\EventSubscriber\RefreshVisitCountEventSubscriber
+    arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory']
+    tags:
+      - { name: 'event_subscriber' }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager']
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
-    arguments: ['@current_user', '@account_switcher', '@entity_field.manager']
+    arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager']

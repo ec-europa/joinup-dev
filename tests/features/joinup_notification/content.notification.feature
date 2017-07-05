@@ -28,13 +28,13 @@ Feature: Content notification system
       | title                              | headline                            | body                                 | state     | collection          |
       | Infrared long-range communications | Prototype built by a young student. | Bringing Internet access through IR. | validated | Communication tools |
     And event content:
-      | title                              | short title         | body                                  | solution                    | start date          | end date            |
-      | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | Smoke signals code standard | 2017-03-31T16:43:13 | 2017-03-31T16:43:13 |
+      | title                              | short title         | body                                  | state    | solution                    | start date          | end date            |
+      | Smoke signals pre-conference party | Smoke signals party | A party thrown before the conference. | proposed | Smoke signals code standard | 2017-03-31T16:43:13 | 2017-03-31T16:43:13 |
     And all e-mails have been sent
 
   Scenario: Send emails on content update.
     When I am logged in as "Jerrard Verity"
-    And I go to the "Infrared long-range communications" news page
+    And I go to the "Infrared long-range communications" news
     And I click "Edit"
     And I enter "Prototype built by a young Italian student." in the Content wysiwyg editor
     And I press "Save new draft"
@@ -59,7 +59,7 @@ Feature: Content notification system
 
   Scenario: Send emails on content delete:
     Given I am logged in as "Jerrard Verity"
-    When I go to the "Infrared long-range communications" news page
+    When I go to the "Infrared long-range communications" news
     And I click "Delete"
     And I press "Delete"
     Then 1 e-mail should have been sent

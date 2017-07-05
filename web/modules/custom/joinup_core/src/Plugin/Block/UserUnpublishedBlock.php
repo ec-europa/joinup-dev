@@ -32,18 +32,6 @@ use Drupal\Core\Session\AccountProxy;
 class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The community content bundle ids.
-   *
-   * @var array
-   */
-  const COMMUNITY_BUNDLES = [
-    'discussion',
-    'document',
-    'event',
-    'news',
-  ];
-
-  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxy

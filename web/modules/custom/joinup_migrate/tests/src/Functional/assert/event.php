@@ -6,6 +6,7 @@
  */
 
 use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 
 // Migration counts.
 $this->assertTotalCount('file__event_logo', 2);
@@ -14,16 +15,14 @@ $this->assertTotalCount('event', 3);
 $this->assertSuccessCount('event', 3);
 
 // Imported content check.
-/* @var \Drupal\node\NodeInterface $event */
-$event = $this->loadEntityByLabel('node', 'Euritas summit 2015: “Innovate, cooperate, take the challenge!”', 'event');
+$event = Node::load(145278);
 $this->assertEquals('Euritas summit 2015: “Innovate, cooperate, take the challenge!”', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1440160716, $event->created->value);
-$this->assertEquals(1440161179, $event->changed->value);
 $this->assertEquals(1, $event->uid->target_id);
-$this->assertEquals("<p><a href=\"http://www.euritas.eu/euritas-summit-2015/agenda\">http://www.euritas.eu/euritas-summit-2015/agenda</a></p>\r\n", $event->field_event_agenda->value);
+$this->assertContains('http://www.euritas.eu/euritas-summit-2015/agenda', $event->field_event_agenda->value);
 $this->assertEquals('gov-it.eu@brz.gv.at', $event->field_event_contact_email->value);
-$this->assertStringEndsWith("<div>Expected Participants: <p>150 representatives from the public sector</p>\r\n</div>\n<div>State: Pending</div>", $event->body->value);
+$this->assertContains('150 representatives from the public sector', $event->body->value);
 $this->assertEquals('2015-10-15T08:30:00', $event->field_event_date->value);
 $this->assertEquals('2015-10-16T13:00:00', $event->field_event_date->end_value);
 $this->assertEquals($new_collection->id(), $event->og_audience->target_id);
@@ -51,15 +50,14 @@ $this->assertEquals('proposed', $event->field_state->value);
 $this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
 $this->assertRedirects(['community/egovernment/event/euritas-summit-2015-“innovate-cooperate-take-challenge”-0'], $event);
 
-$event = $this->loadEntityByLabel('node', 'CPSV-AP Revision WG Virtual Meeting 3', 'event');
+$event = Node::load(150255);
 $this->assertEquals('CPSV-AP Revision WG Virtual Meeting 3', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1458817102, $event->created->value);
-$this->assertEquals(1464677770, $event->changed->value);
 $this->assertEquals(1, $event->uid->target_id);
 $this->assertTrue($event->get('field_event_agenda')->isEmpty());
 $this->assertTrue($event->get('field_event_contact_email')->isEmpty());
-$this->assertStringEndsWith("<div>Expected Participants: <p>Members of the CPSV-AP Revision WG</p>\r\n</div>\n<div>State: Pending</div>", $event->body->value);
+$this->assertContains('Members of the CPSV-AP Revision WG', $event->body->value);
 $this->assertEquals('2016-05-24T09:00:00', $event->field_event_date->value);
 $this->assertEquals('2016-05-24T11:00:00', $event->field_event_date->end_value);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');
@@ -77,14 +75,13 @@ $this->assertEquals('proposed', $event->field_state->value);
 $this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
 $this->assertRedirects(['asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0'], $event);
 
-$event = $this->loadEntityByLabel('node', '5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', 'event');
+$event = Node::load(42464);
 $this->assertEquals('5th International Workshop on e-Health in Emerging Economies - IWEEE Granada -', $event->label());
 $this->assertEquals('event', $event->bundle());
 $this->assertEquals(1323441667, $event->created->value);
-$this->assertEquals(1323806587, $event->changed->value);
 $this->assertTrue($event->get('field_event_agenda')->isEmpty());
 $this->assertEquals('info@iweee.org', $event->get('field_event_contact_email')->value);
-$this->assertStringEndsWith("<p>Thymbra</p>\r\n</div>\n", $event->body->value);
+$this->assertContains('Thymbra', $event->body->value);
 $this->assertEquals('2012-01-11T09:00:00', $event->field_event_date->value);
 $this->assertEquals('2012-01-11T18:00:00', $event->field_event_date->end_value);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');

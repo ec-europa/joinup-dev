@@ -9,11 +9,11 @@ dependencies:
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - ds
-    - joinup_core
     - text
     - user
 id: node.discussion.view_mode_tile
@@ -53,12 +53,14 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: comma_separated
 hidden:
   field_attachment: true
   field_replies: true
   field_shared_in: true
   field_state: true
+  field_visit_count: true
+  langcode: true
   links: true
   og_audience: true
   report: true
