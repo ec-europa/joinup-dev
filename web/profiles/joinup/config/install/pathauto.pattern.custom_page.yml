@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: custom_page
+label: 'Custom pages pattern'
+type: 'canonical_entities:node'
+pattern: 'page/[node:title]'
+selection_criteria:
+  08f63266-4aa0-4f95-8e0b-5012292860c2:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 08f63266-4aa0-4f95-8e0b-5012292860c2
+selection_logic: and
+weight: -5
+relationships: {  }
