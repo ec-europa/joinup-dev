@@ -88,8 +88,7 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
    */
   public function refreshExpiredField(RefreshExpiredFieldEventInterface $event) {
     // Only react to fields that store the download count or visit count.
-    $field_name = $event->getFieldName();
-    if (!in_array($field_name, [static::FIELD_NAME_DOWNLOAD_COUNT, static::FIELD_NAME_VISIT_COUNT])) {
+    if (!in_array($event->getFieldName(), [static::FIELD_NAME_DOWNLOAD_COUNT, static::FIELD_NAME_VISIT_COUNT])) {
       return;
     }
     // Only refresh the field if it has actually expired. It might have been
@@ -98,7 +97,7 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
       return;
     }
 
-    $new_value = $this->getCount($this->getEntity($event), $field_name);
+    $new_value = $this->getCount($this->getEntity($event));
     if ($new_value !== FALSE) {
       $this->updateFieldValue($event, $new_value);
     }
