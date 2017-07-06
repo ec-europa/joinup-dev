@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ */
+#}
+{%
+  set classes = [
+    'button',
+    'button--blue',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ]
+%}
+<div class="search-bar__button-container">
+<input{{ attributes.removeClass('button').addClass('search-bar__button') }} /><span class="search-bar__icon icon icon--search"></span>{{ children }}
+</div>

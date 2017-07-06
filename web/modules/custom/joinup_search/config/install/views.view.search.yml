@@ -216,7 +216,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No content found for your search.'
+          content: '<div class="page__content">No content found for your search.</div>'
           plugin_id: text_custom
       relationships: {  }
       arguments: {  }

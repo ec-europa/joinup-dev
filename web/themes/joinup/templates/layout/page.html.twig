@@ -84,6 +84,12 @@
           </div>
         {% endif %}
 
+        {% if page.filters %}
+          <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
+            {{ page.filters }}
+          </div>
+        {% endif %}
+
         <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
           {{ page.content }}
         </div>
