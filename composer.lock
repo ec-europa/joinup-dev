@@ -5365,12 +5365,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/piwik-reporting-api.git",
-                "reference": "9073901214c86687366660c3af2befc3ac878427"
+                "reference": "8e7d0a379304b09fd95eb1127480b96f7e1c462c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/9073901214c86687366660c3af2befc3ac878427",
-                "reference": "9073901214c86687366660c3af2befc3ac878427",
+                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/8e7d0a379304b09fd95eb1127480b96f7e1c462c",
+                "reference": "8e7d0a379304b09fd95eb1127480b96f7e1c462c",
                 "shasum": ""
             },
             "require": {
@@ -5393,10 +5393,10 @@
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
             "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/master",
+                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.0",
                 "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
             },
-            "time": "2017-06-26 13:08:00"
+            "time": "2017-07-04 09:08:04"
         },
         {
             "name": "phing/phing",
