@@ -106,16 +106,11 @@ joinup_core.piwik_settings:
       label: 'The date when the website was launched, in ISO-8601 extended format.'
 
 joinup_core.piwik_settings.*.*:
-  type: sequence
-  label: 'Bundles'
-  sequence:
-    type: string
-    label: 'Bundle'
-
-joinup_core.piwik_settings.*.*.period:
-  type: integer
-  label: 'Time period, in days'
-
-joinup_core.piwik_settings.*.*.type:
-  type: string
-  label: 'The type of metric to use'
+  type: mapping
+  mapping:
+    period:
+      type: integer
+      label: 'Time period, in days.'
+    type:
+      type: string
+      label: 'The type of metric to use.'
