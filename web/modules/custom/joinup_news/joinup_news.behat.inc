@@ -22,8 +22,8 @@ class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInt
    * @param string $title
    *   The name of the news page.
    *
-   * @When (I )go to the :title news page
-   * @When (I )visit the :title news page
+   * @When (I )go to the :title news
+   * @When (I )visit the :title news
    */
   public function visitNewsPage($title) {
     /** @var \Drupal\node\Entity\Node $node */

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba8ee61b6290ccf652f378798a152428",
+    "content-hash": "b3bad98e99f415cec16d5a0de049c58e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2804,6 +2804,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -3058,6 +3066,63 @@
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
             "time": "2017-02-27 15:47:09"
+        },
+        {
+            "name": "drupal/pathauto",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/pathauto",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "4c82a5689a18421c8c73fcc8be7b333bb21ae02a"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/ctools": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1493468044"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Dave Reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "Freso",
+                    "homepage": "https://www.drupal.org/user/27504"
+                },
+                {
+                    "name": "greggles",
+                    "homepage": "https://www.drupal.org/user/36762"
+                }
+            ],
+            "description": "Provides a mechanism for modules to automatically generate aliases for the content they manage.",
+            "homepage": "https://www.drupal.org/project/pathauto",
+            "support": {
+                "source": "http://cgit.drupalcode.org/pathauto"
+            }
         },
         {
             "name": "drupal/persistent_login",
@@ -3432,7 +3497,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.2.zip",
-                "reference": null,
+                "reference": "8.x-1.2",
                 "shasum": "c6359692a220321ee8b4d6c61970b1c846afebe2"
             },
             "require": {
@@ -3492,7 +3557,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0.zip",
-                "reference": null,
+                "reference": "8.x-1.0",
                 "shasum": "2559a2d54867632b2b0fac12e634da3eb820993d"
             },
             "require": {
@@ -4795,7 +4860,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5305,12 +5370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/piwik-reporting-api.git",
-                "reference": "9073901214c86687366660c3af2befc3ac878427"
+                "reference": "8e7d0a379304b09fd95eb1127480b96f7e1c462c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/9073901214c86687366660c3af2befc3ac878427",
-                "reference": "9073901214c86687366660c3af2befc3ac878427",
+                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/8e7d0a379304b09fd95eb1127480b96f7e1c462c",
+                "reference": "8e7d0a379304b09fd95eb1127480b96f7e1c462c",
                 "shasum": ""
             },
             "require": {
@@ -5333,10 +5398,10 @@
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
             "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/master",
+                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.0",
                 "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
             },
-            "time": "2017-06-26 13:08:00"
+            "time": "2017-07-04 09:08:04"
         },
         {
             "name": "phing/phing",
@@ -5555,7 +5620,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2016-10-03T08:18:38+00:00"
+            "time": "2016-10-03 08:18:38"
         },
         {
             "name": "psr/http-message",
@@ -8912,7 +8977,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
+                "reference": null,
                 "shasum": "3ba3a31ea02323203ceae7ef7f80c091ced2e2f3"
             },
             "require": {
@@ -10682,6 +10747,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "semiceu/adms-ap_validator": 20,
         "drupal/core": 20,
         "drupal/diff": 5,
         "drupal/facets": 15,
@@ -10700,7 +10766,6 @@
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
-        "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/default_content": 20,

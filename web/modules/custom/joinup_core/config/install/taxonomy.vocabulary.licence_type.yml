@@ -8,7 +8,7 @@ third_party_settings:
     rdf_type: 'http://purl.org/adms/licencetype/1.1'
     mapping:
       uuid:
-        value: 
+        value:
           predicate: ''
           format: ''
       vid:
@@ -16,7 +16,7 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
           format: resource
       langcode:
-        value: 
+        value:
           predicate: ''
           format: ''
       name:
@@ -28,11 +28,11 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#definition'
           format: t_literal
       format:
-        value: 
+        value:
           predicate: ''
           format: ''
       weight:
-        value: 
+        value:
           predicate: ''
           format: ''
       parent:
@@ -40,11 +40,11 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#broader'
           format: resource
       changed:
-        value: 
+        value:
           predicate: ''
           format: ''
       default_langcode:
-        value: 
+        value:
           predicate: ''
           format: ''
       path: {  }

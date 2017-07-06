@@ -600,3 +600,51 @@ function joinup_core_file_delete(EntityInterface $entity) {
   // Delete all redirects targeting this path.
   redirect_delete_by_path($path);
 }
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_core_entity_extra_field_info() {
+  $motivation_bundles = [
+    'node' => ['discussion', 'document', 'event', 'news'],
+    'rdf_entity' => ['collection', 'solution', 'asset_release'],
+  ];
+  $fields = [];
+  foreach ($motivation_bundles as $entity_type_id => $bundles) {
+    foreach ($bundles as $bundle) {
+      $fields[$entity_type_id][$bundle]['form']['transition_motivation'] = [
+        'label' => t('Motivation'),
+        'description' => t('The motivation for the action.'),
+        'weight' => 10,
+        'display' => TRUE,
+      ];
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $motivation_form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_asset_release_edit_form',
+    'node_discussion_edit_form',
+    'node_document_edit_form',
+    'node_event_edit_form',
+    'node_news_edit_form',
+  ];
+
+  if (!in_array($form_id, $motivation_form_ids)) {
+    return;
+  }
+
+  $form['transition_motivation'] = [
+    '#type' => 'textarea',
+    '#title' => t('Motivation'),
+    '#description' => t('Description of the reason of this operation.'),
+  ];
+}

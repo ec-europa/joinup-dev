@@ -55,6 +55,7 @@ dependencies:
   - password_policy_characters
   - password_policy_length
   - path
+  - pathauto
   - persistent_login
   - piwik
   - r4032login
@@ -166,6 +167,10 @@ config_devel:
   - og_menu.ogmenu.navigation
   - og.settings
   - password_policy.password_policy.generic_policy
+  - pathauto.pattern.community_content
+  - pathauto.pattern.custom_page
+  - pathauto.pattern.rdf_entities_generic
+  - pathauto.pattern.rdf_entities_releases
   - piwik.settings
   - system.theme
   - swiftmailer.transport
