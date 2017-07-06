@@ -47,6 +47,7 @@ process:
     - plugin: term_reference
       vocabulary: representation_technique
   field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_distribution

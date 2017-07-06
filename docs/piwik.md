@@ -25,11 +25,30 @@ options.
 
 ## Troubleshooting
 
+### Nothing being registered
+
 If your page visits are not being registered in Piwik, check the following:
 
 * Adblockers or other privacy enhancing extensions might be blocking the
   requests.
 * The browser's "Do not track" option might be enabled.
 
+### Driver devicemapper failed
+
 If you get the error `Driver devicemapper failed to remove root filesystem` when
 stopping the Piwik containers, then shut down your web server and try again.
+
+### Reinitializing Piwik
+
+If you want to start from scratch using a fresh Piwik instance:
+
+```
+# Stop the running instance.
+$ ./vendor/bin/phing stop-piwik
+
+# Remove the local storage (run with sudo if needed).
+$ sudo rm -rf ./vendor/piwik/piwik
+
+# Set up a fresh instance.
+$ ./vendor/bin/phing setup-piwik
+```

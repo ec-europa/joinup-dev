@@ -32,8 +32,8 @@ Feature: Solution homepage
       | title               | body                                | policy domain           | spatial coverage | solution                     | state     |
       | IS protocol meet-up | Discussion about the next standard. | Statistics and Analysis | European Union   | Information sharing protocol | validated |
     And document content:
-      | title               | type     | short title | body                    | spatial coverage | policy domain | solution                     | state     |
-      | IS protocol draft 2 | Document | IS draft 2  | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
+      | title               | document type | short title | body                    | spatial coverage | policy domain | solution                     | state     |
+      | IS protocol draft 2 | Document      | IS draft 2  | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
 
   Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution

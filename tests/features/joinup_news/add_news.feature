@@ -7,7 +7,7 @@ Feature: Creation of news through the UI.
   Scenario: Share the news in other collections/solutions.
     Given the following collections:
       | title            | description                                 | logo     | banner     | state     |
-      | Metal fans       | Share the love for nickel, tungsten & co.   | logo.png | banner.jpg | validated |
+      | Metal fans       | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
       | Hardcore diggers | We dig up stuff hidden beneath the earth.   | logo.png | banner.jpg | validated |
       | Cool blacksmiths | Keeping it cool while working on hot stuff. | logo.png | banner.jpg | validated |
     And solutions:
@@ -18,7 +18,7 @@ Feature: Creation of news through the UI.
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
-    Then the following fields should not be present "Shared in"
+    Then the following fields should not be present "Shared in, Motivation"
 
     When I am logged in as a "facilitator" of the "Density catalogue project" solution
     And I go to the homepage of the "Density catalogue project" solution

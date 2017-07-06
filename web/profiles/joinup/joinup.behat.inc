@@ -494,7 +494,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     foreach (get_object_vars($node) as $alias => $value) {
       $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
-        unset($node->alias);
+        unset($node->$alias);
         // Don't set empty values, since we can have multiple aliases that point
         // to the same field (e.g. 'collection' and 'solution' both use the same
         // 'og_audience' field).
@@ -549,44 +549,44 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'custom_page' => [],
       'discussion' => [
-        'state' => 'field_state',
         'content' => 'body',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'document' => [
+        'document type' => 'field_type',
+        'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
         'short title' => 'field_short_title',
-        'state' => 'field_state',
-        'type' => 'field_type',
         'spatial coverage' => 'field_document_spatial_coverage',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'event' => [
         'keywords' => 'field_keywords',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
-        'state' => 'field_state',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
         'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
-        'state' => 'field_state',
         'spatial coverage' => 'field_news_spatial_coverage',
-        'shared in' => 'field_shared_in',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
+        'shared in' => 'field_shared_in',
+        'visits' => 'field_visit_count',
       ],
     ];
 
@@ -1259,7 +1259,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertEquals($description, trim($element->getText()));
+        \PHPUnit_Framework_Assert::assertContains($description, $element->getText());
         // The description was found, stop searching.
         return;
       }
@@ -1400,7 +1400,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertFieldContainsLinkToPage($field, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title);
-    $uri = '/' . $node->toUrl()->getInternalPath();
+    $uri = $node->toUrl()->toString();
     $this->assertSession()->fieldValueEquals($field, $uri);
   }
 

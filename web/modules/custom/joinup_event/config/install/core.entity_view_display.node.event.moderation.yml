@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_state
+    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - node.type.event
   module:
@@ -66,6 +67,7 @@ hidden:
   field_scope: true
   field_shared_in: true
   field_short_title: true
+  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

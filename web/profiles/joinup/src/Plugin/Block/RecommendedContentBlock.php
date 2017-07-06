@@ -5,7 +5,9 @@ namespace Drupal\joinup\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
@@ -22,18 +24,6 @@ use Drupal\og\MembershipManager;
  * )
  */
 class RecommendedContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
-
-  /**
-   * The community content bundle ids.
-   *
-   * @var array
-   */
-  const COMMUNITY_BUNDLES = [
-    'discussion',
-    'document',
-    'event',
-    'news',
-  ];
 
   /**
    * The current user.
@@ -96,20 +86,48 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   /**
    * {@inheritdoc}
    */
-  public function build() {
-    $groups = $this->ogMembershipManager->getUserGroups($this->currentUser->getAccount());
-    $rows = [];
-    if (!empty($groups['rdf_entity'])) {
-      $rows = $this->getContentFromMemberships($groups);
-    }
-    // @todo: Else: Provide content with site-wide content.
-    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
+  public function defaultConfiguration() {
+    return ['count' => 9] + parent::defaultConfiguration();
+  }
 
-    $build['#attributes'] = [
-      'class' => ['listing', 'listing--grid', 'mdl-grid'],
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $count = $this->configuration['count'];
+
+    // @todo Show featured content that is pinned by moderators.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3147
+    // @todo Provide tailored content for authenticated users that are not a
+    //   member of any group, according to their past browsing behaviour.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
+    $entities = [];
+
+    // If the user is a member of one or more collections or solutions, show
+    // the latest content from those.
+    $groups = $this->ogMembershipManager->getUserGroups($this->currentUser->getAccount());
+    if (!empty($groups['rdf_entity'])) {
+      $entities = $this->getContentFromMemberships($groups, $count - count($entities));
+    }
+
+    // Show popular content to anonymous users and users without memberships.
+    else {
+      $entities += $this->getPopularContent($count - count($entities));
+    }
+
+    $build = [
+      '#attributes' => ['class' => ['listing', 'listing--grid', 'mdl-grid']],
     ];
 
-    $build += $rows;
+    foreach ($entities as $entity) {
+      $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
+      $build[] = [
+        '#theme' => 'search_api_field_result',
+        '#item' => $view,
+        '#entity' => $entity,
+      ];
+    }
+
     return $build;
   }
 
@@ -118,11 +136,13 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *
    * @param array $groups
    *   The user's memberships.
+   * @param int $limit
+   *   The number of results to fetch.
    *
    * @return array
    *   An array of rows to render.
    */
-  protected function getContentFromMemberships(array $groups) {
+  protected function getContentFromMemberships(array $groups, $limit) {
     $rdf_entities = isset($groups['rdf_entity']) ? $groups['rdf_entity'] : [];
 
     // Only show content from the first 100 groups to avoid hitting the query
@@ -139,51 +159,59 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $index = Index::load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
-    $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
+    $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
     $query->sort('created', 'DESC');
-    $query->range(0, 9);
+    $query->range(0, $limit);
     $results = $query->execute();
-    $entities = $this->getResultEntities($results);
-    $rows = [];
 
-    foreach ($entities as $entity) {
-      $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
-      $rows[] = [
-        '#theme' => 'search_api_field_result',
-        '#item' => $view,
-        '#entity' => $entity,
-      ];
-    }
-    return $rows;
+    return $this->getResultEntities($results);
   }
 
   /**
-   * Builds a renderable array for the search results.
+   * Returns the most popular community content according to the visit count.
+   *
+   * @param int $limit
+   *   The number of results to fetch.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   The most popular community content entities.
+   */
+  protected function getPopularContent($limit) {
+    $index = Index::load('published');
+    /** @var \Drupal\search_api\Query\QueryInterface $query */
+    $query = $index->query();
+    $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
+    $query->sort('field_visit_count', 'DESC');
+    $query->range(0, $limit);
+    $results = $query->execute();
+
+    return $this->getResultEntities($results);
+  }
+
+  /**
+   * Filters the search results, throwing away stale and inaccessible results.
    *
    * @param \Drupal\search_api\Query\ResultSetInterface $result
    *   The query results object.
    *
-   * @return array
-   *   The render array for the search results.
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   The valid results, as loaded entities.
    */
   protected function getResultEntities(ResultSetInterface $result) {
     $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
       try {
-        /** @var \Drupal\Core\Entity\EntityInterface $entity */
+        /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
         $entity = $item->getOriginalObject()->getValue();
       }
       catch (SearchApiException $e) {
         $entity = NULL;
       }
       // Search results might be stale, so we check if the entity has been
-      // found in the system.
-      if (!$entity) {
-        continue;
-      }
-      if (!$entity->access('view')) {
+      // found in the system, and if the user has access to view them.
+      if (empty($entity) || !$entity->access('view')) {
         continue;
       }
       $results[] = $entity;
@@ -193,10 +221,30 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
   /**
    * {@inheritdoc}
-   *
-   * The page should be dependent on the user's groups.
+   */
+  public function blockForm($form, FormStateInterface $form_state) {
+    $form['count'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Number of items to show'),
+      '#default_value' => $this->configuration['count'],
+      '#weight' => 1,
+    ];
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['count'] = $form_state->getValue('count');
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getCacheContexts() {
+    // The block is dependent on the user's groups.
     return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
   }
 
@@ -204,6 +252,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function getCacheTags() {
+    // The block should be invalidated whenever any node changes.
     return Cache::mergeTags(parent::getCacheTags(), ['node_list']);
   }
 

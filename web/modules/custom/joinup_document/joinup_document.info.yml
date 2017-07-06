@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - cached_computed_field
   - file_url
   - joinup_community_content
   - joinup_licence
@@ -28,6 +29,7 @@ config_devel:
   - field.field.node.document.field_short_title
   - field.field.node.document.field_state
   - field.field.node.document.field_type
+  - field.field.node.document.field_visit_count
   - field.field.node.document.og_audience
   - field.storage.node.field_document_publication_date
   - field.storage.node.field_document_spatial_coverage

@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,12 +13,13 @@ use Drupal\migrate\Row;
  *   id = "collection"
  * )
  */
-class Collection extends JoinupSqlBase implements RedirectImportInterface {
+class Collection extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
   use DefaultRdfRedirectTrait {
     getRedirectSources as rdfGetRedirectSources;
   }
+  use FieldTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -60,6 +62,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
       'state' => $this->t('Workflow state'),
       'banner' => $this->t('Banner'),
       'logo_id' => $this->t('Logo ID'),
+      'i18n' => $this->t('Field translations'),
     ];
   }
 
@@ -106,8 +109,9 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('affiliates', $affiliates);
 
     // Log missed owner values.
-    if (!$row->getSourceProperty('owner')) {
-      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "No owner for '$collection'");
+    $no_owner = !$row->getSourceProperty('owner') && !$row->getSourceProperty('owner_text_name');
+    if ($no_owner) {
+      $this->migration->getIdMap()->saveMessage(['collection' => $collection], "Collection '$collection': missing mandatory content-type owner");
     }
 
     // Spatial coverage.
@@ -119,6 +123,11 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     }
     if (!$row->getSourceProperty('body')) {
       $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Collection '$collection' is missing a Description");
+    }
+
+    // Only repositories provide field translation.
+    if ($row->getSourceProperty('type') === 'repository') {
+      $this->setFieldTranslations($row);
     }
 
     return parent::prepareRow($row);
@@ -175,6 +184,19 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface {
     }
 
     return $sources;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'field_ar_description' => [
+        'table' => 'content_field_repository_description',
+        'field' => 'field_repository_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }
