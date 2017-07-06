@@ -129,3 +129,13 @@ Feature: Add distribution through the UI
       Then I should see the text "WTFPL"
       # Clean up the asset distribution that was created through the UI.
       Then I delete the "Source tarball" asset distribution
+
+    @javascript
+    Scenario: The distribution access URL field should accept multiple file extensions.
+      Given I am logged in as a "facilitator" of the "Solution random x name" solution
+      When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      And I click "Add distribution" in the plus button menu
+      Then I should see the heading "Add Distribution"
+
+      Given I select the radio button "Upload file"
+      Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
