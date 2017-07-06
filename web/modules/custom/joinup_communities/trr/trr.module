@@ -7,8 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 
-// @todo Change this in ISAICP-3493
-const TRR_COLLECTION_ID = 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8';
+const TRR_COLLECTION_ID = 'https://www.nen.nl/GITB/Registry-and-Repository.htm';
 
 /**
  * Implements hook_field_group_pre_render_alter().
@@ -78,6 +77,6 @@ function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInter
     $form_state->setError($form['field_is_test_resource_type'], t('Test resources require a test resource type.'));
   }
   if ($test_resource_type && !$test_resource) {
-    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution caltegory is set to "Test resource".'));
+    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution category is set to "Test resource".'));
   }
 }
