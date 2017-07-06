@@ -68,7 +68,7 @@ class OgUserRoleSolution extends SourcePluginBase {
         'roles' => ['rdf_entity-solution-facilitator'],
       ];
       // Add the solution owner, if case.
-      if ($data->is_admin == 1) {
+      if ($data->is_admin) {
         $row['roles'][] = 'rdf_entity-solution-administrator';
       }
       $rows[] = $row;
