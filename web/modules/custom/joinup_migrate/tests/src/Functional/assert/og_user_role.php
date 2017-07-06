@@ -20,7 +20,7 @@ $assert_og_roles = function ($entity_id, $user_name, $expected_state, array $exp
       'uid' => $account->id(),
     ]);
   if (!$memberships) {
-    $this->fail("No OG membership with 'entity_id' = $entity_id, 'uid' = $user");
+    $this->fail("No OG membership with 'entity_id' = $entity_id, 'uid' = {$account->id()}");
   }
   $membership = reset($memberships);
 

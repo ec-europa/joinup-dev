@@ -50,10 +50,8 @@ class OgUserRoleSolution extends SourcePluginBase {
 
     $query = $db->select('d8_solution', 's')
       ->fields('s', ['nid'])
-      ->fields('ou', ['is_admin', 'is_active', 'created'])
-      ->fields('our', ['uid', 'rid']);
+      ->fields('ou', ['uid', 'is_admin', 'is_active', 'created']);
     $query->join('og_uid', 'ou', 's.nid = ou.nid');
-    $query->join('og_users_roles', 'our', 'ou.nid = our.gid AND ou.uid = our.uid');
     // Allow only migrated users.
     $query->join('d8_user', 'u', 'ou.uid = u.uid');
 
@@ -61,26 +59,19 @@ class OgUserRoleSolution extends SourcePluginBase {
     foreach ($query->execute()->fetchAll() as $data) {
       $nid = (int) $data->nid;
       $uid = (int) $data->uid;
-      $key = "$nid:$uid";
-      if (!isset($rows[$key])) {
-        $rows[$key] = [
-          'nid' => $nid,
-          'uid' => $uid,
-          'state' => $data->is_active ? OgMembershipInterface::STATE_ACTIVE : OgMembershipInterface::STATE_PENDING,
-          'created' => (int) $data->created,
-          'roles' => [],
-        ];
+      $row = [
+        'nid' => $nid,
+        'uid' => $uid,
+        'state' => $data->is_active ? OgMembershipInterface::STATE_ACTIVE : OgMembershipInterface::STATE_PENDING,
+        'created' => (int) $data->created,
+        // Each member, regardless of its role in D6, is facilitator in D8.
+        'roles' => ['rdf_entity-solution-facilitator'],
+      ];
+      // Add the solution owner, if case.
+      if ($data->is_admin == 1) {
+        $row['roles'][] = 'rdf_entity-solution-administrator';
       }
-      // Add the solution owner.
-      if ($data->is_admin && !in_array('rdf_entity-solution-administrator', $rows[$key]['roles'])) {
-        $rows[$key]['roles'][] = 'rdf_entity-solution-administrator';
-        // The facilitator role is complementary with the administrator role.
-        $rows[$key]['roles'][] = 'rdf_entity-solution-facilitator';
-      }
-      // Add the facilitator only if the user is not yet an administrator.
-      if (!in_array('rdf_entity-solution-administrator', $rows[$key]['roles']) && !in_array('rdf_entity-solution-facilitator', $rows[$key]['roles'])) {
-        $rows[$key]['roles'][] = 'rdf_entity-solution-facilitator';
-      }
+      $rows[] = $row;
     }
 
     return new \ArrayIterator($rows);
