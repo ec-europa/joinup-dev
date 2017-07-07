@@ -77,13 +77,6 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   }
   $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
 
-  // Make some alterations for the Release download page.
-  if ($variables['view_mode'] === 'compact') {
-    // Provide a flag that indicates if this is displayed at the top of the
-    // timeline.
-    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
-  }
-
   if (!empty($rdf_entity->is_latest_release)) {
     $variables['is_latest_release'] = $rdf_entity->is_latest_release;
     return;
@@ -219,11 +212,6 @@ function asset_release_entity_update(EntityInterface $entity) {
  */
 function template_preprocess_asset_release_releases_download(array &$variables) {
   $releases = $variables['releases'];
-
-  // Flag the first entity so it can be themed accordingly.
-  if ($first_entity = reset($releases)) {
-    $first_entity->top_of_timeline = TRUE;
-  }
 
   $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity')->viewMultiple($releases, 'compact');
 }

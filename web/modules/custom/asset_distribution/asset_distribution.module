@@ -213,10 +213,6 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
 
     // Provide a flag if this is a standalone distribution.
     $variables['is_standalone'] = !empty($rdf_entity->standalone);
-
-    // Provide a flag that indicates if this is displayed at the top of the
-    // timeline.
-    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
   }
 }
 
