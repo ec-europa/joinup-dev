@@ -69,7 +69,6 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_ar_contact_information
-        - field_ar_affiliates
         - field_spatial_coverage
         - field_ar_closed
         - field_ar_elibrary_creation
@@ -115,15 +114,6 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-    region: content
-  field_ar_affiliates:
-    weight: 15
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_ar_banner:
     weight: 13
@@ -256,7 +246,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_ar_affiliates: true
   langcode: true
   translation: true
   uid: true

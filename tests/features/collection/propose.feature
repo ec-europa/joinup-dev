@@ -153,13 +153,15 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
     When I click "Description" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 
   @javascript @terms
