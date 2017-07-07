@@ -77,22 +77,24 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   }
   $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
 
-  if (!empty($rdf_entity->is_latest_release)) {
-    $variables['is_latest_release'] = $rdf_entity->is_latest_release;
-    return;
-  }
+  $parent_solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf_entity);
 
+  // Mark the release as latest.
   $is_latest_release = FALSE;
-  $field_solution = $rdf_entity->get('field_isr_is_version_of');
-  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+  if ($variables['view_mode'] === 'compact') {
+    // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
+    $is_latest_release = !empty($rdf_entity->is_latest_release);
+  }
+  elseif ($parent_solution) {
     // @todo Find a better way of marking the latest release that doesn't
     //   involve performing a database query in the theme layer.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
-    $latest_release = solution_get_latest_release($solution);
+    $latest_release = solution_get_latest_release($parent_solution);
     if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
       $is_latest_release = TRUE;
     }
   }
+
   $variables['is_latest_release'] = $is_latest_release;
 }
 
