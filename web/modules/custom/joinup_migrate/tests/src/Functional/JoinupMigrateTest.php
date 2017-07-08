@@ -99,7 +99,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
 
     // Assertions for each migrations are defined under assert/ directory.
     foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
-      require __DIR__ . '/assert/' . $file->filename;
+      require __DIR__ . '/../../assert/' . $file->filename;
     }
   }
 
