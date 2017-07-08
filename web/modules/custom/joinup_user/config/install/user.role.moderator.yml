@@ -34,7 +34,7 @@ permissions:
   - 'edit own document content'
   - 'edit owner rdf entity'
   - 'moderate entity parents'
-  - 'propose solution rdf entity'
+  - 'propose collection rdf entity'
   - 'skip comment approval'
   - 'view any unpublished content'
   - 'view licence overview page'

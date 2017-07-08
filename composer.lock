@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "18fcb6257866018401ce5dc6d7907fe3",
+    "content-hash": "ff29eef5b1c27268c8e70cd57258921e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.31.1",
+            "version": "3.31.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "551865464a2779b9038aa871094a24bb9e254e24"
+                "reference": "582e7764e0fa389c3248450cd6db2564dd656d99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/551865464a2779b9038aa871094a24bb9e254e24",
-                "reference": "551865464a2779b9038aa871094a24bb9e254e24",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/582e7764e0fa389c3248450cd6db2564dd656d99",
+                "reference": "582e7764e0fa389c3248450cd6db2564dd656d99",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-07-05T17:26:26+00:00"
+            "time": "2017-07-06T21:11:49+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1771,16 +1771,16 @@
         },
         {
             "name": "drupal/console-extend-plugin",
-            "version": "0.9.0",
+            "version": "0.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-extend-plugin.git",
-                "reference": "b3a61614c5ba7dc3dcd8d2bff35dd965822aed87"
+                "reference": "ae2a76680f93c0fea31bbcafc6b0bcc234bb2fb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-extend-plugin/zipball/b3a61614c5ba7dc3dcd8d2bff35dd965822aed87",
-                "reference": "b3a61614c5ba7dc3dcd8d2bff35dd965822aed87",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-extend-plugin/zipball/ae2a76680f93c0fea31bbcafc6b0bcc234bb2fb4",
+                "reference": "ae2a76680f93c0fea31bbcafc6b0bcc234bb2fb4",
                 "shasum": ""
             },
             "require": {
@@ -1808,7 +1808,7 @@
                 }
             ],
             "description": "Drupal Console Extend Plugin",
-            "time": "2017-07-04T01:55:20+00:00"
+            "time": "2017-07-07T05:12:50+00:00"
         },
         {
             "name": "drupal/core",
@@ -2343,17 +2343,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.0.0-alpha9",
+            "version": "1.0.0-alpha10",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets",
-                "reference": "8.x-1.0-alpha9"
+                "reference": "8.x-1.0-alpha10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha9.zip",
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha10.zip",
                 "reference": null,
-                "shasum": "b0b1e1cc57bc2586cf1afb67c3a8ed24771f4738"
+                "shasum": "3475249f89af0db594a3dd8341ccc6afc6dc532d"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2367,11 +2367,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha9",
-                    "datestamp": "1492681579"
-                },
-                "patches_applied": {
-                    "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
+                    "version": "8.x-1.0-alpha10",
+                    "datestamp": "1499507343"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2484,6 +2481,9 @@
                 "drupal": {
                     "version": "8.x-1.0-alpha4",
                     "datestamp": "1499090343"
+                },
+                "patches_applied": {
+                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2916,12 +2916,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "c46eef96f26073371bc7bcd99a2b550a83989362"
+                "reference": "0a469c2e68414d32d5b2e25830cc42530552bfb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/c46eef96f26073371bc7bcd99a2b550a83989362",
-                "reference": "c46eef96f26073371bc7bcd99a2b550a83989362",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/0a469c2e68414d32d5b2e25830cc42530552bfb3",
+                "reference": "0a469c2e68414d32d5b2e25830cc42530552bfb3",
                 "shasum": ""
             },
             "require-dev": {
@@ -2938,7 +2938,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-06-14 08:54:08"
+            "time": "2017-07-07 09:18:50"
         },
         {
             "name": "drupal/og_menu",
@@ -5713,16 +5713,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.8",
+            "version": "v0.8.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e"
+                "reference": "58a31cc4404c8f632d8c557bc72056af2d3a83db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
-                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/58a31cc4404c8f632d8c557bc72056af2d3a83db",
+                "reference": "58a31cc4404c8f632d8c557bc72056af2d3a83db",
                 "shasum": ""
             },
             "require": {
@@ -5782,7 +5782,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-06-24T06:16:19+00:00"
+            "time": "2017-07-06T14:53:52+00:00"
         },
         {
             "name": "seld/cli-prompt",
@@ -9123,8 +9123,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-05-01 21:54:12"
+            }
         },
         {
             "name": "drupal/devel",
@@ -9267,12 +9266,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "197c10a8a504022b796134cd3dbbb468e6940abd"
+                "reference": "8b9e54853698f02033d187b528693d5fac8d90ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/197c10a8a504022b796134cd3dbbb468e6940abd",
-                "reference": "197c10a8a504022b796134cd3dbbb468e6940abd",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/8b9e54853698f02033d187b528693d5fac8d90ea",
+                "reference": "8b9e54853698f02033d187b528693d5fac8d90ea",
                 "shasum": ""
             },
             "require": {
@@ -9320,7 +9319,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-07-01 14:33:20"
+            "time": "2017-07-06T17:24:52+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -10741,7 +10740,6 @@
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
-        "drupal/facets": 15,
         "drupal/inline_entity_form": 20,
         "drupal/linkit": 20,
         "drupal/message": 20,
