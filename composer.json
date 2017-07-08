@@ -27,7 +27,7 @@
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha4",
-        "drupal/migrate_spreadsheet": "~1.0-beta2",
+        "drupal/migrate_spreadsheet": "~1.0-beta3",
         "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/password_policy": "3.x-dev#8ee51e4e58b1b9493867c43ddfecbdac20e04b0c",
@@ -158,6 +158,9 @@
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+            },
+            "drupal/pathauto": {
+                "Entities with long string IDs are causing errors in key value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-6.patch"
             },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
