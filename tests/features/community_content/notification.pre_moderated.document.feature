@@ -4,13 +4,13 @@ Feature: Notification test for the propose transition.
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
 
-  Background:
+  Scenario: Notifications should be sent whenever a document is going through a relevant transition.
     Given users:
-      | Username         | Roles     | E-mail                      | Password | First name | Family name |
-      | Notify moderator | moderator | notify_moderator@test.com   | asdf     | Notify     | Moderator   |
-      | CC owner         |           | notify_owner@test.com       | asdf     | CC         | Owner       |
-      | CC facilitator   |           | notify_facilitator@test.com | asdf     | CC         | Facilitator |
-      | CC member        |           | notify_member@test.com      | asdf     | CC         | Member      |
+      | Username         | Roles     | E-mail                      | First name | Family name |
+      | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
+      | CC owner         |           | notify_owner@test.com       | CC         | Owner       |
+      | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
+      | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
       | title             | state     | elibrary creation | moderation |
       | CC pre collection | validated | members           | yes        |
@@ -19,13 +19,11 @@ Feature: Notification test for the propose transition.
       | CC pre collection | CC owner       | owner       |
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
-
-  Scenario: Notifications should be sent whenever a document is going through a relevant transition.
-    Given document content:
+    And document content:
       | title                               | author         | body | field_type | collection        | field_state      |
-      | CC notify pre publish               | CC facilitator | body | Document   | CC pre collection | draft            |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
+      | CC notify pre publish               | CC facilitator | body | Document   | CC pre collection | draft            |
       | CC notify pre propose               | CC member      | body | Document   | CC pre collection | draft            |
       | CC notify pre request changes       | CC member      | body | Document   | CC pre collection | validated        |
       | CC notify pre report                | CC member      | body | Document   | CC pre collection | validated        |
@@ -111,7 +109,7 @@ Feature: Notification test for the propose transition.
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                    |
+      | recipient | CC member                                                                                                                                                                                                   |
       | subject   | Joinup: Content has been updated                                                                                                                                                                            |
       | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: Can you do some changes?. |
 
