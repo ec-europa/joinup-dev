@@ -292,7 +292,7 @@ abstract class NotificationSubscriberBase {
 
     if ($actor->hasRole('moderator')) {
       /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('role')->load('moderator');
+      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
       $arguments['@actor:role'] = $role->label();
       $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
     }
