@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
@@ -12,11 +13,12 @@ use Drupal\migrate\Row;
  *   id = "release"
  * )
  */
-class Release extends JoinupSqlBase implements RedirectImportInterface {
+class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
   use DefaultRdfRedirectTrait;
   use DocumentationTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -140,7 +142,28 @@ class Release extends JoinupSqlBase implements RedirectImportInterface {
     $row->setSourceProperty('type', 'asset_release');
     $this->setState($row);
 
+    // Set field translations.
+    $this->setFieldTranslations($row);
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_isr_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
   /**

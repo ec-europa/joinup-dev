@@ -113,7 +113,14 @@
       ones in enable-dev-modules as it can contain modules not needed for development
       like demo content modules. -->
     <target name="enable-uat-modules">
-        <foreach list="${drupal.modules.uat}" param="module" target="enable-module" delimiter=" " />
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${drupal.modules.uat}</param>
+        </drush>
     </target>
 
     <target name="purge-rdf-content">

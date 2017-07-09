@@ -9,7 +9,7 @@ third_party_settings:
     rdf_type: 'http://joinup.eu/policy-domain'
     mapping:
       uuid:
-        value: 
+        value:
           predicate: ''
           format: ''
       vid:
@@ -17,7 +17,7 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
           format: resource
       langcode:
-        value: 
+        value:
           predicate: ''
           format: ''
       name:
@@ -29,11 +29,11 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#definition'
           format: t_literal
       format:
-        value: 
+        value:
           predicate: ''
           format: ''
       weight:
-        value: 
+        value:
           predicate: ''
           format: ''
       parent:
@@ -41,11 +41,11 @@ third_party_settings:
           predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
           format: resource
       changed:
-        value: 
+        value:
           predicate: ''
           format: ''
       default_langcode:
-        value: 
+        value:
           predicate: ''
           format: ''
       path: {  }

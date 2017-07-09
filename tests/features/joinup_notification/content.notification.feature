@@ -34,7 +34,7 @@ Feature: Content notification system
 
   Scenario: Send emails on content update.
     When I am logged in as "Jerrard Verity"
-    And I go to the "Infrared long-range communications" news page
+    And I go to the "Infrared long-range communications" news
     And I click "Edit"
     And I enter "Prototype built by a young Italian student." in the Content wysiwyg editor
     And I press "Save new draft"
@@ -59,7 +59,7 @@ Feature: Content notification system
 
   Scenario: Send emails on content delete:
     Given I am logged in as "Jerrard Verity"
-    When I go to the "Infrared long-range communications" news page
+    When I go to the "Infrared long-range communications" news
     And I click "Delete"
     And I press "Delete"
     Then 1 e-mail should have been sent
