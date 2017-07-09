@@ -6,7 +6,7 @@ label: 'Community content on Publish'
 description: 'Template id 1, 2'
 text:
   -
-    value: "<p>Joinup: Content has been created</p>"
+    value: "<p>Joinup: Content has been published</p>"
     format: content_editor
   -
     value: "<p>@actor:full_name has published the new @entity:bundle - \"@entity:title\" in the @group:bundle: \"@group:title\".</p><p>You can access the new content at the following link: @entity:url</p>"

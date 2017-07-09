@@ -3,12 +3,12 @@ create:
     propose:
       roles:
         moderator:
-          - cc_transitin_propose
+          - cc_transition_propose
       og_roles:
         rdf_entity-collection-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
         rdf_entity-solution-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
     publish:
       og_roles:
         rdf_entity-collection-administrator:
@@ -19,12 +19,12 @@ create:
     propose:
       roles:
         moderator:
-          - cc_transitin_propose
+          - cc_transition_propose
       og_roles:
         rdf_entity-collection-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
         rdf_entity-solution-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
     publish:
       og_roles:
         rdf_entity-collection-administrator:
@@ -36,21 +36,21 @@ update:
     propose:
       roles:
         moderator:
-          - cc_transitin_propose
+          - cc_transition_propose
       og_roles:
         rdf_entity-collection-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
         rdf_entity-solution-administrator:
-          - cc_transitin_propose
+          - cc_transition_propose
     propose_from_reported:
       roles:
         moderator:
-          - cc_transition_propose_from_reported
+          - cc_transition_propose_reported
       og_roles:
         rdf_entity-collection-administrator:
-          - cc_transition_propose_from_reported
+          - cc_transition_propose_reported
         rdf_entity-solution-administrator:
-          - cc_transition_propose_from_reported
+          - cc_transition_propose_reported
     publish:
       og_roles:
         rdf_entity-collection-administrator:
@@ -59,7 +59,7 @@ update:
           - cc_transition_publish
     approve_proposed:
       owner:
-        - cc_pre_approve_proposed
+        - cc_transition_approve_proposed
     report:
       owner:
         - cc_transition_report
