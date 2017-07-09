@@ -833,6 +833,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Assert that the text is visible in a given region.
+   *
    * @Then I (should )see the text :text in the :region region
    */
   public function assertTextVisible($text, $region) {
