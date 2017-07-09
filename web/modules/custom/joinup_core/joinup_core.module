@@ -706,6 +706,7 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
         'request_changes',
         'report',
         'reject_deletion',
+        'request_deletion',
       ],
       'node:post_moderated' => [
         'report',
