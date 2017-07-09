@@ -833,6 +833,20 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * @Then I (should )see the text :text in the :region region
+   */
+  public function assertTextVisible($text, $region) {
+    $actual = $this->getRegion($region)->getText();
+    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the region "%s".', $text, $region);
+
+    if (!(bool) preg_match($regex, $actual)) {
+      throw new \Exception($message);
+    }
+  }
+
+  /**
    * Checks that the given tiles are found in the correct order.
    *
    * Table format:

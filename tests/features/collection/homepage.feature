@@ -5,9 +5,19 @@ Feature: Collection homepage
   I need to be able see all content related to a collection on the collection homepage
 
   Background:
+    Given users:
+      | Username |
+      | Frodo    |
+      | Boromir  |
+      | Legoloas |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
+    Given the following solution:
+      | title             | Bilbo's book          |
+      | description       | Bilbo's autobiography |
+      | elibrary creation | members               |
+      | state             | validated             |
     And the following collection:
       | title             | Middle earth daily               |
       | description       | Middle earth daily               |
@@ -17,13 +27,24 @@ Feature: Collection homepage
       | elibrary creation | members                          |
       | state             | validated                        |
       | policy domain     | Employment and Support Allowance |
+      | affiliates        | Bilbo's book                     |
+    And the following collection user memberships:
+      | collection         | user     |
+      | Middle earth daily | Frodo    |
+      | Middle earth daily | Boromir  |
+      | Middle earth daily | Legoloas |
     And news content:
-      | title                                             | body                | policy domain     | collection         | state     |
-      | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated |
-      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated |
+      | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
+      | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:00am | 2017-7-5 |
+      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated | 2014-10-17 8:00am | 2017-7-5 |
     And event content:
-      | title                                    | short title      | body                                      | collection         | start date          | end date            | state     | policy domain     |
-      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange |
+      | title                                    | short title      | body                                      | collection         | start date          | end date            | state     | policy domain     | created           | changed  |
+      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2014-10-17 8:00am | 2017-7-5 |
+  Scenario: The collection homepage shows the collection metrics.
+    When I go to the homepage of the "Middle earth daily" collection
+    Then I see the text "3 Members" in the "Header" region
+    Then I see the text "1 Solution" in the "Header" region
+    Then I see the days passed since "2017-07-05"
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
