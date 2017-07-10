@@ -31,6 +31,13 @@ create:
           - cc_transition_publish
         rdf_entity-solution-administrator:
           - cc_transition_publish
+  'node:discussion:post_moderated':
+    publish:
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
 update:
   'node:pre_moderated':
     propose:
