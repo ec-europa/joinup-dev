@@ -16,5 +16,5 @@ Feature: Plus button
     
     Then I am an anonymous user
     And I go to the homepage of the "Simple solutions" solution
-    # Plus button is shown.
+    # Plus button is not shown.
     Then I should not see the "Plus button menu" region
