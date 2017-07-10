@@ -22,10 +22,9 @@ Feature: User profile
     And I fill in "Country of origin" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
-    Then I click 'View'
-    And I should see the text "Leoke"
-    And I should see the text "di ser Piero da Vinci"
+    And I should see the heading "Leoke di ser Piero da Vinci" in the "Header" region
     And I should see the text "Supplier exchange"
+    And I should see the link "Edit"
     # @todo The nationality will be rendered as flag image.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
