@@ -203,7 +203,7 @@ display:
           fields: {  }
           plugin_id: search_api_fulltext
       sorts: {  }
-      title: Search
+      title: ''
       header: {  }
       footer: {  }
       empty:
@@ -216,11 +216,12 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No content found for your search.'
+          content: '<div class="page__content">No content found for your search.</div>'
           plugin_id: text_custom
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      css_class: ''
     cache_metadata:
       max-age: -1
       contexts:
