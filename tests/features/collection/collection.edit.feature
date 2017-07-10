@@ -16,9 +16,9 @@ Scenario: Edit a collection
   When I go to the homepage of the "Überwaldean Land Eels" collection
   Then I should see the contextual link "Edit" in the Header region
   When I click the contextual link "Edit" in the Header region
-  Then the following fields should be present "Title, Description, Abstract, Policy domain, Spatial coverage, Affiliates, Closed collection, eLibrary creation, Moderated, Motivation"
+  Then the following fields should be present "Title, Description, Abstract, Policy domain, Spatial coverage, Closed collection, eLibrary creation, Moderated, Motivation"
   And the following field widgets should be present "Contact information, Owner"
-  And the following fields should not be present "Langcode, Translation"
+  And the following fields should not be present "Langcode, Translation, Affiliates"
   And I fill in "Title" with "Überwaldean Sea Eels"
   And I press the "Save as draft" button
   Then I should see the heading "Überwaldean Sea Eels"
