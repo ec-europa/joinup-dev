@@ -9,6 +9,7 @@ dependencies:
   - file_url
   - joinup_core
   - joinup_user
+  - language
   - link
   - rdf_entity
   - text
