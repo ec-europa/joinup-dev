@@ -189,6 +189,9 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
         '#url' => $licence_url,
       ];
     }
+    if (empty($links)) {
+      return [];
+    }
 
     // Render the links as an unordered list, styled as buttons.
     $build = [

@@ -108,3 +108,32 @@
     &:-ms-input-placeholder
       color: #fff
 
+.search-bar__block
+  margin: 20px auto
+  position: relative
+  max-width: 570px
+  +breakpoint(tablet)
+    margin-bottom: 40px
+    margin-top: 40px
+  .search-bar__button-container
+    left: 20px
+    padding: 0
+    width: 25px
+    height: 25px
+    position: relative
+    +border-radius(50%)
+    +centered($horizontal: false, $vertical: true)
+    +breakpoint(tablet)
+      left: -10px
+  .search-bar__button
+    width: 25px
+    height: 25px
+    padding: 0
+    +centered
+    z-index: 10
+    background: none
+    font-size: 0
+    border: none
+    cursor: pointer
+  label
+    display: none

@@ -28,14 +28,14 @@ Feature: "Add custom page" visibility options.
     # and help text.
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Code Camp" collection
-    Then I should not see the link "Add custom page" in the "Plus button menu"
+    Then I should not see the "Plus button menu" region
     And I should not see the link "Add a new page" in the "Left sidebar"
     And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
 
     # An anonymous user should also not see the links and help text.
     When I am an anonymous user
     And I go to the homepage of the "Code Camp" collection
-    Then I should not see the link "Add custom page" in the "Plus button menu"
+    Then I should not see the "Plus button menu" region
     And I should not see the link "Add a new page" in the "Left sidebar"
     And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
 
