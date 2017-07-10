@@ -1,6 +1,6 @@
 site_id: '177'
-url_http: 'http://joinup.acc.ne-dev.eu/'
-url_https: 'https://joinup.acc.ne-dev.eu/'
+url_http: 'https://webgate.ec.europa.eu/fpfis/piwik/'
+url_https: 'https://webgate.ec.europa.eu/fpfis/piwik/'
 domain_mode: 0
 visibility:
   request_path_mode: 0
