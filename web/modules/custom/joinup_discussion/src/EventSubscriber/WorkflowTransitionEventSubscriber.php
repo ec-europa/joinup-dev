@@ -27,7 +27,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
    *   The state change event.
    */
   public function closeComments(WorkflowTransitionEvent $event) {
-    $event->getEntity()->get('field_comments')->status = CommentItemInterface::CLOSED;
+    $event->getEntity()->get('field_replies')->status = CommentItemInterface::CLOSED;
   }
 
 }

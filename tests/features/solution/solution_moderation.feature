@@ -11,15 +11,13 @@ Feature: Solution moderation
       | logo  | logo.png                      |
       | state | validated                     |
 
-    When I am logged in as an "authenticated user"
-    And I go to the homepage
-    And I click "Propose solution"
+    When I am logged in as a member of the "Collection propose state test" collection
+    And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist, Request deletion"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the homepage
-    And I click "Propose solution"
+    And I go to the add solution form of the "Collection propose state test" collection
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request changes, Blacklist, Request deletion"
 
@@ -51,8 +49,8 @@ Feature: Solution moderation
       | Azure Ship                 | Azure ship                 | logo.png | banner.jpg | Angelos Agathe | Placide             | draft            |
       | The Last Illusion          | The Last Illusion          | logo.png | banner.jpg | Angelos Agathe | Placide             | proposed         |
       | Rose of Doors              | Rose of Doors              | logo.png | banner.jpg | Angelos Agathe | Placide             | validated        |
-      | The Ice's Secrets          | The Ice's Secrets          | logo.png | banner.jpg | Angelos Agathe | Placide             | deletion_request |
-      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs_update     |
+      | The Ice's Secrets          | The Ice's Secrets          | logo.png | banner.jpg | Angelos Agathe | Placide             | deletion request |
+      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs update     |
       | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted      |
     And the following solution user memberships:
       | solution                   | user            | roles       |

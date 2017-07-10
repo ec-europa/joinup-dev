@@ -37,7 +37,6 @@ third_party_settings:
       children:
         - group_main
         - group_description
-        - group_categorisation
       parent_name: ''
       weight: 0
       label: General
@@ -71,7 +70,6 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_ar_contact_information
-        - field_ar_affiliates
         - field_spatial_coverage
         - field_ar_closed
         - field_ar_elibrary_creation
@@ -110,15 +108,6 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
-  field_ar_affiliates:
-    weight: 14
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_ar_banner:
     type: image_image
     weight: 12
@@ -142,10 +131,10 @@ content:
       label_singular: 'contact information'
       label_plural: 'contact information'
       allow_new: true
-      allow_existing: true
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_existing: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -209,7 +198,7 @@ content:
     region: content
   field_ar_state:
     type: state_machine_buttons
-    weight: 16
+    weight: 4
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -237,7 +226,24 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  transition_motivation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  translation:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   current_workflow_state: true
+  field_ar_affiliates: true
   field_collection_content: true
   uid: true

@@ -8,10 +8,14 @@ source:
   plugin: news
   track_changes: true
 process:
+  nid: nid
   title: title
+  field_news_headline: title
   created: created
   changed: changed
-  body/value: body
+  body/value:
+    plugin: file_inline
+    source: body
   body/format:
     plugin: default_value
     default_value: content_editor
@@ -28,13 +32,12 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # Revisit this mapping in ISAICP-3068.
-  field_state:
-    plugin: default_value
-    default_value: validated
-
+  field_state: state
+  field_attachment:
+    plugin: migration
+    migration: file:news_attachment
+    source: fids
+    no_stub: true
   og_audience:
     plugin: migration
     source: collection
@@ -45,3 +48,5 @@ destination:
 migration_dependencies:
   required:
     - collection
+    - file:news_attachment
+    - file:inline

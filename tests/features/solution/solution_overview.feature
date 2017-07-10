@@ -19,6 +19,10 @@ Feature: Solutions Overview
     Given users:
       | Username      | E-mail                            |
       | Madam Shirley | i.dont.see.the.future@example.com |
+    And the following collection:
+      | title | Pikachu, I choose you |
+      | logo  | logo.png              |
+      | state | validated             |
     And solutions:
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |
@@ -28,9 +32,6 @@ Feature: Solutions Overview
     And the following owner:
       | name              | type                    |
       | NonProfit example | Non-Profit Organisation |
-    And the following contact:
-      | email | foo@bar.com         |
-      | name  | Information example |
     # Check that visiting as an anonymous does not create cache for all users.
     When I am an anonymous user
     And I am on the homepage
@@ -44,7 +45,7 @@ Feature: Solutions Overview
     Then I should see the "Non electronic health" tile
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
-    And I should see the "Uniting Europe" tile
+    And I should not see the "Uniting Europe" tile
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
@@ -69,25 +70,21 @@ Feature: Solutions Overview
     Then I should see the heading "Non electronic health"
 
     # Add new solution as a moderator to directly publish it.
-    Given I am logged in as a moderator
-    When I am on the homepage
-    And I click "Propose solution"
-    Then I should see the heading "Propose solution"
+    And I am logged in as a moderator
+    When I go to the add solution form of the "Pikachu, I choose you" collection
+    Then I should see the heading "Add Solution"
     When I fill in the following:
       | Title            | Colonies in Earth                                                      |
       | Description      | Some space mumbo jumbo description.                                    |
       | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name             | Ambrosio Morison                                                       |
+      | E-mail address   | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    # The "Documentation" file field has an hidden label that we can target.
-    And I attach the file "text.pdf" to "File"
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Information example"
-    And I press "Add contact information"
+    And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NonProfit example"

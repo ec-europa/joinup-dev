@@ -101,24 +101,41 @@
             </then>
         </if>
         <if>
-            <available file="${solr.core.dir}" type="dir" property="solr.core.dir.available" />
+            <available file="${solr.core.published.dir}" type="dir" property="solr.core.published.dir.available" />
             <then>
-                <echo message="A Solr core has already been configured at ${solr.core.dir}. Skipping." />
+                <echo message="A Solr core has already been configured at ${solr.core.published.dir}. Skipping." />
             </then>
             <else>
                 <!-- Create the Solr core. -->
                 <exec dir="${solr.dir}"
-                      command="./bin/solr create_core -c ${solr.core}"
+                      command="./bin/solr create_core -c ${solr.core.published}"
                       checkreturn="true"
                       passthru="true"/>
                 <!-- Copy the configuration. -->
-                <copy todir="${solr.core.dir}/conf" overwrite="true">
+                <copy todir="${solr.core.published.dir}/conf" overwrite="true">
                     <fileset dir="${solr.config.dir}" />
                 </copy>
-                <!-- Restart Solr so our configuration changes are picked up. -->
-                <phingcall target="restart-apache-solr" />
             </else>
         </if>
+        <if>
+            <available file="${solr.core.unpublished.dir}" type="dir" property="solr.core.unpublished.dir.available" />
+            <then>
+                <echo message="A Solr core has already been configured at ${solr.core.unpublished.dir}. Skipping." />
+            </then>
+            <else>
+                <!-- Create the Solr core. -->
+                <exec dir="${solr.dir}"
+                      command="./bin/solr create_core -c ${solr.core.unpublished}"
+                      checkreturn="true"
+                      passthru="true"/>
+                <!-- Copy the configuration. -->
+                <copy todir="${solr.core.unpublished.dir}/conf" overwrite="true">
+                    <fileset dir="${solr.config.dir}" />
+                </copy>
+            </else>
+        </if>
+        <!-- Restart Solr so our configuration changes are picked up. -->
+        <phingcall target="restart-apache-solr" />
     </target>
 
     <target

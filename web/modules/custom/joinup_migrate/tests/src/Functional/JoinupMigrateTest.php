@@ -6,12 +6,14 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 
 /**
  * Tests Joinup migration.
@@ -20,6 +22,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterface {
 
+  use EntityUtilityTrait;
   use RdfDatabaseConnectionTrait;
 
   /**
@@ -54,13 +57,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected $legacyDb;
 
   /**
-   * Legacy site webroot.
-   *
-   * @var string
-   */
-  protected $legacyWebroot;
-
-  /**
    * Migration plugin manager.
    *
    * @var \Drupal\migrate\Plugin\MigrationPluginManager
@@ -71,11 +67,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->legacyWebroot = rtrim(getenv('SIMPLETEST_LEGACY_WEBROOT'), '/');
-
-    // Check if we're able to access the legacy site files.
-    FileUtility::checkLegacySiteWebRoot($this->legacyWebroot);
-
     $this->setUpSparql();
     $this->setUpLegacyDb();
 
@@ -87,7 +78,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $this->setUpMigration();
 
     // Run test migrations.
-    $this->runMigrations();
+    $this->executeMigrations();
   }
 
   /**
@@ -115,18 +106,36 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   /**
    * Runs all available migrations.
    */
-  protected function runMigrations() {
+  protected function executeMigrations() {
     foreach ($this->manager->createInstances([]) as $id => $migration) {
-      // Force running the migration, even the prior migrations were incomplete.
-      $migration->set('requirements', []);
-      try {
-        (new MigrateExecutable($migration, $this))->import();
-      }
-      catch (\Exception $e) {
-        $class = get_class($e);
-        $this->display("$class: {$e->getMessage()} ({$e->getFile()}, {$e->getLine()})", 'error');
+      $this->executeMigration($migration, $id);
+    }
+  }
+
+  /**
+   * Executes a single migration.
+   *
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration to execute.
+   * @param string $migration_id
+   *   The migration ID (not used, just an artifact of array_walk()).
+   * @param bool $execute_dependencies
+   *   (optional) Whether to execute or not the dependent migrations. Defaults
+   *   to FALSE.
+   */
+  protected function executeMigration(MigrationInterface $migration, $migration_id, $execute_dependencies = FALSE) {
+    if ($execute_dependencies) {
+      $dependencies = $migration->getMigrationDependencies();
+      $required_ids = isset($dependencies['required']) ? $dependencies['required'] : NULL;
+      if ($required_ids) {
+        $required_migrations = $this->manager->createInstances($required_ids);
+        array_walk($required_migrations, [$this, 'executeMigration'], $execute_dependencies);
       }
     }
+    // Force running the migration, even the prior migrations were incomplete.
+    $migration->set('requirements', []);
+
+    (new MigrateExecutable($migration, $this))->import();
   }
 
   /**
@@ -164,9 +173,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   protected function setUpMigration() {
     // Set the legacy site webroot.
-    if (!$legacy_webroot = getenv('SIMPLETEST_LEGACY_WEBROOT')) {
-      throw new \Exception('The legacy site webroot is not set. You must provide a SIMPLETEST_LEGACY_WEBROOT environment variable.');
-    }
+    $public_directory = $this->container->get('stream_wrapper.public')->getDirectoryPath();
+    $legacy_site_files = "$public_directory/joinup_migrate/files";
 
     // Ensure settings.php settings.
     $settings['settings'] = [
@@ -174,8 +182,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
         'value' => 'test',
         'required' => TRUE,
       ],
-      'joinup_migrate.source.root' => (object) [
-        'value' => $legacy_webroot,
+      'joinup_migrate.source.files' => (object) [
+        'value' => $legacy_site_files,
         'required' => TRUE,
       ],
     ];
@@ -196,7 +204,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    */
   public function tearDown() {
     // Rollback migrations to cleanup RDF data.
-    foreach ($this->manager->createInstances(static::$rdfMigrations) as $id => $migration) {
+    foreach ($this->manager->createInstances(static::$rollingBackMigrations) as $id => $migration) {
       try {
         (new MigrateExecutable($migration, $this))->rollback();
       }
@@ -284,59 +292,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   }
 
   /**
-   * Returns an entity by its label.
-   *
-   * Being used for testing, this method assumes that, within an entity type,
-   * all entities have unique labels.
-   *
-   * @param string $entity_type_id
-   *   The entity type ID.
-   * @param string $label
-   *   The entity label.
-   * @param string|null $bundle
-   *   (optional) The search can be restricted to a specific bundle.
-   *
-   * @return \Drupal\Core\Entity\ContentEntityInterface
-   *   The content entity.
-   *
-   * @throws \InvalidArgumentException
-   *   When the entity type lacks a label key.
-   * @throws \Exception
-   *   When the entity with the specified label was not found.
-   */
-  protected function loadEntityByLabel($entity_type_id, $label, $bundle = NULL) {
-    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
-    $entity_type_manager = $this->container->get('entity_type.manager');
-    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
-    if (!$entity_type->hasKey('label')) {
-      throw new \InvalidArgumentException("Entity type '$entity_type_id' doesn't have a label key.");
-    }
-
-    $label_key = $entity_type->getKey('label');
-    $conditions = [$label_key => $label];
-
-    if ($bundle) {
-      if (!$entity_type->hasKey('bundle')) {
-        throw new \InvalidArgumentException("A bundle was passed but entity type '$entity_type_id' doesn't have a bundle key.");
-      }
-      $bundle_key = $entity_type->getKey('bundle');
-      $conditions[$bundle_key] = $bundle;
-    }
-
-    $storage = $entity_type_manager->getStorage($entity_type_id);
-    if (!$entities = $storage->loadByProperties($conditions)) {
-      $message = "No $entity_type_id entity";
-      if ($bundle) {
-        $message .= " ($bundle_key '$bundle') ";
-      }
-      $message .= "entity with $label_key '$label' was found.";
-      throw new \Exception($message);
-    }
-
-    return reset($entities);
-  }
-
-  /**
    * Asserts that an entity reference field refers.
    *
    * @param string[] $expected_labels
@@ -374,23 +329,47 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
    *   A list of expected keywords.
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
+   * @param string $field_name
+   *   (optional) If passed, allows a field other than 'field_keywords'.
    *
    * @throws \InvalidArgumentException
-   *   When the entity is missing the 'field_keywords' field.
+   *   When the entity is missing the field.
    */
-  protected function assertKeywords(array $expected_keywords, ContentEntityInterface $entity) {
-    if (!$entity->hasField('field_keywords')) {
-      throw new \InvalidArgumentException("{$entity->getEntityType()->getLabel()} entity doesn't have a 'field_keywords' field.");
+  protected function assertKeywords(array $expected_keywords, ContentEntityInterface $entity, $field_name = 'field_keywords') {
+    if (!$entity->hasField($field_name)) {
+      throw new \InvalidArgumentException("{$entity->getEntityType()->getLabel()} entity doesn't have a '$field_name' field.");
     }
 
     $keywords = array_map(function (array $item) {
       return $item['value'];
-    }, $entity->get('field_keywords')->getValue());
+    }, $entity->get($field_name)->getValue());
 
     sort($expected_keywords);
     sort($keywords);
 
     $this->assertSame($expected_keywords, $keywords);
+  }
+
+  /**
+   * Asserts that an entity has a list od certain redirects.
+   *
+   * @param string[] $expected_sources
+   *   A list of expected source redirects.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
+   */
+  protected function assertRedirects(array $expected_sources, ContentEntityInterface $entity) {
+    /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
+    $redirect_repository = \Drupal::service('redirect.repository');
+    $redirects = $redirect_repository->findByDestinationUri('internal:/' . $entity->toUrl()->getInternalPath());
+    $actual_sources = array_map(function (Redirect $redirect) {
+      return $redirect->get('redirect_source')->path;
+    }, $redirects);
+
+    sort($expected_sources);
+    sort($actual_sources);
+
+    $this->assertSame($expected_sources, $actual_sources);
   }
 
   /**
@@ -456,11 +435,11 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   ];
 
   /**
-   * Migrations that are creating RDF objects.
+   * Migrations that are creating RDF objects or are writing in the source.
    *
    * @var string[]
    */
-  protected static $rdfMigrations = [
+  protected static $rollingBackMigrations = [
     'collection',
     'contact',
     'distribution',
@@ -469,6 +448,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'policy_domain',
     'release',
     'solution',
+    'mapping',
+    'prepare',
   ];
 
 }

@@ -11,8 +11,6 @@ use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
- *
- * @package src\Traits
  */
 trait OgTrait {
 
@@ -25,12 +23,17 @@ trait OgTrait {
    *   The organic group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of OgRoles to be passed to the membership.
+   * @param string $state
+   *   Optional state to assign to the membership. Can be one of:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = []) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], $state = NULL) {
     if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
       throw new \Exception("The {$group->label()} is not a group.");
     }
@@ -41,6 +44,9 @@ trait OgTrait {
       $membership = OgMembership::create()
         ->setUser($user)
         ->setGroup($group);
+    }
+    if (!empty($state)) {
+      $membership->setState($state);
     }
 
     $membership->setRoles($roles);

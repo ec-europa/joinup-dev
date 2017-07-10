@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Row;
+
 /**
  * Migrates comments.
  *
@@ -42,6 +44,9 @@ class Comment extends JoinupSqlBase {
       'mail' => $this->t('Author mail'),
       'homepage' => $this->t('Author homepage'),
       'hostname' => $this->t('Hostname'),
+      'comment_type' => $this->t('Comment type'),
+      'field_name' => $this->t('Field name'),
+      'fids' => $this->t('Attached file IDs'),
     ];
   }
 
@@ -50,6 +55,25 @@ class Comment extends JoinupSqlBase {
    */
   public function query() {
     return $this->select('d8_comment', 'c')->fields('c');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    // Comment attachments, if case.
+    if ($row->getSourceProperty('type') === 'project_issue') {
+      $fids = $this->select('comment_upload', 'u')
+        ->fields('u', ['fid'])
+        ->condition('u.cid', $row->getSourceProperty('cid'))
+        ->execute()
+        ->fetchCol();
+      if ($fids) {
+        $row->setSourceProperty('fids', $fids);
+      }
+    }
+
+    return parent::prepareRow($row);
   }
 
 }

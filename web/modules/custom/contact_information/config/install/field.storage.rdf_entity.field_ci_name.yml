@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://www.w3.org/2006/vcard/ns#fn'
+      value:
+        predicate: 'http://www.w3.org/2006/vcard/ns#fn'
+        format: literal
 id: rdf_entity.field_ci_name
 field_name: field_ci_name
 entity_type: rdf_entity
@@ -18,7 +20,7 @@ settings:
 module: core
 locked: false
 cardinality: -1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

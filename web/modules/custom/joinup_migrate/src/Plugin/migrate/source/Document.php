@@ -16,6 +16,8 @@ class Document extends NodeBase {
   use CountryTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use LicenceTrait;
+  use StateTrait;
 
   /**
    * {@inheritdoc}
@@ -35,6 +37,7 @@ class Document extends NodeBase {
       'keywords' => $this->t('Keywords'),
       'country' => $this->t('Spatial coverage'),
       'licence' => $this->t('Licence'),
+      'state' => $this->t('State'),
     ] + parent::fields();
   }
 
@@ -46,7 +49,6 @@ class Document extends NodeBase {
       'document_type',
       'publication_date',
       'original_url',
-      'file_path',
       'policy_context',
       'desc_target_users_groups',
       'desc_implementation',
@@ -62,6 +64,7 @@ class Document extends NodeBase {
       'target_users_or_group',
       'factsheet_topic',
       'presentation_nature_of_doc',
+      'state',
     ]);
   }
 
@@ -71,9 +74,20 @@ class Document extends NodeBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
+    $document_type = $row->getSourceProperty('document_type');
 
     // Resolve 'field_file'.
-    $this->setFileUrlTargetId($row, 'field_file', ['nid' => $nid], 'file_path', 'document_file', 'original_url');
+    $table = "d8_file_document_{$document_type}";
+    if ($this->getDatabase()->schema()->tableExists($table)) {
+      $file_source_id_values = $this->select($table)
+        ->fields($table, ['fid'])
+        ->condition("$table.nid", $nid)
+        ->execute()
+        ->fetchAll();
+      $file_migration = "file:document_{$document_type}";
+      $urls = $row->getSourceProperty('original_url') ? [$row->getSourceProperty('original_url')] : [];
+      $this->setFileUrlTargetId($row, 'field_file', $file_source_id_values, $file_migration, $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
+    }
 
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
@@ -113,6 +127,23 @@ class Document extends NodeBase {
       }
     }
     $row->setSourceProperty('body', trim($body));
+
+    // State.
+    $this->setState($row);
+
+    // Licence.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $licence = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The License of document vocabulary vid is 56.
+      ->condition('td.vid', 56)
+      ->execute()
+      ->fetchField();
+    $row->setSourceProperty('licence', $licence ?: NULL);
+    $this->setLicence($row, 'document');
 
     return parent::prepareRow($row);
   }

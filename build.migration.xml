@@ -3,37 +3,60 @@
 <project name="Joinup migration" default="help">
     <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
 
+    <target name="disable-solr-index"
+        description="Disable immediate indexing in Solr index.">
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.published</param>
+            <param>options.index_directly 0</param>
+        </drush>
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.unpublished</param>
+            <param>options.index_directly 0</param>
+        </drush>
+    </target>
+
     <!-- Run the migration IDs specified in the configuration. -->
     <target name="run-migrations"
             description="Run the migrations."
-            depends="enable-migration-modules">
+            depends="enable-migration-modules, disable-solr-index">
         <echo message="Running migration IDs" />
-        <drush
-             command="cset"
-             assume="yes"
-             root="${website.drupal.dir}"
-             bin="${drush.bin}"
-             verbose="${drush.verbose}">
-            <param>search_api.index.collections</param>
-            <param>options.index_directly 0</param>
-        </drush>
         <drush
             command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${migration.ids}</param>
+            <option name="all" />
             <option name="feedback" value="1000" />
             <option name="force" />
+            <option name="timestamp" />
         </drush>
         <drush
-             command="cset"
-             assume="yes"
-             root="${website.drupal.dir}"
-             bin="${drush.bin}"
-             verbose="${drush.verbose}">
-            <param>search_api.index.collections</param>
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.published</param>
+            <param>options.index_directly 1</param>
+        </drush>
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.unpublished</param>
             <param>options.index_directly 1</param>
         </drush>
         <drush
@@ -43,13 +66,6 @@
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
             <option name="batch-size" value="500" />
-        </drush>
-        <drush
-            command="migrate-report-generate"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
         </drush>
     </target>
 
@@ -82,7 +98,7 @@
  'init_commands' => [${line.separator}
    'set_timezone_to_utc' => &quot;SET time_zone='+00:00';&quot;,${line.separator}
  ],${line.separator}];${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.files'] = '${migration.source.files}';${line.separator}" />
         <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
     </target>
 

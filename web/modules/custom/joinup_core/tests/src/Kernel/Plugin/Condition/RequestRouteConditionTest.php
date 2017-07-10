@@ -19,7 +19,12 @@ class RequestRouteConditionTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['system', 'joinup_core', 'og'];
+  public static $modules = [
+    'joinup_core',
+    'og',
+    'piwik_reporting_api',
+    'system',
+  ];
 
   /**
    * The condition plugin manager.

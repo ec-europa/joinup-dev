@@ -129,7 +129,6 @@
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
-                legacyWebroot="${phpunit.migrate.legacy_site.webroot}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -201,7 +200,14 @@
 
     <!-- Enable development modules. -->
     <target name="enable-dev-modules">
-        <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${drupal.modules.dev}</param>
+        </drush>
     </target>
 
     <!-- Enable a module. -->
@@ -223,6 +229,44 @@
         </composer>
     </target>
 
+    <target name="redirect-outgoing-email">
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['system.mail']['interface']['default'] = 'devel_mail_log';" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
+
+    <!-- Create services.yml by copying the default file. -->
+    <target name="create-services-yml">
+        <if>
+            <not>
+                <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            </not>
+            <then>
+                <copy file="${website.services.yml.default}" tofile="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Make services.yml writeable. -->
+    <target
+        name="writable-services-yml"
+        depends="create-services-yml">
+        <if>
+            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
@@ -231,12 +275,12 @@
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, enable-dev-modules" />
+        depends="enable-dev-settings, enable-dev-modules, redirect-outgoing-email" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users" />
+        depends="create-demo-users, redirect-outgoing-email" />
 
     <target
         name="install-dev"

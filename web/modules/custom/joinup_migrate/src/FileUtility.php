@@ -2,52 +2,32 @@
 
 namespace Drupal\joinup_migrate;
 
-use Drupal\Core\Http\ClientFactory;
-use GuzzleHttp\HandlerStack;
+use Drupal\Core\Site\Settings;
+use Drupal\migrate\MigrateException;
 
 /**
- * Provides utility methods for files import.
+ * File utility methods.
  */
 class FileUtility {
 
   /**
-   * Checks that the  legacy site webroot is available.
+   * Gets the legacy site files directory.
    *
-   * @param string $webroot
-   *   The legacy site webroot.
+   * @return string
+   *   The legacy site files directory
    *
-   * @throws \Exception
-   *   When the legacy site webroot is not defined or doesn't exist or is not
-   *   readable.
+   * @throws \Drupal\migrate\MigrateException
+   *   When the site files directory was not configured.
    */
-  public static function checkLegacySiteWebRoot($webroot) {
-    if (empty($webroot)) {
-      throw new \Exception('The web root of the D6 site is not configured. Please run `phing setup-migration`.');
+  public static function getLegacySiteFiles() {
+    $files_dir = Settings::get('joinup_migrate.source.files');
+    $files_dir = rtrim($files_dir, '/');
+
+    if (empty($files_dir)) {
+      throw new MigrateException("Setting 'joinup_migrate.source.files' must be configured in settings.php");
     }
 
-    $files = "$webroot/sites/default/files";
-    $valid = is_dir($files) && is_readable($files);
-    if (!$valid && !is_dir($files)) {
-      // It might be a remote location, accessible via HTTP.
-      $options = ['http_errors' => FALSE];
-      // We call directly the Guzzle client class because the container might
-      // not be in place yet.
-      $http_client_factory = new ClientFactory(HandlerStack::create());
-      $http_client = $http_client_factory->fromOptions();
-      // Do three tries to avoid false positives.
-      for ($i = 0; $i < 3; $i++) {
-        // logo_en.gif is well-known file used in the site.
-        $response = $http_client->request('HEAD', "$files/logo_en.gif", $options);
-        if ($response->getStatusCode() === 200) {
-          $valid = TRUE;
-          break;
-        }
-      }
-    }
-
-    if (!$valid) {
-      throw new \Exception("The web root of the D6 site '$files' doesn't exist or is not readable.");
-    }
+    return $files_dir;
   }
 
 }

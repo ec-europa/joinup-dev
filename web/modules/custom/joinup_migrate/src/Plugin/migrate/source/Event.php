@@ -14,7 +14,14 @@ use Drupal\migrate\Row;
  */
 class Event extends NodeBase {
 
+  use CountryTrait;
   use KeywordsTrait;
+  use StateTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $uriProperties = ['uri', 'website'];
 
   /**
    * {@inheritdoc}
@@ -28,6 +35,10 @@ class Event extends NodeBase {
       'website' => $this->t('Website'),
       'mail' => $this->t('Contact mail'),
       'agenda' => $this->t('Agenda'),
+      'scope' => $this->t('Scope'),
+      'organisation_type' => $this->t('Organisation type'),
+      'state' => $this->t('State'),
+      'file_id' => $this->t('Logo ID'),
     ] + parent::fields();
   }
 
@@ -46,6 +57,8 @@ class Event extends NodeBase {
       'website',
       'mail',
       'agenda',
+      'state',
+      'file_id',
     ]);
   }
 
@@ -81,7 +94,59 @@ class Event extends NodeBase {
     // Keywords.
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
-    return parent::prepareRow($row);
+    // Spatial coverage.
+    $row->setSourceProperty('country', $this->getCountries([$vid]));
+
+    // Scope.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $scope = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The scope vocabulary vid is 45.
+      ->condition('td.vid', 45)
+      ->orderBy('td.name', 'ASC')
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('scope', $scope);
+
+    // Organisation type.
+    $query = $this->select('term_node', 'tn');
+    $query->join('term_data', 'td', 'tn.tid = td.tid');
+    $organisation_type = $query
+      ->fields('td', ['name'])
+      ->condition('tn.nid', $nid)
+      ->condition('tn.vid', $vid)
+      // The organisation type vocabulary vid is 63.
+      ->condition('td.vid', 63)
+      ->execute()
+      ->fetchField();
+    $row->setSourceProperty('organisation_type', $organisation_type ?: NULL);
+
+    // State.
+    $this->setState($row);
+
+    // Attachments.
+    $fids = $this->select('content_field_event_documentation', 'a')
+      ->fields('a', ['field_event_documentation_fid'])
+      ->condition('a.vid', $row->getSourceProperty('vid'))
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('fids', $fids);
+
+    // Save the initial website value, before is validated by the parent method,
+    // in order to compare it, later, with the parsed value.
+    $website = $row->getSourceProperty('website');
+
+    $return = parent::prepareRow($row);
+
+    // If the website URL is malformed, log a message entry.
+    if (!$row->getSourceProperty('website') && $website) {
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Malformed website URL ''");
+    }
+
+    return $return;
   }
 
   /**

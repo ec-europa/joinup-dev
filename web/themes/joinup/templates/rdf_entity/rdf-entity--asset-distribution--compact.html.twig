@@ -20,25 +20,22 @@
 {% endif %}
     <div class="timeline__listing-item">
       <div class="timeline__listing-title">
-        {{ content.field_ad_access_url }}
+        {{ label }}
       </div>
       <div class="timeline__listing-details details">
-        <div class="details__element">
-          <div class="value gray">{{ content.field_ad_file_size }}</div>
-        </div>
-        <div class="details__element hide--phone">
-          <div class="value bold underline">{{ label }}</div>
-        </div>
+        {% if content.field_ad_file_size|render %}
+          <div class="details__element">
+            <div class="value gray">{{ content.field_ad_file_size }}</div>
+          </div>
+        {% endif %}
         <div class="details__element hide--phone">
           <div class="label gray">{{ 'licence:'|t }}</div>
-          <div class="value bold underline action-link">{{ content.field_ad_licence }}</div>
+          <div class="value bold underline action-link__wrapper action-link__wrapper--normal-case">{{ content.field_ad_licence }}</div>
         </div>
       </div>
       <div class="timeline__action-links action-link__wrapper right hide--phone">
         <a href="{{ url }}" class="action-link">{{ 'Details'|t }}</a>
-        {% if content.promoted_download %}
-          <a href="{{ content.promoted_download }}" class="action-link">{{ 'Download'|t }}</a>
-        {% endif %}
+        {{ content.field_ad_access_url }}
       </div>
     </div>
 {% if is_standalone %}

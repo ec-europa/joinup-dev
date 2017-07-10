@@ -14,8 +14,6 @@ use Drupal\user\Entity\Role;
 
 /**
  * Class NotificationSenderService.
- *
- * @package Drupal\joinup_notification
  */
 class NotificationSenderService {
 
@@ -115,7 +113,20 @@ class NotificationSenderService {
    * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
    */
   public function sendStateTransitionMessage(EntityInterface $entity, $role_id, array $template_ids) {
+    if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
+      return;
+    }
+
     $values = ['field_message_content' => $entity->id()];
+    // If the entity is a group content, append the group field to the values.
+    // If the message entity doesn't have the related field attached, the value
+    // will be simply skipped.
+    if ($this->groupTypeManager->isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
+      $parent = $this->relationManager->getParent($entity);
+      if ($parent !== NULL) {
+        $values += ['field_message_group' => $parent->id()];
+      }
+    }
     $this->sendMessageTemplateToRole($template_ids, $values, $role_id, $entity);
   }
 
@@ -199,23 +210,6 @@ class NotificationSenderService {
       return empty($user) ? NULL : $user->id();
     }, $memberships);
     return array_filter($user_ids);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents() {
-    $events = [];
-    $keys = [
-      'solution.validate.post_transition',
-      'solution.request_deletion.post_transition',
-    ];
-
-    foreach ($keys as $key) {
-      $events[$key][] = ['messageSender'];
-    }
-
-    return $events;
   }
 
 }

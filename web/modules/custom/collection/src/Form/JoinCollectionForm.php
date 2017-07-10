@@ -18,8 +18,6 @@ use Drupal\user\Entity\User;
 
 /**
  * A simple form with a button to join or leave a collection.
- *
- * @package Drupal\collection\Form
  */
 class JoinCollectionForm extends FormBase {
 

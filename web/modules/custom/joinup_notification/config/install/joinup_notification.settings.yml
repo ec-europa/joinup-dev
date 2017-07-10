@@ -6,6 +6,13 @@ transition_notifications:
     request_deletion:
       moderator:
         - rdf_entity_solution_request_del
+  asset_release:
+    validate:
+      rdf_entity-solution-facilitator:
+        - rdf_entity_release_update
+    update_published:
+      rdf_entity-solution-facilitator:
+        - rdf_entity_release_update
 delete_notifications:
   rdf_entity:
     solution:

@@ -74,8 +74,7 @@ Feature: Event moderation
     # Non-members should not be able to create events anymore.
     When I am logged in as "Salvador Thomas"
     And I go to the homepage of the "Wet Lords" collection
-    And I open the plus button menu
-    Then I should not see the link "Add event"
+    Then the plus button menu should be empty
 
   Scenario: Transit events from one state to another.
     When I am logged in as "Rosa Vaughn"
@@ -86,14 +85,18 @@ Feature: Event moderation
       | Short title | Rainbow of Worlds                     |
       | Description | This is going to be an amazing event. |
       | Location    | Worlds crossroad                      |
-    And I fill in "Start date" with the date "2018-08-30"
-    And I fill in "Start date" with the time "23:59:00"
+    And I fill the start date of the Date widget with "2018-08-30"
+    And I fill the start time of the Date widget with "23:59:00"
+    And I fill the end date of the Date widget with "2018-09-01"
+    And I fill the end time of the Date widget with "00:30:00"
     And I press "Save as draft"
     Then I should see the success message "Event Rainbow of Worlds has been created"
+    And I should see the text "30 August to 01 September 2018"
 
     # Publish the content.
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    And the following fields should be present "Motivation"
     When I fill in "Title" with "The Fire of the Nothing"
     And I press "Publish"
     Then I should see the heading "The Fire of the Nothing"
@@ -104,7 +107,7 @@ Feature: Event moderation
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
-    And the current workflow state should be "Validated"
+    And the current workflow state should be "Published"
     Then I press "Request changes"
 
     # Implement changes as owner of the event.
@@ -114,7 +117,7 @@ Feature: Event moderation
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The event is amazing"
-    And I press "Update proposed"
+    And I press "Update"
     Then I should see the heading "The Fire of the Nothing"
 
     # Approve changes as facilitator.
@@ -122,7 +125,7 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
     And I click "Edit" in the "Entity actions" region
-    Then I should see the button "Approve proposed"
+    Then I should see the button "Publish"
     And the current workflow state should be "Proposed"
-    And I press "Approve proposed"
+    And I press "Publish"
     Then I should see the heading "The event is amazing"

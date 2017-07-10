@@ -2,14 +2,21 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - file_url
     - rdf_entity
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://xmlns.com/foaf/spec/#term_page'
-      display: ''
-      description: ''
+      target_id:
+        predicate: 'http://xmlns.com/foaf/spec/#term_page'
+        format: 'xsd:string'
+      display:
+        predicate: ''
+        format: ''
+      description:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_isr_documentation
 field_name: field_isr_documentation
 entity_type: rdf_entity
@@ -21,8 +28,8 @@ settings:
   target_type: file
 module: file_url
 locked: false
-cardinality: 1
-translatable: true
+cardinality: -1
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

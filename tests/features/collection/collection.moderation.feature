@@ -7,14 +7,12 @@ Feature: Collection moderation
   # Access checks are not being made here. They are run in the collection add feature.
   Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
     When I am logged in as an "authenticated user"
-    And I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
@@ -154,9 +152,10 @@ Feature: Collection moderation
     When I am logged in as a moderator
     And I am on the homepage
     And I click "Collections"
-    # Tile view modes in the "Collections" page are not using heading markup
-    # for titles.
-    Then I should see the text "Some berry pie"
+    Then I should not see the text "Some berry pie"
+
+    When I go to my dashboard
+    Then I should see the "Some berry pie" tile
     When I go to the homepage of the "Some berry pie" collection
     And I click "Edit"
     And I fill in "Title" with "No berry pie"
@@ -175,7 +174,7 @@ Feature: Collection moderation
     # resubmitted, as happens during moderation. Ref. ISAICP-3200.
     Given I am logged in as a user with the "authenticated" role
     # Propose a collection, filling in the required fields.
-    When I click "Propose collection" in the plus button menu
+    When I go to the propose collection form
     And I fill in "Title" with "Spectres in fog"
     And I enter "The samurai are attacking the railroads" in the "Description" wysiwyg editor
     And I select "Employment and Support Allowance" from "Policy domain"
@@ -224,8 +223,7 @@ Feature: Collection moderation
     # Regression test for a bug that happens when a change on the eLibrary
     # creation setting happens after an ajax callback.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    When I go to the propose collection form
     And I fill in "Title" with "Domestic bovins"
     And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
     And I select "Statistics and Analysis" from "Policy domain"
@@ -261,8 +259,7 @@ Feature: Collection moderation
     # Regression test for a bug that causes the wrong eLibrary creation value
     # to be saved after the "Closed collection" checkbox is checked.
     Given I am logged in as a user with the "authenticated" role
-    When I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    When I go to the propose collection form
     And I fill in "Title" with "Theft of Body"
     And I enter "Kleptomaniac to the bone." in the "Description" wysiwyg editor
     And I select "Supplier exchange" from "Policy domain"
@@ -303,8 +300,7 @@ Feature: Collection moderation
     # is checked.
     # @see collection_form_rdf_entity_form_alter()
     Given I am logged in as a user with the "authenticated" role
-    When I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    When I go to the propose collection form
     And I fill in "Title" with "Silken Emperor"
     And I enter "So smooth." in the "Description" wysiwyg editor
     And I select "Data gathering, data processing" from "Policy domain"
@@ -346,8 +342,7 @@ Feature: Collection moderation
     # is checked and then an "Add more" button on a multi-value widget is clicked.
     # @see collection_form_rdf_entity_form_alter()
     Given I am logged in as a user with the "authenticated" role
-    When I go to the homepage
-    And I click "Propose collection" in the plus button menu
+    When I go to the propose collection form
     And I fill in "Title" with "The blue ships"
     And I enter "Invisible ships on deep sea." in the "Description" wysiwyg editor
     And I select "Employment and Support Allowance" from "Policy domain"

@@ -79,15 +79,19 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'nid' => $this->t('Node ID'),
       'policy' => $this->t('Level1 policy domain'),
       'policy2' => $this->t('Level2 policy domain'),
+      'description' => $this->t('Description'),
       'abstract' => $this->t('Abstract'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
       'publisher' => $this->t('Publisher'),
+      'owner_text_name' => $this->t('Text owner name'),
+      'owner_text_type' => $this->t('Text owner type'),
       'contact' => $this->t('Contact'),
-      'collection_owner' => $this->t('Collection owner'),
-      'status' => $this->t('Status'),
+      'contact_email' => $this->t('Contact E-mail'),
+      'state' => $this->t('State'),
       'roles' => $this->t('Roles'),
+      'url' => $this->t('Collection ID as URL'),
     ];
   }
 

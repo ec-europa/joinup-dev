@@ -9,7 +9,6 @@ dependencies:
     - rdf_entity.rdfentity.contact_information
   module:
     - joinup_core
-    - link
 id: rdf_entity.contact_information.default
 targetEntityType: rdf_entity
 bundle: contact_information
@@ -22,6 +21,7 @@ content:
     settings:
       title: 'Current workflow state'
       title_display: before
+      show_for_new_entities: false
     third_party_settings: {  }
   field_ci_email:
     weight: 0
@@ -29,10 +29,10 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: email_default
+    type: email_legacy_multicardinality
     region: content
   field_ci_name:
-    type: string_textfield
+    type: string_textfield_legacy_multicardinality
     weight: 1
     settings:
       size: 60
@@ -52,8 +52,9 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_legacy_multicardinality
     region: content
 hidden:
   label: true
+  langcode: true
   uid: true

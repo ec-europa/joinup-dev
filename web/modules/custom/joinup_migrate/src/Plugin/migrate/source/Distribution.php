@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,9 +13,13 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends DistributionBase {
+class Distribution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
+  use DefaultRdfRedirectTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
+  use LicenceTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -23,8 +29,21 @@ class Distribution extends DistributionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 'd',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('Node ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
       'access_url' => $this->t('Access URL'),
@@ -33,14 +52,17 @@ class Distribution extends DistributionBase {
       'licence' => $this->t('Licence'),
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
-    ] + parent::fields();
+      'status' => $this->t('Status'),
+      'i18n' => $this->t('Field translations'),
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('d', [
+    return $this->select('d8_distribution', 'd')->fields('d', [
+      'nid',
       'uri',
       'vid',
       'title',
@@ -74,9 +96,39 @@ class Distribution extends DistributionBase {
     $row->setSourceProperty('technique', $representation_technique);
 
     // Resolve 'access_url'.
-    $this->setFileUrlTargetId($row, 'access_url', ['nid' => $nid], 'file_id', 'distribution_file', 'access_url');
+    $fid = $row->getSourceProperty('file_id');
+    $file_source_id_values = $fid ? [['fid' => $fid]] : [];
+    $urls = $row->getSourceProperty('access_url') ? [$row->getSourceProperty('access_url')] : [];
+    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', $urls);
+
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // Licence.
+    $this->setLicence($row, 'distribution');
+
+    // Translations.
+    $this->setFieldTranslations($row);
 
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_distribution_name',
+        'field' => 'field_distribution_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_ad_description' => [
+        'table' => 'content_field_distribution_description',
+        'field' => 'field_distribution_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  rdf_entity:
+    rdf_type: 'http://example.com/file_url'
+    mapping:
+      rid:
+        target_id:
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+          format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
+      label:
+        value:
+          predicate: 'http://example.com/file_url_label'
+          format: t_literal
+      langcode:
+        value:
+          predicate: 'http://example.com/language'
+          format: t_literal
+      default_langcode:
+        value:
+          predicate: 'http://joinup.eu/language/default'
+          format: literal
+    graph:
+      default: 'http://example.com/file_url/published'
+      draft: 'http://example.com/file_url/draft'
+name: File URL
+rid: file_url
+description: ''

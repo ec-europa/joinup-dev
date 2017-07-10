@@ -82,15 +82,17 @@ trait WorkflowTrait {
    * so this method returns the first available field definitions of the
    * entity's field definitions otherwise it returns NULL.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity that has the state field.
+   * @param string $entity_type_id
+   *   The entity type ID for which to return the state field definition.
+   * @param string $bundle_id
+   *   The bundle ID for which to return the state field definition.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface|null
    *   Returns the state field definition of the entity or NULL if none is
    *    found.
    */
-  protected function getEntityStateFieldDefinition(FieldableEntityInterface $entity) {
-    return $this->getWorkflowHelper()::getEntityStateFieldDefinition($entity);
+  protected function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
+    return $this->getWorkflowHelper()->getEntityStateFieldDefinition($entity_type_id, $bundle_id);
   }
 
   /**

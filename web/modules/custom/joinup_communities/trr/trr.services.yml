@@ -1,0 +1,6 @@
+services:
+  trr.register_namespace:
+    class: Drupal\trr\EventSubscriber\RegisterNamespace
+    arguments: []
+    tags:
+      - { name: event_subscriber }

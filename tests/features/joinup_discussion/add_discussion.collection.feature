@@ -40,19 +40,29 @@ Feature: "Add discussion" visibility options.
     And I am logged in as a facilitator of the "The World of the Waves" collection
 
     When I go to the homepage of the "The World of the Waves" collection
-    And I click "Add discussion"
+    And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
-    And the following fields should be present "Title, Content, Policy domain"
+    And the following fields should be present "Title, Content, Policy domain, Add a new file"
     # The entity is new, so the current workflow state should not be shown.
-    And the following fields should not be present "Current workflow state"
+    And the following fields should not be present "Current workflow state, Motivation"
 
     # The section about managing revisions should not be visible.
     And I should not see the text "Revision information"
     And the following fields should not be present "Create new revision, Revision log message, Shared in"
 
+    # Check required fields.
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Upload"
+    And I press "Publish"
+    Then I should see the following lines of text:
+      | Title field is required.            |
+      | File description field is required. |
+      | Content field is required.          |
+
     When I fill in the following:
-      | Title   | An amazing discussion                      |
-      | Content | This is going to be an amazing discussion. |
+      | Title            | An amazing discussion                      |
+      | Content          | This is going to be an amazing discussion. |
+      | File description | The content of this file is mind blowing.  |
     And I press "Publish"
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."

@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -142,8 +143,10 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  langcode: true
   licence: true
   og_group: true
+  rdf_entity_field_is_content_inline_facets: true
   rdf_entity_field_is_content_top: true
   related_solutions: true
   releases_overview: true

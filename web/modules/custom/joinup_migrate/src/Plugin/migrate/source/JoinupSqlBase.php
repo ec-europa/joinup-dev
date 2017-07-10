@@ -2,10 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Site\Settings;
-use Drupal\joinup_migrate\FileUtility;
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
@@ -13,6 +11,16 @@ use Drupal\migrate\Row;
  * Provides a base class for SqlBase classes.
  */
 abstract class JoinupSqlBase extends SqlBase {
+
+  /**
+   * File URL mode: Cardinality is 1, file has priority over URL.
+   */
+  const FILE_URL_MODE_SINGLE = 0;
+
+  /**
+   * File URL mode: Cardinality is unlimited, URL and files are cumulated.
+   */
+  const FILE_URL_MODE_MULTIPLE = 1;
 
   /**
    * A list of source objects that should be checked for existing URIs.
@@ -46,37 +54,20 @@ abstract class JoinupSqlBase extends SqlBase {
   protected $uriProperties = ['uri'];
 
   /**
-   * Gets the legacy site webroot directory.
-   *
-   * @return string
-   *   The legacy site webroot directory
-   *
-   * @throws \Drupal\migrate\MigrateException
-   *   When the webroot was not configured.
-   */
-  protected function getLegacySiteWebRoot() {
-    $webroot = Settings::get('joinup_migrate.source.root');
-    $webroot = rtrim($webroot, '/');
-
-    try {
-      FileUtility::checkLegacySiteWebRoot($webroot);
-    }
-    catch (\Exception $exception) {
-      throw new MigrateException($exception->getMessage());
-    }
-
-    return $webroot;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if ($this->reservedUriTables && $row->hasSourceProperty('uri') && ($uri = $row->getSourceProperty('uri'))) {
-      $reserved = $this->getUrisToExclude();
-      if (in_array($uri, $reserved)) {
-        // This URI is in the reserved list. Generate a new one.
+    if ($row->hasSourceProperty('uri') && ($uri = $row->getSourceProperty('uri'))) {
+      if (Unicode::strlen($uri) > 255) {
+        // Limit the URI to 255 characters.
         $row->setSourceProperty('uri', NULL);
+      }
+      elseif ($this->reservedUriTables) {
+        $reserved = $this->getUrisToExclude();
+        if (in_array($uri, $reserved)) {
+          // This URI is in the reserved list. Generate a new one.
+          $row->setSourceProperty('uri', NULL);
+        }
       }
     }
 
@@ -146,6 +137,10 @@ abstract class JoinupSqlBase extends SqlBase {
     if (empty($url['scheme'])) {
       // Needs a full-qualified URL. The URI might be 'www.example.com'.
       $uri = "http://$uri";
+      // Re-parse URL parts.
+      if (!$url = parse_url($uri)) {
+        return NULL;
+      }
     }
 
     // Check for a valid URI pattern.

@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_core;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -59,13 +60,15 @@ interface WorkflowHelperInterface {
   /**
    * Returns the state field definitions of an entity.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity that has the state field.
+   * @param string $entity_type_id
+   *   The entity type ID for which to return the state field definitions.
+   * @param string $bundle_id
+   *   The bundle ID for which to return the state field definitions.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
    *   Returns an array of state field definitions.
    */
-  public static function getEntityStateFieldDefinitions(FieldableEntityInterface $entity);
+  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
 
   /**
    * Returns the state field definition of an entity.
@@ -74,14 +77,16 @@ interface WorkflowHelperInterface {
    * so this method returns the first available field definitions of the
    * entity's field definitions otherwise it returns NULL.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity that has the state field.
+   * @param string $entity_type_id
+   *   The entity type ID for which to return the state field definition.
+   * @param string $bundle_id
+   *   The bundle ID for which to return the state field definition.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface|null
    *   Returns the state field definition of the entity or NULL if none is
    *   found.
    */
-  public static function getEntityStateFieldDefinition(FieldableEntityInterface $entity);
+  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id);
 
   /**
    * Returns the StateItem field for a given entity.
@@ -104,13 +109,15 @@ interface WorkflowHelperInterface {
   /**
    * Returns whether the entity has a state field and supports workflow.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity to check.
+   * @param string $entity_type_id
+   *   The entity type ID for which to check if a state field exists.
+   * @param string $bundle_id
+   *   The bundle ID for which to check if a state field exists.
    *
    * @return bool
    *   TRUE if the entity has a state field. FALSE otherwise.
    */
-  public function hasEntityStateField(FieldableEntityInterface $entity);
+  public function hasEntityStateField($entity_type_id, $bundle_id);
 
   /**
    * Checks if a state is set as published in a certain workflow.
@@ -128,5 +135,38 @@ interface WorkflowHelperInterface {
    *   retrieve the publication state from the workflow states.
    */
   public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow);
+
+  /**
+   * Checks whether the user has at least one of the provided roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param array $roles
+   *   A list of role ids indexed by keys 'own' and 'any' which represents
+   *   ownership and a second level of 'roles' for system roles and
+   *   'og_roles' for og roles.
+   *
+   * @return bool
+   *   True if the user has at least one of the roles provided.
+   */
+  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles);
+
+  /**
+   * Checks whether the user has at least one of the provided roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param array $roles
+   *   A list of role ids indexed by 'roles' for system roles and
+   *   'og_roles' for og roles.
+   *
+   * @return bool
+   *   True if the user has at least one of the roles provided.
+   */
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles);
 
 }

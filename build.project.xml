@@ -11,6 +11,9 @@
     <!-- Import Phing targets related to Apache Solr. -->
     <import file="${project.basedir}/build.solr.xml" optional="true" />
 
+    <!-- Import Phing targets related to Piwik. -->
+    <import file="${project.basedir}/build.piwik.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
@@ -25,6 +28,9 @@
 
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
+
+    <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
+    <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
@@ -46,6 +52,8 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+        <!-- Set the auto-increment default values for some tables. -->
+        <setmysqlautoincrement />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
@@ -93,7 +101,6 @@
                 dbUrl="${phpunit.db_url}"
                 sparqlUrl="${phpunit.sparql_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
-                legacyWebroot="${phpunit.migrate.legacy_site.webroot}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -106,7 +113,14 @@
       ones in enable-dev-modules as it can contain modules not needed for development
       like demo content modules. -->
     <target name="enable-uat-modules">
-        <foreach list="${drupal.modules.uat}" param="module" target="enable-module" delimiter=" " />
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${drupal.modules.uat}</param>
+        </drush>
     </target>
 
     <target name="purge-rdf-content">
@@ -139,16 +153,6 @@
             style="${sass.style}"
             input="${sass.input}"
             output="${sass.output.dir}/${sass.output.file}" />
-    </target>
-
-    <!-- Make services.yml writeable. -->
-    <target name="writable-services-yml">
-        <if>
-            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
-            <then>
-                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
-            </then>
-        </if>
     </target>
 
     <!-- Disable persistent session cookies, this is necessary for the "Remember
@@ -184,11 +188,48 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
         depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
+
+    <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
+    <target name="redirect-outgoing-email">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="devel" />
+                </phingcall>
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="${line.separator}$config['system.mail']['interface']['default'] = 'devel_mail_log';${line.separator}" />
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';${line.separator}" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
 
 </project>

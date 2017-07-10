@@ -14,11 +14,12 @@ Feature: Navigation menu for custom pages
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
     And I should see the following collection menu items in the specified order:
-      | text               |
-      | Overview           |
-      | About              |
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
     # Check that the 'Edit menu' local action is present.
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
@@ -34,18 +35,19 @@ Feature: Navigation menu for custom pages
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" collection should have 3 visible items
+    And the navigation menu of the "Rainbow tables" collection should have 4 visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" collection should have 3 items
+    Then the navigation menu of the "Rainbow tables" collection should have 4 items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 2 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
     When I disable "Overview" in the navigation menu of the "Rainbow tables" collection
+    And I disable "Members" in the navigation menu of the "Rainbow tables" collection
     And I disable "About" in the navigation menu of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
@@ -157,20 +159,42 @@ Feature: Navigation menu for custom pages
       | banner | banner.jpg  |
       | state  | validated   |
     And custom_page content:
-      | title                    | body      | collection  |
-      | The Burning Angel        | Test body | Hidden Ship |
-      | Snake of Pleasure        | Test body | Hidden Ship |
-      | The Slaves of the Shores | Test body | Hidden Ship |
+      | title                       | body      | collection  |
+      | The Burning Angel           | Test body | Hidden Ship |
+      | Snake of Pleasure           | Test body | Hidden Ship |
+      | The Slaves of the Shores    | Test body | Hidden Ship |
+      | The Slaves of the Sea       | Test body | Hidden Ship |
+      | The Slaves of the Mountains | Test body | Hidden Ship |
+      | The Slaves of the Air       | Test body | Hidden Ship |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
-      | title                    | parent            | weight |
-      | Snake of Pleasure        | The Burning Angel | 2      |
-      | The Slaves of the Shores | The Burning Angel | 1      |
+      | title                       | parent            | weight |
+      | Snake of Pleasure           | The Burning Angel | 2      |
+      | The Slaves of the Shores    | The Burning Angel | 1      |
+      | The Slaves of the Sea       | The Burning Angel | 4      |
+      | The Slaves of the Mountains | The Burning Angel | 3      |
+      | The Slaves of the Air       | The Burning Angel | 5      |
     And I go to the "Hidden Ship" collection
     When I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the link "The Burning Angel" in the "Navigation menu block" region
     But I should not see the link "Snake of Pleasure" in the "Navigation menu block" region
     And I should not see the link "The Slaves of the Shores" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores    |
+      | Snake of Pleasure           |
+      | The Slaves of the Mountains |
+      | The Slaves of the Sea       |
+      | The Slaves of the Air       |
+
+    # Disabled links should not be shown in the sub pages menu.
+    When I am logged in as a facilitator of the "Hidden Ship" collection
+    And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
+    And I disable "The Slaves of the Air" in the navigation menu of the "Hidden Ship" collection
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
       | Snake of Pleasure        |
+      | The Slaves of the Sea    |
+    But I should not see the "The Slaves of the Mountains" tile
+    And I should not see the "The Slaves of the Air" tile

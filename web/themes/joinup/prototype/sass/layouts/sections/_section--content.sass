@@ -4,7 +4,7 @@
 
 // Component
 // --------------------------------------------------
-.section--content
+// .section--content
 
 // Elements
 // --------------------------------------------------
@@ -24,6 +24,9 @@
     padding: 40px 30px
   +breakpoint(desktop)
     padding: 40px 60px
+  @media print
+    padding: 0
+    padding-bottom: 20px
 
 .page__content-image
   img
@@ -38,12 +41,14 @@
 .page__title,
 .page__title-wrapper
   .icon
-    position: absolute
-    top: 50%
-    left: -55px
-    transform: translateY(-50%)
-    +icon-size(50px)
+    left: -50px
+    +centered($horizontal: false, $vertical: true)
+    +icon-size(35px)
   h1
     margin: 0
     display: inline-block
     vertical-align: middle
+
+.page__title-wrapper
+  @media print
+    margin: 0

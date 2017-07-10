@@ -43,8 +43,8 @@ Feature: "Discussion page" editing.
       | solution             | user          | roles       |
       | Lights in the Shards | Toni Holloway | facilitator |
     And "discussion" content:
-      | title         | author        | solution             |
-      | Fallen Flames | Toni Holloway | Lights in the Shards |
+      | title         | author        | solution             | state     |
+      | Fallen Flames | Toni Holloway | Lights in the Shards | validated |
     When I am logged in as "Toni Holloway"
     And I go to the "Fallen Flames" discussion
     Then I should see the link "Edit" in the "Entity actions" region

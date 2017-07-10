@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -170,7 +171,24 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
       $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
-
+  // Revoke access to canonical route for anonymous users.
+  // Only revoke access for anonymous users.
+  if ($account->isAuthenticated()) {
+    return AccessResult::neutral();
+  }
+  // Get entity from route.
+  $route = \Drupal::routeMatch();
+  $route_name = $route->getRouteName();
+  if ($route_name != 'entity.rdf_entity.canonical') {
+    return AccessResult::neutral();
+  }
+  $route_entity = $route->getParameter('rdf_entity');
+  if (empty($route_entity)) {
+    return AccessResult::neutral();
+  }
+  if ($entity->id() == $route_entity->id()) {
+    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+  }
   return AccessResult::neutral();
 }
 
@@ -188,7 +206,7 @@ function owner_is_owner_referenced(EntityInterface $entity) {
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
 
   // Check in Sparql if the owner id is set as object in any triple.
-  return $sparql_endpoint->query("ASK { ?s ?p <{$entity->id()}> }")->isTrue();
+  return $sparql_endpoint->query("ASK { ?s ?p " . SparqlArg::uri($entity->id()) . " }")->isTrue();
 }
 
 /**

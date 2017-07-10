@@ -22,6 +22,6 @@ Feature: Edit licence through UI
     When I click "Edit"
     And I fill in "Title" with "Licence 1.1"
     And I fill in "Description" with "This is some different description."
-    And I fill in "Type" with "Attribution"
+    And I select "Attribution" from "Type"
     And I press "Save"
     Then I should see the heading "Licence 1.1"

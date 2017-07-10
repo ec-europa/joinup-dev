@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://purl.org/dc/terms/relation'
+      target_id:
+        predicate: 'http://purl.org/dc/terms/relation'
+        format: resource
 id: rdf_entity.field_isr_related_solutions
 field_name: field_isr_related_solutions
 entity_type: rdf_entity
@@ -16,7 +18,7 @@ settings:
 module: core
 locked: false
 cardinality: -1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

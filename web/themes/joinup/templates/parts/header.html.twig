@@ -8,18 +8,20 @@
     {{ page.header_central_menu.joinup_theme_main_menu }}
 
     <div class="mdl-layout-spacer"></div>
-    <div class="search-bar search-bar--header mdl-textfield mdl-js-textfield mdl-textfield--expandable
+
+    <div class="search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-textfield--expandable
     mdl-textfield--floating-label mdl-textfield--align-right">
-    <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
-    for="search-bar__input">
-    <span class="search-bar__icon icon icon--search"></span>
-  </label>
-  {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
-  <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
-    <input class="search-bar__input mdl-textfield__input" type="text" name="keys"
-    id="search-bar__input">
-  </form>
-</div>
+      <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
+      for="search-bar__input">
+        <span class="search-bar__icon icon icon--search"></span>
+      </label>
+
+      {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
+      <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+        <input class="search-bar__input mdl-textfield__input" type="text" name="keys"
+        id="search-bar__input">
+      </form>
+    </div>
 
 {{ page.header_profile_menu }}
 

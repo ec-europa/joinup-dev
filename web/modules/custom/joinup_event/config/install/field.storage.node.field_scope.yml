@@ -12,10 +12,10 @@ settings:
   allowed_values:
     -
       value: cross_border
-      label: 'Cross-border'
+      label: Cross-border
     -
       value: pan_european
-      label: 'Pan-European'
+      label: Pan-European
     -
       value: international
       label: International
@@ -35,7 +35,7 @@ settings:
 module: options
 locked: false
 cardinality: -1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

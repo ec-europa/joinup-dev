@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
@@ -45,11 +46,19 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Navigates to the add solution form.
    *
-   * @When (I )go to the add solution form
-   * @When (I )visit the add solution form
+   * @param string $collection
+   *   The parent collection.
+   *
+   * @When (I )go to the add solution form of the :collection collection
+   * @When (I )visit the add solution form of the :collection collection
    */
-  public function visitAddSolutionForm() {
-    $this->visitPath('/rdf_entity/add/solution');
+  public function visitAddSolutionForm($collection) {
+    $collection = $this->getRdfEntityByLabel($collection);
+    $solution_url = Url::fromRoute('solution.collection_solution.add', [
+      'rdf_entity' => $collection->id(),
+    ]);
+
+    $this->visitPath($solution_url->getInternalPath());
   }
 
   /**
@@ -88,12 +97,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description and elibrary creation are mandatory.
+   * Fields title, description, state and elibrary creation are mandatory.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
@@ -130,7 +139,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Table format:
    * | title             | Sample solution                         |
    * | description       | A sample solution                       |
-   * | document          | text.pdf                                |
+   * | documentation     | text.pdf                                |
    * | moderation        | no|yes                                  |
    * | closed            | no|yes                                  |
    * | elibrary creation | facilitators|members|registered users   |
@@ -250,7 +259,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     foreach ($file_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
@@ -335,17 +346,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
-    // the same bundle with a release. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->notExists('field_is_has_version')
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
     }
   }
 
@@ -491,6 +497,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'field_is_elibrary_creation' =>
         ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
+      'field_is_state' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'deletion request' => 'deletion_request',
+        'needs update' => 'needs_update',
+        'blacklisted' => 'blacklisted',
+      ],
     ];
 
     foreach ($fields as $field => $value) {
@@ -503,8 +517,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
+    // Convert any entity reference field label value with the entity ID.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }

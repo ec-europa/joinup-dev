@@ -87,13 +87,10 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
   field_user_professional_domain:
-    type: entity_reference_autocomplete
+    type: options_select
     weight: 5
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
 hidden:
   field_last_password_reset: true
@@ -101,6 +98,8 @@ hidden:
   field_user_frequency: true
   field_user_group_types: true
   field_user_subscription_events: true
+  langcode: true
   language: true
+  piwik: true
   simplenews: true
   timezone: true

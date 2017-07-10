@@ -75,6 +75,7 @@
 <article{{ attributes }}>
   <div class="page__content page__content-image">
     {{ content.body }}
+    {{ content.field_attachment }}
     <div class="details__bottom">
       {% if topics and spatial_coverage %}
         {% trans %}This news is about {{ topics }} in {{ spatial_coverage }} area{% endtrans %}

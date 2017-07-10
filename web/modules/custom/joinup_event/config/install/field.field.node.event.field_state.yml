@@ -13,12 +13,12 @@ bundle: event
 label: State
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value:
   -
-    value: __new__
+    value: draft
 default_value_callback: ''
 settings:
   workflow: ''
-  workflow_callback: joinup_event_workflow_selector
+  workflow_callback: joinup_community_content_workflow_selector
 field_type: state

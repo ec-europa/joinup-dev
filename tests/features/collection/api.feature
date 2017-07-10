@@ -27,8 +27,7 @@ Feature: Collection API
       | name     | type                  |
       | Prayfish | Private Individual(s) |
     And I am logged in as an "authenticated user"
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then I should see the heading "Propose collection"
     When I fill in the following:
       | Title         | Collection API example                       |

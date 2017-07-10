@@ -10,12 +10,12 @@ bundle: comment
 mode: default
 content:
   author:
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
   field_body:
-    weight: 3
+    weight: 0
     settings:
       rows: 5
       placeholder: ''
@@ -23,4 +23,5 @@ content:
     type: string_textarea
     region: content
 hidden:
+  langcode: true
   subject: true

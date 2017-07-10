@@ -4,35 +4,47 @@
     "type": "project",
     "license": "EUPL",
     "require": {
+        "php": ">=5.5.9",
+        "SEMICeu/adms-ap_validator": "dev-master",
         "composer/composer": "~1.0",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/console": "~1.0",
         "drupal/core": "8.3.x-dev#4c6a12eb9549d357cce88ad6a352187e456068c8",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^3.0",
+        "drupal/editor_file": "~1.0",
         "drupal/facets": "~1.0@alpha",
         "drupal/field_group": "~1.0-rc6",
+        "drupal/file_url": "~1.0",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
+        "drupal/linkit": "5.x-dev#e595d05a622f5ab75758dce5f11ae5208b991f91",
         "drupal/message": "dev-8.x-1.x#7d4c6039adae8afc09d37bc6be60709a3caa2e26 as 1.0",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
-        "drupal/migrate_report": "~1.0-alpha2",
-        "drupal/migrate_run": "~1.0-alpha1",
+        "drupal/migrate_run": "~1.0-alpha4",
         "drupal/migrate_spreadsheet": "~1.0-beta2",
         "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
+        "drupal/password_policy": "3.x-dev#8ee51e4e58b1b9493867c43ddfecbdac20e04b0c",
+        "drupal/pathauto": "^1.0",
         "drupal/persistent_login": "dev-1.x#1320f841da3c",
         "drupal/phingdrushtask": "dev-7.x-2.x#6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
+        "drupal/piwik": "~1.0",
+        "drupal/piwik_reporting_api": "~1.0@beta",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
+        "drupal/redirect": "~1.0",
         "drupal/search_api": "~1.0-rc2",
-        "drupal/search_api_solr": "dev-1.x#5a7e66cfaac8f9ff210204105c86eefb528aa2a3",
+        "drupal/search_api_solr": "~1.0-rc2",
         "drupal/simplenews": "~1.0-alpha3",
         "drupal/state_machine": "~1.0-beta3",
+        "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
+        "drupal/video_embed_field": "~1.5",
         "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "~8.0",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
@@ -41,7 +53,6 @@
         "minimaxir/big-list-of-naughty-strings": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
-        "php": ">=5.5.9",
         "solarium/solarium": "~3.7",
         "typhonius/behattask": "1.0",
         "drupal/password_policy": "3.x-dev",
@@ -53,24 +64,30 @@
         "behat/mink-selenium2-driver": "dev-master#739b7570f0536bad9b07b511a62c885ee1ec029a",
         "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "~8.2.9",
-        "drupal/config_devel": "dev-1.x#92f735cae8e9fb328edca285340a5bfbf72028cc",
+        "drupal/config_devel": "~1.0",
+        "drupal/config_inspector": "^1.0@beta",
         "drupal/config_update": "~1.2",
         "drupal/default_content": "dev-1.x#18f2408a0f74d871b076ef94d1b83f380ea797c9",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#8d2eea92396b7079f3f9ac6f67c8987aa1e911a5",
+        "drupal/drupal-extension": "dev-master#0cc5400664d26943c4b90b693e059246221ffec3",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
         "mikey179/vfsStream": "~1.2",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
-        "phpunit/phpunit": "~4.8",
-        "symfony/css-selector": "~2.8"
+        "phpunit/phpunit": "^4.8.28",
+        "symfony/css-selector": "~2.8",
+        "webflo/drupal-finder": "^0.3",
+        "webmozart/path-util": "~2.3"
     },
     "conflict": {
         "drupal/drupal": "*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+      "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
@@ -112,15 +129,25 @@
                 "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
                 "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
+                "Soft reload does not clean up user inputs like in D7 (Firefox only) @see https://www.drupal.org/node/2596597": "https://www.drupal.org/files/issues/2596597-8.patch",
                 "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
                 "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-85.patch",
-                "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch"
+                "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
+                "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
+                "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-28.patch",
+                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-2.patch"
             },
             "drupal/facets": {
                 "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
             },
+            "drupal/file_url": {
+                "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
+            },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+            },
+            "drupal/linkit": {
+                "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -132,8 +159,11 @@
                 "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
             },
             "drupal/password_policy": {
-                "Provide a character type restriction plugin. @see https://www.drupal.org/node/2874853": "https://www.drupal.org/files/issues/types_negate_constraint_module.patch",
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+            },
+            "drupal/redirect": {
+                "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
+                "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
             }
         }
     },
@@ -147,12 +177,12 @@
             "url": "https://github.com/Gizra/message.git"
         },
         {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
+            "type": "vcs",
+            "url": "https://github.com/pfrenssen/piwik-reporting-api.git"
         },
         {
-            "type": "vcs",
-            "url": "https://git.drupal.org/project/phingdrushtask.git"
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
         },
         {
             "type": "package",
@@ -201,6 +231,18 @@
                 "version": "dev-master",
                 "source": {
                     "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "SEMICeu/adms-ap_validator",
+                "version": "dev-master",
+                "source": {
+                    "url": "git@github.com:SEMICeu/adms-ap_validator.git",
                     "type": "git",
                     "reference": "master"
                 }

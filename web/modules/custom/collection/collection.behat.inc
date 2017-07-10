@@ -268,7 +268,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $fields);
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'collection', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
@@ -290,7 +290,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name])->id()];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
@@ -424,15 +426,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Subscribes the given users to the given collections.
    *
-   * The role Id of organic group roles are consisting of 3 parts, the entity
-   * type ID and the bundle of the group, and the machine name of the role.
-   * Do not provide the complete ID of the Og role. The entity type ID and
-   * bundle are going to be added automatically.
-   *
    * Table format:
-   * | collection               | user          | roles                      |
-   * | Interoperability Friends | Verence II    | facilitator, administrator |
-   * | Electronic Surveillance  | Letice Earwig |                            |
+   * @codingStandardsIgnoreStart
+   * | collection               | user          | roles                      | state   |
+   * | Interoperability Friends | Verence II    | facilitator, administrator | active  |
+   * | Electronic Surveillance  | Letice Earwig |                            | blocked |
+   * @codingStandardsIgnoreEnd
+   *
+   * Only the 'collection' and 'user' columns are required. Multiple comma
+   * separated roles can be passed.
+   *
+   * The state can be empty, or one of 'active', 'pending', or 'blocked'. If the
+   * state is omitted it will default to 'active'.
    *
    * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
@@ -468,7 +473,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         $roles = $this->getOgRoles($role_names, $group);
       }
 
-      $this->subscribeUserToGroup($member, $group, $roles);
+      $state = !empty($values['state']) ? $values['state'] : NULL;
+
+      $this->subscribeUserToGroup($member, $group, $roles, $state);
     }
   }
 

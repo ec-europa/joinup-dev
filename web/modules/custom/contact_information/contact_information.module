@@ -5,8 +5,10 @@
  * Provides functionality for the contact information module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -100,6 +102,39 @@ function contact_information_inline_entity_form_entity_builder($entity_type, Ent
  */
 function contact_information_entity_auto_label(EntityInterface $entity) {
   // Generate the label using the values of the name field.
-  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
+  $names = array_map('trim', array_column($entity->get('field_ci_name')->getValue(), 'value'));
   $entity->set('label', implode(', ', $names));
+}
+
+/**
+ * Revoke access to canonical route for anonymous users for contact information.
+ *
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Access being checked for a contact information.
+  if ($entity->getEntityTypeId() != 'rdf_entity') {
+    return AccessResult::neutral();
+  }
+  if ($entity->bundle() != 'contact_information') {
+    return AccessResult::neutral();
+  }
+  // Only revoke access for anonymous users.
+  if ($account->isAuthenticated()) {
+    return AccessResult::neutral();
+  }
+  // Get entity from route.
+  $route = \Drupal::routeMatch();
+  $route_name = $route->getRouteName();
+  if ($route_name != 'entity.rdf_entity.canonical') {
+    return AccessResult::neutral();
+  }
+  $route_entity = $route->getParameter('rdf_entity');
+  if (empty($route_entity)) {
+    return AccessResult::neutral();
+  }
+  if ($entity->id() == $route_entity->id()) {
+    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+  }
+  return AccessResult::neutral();
 }

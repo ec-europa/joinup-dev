@@ -34,6 +34,8 @@ default:
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
+        Modal content: '#drupal-modal'
+        Modal buttons: '.ui-dialog-buttonpane'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

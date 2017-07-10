@@ -3,11 +3,14 @@
 namespace Drupal\joinup_core;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
@@ -31,16 +34,36 @@ class WorkflowHelper implements WorkflowHelperInterface {
   protected $currentUser;
 
   /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * The membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * Constructs a WorkflowHelper.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The service that contains the current user.
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account switcher interface.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
+   *   The entity field manager.
+   * @param \Drupal\og\MembershipManagerInterface $membershipManager
+   *   The membership manager service.
    */
-  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher) {
+  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager) {
     $this->accountSwitcher = $accountSwitcher;
     $this->currentUser = $currentUser;
+    $this->entityFieldManager = $entityFieldManager;
+    $this->membershipManager = $membershipManager;
   }
 
   /**
@@ -54,15 +77,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
     }, $allowed_transitions);
 
     return $allowed_states;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
-    return array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getLabel();
-    }, $this->getAvailableTransitions($entity, $account));
   }
 
   /**
@@ -93,28 +107,8 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getEntityStateFieldDefinitions(FieldableEntityInterface $entity) {
-    return array_filter($entity->getFieldDefinitions(), function (FieldDefinitionInterface $field_definition) {
-      return $field_definition->getType() == 'state';
-    });
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getEntityStateFieldDefinition(FieldableEntityInterface $entity) {
-    if ($field_definitions = static::getEntityStateFieldDefinitions($entity)) {
-      return reset($field_definitions);
-    }
-
-    return NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getEntityStateField(FieldableEntityInterface $entity) {
-    $field_definition = $this->getEntityStateFieldDefinition($entity);
+    $field_definition = $this->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle());
     if ($field_definition === NULL) {
       throw new \Exception('No state fields were found in the entity.');
     }
@@ -124,8 +118,37 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField(FieldableEntityInterface $entity) {
-    return (bool) static::getEntityStateFieldDefinitions($entity);
+  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
+    if ($field_definitions = static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
+      return reset($field_definitions);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id) {
+    return array_filter($this->entityFieldManager->getFieldDefinitions($entity_type_id, $bundle_id), function (FieldDefinitionInterface $field_definition) {
+      return $field_definition->getType() == 'state';
+    });
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+    return array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getLabel();
+    }, $this->getAvailableTransitions($entity, $account));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasEntityStateField($entity_type_id, $bundle_id) {
+    return (bool) static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**
@@ -143,6 +166,61 @@ class WorkflowHelper implements WorkflowHelperInterface {
     // are stored there.
     $raw_workflow_definition = $workflow->getPluginDefinition();
     return !empty($raw_workflow_definition['states'][$state_id]['published']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+    $own = $entity->getOwnerId() === $account->id();
+    if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
+      return TRUE;
+    }
+    if ($own && isset($roles['own']) && $this->userHasRoles($entity, $account, $roles['own'])) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+    $parent = $this->getEntityParent($entity);
+    $membership = $this->membershipManager->getMembership($parent, $account);
+
+    // First check the 'any' permissions.
+    if (isset($roles['roles'])) {
+      if (array_intersect($account->getRoles(), $roles['roles'])) {
+        return TRUE;
+      }
+    }
+    if (isset($roles['og_roles']) && !empty($membership)) {
+      if (array_intersect($membership->getRolesIds(), $roles['og_roles'])) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Helper method to retrieve the parent of the entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *   The rdf entity the entity belongs to, or NULL when no group is found.
+   */
+  protected function getEntityParent(EntityInterface $entity) {
+    $groups = $this->membershipManager->getGroups($entity);
+    if (empty($groups['rdf_entity'])) {
+      return NULL;
+    }
+
+    return reset($groups['rdf_entity']);
   }
 
 }

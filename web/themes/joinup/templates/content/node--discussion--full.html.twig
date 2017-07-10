@@ -74,6 +74,7 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
+    {{ content.field_attachment }}
     <div class="details__bottom">
       {% if domains %}
         {% trans %}This discussion is about {{ domains }}{% endtrans %}
@@ -85,7 +86,7 @@
     </div>
   </div>
 
-  {{ content.field_comments }}
+  {{ content.field_replies }}
 
   {{ content.field_shared_in }}
 

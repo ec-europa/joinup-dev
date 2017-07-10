@@ -9,7 +9,7 @@ field_name: field_user_content
 entity_type: user
 type: search_api_field
 settings:
-  index: collections
+  index: published
   facet_regions:
     top: 'Collection content top'
   view_modes:
@@ -30,7 +30,7 @@ settings:
 module: search_api_field
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

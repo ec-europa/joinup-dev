@@ -21,11 +21,11 @@ trait FileUrlFieldTrait {
   protected $migrationPluginManager;
 
   /**
-   * The migration used to lookup for file ID.
+   * A list of migrations used to lookup for file ID.
    *
-   * @var \Drupal\migrate\Plugin\MigrationInterface
+   * @var \Drupal\migrate\Plugin\MigrationInterface[]
    */
-  protected $fileMigration;
+  protected $fileMigration = [];
 
   /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
@@ -63,45 +63,62 @@ trait FileUrlFieldTrait {
   }
 
   /**
-   * Gets the file URL field target ID.
+   * Gets the file URL field target IDs.
    *
-   * This method builds the target_id value of a file URL field. If the row file
-   * property ($file_property) indicates an incoming uploaded file, the method
-   * will lookup in the file migration ($file_migration_id), using the source
-   * IDs provided in $file_source_ids, and will build a URI based on the
-   * corresponding file. If the row contains no valid file source property, the
-   * method will try to get a remote URI from the row $url_property property.
+   * Builds a list of the target_id values of a file URL field. If source ID
+   * values are passed, the method performs a lookup, for each file, in the file
+   * migration ($file_migration_id) map table, by iterating over the source ID
+   * values provided in $file_source_ids. Depending of the destination field
+   * cardinality, the method will try to get a remote URI from the row
+   * $url_property property and append it to the file URL field items.
    *
    * @param \Drupal\migrate\Row $row
    *   The migrate row to be altered.
    * @param string $file_url_field_property
    *   The source property corresponding to the file URL field to be set.
-   * @param array $file_source_ids
-   *   The file migration source IDs values. Example ['nid' => 123].
-   * @param string $file_property
-   *   The source property that indicates if a uploaded file should be set.
+   * @param array[] $file_source_id_values
+   *   A list of source ID values corresponding to all the files attached to
+   *   this entity. Example [['fid' => 123], ['fid' => 789]].
    * @param string $file_migration_id
    *   The ID of the file migration to be used for file ID lookup.
-   * @param string $url_property
-   *   The source property of the remote URL to be set.
+   * @param string[] $urls
+   *   A list of URLs to be set.
+   * @param int $mode
+   *   (optional) Indicates how file uploads and remote URL are composing the
+   *   file URL field. Possible values JoinupSqlBase::FILE_URL_MODE_*. Defaults
+   *   to JoinupSqlBase::FILE_URL_MODE_SINGLE.
    */
-  protected function setFileUrlTargetId(Row $row, $file_url_field_property, array $file_source_ids, $file_property, $file_migration_id, $url_property) {
-    if ($row->getSourceProperty($file_property)) {
-      $uri = NULL;
-      // The target ID points to an uploaded file. Lookup in the file migration,
-      // using the provided source IDs values, and get the migrated file ID.
-      $lookup = $this->getFileMigration($file_migration_id)->getIdMap()
-        ->lookupDestinationIds($file_source_ids);
-      if (!empty($lookup[0][0])) {
-        global $base_url;
-        $uri = $base_url . '/file-dereference/' . $lookup[0][0];
+  protected function setFileUrlTargetId(Row &$row, $file_url_field_property, array $file_source_id_values, $file_migration_id, array $urls, $mode = JoinupSqlBase::FILE_URL_MODE_SINGLE) {
+    $items = [];
+    if ($file_source_id_values) {
+      global $base_url;
+      $file_migration = $this->getFileMigration($file_migration_id);
+      foreach ($file_source_id_values as $id) {
+        // Lookup in the file migration, using the provided source IDs value,
+        // and get the migrated file ID.
+        $lookup = $file_migration->getIdMap()->lookupDestinationIds($id);
+        if (!empty($lookup[0][0])) {
+          $items[] = $base_url . '/file-dereference/' . $lookup[0][0];
+        }
+        // Break here if the cardinality is 1 and we already have one item.
+        if (($mode === JoinupSqlBase::FILE_URL_MODE_SINGLE) && (count($items) === 1)) {
+          break;
+        }
       }
     }
-    else {
-      // The URI might be a reference to a remote file or NULL.
-      $uri = $this->normalizeUri($row->getSourceProperty($url_property));
+
+    // Only add the remote URL if it's a multiple cardinality field or no file
+    // reference has been added in the previous step.
+    if (($mode === JoinupSqlBase::FILE_URL_MODE_MULTIPLE) || empty($items)) {
+      if ($mode === JoinupSqlBase::FILE_URL_MODE_SINGLE) {
+        // Cut off the first element in case of single value fields.
+        $urls = [$urls[0]];
+      }
+      $items = array_merge($items, $urls);
     }
-    $row->setSourceProperty($file_url_field_property, $uri);
+
+    // Store file URL items in the row under passed property.
+    $row->setSourceProperty($file_url_field_property, $items);
   }
 
   /**
@@ -111,13 +128,13 @@ trait FileUrlFieldTrait {
    *   The file migration ID.
    *
    * @return \Drupal\migrate\Plugin\MigrationInterface
-   *   The 'documentation_file' migration.
+   *   The file migration.
    */
   protected function getFileMigration($file_migration_id) {
-    if (!isset($this->fileMigration)) {
-      $this->fileMigration = $this->migrationPluginManager->createInstance($file_migration_id);
+    if (!isset($this->fileMigration[$file_migration_id])) {
+      $this->fileMigration[$file_migration_id] = $this->migrationPluginManager->createInstance($file_migration_id);
     }
-    return $this->fileMigration;
+    return $this->fileMigration[$file_migration_id];
   }
 
 }

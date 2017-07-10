@@ -12,6 +12,7 @@
 // Component
 // --------------------------------------------------
 .button
+  +hidden-print
   font-weight: $font-weight-medium
   line-height: initial
   height: auto
@@ -33,8 +34,8 @@
   height: 22px
   position: relative
   .icon
-    left: 0
     z-index: 1
+    +icon-size(10px)
     +centered($horizontal: false, $vertical: true)
 
 .button__no-bg
@@ -48,6 +49,9 @@
   display: inline-block
   z-index: 10
   position: relative
+
+.button__container
+  margin: 10px 0
 
 // Modifiers
 // --------------------------------------------------
@@ -70,13 +74,14 @@
 
 .button__no-bg-wrapper--circle
   .icon
+    padding: 3px
     color: $color-blue-medium
-    +icon-size(18px)
     border: 2px solid $color-blue-medium
-    border-radius: 18px
+    border-radius: 50%
   .button__no-bg
     color: $color-blue-medium
     padding: 0 0 0 30px
+    line-height: 20px
   &:hover
     .icon
       color: $color-blue-lighter
@@ -87,13 +92,14 @@
 .button__no-bg-wrapper--grey
   .icon
     color: $color-grey-input
-    +icon-size(22px)
   .button__no-bg
     padding: 0 0 0 20px
     color: $color-grey-input
 
 // Dependiencies
 // --------------------------------------------------
-
+.adms-validator-form
+  .button
+    margin-top: $form-margin
 // States
 // --------------------------------------------------

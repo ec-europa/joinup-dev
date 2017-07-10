@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,11 +13,16 @@ use Drupal\migrate\Row;
  *   id = "solution"
  * )
  */
-class Solution extends SolutionBase {
+class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -30,14 +37,29 @@ class Solution extends SolutionBase {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 's',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fields() {
     return [
+      'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
       'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owners'),
+      'owner_name' => $this->t('Text owner name'),
+      'owner_type' => $this->t('Text owner type'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
@@ -47,28 +69,38 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
-    ] + parent::fields();
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
+      'i18n' => $this->t('Field translations'),
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    return parent::query()->fields('s', [
+    return $this->select('d8_solution', 's')->fields('s', [
+      'nid',
       'vid',
+      'type',
       'title',
       'uri',
       'created_time',
       'changed_time',
       'body',
-      'sid',
       'policy2',
       'landing_page',
       'metrics_page',
-      'docs_url',
-      'docs_path',
+      'state',
+      'item_state',
+      'contact_email',
+      'owner_name',
+      'owner_type',
+      'logo_id',
+      'banner',
     ]);
   }
 
@@ -83,7 +115,8 @@ class Solution extends SolutionBase {
     $this->setKeywords($row, 'keywords', $nid, $vid);
 
     // Resolve documentation.
-    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
@@ -112,7 +145,66 @@ class Solution extends SolutionBase {
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
 
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // State.
+    $this->setState($row);
+
+    // Only 'asset_release' type provides field translation.
+    if ($row->getSourceProperty('type') === 'asset_release') {
+      $this->setFieldTranslations($row);
+    }
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Gets the (D6) 'asset_release' documentation given its node revision ID.
+   *
+   * @param int $vid
+   *   The (D6) 'asset_release' node revision ID.
+   *
+   * @return array[]
+   *   An indexed array where the first item is a list of file IDs, each one
+   *   represented as source IDs (example [['fid' => 123, 'fid' => 987]]) and
+   *   the second item is a simple array of URLs.
+   */
+  protected function getAssetReleaseDocumentation($vid) {
+    $items = $this->select('d8_file_documentation', 'd')->fields('d')
+      ->condition('d.vid', $vid)
+      ->execute()
+      ->fetchAll();
+
+    $return = [[], []];
+    foreach ($items as $item) {
+      if (!empty($item['fid'])) {
+        $return[0][] = ['fid' => $item['fid']];
+      }
+      if (!empty($item['url'])) {
+        $return[1][] = $item['url'];
+      }
+    }
+
+    return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_is_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

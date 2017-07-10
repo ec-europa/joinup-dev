@@ -9,23 +9,23 @@ dependencies:
     - field.field.rdf_entity.contact_information.field_ci_webpage
     - rdf_entity.rdfentity.contact_information
   module:
-    - link
+    - joinup_core
 id: rdf_entity.contact_information.inline
 targetEntityType: rdf_entity
 bundle: contact_information
 mode: inline
 content:
   field_ci_email:
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: email_default
+    type: email_legacy_multicardinality
     region: content
   field_ci_name:
-    type: string_textfield
-    weight: 1
+    type: string_textfield_legacy_multicardinality
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -37,10 +37,11 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
+    type: link_legacy_multicardinality
     region: content
 hidden:
   current_workflow_state: true
   field_ci_state: true
   label: true
+  langcode: true
   uid: true

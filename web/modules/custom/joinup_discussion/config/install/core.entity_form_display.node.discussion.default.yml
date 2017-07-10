@@ -3,14 +3,17 @@ status: true
 dependencies:
   config:
     - field.field.node.discussion.body
-    - field.field.node.discussion.field_comments
+    - field.field.node.discussion.field_attachment
     - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - comment
+    - file
     - joinup_core
     - path
     - text
@@ -30,24 +33,25 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 9
+    weight: 10
     region: content
     settings:
       title: 'Current workflow state'
       title_display: before
       show_for_new_entities: false
     third_party_settings: {  }
-  field_comments:
-    weight: 8
-    settings: {  }
+  field_attachment:
+    weight: 3
+    settings:
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: comment_default
+    type: file_generic
     region: content
   field_policy_domain:
     weight: 2
@@ -55,8 +59,14 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_replies:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
+    region: content
   field_state:
-    weight: 10
+    weight: 11
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -64,7 +74,7 @@ content:
     region: content
   path:
     type: path
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -72,14 +82,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 6
     third_party_settings: {  }
     region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 7
     third_party_settings: {  }
     region: content
   title:
@@ -92,7 +102,7 @@ content:
     region: content
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -101,4 +111,5 @@ content:
     region: content
 hidden:
   field_shared_in: true
+  field_visit_count: true
   og_audience: true

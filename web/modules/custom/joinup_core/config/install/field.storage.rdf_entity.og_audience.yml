@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://joinup.eu/rdf_entity/group'
+      target_id:
+        predicate: 'http://joinup.eu/rdf_entity/group'
+        format: resource
 id: rdf_entity.og_audience
 field_name: og_audience
 entity_type: rdf_entity
@@ -17,7 +19,7 @@ settings:
 module: og
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

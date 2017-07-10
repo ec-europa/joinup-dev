@@ -24,11 +24,11 @@ SELECT
   TRIM(uri.field_id_uri_value),
   nr.body,
   f.fid,
-  f.filepath,
+  SUBSTRING(TRIM(f.filepath), 21),
   f.timestamp,
   f.uid,
   cfdau1.field_distribution_access_url1_url,
-  nl.nid,
+  nl.title,
   ar.nid,
   IF(g.type = 'project_project', 'release', 'solution')
 FROM node n
@@ -45,4 +45,3 @@ LEFT JOIN node nl ON cfdl.field_distribution_licence_nid = nl.nid AND nl.type = 
 LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 WHERE n.type = 'distribution'
 AND ar.nid IN(SELECT nid FROM d8_solution UNION SELECT nid FROM d8_release)
-ORDER BY ar.nid ASC, n.nid ASC

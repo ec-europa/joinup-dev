@@ -9,7 +9,7 @@
     width: 100%
 
 .form-wrapper
-  margin-bottom: 25px
+  margin-bottom: $form-margin
   &.form__actions-wrapper
     margin-bottom: 0
 
@@ -33,6 +33,7 @@ form .description
       white-space: normal
 
 .mdl-layout__drawer-button
+  +hidden-print
   top: 4px
   .material-icons
     font-size: 40px
@@ -43,3 +44,16 @@ form .description
     color: #fff
   +breakpoint(tablet)
     display: none
+
+.mdl-textfield--floating-label
+  .field-prefix
+    display: none
+
+.mdl-layout
+  overflow: initial !important
+
+.mdl-spinner
+  position: fixed
+  top: 48.5%
+  left: 49%
+  z-index: 1000

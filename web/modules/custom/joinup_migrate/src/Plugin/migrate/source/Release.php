@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,11 +13,16 @@ use Drupal\migrate\Row;
  *   id = "release"
  * )
  */
-class Release extends JoinupSqlBase {
+class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
   use CountryTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
+  use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use KeywordsTrait;
+  use StateTrait;
+  use StatusTrait;
 
   /**
    * {@inheritdoc}
@@ -42,6 +49,7 @@ class Release extends JoinupSqlBase {
       'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
+      'body' => $this->t('Description'),
       'created_time' => $this->t('Creation date'),
       'distribution' => $this->t('Distribution'),
       'solution' => $this->t('Solution ID'),
@@ -53,6 +61,8 @@ class Release extends JoinupSqlBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'documentation' => $this->t('Documentation'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
     ] + parent::fields();
   }
 
@@ -64,6 +74,7 @@ class Release extends JoinupSqlBase {
       'nid',
       'vid',
       'title',
+      'body',
       'created_time',
       'changed_time',
       'uri',
@@ -71,8 +82,8 @@ class Release extends JoinupSqlBase {
       'language',
       'version_notes',
       'version_number',
-      'docs_path',
-      'docs_url',
+      'state',
+      'item_state',
     ]);
   }
 
@@ -117,9 +128,42 @@ class Release extends JoinupSqlBase {
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Resolve documentation.
-    $this->setFileUrlTargetId($row, 'documentation', ['nid' => $nid], 'docs_path', 'documentation_file', 'docs_url');
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
+
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // State.
+    if ($row->getSourceProperty('item_state') === 'proposed') {
+      // Releases have no 'proposed' state (why?). What if 'proposed' is piped?
+      $row->setSourceProperty('item_state', 'draft');
+    }
+    $row->setSourceProperty('type', 'asset_release');
+    $this->setState($row);
+
+    // Set field translations.
+    $this->setFieldTranslations($row);
 
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_isr_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
   /**

@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -15,12 +16,18 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
+use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
 
 /**
  * Implements hook_theme().
@@ -37,6 +44,19 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'attributes' => [],
         'prefix_text' => '',
         'suffix_text' => '',
+      ],
+    ],
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
+    '404_not_found' => [
+      'variables' => [
+        'search' => [],
+        'front' => [],
       ],
     ],
   ];
@@ -177,6 +197,7 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
  *   can be used to expose this information.
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
+ * - Provides a 'path' field only for the 'rdf_entity' entities.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
@@ -211,6 +232,14 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
       ]);
   }
 
+  // Allow alias features for RDF entities.
+  if (($entity_type->id() === 'rdf_entity') && \Drupal::moduleHandler()->moduleExists('path')) {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE);
+  }
+
   return $fields;
 }
 
@@ -223,9 +252,15 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   // @todo Remove when ISAICP-3126 gets in.
   $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
 
-  // Add the about page as link template, so the og context will be
-  // automatically solved.
-  $entity_types['rdf_entity']->setLinkTemplate('about-page', '/rdf_entity/{rdf_entity}/about');
+  // Add the about page and member overview as link templates, so the OG context
+  // will be automatically solved.
+  $link_templates = [
+    'about-page' => '/rdf_entity/{rdf_entity}/about',
+    'member-overview' => '/rdf_entity/{rdf_entity}/members',
+  ];
+  foreach ($link_templates as $key => $path) {
+    $entity_types['rdf_entity']->setLinkTemplate($key, $path);
+  }
 }
 
 /**
@@ -271,38 +306,14 @@ QUERY;
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Remove non-related actions (adding/removing roles) for other group types
- * from member overview page.
- */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // The form id will contain the entity id of the group, so we have to fall
-  // back to strstr to see if the generic part matches.
-  if (strstr($form_id, 'views_form_og_members_overview_default') === FALSE) {
-    return;
-  }
-  $entity = \Drupal::request()->get('rdf_entity');
-  if (empty($entity) || !in_array($entity->getType(), ['solution', 'collection'])) {
-    return;
-  }
-  // Header not set if the view is empty (no members).
-  if (empty($form['header'])) {
-    return;
-  }
-  foreach ($form['header']['og_membership_bulk_form']['action']['#options'] as $key => $option) {
-    if (strstr($key, 'rdf_entity-' . $entity->getType()) === FALSE) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options'][$key]);
-    }
-  }
-}
-
-/**
  * Implements hook_node_links_alter().
  */
 function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
   if (isset($links['comment__field_comments']['#links']['comment-add'])) {
     unset($links['comment__field_comments']['#links']['comment-add']);
+  }
+  if (isset($links['comment__field_replies']['#links']['comment-add'])) {
+    unset($links['comment__field_replies']['#links']['comment-add']);
   }
 }
 
@@ -336,6 +347,55 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
 }
 
 /**
+ * Implements hook_query_TAG_alter().
+ *
+ * In Joinup, solutions and releases share the same bundle uri. The distinction
+ * between these two is that the releases always have the field
+ * 'field_isr_is_version_of' filled, while solutions do not have this field.
+ * This alter performs the following:
+ * 1. If there is a filter on both the release and solution bundles, do nothing.
+ * 2. If there is a filter on the solution, set the field
+ * 'field_isr_is_version_of' as a field required to be absent.
+ * 3. If there is a filter on the asset release, set the field
+ * 'field_isr_is_version_of' as a required field.
+ * 4. If there is a negative case on the bundles, perform cases 2 and 3 on
+ * reverse.
+ * 5. If none of these exist, as a filter, ignore it.
+ */
+function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  // If only one of the following are true, then add a condition on their
+  // corresponding field. If both are set, then do not bother.
+  $solution = FALSE;
+  $release = FALSE;
+
+  $entity_type = $query->getMetaData('entity_type');
+  $bundle_key = $entity_type->getKey('bundle');
+  foreach ($conditions as $condition) {
+    if ($condition['field'] === $bundle_key) {
+      $bundles = array_intersect(['solution', 'asset_release'], $condition['value']);
+      if (empty($bundles) || count($bundles) !== 1) {
+        continue;
+      }
+      $bundle = reset($bundles);
+      if ($bundle === 'solution') {
+        $solution = TRUE;
+      }
+      elseif ($bundle === 'asset_release') {
+        $release = TRUE;
+      }
+    }
+  }
+
+  if ($solution && !$release) {
+    $query->notExists('field_isr_is_version_of');
+  }
+  elseif (!$solution && $release) {
+    $query->exists('field_isr_is_version_of');
+  }
+}
+
+/**
  * Implements hook_field_formatter_info_alter().
  *
  * - Make sure the standard formatter for links can be used for the link that is
@@ -353,7 +413,7 @@ function joinup_core_entity_create(EntityInterface $entity) {
   if ($entity instanceof EntityPublishedInterface) {
     /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
     $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-    if ($workflow_helper->hasEntityStateField($entity)) {
+    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
       $state_field = $workflow_helper->getEntityStateField($entity);
       $workflow = $state_field->getWorkflow();
       $state_id = $state_field->getValue()['value'];
@@ -365,4 +425,226 @@ function joinup_core_entity_create(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Override the validate handler for the datetime widget.
+ */
+function joinup_core_element_info_alter(array &$info) {
+  if (isset($info['datetime'])) {
+    $info['datetime']['#element_validate'] = [
+      [
+        Datetime::class,
+        'validateDatetime',
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for RDF entities.
+ */
+function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+  // When a collection or solution is created, create a new navigation menu and
+  // associate it with the new collection or solution. This menu can be used to
+  // link to custom pages, member overviews, an about page etc.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('Members'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('member-overview')->toString()],
+      'weight' => -9,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'weight' => -8,
+    ]);
+    $link->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Provide default images for collections and solutions in case they are empty.
+ */
+function joinup_core_rdf_entity_presave(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['solution', 'collection'])) {
+    return;
+  }
+
+  $field_data = [
+    'logo' => ['field_ar_logo', 'field_is_logo'],
+    'banner' => ['field_ar_banner', 'field_is_banner'],
+  ];
+
+  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  foreach ($field_data as $field_type => $fields) {
+    foreach ($fields as $field) {
+      if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
+        // Get files without the . and .. directories.
+        $files = array_slice(scandir($fixtures_path . $field_type), 2);
+        $random = array_rand($files);
+        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file = File::create(['uri' => $file_path]);
+        $file->save();
+        $entity->set($field, $file->id());
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function joinup_core_token_info() {
+  return [
+    'types' => [
+      'joinup-current-page' => [
+        'name' => t('Joinup current page'),
+        'description' => t('Custom tokens that can be derived from the context of the current page.'),
+      ],
+    ],
+    'tokens' => [
+      'joinup-current-page' => [
+        'group-context' => [
+          'name' => t('Group context'),
+          'description' => t('The collection or solution a page belongs to.'),
+        ],
+        'page-type' => [
+          'name' => t('Page type'),
+          'description' => t('Human readable page type. Intended for analytics.'),
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function joinup_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  switch ($type) {
+    case 'joinup-current-page':
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          case 'group-context':
+            /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+            if ($group = \Drupal::service('og.context')->getGroup()) {
+              $replacements[$original] = $group->label();
+            }
+            break;
+
+          case 'page-type':
+            $replacements[$original] = \Drupal::service('joinup_core.page_type_determiner')->getType();
+            break;
+        }
+      }
+      break;
+  }
+
+  return $replacements;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * File entities might have file system redirects coming from previous platform
+ * versions, following this pattern (relative to files directory):
+ * @code
+ * legacy/path/to/image.png -> actual/path/to/image.png
+ * @endcode
+ * Such redirects are not cleared automatically by the Redirect module, when the
+ * source file entity is deleted, thus we're fulfilling this task here.
+ */
+function joinup_core_file_delete(EntityInterface $entity) {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+
+  /** @var \Drupal\file\FileInterface $entity */
+  $uri = $entity->getFileUri();
+  $scheme = $file_system->uriScheme($uri);
+  if ($scheme !== 'public') {
+    return;
+  }
+
+  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . file_uri_target($uri);
+
+  // Delete all redirects targeting this path.
+  redirect_delete_by_path($path);
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_core_entity_extra_field_info() {
+  $motivation_bundles = [
+    'node' => ['discussion', 'document', 'event', 'news'],
+    'rdf_entity' => ['collection', 'solution', 'asset_release'],
+  ];
+  $fields = [];
+  foreach ($motivation_bundles as $entity_type_id => $bundles) {
+    foreach ($bundles as $bundle) {
+      $fields[$entity_type_id][$bundle]['form']['transition_motivation'] = [
+        'label' => t('Motivation'),
+        'description' => t('The motivation for the action.'),
+        'weight' => 10,
+        'display' => TRUE,
+      ];
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $motivation_form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_asset_release_edit_form',
+    'node_discussion_edit_form',
+    'node_document_edit_form',
+    'node_event_edit_form',
+    'node_news_edit_form',
+  ];
+
+  if (!in_array($form_id, $motivation_form_ids)) {
+    return;
+  }
+
+  $form['transition_motivation'] = [
+    '#type' => 'textarea',
+    '#title' => t('Motivation'),
+    '#description' => t('Description of the reason of this operation.'),
+  ];
 }

@@ -51,6 +51,7 @@ Feature: Asset distribution editing.
     And I go to the homepage of the "Asset distribution example" asset distribution
     And I click "Edit"
     Then I should see the heading "Edit Distribution Asset distribution example"
+    And the following fields should not be present "Langcode, Translation"
     When I fill in "Title" with "Asset distribution example revised"
     And I press "Save"
     Then I should see the heading "Asset distribution example revised"

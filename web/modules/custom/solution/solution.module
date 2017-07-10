@@ -13,7 +13,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
@@ -56,9 +55,12 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   // @see solution_rdf_entity_load().
   $fields['collection'] = BaseFieldDefinition::create('entity_reference')
     ->setLabel(t('Collection'))
+    ->setName('collection')
     ->setDescription(t('The collections this solution belongs to.'))
-    ->setReadOnly(TRUE)
-    ->setSetting('target_type', 'rdf_type');
+    ->setTranslatable(FALSE)
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setComputed(TRUE)
+    ->setReadOnly(TRUE);
 
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
@@ -66,21 +68,21 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_entity_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
  * creates the solution.
  *
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
-function solution_rdf_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() !== 'solution') {
+function solution_entity_insert(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'solution') {
     return;
   }
 
   // When a new solution is created, give the current user the 'group owner'
   // role, if it is not the anonymous user.
-  if (!\Drupal::currentUser()->isAnonymous()) {
+  if (!empty($entity->getOwner())) {
     // The group owner inherits all roles of a solution facilitator and
     // administrator.
     $roles = [
@@ -89,12 +91,11 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create();
-    $membership
-      ->setUser(\Drupal::currentUser())
-      ->setGroup($entity)
-      ->setRoles(array_values(OgRole::loadMultiple($roles)))
-      ->save();
+    $membership = Og::getMembership($entity, $entity->getOwner());
+    if (!empty($membership)) {
+      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+      $membership->save();
+    }
   }
 }
 
@@ -522,5 +523,17 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   else {
     // Exclude all the distributions.
     $query->addCondition('entity_bundle', 'asset_distribution', '<>');
+  }
+}
+
+/**
+ * Implements hook_field_group_pre_render_alter().
+ */
+function solution_field_group_pre_render_alter(&$element, $group, $rendering_object) {
+  // Disable the trr tab on solution pages by default.
+  // Re-enable it in trr.module.
+  // @see trr_field_group_pre_render_alter().
+  if ($group->group_name == 'group_trr') {
+    $element['#access'] = FALSE;
   }
 }

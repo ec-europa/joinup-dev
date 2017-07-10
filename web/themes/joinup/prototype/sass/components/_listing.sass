@@ -7,7 +7,7 @@
 
 // Component
 // --------------------------------------------------
-.listing
+// .listing
 
 // Elements
 // --------------------------------------------------
@@ -28,6 +28,7 @@
     max-width: 100%
     max-height: 140px
     height: auto
+    width: auto
     +centered
 
 .listing__metadata
@@ -68,16 +69,8 @@
   p
     margin-bottom: 0
 
-.listing__tags
-  span
-    font-size: 12px
-    margin-right: 6px
-    &:after
-      content: ','
-    &:last-of-type
-      margin-right: 0
-      &:after
-        content: none
+.listing__tags, .listing__tags a
+  font-size: $font-size-xsmall
 
 .listing__stats
   position: absolute
@@ -99,7 +92,8 @@
 
 .listing__icon
   color: lighten($color-grey-medium, 10%)
-  +icon-size(26px)
+  margin-left: 6px
+  +icon-size(16px)
 
 .listing__text
   font-size: $font-size-xsmall
@@ -133,8 +127,24 @@
 .listing__action-link__wrapper
   padding: 0 20px
 
-.listing__details
+.listing__item--create-tile
+  .mdl-cell--middle
+    width: 100%
 
+.listing__create-tile
+  color: $color-base
+  display: block
+  text-align: center
+  text-decoration: none
+  text-transform: uppercase
+  width: 100%
+
+  &:before
+    display: block
+    font-size: 200px
+    line-height: 0.5em
+    margin-bottom: 30px
+    content: "+"
 
 // Modifiers
 // --------------------------------------------------
@@ -146,7 +156,7 @@
   background-color: #f0f7f7
   .icon
     color: #5d5e5f
-    +icon-size(90px)
+    +icon-size(50px)
     +centered
 
 .listing__card--inline-containers
@@ -183,8 +193,9 @@
 .listing__title
   .icon
     position: relative
-    top: 7px
-    +icon-size(32px)
+    top: 1px
+    margin-left: 6px
+    +icon-size(16px)
 
 .listing__card--detail-container
   .listing__metadata
@@ -337,15 +348,6 @@
   cursor: pointer
   .load-more
     text-decoration: none
-  .load-more__wrapper
-    margin-top: -10px
-    text-align: center
-    +centered
   .load-more__icon
-    color: darken($color-grey-light, 10%)
-    +icon-size(60px)
-
-  .load-more__text
-    font-size: $font-size-base
-    font-weight: $font-weight-medium
-    color: $color-base
+    margin-bottom: 10px
+    +icon-size(36px)

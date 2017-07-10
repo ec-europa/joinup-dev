@@ -16,8 +16,7 @@ Feature: Proposing a collection
       | Username      | Password |
       | Cecil Clapman | claps    |
     Given I am an anonymous user
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then I should see the error message "Access denied. You must log in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
@@ -31,15 +30,18 @@ Feature: Proposing a collection
       | name                 | type    |
       | Organisation example | Company |
     And I am logged in as an "authenticated user"
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then I should see the heading "Propose collection"
-    And the following fields should not be present "Current workflow state"
+    And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
+    # Ensure that the description for the "Access url" is shown.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
+    And I should see the description "Web page for the external Repository." for the "Access URL" field
+    And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL)                               |
+      | Spatial coverage | Belgium                                                                                              |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
@@ -55,6 +57,8 @@ Feature: Proposing a collection
       | Field Logo is required   |
       | Field Banner is required |
     And I should see the heading "Ancient and Classical Mythology"
+    And I should see a logo on the header
+    And I should see a banner on the header
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 member
@@ -62,6 +66,7 @@ Feature: Proposing a collection
     And I should see the following collection menu items in the specified order:
       | text     |
       | Overview |
+      | Members  |
       | About    |
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
@@ -79,8 +84,7 @@ Feature: Proposing a collection
       | title | The Ratcatcher's Guild |
       | state | validated              |
     Given I am logged in as a user with the "authenticated" role
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
@@ -149,16 +153,16 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
     When I click "Description" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
-    # There should be a help text for the 'Access URL' field.
-    Then I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
