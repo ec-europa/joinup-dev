@@ -284,6 +284,7 @@ Feature: Moderate community content
     When I go to the "Cataclysmic variables" discussion
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "Cataclysmic conditions"
+    And I fill in "Motivation" with "This is a regression issue."
     And I press "Request changes"
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
