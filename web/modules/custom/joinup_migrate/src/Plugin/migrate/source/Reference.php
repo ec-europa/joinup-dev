@@ -334,7 +334,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       return NULL;
     }
 
-    $scheme = '';
+    $scheme = 'http://';
     if (!empty($url_parts['scheme'])) {
       if (!in_array($url_parts['scheme'], ['http', 'https'])) {
         // Only HTTP and HTTPS are allowed.
@@ -344,9 +344,23 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     }
 
     if (UrlHelper::isExternal($path)) {
-      if (!UrlHelper::externalIsLocal($path, "{$scheme}joinup.ec.europa.eu")) {
+      if (preg_match('@^(//)?joinup.ec.europa.eu@', $path)) {
+        $path = $scheme . ltrim($path, '/');
+        // Re-extract parts.
+        if (!$url_parts = parse_url($path)) {
+          return NULL;
+        }
+      }
+
+      try {
+        if (!UrlHelper::externalIsLocal($path, "{$scheme}joinup.ec.europa.eu")) {
+          return NULL;
+        }
+      }
+      catch (\Exception $e) {
         return NULL;
       }
+
       // Remove the host part.
       $path = preg_replace('|^http[s]?://joinup.ec.europa.eu(.*)$|', '$1', $path);
     }
