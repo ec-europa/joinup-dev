@@ -12,6 +12,7 @@ CREATE OR REPLACE VIEW d8_collection (
   body,
   access_url,
   elibrary,
+  uid,
   owner,
   owner_text_name,
   owner_text_type,
@@ -38,6 +39,8 @@ SELECT
   IF (p.description IS NOT NULL AND TRIM(p.description) <> '', TRIM(p.description), IF(nr.body IS NOT NULL AND TRIM(nr.body) <> '', TRIM(nr.body), NULL)),
   IF(n.type = 'community', ctc.field_community_url_url, cfru.field_repository_url_url),
   p.elibrary,
+  -- Pick-up the first, if there are more.
+  SUBSTRING_INDEX(p.collection_owner, ',', 1),
   p.publisher,
   p.owner_text_name,
   p.owner_text_type,
