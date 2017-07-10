@@ -77,6 +77,7 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   }
   $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
 
+  /** @var \Drupal\rdf_entity\Entity\Rdf $parent_solution */
   $parent_solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf_entity);
 
   // Mark the release as latest.
