@@ -169,7 +169,7 @@ abstract class NotificationSubscriberBase {
     $uids_to_skip = array_unique([0, $this->currentUser->id()]);
     $message_data = [];
 
-    if (!empty($user_data['owner']) && $entity->getOwnerId() !== $this->currentUser->id()) {
+    if (!empty($user_data['owner']) && $entity->getOwnerId() !== $this->currentUser->id() && !$entity->getOwner()->isAnonymous()) {
       $message_data[$entity->getOwnerId()] = $user_data['owner'];
       $uids_to_skip[] = $entity->getOwnerId();
     }
@@ -317,6 +317,9 @@ abstract class NotificationSubscriberBase {
       foreach ($user_ids as $user_id) {
         /** @var \Drupal\user\Entity\User $user */
         $user = $this->entityTypeManager->getStorage('user')->load($user_id);
+        if ($user->isAnonymous()) {
+          continue;
+        }
         $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
         $this->messageNotifier->send($message, $options);
       }
