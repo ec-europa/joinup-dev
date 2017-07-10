@@ -45,6 +45,11 @@ Feature: Collection homepage
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
     Then I see the days passed since "2017-07-05"
+    When I am logged in as authenticated
+    And I go to the homepage of the "Middle earth daily" collection
+    When I press the "Join this collection" button
+    And I go to the homepage of the "Middle earth daily" collection
+    Then I should see the text "4 Members" in the "Header" region
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
