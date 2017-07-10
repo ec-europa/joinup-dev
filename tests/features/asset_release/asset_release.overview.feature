@@ -56,3 +56,27 @@ Feature: Asset distribution overview on solution.
     When I click "The Child of the Past 1"
     Then I should see the heading "The Child of the Past 1"
     And I should see the text "Latest release"
+
+    # Create a new release.
+    When I am logged in as a facilitator of the "Lovely Butterfly" solution
+    And I go to the homepage of the "Lovely Butterfly" solution
+    And I click "Add release" in the plus button menu
+    Then I should see the heading "Add Release"
+    When I fill in "Name" with "The Deep Doors"
+    And I fill in "Release number" with "4"
+    And I enter "Notes 4" in the "Release notes" wysiwyg editor
+    And I press "Publish"
+    Then I should see the heading "The Deep Doors 4"
+
+    # We need to logout as unpublished releases are also shown in the list for
+    # privileged users.
+    # @see ISAICP-3393
+    When I am an anonymous user
+    And I go to the homepage of the "Lovely Butterfly" solution
+    And I click "Download releases"
+    Then I should see the following releases in the exact order:
+      | release                 |
+      | The Deep Doors 4        |
+      | The Child of the Past 1 |
+      | Thief in the Angels 2   |
+    And the "The Deep Doors" release should be marked as the latest release
