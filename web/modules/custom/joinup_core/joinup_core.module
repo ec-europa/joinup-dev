@@ -719,5 +719,5 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
     ],
   ];
 
-  return in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
+  return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
 }
