@@ -187,11 +187,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    if (empty($this->config[$this->entity->get($this->stateField)->first()->value])) {
+    if (empty($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value])) {
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->entity->get($this->stateField)->first()->value], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value], $event);
     $this->sendUserDataMessages($user_data);
   }
 

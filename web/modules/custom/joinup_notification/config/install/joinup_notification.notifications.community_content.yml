@@ -117,6 +117,27 @@ update:
       owner:
         - cc_transition_request_changes
 delete:
-  deletion_request:
-    owner:
-      - cc_delete
+  node:pre_moderated:
+    deletion_request:
+      owner:
+        - cc_delete
+  node:post_moderated:
+    validated:
+      owner:
+        - cc_delete
+    needs_update:
+      owner:
+        - cc_delete
+    proposed:
+      owner:
+        - cc_delete
+  node:discussion:post_moderated:
+    validated:
+      owner:
+        - cc_delete
+    needs_update:
+      owner:
+        - cc_delete
+    proposed:
+      owner:
+        - cc_delete

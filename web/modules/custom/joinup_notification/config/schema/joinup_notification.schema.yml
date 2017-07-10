@@ -4,18 +4,15 @@ joinup_notification.notifications.community_content:
   mapping:
     create:
       label: 'Notifications for the create operation'
-      type: joinup_notification.workflow.settings
+      type: joinup_notification.workflow.transition.settings
     update:
       label: 'Notifications for the update operation'
-      type: joinup_notification.workflow.settings
+      type: joinup_notification.workflow.transition.settings
     delete:
       label: 'Notifications for the delete operation'
-      type: sequence
-      sequence:
-        label: 'State'
-        type: joinup_notification.user_role.settings
+      type: joinup_notification.workflow.state.settings
 
-joinup_notification.workflow.settings:
+joinup_notification.workflow.transition.settings:
   label: 'Transition settings'
   type: sequence
   sequence:
@@ -23,6 +20,16 @@ joinup_notification.workflow.settings:
     type: sequence
     sequence:
       label: 'Transition id'
+      type: joinup_notification.user_role.settings
+
+joinup_notification.workflow.state.settings:
+  label: 'Transition settings'
+  type: sequence
+  sequence:
+    label: 'Workflow id'
+    type: sequence
+    sequence:
+      label: 'State id'
       type: joinup_notification.user_role.settings
 
 joinup_notification.user_role.settings:
