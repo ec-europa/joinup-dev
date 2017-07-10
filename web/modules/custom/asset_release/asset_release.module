@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -97,6 +98,14 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   }
 
   $variables['is_latest_release'] = $is_latest_release;
+
+  // Whenever a new release gets created, the parent solution gets updated.
+  // Invalidate the rendered template cache of the latest release in that case,
+  // so the latest release flag gets updated.
+  if ($parent_solution && $is_latest_release) {
+    $cache_tags = isset($variables['#cache']['tags']) ? $variables['#cache']['tags'] : [];
+    $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+  }
 }
 
 /**
