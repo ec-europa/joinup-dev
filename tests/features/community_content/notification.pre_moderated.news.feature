@@ -20,7 +20,7 @@ Feature: Notification test for the propose transition.
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
     And news content:
-      | title                               | author         | body | field_news_headline                 | collection        | field_state      |
+      | title                               | author         | body | headline                            | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
       | CC notify pre publish               | CC facilitator | body | CC notify pre publish               | CC pre collection | draft            |

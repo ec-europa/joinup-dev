@@ -20,18 +20,18 @@ Feature: Notification test for the propose transition.
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
     And document content:
-      | title                               | author         | body | field_type | collection        | field_state      |
+      | title                               | author         | body | document type | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
-      | CC notify pre publish               | CC facilitator | body | Document   | CC pre collection | draft            |
-      | CC notify pre propose               | CC member      | body | Document   | CC pre collection | draft            |
-      | CC notify pre request changes       | CC member      | body | Document   | CC pre collection | validated        |
-      | CC notify pre report                | CC member      | body | Document   | CC pre collection | validated        |
-      | CC notify pre request deletion      | CC member      | body | Document   | CC pre collection | validated        |
-      | CC notify pre propose from reported | CC member      | body | Document   | CC pre collection | needs_update     |
-      | CC notify pre approve proposed      | CC member      | body | Document   | CC pre collection | proposed         |
-      | CC notify pre reject deletion       | CC member      | body | Document   | CC pre collection | deletion_request |
-      | CC notify pre delete                | CC member      | body | Document   | CC pre collection | deletion_request |
+      | CC notify pre publish               | CC facilitator | body | Document      | CC pre collection | draft            |
+      | CC notify pre propose               | CC member      | body | Document      | CC pre collection | draft            |
+      | CC notify pre request changes       | CC member      | body | Document      | CC pre collection | validated        |
+      | CC notify pre report                | CC member      | body | Document      | CC pre collection | validated        |
+      | CC notify pre request deletion      | CC member      | body | Document      | CC pre collection | validated        |
+      | CC notify pre propose from reported | CC member      | body | Document      | CC pre collection | needs_update     |
+      | CC notify pre approve proposed      | CC member      | body | Document      | CC pre collection | proposed         |
+      | CC notify pre reject deletion       | CC member      | body | Document      | CC pre collection | deletion_request |
+      | CC notify pre delete                | CC member      | body | Document      | CC pre collection | deletion_request |
 
     # Test 'create' operation.
     When all e-mails have been sent
