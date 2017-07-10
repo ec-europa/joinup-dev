@@ -48,6 +48,8 @@
 
   {% if is_front and not logged_in %}
     {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
+  {% elseif page.featured and is_navy_header %}
+    {% include directory ~ '/templates/parts/featured--navy-blue.html.twig' %}
   {% elseif page.featured or is_blue_header %}
     <div class="section section--featured">
       {% if is_blue_header %}
@@ -79,6 +81,12 @@
         {% if page.content_top %}
           <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
             {{ page.content_top }}
+          </div>
+        {% endif %}
+
+        {% if page.filters %}
+          <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
+            {{ page.filters }}
           </div>
         {% endif %}
 
