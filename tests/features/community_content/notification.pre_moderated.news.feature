@@ -53,7 +53,7 @@ Feature: Notification test for the propose transition.
     And I click "Add news" in the plus button menu
     And I fill in "Kicker" with "CC notify create publish"
     And I fill in "Headline" with "CC notify create publish"
-    And I fill in "Content" with "CC notify create propose"
+    And I fill in "Content" with "CC notify create publish"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                  |
