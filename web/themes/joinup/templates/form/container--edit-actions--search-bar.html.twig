@@ -23,13 +23,7 @@
   set classes = [
     has_parent ? 'js-form-wrapper',
     has_parent ? 'form-wrapper',
-    is_collection ? 'mdl-grid',
-    is_collection ? 'mdl-grid--no-spacing',
-    is_collection ? 'vertical-tabs__actions',
-    'form__actions-wrapper',
+    'search-bar__button-container',
   ]
 %}
-
-
-    {{ children }}
-
+<div{{ attributes.addClass(classes) }}>{{ children }}</div>

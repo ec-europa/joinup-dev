@@ -745,8 +745,8 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   }
 
   // Suggestion based on data twig suggestion created in form alter.
-  if (isset($variables['element']['#attributes']['data-twig-suggestion'])) {
-    $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $variables['element']['#attributes']['data-twig-suggestion'];
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
   }
 
   // Suggestion for search form submit.
@@ -762,8 +762,8 @@ function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, 
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
 
   // Suggestion based on data twig suggestion created in form alter.
-  if (isset($variables['element']['#attributes']['data-twig-suggestion'])) {
-    $suggestions[] = 'form_element__' . $variables['element']['#type'] . '__' . $variables['element']['#attributes']['data-twig-suggestion'];
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'form_element__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
   }
 }
 
@@ -1030,7 +1030,7 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
  */
 function joinup_theme_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (strpos($form['#id'], 'views-exposed-form-search-page-') !== FALSE) {
-    $form['keys']['#attributes']['data-twig-suggestion'] = 'search_bar';
+    $form['keys']['#extra_suggestion'] = 'search_bar';
     $form['keys']['#attributes']['class'][] = 'search-bar__input';
     $form['keys']['#attributes']['placeholder'] = t('Start typing to search...');
   }
