@@ -1,5 +1,5 @@
 @api @email
-Feature: Notification test for the propose transition.
+Feature: Notification test for the news transitions on a post moderated parent.
   In order to manage my collections
   As an owner of the collection
   I want to receive a notification when an entity is proposed.
