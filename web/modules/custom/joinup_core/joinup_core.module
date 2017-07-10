@@ -670,13 +670,20 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
 function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\node\NodeForm $test */
   $entity = $form_state->getFormObject()->getEntity();
+  $to_state = $form_state->getTriggeringElement()['#state_id'];
+  // If $to_state is empty, it means that another button was clicked, like
+  // "Add new" in the contact information field.
+  if (empty($to_state)) {
+    return;
+  }
+
   /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
   $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
   $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
   /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
   $workflow = $workflow_helper->getWorkflow($entity, $state_field);
   $from_state = $entity->get($state_field)->first()->value;
-  $to_state = $form_state->getTriggeringElement()['#state_id'];
+
   $transition = $workflow->findTransition($from_state, $to_state);
 
   if (joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId()) && empty($form_state->getValue('transition_motivation'))) {
