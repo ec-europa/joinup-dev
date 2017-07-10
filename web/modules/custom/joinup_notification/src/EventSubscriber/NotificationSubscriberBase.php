@@ -227,8 +227,6 @@ abstract class NotificationSubscriberBase {
    *
    * @return array
    *   An array of user ids.
-   *
-   * @todo: To be transfered in a base class when more subscribers are created.
    */
   protected function getRecipientIdsByOgRole(EntityInterface $entity, $role_id) {
     if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
