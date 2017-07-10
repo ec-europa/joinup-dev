@@ -14,6 +14,6 @@ final class NotificationEvents {
    *
    * @var string
    */
-  const COMMUNITY_CONTENT_CRUD = 'joinup_notification.notify';
+  const COMMUNITY_CONTENT_CRUD = 'joinup_notification.cc.notify';
 
 }

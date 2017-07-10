@@ -4,6 +4,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -51,7 +52,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events['joinup_notification.notify'] = [
+    $events[NotificationEvents::COMMUNITY_CONTENT_CRUD] = [
       ['onCreate'],
       ['onUpdate'],
       ['onDelete'],
