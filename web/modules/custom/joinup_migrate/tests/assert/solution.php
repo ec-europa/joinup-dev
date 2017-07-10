@@ -8,10 +8,6 @@
 use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
-// Migration counts.
-$this->assertTotalCount('solution', 13);
-$this->assertSuccessCount('solution', 13);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
 $solution = $this->loadEntityByLabel('rdf_entity', 'The administrative geography and civil voting area ontology', 'solution');

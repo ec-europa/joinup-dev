@@ -7,12 +7,6 @@
 
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('custom_page_parent', 2);
-$this->assertSuccessCount('custom_page_parent', 2);
-$this->assertTotalCount('custom_page', 8);
-$this->assertSuccessCount('custom_page', 8);
-
 // Parent custom pages.
 /* @var \Drupal\node\NodeInterface $custom_page */
 $custom_page = $this->loadEntityByLabel('node', 'Digital Signature Service', 'custom_page');

@@ -7,10 +7,6 @@
 
 use Drupal\file\Entity\File;
 
-// Migration counts.
-$this->assertTotalCount('collection', 8);
-$this->assertSuccessCount('collection', 8);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
 $collection = $new_collection;

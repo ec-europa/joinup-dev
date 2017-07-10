@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
-use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\Tests\BrowserTestBase;
@@ -240,55 +239,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
       ->execute()
       ->fetchAll();
     $this->assertTrue($found);
-  }
-
-  /**
-   * Asserts total number of items migrated.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   */
-  protected function assertTotalCount($migration_id, $count) {
-    $this->countHelper($migration_id, $count);
-  }
-
-  /**
-   * Asserts that number of items successfully migrated.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   */
-  protected function assertSuccessCount($migration_id, $count) {
-    $this->countHelper($migration_id, $count, MigrateIdMapInterface::STATUS_IMPORTED);
-  }
-
-  /**
-   * Asserts number of migrated items with a given status.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   * @param int $status
-   *   (optional) The migration status. If missed all the items are counted.
-   */
-  protected function countHelper($migration_id, $count, $status = NULL) {
-    $table = "migrate_map_{$migration_id}";
-    $query = $this->db->select($table)->fields($table);
-    if ($status !== NULL) {
-      $query->condition('source_row_status', $status);
-    }
-
-    $actual_count = $query
-      ->countQuery()
-      ->execute()
-      ->fetchField();
-
-    $this->assertEquals($count, $actual_count);
   }
 
   /**

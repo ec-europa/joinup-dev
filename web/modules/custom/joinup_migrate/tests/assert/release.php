@@ -7,10 +7,6 @@
 
 use Drupal\file_url\FileUrlHandler;
 
-// Migration counts.
-$this->assertTotalCount('release', 86);
-$this->assertSuccessCount('release', 86);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $release */
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.0.0', 'asset_release');

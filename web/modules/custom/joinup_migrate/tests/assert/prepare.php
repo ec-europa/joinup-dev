@@ -74,17 +74,6 @@ $expected_values = [
   ],
 ];
 
-// Migration counts.
-$expected_values_count = count($expected_values);
-$this->assertTotalCount('prepare', $expected_values_count);
-$this->assertSuccessCount('prepare', $expected_values_count);
-
-// Imported content check.
-$imported = $this->legacyDb->select('d8_prepare')
-  ->fields('d8_prepare')
-  ->execute()
-  ->fetchAllAssoc('collection', PDO::FETCH_ASSOC);
-
 foreach ($expected_values as $collection => $expected_value) {
   $import = $imported[$collection];
 
