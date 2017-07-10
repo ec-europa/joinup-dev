@@ -164,7 +164,9 @@ abstract class NotificationSubscriberBase {
       'roles' => [],
       'og_roles' => [],
     ];
-    $uids_to_skip = $this->currentUser->isAnonymous() ? [] : [$this->currentUser->id()];
+    // By default, skip the anonymous user and the actor.
+    // The actor might be an anonymous user.
+    $uids_to_skip = array_unique([0, $this->currentUser->id()]);
     $message_data = [];
 
     if (!empty($user_data['owner']) && $entity->getOwnerId() !== $this->currentUser->id()) {
