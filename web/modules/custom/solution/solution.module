@@ -445,32 +445,35 @@ function solution_get_latest_release(RdfInterface $solution) {
     throw new \InvalidArgumentException('Passed argument is not a solution RDF entity.');
   }
 
-  $ids = \Drupal::entityQuery('rdf_entity')
-    ->condition('rid', 'asset_release')
-    ->condition('field_isr_is_version_of', $solution->id())
-    ->sort('field_isr_creation_date', 'DESC')
-    ->execute();
+  $cache = &drupal_static(__FUNCTION__, []);
+  if (!isset($cache[$solution->id()])) {
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->condition('field_isr_is_version_of', $solution->id())
+      ->sort('field_isr_creation_date', 'DESC')
+      ->execute();
 
-  if (empty($ids)) {
-    return NULL;
+    $cache[$solution->id()] = NULL;
+    if (!empty($ids)) {
+      // @todo: Sorting is not yet working in SPARQL, we're fetching all results
+      // and doing the sorting in PHP right now. Once sorting is working we
+      // should limit the result set to 1 item.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      $releases = Rdf::loadMultiple($ids);
+      usort($releases, function ($release1, $release2) {
+        $ct1 = $release1->field_isr_creation_date->value;
+        $ct2 = $release2->field_isr_creation_date->value;
+        if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
+          return 0;
+        }
+        return ($ct1 < $ct2) ? 1 : -1;
+      });
+
+      $cache[$solution->id()] = reset($releases);
+    }
   }
 
-  // @todo: Sorting is not yet working in SPARQL, we're fetching all results and
-  // doing the sorting in PHP right now. Once sorting is working we should limit
-  // the result set to 1 item.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-  $releases = Rdf::loadMultiple($ids);
-  usort($releases, function ($release1, $release2) {
-    $ct1 = $release1->field_isr_creation_date->value;
-    $ct2 = $release2->field_isr_creation_date->value;
-    if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
-      return 0;
-    }
-    return ($ct1 < $ct2) ? 1 : -1;
-  });
-
-  $latest_release = reset($releases);
-  return $latest_release;
+  return $cache[$solution->id()];
 }
 
 /**
