@@ -329,7 +329,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then the :release release should be marked as the latest release
    */
-  public function assertLinkDistribution($release) {
+  public function assertReleaseIsLatest($release) {
     $release = $this->getAssetReleaseByName($release);
 
     $latest_releases = $this->getSession()->getPage()->findAll('css', '.is-latest');
