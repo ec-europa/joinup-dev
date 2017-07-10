@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Database\Connection;
@@ -217,13 +218,11 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     }
 
     // Build the DOM based on this markup.
-    $dom = new \DOMDocument();
-    @$dom->loadHTML($markup, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT);
-
+    $document = Html::load($markup);
     $changed = FALSE;
     foreach (static::TAGS as $tag => $attribute) {
       /** @var \DOMElement $element */
-      foreach ($dom->getElementsByTagName($tag) as $element) {
+      foreach ($document->getElementsByTagName($tag) as $element) {
         $incoming_path = trim($element->getAttribute($attribute));
         if ($incoming_path && $parts = $this->getRelativePath($incoming_path)) {
           // If not cached, try to extract a valid target and cache it.
@@ -244,7 +243,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       }
     }
     if ($changed) {
-      $markup = $dom->saveHTML();
+      $markup = Html::serialize($document);
     }
 
     return $changed;
@@ -435,7 +434,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
             if ($fields) {
               // Remove the column: 'body/value' -> 'body'.
               $this->fieldInfo[$entity_type][$bundle] = array_map(function ($field) {
-                list($field, $key) = explode('/', $field, 2);
+                list($field,) = explode('/', $field, 2);
                 return $field;
               }, $fields);
             }
