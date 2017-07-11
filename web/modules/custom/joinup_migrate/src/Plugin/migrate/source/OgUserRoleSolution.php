@@ -39,6 +39,7 @@ class OgUserRoleSolution extends SourcePluginBase {
       'roles' => $this->t('OG roles'),
       'created' => $this->t('Created'),
       'state' => $this->t('State'),
+      'id' => $this->t('Membership ID'),
     ];
   }
 
@@ -47,6 +48,18 @@ class OgUserRoleSolution extends SourcePluginBase {
    */
   public function initializeIterator() {
     $db = Database::getConnection('default', 'migrate');
+
+    // Get all existing memberships using a SQL query to speed up the process.
+    $existing_memberships = [];
+    if (Database::getConnection()->schema()->tableExists('migrate_map_solution')) {
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+      $query = Database::getConnection()->select('og_membership', 'og')
+        ->condition('og.entity_type', 'rdf_entity');
+      $query->join('migrate_map_solution', 's', "og.entity_id = s.destid1");
+      $query->addField('og', 'id');
+      $query->addExpression("CONCAT_WS(':', s.sourceid1, og.uid)");
+      $existing_memberships = $query->execute()->fetchAllKeyed(1, 0);
+    }
 
     $query = $db->select('d8_solution', 's')
       ->fields('s', ['nid'])
@@ -71,6 +84,16 @@ class OgUserRoleSolution extends SourcePluginBase {
       if ($data->is_admin) {
         $row['roles'][] = 'rdf_entity-solution-administrator';
       }
+
+      // It's possible that a membership has been already created for this user,
+      // as an effect of his solution authorship. In this case we add also the
+      // membership ID to the row, so the membership will be updated instead of
+      // being created.
+      $key = "$nid:$uid";
+      if (isset($existing_memberships[$key])) {
+        $row['id'] = (int) $existing_memberships[$key];
+      }
+
       $rows[] = $row;
     }
 

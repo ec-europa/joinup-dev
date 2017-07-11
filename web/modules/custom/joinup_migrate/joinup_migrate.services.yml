@@ -15,3 +15,7 @@ services:
     class: Drupal\joinup_migrate\EventSubscriber\TranslateFieldSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_migrate.solution_owner_check_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\SolutionOwnerCheckSubscriber
+    tags:
+      - { name: event_subscriber }
