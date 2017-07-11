@@ -49,6 +49,12 @@ content:
       prefix: 'http://example.org/joinup/publisher'
     third_party_settings: {  }
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   label: true
   uid: true
