@@ -86,9 +86,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     When I fill in "Motivation" with "I just want to delete it."
     And I press "Request deletion"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                            |
-      | subject   | Joinup: Content has been updated                                                                                                                                                    |
-      | body      | CC Member has requested to delete the document - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: I just want to delete it.. |
+      | recipient | CC owner                                                                                                                                                                              |
+      | subject   | Joinup: Content has been updated                                                                                                                                                      |
+      | body      | CC Member has requested to delete the document - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -109,9 +109,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                   |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                            |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: Can you do some changes?. |
+      | recipient | CC member                                                                                                                                                                                                     |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                              |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -122,9 +122,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     When I fill in "Motivation" with "Your content is reported"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                          |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                   |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: Your content is reported. |
+      | recipient | CC member                                                                                                                                                                                            |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                     |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the document - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -132,9 +132,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                  |
-      | subject   | Joinup: Content has been updated                                                                                                           |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the document - "@ndoe:title" in the collection: "CC pre collection" . |
+      | recipient | CC member                                                                                                                                                    |
+      | subject   | Joinup: Content has been updated                                                                                                                             |
+      | body      | the Facilitator, CC Facilitator has approved your request to publish the document - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -145,9 +145,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     When I fill in "Motivation" with "I still like it"
     And I press "Reject deletion"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                      |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                               |
-      | body      | the Facilitator, CC Facilitator has not approved your request to delete the document - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: I still like it. |
+      | recipient | CC member                                                                                                                                                                                                        |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                                 |
+      | body      | the Facilitator, CC Facilitator has not approved your request to delete the document - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
@@ -157,6 +157,6 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                             |
-      | subject   | Joinup: Content has been deleted                                                                                      |
-      | body      | Facilitator CC Facilitator has deleted the document - "CC notify pre delete" in the collection: "CC pre collection" . |
+      | recipient | CC member                                                                                                            |
+      | subject   | Joinup: Content has been deleted                                                                                     |
+      | body      | Facilitator CC Facilitator has deleted the document - "CC notify pre delete" in the collection: "CC pre collection". |

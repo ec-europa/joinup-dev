@@ -9,7 +9,7 @@ text:
     value: "<p>Joinup: Content has been updated</p>"
     format: content_editor
   -
-    value: "<p>the @actor:role, @actor:field_user_first_name @actor:field_user_family_name has requested you to modify the @entity:bundle - \"@entity:title\" in the @group:bundle: \"@group:title\", with the following motivation: @transition:motivation.</p><p>Your content has been moved back to \"Proposed\" state; you may modify it and request it to be published again.</p><p>You can access your content at the following link: @entity:url</p>"
+    value: "<p>the @actor:role, @actor:field_user_first_name @actor:field_user_family_name has requested you to modify the @entity:bundle - \"@entity:title\" in the @group:bundle: \"@group:title\", with the following motivation: \"@transition:motivation\".</p><p>Your content has been moved back to \"Proposed\" state; you may modify it and request it to be published again.</p><p>You can access your content at the following link: @entity:url</p>"
     format: content_editor
 settings:
   'token options':
