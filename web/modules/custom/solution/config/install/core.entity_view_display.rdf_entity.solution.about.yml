@@ -77,6 +77,24 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_is_language:
+    type: entity_reference_label
+    weight: 6
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_is_owner:
     weight: 1
     label: above
@@ -96,6 +114,95 @@ content:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
+  field_is_related_solutions:
+    type: entity_reference_label
+    weight: 8
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_is_solution_type:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_policy_domain:
+    type: entity_reference_label
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_spatial_coverage:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_status:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
 hidden:
   field_is_actor: true
   field_is_affiliations_requests: true
@@ -110,15 +217,12 @@ hidden:
   field_is_included_asset: true
   field_is_issue_tracker: true
   field_is_landing_page: true
-  field_is_language: true
   field_is_logo: true
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_modification_date: true
   field_is_product_type: true
-  field_is_related_solutions: true
   field_is_solution_category: true
-  field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
   field_is_state: true
@@ -129,9 +233,6 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
-  field_policy_domain: true
-  field_spatial_coverage: true
-  field_status: true
   label: true
   langcode: true
   licence: true
