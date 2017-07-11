@@ -76,7 +76,7 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.setAttribute('class', classes) }}>
   <div class="listing__metadata">
     <div class="listing__field">
       {{ title_prefix }}

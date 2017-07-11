@@ -157,3 +157,47 @@ Feature: Sharing content between collections
       | document     |
       | discussion   |
       | news         |
+
+  @javascript
+  Scenario Outline: Shared content should show visual cues in the collections they are shared.
+    Given collections:
+      | title | state     |
+      | Earth | validated |
+      | Mars  | validated |
+      | Venus | validated |
+    And <content type> content:
+      | title         | collection | shared in   | state     |
+      | Earth content | Earth      | Mars        | validated |
+      | Mars content  | Mars       |             | validated |
+      | Venus content | Venus      | Earth, Mars | validated |
+
+    When I go to the homepage of the "Earth" collection
+    Then I should see the "Earth content" tile
+    And I should see the "Venus content" tile
+    And the "Venus content" tile should be marked as shared from "Venus"
+    And the "Earth content" tile should not be marked as shared
+
+    When I go to the homepage of the "Mars" collection
+    Then I should see the "Earth content" tile
+    And I should see the "Mars content" tile
+    And I should see the "Venus content" tile
+    And the "Earth content" tile should be marked as shared from "Earth"
+    And the "Venus content" tile should be marked as shared from "Venus"
+    But the "Mars content" tile should not be marked as shared
+
+    When I go to the homepage of the "Venus" collection
+    Then I should see the "Venus content" tile
+    And the "Venus content" tile should not be marked as shared
+
+    When I go to the homepage
+    And I click "Content"
+    And the "Earth content" tile should not be marked as shared
+    And the "Mars content" tile should not be marked as shared
+    And the "Venus content" tile should not be marked as shared
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
