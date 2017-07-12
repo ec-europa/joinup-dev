@@ -18,6 +18,17 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_theme_theme() {
+  return [
+    'share_content_form' => [
+      'render element' => 'form',
+    ],
+  ];
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
