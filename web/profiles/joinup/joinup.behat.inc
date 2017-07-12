@@ -10,6 +10,7 @@ use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -1541,9 +1542,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
+    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains("/node/{$node->id()}", $href);
+    \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
   }
 
 }
