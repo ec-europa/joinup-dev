@@ -206,9 +206,10 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
 function template_preprocess_social_share(array &$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
   $variables['url'] = $entity->toUrl('canonical', [
     'language' => $entity->language(),
-  ])->setAbsolute();
+  ])->setAbsolute()->setOption('alias', TRUE);
 
   $variables['encoded_url'] = urlencode($variables['url']->toString());
 }
