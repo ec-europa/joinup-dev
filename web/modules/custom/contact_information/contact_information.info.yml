@@ -15,6 +15,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.rdf_entity.contact_information.default
   - core.entity_form_display.rdf_entity.contact_information.inline
+  - core.entity_view_display.rdf_entity.contact_information.about
   - core.entity_view_display.rdf_entity.contact_information.default
   - field.field.rdf_entity.contact_information.field_ci_email
   - field.field.rdf_entity.contact_information.field_ci_name

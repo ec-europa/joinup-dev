@@ -29,3 +29,13 @@ joinup_core.not_found:
     _title: 'Page not found'
   requirements:
     _access: 'TRUE'
+
+joinup_core.piwik_integration_settings:
+  path: '/admin/statistics/piwik-settings'
+  defaults:
+    _form: '\Drupal\joinup_core\Form\PiwikIntegrationSettingsForm'
+    _title: 'Piwik integration'
+  requirements:
+    _permission: 'administer piwik integration'
+  options:
+    _admin_route: TRUE
