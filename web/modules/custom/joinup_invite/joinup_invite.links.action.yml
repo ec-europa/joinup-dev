@@ -4,3 +4,5 @@ joinup_invite.add_facilitator:
   title: 'Add facilitators'
   appears_on:
     - entity.rdf_entity.member_overview
+  cache_contexts:
+    - og_role
