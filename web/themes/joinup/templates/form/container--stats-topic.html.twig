@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * Theme override of a container used to wrap child elements.
+ *
+ * Used for the "Downloads" statistics in the group header of solutions. This
+ * renders the 'Licence' and 'Downloads' topics.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - children: The rendered child elements of the container.
+ * - has_parent: A flag to indicate that the container has one or more parent
+ *   containers.
+ * - topic: The translated label of the statistic topic, e.g. 'Licence' or
+ *   'Downloads'.
+ *
+ * @see template_preprocess_container()
+ */
+#}
+{% if children is not empty %}
+  <div class="stats__column">
+    <div class="stats__wrapper">
+      <span class="stats__text">{{ topic }}:</span>
+      <span class="stats__text bold underline">{{ children }}</span>
+    </div>
+  </div>
+{% endif %}

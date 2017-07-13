@@ -60,6 +60,7 @@ Feature: Unpublished content of the website
     And I fill in "Title" with "The Gift of the Female"
     And I fill in "Description" with "Some random description"
     And I fill in "Location" with "Somewhere"
+    And I fill in "Motivation" with "Some regression issues"
     And I press "Request changes"
     And I go to the homepage of the "Invisible Boyfriend" collection
     Then I should see the "The Male of the Gift" tile

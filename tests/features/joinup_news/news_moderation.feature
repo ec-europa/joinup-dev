@@ -309,6 +309,7 @@ Feature: News moderation.
     And I should see the link "Edit"
     When I click "Edit"
     And for "Kicker" I enter "Hawkgirl saves the planet again"
+    And I fill in "Motivation" with "Let's change the kicker."
     And I press "Request changes"
     Then I should see the success message "News Hawkgirl saves the planet again has been updated."
     # A new draft has been created with a new title. The previously validated
