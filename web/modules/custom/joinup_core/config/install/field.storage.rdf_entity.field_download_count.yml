@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - cached_computed_field
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://schema.org/userInteractionCount'
+        format: 'xsd:integer'
+      expire:
+        predicate: 'http://schema.org/expires'
+        format: 'xsd:integer'
+id: rdf_entity.field_download_count
+field_name: field_download_count
+entity_type: rdf_entity
+type: cached_computed_integer
+settings:
+  unsigned: false
+  size: normal
+module: cached_computed_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

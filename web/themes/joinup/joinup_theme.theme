@@ -272,6 +272,16 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for the stats topic container.
+ *
+ * This is used for the statistics in the group header, like 'licence' and
+ * 'downloads'.
+ */
+function joinup_theme_preprocess_container__stats_topic(&$variables) {
+  $variables['topic'] = $variables['element']['#stats_topic'];
+}
+
+/**
  * Implements hook_preprocess_HOOK() for container.html.twig.
  */
 function joinup_theme_preprocess_container(&$variables) {
@@ -880,9 +890,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       }
     }
 
-    if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'licence') {
+    // Add a theme suggestion for statistic topics which are being shown in the
+    // group header, such as 'licence' and 'downloads'.
+    if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'container' && !empty($variables['element']['#stats_topic'])) {
       $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__licence';
+      $suggestions[] = $original_theme_hook . '__stats_topic';
     }
   }
 

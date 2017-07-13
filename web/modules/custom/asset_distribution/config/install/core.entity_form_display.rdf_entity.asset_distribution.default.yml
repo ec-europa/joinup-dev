@@ -11,6 +11,7 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_licence
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
@@ -88,6 +89,7 @@ content:
 hidden:
   current_workflow_state: true
   field_ad_file_size: true
+  field_download_count: true
   field_status: true
   langcode: true
   og_audience: true
