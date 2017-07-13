@@ -38,7 +38,8 @@ Feature: Discussion moderation
     Then I should see the heading "Edit Discussion Best method to cut logs"
     And the following fields should be present "Motivation"
     And the current workflow state should be "Published"
-    When I press "Report"
+    When I fill in "Motivation" with "Let's test reporting"
+    And I press "Report"
     # The published version does not change.
     Then I should see the heading "Best method to cut logs"
 
