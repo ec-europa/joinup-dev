@@ -10,6 +10,7 @@ Feature: Collection homepage
       | Frodo    |
       | Boromir  |
       | Legoloas |
+      | Gimli    |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -29,10 +30,10 @@ Feature: Collection homepage
       | policy domain     | Employment and Support Allowance |
       | affiliates        | Bilbo's book                     |
     And the following collection user memberships:
-      | collection         | user     |
-      | Middle earth daily | Frodo    |
-      | Middle earth daily | Boromir  |
-      | Middle earth daily | Legoloas |
+      | collection         | user     | roles       |
+      | Middle earth daily | Frodo    | facilitator |
+      | Middle earth daily | Boromir  |             |
+      | Middle earth daily | Legoloas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:00am | 2017-7-5 |
@@ -40,16 +41,35 @@ Feature: Collection homepage
     And event content:
       | title                                    | short title      | body                                      | collection         | start date          | end date            | state     | policy domain     | created           | changed  |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2014-10-17 8:00am | 2017-7-5 |
+
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
     Then I see the days passed since "2017-07-05"
-    When I am logged in as authenticated
+    # Test caching of the metrics: Members.
+    # Gimli is not a member yet.
+    When I am logged in as Gimli
     And I go to the homepage of the "Middle earth daily" collection
-    When I press the "Join this collection" button
+    And I press the "Join this collection" button
     And I go to the homepage of the "Middle earth daily" collection
-    Then I should see the text "4 Members" in the "Header" region
+    Then I see the text "4 Members" in the "Header" region
+
+    # see ISAICP-3599
+    # Test caching of the metrics: Solutions.
+    #Then I delete the "Bilbo's book" solution
+    #When I am logged in as Gimli
+    #And I go to the homepage of the "Middle earth daily" collection
+    #Then I see the text "0 Solutions" in the "Header" region
+
+    # Test last updated
+    #Then I am logged in as "Frodo"
+    #And I go to the homepage of the "Middle earth daily" collection
+    #Then I click "Rohirrim make extraordinary deal"
+    #And I click "Edit" in the "Entity actions" region
+    #Then I break
+    #Then I click "Update"
+    #And I go to the homepage of the "Middle earth daily" collection
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection

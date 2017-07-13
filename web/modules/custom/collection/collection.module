@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -349,25 +350,47 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   // Member count.
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    // @see collection_og_membership_presave()
+    $tags = Cache::buildTags('joinup-membership', [$tag]);
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
+      '#cache' => [
+        'tags' => $tags,
+      ],
     ];
   }
   // Solution count.
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    $tags = Cache::buildTags('og-group-content', [$tag]);
     $build['solutions'] = [
       '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
+      '#cache' => [
+        // Invalidate when community content is saved.
+        'tags' => $tags,
+      ],
     ];
   }
   if ($display->getComponent('last_update')) {
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    $tags = Cache::buildTags('og-group-content', [$tag]);
     $days_since_update = collection_last_change($entity);
+    $build['last_update']['cache'] = [
+      // Invalidate daily.
+      'max-age' => 86400,
+      // Invalidate when community content is saved.
+      'tags' => $tags,
+    ];
     if (empty($days_since_update)) {
       $build['last_update']['#markup'] = '-';
     }
-    $build['last_update'] = [
-      '#markup' => \Drupal::translation()->formatPlural($days_since_update, '@days day ago', '@days days ago', ['@days' => $days_since_update]),
-    ];
+    else {
+      $build['last_update'] = [
+        '#markup' => \Drupal::translation()->formatPlural($days_since_update, '@days day ago', '@days days ago', ['@days' => $days_since_update]),
+      ];
+    }
   }
 }
 
@@ -467,4 +490,12 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function collection_og_membership_presave(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }
