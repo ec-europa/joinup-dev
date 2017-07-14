@@ -6,11 +6,10 @@ use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\og\Entity\OgRole;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgAccessInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity\UriEncoder;
-use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -88,47 +87,42 @@ class InviteForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $entity_type_id = $this->currentRouteMatch->getRouteObject()->getOption('_og_entity_type_id');
-    $group = $this->currentRouteMatch->getParameter($entity_type_id);
-    $form_state->set('group', $group);
+  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+    $form_state->set('group', $rdf_entity);
 
     $form['filter_container'] = [
       '#type' => 'container',
-      '#title' => t('Search Users'),
-      '#weight' => 0,
+      '#title' => $this->t('Search Users'),
     ];
 
     $form['filter_container']['email'] = [
       '#type' => 'textfield',
-      '#title' => t('Email or name'),
+      '#title' => $this->t('Email or name'),
       '#default_value' => $form_state->getValue('email') ?: '',
       '#autocomplete_route_name' => 'joinup_invite.user_auto_complete',
       '#autocomplete_route_parameters' => [
-        '_og_entity_type_id' => $group->getEntityTypeId(),
-        $group->getEntityTypeId() => UriEncoder::encodeUrl($group->id()),
+        '_og_entity_type_id' => $rdf_entity->getEntityTypeId(),
+        $rdf_entity->getEntityTypeId() => UriEncoder::encodeUrl($rdf_entity->id()),
       ],
-      '#weight' => 0,
     ];
 
     $form['filter_container']['filter_submit'] = [
       '#type' => 'submit',
-      '#value' => 'Filter',
+      '#value' => $this->t('Filter'),
+      '#name' => 'op_filter',
       '#submit' => ['::filterSubmit'],
-      '#weight' => 1,
     ];
 
     if ($filter = $form_state->getValue('email')) {
       $form['results_container'] = [
         '#type' => 'container',
-        '#title' => t('Results'),
-        '#weight' => 1,
+        '#title' => $this->t('Results'),
       ];
 
       $rows = $this->getRows($filter);
       $form['results_container']['users'] = [
         '#type' => 'tableselect',
-        '#title' => t('Users'),
+        '#title' => $this->t('Users'),
         '#header' => $this->getHeader(),
         '#options' => $rows,
         '#multiple' => TRUE,
@@ -136,15 +130,13 @@ class InviteForm extends FormBase {
         '#attributes' => [
           'class' => ['tableheader-processed'],
         ],
-        '#empty' => 'No users found.',
-        '#weight' => 15,
+        '#empty' => $this->t('No users found.'),
       ];
 
       if (!empty($rows)) {
         $form['results_container']['submit'] = [
           '#type' => 'submit',
-          '#value' => t('Add facilitators'),
-          '#weight' => 20,
+          '#value' => $this->t('Add facilitators'),
         ];
       }
     }
@@ -159,7 +151,7 @@ class InviteForm extends FormBase {
    *   The header.
    */
   protected function getHeader() {
-    return [['data' => 'Personal Info']];
+    return [['data' => $this->t('Personal Info')]];
   }
 
   /**
@@ -171,7 +163,7 @@ class InviteForm extends FormBase {
    * @return array
    *   The rows of the tableselect.
    */
-  private function getRows($filter) {
+  protected function getRows($filter) {
     if ($user = user_load_by_mail($filter)) {
       $users = [$user];
     }
@@ -182,7 +174,7 @@ class InviteForm extends FormBase {
         ->condition('field_user_family_name', '%' . $filter . '%', 'LIKE')
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
-      $users = User::loadMultiple($results);
+      $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
     }
 
     $rows = [];
@@ -194,25 +186,6 @@ class InviteForm extends FormBase {
       ];
     }
     return $rows;
-  }
-
-  /**
-   * Returns a full name of the user.
-   *
-   * @param \Drupal\user\UserInterface $user
-   *   The user object.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   A string version of user's full name.
-   */
-  protected function getAccountName(UserInterface $user) {
-    $first_name = empty($user->get('field_user_first_name')->first()->value) ? '' : $user->get('field_user_first_name')->first()->value;
-    $family_name = empty($user->get('field_user_family_name')->first()->value) ? '' : $user->get('field_user_family_name')->first()->value;
-
-    return $this->t('@name (@email)', [
-      '@name' => implode(' ', [$first_name, $family_name]),
-      '@email' => $user->getEmail(),
-    ]);
   }
 
   /**
@@ -233,8 +206,8 @@ class InviteForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     $triggering_element = $form_state->getTriggeringElement();
-    $users = array_filter($form_state->getValue('users'));
-    if ($triggering_element['#name'] === 'op' && $triggering_element['#value'] !== 'Filter' && empty($users)) {
+    $users = empty($form_state->getValue('users')) ? [] : array_filter($form_state->getValue('users'));
+    if ($triggering_element['#name'] !== 'op_filter' && empty($users)) {
       $form_state->setErrorByName('users', $this->t('You must select at least one user'));
     }
   }
@@ -245,10 +218,11 @@ class InviteForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $users = array_filter($form_state->getValue('users'));
     $group = $form_state->get('group');
-    $facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
+    $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
+    $facilitator_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
     foreach ($users as $uid) {
-      $user = User::load($uid);
+      $user = $this->entityTypeManager->getStorage('user')->load($uid);
       $membership = $this->ogMembershipManager->getMembership($group, $user);
       if (empty($membership)) {
         $membership = $this->ogMembershipManager->createMembership($group, $user);
@@ -257,9 +231,26 @@ class InviteForm extends FormBase {
       $membership->save();
     }
 
-    drupal_set_message(t('Your settings have been saved.'), 'status', TRUE);
+    drupal_set_message($this->t('Your settings have been saved.'), 'status', TRUE);
     $form_state->setRedirect('entity.rdf_entity.member_overview', [
       'rdf_entity' => $group->id(),
+    ]);
+  }
+
+  /**
+   * Returns a full name of the user with his email as suffix in parenthesis.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user object.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   A string version of user's full name.
+   */
+  protected function getAccountName(UserInterface $user) {
+    $full_name = $user->get('full_name')->value;
+    return $this->t('@name (@email)', [
+      '@name' => $full_name,
+      '@email' => $user->getEmail(),
     ]);
   }
 

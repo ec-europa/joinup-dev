@@ -6,7 +6,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\og\MembershipManager;
-use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -77,7 +76,7 @@ class UserAutoCompleteController extends ControllerBase {
         ->condition('field_user_family_name', '%' . $param . '%', 'LIKE')
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
-      $users = User::loadMultiple($results);
+      $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
 
       foreach ($users as $user) {
         $values[] = ['value' => $user->getEmail(), 'label' => $this->getAccountName($user)];
@@ -87,7 +86,7 @@ class UserAutoCompleteController extends ControllerBase {
   }
 
   /**
-   * Returns a full name of the user.
+   * Returns a full name of the user with his email as suffix in parenthesis.
    *
    * @param \Drupal\user\UserInterface $user
    *   The user object.
@@ -96,11 +95,9 @@ class UserAutoCompleteController extends ControllerBase {
    *   A string version of user's full name.
    */
   protected function getAccountName(UserInterface $user) {
-    $first_name = empty($user->get('field_user_first_name')->first()->value) ? '' : $user->get('field_user_first_name')->first()->value;
-    $family_name = empty($user->get('field_user_family_name')->first()->value) ? '' : $user->get('field_user_family_name')->first()->value;
-
+    $full_name = $user->get('full_name')->value;
     return $this->t('@name (@email)', [
-      '@name' => implode(' ', [$first_name, $family_name]),
+      '@name' => $full_name,
       '@email' => $user->getEmail(),
     ]);
   }
