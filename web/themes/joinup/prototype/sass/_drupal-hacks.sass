@@ -131,9 +131,6 @@ textarea
 .is-only-placeholder
   background: repeating-linear-gradient(-45deg, red, red 25px, rgba(255,255,255,1) 25px, rgba(255,255,255,1) 50px)
 
-.ui-dialog
-  z-index: 400
-
 .block-local-tasks-block
   +hidden-print
 
@@ -143,3 +140,38 @@ textarea
 // Fix facets in search header
 .block-facets
   position: relative
+
+// jQuery ui hacks
+.ui-dialog
+  z-index: 400
+
+.ui-dialog-buttonpane
+  border: none
+  padding-right: .4em !important
+  .button
+    @extend .button--blue-light
+    font-weight: 600
+
+.ui-widget-content
+  color: $color-base
+
+.ui-dialog-content
+  .form-actions
+    margin-bottom: 0
+
+.ui-dialog-titlebar-close
+  height: 15px !important
+  width: 15px !important
+  background: none !important
+  border: none !important
+  .ui-icon
+    @extend .icon
+    color: $color-blue-dark
+    background: none
+    border: none !important
+    text-indent: 0
+    font-size: 0
+    padding: 0
+    &:before
+      +icon-size(15px)
+      content: '\e617'
