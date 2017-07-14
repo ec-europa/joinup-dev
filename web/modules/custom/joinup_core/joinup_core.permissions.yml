@@ -1,0 +1,3 @@
+administer piwik integration:
+  title: 'Administer Piwik integration'
+  description: 'Grants access to the Piwik Integration settings form.'

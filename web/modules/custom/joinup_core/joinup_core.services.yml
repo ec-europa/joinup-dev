@@ -11,8 +11,8 @@ services:
     class: Drupal\joinup_core\PageTypeDeterminer
     arguments: ['@current_route_match', '@entity_type.bundle.info']
   joinup_core.refresh_visit_count:
-    class: Drupal\joinup_core\EventSubscriber\RefreshVisitCountEventSubscriber
-    arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory']
+    class: Drupal\joinup_core\EventSubscriber\RefreshCachedPiwikDataEventSubscriber
+    arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory', '@config.factory', '@logger.factory']
     tags:
       - { name: 'event_subscriber' }
   joinup_core.relations_manager:

@@ -5,6 +5,7 @@
  * Contains \JoinupSubContext.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
@@ -1546,6 +1547,29 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $href = $link_element->getAttribute('href');
 
     \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
+  }
+
+  /**
+   * Forces a cleanup to run for og queue worker.
+   *
+   * Og enqueues items to be deleted instead of deleting them directly in order
+   * to counter cases like when an entity has a big amount of memberships. This
+   * causes behat to bubble all memberships to the end of the suite and attempt
+   * to delete them all together which causes memory issues. Thus, the following
+   * method processes the queue manually after every scenario. This turns every
+   * scenario to a pseudo request when it comes to og.
+   *
+   * @AfterScenario
+   */
+  public function ogCleanup(AfterScenarioScope $event) {
+    /** @var \Drupal\Core\Queue\QueueWorkerInterface $worker */
+    $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('og_orphaned_group_content_cron');
+    $queue = \Drupal::queue('og_orphaned_group_content');
+
+    while ($item = $queue->claimItem()) {
+      $worker->processItem($item->data);
+      $queue->deleteItem($item);
+    }
   }
 
 }
