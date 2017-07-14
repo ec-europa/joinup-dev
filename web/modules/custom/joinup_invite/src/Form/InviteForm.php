@@ -125,11 +125,12 @@ class InviteForm extends FormBase {
         '#weight' => 1,
       ];
 
+      $rows = $this->getRows($filter);
       $form['results_container']['users'] = [
         '#type' => 'tableselect',
         '#title' => t('Users'),
         '#header' => $this->getHeader(),
-        '#options' => $this->getRows($filter),
+        '#options' => $rows,
         '#multiple' => TRUE,
         '#js_select' => FALSE,
         '#attributes' => [
@@ -139,11 +140,13 @@ class InviteForm extends FormBase {
         '#weight' => 15,
       ];
 
-      $form['results_container']['submit'] = [
-        '#type' => 'submit',
-        '#value' => t('Add facilitators'),
-        '#weight' => 20,
-      ];
+      if (!empty($rows)) {
+        $form['results_container']['submit'] = [
+          '#type' => 'submit',
+          '#value' => t('Add facilitators'),
+          '#weight' => 20,
+        ];
+      }
     }
 
     return $form;
@@ -227,8 +230,20 @@ class InviteForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    $triggering_element = $form_state->getTriggeringElement();
+    $users = array_filter($form_state->getValue('users'));
+    if ($triggering_element['#name'] === 'op' && $triggering_element['#value'] !== 'Filter' && empty($users)) {
+      $form_state->setErrorByName('users', $this->t('You must select at least one user'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $users = $form_state->getValue('users');
+    $users = array_filter($form_state->getValue('users'));
     $group = $form_state->get('group');
     $facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
 
@@ -242,6 +257,7 @@ class InviteForm extends FormBase {
       $membership->save();
     }
 
+    drupal_set_message(t('Your settings have been saved.'), 'status', TRUE);
     $form_state->setRedirect('entity.rdf_entity.member_overview', [
       'rdf_entity' => $group->id(),
     ]);
