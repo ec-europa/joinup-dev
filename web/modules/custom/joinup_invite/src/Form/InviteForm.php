@@ -14,7 +14,7 @@ use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class InviteForm.
+ * Form to add a user as facilitator of a rdf entity group.
  */
 class InviteForm extends FormBase {
 
