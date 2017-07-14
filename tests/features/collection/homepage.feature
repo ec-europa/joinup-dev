@@ -57,19 +57,19 @@ Feature: Collection homepage
 
     # see ISAICP-3599
     # Test caching of the metrics: Solutions.
-    #Then I delete the "Bilbo's book" solution
-    #When I am logged in as Gimli
-    #And I go to the homepage of the "Middle earth daily" collection
-    #Then I see the text "0 Solutions" in the "Header" region
+#    Then I delete the "Bilbo's book" solution
+#    When I am logged in as Gimli
+#    And I go to the homepage of the "Middle earth daily" collection
+#    Then I see the text "0 Solutions" in the "Header" region
 
     # Test last updated
-    #Then I am logged in as "Frodo"
-    #And I go to the homepage of the "Middle earth daily" collection
-    #Then I click "Rohirrim make extraordinary deal"
-    #And I click "Edit" in the "Entity actions" region
-    #Then I break
-    #Then I click "Update"
-    #And I go to the homepage of the "Middle earth daily" collection
+#    Then I am logged in as "Frodo"
+#    And I go to the homepage of the "Middle earth daily" collection
+#    Then I click "Rohirrim make extraordinary deal"
+#    And I click "Edit" in the "Entity actions" region
+#    Then I press "Update"
+#    And I go to the homepage of the "Middle earth daily" collection
+#    And I should see the text "0 days ago"
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection

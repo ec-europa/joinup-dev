@@ -365,6 +365,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
     $solution_count = collection_solution_count($entity);
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
     $tags = Cache::buildTags('og-group-content', [$tag]);
+    $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
     $build['solutions'] = [
       '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
       '#cache' => [
@@ -377,13 +378,11 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
     $tags = Cache::buildTags('og-group-content', [$tag]);
     $days_since_update = collection_last_change($entity);
-    $build['last_update']['cache'] = [
-      // Invalidate daily.
-      'max-age' => 86400,
+    $build['last_update']['#cache'] = [
       // Invalidate when community content is saved.
       'tags' => $tags,
     ];
-    if (empty($days_since_update)) {
+    if ($days_since_update === NULL) {
       $build['last_update']['#markup'] = '-';
     }
     else {
