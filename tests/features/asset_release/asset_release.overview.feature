@@ -65,6 +65,25 @@ Feature: Asset distribution overview on solution.
     When I fill in "Name" with "The Deep Doors"
     And I fill in "Release number" with "4"
     And I enter "Notes 4" in the "Release notes" wysiwyg editor
+
+    # Regression test. First save as draft and then publish to ensure
+    # proper cache invalidation.
+    # @see: ISAICP-3128
+    And I press "Save as draft"
+    Then I should see the heading "The Deep Doors 4"
+    When I am an anonymous user
+    And I go to the homepage of the "Lovely Butterfly" solution
+    And I click "Download releases"
+    Then I should see the following releases in the exact order:
+      | release                 |
+      | The Child of the Past 1 |
+      | Thief in the Angels 2   |
+    And the "The Child of the Past" release should be marked as the latest release
+
+    # Publish the release as a solution facilitator.
+    When I am logged in as a facilitator of the "Lovely Butterfly" solution
+    And I go to the homepage of the "The Deep Doors" release
+    When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "The Deep Doors 4"
 
