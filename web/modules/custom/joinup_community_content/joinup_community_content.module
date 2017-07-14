@@ -184,3 +184,32 @@ function joinup_community_content_preprocess_page(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_community_content_theme($existing, $type, $theme, $path) {
+  return [
+    'social_share' => [
+      'variables' => ['entity' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Preprocess function for the "social_share" theme hook.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: the entity being shared.
+ */
+function template_preprocess_social_share(array &$variables) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
+  $variables['url'] = $entity->toUrl('canonical', [
+    'language' => $entity->language(),
+  ])->setAbsolute()->setOption('alias', TRUE);
+
+  $variables['encoded_url'] = urlencode($variables['url']->toString());
+}

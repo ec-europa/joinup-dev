@@ -68,9 +68,9 @@ content:
     region: content
   join_collection:
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   label:
     label: hidden
     type: string
@@ -88,6 +88,21 @@ content:
       joinup:
         template_suggestion: ''
     region: content
+  last_update:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  members:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  solutions:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true

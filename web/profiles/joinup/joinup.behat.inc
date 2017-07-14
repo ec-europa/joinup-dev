@@ -11,6 +11,7 @@ use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -834,6 +835,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Assert that the text is visible in a given region.
+   *
+   * @Then I (should )see the text :text in the :region region
+   */
+  public function assertTextVisible($text, $region) {
+    $actual = $this->getRegion($region)->getText();
+    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the region "%s".', $text, $region);
+
+    if (!(bool) preg_match($regex, $actual)) {
+      throw new \Exception($message);
+    }
+  }
+
+  /**
    * Checks that the given tiles are found in the correct order.
    *
    * Table format:
@@ -1519,6 +1536,33 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($element) {
       throw new \Exception('The small header was fount in the page, but it should not.');
     }
+  }
+
+  /**
+   * Asserts that a certain link contains the unaliased path of a node.
+   *
+   * @param string $link
+   *   The link text.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not in the page.
+   *
+   * @Then the share link :link should point to the :title content
+   */
+  public function assertLinkContainsNodeUnaliasedUrl($link, $title) {
+    $node = $this->getNodeByTitle($title);
+    $link_element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$link_element) {
+      throw new \Exception("Link '{$link}' was not found in the page.");
+    }
+
+    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
+    $href = $link_element->getAttribute('href');
+
+    \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
   }
 
   /**

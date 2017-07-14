@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Template to render the share content form.
+ *
+ * Note that the form tag will be added through a theme wrapper.
+ *
+ * Available variables:
+ * - form: the form build array.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="mdl-grid share-box__container">
+  <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--8-col-tablet">
+    {{ form.share }}
+  </div>
+  <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet">
+    {{ form|without('share')|render }}
+  </div>
+</div>
