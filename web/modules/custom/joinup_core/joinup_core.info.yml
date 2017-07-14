@@ -38,10 +38,12 @@ config_devel:
   - field.field.comment.comment.field_body
   - field.field.taxonomy_term.file_type.extension
   - field.field.taxonomy_term.file_type.mime_type
-  - field.storage.node.field_shared_in
   - field.storage.comment.field_body
+  - field.storage.node.field_download_count
+  - field.storage.node.field_shared_in
   - field.storage.node.field_visit_count
   - field.storage.node.og_audience
+  - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_spatial_coverage
@@ -51,6 +53,7 @@ config_devel:
   - field.storage.taxonomy_term.extension
   - field.storage.taxonomy_term.mime_type
   - image.style.banner
+  - joinup_core.piwik_settings
   - rdf_draft.settings
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira

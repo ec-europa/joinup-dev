@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: cc_transition_report
+label: 'Community content on Report'
+description: 'Template id 5'
+text:
+  -
+    value: "<p>Joinup: Content has been updated</p>"
+    format: content_editor
+  -
+    value: "<p>the @actor:role, @actor:field_user_first_name @actor:field_user_family_name has requested you to modify the @entity:bundle - \"@entity:title\" in the @group:bundle: \"@group:title\", following the following advises: \"@transition:motivation\".</p><p>Your content has been moved back to \"Needs update\" state; you may modify it and request it to be published again.</p><p>You can access your content at the following link: @entity:url</p>"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

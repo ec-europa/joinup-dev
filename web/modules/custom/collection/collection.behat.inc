@@ -689,4 +689,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $collection->save();
   }
 
+  /**
+   * Asserts that the string "x days ago" is present on the page.
+   *
+   * @Then I see the days passed since :date
+   */
+  public function assertDaysPassedSince($date) {
+    $timestamp = strtotime($date);
+    $seconds_since = time() - $timestamp;
+    $days_since = floor($seconds_since / 86400);
+    $text = sprintf("%s days ago", $days_since);
+    $this->assertSession()->pageTextContains($text);
+  }
+
 }
