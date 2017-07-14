@@ -104,7 +104,14 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   // so the latest release flag gets updated.
   if ($parent_solution && $is_latest_release) {
     $cache_tags = isset($variables['#cache']['tags']) ? $variables['#cache']['tags'] : [];
-    $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+    $cache_tags = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+
+    // Add the group content tag belonging to the parent too. We need to
+    // invalidate the cache also when a release is first saved as draft and then
+    // published. In that case the solution won't be updated, so we need to
+    // manually take care of this.
+    $group_tag = Cache::buildTags('og-group-content', [$parent_solution->getEntityTypeId() . ':' . $parent_solution->id()]);
+    $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
   }
 }
 
