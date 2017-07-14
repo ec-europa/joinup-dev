@@ -51,7 +51,6 @@
     'mdl-textfield--floating-label',
     'mdl-js-textfield',
     'textfield--full-width',
-    description ? 'textfield--helptext-container',
     'js-form-item',
     'form-item',
     'js-form-type-' ~ type|clean_class,
@@ -66,6 +65,8 @@
 {%
   set description_classes = [
     'textfield__helptext',
+    'description',
+    'form__description',
     description_display == 'invisible' ? 'visually-hidden',
   ]
 %}
