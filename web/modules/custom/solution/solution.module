@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -449,6 +450,49 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function solution_rdf_entity_predelete(EntityInterface $entity) {
+  if ($entity->bundle() === 'solution') {
+    solution_invalidate_collection($entity);
+  }
+}
+
+/**
+ * Invalidate the cache of collections the solution belongs to.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The solution.
+ */
+function solution_invalidate_collection(EntityInterface $entity) {
+  if ($entity->isNew()) {
+    return;
+  }
+  // Solutions aren't group content of collections. However, they appear
+  // alongside group content in collection overviews.
+  // For this reason, we clear the collection group cache tags whenever a
+  // solution is saved.
+  $ids = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $entity->id())
+    ->execute();
+  $tags = [];
+  if ($ids) {
+    foreach ($ids as $id) {
+      $tags[] = "rdf_entity:$id";
+    }
+    Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  solution_invalidate_collection($entity);
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  *
  * When the entity is saved into the default graph, the draft must be deleted.
@@ -471,6 +515,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
   }
+  solution_invalidate_collection($entity);
 }
 
 /**
