@@ -104,9 +104,10 @@ Feature: Document moderation
     Then the current workflow state should be "Published"
     And the following fields should be present "Motivation"
     And I should see the button "Request changes"
-    Then I press "Request changes"
 
     # Implement changes as owner of the document.
+    Given I fill in "Motivation" with "Request some regression changes"
+    And I press "Request changes"
     When I am logged in as "Gretchen Greene"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "A not so amazing document"
