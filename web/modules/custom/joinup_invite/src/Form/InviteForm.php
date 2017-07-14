@@ -151,7 +151,11 @@ class InviteForm extends FormBase {
    *   The header.
    */
   protected function getHeader() {
-    return [['data' => $this->t('Personal Info')]];
+    return [
+      'name' => [
+        'data' => $this->t('Personal Info'),
+      ],
+    ];
   }
 
   /**
@@ -182,7 +186,7 @@ class InviteForm extends FormBase {
       $name = $this->getAccountName($user);
       $rows[$user->id()] = [
         'title' => ['data' => ['#title' => $name]],
-        0 => $name,
+        'name' => $name,
       ];
     }
     return $rows;
