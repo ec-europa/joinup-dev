@@ -302,11 +302,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected static function assetDistributionFieldAliases() {
     // Mapping alias - field name.
     return [
-      'uri' => 'id',
-      'title' => 'label',
       'access url' => 'field_ad_access_url',
       'creation date' => 'field_ad_creation_date',
       'description' => 'field_ad_description',
+      'downloads' => 'field_download_count',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
@@ -314,6 +313,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'representation technique' => 'field_ad_repr_technique',
       'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',
+      'title' => 'label',
+      'uri' => 'id',
     ];
   }
 
