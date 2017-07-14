@@ -3,16 +3,16 @@ status: true
 dependencies:
   module:
     - comment
+    - text
 id: comment.field_body
 field_name: field_body
 entity_type: comment
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: false
 indexes: {  }
-persist_with_no_fields: false
+persist_with_no_fields: true
 custom_storage: false

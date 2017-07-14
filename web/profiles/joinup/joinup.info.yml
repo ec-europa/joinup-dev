@@ -154,6 +154,7 @@ config_devel:
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
+  - filter.format.plain
   - filter.format.restricted_html
   - image.style.profile_icon
   - image.style.profile_icon_big

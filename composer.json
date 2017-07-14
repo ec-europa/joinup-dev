@@ -11,6 +11,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/better_formats": "dev-1.x#9b3b5fa792c1dfe0d1121021a230086f3599b7e4",
         "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/console": "~1.0",
         "drupal/core": "8.3.x-dev#4c6a12eb9549d357cce88ad6a352187e456068c8",
@@ -137,6 +138,9 @@
             },
             "drupal/facets": {
                 "Undefined index: active in facets_system_breadcrumb_alter() @see https://www.drupal.org/node/2869850": "https://www.drupal.org/files/issues/undefIndexActive_2869850.2.patch"
+            },
+            "drupal/better_formats": {
+                "Error: The value you selected is not a valid choice @see https://www.drupal.org/node/2894822": "https://www.drupal.org/files/issues/2894822-3.patch"
             },
             "drupal/file_url": {
                 "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
