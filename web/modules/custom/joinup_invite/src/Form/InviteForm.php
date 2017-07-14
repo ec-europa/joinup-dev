@@ -247,9 +247,8 @@ class InviteForm extends FormBase {
    *   A string version of user's full name.
    */
   protected function getAccountName(UserInterface $user) {
-    $full_name = $user->get('full_name')->value;
     return $this->t('@name (@email)', [
-      '@name' => $full_name,
+      '@name' => $user->get('full_name')->value,
       '@email' => $user->getEmail(),
     ]);
   }
