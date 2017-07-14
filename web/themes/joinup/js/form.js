@@ -162,4 +162,13 @@
     }
   };
 
+  // Autosize textareas.
+  Drupal.behaviors.autosizeTextare = {
+    attach: function (context, settings) {
+      $(context).find('textarea').once('autosizeTextare').each(function () {
+        autosize($(this));
+      });
+    }
+  };
+
 })(jQuery, Drupal);
