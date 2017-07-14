@@ -5,195 +5,55 @@
  * Module handling notifications in joinup.
  */
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
-use Drupal\og\Og;
-use Drupal\state_machine\Event\WorkflowTransitionEvent;
+use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\NotificationEvents;
 
 /**
- * Implements hook_entity_predelete().
- *
- * Handles the notifications for the entity types rdf_entity and node the same
- * way as the WorkflowTransitionEventSubscriber does but since we do not have a
- * transition when an entity is deleted, there is no event fired.
- * Thus, this is handled separately.
- *
- * This notification functionality is currently applying if the two following
- * criteria are met:
- *  - If the entity is a node and has a state field and the state is
- * 'deletion_request'.
- *  - There is configuration set for the entity type and the bundle.
- *
- * @see modules/custom/joinup_notification/src/config/schema/joinup_notification.schema.yml
+ * Implements hook_ENTITY_TYPE_insert().
  */
-function joinup_notification_entity_predelete(EntityInterface $entity) {
-  if (!($entity instanceof ContentEntityInterface) || !in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
-    return;
-  }
-
-  if ($entity->getEntityTypeId() === 'node') {
-    $values = [
-      'field_message_entity_title' => $entity->label(),
-      'field_message_entity_bundle' => $entity->bundle(),
-    ];
-    joinup_notification_node_admin_action_notification($entity, 'delete_notifications', $values);
-  }
-
-  $entity_type = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
-  /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-
-  // The asset distribution rdf entity does not have a workflow so it is
-  // excluded from the following check.
-  if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
-    $state_field = $workflow_helper->getEntityStateField($entity);
-    if (empty($state_field) || empty($state_field->value) || $state_field->value !== 'deletion_request') {
-      return;
-    }
-  }
-
-  $configuration = \Drupal::config('joinup_notification.settings')->get('delete_notifications');
-  if (empty($configuration[$entity_type][$bundle])) {
-    return;
-  }
-
-  /** @var \Drupal\joinup_notification\NotificationSenderService $notification_sender */
-  $notification_sender = \Drupal::service('joinup_notification.notification_sender');
-  foreach ($configuration[$entity_type][$bundle] as $role_id => $messages) {
-    $notification_sender->sendStateTransitionMessage($entity, $role_id, $messages);
-  }
-}
-
-/**
- * Notification handler for actions taken by moderators on community content.
- *
- * Sends an e-mail to facilitators of collection/solutions when a moderator
- * performs an action to a community content node.
- *
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The community content entity.
- * @param string $notification_id
- *   The id that is used to index the settings.
- * @param array $values
- *   Values to be passed to the message entity.
- *
- * @see web/modules/custom/joinup_notification/config/install/joinup_notification.settings.yml
- */
-function joinup_notification_node_admin_action_notification(EntityInterface $entity, $notification_id, array $values = []) {
-  $user = \Drupal::currentUser();
-
-  // Send this notification only when a moderator triggered it.
-  if (!in_array('moderator', $user->getRoles())) {
-    return;
-  }
-
-  if (!Og::isGroupContent('node', $entity->bundle())) {
-    return;
-  }
-
-  /** @var \Drupal\Og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $groups = $membership_manager->getGroups($entity);
-
-  // In Joinup all the nodes that are group content should have groups, but
-  // check for safety.
-  if (empty($groups['rdf_entity'])) {
-    \Drupal::logger('joinup_notification')->alert('%title @bundle node has no groups associated.', [
-      '%title' => $entity->label(),
-      '@bundle' => $entity->bundle(),
-    ]);
-
-    return;
-  }
-
-  $configuration = \Drupal::config('joinup_notification.settings')->get($notification_id);
-  $sender = \Drupal::service('joinup_notification.notification_sender');
-
-  foreach ($groups['rdf_entity'] as $group) {
-    if (empty($configuration['node'][$entity->bundle()])) {
-      continue;
-    }
-
-    $values += [
-      'field_message_actor' => $user->id(),
-      'field_message_content' => $group->id(),
-    ];
-    foreach ($configuration['node'][$entity->bundle()] as $role_id => $messages) {
-      $sender->sendMessageTemplateToRole($messages, $values, $role_id, $group);
-    }
-  }
+function joinup_notification_node_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', $entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
- *
- * Sends an e-mail to facilitators of collection/solutions when a moderator
- * updates a community content node.
  */
 function joinup_notification_node_update(EntityInterface $entity) {
-  $values = ['field_message_node' => $entity->id()];
-  joinup_notification_node_admin_action_notification($entity, 'content_update_notifications', $values);
+  joinup_notification_dispatch_notification('update', $entity);
 }
 
 /**
- * Implements hook_entity_update().
- *
- * State machine does not fire a transition event when the target state is the
- * same as the source state because the current state 'is always allowed'.
- * If the original state is the same as the target entity, fire that transition
- * manually.
- *
- * @see https://www.drupal.org/node/2746091
+ * Implements hook_ENTITY_TYPE_delete().
  */
-function joinup_notification_entity_update(EntityInterface $entity) {
-  if (!in_array($entity->getEntityTypeId(), ['rdf_entity', 'node'])) {
-    return;
-  }
+function joinup_notification_node_delete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', $entity);
+}
 
-  /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-  if (!$workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
+/**
+ * Dispatches a generic notification event.
+ *
+ * @param string $operation
+ *   The CRUD operation string.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity object.
+ */
+function joinup_notification_dispatch_notification($operation, EntityInterface $entity) {
+  if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
-  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
-
-  // Skip cases where original version is not present or the original state
-  // is empty.
-  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-  if (empty($entity->original) || empty($entity->original->get($state_field)->first()->value)) {
-    return;
-  }
-
-  /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_field_item */
-  $state_field_item = $entity->get($state_field)->first();
-  $original_state = $entity->original->get($state_field)->first()->value;
-  $target_state = $state_field_item->value;
-  if ($original_state !== $target_state) {
-    return;
-  }
-
-  $workflow = $state_field_item->getWorkflow();
-  $transition = $workflow->findTransition($original_state, $target_state);
-  if ($transition === NULL) {
-    return;
-  }
-  // Replicate the event fire process by StateItem.
-  // @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem
-  $event_id = $workflow->getGroup() . '.' . $transition->getId() . '.' . 'post_transition';
-  $original_state = $workflow->getState($original_state);
-  $target_state = $workflow->getState($target_state);
-  $event = new WorkflowTransitionEvent($original_state, $target_state, $workflow, $entity, 'post_transition');
+  $event = new NotificationEvent($operation, $entity);
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
-  $event_dispatcher->dispatch($event_id, $event);
-  $event_dispatcher->dispatch('state_machine.post_transition', $event);
+  $event_dispatcher->dispatch(NotificationEvents::COMMUNITY_CONTENT_CRUD, $event);
 }
 
 /**
  * Implements hook_mail_alter().
  *
  * Converts in HTML the mails sent by the user and joinup_user modules.
+ *
+ * For emails sent by the message_notify module, add a prefix and a suffix.
  */
 function joinup_notification_mail_alter(&$message) {
   if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
@@ -209,5 +69,11 @@ function joinup_notification_mail_alter(&$message) {
   // Mails sent by the message_notify module are already HTML ready.
   if ($message['module'] === 'message_notify') {
     $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    $user = user_load_by_mail($message['to']);
+    $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
+    $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
+    $suffix = t('<p>Kind regards,</p><p>The Joinup Community Team</p>');
+    $body = array_merge([$prefix], $message['body'], [$suffix]);
+    $message['body'] = $body;
   }
 }

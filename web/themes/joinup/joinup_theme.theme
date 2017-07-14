@@ -18,6 +18,17 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_theme_theme() {
+  return [
+    'share_content_form' => [
+      'render element' => 'form',
+    ],
+  ];
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {
@@ -44,6 +55,16 @@ function joinup_theme_preprocess_page(&$variables) {
     'user.pass',
     'user.register',
   ];
+
+  // We need to show the header in a navy blue variant on certain routes:
+  // search page.
+  $navy_header_routes = [
+    'view.search.page_1',
+  ];
+
+  if (!empty($route_name) && in_array($route_name, $navy_header_routes)) {
+    $variables['is_navy_header'] = TRUE;
+  }
 
   // Check if page is form with vertical tabs.
   // It is needed for proper display of vertical tabs.
@@ -193,6 +214,7 @@ function joinup_theme_preprocess_block(&$variables) {
 
       case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
+      case 'view.search.page_1':
       case 'view.solutions.page_1':
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
@@ -258,6 +280,16 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
     $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
     $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for the stats topic container.
+ *
+ * This is used for the statistics in the group header, like 'licence' and
+ * 'downloads'.
+ */
+function joinup_theme_preprocess_container__stats_topic(&$variables) {
+  $variables['topic'] = $variables['element']['#stats_topic'];
 }
 
 /**
@@ -682,56 +714,65 @@ function joinup_theme_remove_contextual_links(array &$variables) {
  * buttons.
  */
 function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-  if (empty($variables['element']['#is_button'])) {
-    return;
-  }
+  if (!empty($variables['element']['#is_button'])) {
 
-  // Skip dropbuttons since we have no custom styling for them. These can be
-  // recognized by not having an '#array_parents' property .
-  // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
-  if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
-    return;
-  }
-
-  // We need to have different styling on some buttons. The key of this
-  // multi-dimension array represents the suggestion name, while its values
-  // are the build array key of the button being rendered.
-  $input_suggestions = [
-    'input__ief_add_another' => [
-      // Generic "Add more" button for multi-value widgets.
-      'add_more',
-      'ief_add_existing',
-      'ief_add',
-      'ief_reference_save',
-      'ief_add_save',
-      'ief_edit_save',
-    ],
-    'input__ief_edit' => [
-      'ief_entity_edit',
-      'ief_entity_edit_save',
-    ],
-    'input__ief_cancel' => [
-      'ief_entity_cancel',
-      'ief_remove_cancel',
-    ],
-    'input__ief_cancel_circle' => [
-      'ief_add_cancel',
-      'ief_edit_cancel',
-      'ief_reference_cancel',
-    ],
-    'input__remove_button' => [
-      'ief_entity_remove',
-      'ief_remove_confirm',
-      'remove_button',
-    ],
-  ];
-
-  // The last key of #array_parents is the build array key used in the code.
-  $element_key = end($variables['element']['#array_parents']);
-  foreach ($input_suggestions as $suggestion => $names) {
-    if (in_array($element_key, $names)) {
-      $suggestions[] = $suggestion;
+    // Skip dropbuttons since we have no custom styling for them. These can be
+    // recognized by not having an '#array_parents' property .
+    // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
+    if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
+      return;
     }
+
+    // We need to have different styling on some buttons. The key of this
+    // multi-dimension array represents the suggestion name, while its values
+    // are the build array key of the button being rendered.
+    $input_suggestions = [
+      'input__ief_add_another' => [
+        // Generic "Add more" button for multi-value widgets.
+        'add_more',
+        'ief_add_existing',
+        'ief_add',
+        'ief_reference_save',
+        'ief_add_save',
+        'ief_edit_save',
+      ],
+      'input__ief_edit' => [
+        'ief_entity_edit',
+        'ief_entity_edit_save',
+      ],
+      'input__ief_cancel' => [
+        'ief_entity_cancel',
+        'ief_remove_cancel',
+      ],
+      'input__ief_cancel_circle' => [
+        'ief_add_cancel',
+        'ief_edit_cancel',
+        'ief_reference_cancel',
+      ],
+      'input__remove_button' => [
+        'ief_entity_remove',
+        'ief_remove_confirm',
+        'remove_button',
+      ],
+    ];
+
+    // The last key of #array_parents is the build array key used in the code.
+    $element_key = end($variables['element']['#array_parents']);
+    foreach ($input_suggestions as $suggestion => $names) {
+      if (in_array($element_key, $names)) {
+        $suggestions[] = $suggestion;
+      }
+    }
+  }
+
+  // Suggestion based on data twig suggestion created in form alter.
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
+  }
+
+  // Suggestion for search form submit.
+  if (isset($variables['element']['#id']) && strpos($variables['element']['#id'], 'edit-submit-search') !== FALSE) {
+    $suggestions[] = 'input__submit__search_bar';
   }
 }
 
@@ -740,6 +781,11 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
  */
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
+
+  // Suggestion based on data twig suggestion created in form alter.
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'form_element__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
+  }
 }
 
 /**
@@ -762,6 +808,11 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+
+    // Suggestion for search form submit container.
+    if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
+      $suggestions[] = 'container__edit_actions__search_bar';
+    }
   }
 }
 
@@ -850,9 +901,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       }
     }
 
-    if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'licence') {
+    // Add a theme suggestion for statistic topics which are being shown in the
+    // group header, such as 'licence' and 'downloads'.
+    if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'container' && !empty($variables['element']['#stats_topic'])) {
       $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__licence';
+      $suggestions[] = $original_theme_hook . '__stats_topic';
     }
   }
 
@@ -927,6 +980,17 @@ function joinup_theme_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_rdf_entity().
+ *
+ * Hide label for certain displays.
+ */
+function joinup_theme_preprocess_rdf_entity(&$variables) {
+  if ($variables['view_mode'] == 'about') {
+    $variables['is_label_hidden'] = TRUE;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
  *
  * Hides the separator and end date as only the start date is shown in tiles.
@@ -990,5 +1054,18 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
         $variables['rows'][$index]['#file_extension'] = 'default';
       }
     }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add theme suggestions and classes in search form.
+ */
+function joinup_theme_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (strpos($form['#id'], 'views-exposed-form-search-page-') !== FALSE) {
+    $form['keys']['#extra_suggestion'] = 'search_bar';
+    $form['keys']['#attributes']['class'][] = 'search-bar__input';
+    $form['keys']['#attributes']['placeholder'] = t('Start typing to search...');
   }
 }

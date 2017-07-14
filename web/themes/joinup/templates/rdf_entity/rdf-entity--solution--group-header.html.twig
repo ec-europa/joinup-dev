@@ -13,17 +13,8 @@
       <h1 class="featured__text">{{ label }}</h1>
     </a>
       <div class="featured__stats">
-        <div class="stats__column">
-          <div class="stats__wrapper">
-            {{ content.licence }}
-          </div>
-        </div>
-        <div class="stats__column is-only-placeholder">
-          <div class="stats__wrapper">
-            <span class="stats__text">Downloads:</span>
-            <span class="stats__text bold">1234</span>
-          </div>
-        </div>
+        {{ content.licence }}
+        {{ content.downloads }}
       </div>
       {{ content.releases_overview }}
   </div>

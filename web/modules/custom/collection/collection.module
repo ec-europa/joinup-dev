@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -13,8 +14,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
@@ -293,9 +296,28 @@ function collection_entity_extra_field_info() {
   $collection = RdfEntityType::load('collection');
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
-  $fields['rdf_entity'][$collection->id()]['display']['join_collection'] = [
+  $display = &$fields['rdf_entity'][$collection->id()]['display'];
+  $display['join_collection'] = [
     'label' => t('Join collection'),
     'description' => t('Shows the join/leave collection form'),
+    'visible' => FALSE,
+  ];
+
+  $display['members'] = [
+    'label' => t('Amount of members'),
+    'description' => t('Amount of members of the collection'),
+    'visible' => FALSE,
+  ];
+
+  $display['solutions'] = [
+    'label' => t('Amount of solutions'),
+    'description' => t('Amount of solutions of the collection'),
+    'visible' => FALSE,
+  ];
+
+  $display['last_update'] = [
+    'label' => t('Last update'),
+    'description' => t('Days since last update to the collection'),
     'visible' => FALSE,
   ];
 
@@ -308,6 +330,7 @@ function collection_entity_extra_field_info() {
  * Populates the extra field 'join_collection'.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
   if ($entity->bundle() != 'collection') {
     return;
   }
@@ -324,6 +347,123 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       '#cache' => ['contexts' => ['og_role']],
     ];
   }
+  // Member count.
+  if ($display->getComponent('members')) {
+    $member_count = collection_member_count($entity);
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    // @see collection_og_membership_presave()
+    $tags = Cache::buildTags('joinup-membership', [$tag]);
+    $build['members'] = [
+      '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
+      '#cache' => [
+        'tags' => $tags,
+      ],
+    ];
+  }
+  // Solution count.
+  if ($display->getComponent('solutions')) {
+    $solution_count = collection_solution_count($entity);
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    $tags = Cache::buildTags('og-group-content', [$tag]);
+    $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
+    $build['solutions'] = [
+      '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
+      '#cache' => [
+        // Invalidate when community content is saved.
+        'tags' => $tags,
+      ],
+    ];
+  }
+  if ($display->getComponent('last_update')) {
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    $tags = Cache::buildTags('og-group-content', [$tag]);
+    $days_since_update = collection_last_change($entity);
+    $build['last_update']['#cache'] = [
+      // Invalidate when community content is saved.
+      'tags' => $tags,
+    ];
+    if ($days_since_update === NULL) {
+      $build['last_update']['#markup'] = '-';
+    }
+    else {
+      $build['last_update'] = [
+        '#markup' => \Drupal::translation()->formatPlural($days_since_update, '@days day ago', '@days days ago', ['@days' => $days_since_update]),
+      ];
+    }
+  }
+}
+
+/**
+ * Amount of members of a collection.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $entity
+ *   The collection.
+ *
+ * @return int
+ *   Amount of members.
+ */
+function collection_member_count(RdfInterface $entity) {
+  return \Drupal::entityQuery('og_membership')
+    ->condition('entity_type', 'rdf_entity')
+    ->condition('entity_id', $entity->id())
+    ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+    ->count()
+    ->execute();
+}
+
+/**
+ * Amount of solutions in the collection.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $entity
+ *   The collection.
+ *
+ * @return int
+ *   Amount of solutions.
+ */
+function collection_solution_count(RdfInterface $entity) {
+  $solutions = $entity->get('field_ar_affiliates');
+  $solution_ids = [];
+  foreach ($solutions as $solution) {
+    $solution_ids[] = $solution->getValue()['target_id'];
+  }
+  $solution_count = 0;
+  if ($solution_ids) {
+    $solution_count = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'solution')
+      ->condition('id', $solution_ids, 'IN')
+      ->condition('field_is_state', 'validated')
+      ->count()
+      ->execute();
+  }
+  return $solution_count;
+}
+
+/**
+ * Determine when the last change was made to the collection content.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $entity
+ *   The collection.
+ *
+ * @return null|string
+ *   Days since last change.
+ */
+function collection_last_change(RdfInterface $entity) {
+  $last_changed_nid = \Drupal::entityQuery('node')
+    ->condition('og_audience', $entity->id())
+    ->condition('status', TRUE)
+    ->sort('changed', 'DESC')
+    ->range(0, 1)
+    ->execute();
+  // No content yet.
+  if (empty($last_changed_nid)) {
+    return NULL;
+  }
+  $last_changed_node = Node::load(array_pop($last_changed_nid));
+  $node_last_updated_time = $last_changed_node->getChangedTime();
+  // Seconds since last update.
+  $interval = \Drupal::time()->getRequestTime() - $node_last_updated_time;
+  // Convert to days.
+  return floor($interval / 86400);
 }
 
 /**
@@ -349,4 +489,12 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function collection_og_membership_presave(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }

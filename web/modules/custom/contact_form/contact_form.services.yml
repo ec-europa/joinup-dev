@@ -1,0 +1,6 @@
+services:
+  contact_form.event_subscriber:
+    class: Drupal\contact_form\EventSubscriber\NotificationSubscriber
+    arguments: ['@entity_type.manager', '@message_notify.sender']
+    tags:
+      - { name: event_subscriber }
