@@ -9,14 +9,14 @@ dependencies:
     - text
 third_party_settings:
   better_formats:
-    allowed_formats_toggle: 1
+    allowed_formats_toggle: true
     allowed_formats:
       plain: plain
       restricted_html: restricted_html
       full_html: 0
       content_editor: 0
       basic_html: 0
-    default_order_toggle: 0
+    default_order_toggle: false
     default_order_wrapper:
       formats:
         content_editor:

@@ -137,7 +137,7 @@
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-2.patch"
             },
             "drupal/better_formats": {
-                "Error: The value you selected is not a valid choice @see https://www.drupal.org/node/2894822": "https://www.drupal.org/files/issues/2894822-3.patch"
+                "Provide config schema for field 3rd party settings @see https://www.drupal.org/node/2895045": "https://www.drupal.org/files/issues/2895045-2.patch"
             },
             "drupal/file_url": {
                 "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
@@ -177,7 +177,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/pfrenssen/piwik-reporting-api.git"
+            "url": "https://github.com/claudiu-cristea/piwik-reporting-api.git"
         },
         {
             "type": "composer",
