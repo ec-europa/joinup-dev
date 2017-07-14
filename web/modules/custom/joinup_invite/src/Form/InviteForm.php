@@ -169,9 +169,9 @@ class InviteForm extends FormBase {
     }
     else {
       $results = $this->entityTypeManager->getStorage('user')->getQuery('OR')
-        ->condition('mail', '%' . $filter . '%', 'LIKE')
-        ->condition('field_user_first_name', '%' . $filter . '%', 'LIKE')
-        ->condition('field_user_family_name', '%' . $filter . '%', 'LIKE')
+        ->condition('mail', $filter, 'CONTAINS')
+        ->condition('field_user_first_name', $filter, 'CONTAINS')
+        ->condition('field_user_family_name', $filter, 'CONTAINS')
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);

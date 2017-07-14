@@ -71,9 +71,9 @@ class UserAutoCompleteController extends ControllerBase {
     $values = [];
     if ($param) {
       $results = $this->entityTypeManager->getStorage('user')->getQuery('OR')
-        ->condition('mail', '%' . $param . '%', 'LIKE')
-        ->condition('field_user_first_name', '%' . $param . '%', 'LIKE')
-        ->condition('field_user_family_name', '%' . $param . '%', 'LIKE')
+        ->condition('mail', $param, 'CONTAINS')
+        ->condition('field_user_first_name', $param, 'CONTAINS')
+        ->condition('field_user_family_name', $param, 'CONTAINS')
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
