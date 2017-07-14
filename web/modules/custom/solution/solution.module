@@ -447,7 +447,6 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
   else {
     throw new \Exception("State field value is invalid. Current value found: " . $state);
   }
-  solution_invalidate_collection($entity);
 }
 
 /**
@@ -466,6 +465,9 @@ function solution_rdf_entity_predelete(EntityInterface $entity) {
  *   The solution.
  */
 function solution_invalidate_collection(EntityInterface $entity) {
+  if ($entity->isNew()) {
+    return;
+  }
   // Solutions aren't group content of collections. However, they appear
   // alongside group content in collection overviews.
   // For this reason, we clear the collection group cache tags whenever a
@@ -481,6 +483,13 @@ function solution_invalidate_collection(EntityInterface $entity) {
     }
     Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  solution_invalidate_collection($entity);
 }
 
 /**
@@ -506,6 +515,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
   }
+  solution_invalidate_collection($entity);
 }
 
 /**
