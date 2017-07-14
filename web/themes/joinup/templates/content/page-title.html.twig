@@ -13,7 +13,7 @@
  */
 #}
 {{ title_prefix }}
-{% if title %}
+{% if title|render %}
   <div class="page__title-wrapper">
       {% if is_create_page %}
         <h1 class="page__title">

@@ -20,14 +20,14 @@ Feature: Solution homepage
       | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium          |
       | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
-      | title           | description                                        | access url | solution                     | parent                       |
-      | PDF version     | Pdf version of the paper.                          | text.pdf   | Information sharing protocol | IS protocol paper            |
-      | ZIP version     | Zip version of the paper.                          | test.zip   | Information sharing protocol | IS protocol paper            |
+      | title           | description                                        | access url       | solution                     | parent                       | downloads |
+      | PDF version     | Pdf version of the paper.                          | text.pdf         | Information sharing protocol | IS protocol paper            | 589       |
+      | ZIP version     | Zip version of the paper.                          | test.zip         | Information sharing protocol | IS protocol paper            | 514       |
       # One distribution directly attached to the "Information sharing protocol" solution.
-      | Protocol draft  | Initial draft of the protocol.                     | text.pdf   | Information sharing protocol | Information sharing protocol |
-      | Source code     | Source code for the Fireproof tool.                | test.zip   | Security audit tools         | Fireproof                    |
+      | Protocol draft  | Initial draft of the protocol.                     | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       |
+      | Source code     | Source code for the Fireproof tool.                | test.zip         | Security audit tools         | Fireproof                    | 432       |
       # One distribution directly attached to the "Security audit tools" solution.
-      | Code of conduct | Code of conduct for contributing to this software. | text.pdf   | Security audit tools         | Security audit tools         |
+      | Code of conduct | Code of conduct for contributing to this software. | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       |
     And news content:
       | title               | body                                | policy domain           | spatial coverage | solution                     | state     |
       | IS protocol meet-up | Discussion about the next standard. | Statistics and Analysis | European Union   | Information sharing protocol | validated |
@@ -49,6 +49,8 @@ Feature: Solution homepage
     And I should not see the "Code of conduct" tile
     # Nor the solution itself should be shown.
     And I should not see the "Information sharing protocol" tile
+    # The total downloads of the 3 distributions should be shown.
+    And I should see the text "1667"
 
     # Test the filtering on the content type facet.
     When I click the Distribution content tab
@@ -70,6 +72,8 @@ Feature: Solution homepage
     And I should see the "Code of conduct" tile
     But I should not see the "IS protocol paper 1" tile
     And I should not see the "Protocol draft" tile
+    # The total downloads of the 2 distributions should be shown.
+    And I should see the text "1172"
 
   # This is a regression test for the entities that include a hashmark on their Uri.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3225

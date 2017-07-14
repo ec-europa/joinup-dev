@@ -72,8 +72,4 @@ Feature: Creating content and commenting on archived collection
     # We only need to check that privileged users do not have access anymore.
     And I am logged in as a facilitator of the "The Willing Consort" collection
     And I go to the "The Willing Consort" collection
-    Then I should not see the contextual link "Add event" in the "Plus button menu" region
-    And I should not see the contextual link "Add news" in the "Plus button menu" region
-    And I should not see the contextual link "Add document" in the "Plus button menu" region
-    And I should not see the contextual link "Add discussion" in the "Plus button menu" region
-    And I should not see the contextual link "Add custom page" in the "Navigation menu block" region
+    Then I should not see the "Plus button menu" region

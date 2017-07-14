@@ -219,6 +219,7 @@ $this->assertReferences([
 $this->assertReferences([
   'signaturpruefservice_dokumentation_v1.8.pdf',
   'dokumentation_-_webservice_schnittstelle_v1.3_0.pdf',
+  'wwww.eun.org',
 ], $release->get('field_isr_documentation'));
 // Check for documentation as remote URL.
 $urls = [];

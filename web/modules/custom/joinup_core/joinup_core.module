@@ -568,6 +568,7 @@ function joinup_core_tokens($type, $tokens, array $data, array $options, Bubblea
         }
       }
       break;
+
   }
 
   return $replacements;
@@ -625,10 +626,13 @@ function joinup_core_entity_extra_field_info() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Returns an array of form ids that should have a motivation field.
+ *
+ * @return array
+ *   An array of form ids.
  */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $motivation_form_ids = [
+function joinup_core_get_motivation_form_ids() {
+  return [
     'rdf_entity_collection_edit_form',
     'rdf_entity_solution_edit_form',
     'rdf_entity_asset_release_edit_form',
@@ -637,8 +641,13 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
     'node_event_edit_form',
     'node_news_edit_form',
   ];
+}
 
-  if (!in_array($form_id, $motivation_form_ids)) {
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, joinup_core_get_motivation_form_ids())) {
     return;
   }
 
@@ -647,4 +656,75 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
     '#title' => t('Motivation'),
     '#description' => t('Description of the reason of this operation.'),
   ];
+  $form['#validate'][] = 'joinup_core_motivation_form_validate';
+}
+
+/**
+ * Validation function for the forms with a motivation field.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\node\NodeForm $test */
+  $entity = $form_state->getFormObject()->getEntity();
+  $to_state = $form_state->getTriggeringElement()['#state_id'];
+  // If $to_state is empty, it means that another button was clicked, like
+  // "Add new" in the contact information field.
+  if (empty($to_state)) {
+    return;
+  }
+
+  /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
+  /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
+  $workflow = $workflow_helper->getWorkflow($entity, $state_field);
+  $from_state = $entity->get($state_field)->first()->value;
+
+  $transition = $workflow->findTransition($from_state, $to_state);
+
+  if (joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId()) && empty($form_state->getValue('transition_motivation'))) {
+    $form_state->setErrorByName('transition_motivation', t('This action requires you to fill in the motivation field.'));
+  }
+  $entity->motivation = $form_state->getValue('transition_motivation');
+}
+
+/**
+ * Returns whether the transition requires a motivation.
+ *
+ * @param string $entity_type_id
+ *   The entity type id.
+ * @param string $workflow_id
+ *   The workflow id.
+ * @param string $transition_id
+ *   The transition id.
+ *
+ * @return bool
+ *   Whether the transition requires a motivation.
+ */
+function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $transition_id) {
+  $required_transitions = [
+    'node' => [
+      'node:pre_moderated' => [
+        'report',
+        'request_changes',
+        'report',
+        'reject_deletion',
+        'request_deletion',
+      ],
+      'node:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+      'node:discussion:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+    ],
+  ];
+
+  return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
 }
