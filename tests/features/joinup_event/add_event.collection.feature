@@ -74,7 +74,6 @@ Feature: "Add event" visibility options.
     Then I select "National" from "Scope"
     And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
-    Then I break
     Then I should see the heading "An amazing event"
     Then I see the text "National"
     Then I see the text "Regional"
