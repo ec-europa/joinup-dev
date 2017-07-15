@@ -82,7 +82,6 @@ themes:
   - joinup_theme
 
 config_devel:
-  - better_formats.settings
   - block.block.entity_bundle_facet
   - block.block.exposed_form_search_page
   - block.block.footer_menu
