@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cabb17f2e4621175289427c80d129b0",
+    "content-hash": "0f3e676686b333409cfe048daeeb3e0d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3090,7 +3090,7 @@
                     "datestamp": "1493467743"
                 },
                 "patches_applied": {
-                    "Entities with long string IDs are causing errors in key value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
+                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9326,7 +9326,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-07-06T17:24:52+00:00"
+            "time": "2017-07-06 17:24:52"
         },
         {
             "name": "fabpot/goutte",

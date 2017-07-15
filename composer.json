@@ -157,7 +157,7 @@
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
             "drupal/pathauto": {
-                "Entities with long string IDs are causing errors in key value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
+                "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
             },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
