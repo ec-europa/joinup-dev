@@ -1,0 +1,5 @@
+shared_content:
+  js:
+    js/shared_content.js: {}
+  dependencies:
+    - core/jquery

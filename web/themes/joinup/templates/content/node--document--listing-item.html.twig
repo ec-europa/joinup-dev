@@ -76,7 +76,7 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.setAttribute('class', classes) }}>
   {% if view_mode == 'view_mode_featured' %}
     <div class="listing__image listing__image--default">
       <span class="icon icon--mime-{{ extension }}"></span>

@@ -72,4 +72,7 @@ hidden:
   field_spatial_coverage: true
   join_collection: true
   langcode: true
+  last_update: true
+  members: true
   og_group: true
+  solutions: true

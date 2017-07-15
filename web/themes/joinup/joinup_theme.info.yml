@@ -18,6 +18,7 @@ regions:
   featured: Featured
   sidebar_left: 'Sidebar left'
   content_top: 'Content top'
+  filters: 'Filters'
   content: Content  # the content region is required
   content_bottom: 'Content bottom'
   footer: Footer
