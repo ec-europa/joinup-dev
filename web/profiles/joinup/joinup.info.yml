@@ -26,6 +26,7 @@ dependencies:
   - field_group
   - file
   - help
+  - honeypot
   - image
   - inline_entity_form
   - joinup_core

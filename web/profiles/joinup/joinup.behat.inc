@@ -1606,4 +1606,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
   }
 
+  /**
+   * Block test execution for a given time.
+   *
+   * @Then I wait :seconds seconds
+   */
+  public function iWaitSeconds($seconds) {
+    sleep($seconds);
+  }
+
 }
