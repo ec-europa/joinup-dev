@@ -11,6 +11,7 @@
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "~1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/better_formats": "dev-1.x#9b3b5fa792c1dfe0d1121021a230086f3599b7e4",
         "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/console": "~1.0",
         "drupal/core": "~8.3",
@@ -135,6 +136,9 @@
                 "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-28.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-2.patch"
             },
+            "drupal/better_formats": {
+                "Provide config schema for field 3rd party settings @see https://www.drupal.org/node/2895045": "https://www.drupal.org/files/issues/2895045-2.patch"
+            },
             "drupal/file_url": {
                 "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
             },
@@ -176,7 +180,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/pfrenssen/piwik-reporting-api.git"
+            "url": "https://github.com/claudiu-cristea/piwik-reporting-api.git"
         },
         {
             "type": "composer",

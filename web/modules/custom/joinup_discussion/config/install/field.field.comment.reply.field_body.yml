@@ -4,15 +4,45 @@ dependencies:
   config:
     - comment.type.reply
     - field.storage.comment.field_body
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: true
+    allowed_formats:
+      simple_html: simple_html
+      simple_text: simple_text
+      basic_html: 0
+      content_editor: 0
+      full_html: 0
+      restricted_html: 0
+    default_order_toggle: false
+    default_order_wrapper:
+      formats:
+        content_editor:
+          weight: '-10'
+        basic_html:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        plain_text:
+          weight: '0'
+        full_html:
+          weight: '1'
+        simple_text:
+          weight: '0'
+        simple_html:
+          weight: '0'
 id: comment.reply.field_body
 field_name: field_body
 entity_type: comment
 bundle: reply
-label: Comment
+label: 'Create comment'
 description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long
