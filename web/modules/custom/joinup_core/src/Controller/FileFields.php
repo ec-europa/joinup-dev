@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\joinup_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
