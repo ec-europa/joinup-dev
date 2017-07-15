@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ce9742230fa513aaf334c89485adf14",
+    "content-hash": "0f3e676686b333409cfe048daeeb3e0d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3069,17 +3069,11 @@
         },
         {
             "name": "drupal/pathauto",
-            "version": "1.0.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/pathauto",
-                "reference": "8.x-1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "4c82a5689a18421c8c73fcc8be7b333bb21ae02a"
+                "reference": "ab05b7956a61d102e42ceb789a3857dd37aa11f6"
             },
             "require": {
                 "drupal/core": "*",
@@ -3092,11 +3086,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1493468044"
+                    "version": "8.x-1.0-rc1+2-dev",
+                    "datestamp": "1493467743"
                 },
                 "patches_applied": {
-                    "Entities with long string IDs are causing errors in key value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-6.patch"
+                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3125,7 +3119,8 @@
             "homepage": "https://www.drupal.org/project/pathauto",
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
-            }
+            },
+            "time": "2017-05-06 16:06:59"
         },
         {
             "name": "drupal/persistent_login",
@@ -10758,6 +10753,7 @@
         "drupal/og": 20,
         "drupal/og_menu": 15,
         "drupal/password_policy": 20,
+        "drupal/pathauto": 20,
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 10,
