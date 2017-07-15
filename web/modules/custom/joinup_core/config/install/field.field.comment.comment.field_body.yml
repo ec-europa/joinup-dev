@@ -11,11 +11,12 @@ third_party_settings:
   better_formats:
     allowed_formats_toggle: true
     allowed_formats:
-      plain: plain
-      restricted_html: restricted_html
-      full_html: 0
-      content_editor: 0
+      simple_html: simple_html
+      simple_text: simple_text
       basic_html: 0
+      content_editor: 0
+      full_html: 0
+      restricted_html: 0
     default_order_toggle: false
     default_order_wrapper:
       formats:
@@ -29,6 +30,10 @@ third_party_settings:
           weight: '0'
         full_html:
           weight: '1'
+        simple_text:
+          weight: '0'
+        simple_html:
+          weight: '0'
 id: comment.comment.field_body
 field_name: field_body
 entity_type: comment

@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.restricted_html
+    - filter.format.simple_html
   module:
     - ckeditor
-format: restricted_html
+format: simple_html
 editor: ckeditor
 settings:
   toolbar:
@@ -22,16 +22,6 @@ settings:
             - DrupalLink
             - DrupalUnlink
         -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Media
-          items:
-            - Blockquote
-            - DrupalImage
-        -
           name: Tools
           items:
             - Source
@@ -40,11 +30,3 @@ settings:
       language_list: un
     stylescombo:
       styles: ''
-image_upload:
-  status: false
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null

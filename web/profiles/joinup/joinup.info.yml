@@ -148,14 +148,16 @@ config_devel:
   - editor.editor.basic_html
   - editor.editor.content_editor
   - editor.editor.restricted_html
+  - editor.editor.simple_html
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
-  - filter.format.plain
   - filter.format.restricted_html
+  - filter.format.simple_html
+  - filter.format.simple_text
   - image.style.profile_icon
   - image.style.profile_icon_big
   - language.content_settings.rdf_entity.asset_distribution

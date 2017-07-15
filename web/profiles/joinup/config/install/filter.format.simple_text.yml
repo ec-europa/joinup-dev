@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies: {  }
 name: 'Simple text'
-format: plain
-weight: -8
+format: simple_text
+weight: 5
 filters:
   filter_html_escape:
     id: filter_html_escape
