@@ -57,10 +57,11 @@ class FileFields extends ControllerBase {
     foreach ($fields_structure as $entity_type => $fields) {
       foreach ($fields as $field_name => $field) {
         foreach ($field['bundles'] as $bundle) {
-          $build['table']['#rows'][$field_name] = $this->buildRow($entity_type, $bundle, $field_name);
+          $build['table']['#rows']["$entity_type$bundle$field_name"] = $this->buildRow($entity_type, $bundle, $field_name);
         }
       }
     }
+    sort($build['table']['#rows']);
     return $build;
   }
 
