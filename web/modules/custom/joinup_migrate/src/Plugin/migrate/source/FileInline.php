@@ -115,9 +115,7 @@ class FileInline extends SourcePluginBase {
    */
   protected static $bodyFields = [
     'd8_collection' => ['body'],
-    // @todo Disable till ISAICP-3514 gets clarified.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3514
-    // 'd8_comment' => ['comment'],
+    'd8_comment' => ['comment'],
     'd8_custom_page' => ['body'],
     'd8_discussion' => ['body'],
     'd8_distribution' => ['body'],

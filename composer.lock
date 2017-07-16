@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "047dbffb846f9f205941bb6e346e94eb",
+    "content-hash": "817bdc5c1a2c7f3a8cd26529c2cf5789",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2652,7 +2652,8 @@
                     "datestamp": "1492788242"
                 },
                 "patches_applied": {
-                    "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
+                    "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch",
+                    "Linkit filter should honour the URL query and fragment @see https://www.drupal.org/node/2895153": "https://www.drupal.org/files/issues/2895153-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

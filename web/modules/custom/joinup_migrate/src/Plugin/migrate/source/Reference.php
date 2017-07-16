@@ -223,7 +223,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     foreach (static::TAGS as $tag => $attribute) {
       /** @var \DOMElement $element */
       foreach ($document->getElementsByTagName($tag) as $element) {
-        $incoming_path = trim($element->getAttribute($attribute));
+        $incoming_path = $element->getAttribute($attribute);
         if ($incoming_path && $parts = $this->getRelativePath($incoming_path)) {
           // If not cached, try to extract a valid target and cache it.
           if (!array_key_exists($incoming_path, $this->result)) {
@@ -237,6 +237,22 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
             $element->setAttribute($attribute, $link);
             $element->setAttribute('data-entity-type', $this->result[$incoming_path]['type']);
             $element->setAttribute('data-entity-uuid', $this->result[$incoming_path]['uuid']);
+
+            // Change also the text on elements like:
+            // @code
+            // <a href="http://joinup.ec.europa.eu/some/path">http://joinup.ec.europa.eu/some/path</a>
+            // @endcode
+            if (preg_match('@^(http[s]?://)@', $element->textContent, $found)) {
+              $qualified_incoming_path = $incoming_path;
+              if (!preg_match('@^http[s]?://@', $incoming_path)) {
+                $qualified_incoming_path = ltrim($qualified_incoming_path, '/');
+                $qualified_incoming_path = "{$found[1]}joinup.ec.europa.eu/$qualified_incoming_path";
+              }
+              if ($element->textContent === $qualified_incoming_path) {
+                $element->nodeValue = "{$found[1]}joinup.ec.europa.eu$link";
+              }
+            }
+
             $changed = TRUE;
           }
         }
@@ -420,14 +436,14 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    * The list of fields is built by checking if the field uses the 'file_inline'
    * process plugin.
    *
-   * @param string $entity_type_id
+   * @param string $limit_to_entity_type_id
    *   (optional) If passed, only information regarding that entity will be
    *   returned. Defaults to null.
    *
    * @return array[]
    *   A structured array.
    */
-  protected function getFieldInfo($entity_type_id = NULL) {
+  protected function getFieldInfo($limit_to_entity_type_id = NULL) {
     if (!isset($this->fieldInfo)) {
       $this->fieldInfo = [];
       // Iterate over all migrations.
@@ -435,29 +451,50 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
         $definition = $migration->getPluginDefinition();
         // But only on those having an entity destination.
         if (strpos($definition['destination']['plugin'], 'entity:') === 0) {
-          $entity_type = substr($definition['destination']['plugin'], 7);
-          // And a default bundle should be configured for destination.
-          if (!empty($definition['destination']['default_bundle'])) {
-            $bundle = $definition['destination']['default_bundle'];
-            // Collect all fields that are using the 'file_inline' processor.
-            $fields = array_keys(array_filter($migration->getProcessPlugins(), function (array $plugins) {
-              return (bool) array_filter($plugins, function (MigrateProcessInterface $plugin) {
-                return $plugin->getPluginId() === 'file_inline';
-              });
-            }));
-            if ($fields) {
-              // Remove the column: 'body/value' -> 'body'.
-              $this->fieldInfo[$entity_type][$bundle] = array_map(function ($field) {
-                list($field,) = explode('/', $field, 2);
-                return $field;
-              }, $fields);
+          $entity_type_id = substr($definition['destination']['plugin'], 7);
+          $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+          // The entity type must support bundles.
+          if ($bundle_key = $entity_type->getKey('bundle')) {
+            $bundles = [];
+            // The bundle is passed as a field mapping.
+            if (isset($definition['process'][$bundle_key])) {
+              // Get all bundles for this entity type.
+              if ($bundle_entity_type_id = $entity_type->getBundleEntityType()) {
+                $bundle_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id);
+                $bundles = array_keys($bundle_storage->loadMultiple());
+              }
+            }
+            // A default bundle is configured in for the destination plugin.
+            elseif (!empty($definition['destination']['default_bundle'])) {
+              $bundles = [$definition['destination']['default_bundle']];
+            }
+
+            foreach ($bundles as $bundle) {
+              if (!empty($this->fieldInfo[$entity_type_id][$bundle])) {
+                // This bundle was already processed in a previous iteration.
+                continue;
+              }
+
+              // Collect all fields that are using the 'file_inline' processor.
+              $fields = array_keys(array_filter($migration->getProcessPlugins(), function (array $plugins) {
+                return (bool) array_filter($plugins, function (MigrateProcessInterface $plugin) {
+                  return $plugin->getPluginId() === 'file_inline';
+                });
+              }));
+              if ($fields) {
+                // Remove the column: 'body/value' -> 'body'.
+                $this->fieldInfo[$entity_type_id][$bundle] = array_map(function ($field) {
+                  list($field,) = explode('/', $field, 2);
+                  return $field;
+                }, $fields);
+              }
             }
           }
         }
       }
     }
 
-    return $entity_type_id ? $this->fieldInfo[$entity_type_id] : $this->fieldInfo;
+    return $limit_to_entity_type_id ? $this->fieldInfo[$limit_to_entity_type_id] : $this->fieldInfo;
   }
 
   /**
