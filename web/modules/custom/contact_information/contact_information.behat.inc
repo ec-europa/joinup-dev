@@ -18,7 +18,6 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class ContactInformationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UserTrait;
 
@@ -179,7 +178,6 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    */
   protected function createContactInformation(array $values) {
     $values['rid'] = 'contact_information';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
 
     // The 'author' key was replaced by 'uid' in the calling function.
     if (!empty($values['uid'])) {

@@ -10,7 +10,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -21,7 +20,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityReferenceTrait;
   use FileTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -148,7 +146,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     }
 
     $values['rid'] = 'asset_release';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $asset_release = Rdf::create($values);
     $asset_release->save();
     $this->assetReleases[$asset_release->id()] = $asset_release;
