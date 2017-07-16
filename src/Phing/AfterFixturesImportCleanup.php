@@ -25,7 +25,7 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // labeled 'Multilingual Code'.
     // @see http://publications.europa.eu/mdr/resource//documentation/schema/cat.html#element_languages
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2764
-    $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(isBlank(?entity)) };');
+    $this->execute('sparql DELETE FROM <http://languages-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . FILTER(str(?value) = "Multilingual Code") };');
 
     // @see ISAICP-3084
     $this->execute('sparql INSERT INTO <http://adms-sw-v1.00> { <http://purl.org/adms/licencetype/ViralEffect-ShareAlike>  <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/adms/licencetype/1.1> };');
@@ -46,6 +46,10 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // @see ISAICP-3216
     $this->execute('sparql INSERT INTO <http://eira_skos> { ?subject a skos:Concept . ?subject skos:topConceptOf <http://data.europa.eu/eira> } WHERE { ?subject a skos:Collection . };');
     $this->execute('sparql INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+
+    // Remove deprecated countries from the country list.
+    // @See ISAICP-3442
+    $this->execute('sparql DELETE FROM <http://countries-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };');
   }
 
 }
