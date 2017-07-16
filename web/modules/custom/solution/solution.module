@@ -586,6 +586,9 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
 
+  // Exclude custom pages from the solution overview.
+  $query->addCondition('entity_bundle', 'custom_page', '<>');
+
   // If we don't have any releases associated to this solution, it also means
   // that any distribution available is directly associated. We don't need any
   // further filtering on the results.

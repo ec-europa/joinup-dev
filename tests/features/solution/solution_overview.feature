@@ -106,3 +106,25 @@ Feature: Solutions Overview
 
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
+
+  @terms
+  Scenario: Custom pages should not be visible on the overview page
+    Given the following solution:
+      | title             | Jira restarters                      |
+      | description       | Rebooting solves all issues          |
+      | documentation     | text.pdf                             |
+      | elibrary creation | registered users                     |
+      | landing page      | http://foo-example.com/landing       |
+      | webdav creation   | no                                   |
+      | webdav url        | http://joinup.eu/solution/foo/webdav |
+      | wiki              | http://example.wiki/foobar/wiki      |
+      | state             | validated                            |
+    And news content:
+      | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
+      | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
+    And custom_page content:
+      | title            | body                                       | solution |
+      | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira restarters       |
+    When I go to the homepage of the "Jira restarters" solution
+    Then I should see the "Jira will be down for maintenance" tile
+    And I should not see the "Maintenance page" tile

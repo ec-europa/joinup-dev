@@ -120,3 +120,22 @@ Feature: Collections Overview
     And I should see the text "Irwin BVBA made-up company"
     And I should see the text "E-health"
     And I should see the text "Belgium"
+
+  @terms
+  Scenario: Custom pages should not be visible on the overview page
+    Given the following collection:
+      | title            | Jira       |
+      | logo             | logo.png   |
+      | moderation       | no         |
+      | policy domain    | Demography |
+      | spatial coverage | Belgium    |
+      | state            | validated  |
+    And news content:
+      | title                             | body                             | collection | policy domain           | spatial coverage | state     |
+      | Jira will be down for maintenance | As always, during business hours | Jira       | Statistics and Analysis | Luxembourg       | validated |
+    And custom_page content:
+      | title            | body                                       | collection |
+      | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira       |
+    When I go to the homepage of the "Jira" collection
+    Then I should see the "Jira will be down for maintenance" tile
+    And I should not see the "Maintenance page" tile
