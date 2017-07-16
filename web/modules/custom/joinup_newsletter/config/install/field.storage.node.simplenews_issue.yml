@@ -5,7 +5,7 @@ dependencies:
     - node
     - simplenews
 id: node.newsletter
-field_name: newsletter
+field_name: simplenews_issue
 entity_type: node
 type: simplenews_issue
 settings:
