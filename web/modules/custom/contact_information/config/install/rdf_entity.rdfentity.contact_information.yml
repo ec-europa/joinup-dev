@@ -28,6 +28,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/contact-information/published'
       draft: 'http://joinup.eu/contact-information/draft'
+    entity_id_plugin: joinup_po_namespace
 name: 'Contact information'
 rid: contact_information
 description: ''
