@@ -15,5 +15,6 @@ Feature: Input filter
       | Luke cage             | Some shady iframe                  | value: <iframe width="50" height="50" src="https://www.example.com" ></iframe> - format: content_editor                                                    | Netflix group | validated |
     When I go to the "Jessica Jones returns" news
     Then I should see the "iframe" element in the Content region
+    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube.com/embed/nWHUjuJ8zxE" in the "Content" region
     When I go to the "Luke cage" news
-    Then I should not see the "iframe" element in the Content region
+    Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region
