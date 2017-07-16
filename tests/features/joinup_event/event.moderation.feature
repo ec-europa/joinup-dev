@@ -108,9 +108,10 @@ Feature: Event moderation
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
     And the current workflow state should be "Published"
-    Then I press "Request changes"
 
-    # Implement changes as owner of the event.
+    # Implement changes as owner of the document.
+    Given I fill in "Motivation" with "Request some regression changes"
+    And I press "Request changes"
     When I am logged in as "Rosa Vaughn"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"

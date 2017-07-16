@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -219,6 +220,9 @@ function solution_entity_extra_field_info() {
 
   $solution = RdfEntityType::load('solution');
   if ($solution) {
+    // Append some additional fields to the solution entity display containing
+    // related information.
+    // @see solution_rdf_entity_view()
     $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
       'label' => t('Releases overview'),
       'description' => t('A link to the releases overview page'),
@@ -227,6 +231,11 @@ function solution_entity_extra_field_info() {
     $fields['rdf_entity'][$solution->id()]['display']['related_solutions'] = [
       'label' => t('Related solutions: explicit + EIRA'),
       'description' => t('Solutions either explicitly or referenced through EIRA.'),
+      'visible' => FALSE,
+    ];
+    $fields['rdf_entity'][$solution->id()]['display']['download_total'] = [
+      'label' => t('Total distribution downloads'),
+      'description' => t('The total downloads of all distributions in this collection.'),
       'visible' => FALSE,
     ];
   }
@@ -269,6 +278,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     return;
   }
 
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
   if ($display->getComponent('releases_overview')) {
     $build['releases_overview'] = [
       '#type' => 'link',
@@ -284,6 +294,39 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   if ($display->getComponent('related_solutions')) {
     $ids = solution_get_related_solutions_ids($entity);
     $build['related_solutions'] = solution_build_related_solutions_list($ids);
+  }
+
+  // Attach the download total of all distributions in this solution.
+  if ($display->getComponent('download_total')) {
+    $total = 0;
+    if (!$entity->isNew()) {
+      /** @var \Drupal\asset_distribution\AssetDistributionRelations $relationship_counselor */
+      $relationship_counselor = \Drupal::service('asset_distribution.relations');
+      foreach ($relationship_counselor->getSolutionDistributions($entity) as $distribution) {
+        foreach ($distribution->field_download_count->getValue() as $item) {
+          // @todo The support for fields with multiple properties has not yet
+          //   been implemented in RDF entity. These are currently returned as
+          //   multiple field items, each containing one of the properties.
+          //   Once this is fixed we no longer need to check whether the 'value'
+          //   parameter exists, it will always be there.
+          // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3576
+          // @see https://www.drupal.org/node/2892361
+          if (!empty($item['value'])) {
+            $total += (int) $item['value'];
+          }
+        }
+      }
+    }
+
+    // The '#stats_topic' property is used as the label for the statistic, and
+    // to set a template suggestion for the container.
+    // @see joinup_theme_theme_suggestions_alter()
+    // @see joinup_theme_preprocess_container__stats_topic()
+    $build['downloads'] = [
+      '#type' => 'container',
+      '#stats_topic' => t('Downloads'),
+      0 => ['#markup' => (string) $total],
+    ];
   }
 }
 
@@ -407,6 +450,49 @@ function solution_rdf_entity_presave(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function solution_rdf_entity_predelete(EntityInterface $entity) {
+  if ($entity->bundle() === 'solution') {
+    solution_invalidate_collection($entity);
+  }
+}
+
+/**
+ * Invalidate the cache of collections the solution belongs to.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The solution.
+ */
+function solution_invalidate_collection(EntityInterface $entity) {
+  if ($entity->isNew()) {
+    return;
+  }
+  // Solutions aren't group content of collections. However, they appear
+  // alongside group content in collection overviews.
+  // For this reason, we clear the collection group cache tags whenever a
+  // solution is saved.
+  $ids = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $entity->id())
+    ->execute();
+  $tags = [];
+  if ($ids) {
+    foreach ($ids as $id) {
+      $tags[] = "rdf_entity:$id";
+    }
+    Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  solution_invalidate_collection($entity);
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  *
  * When the entity is saved into the default graph, the draft must be deleted.
@@ -429,6 +515,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
   }
+  solution_invalidate_collection($entity);
 }
 
 /**
