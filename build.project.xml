@@ -188,12 +188,12 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, configure-piwik-drupal, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
+        depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, configure-piwik-drupal, create-demo-users" />
 
     <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
     <target name="redirect-outgoing-email">

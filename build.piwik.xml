@@ -44,7 +44,7 @@
     </target>
 
     <target
-        name="configure-piwik"
+        name="configure-piwik-docker"
         depends="download-piwik-repository">
         <!-- Start by doing a clean checkout of the branch. -->
         <gitcheckout
@@ -80,7 +80,9 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <!-- Configure Drupal. -->
+    </target>
+
+    <target name="configure-piwik-drupal">
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.local.php" />
@@ -89,7 +91,7 @@
                 <!-- Comment out previous configuration. -->
                 <replaceregexp>
                     <regexp
-                        pattern="^(.*piwik\.settings.*)$"
+                        pattern="^[^#](.*piwik.*\.settings.*)$"
                         replace="#\1"
                         modifiers="m" />
                 </replaceregexp>
@@ -97,7 +99,7 @@
         </reflexive>
         <append
             destFile="${website.settings.local.php}"
-            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}/';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}" />
+            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}/';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}$config['piwik_reporting_api.settings']['token_auth'] = '${piwik.token}';${line.separator}" />
     </target>
 
     <target
@@ -148,6 +150,6 @@
     <target
         name="setup-piwik"
         description="Set up and start Piwik."
-        depends="download-piwik-containers, configure-piwik, start-piwik" />
+        depends="download-piwik-containers, configure-piwik-docker, start-piwik" />
 
 </project>
