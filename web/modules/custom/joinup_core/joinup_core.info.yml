@@ -52,6 +52,7 @@ config_devel:
   - field.storage.rdf_entity.og_audience
   - field.storage.taxonomy_term.extension
   - field.storage.taxonomy_term.mime_type
+  - honeypot.settings
   - image.style.banner
   - joinup_core.piwik_settings
   - rdf_draft.settings
