@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.newsletter
+    - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
     - text
@@ -27,7 +27,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  newsletter:
+  simplenews_issue:
     type: options_select
     weight: 1
     settings: {  }

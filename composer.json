@@ -22,6 +22,7 @@
         "drupal/facets": "^1.0-alpha10",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
+        "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "5.x-dev#e595d05a622f5ab75758dce5f11ae5208b991f91",
         "drupal/message": "dev-8.x-1.x#7d4c6039adae8afc09d37bc6be60709a3caa2e26 as 1.0",
@@ -51,6 +52,7 @@
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "google/material-design-lite": "dev-v1.1.3",
+        "jacklmoore/autosize": "dev-master",
         "minimaxir/big-list-of-naughty-strings": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
@@ -224,6 +226,19 @@
                     "url": "git@github.com:google/material-design-lite.git",
                     "type": "git",
                     "reference": "v1.1.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jacklmoore/autosize",
+                "version": "dev-master",
+                "type": "drupal-theme-library",
+                "source": {
+                    "url": "git@github.com:jackmoore/autosize.git",
+                    "type": "git",
+                    "reference": "master"
                 }
             }
         },

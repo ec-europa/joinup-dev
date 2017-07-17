@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "817bdc5c1a2c7f3a8cd26529c2cf5789",
+    "content-hash": "33907a5065bcdad484599e9c5dae3ea8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2569,6 +2569,58 @@
             }
         },
         {
+            "name": "drupal/honeypot",
+            "version": "1.27.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/honeypot",
+                "reference": "8.x-1.27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/honeypot-8.x-1.27.zip",
+                "reference": "8.x-1.27",
+                "shasum": "b40f86ef45a7f4325343e8aa455ecbdceab51ffe"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.27",
+                    "datestamp": "1499867343"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Geerling",
+                    "homepage": "https://www.drupal.org/user/389011",
+                    "email": "geerlingguy@mac.com"
+                }
+            ],
+            "description": "Mitigates spam form submissions using the honeypot method.",
+            "homepage": "https://www.drupal.org/project/honeypot",
+            "keywords": [
+                "deterrent",
+                "form",
+                "honeypot",
+                "honeytrap",
+                "php",
+                "spam"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/honeypot"
+            }
+        },
+        {
             "name": "drupal/inline_entity_form",
             "version": "dev-1.x",
             "source": {
@@ -4675,6 +4727,17 @@
                 "password"
             ],
             "time": "2014-11-20T16:49:30+00:00"
+        },
+        {
+            "name": "jacklmoore/autosize",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:jackmoore/autosize.git",
+                "reference": "master"
+            },
+            "type": "drupal-theme-library",
+            "time": "2017-07-12 23:38:25"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10809,6 +10872,7 @@
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
+        "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
