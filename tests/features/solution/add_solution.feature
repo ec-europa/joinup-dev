@@ -43,7 +43,9 @@ Feature: "Add solution" visibility options.
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
     # The TRR fieldgroup should only be visible inside the TRR collection.
     And I should not see the text "TRR"
-    And the "Solution type" field should contain the "IOP specification underpinning View, Technical View - Application, Technical View - Infrastructure" option groups
+    # Regression test to endure that the language terms "Multilingual Code" are not present.
+    And the available options in the "Language" select should not include the "Multilingual Code"
+    And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View" option groups
     When I fill in the following:
       | Title            | Espresso is the solution                                      |
       | Description      | This is a test text                                           |
@@ -51,7 +53,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Ernst Brice                                                   |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -95,7 +97,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ajit Tamboli                                                           |
       | E-mail address   | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
