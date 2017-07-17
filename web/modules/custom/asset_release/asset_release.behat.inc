@@ -326,16 +326,22 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then the :release release should be marked as the latest release
    */
-  public function assertLinkDistribution($release) {
+  public function assertReleaseIsLatest($release) {
     $release = $this->getAssetReleaseByName($release);
 
-    $latest_release = $this->getSession()->getPage()->find('css', '.is-latest');
-    if (empty($latest_release)) {
-      throw new \Exception("No release marked as latest was found in the page.");
+    $latest_releases = $this->getSession()->getPage()->findAll('css', '.is-latest');
+    if (empty($latest_releases)) {
+      throw new \Exception('No release marked as latest was found in the page.');
     }
-    $release_version = $release->field_isr_release_number->value;
+
+    if (count($latest_releases) > 1) {
+      throw new \Exception('Multiple releases marked as latest were found in the page.');
+    }
+
+    $release_version = $release->get('field_isr_release_number')->value;
     $name_with_version = $release->label() . " " . $release_version;
 
+    $latest_release = reset($latest_releases);
     if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
       throw new \Exception("{$release->label()} is not marked as the latest release.");
     }

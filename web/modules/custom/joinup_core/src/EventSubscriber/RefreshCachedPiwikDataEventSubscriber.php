@@ -314,7 +314,11 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
 
     /** @var \Drupal\file\FileInterface $file */
     foreach ($entity->field_ad_access_url->referencedEntities() as $file) {
-      return Url::fromUri(file_create_url($file->getFileUri()))->setAbsolute()->toString();
+      if ($file !== NULL) {
+        return Url::fromUri(file_create_url($file->getFileUri()))
+          ->setAbsolute()
+          ->toString();
+      }
     }
 
     return FALSE;

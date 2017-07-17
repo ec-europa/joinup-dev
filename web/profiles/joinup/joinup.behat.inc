@@ -1617,4 +1617,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     \PHPUnit_Framework_Assert::assertContains($pattern, $href);
   }
 
+  /**
+   * Block test execution for a given time.
+   *
+   * @Then I wait :seconds seconds
+   */
+  public function iWaitSeconds($seconds) {
+    sleep($seconds);
+  }
+
 }
