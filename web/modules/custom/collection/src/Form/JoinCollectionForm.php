@@ -9,17 +9,46 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
+use Drupal\og\MembershipManager;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A simple form with a button to join or leave a collection.
  */
 class JoinCollectionForm extends FormBase {
+
+  /**
+   * The membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
+   * Constructs a JoinCollectionForm.
+   *
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The membership manager service.
+   */
+  public function __construct(MembershipManagerInterface $membership_manager) {
+    $this->membershipManager = $membership_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.membership_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -49,7 +78,30 @@ class JoinCollectionForm extends FormBase {
     // If the user is already a member of the collection, show a link to the
     // confirmation form, disguised as a form submit button. The confirmation
     // form should open in a modal dialog for JavaScript-enabled browsers.
-    if (Og::isMember($collection, $user)) {
+    $membership = $this->membershipManager->getMembership($collection, $user, [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+    ]);
+    $button_classes = [
+      'button',
+      'button--blue-light',
+      'mdl-button',
+      'mdl-js-button',
+      'mdl-button--raised',
+      'mdl-js-ripple-effect',
+      'mdl-button--accent',
+    ];
+
+    if (empty($membership)) {
+      $form['join'] = [
+        '#attributes' => [
+          'class' => $button_classes,
+        ],
+        '#type' => 'submit',
+        '#value' => $this->t('Join this collection'),
+      ];
+    }
+    elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $form['leave'] = [
         '#type' => 'link',
         '#title' => $this->t('Leave this collection'),
@@ -57,40 +109,24 @@ class JoinCollectionForm extends FormBase {
           'rdf_entity' => $collection->id(),
         ]),
         '#attributes' => [
-          'class' => [
+          'class' => array_merge($button_classes, [
             'use-ajax',
-            'button',
             'button--small',
-            'button--blue-light',
-            'mdl-button',
-            'mdl-js-button',
-            'mdl-button--raised',
-            'mdl-js-ripple-effect',
-            'mdl-button--accent',
-          ],
+          ]),
           'data-dialog-type' => 'modal',
           'data-dialog-options' => Json::encode(['width' => 'auto']),
         ],
       ];
       $form['#attached']['library'][] = 'core/drupal.ajax';
     }
-
-    // If the user is not yet a member, show the join button.
-    else {
-      $form['join'] = [
+    elseif ($membership->getState() === OgMembershipInterface::STATE_PENDING) {
+      $form['pending'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Membership is pending'),
+        '#url' => Url::fromRoute('<current>', [], ['fragment' => 'pending']),
         '#attributes' => [
-          'class' => [
-            'button',
-            'button--blue-light',
-            'mdl-button',
-            'mdl-js-button',
-            'mdl-button--raised',
-            'mdl-js-ripple-effect',
-            'mdl-button--accent',
-          ],
+          'class' => array_merge($button_classes, ['button--small']),
         ],
-        '#type' => 'submit',
-        '#value' => $this->t('Join this collection'),
       ];
     }
 
@@ -115,8 +151,12 @@ class JoinCollectionForm extends FormBase {
       ]));
     }
 
-    // Check if the user is already a member of the collection.
-    if (Og::isMember($collection, $user)) {
+    $membership = $this->membershipManager->getMembership($collection, $user, [
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_ACTIVE,
+    ]);
+
+    if (!empty($membership)) {
       $form_state->setErrorByName('collection', $this->t('You already are a member of this collection.'));
     }
   }
@@ -130,16 +170,17 @@ class JoinCollectionForm extends FormBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($form_state->getValue('user_id'));
     $role_id = $collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED;
-
+    $state = $collection->get('field_ar_closed')->first()->value ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
     $membership = OgMembership::create();
     $membership
       ->setUser($user)
       ->setGroup($collection)
-      ->setState(OgMembershipInterface::STATE_ACTIVE)
+      ->setState($state)
       ->setRoles([OgRole::load($role_id)])
       ->save();
 
-    drupal_set_message($this->t('You are now a member of %collection.', [
+    $message = ($state === OgMembership::STATE_ACTIVE) ? 'You are now a member of %collection.' : 'Your membership to the %collection collection is under approval.';
+    drupal_set_message($this->t($message, [
       '%collection' => $collection->getName(),
     ]));
   }
