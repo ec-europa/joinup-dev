@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\og\OgMembershipInterface;
@@ -47,47 +46,88 @@ class OgUserRole extends SourcePluginBase {
    * {@inheritdoc}
    */
   public function initializeIterator() {
+    static $multiple_owner_rows_reported = [];
+
+    $db = Database::getConnection('default', 'migrate');
+
+    $query = $db->select('d8_prepare', 'p')
+      ->fields('p', ['collection'])
+      ->fields('ou', ['uid', 'is_admin', 'is_active', 'created']);
+    $query->join('d8_mapping', 'm', "p.collection = m.collection AND m.owner = 'Y'");
+    $query->join('og_uid', 'ou', 'm.nid = ou.nid');
+    // Allow only migrated users.
+    $query->join('d8_user', 'u', 'ou.uid = u.uid');
+
     $rows = [];
-
-    $role_type = [
-      'admin' => 'rdf_entity-collection-administrator',
-      'facilitator' => 'rdf_entity-collection-facilitator',
-      'member' => 'rdf_entity-collection-member',
-    ];
-
-    $query = Database::getConnection('default', 'migrate')
-      ->select('d8_prepare', 'c')
-      ->fields('c', ['collection', 'roles']);
-
-    $info = [];
     foreach ($query->execute()->fetchAll() as $data) {
-      if ($data->roles) {
-        $roles = Json::decode($data->roles);
-        foreach ($roles as $type => $uids) {
-          foreach ($uids as $uid => list($is_active, $created)) {
-            $info[$data->collection][$uid]['created'] = $created;
-            $info[$data->collection][$uid]['state'][] = $is_active ? OgMembershipInterface::STATE_ACTIVE : OgMembershipInterface::STATE_PENDING;
-            $info[$data->collection][$uid]['roles'][] = $role_type[$type];
-          }
+      $collection = $data->collection;
+      $uid = (int) $data->uid;
+      $key = "$collection:$uid";
+
+      // In the case when we have multiple rows with "Owner == 'Y'", we pickup
+      // only the first occurrence. For this reason we key the $rows array with
+      // the unique key compounded by collection name and user ID.
+      if (isset($rows[$key])) {
+        if (!isset($multiple_owner_rows_reported[$key])) {
+          // Log only once, even there more than 2 owner rows per collection.
+          $this->migration->getIdMap()->saveMessage([
+            'collection' => $collection,
+            'uid' => $uid,
+          ], "Collection '$collection' has multiple rows with Owner == 'Y'");
+        }
+        $multiple_owner_rows_reported[$key] = TRUE;
+        continue;
+      }
+
+      $row = [
+        'collection' => $collection,
+        'uid' => $uid,
+        'state' => $data->is_active ? OgMembershipInterface::STATE_ACTIVE : OgMembershipInterface::STATE_PENDING,
+        'created' => (int) $data->created,
+        'roles' => [],
+      ];
+
+      // Collection owners are added as facilitators.
+      if ($data->is_admin) {
+        $row['roles']['facilitator'] = 'rdf_entity-collection-facilitator';
+      }
+
+      $rows[$key] = $row;
+    }
+
+    // Add the collection owners.
+    $query = $db->select('d8_prepare', 'p')
+      ->fields('p', ['collection', 'collection_owner'])
+      ->isNotNull('p.collection_owner');
+    foreach ($query->execute()->fetchAllKeyed() as $collection => $collection_owner) {
+      $uids = array_map('intval', explode(',', $collection_owner));
+      foreach ($uids as $uid) {
+        $key = "$collection:$uid";
+        // Membership already added.
+        if (isset($rows[$key])) {
+          $rows[$key]['roles']['owner'] = 'rdf_entity-collection-administrator';
+          // Facilitator should be added along with owner.
+          $rows[$key]['roles']['facilitator'] = 'rdf_entity-collection-facilitator';
+        }
+        // New membership.
+        else {
+          $rows[$key] = [
+            'collection' => $collection,
+            'uid' => $uid,
+            'state' => OgMembershipInterface::STATE_ACTIVE,
+            'roles' => [
+              'owner' => 'rdf_entity-collection-administrator',
+              'facilitator' => 'rdf_entity-collection-facilitator',
+            ],
+          ];
         }
       }
     }
 
-    foreach ($info as $collection => $users) {
-      foreach ($users as $uid => $data) {
-        // The facilitator role is complementary with the administrator role.
-        if (in_array('rdf_entity-collection-administrator', $data['roles'])) {
-          $data['roles'][] = 'rdf_entity-collection-facilitator';
-        }
-        $rows[] = [
-          'uid' => $uid,
-          'collection' => $collection,
-          'roles' => $data['roles'],
-          'created' => $data['created'],
-          'state' => $data['state'],
-        ];
-      }
-    }
+    // Remove keys from roles.
+    array_walk($rows, function (array &$row) {
+      $row['roles'] = array_values($row['roles']);
+    });
 
     return new \ArrayIterator($rows);
   }
