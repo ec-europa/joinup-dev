@@ -1,10 +1,10 @@
-langcode: und
+langcode: en
 status: true
 dependencies:
   module:
     - node
     - simplenews
-id: node.newsletter
+id: node.simplenews_issue
 field_name: simplenews_issue
 entity_type: node
 type: simplenews_issue
