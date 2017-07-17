@@ -35,7 +35,7 @@ Feature: About this solution
       | policy domain       | Demography, E-inclusion                                             |
       | related solutions   | Gel, Polymer, Protein                                               |
       | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
-      | spatial coverage    | Netherlands Antilles, Egypt                                         |
+      | spatial coverage    | Italy, Egypt                                         |
       | status              | Under development                                                   |
       | collection          | Monoclonal Antibody Development                                     |
 
@@ -73,7 +73,7 @@ Feature: About this solution
     # Multiple spatial coverage entries.
     And I should see the following lines of text:
     | Egypt                |
-    | Netherlands Antilles |
+    | Italy |
 
     # Multiple solution types.
     And I should see the following lines of text:

@@ -26,12 +26,14 @@ dependencies:
   - field_group
   - file
   - help
+  - honeypot
   - image
   - inline_entity_form
   - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_invite
   - joinup_licence
   - joinup_news
   - joinup_newsletter

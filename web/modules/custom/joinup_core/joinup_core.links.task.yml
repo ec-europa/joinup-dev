@@ -1,0 +1,4 @@
+joinup_core.reports_file_fields:
+  route_name: joinup_core.file_field_info
+  title: 'File fields'
+  base_route: entity.field_storage_config.collection
