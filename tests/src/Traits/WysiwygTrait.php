@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\joinup\Exception\WysiwygEditorNotFoundException;
+
 /**
  * Helper methods for interacting with WYSIWYG editors.
  */
@@ -62,6 +64,27 @@ trait WysiwygTrait {
   }
 
   /**
+   * Checks whether a WYSIWYG editor with the given field label is present.
+   *
+   * @param string $field
+   *   The label of the field to which the WYSIWYG editor is attached.
+   *
+   * @return bool
+   *   TRUE if the editor is present, FALSE otherwise.
+   */
+  public function hasWysiwyg($field) {
+    try {
+      $this->getWysiwyg($field);
+      return TRUE;
+    }
+    // Only catch the specific exception that is thrown when the WYSIWYG editor
+    // is not present, let all other exceptions pass through.
+    catch (WysiwygEditorNotFoundException $e) {
+      return FALSE;
+    }
+  }
+
+  /**
    * Returns the WYSIWYG editor that is associated with the given field label.
    *
    * This is hardcoded on the CKE editor which is included with Drupal core.
@@ -73,8 +96,10 @@ trait WysiwygTrait {
    *   The WYSIWYG editor.
    *
    * @throws \Exception
-   *   When the field label or editor can not be found, or is present more than
-   *   once in the page.
+   *   When the field label can not be found, or the field label or editor is
+   *   present more than once in the page.
+   * @throws \Drupal\joinup\Exception\WysiwygEditorNotFoundException
+   *   Thrown when the wysiwyg editor can not be found in the page.
    */
   protected function getWysiwyg($field) {
     $driver = $this->getSession()->getDriver();
@@ -88,7 +113,7 @@ trait WysiwygTrait {
     $wysiwyg_id = 'cke_' . $label_elements[0]->getAttribute('for');
     $wysiwyg_elements = $driver->find('//div[@id="' . $wysiwyg_id . '"]');
     if (empty($wysiwyg_elements)) {
-      throw new \Exception("Could not find the '$field' wysiwyg editor.");
+      throw new WysiwygEditorNotFoundException("Could not find the '$field' wysiwyg editor.");
     }
     if (count($wysiwyg_elements) > 1) {
       throw new \Exception("Multiple '$field' wysiwyg editors found in the page.");
