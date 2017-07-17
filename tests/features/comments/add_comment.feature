@@ -3,10 +3,10 @@ Feature: Add comments
   As a visitor of the website I can leave a comment on community content.
 
   Background:
-    Given the following collection:
-      | title | Gossip collection |
-      | logo  | logo.png          |
-      | state | validated         |
+    Given the following collections:
+      | title             | state     | closed |
+      | Gossip collection | validated | no     |
+      | Shy collection    | validated | yes    |
 
     And users:
       | Username        | E-mail                 |
@@ -55,6 +55,31 @@ Feature: Add comments
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should see text matching "Mr scandal was doing something weird the other day."
+
+    Examples:
+      | content type | title               | state     |
+      | news         | Scandalous news     | validated |
+      | event        | Celebrity gathering | validated |
+      | discussion   | Is gossip bad?      | validated |
+      | document     | Wikileaks           | validated |
+
+  Scenario Outline: Comments are disallowed for anonymous users in closed collections.
+    Given <content type> content:
+      | title   | body                                                | collection     | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Shy collection | <state> |
+
+    # Anonymous users should not be able to comment.
+    Given I am an anonymous user
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    Then I should see the text "Login or create an account to comment"
+    And the following fields should not be present "Create comment"
+    And I should not see the button "Post comment"
+
+    # Logged-in users can still comment.
+    Given I am logged in as "Miss tell tales"
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    Then the following fields should be present "Create comment"
+    And I should see the button "Post comment"
 
     Examples:
       | content type | title               | state     |
