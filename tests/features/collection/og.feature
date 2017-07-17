@@ -7,18 +7,22 @@ Feature: Organic Groups integration
   Scenario: Joining and leaving a collection
     Given collections:
       | title                       | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation | moderation | state     |
-      | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | validated |
-      | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | no     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | validated |
+      | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | no     | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | validated |
+      | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | yes    | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | validated |
     And users:
-      | Username       |
-      | Madame Sharn   |
-      | Goodie Whemper |
+      | Username           |
+      | Madame Sharn       |
+      | Goodie Whemper     |
+      | Kathie Cumberwatch |
+    And the following collection user memberships:
+      | collection                  | user               |
+      | Folk Dance and Song Society | Kathie Cumberwatch |
 
     # Initially the collection should only have 1 member, the group manager
     # but since this is created by the api, no user is logged so no user
     # is assigned as group owner and the collection should not have members.
     Then the "Überwaldean Land Eels" collection should have 0 members
-    And the "Folk Dance and Song Society" collection should have 0 members
+    And the "Folk Dance and Song Society" collection should have 1 members
 
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
@@ -43,11 +47,13 @@ Feature: Organic Groups integration
     When I go to the homepage of the "Folk Dance and Song Society" collection
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
-    Then I should see the success message "You are now a member of Folk Dance and Song Society."
-    And the "Folk Dance and Song Society" collection should have 1 member
+    Then I should see the success message "Your membership to the Folk Dance and Song Society collection is under approval."
+    And the "Folk Dance and Song Society" collection should have 2 members
     When I go to the homepage of the "Folk Dance and Song Society" collection
     Then I should not see the "Join this collection" button
-    But I should see the link "Leave this collection"
+    And I should not see the "Leave this collection" button
+    # Pending membership.
+    But I should see the link "Membership is pending"
 
     # Check that a second authenticated user can join, the form should not be
     # cached.
@@ -75,10 +81,11 @@ Feature: Organic Groups integration
     And I should see the "Join this collection" button
     And the "Überwaldean Land Eels" collection should have 0 members
 
-    When I go to the homepage of the "Folk Dance and Song Society" collection
+    When I am logged in as "Kathie Cumberwatch"
+    And I go to the homepage of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
-    And the "Folk Dance and Song Society" collection should have 0 members
+    And the "Folk Dance and Song Society" collection should have 1 members

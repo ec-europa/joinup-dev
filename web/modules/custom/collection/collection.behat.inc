@@ -414,7 +414,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $actual = \Drupal::entityQuery('og_membership')
       ->condition('entity_type', 'rdf_entity')
       ->condition('entity_id', $collection->id())
-      ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+      ->condition('state', [OgMembershipInterface::STATE_ACTIVE, OgMembershipInterface::STATE_PENDING], 'IN')
       ->count()
       ->execute();
 
