@@ -21,6 +21,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_entity_access().
@@ -390,7 +391,13 @@ function solution_build_related_solutions_list(array $ids) {
   $entities = Rdf::loadMultiple($ids);
   $delta = 0;
   $elements = [];
+  /**@var EntityInterface $referenced_solution */
   foreach ($entities as $id => $referenced_solution) {
+    // Make sure no draft content ends up in shared cache.
+    $anonymous_user = User::getAnonymousUser();
+    if (!$referenced_solution->access('view', $anonymous_user)) {
+      continue;
+    }
     $view_builder = Drupal::entityTypeManager()->getViewBuilder($referenced_solution->getEntityTypeId());
     $element = $view_builder->view($referenced_solution, 'view_mode_tile', $referenced_solution->language()->getId());
     $elements[$delta] = [
@@ -578,6 +585,9 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
 
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // Exclude custom pages from the solution overview.
+  $query->addCondition('entity_bundle', 'custom_page', '<>');
 
   // If we don't have any releases associated to this solution, it also means
   // that any distribution available is directly associated. We don't need any

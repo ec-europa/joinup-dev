@@ -1,0 +1,19 @@
+entity.rdf_entity.members.invite:
+  path: 'rdf_entity/{rdf_entity}/members/invite'
+  defaults:
+    _form: '\Drupal\joinup_invite\Form\InviteForm'
+    _title: 'Add facilitators'
+  requirements:
+    _og_user_access_group: 'manage members'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+    _og_entity_type_id: rdf_entity
+
+joinup_invite.user_auto_complete:
+  path: 'joinup_invite/user_auto_complete'
+  defaults:
+    _controller: '\Drupal\joinup_invite\Controller\UserAutoCompleteController::userAutoComplete'
+  requirements:
+    _permission: 'access user profiles'
