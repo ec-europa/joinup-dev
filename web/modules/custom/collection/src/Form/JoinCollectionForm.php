@@ -9,9 +9,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
-use Drupal\og\MembershipManager;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -179,10 +177,11 @@ class JoinCollectionForm extends FormBase {
       ->setRoles([OgRole::load($role_id)])
       ->save();
 
-    $message = ($state === OgMembership::STATE_ACTIVE) ? 'You are now a member of %collection.' : 'Your membership to the %collection collection is under approval.';
-    drupal_set_message($this->t($message, [
-      '%collection' => $collection->getName(),
-    ]));
+    $parameters = ['%collection' => $collection->getName()];
+    $message = ($state === OgMembership::STATE_ACTIVE) ?
+      $this->t('You are now a member of %collection.', $parameters) :
+      $this->t('Your membership to the %collection collection is under approval.', $parameters);
+    drupal_set_message($message);
   }
 
   /**
