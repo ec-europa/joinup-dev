@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.newsletter
+    - field.storage.node.simplenews_issue
     - node.type.newsletter
   module:
     - simplenews
-id: node.newsletter.newsletter
-field_name: newsletter
+id: node.newsletter.simplenews_issue
+field_name: simplenews_issue
 entity_type: node
 bundle: newsletter
 label: Newsletter
