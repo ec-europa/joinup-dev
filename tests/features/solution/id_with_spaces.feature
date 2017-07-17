@@ -18,3 +18,16 @@ Feature: Solution API
       | webdav url        | http://joinup.eu/solution/foo/webdav   |
       | wiki              | http://example.wiki/foobar/wiki        |
       | state             | validated                              |
+    And the following solution:
+      | uri               | http://www.it-planungsrat.de/DE/Projekte/Koordinierungsprojekte/OsiP/Online_Sicherheitspr%C3%BCfung.html |
+      | title             | Solution with unicode                                                                                     |
+      | description       | A sample solution                                                                                        |
+      | logo              | logo.png                                                                                                 |
+      | banner            | banner.jpg                                                                                               |
+      | documentation     | text.pdf                                                                                                 |
+      | elibrary creation | registered users                                                                                         |
+      | landing page      | http://foo-example.com/landing                                                                           |
+      | webdav creation   | no                                                                                                       |
+      | webdav url        | http://joinup.eu/solution/foo/webdav                                                                     |
+      | wiki              | http://example.wiki/foobar/wiki                                                                          |
+      | state             | validated                                                                                                |
