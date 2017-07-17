@@ -176,10 +176,6 @@
             "url": "https://github.com/Gizra/message.git"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/claudiu-cristea/piwik-reporting-api.git"
-        },
-        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
