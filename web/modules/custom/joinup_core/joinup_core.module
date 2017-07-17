@@ -257,6 +257,7 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   $link_templates = [
     'about-page' => '/rdf_entity/{rdf_entity}/about',
     'member-overview' => '/rdf_entity/{rdf_entity}/members',
+    'add-facilitator' => '/rdf_entity/{rdf_entity}/members/invite',
   ];
   foreach ($link_templates as $key => $path) {
     $entity_types['rdf_entity']->setLinkTemplate($key, $path);

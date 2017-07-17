@@ -39,3 +39,11 @@ joinup_core.piwik_integration_settings:
     _permission: 'administer piwik integration'
   options:
     _admin_route: TRUE
+
+joinup_core.file_field_info:
+  path: '/admin/reports/fields/file'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\FileFields::listing'
+    _title: 'File fields'
+  requirements:
+      _permission: 'administer content types'
