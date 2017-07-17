@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.newsletter
+    - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
     - link
@@ -27,5 +27,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  newsletter: true
+  simplenews_issue: true
   report: true
