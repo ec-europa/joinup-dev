@@ -410,8 +410,8 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   TRUE, if process is needed.
    */
   protected static function needsProcessing($markup) {
-    $a_pattern = '@<a\s+[^>]*href\s*=\s*([\'\"])??[http(s)?://joinup.ec.europa.eu/]?([/]?[^\" ]*?)\\1[^>]*>@i';
-    $img_pattern = '@<img\s+[^>]*src\s*=\s*([\'\"])??[http(s)?://joinup.ec.europa.eu/]?([/]?[^\" ]*?)\\1[^>]*>@i';
+    $a_pattern = "@<a\s+[^>]*href\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
+    $img_pattern = "@<img\s+[^>]*src\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
     return preg_match($a_pattern, $markup) || preg_match($img_pattern, $markup);
   }
 
