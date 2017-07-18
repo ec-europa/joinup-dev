@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4db129b6114e3eff52d3bd6549040cc",
+    "content-hash": "b22a221778bf723f272c6754e7a205bf",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3179,7 +3179,7 @@
                     "datestamp": "1493467743"
                 },
                 "patches_applied": {
-                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-10.patch"
+                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-15.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8824,7 +8824,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -9280,7 +9280,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -9476,7 +9477,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-07-06T17:24:52+00:00"
+            "time": "2017-07-06 17:24:52"
         },
         {
             "name": "fabpot/goutte",
