@@ -148,7 +148,7 @@
             },
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch",
-                "Linkit filter should honour the URL query and fragment @see https://www.drupal.org/node/2895153": "https://www.drupal.org/files/issues/2895153-2.patch"
+                "Linkit filter should honour the URL query and fragment @see https://www.drupal.org/node/2895153": "https://www.drupal.org/files/issues/2895153-4.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",

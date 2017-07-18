@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab77df35c9c196ea575fafc1cee86d9e",
+    "content-hash": "18ff2c229b4b8d4c906bf6bf10a8dbf8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2725,8 +2725,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
-            },
-            "time": "2017-05-29 21:27:56"
+            }
         },
         {
             "name": "drupal/mailsystem",
