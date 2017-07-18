@@ -16,4 +16,13 @@ final class NotificationEvents {
    */
   const COMMUNITY_CONTENT_CRUD = 'joinup_notification.cc.notify';
 
+  /**
+   * An event to be fired for crud operations that require a notification.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const RDF_ENTITY_CRUD = 'joinup_notification.rdf.notify';
+
 }
