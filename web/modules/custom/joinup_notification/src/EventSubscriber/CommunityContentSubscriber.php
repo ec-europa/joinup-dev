@@ -95,7 +95,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -143,7 +143,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -191,7 +191,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value]);
     $this->sendUserDataMessages($user_data);
   }
 

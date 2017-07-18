@@ -150,15 +150,15 @@ abstract class NotificationSubscriberBase {
    *
    * @param array $user_data
    *   A structured array of user ownership and roles and their corresponding
-   *    message ids.
-   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *   The event object.
+   *   message ids.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   Optionally alter the entity to be checked.
    *
    * @return array
    *   An array of user ids that every key is an array of message ids.
    */
-  protected function getUsersMessages(array $user_data, NotificationEvent $event) {
-    $entity = $event->getEntity();
+  protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
+    $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [
       'roles' => [],
@@ -183,7 +183,7 @@ abstract class NotificationSubscriberBase {
     }
 
     foreach ($user_data['og_roles'] as $role_id => $messages) {
-      $recipients = $this->getRecipientIdsByOgRole($this->entity, $role_id);
+      $recipients = $this->getRecipientIdsByOgRole($entity, $role_id);
       $recipients = array_diff(array_values($recipients), $uids_to_skip);
       foreach ($recipients as $uid) {
         $message_data[$uid] = $messages;
