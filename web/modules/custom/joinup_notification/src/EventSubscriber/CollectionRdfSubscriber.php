@@ -13,6 +13,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
+  const TEMPLATE_APPROVE_EDIT = 'col_approve_edit';
+  const TEMPLATE_APPROVE_NEW = 'col_approve_new';
+  const TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER = 'col_arc_del_apr_owner';
+  const TEMPLATE_ARCHIVE_DELETE_MEMBERS = 'col_arc_del_members';
+  const TEMPLATE_ARCHIVE_DELETE_NO_REQUEST = 'col_arc_del_no_request';
+  const TEMPLATE_ARCHIVE_DELETE_REJECT = 'col_arc_del_rej';
+  const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL = 'col_arc_del_sol_generic';
+  const TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED = 'col_arc_del_sol_no_affiliates';
+  const TEMPLATE_PROPOSE_EDIT_MODERATORS = 'col_propose_edit_mod';
+  const TEMPLATE_PROPOSE_EDIT_OWNER = 'col_propose_edit_own';
+  const TEMPLATE_PROPOSE_NEW = 'col_propose_new';
+  const TEMPLATE_REQUEST_ARCHIVAL_DELETION = 'col_req_arch_del';
+
   /**
    * The operation string.
    *
@@ -56,15 +69,22 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected $hasPublished;
 
   /**
+   * The notification event.
+   *
+   * @var \Drupal\joinup_notification\Event\NotificationEvent
+   */
+  protected $event;
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
     $events[NotificationEvents::RDF_ENTITY_CRUD] = [
-      # Notification id 1 - Propose new collection.
+      // Notification id 1 - Propose new collection.
       ['onCreate'],
-      # All notification Ids.
+      // All notification Ids.
       ['onUpdate'],
-      # Notification id 9, 12, 13, 14.
+      // Notification id 9, 12, 13, 14.
       ['onDelete'],
     ];
 
@@ -76,6 +96,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
+    $this->event = $event;
     $this->stateField = 'field_ar_state';
     $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
     $from_state = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
@@ -88,25 +109,25 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   /**
    * Sends notification if the collection is created in proposed state.
    *
-   * Notifications handled: 1.
-   *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *    The notification event.
+   *   The notification event.
    */
   public function onCreate(NotificationEvent $event) {
     $this->initialize($event);
     if (!$this->appliesOnCreate()) {
       return;
     }
-
-    $this->notificationPropose();
+    $template_id = self::TEMPLATE_APPROVE_NEW;
+    $user_data_array = ['roles' => ['moderator' => [$template_id]]];
+    $user_data = $this->getUsersMessages($user_data_array);
+    $this->sendUserDataMessages($user_data);
   }
 
   /**
    * Checks if the conditions apply for the onCreate method.
    *
    * @return bool
-   *    Whether the conditions apply.
+   *   Whether the conditions apply.
    */
   protected function appliesOnCreate() {
     if (!$this->appliesOnCollections()) {
@@ -130,7 +151,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Notifications handled: All.
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *    The notification event.
+   *   The notification event.
    */
   public function onUpdate(NotificationEvent $event) {
     $this->initialize($event);
@@ -158,7 +179,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
         break;
 
       case 'archive':
-        $this->notificationArchive();
+        $this->notificationArchiveDelete();
         break;
 
     }
@@ -168,7 +189,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Checks if the conditions apply for the onUpdate method.
    *
    * @return bool
-   *    Whether the conditions apply.
+   *   Whether the conditions apply.
    */
   protected function appliesOnUpdate() {
     if (!$this->appliesOnCollections()) {
@@ -201,7 +222,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Notifications handled: 9, 12, 13, 14.
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *    The notification event.
+   *   The notification event.
    */
   public function onDelete(NotificationEvent $event) {
     $this->initialize($event);
@@ -216,7 +237,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Checks if the conditions apply for the onDelete method.
    *
    * @return bool
-   *    Whether the conditions apply.
+   *   Whether the conditions apply.
    */
   protected function appliesOnDelete() {
     if (!$this->appliesOnCollections()) {
@@ -233,12 +254,41 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   /**
    * Sends a notification for proposing a collection.
    *
-   * Notification id 1, 4, 5.
-   * Notification 1 is sent when the entity has not been published yet. 4 and 5
-   * are sent when the proposal is by editing a published version.
+   * @codingStandardsIgnoreStart
+   * Notification id 1:
+   *  - Event: A new collection is proposed.
+   *  - Recipient: Moderators
+   * Notification id 4:
+   *  - Event: A collection which has been published is proposed.
+   *  - Recipient: Moderators
+   * Notification id 5:
+   *  - Event: A collection which has been published is proposed.
+   *  - Recipient: Owner
+   *@codingStandardsIgnoreStart
+   *
+   * If the entity does not have a published version, send notification id 1 to
+   * the moderators, otherwise, send templates 4, 5 to the owner and the
+   * moderator respectively.
+   *
    */
   protected function notificationPropose() {
-    // @todo: TBD
+    if (!$this->hasPublished) {
+      $user_data = ['roles' => ['moderator' => [self::TEMPLATE_PROPOSE_NEW]]];
+    }
+    else {
+      $user_data = [
+        'owner' => [
+          self::TEMPLATE_PROPOSE_EDIT_OWNER,
+        ],
+        'roles' => [
+          'moderator' => [
+            self::TEMPLATE_PROPOSE_EDIT_MODERATORS,
+          ],
+        ],
+      ];
+    }
+
+    $this->getUsersAndSend($user_data);
   }
 
   /**
@@ -249,7 +299,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * modification is approved.
    */
   protected function notificationValidate() {
-    // @todo: TBD
+    $template_id = $this->hasPublished ? self::TEMPLATE_APPROVE_EDIT : self::TEMPLATE_APPROVE_NEW;
+    $user_data = ['owner' => [$template_id]];
+    $this->getUsersAndSend($user_data);
   }
 
   /**
@@ -258,7 +310,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Notification id 8.
    */
   protected function notificationRequestArchivalDeletion() {
-    // @todo: TBD
+    $template_id = self::TEMPLATE_REQUEST_ARCHIVAL_DELETION;
+    $user_data = ['roles' => ['moderator' => [$template_id]]];
+    $this->getUsersAndSend($user_data);
   }
 
   /**
@@ -267,16 +321,93 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    * Notification id 10.
    */
   protected function notificationRejectArchivalDeletion() {
-    // @todo: TBD
+    $template_id = self::TEMPLATE_ARCHIVE_DELETE_REJECT;
+    $user_data = ['owner' => [$template_id]];
+    $this->getUsersAndSend($user_data);
   }
 
   /**
    * Sends a notification on archiving a collection.
    *
-   * Notification id 9, 12, 13, 14.
+   * Notification id 9, 13, 14.
+   *
+   * Notification 9 notifies the owner that his request to archive/delete a
+   * collection was approved.
+   * Notification 13 notifies the owner that his collection has been archived/
+   * deleted without prior request.
+   * Only one of both are sent depending on the current state of the collection.
    */
-  protected function notificationArchive() {
-    // @todo: TBD
+  protected function notificationArchiveDelete() {
+    // Template id 9. Notify the owner.
+    $template_id = $this->isTransitionRequested() ? self::TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER : self::TEMPLATE_ARCHIVE_DELETE_NO_REQUEST;
+    $user_data = ['roles' => ['moderator' => [$template_id]]];
+    $user_data = $this->getUsersMessages($user_data);
+    $this->sendUserDataMessages($user_data);
+
+    // Next, notify all owners of affiliated solutions.
+    if (!$this->entity->get('field_ar_affiliates')->isEmpty()) {
+      foreach ($this->entity->get('field_ar_affiliates')->referencedEntities() as $solution) {
+        if (!empty($solution)) {
+          $this->notifySolutionOwners($solution);
+        }
+      }
+    }
+
+    // Avoid sending again to the owner.
+    $uids_to_skip = array_keys($user_data);
+
+    // Last, send an email to all members of the collection.
+    $user_data = [
+      'og_roles' => [
+        'rdf_entity-collection-member',
+      ],
+    ];
+    $user_data = $this->getUsersMessages($user_data);
+    foreach ($uids_to_skip as $uid) {
+      unset($user_data[$uid]);
+    }
+
+    $this->sendUserDataMessages($user_data);
+  }
+
+  /**
+   * Sends a notification to solution owners affiliated with the collection.
+   *
+   * Notification id 11, 12.
+   *
+   * Notification 11 is sent to the solution owners in which the collection that
+   * is archived/deleted is the only affiliate, prompting them to take action.
+   * Notification 12 is sent to the solution owners in which the collection that
+   * is archived/deleted is one of the affiliates. This is an information email.
+   * Only one of both are sent to the owner of a solution depending on the
+   * amount of the affiliates the solution has.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $solution
+   *    The solution entity.
+   *
+   * @todo: This might need to be moved to the solution subscriber once it is
+   * created, in order to remove weird workarounds.
+   */
+  protected function notifySolutionOwners(EntityInterface $solution) {
+    // Count collections that are not archived and are affiliated to the
+    // solution.
+    $collection_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $solution->id())
+      ->condition('field_ar_state', 'archived', '<>')
+      ->count()
+      ->execute();
+
+    $template_id = $collection_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
+    $user_data = [
+      'og_role' => [
+        'rdf_entity-solution-administrator' => [
+          $template_id,
+        ],
+      ],
+    ];
+    $user_data = $this->getUsersMessages($user_data, $solution);
+    $this->sendUserDataMessages($user_data);
   }
 
   /**
@@ -367,6 +498,51 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     }
 
     return $entity->hasGraph('default');
+  }
+
+  /**
+   * Calculates the user data to send the messages with.
+   *
+   * @param array $user_data
+   *    The user data array.
+   *
+   * @see: ::getUsersMessages() for more information on the array.
+   */
+  protected function getUsersAndSend(array $user_data) {
+    $user_data = $this->getUsersMessages($user_data);
+    $this->sendUserDataMessages($user_data);
+  }
+
+  /**
+   * Returns the state of the collection related to the event.
+   *
+   * @return string
+   *    The current state.
+   */
+  protected function getCollectionState() {
+    return $this->entity->get('field_ar_state')->first()->value;
+  }
+
+  /**
+   * Checks whether the action is requested.
+   *
+   * Applies only for archival and deletion request.
+   *
+   * @return bool
+   *    Whether the action is requested. Returns true if the current state is
+   *    deletion_request and the operation is delete or if the current state is
+   *    archival_request and the transition is archive. False otherwise.
+   */
+  protected function isTransitionRequested() {
+    $state = $this->getCollectionState();
+    if ($state === 'deletion_request') {
+      return $this->operation === 'delete';
+    }
+    elseif ($state === 'archival_request') {
+      return $this->transition->getId() === 'archive';
+    }
+
+    return FALSE;
   }
 
 }
