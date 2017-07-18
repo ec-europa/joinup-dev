@@ -1607,6 +1607,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Assert that the persistent url link follows a given pattern.
+   *
+   * @Then the persistent url should contain :pattern
+   */
+  public function thePersistentUrlShouldContain($pattern) {
+    $field_selector = $this->getSession()->getPage()->find('css', '.permalink');
+    $href = $field_selector->getAttribute('href');
+    \PHPUnit_Framework_Assert::assertContains($pattern, $href);
+  }
+
+  /**
    * Block test execution for a given time.
    *
    * @Then I wait :seconds seconds

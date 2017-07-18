@@ -52,6 +52,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/solution/published'
       draft: 'http://joinup.eu/solution/draft'
+    entity_id_plugin: joinup_po_namespace
 name: Solution
 rid: solution
 description: ''
