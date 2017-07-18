@@ -20,3 +20,16 @@ config_devel:
   - message.template.cc_transition_reject_deletion
   - message.template.cc_delete
   - message.template.cc_transition_propose_reported
+  - message.template.col_approve_edit
+  - message.template.col_approve_new
+  - message.template.col_arc_del_apr_own
+  - message.template.col_arc_del_members
+  - message.template.col_arc_del_no_request
+  - message.template.col_arc_del_rej
+  - message.template.col_arc_del_sol_generic
+  - message.template.col_arc_del_sol_no_affiliates
+  - message.template.col_propose_edit_mod
+  - message.template.col_propose_edit_own
+  - message.template.col_propose_new
+  - message.template.col_req_arch_del
+
