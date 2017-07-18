@@ -21,6 +21,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_entity_access().
@@ -390,7 +391,13 @@ function solution_build_related_solutions_list(array $ids) {
   $entities = Rdf::loadMultiple($ids);
   $delta = 0;
   $elements = [];
+  /**@var EntityInterface $referenced_solution */
   foreach ($entities as $id => $referenced_solution) {
+    // Make sure no draft content ends up in shared cache.
+    $anonymous_user = User::getAnonymousUser();
+    if (!$referenced_solution->access('view', $anonymous_user)) {
+      continue;
+    }
     $view_builder = Drupal::entityTypeManager()->getViewBuilder($referenced_solution->getEntityTypeId());
     $element = $view_builder->view($referenced_solution, 'view_mode_tile', $referenced_solution->language()->getId());
     $elements[$delta] = [
@@ -532,32 +539,35 @@ function solution_get_latest_release(RdfInterface $solution) {
     throw new \InvalidArgumentException('Passed argument is not a solution RDF entity.');
   }
 
-  $ids = \Drupal::entityQuery('rdf_entity')
-    ->condition('rid', 'asset_release')
-    ->condition('field_isr_is_version_of', $solution->id())
-    ->sort('field_isr_creation_date', 'DESC')
-    ->execute();
+  $cache = &drupal_static(__FUNCTION__, []);
+  if (!isset($cache[$solution->id()])) {
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->condition('field_isr_is_version_of', $solution->id())
+      ->sort('field_isr_creation_date', 'DESC')
+      ->execute();
 
-  if (empty($ids)) {
-    return NULL;
+    $cache[$solution->id()] = NULL;
+    if (!empty($ids)) {
+      // @todo: Sorting is not yet working in SPARQL, we're fetching all results
+      // and doing the sorting in PHP right now. Once sorting is working we
+      // should limit the result set to 1 item.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      $releases = Rdf::loadMultiple($ids);
+      usort($releases, function ($release1, $release2) {
+        $ct1 = $release1->field_isr_creation_date->value;
+        $ct2 = $release2->field_isr_creation_date->value;
+        if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
+          return 0;
+        }
+        return ($ct1 < $ct2) ? 1 : -1;
+      });
+
+      $cache[$solution->id()] = reset($releases);
+    }
   }
 
-  // @todo: Sorting is not yet working in SPARQL, we're fetching all results and
-  // doing the sorting in PHP right now. Once sorting is working we should limit
-  // the result set to 1 item.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-  $releases = Rdf::loadMultiple($ids);
-  usort($releases, function ($release1, $release2) {
-    $ct1 = $release1->field_isr_creation_date->value;
-    $ct2 = $release2->field_isr_creation_date->value;
-    if (empty($ct1) || empty($ct2) || $ct1 == $ct2) {
-      return 0;
-    }
-    return ($ct1 < $ct2) ? 1 : -1;
-  });
-
-  $latest_release = reset($releases);
-  return $latest_release;
+  return $cache[$solution->id()];
 }
 
 /**
@@ -578,6 +588,9 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
 
   // Remove the solution itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // Exclude custom pages from the solution overview.
+  $query->addCondition('entity_bundle', 'custom_page', '<>');
 
   // If we don't have any releases associated to this solution, it also means
   // that any distribution available is directly associated. We don't need any

@@ -24,6 +24,9 @@
         <h1 class="page__title">
           {{ title }}
         </h1>
+        {% if permalink %}
+          <a class="permalink" href="{{ permalink }}" title="Permalink">#</a>
+        {% endif %}
       {% endif %}
   </div>
 {% endif %}

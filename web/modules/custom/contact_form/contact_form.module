@@ -44,6 +44,15 @@ function contact_form_form_message_contact_form_submission_form_alter(&$form, Fo
     ],
   ];
 
+  // If honeypot is enabled, add protection to the form.
+  if (function_exists('honeypot_add_form_protection')) {
+    honeypot_add_form_protection(
+      $form,
+      $form_state,
+      ['honeypot', 'time_restriction']
+    );
+  }
+
   // Change the text of the submit button to "Submit".
   $form['actions']['submit']['#value'] = t('Submit');
 

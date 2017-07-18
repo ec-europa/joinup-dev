@@ -304,6 +304,24 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that a select field does not have any of the given options.
+   *
+   * @param string $select
+   *   The name of the select element.
+   * @param string $options
+   *   A comma separated list of items to check.
+   *
+   * @Then the available options in the :select select should not include the :options( options)
+   */
+  public function assertSelectOptionNotAvailable($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = $this->getSelectOptions($field);
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
+  }
+
+  /**
    * Checks that the given select field has the given optgroups.
    *
    * @param string $select
@@ -318,7 +336,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
   }
 
   /**
@@ -1586,6 +1604,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $worker->processItem($item->data);
       $queue->deleteItem($item);
     }
+  }
+
+  /**
+   * Assert that the persistent url link follows a given pattern.
+   *
+   * @Then the persistent url should contain :pattern
+   */
+  public function thePersistentUrlShouldContain($pattern) {
+    $field_selector = $this->getSession()->getPage()->find('css', '.permalink');
+    $href = $field_selector->getAttribute('href');
+    \PHPUnit_Framework_Assert::assertContains($pattern, $href);
+  }
+
+  /**
+   * Block test execution for a given time.
+   *
+   * @Then I wait :seconds seconds
+   */
+  public function iWaitSeconds($seconds) {
+    sleep($seconds);
   }
 
 }

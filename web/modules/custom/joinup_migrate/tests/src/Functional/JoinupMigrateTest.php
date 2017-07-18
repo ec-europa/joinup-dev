@@ -399,7 +399,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'Former Yugoslav Republic of Macedonia',
     'Germany',
     'Gibraltar',
-    'Gilbert and Ellice Islands',
     'Greece',
     'Guernsey',
     'Hungary',

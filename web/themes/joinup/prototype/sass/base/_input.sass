@@ -6,19 +6,26 @@
 
 // Component
 // --------------------------------------------------
+// .mdl-textfield
 
 // Elements
 // --------------------------------------------------
 .mdl-textfield__input
-  padding-top: 12px
-  padding-bottom: 12px
+  height: 42px
+  padding-top: 0
+  padding-bottom: 0
+  border-width: 1px
+  border-color: $color-grey-input
+
+.mdl-textfield__label-container
+  position: relative
 
 .mdl-textfield__label
-  font-size: 20px
-  top: 30px
+  font-size: $font-size-medium
+  top: 10px
+  color: $color-grey-input
   &:after
-    top: 31px
-    bottom: auto
+    bottom: 0
 
 .textfield__helptext
   font-size: $font-size-xsmall
@@ -27,59 +34,43 @@
   margin-top: 6px
   color: lighten($color-grey-medium, 10%)
 
-.textfield--helptext-container
-  margin-bottom: 0 !important
-
 // Modifiers
 // --------------------------------------------------
-.textfield--full-width, #edit-submit
+.textfield--full-width
   width: 100%
+
 
 // Dependiencies
 // --------------------------------------------------
 
 // States
 // --------------------------------------------------
-.mdl-textfield--floating-label.is-invalid,
-.mdl-textfield--floating-label,
-.mdl-textfield.is-invalid,
 .mdl-textfield
-  .mdl-textfield__input
-    border-color: $color-grey-input
-    border-width: 1px
-  .mdl-textfield__label
-    font-size: $font-size-medium
-    color: $color-grey-input
-    font-size: 20px
-    &:after
-      background-color: #a0a1a2
+  &.is-invalid
+    .mdl-textfield__input
+      border-width: 1px
+      border-color: $color-grey-input
+    .mdl-textfield__label
+      font-size: $font-size-medium
+      color: $color-grey-input
+      &:after
+        background-color: #a0a1a2
+  &.is-focused,
+  &.is-dirty
+    .mdl-textfield__label
+      font-size: $font-size-small
+      top: -16px
+      color: $color-blue-medium
+      &:after
+        bottom: 0
+        background-color: $color-blue-medium
 
-.mdl-textfield--floating-label.is-focused,
-.mdl-textfield--floating-label.is-dirty,
-.mdl-textfield.is-focused,
-.mdl-textfield.is-dirty
-  .mdl-textfield__label
-    font-size: $font-size-small
-    color: $color-blue-medium
-    &:after
-      background-color: $color-blue-medium
-      top: 57px !important
+.mdl-textfield--textarea
+  &.is-focused,
+  &.is-dirty
+    .mdl-textfield__input
+      height: auto
+      padding-top: 12px
+      padding-bottom: 12px
 
-
-.textfield--textarea.mdl-textfield.is-focused,
-.textfield--textarea.mdl-textfield.is-dirty
-  textarea
-    -moz-box-sizing: border-box
-    box-sizing: border-box
-    height: 57px
-  .mdl-textfield__label
-    &:after
-      top: 47px !important
-
-.textfield--textarea.mdl-textfield
-  width: 100%
-
-.comment-comment-form
-  .form-wrapper.field--widget-string-textarea
-    margin-bottom: 0
-    height: 97px
+      

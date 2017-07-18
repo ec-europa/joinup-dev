@@ -489,6 +489,9 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 
   // Remove the collection itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // Exclude custom pages from the collection overview.
+  $query->addCondition('entity_bundle', 'custom_page', '<>');
 }
 
 /**
