@@ -59,6 +59,6 @@ LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 LEFT JOIN content_type_community ctc ON n.vid = ctc.vid
 LEFT JOIN files fc ON ctc.field_community_logo_fid = fc.fid
 LEFT JOIN content_type_repository ctr ON n.vid = ctr.vid
-LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid
+LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid AND cfru.delta = 0
 LEFT JOIN files fr ON ctr.field_repository_logo_fid = fr.fid
 LEFT JOIN og o ON n.nid = o.nid
