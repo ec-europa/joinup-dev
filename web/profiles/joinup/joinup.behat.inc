@@ -1146,30 +1146,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Checks that a given field label is associated with a WYSIWYG editor.
-   *
-   * @param string $label
-   *   The label of the field containing the WYSIWYG editor.
-   *
-   * @Then I should see the :label wysiwyg editor
-   */
-  public function assertWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertTrue($this->hasWysiwyg($label));
-  }
-
-  /**
-   * Checks that a given field label is not associated with a WYSIWYG editor.
-   *
-   * @param string $label
-   *   The label of the field uncontaining the WYSIWYG editor.
-   *
-   * @Then the :label field should not have a wysiwyg editor
-   */
-  public function assertNoWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertFalse($this->hasWysiwyg($label));
-  }
-
-  /**
    * Create comment entities.
    *
    * Table format:
