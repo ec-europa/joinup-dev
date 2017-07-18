@@ -14,21 +14,42 @@ use Drupal\joinup_notification\NotificationEvents;
  * Implements hook_ENTITY_TYPE_insert().
  */
 function joinup_notification_node_insert(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('create', $entity);
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function joinup_notification_node_update(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('update', $entity);
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function joinup_notification_node_delete(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('delete', $entity);
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_rdf_entity_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::RDF_ENTIRTY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_rdf_entity_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_notification_rdf_entity_delete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::RDF_ENTITY_CRUD, $entity);
 }
 
 /**
@@ -36,16 +57,18 @@ function joinup_notification_node_delete(EntityInterface $entity) {
  *
  * @param string $operation
  *   The CRUD operation string.
+ * @param string $event
+ *   The event name.
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity object.
  */
-function joinup_notification_dispatch_notification($operation, EntityInterface $entity) {
+function joinup_notification_dispatch_notification($operation, $event, EntityInterface $entity) {
   if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
   $event = new NotificationEvent($operation, $entity);
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
-  $event_dispatcher->dispatch(NotificationEvents::COMMUNITY_CONTENT_CRUD, $event);
+  $event_dispatcher->dispatch($event, $event);
 }
 
 /**
