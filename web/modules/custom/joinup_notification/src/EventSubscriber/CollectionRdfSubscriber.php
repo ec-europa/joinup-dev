@@ -27,13 +27,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   const TEMPLATE_REQUEST_ARCHIVAL_DELETION = 'col_req_arch_del';
 
   /**
-   * The operation string.
-   *
-   * @var string
-   */
-  protected $operation;
-
-  /**
    * The transition object.
    *
    * @var \Drupal\state_machine\Plugin\Workflow\WorkflowTransition

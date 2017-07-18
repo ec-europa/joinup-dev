@@ -14,13 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   /**
-   * The operation string.
-   *
-   * @var string
-   */
-  protected $operation;
-
-  /**
    * The transition object.
    *
    * @var \Drupal\state_machine\Plugin\Workflow\WorkflowTransition
