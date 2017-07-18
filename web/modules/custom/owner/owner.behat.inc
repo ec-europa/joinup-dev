@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\MaterialDesignTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -23,7 +22,6 @@ use Drupal\taxonomy\TermInterface;
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use MaterialDesignTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UserTrait;
   use UtilityTrait;
@@ -75,7 +73,6 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
 
       $values = [
         'rid' => 'owner',
-        'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
         'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ];
