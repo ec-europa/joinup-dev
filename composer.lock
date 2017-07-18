@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfbabc2f1d458470112a59f60803db59",
+    "content-hash": "de1f589dd57f3fa9ff3563aefc3f379d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4679,6 +4679,17 @@
                 "password"
             ],
             "time": "2014-11-20T16:49:30+00:00"
+        },
+        {
+            "name": "jacklmoore/autosize",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:jackmoore/autosize.git",
+                "reference": "master"
+            },
+            "type": "drupal-theme-library",
+            "time": "2017-07-12 23:38:25"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10811,6 +10822,7 @@
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
         "google/material-design-lite": 20,
+        "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,

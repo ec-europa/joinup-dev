@@ -15,3 +15,7 @@ services:
     class: Drupal\joinup_migrate\EventSubscriber\TranslateFieldSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_migrate.mail_swap_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\MailSwapSubscriber
+    tags:
+      - { name: event_subscriber }
