@@ -69,18 +69,11 @@ class MailSwapSubscriber implements EventSubscriberInterface {
    */
   protected function toggleMailOff() {
     $config_factory = \Drupal::configFactory();
-    $system_mail = $config_factory->getEditable('system.mail');
-    $mailsystem = $config_factory->getEditable('mailsystem.settings');
-
-    // Save the current mailer.
-    \Drupal::state()->set('joinup_migrate.mail', [
-      'system' => $system_mail->get('interface.default'),
-      'mailsystem' => $mailsystem->get('defaults.sender'),
-    ]);
-
     // Switch to 'null' mailer.
-    $system_mail->set('interface.default', 'null')->save();
-    $mailsystem->set('defaults.sender', 'null')->save();
+    $config_factory->getEditable('system.mail')
+      ->set('interface.default', 'null')->save();
+    $config_factory->getEditable('mailsystem.settings')
+      ->set('defaults.sender', 'null')->save();
   }
 
   /**
@@ -88,17 +81,11 @@ class MailSwapSubscriber implements EventSubscriberInterface {
    */
   protected function toggleMailOn() {
     $config_factory = \Drupal::configFactory();
-    $system_mail = $config_factory->getEditable('system.mail');
-    $mailsystem = $config_factory->getEditable('mailsystem.settings');
-
-    // Get the system mailer.
-    $state = \Drupal::state();
-    $mail = $state->get('joinup_migrate.mail');
-    $state->delete('joinup_migrate.mail');
-
     // Restore the system mailer.
-    $system_mail->set('interface.default', $mail['system'])->save();
-    $mailsystem->set('defaults.sender', $mail['mailsystem'])->save();
+    $config_factory->getEditable('system.mail')
+      ->set('interface.default', 'php_mail')->save();
+    $config_factory->getEditable('mailsystem.settings')
+      ->set('defaults.sender', 'swiftmailer')->save();
   }
 
 }

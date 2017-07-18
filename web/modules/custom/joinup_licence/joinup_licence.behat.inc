@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -19,7 +18,6 @@ use Drupal\rdf_entity\Entity\Rdf;
 class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -134,7 +132,6 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   protected function createLicence(array $values) {
     $values['rid'] = 'licence';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $licence = Rdf::create($values);
     $licence->save();
     $this->licences[$licence->id()] = $licence;

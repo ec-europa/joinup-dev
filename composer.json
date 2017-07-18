@@ -29,7 +29,7 @@
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha4",
-        "drupal/migrate_spreadsheet": "~1.0-beta3",
+        "drupal/migrate_spreadsheet": "~1.0-beta4",
         "drupal/og": "dev-ISAICP-2709 as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/password_policy": "3.x-dev#8ee51e4e58b1b9493867c43ddfecbdac20e04b0c",
@@ -92,8 +92,7 @@
     "autoload": {
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
-            "DrupalProject\\": "src",
-            "PhpOffice\\PhpSpreadsheet\\": "vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet"
+            "DrupalProject\\": "src"
         },
         "classmap": [
             "scripts/composer/ScriptHandler.php"
@@ -180,10 +179,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/Gizra/message.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/claudiu-cristea/piwik-reporting-api.git"
         },
         {
             "type": "composer",
