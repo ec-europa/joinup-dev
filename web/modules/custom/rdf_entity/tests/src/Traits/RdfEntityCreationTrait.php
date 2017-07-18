@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\rdf_entity\Traits;
 
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -11,8 +10,6 @@ use Drupal\rdf_entity\Entity\Rdf;
  * This trait is meant to be used only by test classes.
  */
 trait RdfEntityCreationTrait {
-
-  use RandomGeneratorTrait;
 
   /**
    * Get an rdf entity from the database based on its title.
