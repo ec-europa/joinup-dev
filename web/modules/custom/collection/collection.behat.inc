@@ -13,7 +13,6 @@ use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgMembershipInterface;
@@ -32,7 +31,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
 

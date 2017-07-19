@@ -24,7 +24,7 @@ process:
       no_stub: true
     - plugin: default_value
       default_value: 1
-  newsletter:
+  simplenews_issue:
     plugin: migration
     source: newsletter
     migration: newsletter_type
