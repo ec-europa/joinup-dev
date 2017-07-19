@@ -217,8 +217,6 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       'validate',
       'request_archival',
       'request_deletion',
-      'reject_archival',
-      'reject_deletion',
       'archive',
     ];
     if (!in_array($this->transition->getId(), $transitions_with_notification)) {
@@ -314,7 +312,13 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function notificationValidate() {
     $template_id = $this->hasPublished ? self::TEMPLATE_APPROVE_EDIT : self::TEMPLATE_APPROVE_NEW;
-    $user_data = ['owner' => [$template_id]];
+    $user_data = [
+      'og_roles' => [
+        'rdf_entity-collection-administrator' => [
+          $template_id,
+        ],
+      ],
+    ];
     $this->getUsersAndSend($user_data);
   }
 
@@ -336,7 +340,13 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function notificationRejectArchivalDeletion() {
     $template_id = self::TEMPLATE_ARCHIVE_DELETE_REJECT;
-    $user_data = ['owner' => [$template_id]];
+    $user_data = [
+      'og_roles' => [
+        'rdf_entity-collection-administrator' => [
+          $template_id,
+        ],
+      ],
+    ];
     $this->getUsersAndSend($user_data);
   }
 
@@ -354,7 +364,13 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected function notificationArchiveDelete() {
     // Template id 9. Notify the owner.
     $template_id = $this->isTransitionRequested() ? self::TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER : self::TEMPLATE_ARCHIVE_DELETE_NO_REQUEST;
-    $user_data = ['roles' => ['moderator' => [$template_id]]];
+    $user_data = [
+      'og_roles' => [
+        'rdf_entity-collection-administrator' => [
+          $template_id,
+        ],
+      ],
+    ];
     $user_data = $this->getUsersMessages($user_data);
     $this->sendUserDataMessages($user_data);
 
@@ -376,7 +392,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     // Last, send an email to all members of the collection.
     $user_data = [
       'og_roles' => [
-        'rdf_entity-collection-member',
+        'rdf_entity-collection-member' => [
+          self::TEMPLATE_ARCHIVE_DELETE_MEMBERS,
+        ],
       ],
     ];
     $user_data = $this->getUsersMessages($user_data);
@@ -546,10 +564,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function isTransitionRequested() {
     $state = $this->getCollectionState();
-    if ($state === 'deletion_request') {
-      return $this->operation === 'delete';
+    if ($this->operation === 'delete') {
+      return $state === 'deletion_request';
     }
-    elseif ($state === 'archival_request') {
+    elseif ($state === 'archived') {
       return $this->transition->getId() === 'archive';
     }
 
