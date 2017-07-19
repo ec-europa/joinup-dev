@@ -41,6 +41,29 @@
             <option name="force" />
             <option name="timestamp" />
         </drush>
+
+        <!-- If a migration crashes, it's possible that the system mailer is not
+            restored. Thus we are forcing the restore of system mailer. -->
+        <drush
+            command="cset"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>system.mail</param>
+            <param>interface.default</param>
+            <param>php_mail</param>
+        </drush>
+        <drush
+            command="cset"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>mailsystem.settings</param>
+            <param>defaults.sender</param>
+            <param>swiftmailer</param>
+        </drush>
         <drush
                 command="cset"
                 assume="yes"

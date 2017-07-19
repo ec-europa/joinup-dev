@@ -66,7 +66,7 @@ trait LicenceTrait {
         /** @var \PhpOffice\PhpSpreadsheet\Spreadsheet $workbook */
         $workbook = $reader->load($file);
 
-        $worksheet = $workbook->getSheet();
+        $worksheet = $workbook->getSheet(0);
       }
       catch (\Exception $e) {
         $class = get_class($e);
