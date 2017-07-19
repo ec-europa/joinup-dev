@@ -155,7 +155,7 @@ abstract class NotificationSubscriberBase {
    *   Optionally alter the entity to be checked.
    *
    * @return array
-   *   An array of user ids that every key is an array of message ids.
+   *   An array of message ids that every key is an array of user ids.
    */
   protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
     $entity = $entity ?: $this->entity;

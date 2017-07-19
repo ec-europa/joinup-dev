@@ -142,6 +142,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       return FALSE;
     }
 
+    if (empty($this->transition)) {
+      return FALSE;
+    }
+
     if ($this->transition->getId() !== 'propose') {
       return FALSE;
     }
@@ -201,6 +205,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     }
 
     if ($this->operation !== 'update') {
+      return FALSE;
+    }
+
+    if (empty($this->transition)) {
       return FALSE;
     }
 
@@ -281,12 +289,14 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     }
     else {
       $user_data = [
-        'owner' => [
-          self::TEMPLATE_PROPOSE_EDIT_OWNER,
-        ],
         'roles' => [
           'moderator' => [
             self::TEMPLATE_PROPOSE_EDIT_MODERATORS,
+          ],
+        ],
+        'og_roles' => [
+          'rdf_entity-collection-administrator' => [
+            self::TEMPLATE_PROPOSE_EDIT_OWNER,
           ],
         ],
       ];
@@ -358,7 +368,10 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     }
 
     // Avoid sending again to the owner.
-    $uids_to_skip = array_keys($user_data);
+    $uids_to_skip = [];
+    foreach ($user_data as $message_id => $user_ids) {
+      $uids_to_skip += array_values($user_ids);
+    }
 
     // Last, send an email to all members of the collection.
     $user_data = [
