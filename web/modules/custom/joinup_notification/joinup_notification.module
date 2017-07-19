@@ -32,10 +32,32 @@ function joinup_notification_node_delete(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ */
+function joinup_notification_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function joinup_notification_rdf_entity_insert(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('create', NotificationEvents::RDF_ENTIRTY_CRUD, $entity);
+  joinup_notification_dispatch_notification('create', NotificationEvents::RDF_ENTITY_CRUD, $entity);
 }
 
 /**
@@ -57,18 +79,18 @@ function joinup_notification_rdf_entity_delete(EntityInterface $entity) {
  *
  * @param string $operation
  *   The CRUD operation string.
- * @param string $event
+ * @param string $event_name
  *   The event name.
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity object.
  */
-function joinup_notification_dispatch_notification($operation, $event, EntityInterface $entity) {
+function joinup_notification_dispatch_notification($operation, $event_name, EntityInterface $entity) {
   if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
   $event = new NotificationEvent($operation, $entity);
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
-  $event_dispatcher->dispatch($event, $event);
+  $event_dispatcher->dispatch($event_name, $event);
 }
 
 /**
