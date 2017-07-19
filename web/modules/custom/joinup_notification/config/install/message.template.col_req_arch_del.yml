@@ -6,7 +6,7 @@ label: 'Collection request archival/deletion'
 description: 'Template id 8'
 text:
   -
-    value: "<p>User @user:field_user_first_name requested to @transition:request_action @entity:bundle @entity:title</p>\r\n"
+    value: "<p>User @actor:field_user_first_name requested to @transition:request_action @entity:bundle @entity:title</p>\r\n"
     format: content_editor
   -
     value: "<p>@actor:field_user_first_name @actor:field_user_family_name has requested to @transition:request_action the @entity:bundle \"@entity:title\".</p>\r\n\r\n<p>To approve or reject this request, please go to @entity:url. You will be prompted to provide feedback in case of rejection.</p>\r\n\r\n<p>The requestor will be notified of your decision and feedback.</p>\r\n"
