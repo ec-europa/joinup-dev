@@ -204,7 +204,7 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-content, install, import-rdf-fixtures, setup-dev, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-piwik-drupal, create-demo-users" />
 
     <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
     <target name="redirect-outgoing-email">
