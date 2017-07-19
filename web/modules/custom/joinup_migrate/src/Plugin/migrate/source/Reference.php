@@ -192,7 +192,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     $values = [];
     foreach ($this->getFieldInfo($entity_type_id)[$bundle] as $field) {
       $value = $entity->get($field)->value;
-      if ($value && $this->process($value, $entity_id)) {
+      if ($value && $this->process($value)) {
         $values[$field] = $value;
       }
     }
@@ -210,13 +210,13 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    * @return bool
    *   If $markup has been changed.
    */
-  protected function process(&$markup, $eid) {
+  protected function process(&$markup) {
     // Perform a bird-eye check and exit here, if there are no internal links,
     // for performance reasons.
     if (!static::needsProcessing($markup)) {
       return FALSE;
     }
-$f = fopen('/srv/project/web/sites/default/files/A_TEST_URLS.txt', 'w');
+
     // Build the DOM based on this markup.
     $document = Html::load($markup);
     $changed = FALSE;
@@ -255,16 +255,13 @@ $f = fopen('/srv/project/web/sites/default/files/A_TEST_URLS.txt', 'w');
 
             $changed = TRUE;
           }
-          elseif ($this->result[$incoming_path] === NULL) {
-            fwrite($f, "$eid: $incoming_path\n");
-          }
         }
       }
     }
     if ($changed) {
       $markup = Html::serialize($document);
     }
-fclose($f);
+
     return $changed;
   }
 
