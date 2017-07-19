@@ -1,8 +1,6 @@
 langcode: en
 status: true
-dependencies:
-  module:
-    - linkit
+dependencies: {  }
 name: 'Content Editor'
 format: content_editor
 weight: -10
@@ -47,10 +45,3 @@ filters:
     status: true
     weight: 9
     settings: {  }
-  linkit:
-    id: linkit
-    provider: linkit
-    status: true
-    weight: -15
-    settings:
-      title: true
