@@ -47,7 +47,7 @@ class RdfPurge extends VirtuosoTaskBase {
    * Set the Solr cores.
    *
    * @param string[] $solr_cores
-   *   A comma delimited list od Solr core names.
+   *   A comma delimited list of Solr core names.
    */
   public function setSolrCores($solr_cores) {
     $this->solrCores = array_filter(array_map('trim', explode(',', $solr_cores)));
