@@ -16,6 +16,8 @@ Feature: Submit the contact form
     When I am on the homepage
     And I click "Contact" in the "Footer" region
     Then I should see the heading "Contact"
+    # The honeypot field that needs to be empty on submission.
+    Then the following fields should be present "user_homepage"
 
     When I fill in the following:
       | First name     | Oswine                      |
@@ -26,6 +28,8 @@ Feature: Submit the contact form
       | Subject        | Screen reader accessibility |
       | Message        | Dear sir, madam, ...        |
       | Attachment     | logo.jpg                    |
+    # We need to wait 5 seconds for the honeypot validation to pass.
+    Then I wait 5 seconds
     And I press "Submit"
 
     # Both moderators should have received the notification e-mail.

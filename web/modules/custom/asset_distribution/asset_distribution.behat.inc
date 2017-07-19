@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -23,7 +22,6 @@ use Drupal\file_url\FileUrlHandler;
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use EntityReferenceTrait;
 
@@ -143,7 +141,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
 
     $values['rid'] = 'asset_distribution';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $asset_distribution = Rdf::create($values);
     $asset_distribution->save();
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;

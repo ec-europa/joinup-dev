@@ -26,12 +26,14 @@ dependencies:
   - field_group
   - file
   - help
+  - honeypot
   - image
   - inline_entity_form
   - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_invite
   - joinup_licence
   - joinup_news
   - joinup_newsletter
@@ -148,6 +150,7 @@ config_devel:
   - editor.editor.basic_html
   - editor.editor.content_editor
   - editor.editor.restricted_html
+  - editor.editor.simple_html
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
@@ -155,6 +158,8 @@ config_devel:
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - filter.format.simple_html
+  - filter.format.simple_text
   - image.style.profile_icon
   - image.style.profile_icon_big
   - language.content_settings.rdf_entity.asset_distribution

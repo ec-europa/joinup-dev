@@ -27,7 +27,7 @@ Feature: Creating a test (solution) in the TRR collection.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Lucky Luke                                                    |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
     And I select "Whales protection" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
