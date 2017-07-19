@@ -279,14 +279,23 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   If the URI of destination object is malformed.
    */
   protected function processPath($path) {
+    // As we've already created redirects for all migrated entities, we already
+    // have a consistent mapping database between the old and the new URLs, in
+    // the {redirect} table, so we simply perform a lookup there to see if we
+    // can rewrite this path. We do not rewrite the canonical paths for the
+    // entities that are preserving their IDs, so a community content, referred
+    // as '/node/123', will not be rewritten but will continue to work because
+    // the ID was preserved during the migration process.
     if (!$uri = $this->db->query(static::SQL, [':path' => $path])->fetchField()) {
       return NULL;
     }
 
     // Get the source entity and remove the scheme from link.
     list($scheme, $link) = explode(':', $uri, 2);
+
+    // A file-system path of a managed file.
     if ($scheme === 'base') {
-      // A managed file system path.
+      // Strip out '/sites/default/files/' prefix.
       $target_path = substr($link, 21);
       $values = ['uri' => "public://{$target_path}"];
       $files = $this->getStorage('file')->loadByProperties($values);
@@ -295,8 +304,8 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       }
       $entity = reset($files);
     }
+    // An alias to an entity canonical path.
     elseif ($scheme === 'internal') {
-      // An entity.
       list($entity_type_id, $entity_id) = explode('/', substr($link, 1), 2);
       // RDF entity IDs are encoded.
       if ($entity_type_id === 'rdf_entity') {
@@ -340,7 +349,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   The relative path parts or NULL.
    */
   protected function getRelativePath($path) {
-    if ((strpos($path, '#') === 0) || !UrlHelper::isValid($path)) {
+    if ((strpos($path, '#') === 0) || !UrlHelper::isValid(UrlHelper::encodePath($path))) {
       // Only fragment or invalid.
       return NULL;
     }
