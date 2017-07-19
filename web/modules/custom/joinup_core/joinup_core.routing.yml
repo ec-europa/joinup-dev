@@ -30,6 +30,14 @@ joinup_core.not_found:
   requirements:
     _access: 'TRUE'
 
+joinup_core.admin_statistics:
+  path: '/admin/statistics'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Statistics'
+  requirements:
+    _permission: 'access administration pages'
+
 joinup_core.piwik_integration_settings:
   path: '/admin/statistics/piwik-settings'
   defaults:
