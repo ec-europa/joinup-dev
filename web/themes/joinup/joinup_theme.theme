@@ -472,6 +472,9 @@ function joinup_theme_preprocess_field__comment(&$variables) {
       $variables['comments_status'] = 'hidden';
       break;
   }
+
+  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
 /**
