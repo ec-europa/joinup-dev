@@ -14,7 +14,6 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
@@ -31,7 +30,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use FileTrait;
   use NodeTrait;
   use OgTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
   use UtilityTrait;
@@ -266,7 +264,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $values['rid'] = 'solution';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
