@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -500,4 +501,23 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 function collection_og_membership_presave(OgMembershipInterface $entity) {
   $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
   Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Disallow anonymous users to post comments on closed collections content.
+ */
+function collection_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($op !== 'post comments') {
+    return AccessResult::neutral();
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if (!$parent || $parent->bundle() !== 'collection') {
+    return AccessResult::neutral();
+  }
+
+  return AccessResult::forbiddenIf($parent->get('field_ar_closed')->value && $account->isAnonymous())->addCacheableDependency($parent);
 }

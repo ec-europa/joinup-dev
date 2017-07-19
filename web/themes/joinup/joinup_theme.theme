@@ -437,9 +437,29 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   $entity = $variables['element']['#object'];
   $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
 
-  // Get comments status.
+  // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
+
+  // On closed collections community content, anonymous users are not allowed to
+  // comment. Show a message instead.
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
+  $user = \Drupal::currentUser();
+  if (
+    $user->isAnonymous() &&
+    $parent &&
+    $parent->getEntityTypeId() === 'rdf_entity' &&
+    $parent->bundle() === 'collection' &&
+    $parent->get('field_ar_closed')->value
+  ) {
+    $comments_status = 'closed_collection';
+  }
+
   switch ($comments_status) {
+    case 'closed_collection':
+      $variables['comments_status'] = 'closed_collection';
+      break;
+
     case CommentItemInterface::OPEN:
       $variables['comments_status'] = 'open';
       break;
@@ -452,6 +472,9 @@ function joinup_theme_preprocess_field__comment(&$variables) {
       $variables['comments_status'] = 'hidden';
       break;
   }
+
+  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
 /**
