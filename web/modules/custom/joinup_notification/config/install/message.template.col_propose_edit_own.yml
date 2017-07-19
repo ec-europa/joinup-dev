@@ -6,10 +6,10 @@ label: 'Collection propose after edit - Owner'
 description: 'Template id 5'
 text:
   -
-    value: "<p>User @user:field_user_first_name proposed to edit @entity:bundle @entity:title</p>\r\n"
+    value: "<p>User @actor:field_user_first_name proposed to edit @entity:bundle @entity:title</p>\r\n"
     format: content_editor
   -
-    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has proposed to edit @entity:bundle \"@entity\".</p>\r\n<p>To modify your @entity:bundle, please go to @entity:url.</p>"
+    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has proposed to edit @entity:bundle \"@entity:title\".</p>\r\n<p>To modify your @entity:bundle, please go to @entity:url.</p>"
     format: content_editor
 settings:
   'token options':
