@@ -72,6 +72,8 @@ Feature: Add comments
     Given I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "<title>"
     Then I should see the text "Login or create an account to comment"
+    And the link "Login" should point to "user/login"
+    And the link "create an account" should point to "user/register"
     And the following fields should not be present "Create comment"
     And I should not see the button "Post comment"
 
