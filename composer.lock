@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b22a221778bf723f272c6754e7a205bf",
+    "content-hash": "e8534c71fa1d9fa729c64dcae1dcf67e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3405,17 +3405,17 @@
         },
         {
             "name": "drupal/piwik_reporting_api",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/piwik_reporting_api",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta1.zip",
+                "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta2.zip",
                 "reference": null,
-                "shasum": "83df273155769598f1d6c5ac9b15a74b2f3d430e"
+                "shasum": "5b2e3bebd3f96e0dde3c29759747485cd53f0313"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3428,8 +3428,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1498583042"
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1500465842"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10908,7 +10908,6 @@
         "drupal/pathauto": 20,
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
