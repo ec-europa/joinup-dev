@@ -37,6 +37,33 @@
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
+        <!-- Override Solr server connection with the local settings. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php"/>
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        multiline="true"
+                        pattern="\s*\$config\['search_api.server.solr_(un)?published'\]\['backend_config'\]\['connector_config'\]\['(scheme|host|port|path|core)'] = '[^'].*';\s*\n"
+                        replace="${line.separator}"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+                destFile="${website.settings.php}"
+                text="${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['host'] = '${solr.server.host}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['port'] = '${solr.server.port}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['path'] = '${solr.server.path}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = '${solr.core.published}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['host'] = '${solr.server.host}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['port'] = '${solr.server.port}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['path'] = '${solr.server.path}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = '${solr.core.unpublished}';${line.separator}"/>
+
         <drush
             command="site-install"
             assume="yes"
@@ -75,7 +102,9 @@
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}" />
+            Password="${sparql.password}"
+            SolrUrl="${solr.server.scheme}://${solr.server.host}:${solr.server.port}${solr.server.path}"
+            SolrCores="${solr.core.published},${solr.core.unpublished}" />
     </target>
 
     <target name="import-rdf-fixtures">
