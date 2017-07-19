@@ -69,6 +69,13 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   protected $event;
 
   /**
+   * The source state of the collection.
+   *
+   * @var string
+   */
+  protected $fromState;
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -89,12 +96,16 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
+    if ($this->entity->bundle() !== 'collection') {
+      return;
+    }
+
     $this->event = $event;
     $this->stateField = 'field_ar_state';
     $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-    $from_state = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
+    $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
     $to_state = $this->entity->get($this->stateField)->first()->value;
-    $this->transition = $this->workflow->findTransition($from_state, $to_state);
+    $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
   }
@@ -110,7 +121,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     if (!$this->appliesOnCreate()) {
       return;
     }
-    $template_id = self::TEMPLATE_APPROVE_NEW;
+    $template_id = self::TEMPLATE_PROPOSE_NEW;
     $user_data_array = ['roles' => ['moderator' => [$template_id]]];
     $user_data = $this->getUsersMessages($user_data_array);
     $this->sendUserDataMessages($user_data);
@@ -158,17 +169,17 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
         break;
 
       case 'validate':
-        $this->notificationValidate();
+        if ($this->fromState === 'proposed') {
+          $this->notificationValidate();
+        }
+        elseif (in_array($this->fromState, ['archival_request', 'deletion_request'])) {
+          $this->notificationRejectArchivalDeletion();
+        }
         break;
 
       case 'request_archival':
       case 'request_deletion':
         $this->notificationRequestArchivalDeletion();
-        break;
-
-      case 'reject_archival':
-      case 'reject_deletion':
-        $this->notificationRejectArchivalDeletion();
         break;
 
       case 'archive':
@@ -219,11 +230,11 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   public function onDelete(NotificationEvent $event) {
     $this->initialize($event);
-    if (!$this->appliesOnCreate()) {
+    if (!$this->appliesOnDelete()) {
       return;
     }
 
-    $this->notificationPropose();
+    $this->notificationArchiveDelete();
   }
 
   /**
@@ -433,18 +444,14 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    */
   protected function generateArguments(EntityInterface $entity) {
     $arguments = parent::generateArguments($entity);
-    $parent = $this->relationManager->getParent($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
-
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@group:title'] = $parent->label();
-    $arguments['@group:bundle'] = $parent->bundle();
 
     if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($parent, $actor);
+      $membership = $this->membershipManager->getMembership($entity, $actor);
       if (!empty($membership)) {
         $role_names = array_map(function (OgRoleInterface $og_role) {
           return $og_role->getName();
@@ -460,14 +467,11 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
 
-    if ($this->transition->getId() === 'archive') {
+    if (in_array($this->transition->getId(), ['archive', 'request_archival']) || ($this->transition->getId() === 'validate' && $this->fromState === 'archival_request')) {
       $arguments['@transition:request_action'] = 'archive';
       $arguments['@transition:request_action:past'] = 'archived';
-      $arguments['@transition:motivation'] = t('You can verify the outcome of your request by clicking on @entity:url.', [
-        '@entity:url' => $arguments['@entity:url'],
-      ]);
     }
-    elseif ($this->operation === 'delete') {
+    elseif ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
       $arguments['@transition:request_action'] = 'delete';
       $arguments['@transition:request_action:past'] = 'deleted';
     }
@@ -483,14 +487,15 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
    *
    * @return bool
    *   Whether the entity has a published version.
+   *
+   * @see: joinup_notification_rdf_entity_presave()
    */
   protected function hasPublishedVersion(EntityInterface $entity) {
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    if ($entity->isNew()) {
-      return FALSE;
+    if (isset($entity->hasPublished)) {
+      return ($entity->hasPublished);
     }
 
-    return $entity->hasGraph('default');
+    return FALSE;
   }
 
   /**
