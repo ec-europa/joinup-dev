@@ -6,6 +6,7 @@ default:
         - Drupal\joinup\Context\DrupalContext
         - Drupal\joinup\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
       filters:
         tags: '~@wip'
