@@ -13,18 +13,22 @@
     <!-- Section featured end -->
     <!-- Section content start -->
     <div class="section section--content">
-      <div class="main-container mdl-grid">
-        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid">
+            <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
 
-          {{> partials/sidebar-menu--solutions }}
+              {{> partials/sidebar-menu--solutions }}
 
-        </div>
-        <div class="section section--main mdl-cell mdl-cell--8-col">
-          <h1 class="page__title">About</h1>
-          <div class="page__content">
+            </div>
+            <div class="section section--main mdl-cell mdl-cell--8-col">
+              <h1 class="page__title">About</h1>
+              <div class="page__content">
 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus erat sit amet eros lacinia, sit amet tristique dui porttitor. Nullam rutrum hendrerit mollis. Donec eu sollicitudin leo. Phasellus egestas quam sed justo tincidunt sagittis. Nunc et consequat orci, quis lacinia metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lectus metus, suscipit laoreet sem quis, dignissim maximus sem. Cras quis risus at nisl bibendum fringilla quis in sem. Integer tempor lectus justo, dapibus sodales diam laoreet id. Sed fermentum suscipit nunc. Suspendisse potenti. Aliquam nec facilisis mauris. Maecenas et augue nec odio facilisis elementum ac et dui. Duis tempus lorem ac magna luctus rhoncus. Donec ac turpis nulla.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In finibus erat sit amet eros lacinia, sit amet tristique dui porttitor. Nullam rutrum hendrerit mollis. Donec eu sollicitudin leo. Phasellus egestas quam sed justo tincidunt sagittis. Nunc et consequat orci, quis lacinia metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lectus metus, suscipit laoreet sem quis, dignissim maximus sem. Cras quis risus at nisl bibendum fringilla quis in sem. Integer tempor lectus justo, dapibus sodales diam laoreet id. Sed fermentum suscipit nunc. Suspendisse potenti. Aliquam nec facilisis mauris. Maecenas et augue nec odio facilisis elementum ac et dui. Duis tempus lorem ac magna luctus rhoncus. Donec ac turpis nulla.
 
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -32,25 +36,29 @@
     <!-- Section content end -->
     <!-- Section post-content start -->
     <div class="section section--post-content">
-      <div class="main-container mdl-grid">
-        <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
-          <div class="row">
-            <div class="mdl-grid">
-              <div class="listing__header mdl-cell mdl-cell--12-col">
-                <h3 class="listing__block-title">Related content from other solutions filtred by</h3>
-                <div class="filter">
-                  <div class="filter__term">similar tags</div>
-                  <div class="filter__icon icon icon--arrow-down"></div>
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid">
+            <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
+              <div class="row">
+                <div class="mdl-grid">
+                  <div class="listing__header mdl-cell mdl-cell--12-col">
+                    <h3 class="listing__block-title">Related content from other solutions filtred by</h3>
+                    <div class="filter">
+                      <div class="filter__term">similar tags</div>
+                      <div class="filter__icon icon icon--arrow-down"></div>
+                    </div>
+                  </div>
+
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+
                 </div>
               </div>
-
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-
             </div>
           </div>
         </div>
