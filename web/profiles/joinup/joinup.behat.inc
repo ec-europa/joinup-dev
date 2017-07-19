@@ -1649,4 +1649,30 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     sleep($seconds);
   }
 
+  /**
+   * Asserts that a certain link points to a specific path.
+   *
+   * Example: Then the link "Login" should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link should point to :href
+   */
+  public function assertLinkHref($link, $href) {
+    $element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the page.");
+    }
+
+    $attribute = trim($element->getAttribute('href'), '/');
+    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path.");
+  }
+
 }
