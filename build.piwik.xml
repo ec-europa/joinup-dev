@@ -99,7 +99,7 @@
         </reflexive>
         <append
             destFile="${website.settings.local.php}"
-            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = 'http://localhost:${piwik.port}/';${line.separator}$config['piwik.settings']['url_https'] = '';${line.separator}$config['piwik_reporting_api.settings']['token_auth'] = '${piwik.token}';${line.separator}" />
+            text="$config['piwik.settings']['site_id'] = '${piwik.website_id}';${line.separator}$config['piwik.settings']['url_http'] = '${piwik.url.http}';${line.separator}$config['piwik.settings']['url_https'] = '${piwik.url.https}';${line.separator}$config['piwik_reporting_api.settings']['token_auth'] = '${piwik.token}';${line.separator}" />
     </target>
 
     <target
