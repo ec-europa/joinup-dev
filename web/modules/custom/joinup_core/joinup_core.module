@@ -737,7 +737,7 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
         'request_archival',
         'validate',
         'validate',
-        'archive'
+        'archive',
       ],
     ],
   ];
