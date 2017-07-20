@@ -76,8 +76,8 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}"
-            SolrUrl="${solr.server.scheme}://${solr.server.host}:${solr.server.port}${solr.server.path}"
-            SolrCores="${solr.core.published},${solr.core.unpublished}" />
+            SolrUrl="${solr.server.url}"
+            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
