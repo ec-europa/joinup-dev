@@ -62,6 +62,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
       'state' => $this->t('Workflow state'),
       'banner' => $this->t('Banner'),
       'logo_id' => $this->t('Logo ID'),
+      'uid' => $this->t('Author'),
       'i18n' => $this->t('Field translations'),
     ];
   }
@@ -91,6 +92,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
       'state',
       'banner',
       'logo_id',
+      'uid',
     ]);
   }
 

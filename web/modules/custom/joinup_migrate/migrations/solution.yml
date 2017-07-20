@@ -9,6 +9,11 @@ source:
 process:
   id: uri
   label: title
+  uid:
+    plugin: migration
+    migration: user
+    source: uid
+    no_stub: true
   field_is_banner:
     plugin: migration
     source: banner
