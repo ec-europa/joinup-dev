@@ -1,9 +1,9 @@
 material-design-lite:
   css:
     theme:
-      vendor/material-design-lite/dist/material.min.css: {}
+      vendor/material-design-lite/material.min.css: {}
   js:
-    vendor/material-design-lite/dist/material.min.js: {}
+    vendor/material-design-lite/material.min.js: {}
 
 global-components:
   Version: 1.x
