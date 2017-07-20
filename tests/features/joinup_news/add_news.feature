@@ -40,11 +40,11 @@ Feature: Creation of news through the UI.
       | Content          | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
       | File description | Comparison materials                                                                          |
 
-    # Share the content in another solution.
+    # Reference a solution in the news.
     When I fill in "Referenced solution" with "Dig do's and don'ts"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
-    # Verify that the referenced collection is rendered as tile.
+    # Verify that the referenced solution is rendered as tile.
     And I should see the "Dig do's and don'ts" tile
 
     # Edit again and try to share into the same solution.
@@ -53,7 +53,7 @@ Feature: Creation of news through the UI.
     And I press "Update"
     Then I should see the error message "The value Dig do's and don'ts is already selected for field Referenced solution."
 
-    # Add another collection in the field.
+    # Add another solution in the field.
     When I fill in "Referenced solution" with values "Dig do's and don'ts, Anvil test routines"
     And I press "Update"
     Then I should see the success message "News Ytterbium metal of the year has been updated."
