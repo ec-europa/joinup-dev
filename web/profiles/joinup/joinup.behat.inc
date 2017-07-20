@@ -30,6 +30,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\node\Entity\Node;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
@@ -1584,7 +1585,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Forces a cleanup to run for og queue worker.
+   * Forces a cleanup to run for og queue worker and og memberships.
    *
    * Og enqueues items to be deleted instead of deleting them directly in order
    * to counter cases like when an entity has a big amount of memberships. This
@@ -1603,6 +1604,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     while ($item = $queue->claimItem()) {
       $worker->processItem($item->data);
       $queue->deleteItem($item);
+    }
+
+    // Clean up og memberships that have no group or user.
+    /** @var \Drupal\og\Entity\OgMembership $og_membership */
+    foreach (OgMembership::loadMultiple() as $og_membership) {
+      if (empty($og_membership->getGroup()) || empty($og_membership->getUser())) {
+        $og_membership->delete();
+      }
     }
   }
 
