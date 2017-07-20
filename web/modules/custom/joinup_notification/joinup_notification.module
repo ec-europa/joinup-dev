@@ -70,7 +70,7 @@ function joinup_notification_rdf_entity_update(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
-function joinup_notification_rdf_entity_delete(EntityInterface $entity) {
+function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
   joinup_notification_dispatch_notification('delete', NotificationEvents::RDF_ENTITY_CRUD, $entity);
 }
 

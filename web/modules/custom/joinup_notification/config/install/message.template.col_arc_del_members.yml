@@ -9,7 +9,7 @@ text:
     value: "<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>\r\n"
     format: content_editor
   -
-    value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\r\n<p>The reason getting @transition:request_action:past is: @transition:motivation.</p>"
+    value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\r\n<p>@transition:archive:extra:members</p>"
     format: content_editor
 settings:
   'token options':
