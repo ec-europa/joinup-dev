@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e26a92a5f14e59101dc264b6604b64e4",
+    "content-hash": "dd4188424b706ca529409066c9d7770e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2902,6 +2902,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -3605,7 +3613,8 @@
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
-                    "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
+                    "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
+                    "Boost by content type @see https://www.drupal.org/node/2851436": "https://www.drupal.org/files/issues/2851436-18--type_boost_processor.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3671,6 +3680,9 @@
                 "drupal": {
                     "version": "8.x-1.0",
                     "datestamp": "1498580642"
+                },
+                "patches_applied": {
+                    "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4959,7 +4971,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -8825,7 +8837,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
