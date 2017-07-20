@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "afcac2a2493b446b474a38c642342d22",
+    "content-hash": "dd4188424b706ca529409066c9d7770e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2644,7 +2644,8 @@
                     "datestamp": "1479155639"
                 },
                 "patches_applied": {
-                    "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+                    "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
+                    "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2900,6 +2901,14 @@
                 "GPL-2.0+"
             ],
             "authors": [
+                {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -4962,7 +4971,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -8828,7 +8837,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
