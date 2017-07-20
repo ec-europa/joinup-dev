@@ -1652,7 +1652,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-<<<<<<< HEAD
    * Simulates picking of an autosuggestion value from a field.
    *
    * @param string $value
@@ -1681,8 +1680,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // @see ::locatePath()
     $client = new Client(['base_uri' => $this->getMinkParameter('base_url')]);
     $uri = $element->getAttribute('data-autocomplete-path') . '?' . UrlHelper::buildQuery([
-        'q' => $value,
-      ]);
+      'q' => $value,
+    ]);
     $response = $client->get($uri);
 
     if ($response->getStatusCode() !== 200) {
