@@ -17,8 +17,8 @@ register_pending_approval_admin:
   body: "[user:display-name] has applied for an account.\r\n\r\n[user:edit-url]"
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
 status_activated:
-  body: "[user:display-name],\r\n\r\nYour account at [site:name] has been activated.\r\n\r\nYou may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:account-name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
-  subject: 'Account details for [user:display-name] at [site:name] (approved)'
+  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently unblocked by our moderators. \r\nFor more information about how to avoid your account being blocked in the future, please visit our <FAQ section>.\r\n\r\nKind regards,\r\nThe Joinup Moderation Team."
+  subject: 'Your account was just unblocked.'
 status_blocked:
   body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently blocked by our moderators. \r\nFor more information about blocked accounts, please visit our <FAQ section>.\r\n\r\nKind regards,\r\nThe Joinup Moderation Team."
   subject: 'Your account was just blocked.'
