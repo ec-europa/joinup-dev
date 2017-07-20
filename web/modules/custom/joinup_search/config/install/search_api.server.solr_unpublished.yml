@@ -10,11 +10,11 @@ backend: search_api_solr
 backend_config:
   connector: standard
   connector_config:
-    scheme: http
-    host: localhost
-    port: '8983'
-    path: /solr
-    core: drupal_unpublished
+    scheme: ''
+    host: ''
+    port: ''
+    path: ''
+    core: ''
     timeout: 5
     index_timeout: 5
     optimize_timeout: 10
