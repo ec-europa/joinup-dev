@@ -138,6 +138,35 @@
         <phingcall target="restart-apache-solr" />
     </target>
 
+    <!-- Override Solr server connection information in the settings.local.php file. -->
+    <target name="configure-apache-solr-drupal">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php"/>
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        multiline="true"
+                        pattern="\s*\$config\['search_api.server.solr_(un)?published'\]\['backend_config'\]\['connector_config'\]\['(scheme|host|port|path|core)'] = '[^'].*';\s*\n"
+                        replace="${line.separator}"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+                destFile="${website.settings.local.php}"
+                text="${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['host'] = '${solr.server.host}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['port'] = '${solr.server.port}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['path'] = '${solr.server.path}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = '${solr.core.published}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['host'] = '${solr.server.host}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['port'] = '${solr.server.port}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['path'] = '${solr.server.path}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = '${solr.core.unpublished}';${line.separator}"/>
+    </target>
+
     <target
         name="setup-apache-solr"
         description="Set up Apache Solr."

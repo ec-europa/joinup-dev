@@ -37,33 +37,6 @@
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
-        <!-- Override Solr server connection with the local settings. -->
-        <reflexive>
-            <fileset dir="${website.settings.dir}">
-                <include pattern="settings.php"/>
-            </fileset>
-            <filterchain>
-                <replaceregexp>
-                    <regexp
-                        multiline="true"
-                        pattern="\s*\$config\['search_api.server.solr_(un)?published'\]\['backend_config'\]\['connector_config'\]\['(scheme|host|port|path|core)'] = '[^'].*';\s*\n"
-                        replace="${line.separator}"/>
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
-        <append
-                destFile="${website.settings.php}"
-                text="${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['host'] = '${solr.server.host}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['port'] = '${solr.server.port}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['path'] = '${solr.server.path}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = '${solr.core.published}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['scheme'] = '${solr.server.scheme}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['host'] = '${solr.server.host}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['port'] = '${solr.server.port}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['path'] = '${solr.server.path}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = '${solr.core.unpublished}';${line.separator}"/>
-
         <drush
             command="site-install"
             assume="yes"
@@ -228,12 +201,12 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, configure-apache-solr-drupal, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, create-demo-users" />
 
     <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
     <target name="redirect-outgoing-email">
