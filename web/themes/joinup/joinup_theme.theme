@@ -43,15 +43,12 @@ function joinup_theme_preprocess_page(&$variables) {
   // node and rdf entity forms, user forms.
   $route_name = $route_match->getRouteName();
   $blue_header_routes = [
+    'adms_validator.adms_validator_form',
     'collection.propose_form',
+    'contact_form.contact_page',
     'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
-    'node.add',
-    'node.add_page',
     'rdf_entity.propose_form',
-    'rdf_entity.rdf_add',
-    'rdf_entity.rdf_add_page',
-    'solution.collection_solution.add',
     'user.login',
     'user.pass',
     'user.register',
@@ -92,8 +89,21 @@ function joinup_theme_preprocess_page(&$variables) {
     }
   }
 
+  // Check pattern for add pages.
+  $form_pattern = '.add';
+  $route_length = strlen($route_name);
+  $pattern_length = strlen($form_pattern);
+  if ($route_length > $pattern_length) {
+    if (substr_compare($route_name, $form_pattern, $route_length - $pattern_length, $pattern_length) === 0) {
+      $variables['is_blue_header'] = TRUE;
+    }
+  }
+
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
+  }
+
+  if (isset($variables['is_blue_header'])) {
     // Move the title from the content region to featured region.
     $title = $variables['page']['content']['pagetitle'];
     unset($variables['page']['content']['pagetitle']);
@@ -128,21 +138,26 @@ function joinup_theme_preprocess_page_title(&$variables) {
   if ($permalink) {
     $variables['permalink'] = $permalink;
   }
+
   $route_name = $route_match->getRouteName();
 
   // Array contains create pages.
   $create_content_routes = [
     'collection.propose_form',
-    'node.add',
-    'node.add_page',
     'rdf_entity.propose_form',
-    'rdf_entity.rdf_add',
-    'rdf_entity.rdf_add_page',
-    'solution.collection_solution.add',
   ];
 
   // Set a flag when we are on content creation routes
   // in order to customise some templates.
+  $form_pattern = '.add';
+  $route_length = strlen($route_name);
+  $pattern_length = strlen($form_pattern);
+  if ($route_length > $pattern_length) {
+    if (substr_compare($route_name, $form_pattern, $route_length - $pattern_length, $pattern_length) === 0) {
+      $variables['is_create_page'] = TRUE;
+    }
+  }
+
   if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
     $variables['is_create_page'] = TRUE;
   }
