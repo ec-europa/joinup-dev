@@ -60,9 +60,11 @@ function joinup_user_mail($key, &$message, $params) {
   $token_service = \Drupal::token();
   $language_manager = \Drupal::languageManager();
   $langcode = $message['langcode'];
+
   $variables = [
     'user' => $params['account'],
-    'original' => $params['original'],
+    'original' => isset($params['original']) ? $params['original'] : NULL,
+    'membership' => isset($params['membership']) ? $params['membership'] : NULL,
   ];
 
   $language = \Drupal::languageManager()
@@ -111,9 +113,22 @@ function joinup_user_mail($key, &$message, $params) {
  */
 function joinup_user_mail_tokens(array &$replacements, array $data, array $options) {
   user_mail_tokens($replacements, $data, $options);
+
   if (isset($data['user']) && isset($data['original'])) {
     $changes = joinup_user_account_changes($data['original'], $data['user']);
     $replacements['[user:changes]'] = implode("\n", $changes);
+  }
+
+  if (isset($data['membership'])) {
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    $membership = $data['membership'];
+
+    foreach ($membership->getRoles() as $role) {
+      $roles[$role->id()] = $role->label();
+    }
+
+    $replacements['[group:bundle]'] = $membership->getGroup()->bundle();
+    $replacements['[group:roles]'] = implode(', ', $roles);
   }
 }
 
@@ -167,6 +182,8 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
   $form['#submit'][] = 'joinup_user_form_user_admin_settings_alter_submit';
   $mail_config = \Drupal::config('joinup_user.mail');
   $email_token_help = t('Available variables are: [site:name], [site:url], [user:display-name], [user:account-name], [user:mail], [site:login-url], [site:url-brief], [user:edit-url], [user:one-time-login-url], [user:cancel-url], [user:changes].');
+
+  // Settings for the e-mail sent when an admin updates a user profile.
   $form['email_admin_update'] = [
     '#type' => 'details',
     '#title' => t('Account changed by administrator'),
@@ -186,6 +203,27 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
     '#default_value' => $mail_config->get('email_admin_update.body'),
     '#rows' => 15,
   ];
+
+  // Settings for the e-mail sent when a OG role is added to a user.
+  $form['email_og_roles_changed'] = [
+    '#type' => 'details',
+    '#title' => t('Role changed inside a group'),
+    '#description' => t('Edit the email messages sent to group members when their roles change.'),
+    '#group' => 'email',
+  ];
+  $form['email_og_roles_changed']['#description'] .= ' ' . $email_token_help;
+  $form['email_og_roles_changed']['user_mail_og_roles_changed_subject'] = [
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => $mail_config->get('og_roles_changed.subject'),
+    '#maxlength' => 180,
+  ];
+  $form['email_og_roles_changed']['user_mail_og_roles_changed_body'] = [
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => $mail_config->get('og_roles_changed.body'),
+    '#rows' => 15,
+  ];
 }
 
 /**
@@ -193,8 +231,10 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
  */
 function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormStateInterface $form_state) {
   \Drupal::configFactory()->getEditable('joinup_user.mail')
-    ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
     ->set('email_admin_update.subject', $form_state->getValue('user_mail_update_account_subject'))
+    ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
+    ->set('og_roles_changed.subject', $form_state->getValue('user_mail_og_roles_changed_subject'))
+    ->set('og_roles_changed.body', $form_state->getValue('user_mail_og_roles_changed_body'))
     ->save();
 }
 
@@ -329,8 +369,42 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_ENTITY_TYPE_presave() for OG Membership entities.
  */
 function joinup_user_og_membership_presave(EntityInterface $entity) {
-  // When a membership changes, clear the user's cache so that the related
-  // content on the user profile page matches the new group memberships.
+  joinup_user_invalidate_user_cache_tags($entity);
+
+  if ($entity->getEntityTypeId() === 'og_membership') {
+    /** @var \Drupal\user\Entity\User $account */
+    $account = $entity->getUser();
+
+    $params = [
+      'account' => $account,
+      'membership' => $entity,
+    ];
+
+    $params['account'] = $account;
+    \Drupal::service('plugin.manager.mail')->mail(
+      'joinup_user',
+      'og_roles_changed',
+      $account->getEmail(),
+      $account->getPreferredLangcode(),
+      $params
+    );
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
+ */
+function joinup_user_og_membership_predelete(EntityInterface $entity) {
+  joinup_user_invalidate_user_cache_tags($entity);
+}
+
+/**
+ * Flush the caches of the user that belongs to a OG membership.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The OG membership entity.
+ */
+function joinup_user_invalidate_user_cache_tags(EntityInterface $entity) {
   if ($entity->getEntityTypeId() === 'og_membership') {
     $user = $entity->getUser();
     if (!empty($user)) {
@@ -339,11 +413,4 @@ function joinup_user_og_membership_presave(EntityInterface $entity) {
       $invalidator->invalidateTags($entity->getUser()->getCacheTagsToInvalidate());
     }
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
- */
-function joinup_user_og_membership_predelete(EntityInterface $entity) {
-  joinup_user_og_membership_presave($entity);
 }
