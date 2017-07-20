@@ -9,7 +9,7 @@ text:
     value: "<p>Your request to @transition:request_action @entity:bundle @entity:title has been approved.</p>\r\n"
     format: content_editor
   -
-    value: "<p>The @entity:bundle \"@entity:title\" has been @transition:request_action:past as per your request.<br />\r\n@transition:motivation</p>\r\n"
+    value: "<p>The @entity:bundle \"@entity:title\" has been @transition:request_action:past as per your request.<br />\r\n@transition:archive:extra:owner</p>\r\n"
     format: content_editor
 settings:
   'token options':

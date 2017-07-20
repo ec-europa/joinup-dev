@@ -72,10 +72,9 @@ Feature: Notification test for the collection transitions.
     And I fill in "Owner" with "NC for all"
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                                                 |
-      | subject   | User NC proposed collection NC proposed new                                                                                        |
+      | recipient | NC moderator                                                                                        |
+      | subject   | User NC proposed collection NC proposed new                                                         |
       | body      | NC User has proposed collection "NC proposed new". To approve or reject this proposal, please go to |
-    Then I delete the "NC proposed new" collection
 
     # Test 'propose' operation (on an existing collection)
     When all e-mails have been sent
@@ -84,8 +83,8 @@ Feature: Notification test for the collection transitions.
     And I click the contextual link "Edit" in the Header region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                                                 |
-      | subject   | User NC proposed collection NC to propose                                                                                        |
+      | recipient | NC moderator                                                                                       |
+      | subject   | User NC proposed collection NC to propose                                                          |
       | body      | NC Owner has proposed collection "NC to propose". To approve or reject this proposal, please go to |
 
     # Test 'request archival' operation.
@@ -155,8 +154,8 @@ Feature: Notification test for the collection transitions.
     When I fill in "Motivation" with "It will not be archived."
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | NC owner                                                                                                                                           |
-      | subject   | Your request to archive collection NC to reject archival has been rejected                                                                         |
+      | recipient | NC owner                                                                                                                                        |
+      | subject   | Your request to archive collection NC to reject archival has been rejected                                                                      |
       | body      | NC Moderator has rejected your request to archive the collection "NC to reject archival". The reason for rejection is: It will not be archived. |
 
     # Test the 'reject deletion' operation.
@@ -190,14 +189,36 @@ Feature: Notification test for the collection transitions.
       | subject   | The collection NC to archive was archived. Your solution was affiliated only to the collection NC to archive, and as a consequence, your solution is not currently affiliated to any other collection. Please verify and take appropriate action. |
       | body      | Since your solution "NC Solution1" was affiliated only with this archived collection, your solution is currently no longer affiliated to any other collection.                                                                                    |
     And the following email should have been sent:
-      | recipient | NCS owner                                                                                                    |
-      | subject   | The collection NC to archive was archived                                                                    |
-      | body      | The "NC to archive" collection, to which your "NC Solution1" solution was affiliated, was recently archived. |
+      | recipient | NCS owner                                                                                                                                                       |
+      | subject   | The collection NC to archive was archived                                                                                                                       |
+      | body      | The "NC to archive" collection, to which your "NC Solution2" solution was affiliated, was recently archived. Please verify the updated details of your solution |
     And the following email should have been sent:
-      | recipient | NCS member1                                                                   |
-      | subject   | The collection NC to archive was archived.                                    |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. |
+      | recipient | NC member1                                                                                                                   |
+      | subject   | The collection NC to archive was archived.                                                                                   |
+      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
     And the following email should have been sent:
-      | recipient | NCS member2                                                                   |
-      | subject   | The collection NC to archive was archived.                                    |
-      | body      | The collection "NC to archive", of which you are a member, has been archived. |
+      | recipient | NC member2                                                                                                                   |
+      | subject   | The collection NC to archive was archived.                                                                                   |
+      | body      | The collection "NC to archive", of which you are a member, has been archived. The reason for being archived is: As you wish. |
+
+    # Test the 'delete' operation.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to delete" collection
+    And I click the contextual link "Edit" in the Header region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                            |
+      | subject   | Your request to delete collection NC to delete has been approved.   |
+      | body      | The collection "NC to delete" has been deleted as per your request. |
+    And the following email should have been sent:
+      | recipient | NC member1                                                                  |
+      | subject   | The collection NC to delete was deleted.                                    |
+      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+    And the following email should have been sent:
+      | recipient | NC member2                                                                  |
+      | subject   | The collection NC to delete was deleted.                                    |
+      | body      | The collection "NC to delete", of which you are a member, has been deleted. |
+
+    # Clean up manually created collection.
+    Then I delete the "NC proposed new" collection

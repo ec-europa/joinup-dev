@@ -504,18 +504,22 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
       $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
 
-    if (in_array($this->transition->getId(), ['archive', 'request_archival']) || ($this->transition->getId() === 'validate' && $this->fromState === 'archival_request')) {
+    if ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
+      $arguments['@transition:request_action'] = 'delete';
+      $arguments['@transition:request_action:past'] = 'deleted';
+    }
+    elseif (in_array($this->transition->getId(), ['archive', 'request_archival']) || ($this->transition->getId() === 'validate' && $this->fromState === 'archival_request')) {
       $arguments['@transition:request_action'] = 'archive';
       $arguments['@transition:request_action:past'] = 'archived';
       if ($this->transition->getId() === 'archive') {
-        $arguments['@transition:motivation'] = t('You can verify the outcome of your request by clicking on @entity:url', [
+        $arguments['@transition:archive:extra:owner'] = t('You can verify the outcome of your request by clicking on @entity:url', [
           '@entity:url' => $arguments['@entity:url'],
         ]);
+        $arguments['@transition:archive:extra:members'] = t('The reason for being @transition:request_action:past is: @transition:motivation', [
+          '@transition:request_action:past' => $arguments['@transition:request_action:past'],
+          '@transition:motivation' => $arguments['@transition:motivation'],
+        ]);
       }
-    }
-    elseif ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
-      $arguments['@transition:request_action'] = 'delete';
-      $arguments['@transition:request_action:past'] = 'deleted';
     }
 
     return $arguments;
