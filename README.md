@@ -24,7 +24,7 @@ This fork has the following additions to the original version of drupal-project:
   so you can automate your tests right from the start. No setup needed!
 
 If you want to know how to use it as replacement for
-[Drush Make](https://github.com/drush-ops/drush/blob/master/docs/make.md) visit
+[Drush Make](https://github.com/drush-ops/drush/blob/8.x/docs/make.md) visit
 the [Documentation on drupal.org](https://www.drupal.org/node/2471553).
 
 ## Usage
