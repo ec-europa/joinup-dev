@@ -76,6 +76,9 @@ Feature: Notification test for the collection transitions.
       | subject   | User NC proposed collection NC proposed new                                                         |
       | body      | NC User has proposed collection "NC proposed new". To approve or reject this proposal, please go to |
 
+    # Clean up manually created collection.
+    Then I delete the "NC proposed new" collection
+
     # Test 'propose' operation (on an existing collection)
     When all e-mails have been sent
     And I am logged in as "NC owner"
@@ -219,6 +222,3 @@ Feature: Notification test for the collection transitions.
       | recipient | NC member2                                                                  |
       | subject   | The collection NC to delete was deleted.                                    |
       | body      | The collection "NC to delete", of which you are a member, has been deleted. |
-
-    # Clean up manually created collection.
-    Then I delete the "NC proposed new" collection
