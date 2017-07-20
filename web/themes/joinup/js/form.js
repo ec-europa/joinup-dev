@@ -150,9 +150,9 @@
   };
 
   // Autosize textareas.
-  Drupal.behaviors.autosizeTextare = {
+  Drupal.behaviors.autosizeTextarea = {
     attach: function (context, settings) {
-      $(context).find('textarea').once('autosizeTextare').each(function () {
+      $(context).find('textarea').once('autosizeTextarea').each(function () {
         autosize($(this));
       });
     }
