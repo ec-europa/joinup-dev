@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Url;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -296,6 +297,7 @@ abstract class NotificationSubscriberBase {
       $arguments['@actor:role'] = $role->label();
       $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
     }
+    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
 
     return $arguments;
   }
@@ -305,9 +307,11 @@ abstract class NotificationSubscriberBase {
    *
    * @param array $user_data
    *   An array of user ids and their corresponding messages.
+   * @param array $arguments
+   *   Optionally pass additional arguments.
    */
-  protected function sendUserDataMessages(array $user_data) {
-    $arguments = $this->generateArguments($this->entity);
+  protected function sendUserDataMessages(array $user_data, array $arguments = []) {
+    $arguments += $this->generateArguments($this->entity);
 
     foreach ($user_data as $template_id => $user_ids) {
       $values = ['template' => $template_id, 'arguments' => $arguments];

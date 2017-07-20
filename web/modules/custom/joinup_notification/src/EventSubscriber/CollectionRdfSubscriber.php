@@ -15,7 +15,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
 
   const TEMPLATE_APPROVE_EDIT = 'col_approve_edit';
   const TEMPLATE_APPROVE_NEW = 'col_approve_new';
-  const TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER = 'col_arc_del_apr_owner';
+  const TEMPLATE_ARCHIVE_DELETE_APPROVE_OWNER = 'col_arc_del_apr_own';
   const TEMPLATE_ARCHIVE_DELETE_MEMBERS = 'col_arc_del_members';
   const TEMPLATE_ARCHIVE_DELETE_NO_REQUEST = 'col_arc_del_no_request';
   const TEMPLATE_ARCHIVE_DELETE_REJECT = 'col_arc_del_rej';
@@ -399,7 +399,9 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     ];
     $user_data = $this->getUsersMessages($user_data);
     foreach ($uids_to_skip as $uid) {
-      unset($user_data[$uid]);
+      foreach ($user_data as $message_id => $user_ids) {
+        unset($user_data[$message_id][$uid]);
+      }
     }
 
     $this->sendUserDataMessages($user_data);
@@ -429,20 +431,24 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     $collection_count = $this->entityTypeManager->getStorage('rdf_entity')->getQuery()
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $solution->id())
-      ->condition('field_ar_state', 'archived', '<>')
+      ->condition('field_ar_state', 'archived', '!=')
       ->count()
       ->execute();
 
     $template_id = $collection_count ? self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ALL : self::TEMPLATE_ARCHIVE_DELETE_SOLUTIONS_ORPHANED;
     $user_data = [
-      'og_role' => [
+      'og_roles' => [
         'rdf_entity-solution-administrator' => [
           $template_id,
         ],
       ],
     ];
     $user_data = $this->getUsersMessages($user_data, $solution);
-    $this->sendUserDataMessages($user_data);
+    $arguments = [
+      '@affiliate:title' => $solution->label(),
+      '@affiliate:url' => $solution->toUrl('canonical', ['absolute' => TRUE])->toString(),
+    ];
+    $this->sendUserDataMessages($user_data, $arguments);
   }
 
   /**
@@ -501,6 +507,11 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     if (in_array($this->transition->getId(), ['archive', 'request_archival']) || ($this->transition->getId() === 'validate' && $this->fromState === 'archival_request')) {
       $arguments['@transition:request_action'] = 'archive';
       $arguments['@transition:request_action:past'] = 'archived';
+      if ($this->transition->getId() === 'archive') {
+        $arguments['@transition:motivation'] = t('You can verify the outcome of your request by clicking on @entity:url', [
+          '@entity:url' => $arguments['@entity:url'],
+        ]);
+      }
     }
     elseif ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
       $arguments['@transition:request_action'] = 'delete';

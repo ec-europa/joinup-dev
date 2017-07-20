@@ -28,18 +28,18 @@ Feature: Notification test for the collection transitions.
       | NC Solution1 | NCS owner | owner |
       | NC Solution2 | NCS owner | owner |
     And collections:
-      | title                  | state            | abstract     | description   | policy domain     | owner      | affiliates                 |
-      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all |                            |
+      | title                  | state            | abstract     | description   | policy domain     | owner      | affiliates                     |
+      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all |                                |
       # The following will also cover the validate edited notification.
-      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | NC Solution2               |
-      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                            |
-      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | NC Solution1, NC Solution2 |
-      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                            |
+      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution2"                 |
+      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution1", "NC Solution2" |
+      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
     And the following collection user memberships:
       | collection             | user           | roles              |
       | NC to propose          | NC owner       | owner, facilitator |
@@ -60,53 +60,53 @@ Feature: Notification test for the collection transitions.
       | NC to delete           | NC member2     |                    |
 
     # Test 'create' operation.
-#    When all e-mails have been sent
-#    And I am logged in as "NC user"
-#    When I go to the propose collection form
-#    When I fill in the following:
-#      | Title            | NC proposed new |
-#      | Description      | No one cares.   |
-#      | Spatial coverage | Belgium         |
-#    When I select "HR" from "Policy domain"
-#    And I press "Add existing" at the "Owner" field
-#    And I fill in "Owner" with "NC for all"
-#    And I press "Propose"
-#    Then the following email should have been sent:
-#      | recipient | NC moderator                                                                                                                 |
-#      | subject   | User NC proposed collection NC proposed new                                                                                        |
-#      | body      | NC User has proposed collection "NC proposed new". To approve or reject this proposal, please go to |
-#    Then I delete the "NC proposed new" collection
+    When all e-mails have been sent
+    And I am logged in as "NC user"
+    When I go to the propose collection form
+    When I fill in the following:
+      | Title            | NC proposed new |
+      | Description      | No one cares.   |
+      | Spatial coverage | Belgium         |
+    When I select "HR" from "Policy domain"
+    And I press "Add existing" at the "Owner" field
+    And I fill in "Owner" with "NC for all"
+    And I press "Propose"
+    Then the following email should have been sent:
+      | recipient | NC moderator                                                                                                                 |
+      | subject   | User NC proposed collection NC proposed new                                                                                        |
+      | body      | NC User has proposed collection "NC proposed new". To approve or reject this proposal, please go to |
+    Then I delete the "NC proposed new" collection
 
     # Test 'propose' operation (on an existing collection)
-#    When all e-mails have been sent
-#    And I am logged in as "NC owner"
-#    And I go to the homepage of the "NC to propose" collection
-#    And I click the contextual link "Edit" in the Header region
-#    And I press "Propose"
-#    Then the following email should have been sent:
-#      | recipient | NC moderator                                                                                                                 |
-#      | subject   | User NC proposed collection NC to propose                                                                                        |
-#      | body      | NC Owner has proposed collection "NC to propose". To approve or reject this proposal, please go to |
+    When all e-mails have been sent
+    And I am logged in as "NC owner"
+    And I go to the homepage of the "NC to propose" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Propose"
+    Then the following email should have been sent:
+      | recipient | NC moderator                                                                                                                 |
+      | subject   | User NC proposed collection NC to propose                                                                                        |
+      | body      | NC Owner has proposed collection "NC to propose". To approve or reject this proposal, please go to |
 
     # Test 'request archival' operation.
-#    When all e-mails have been sent
-#    And I go to the homepage of the "NC to request archival" collection
-#    And I click the contextual link "Edit" in the Header region
-#    And I press "Request archival"
-#    Then the following email should have been sent:
-#      | recipient | NC moderator                                                                                                               |
-#      | subject   | User NC requested to archive collection NC to request archival                                                             |
-#      | body      | NC Owner has requested to archive the collection "NC to request archival". To approve or reject this request, please go to |
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to request archival" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Request archival"
+    Then the following email should have been sent:
+      | recipient | NC moderator                                                                                                               |
+      | subject   | User NC requested to archive collection NC to request archival                                                             |
+      | body      | NC Owner has requested to archive the collection "NC to request archival". To approve or reject this request, please go to |
 
     # Test 'request deletion' operation.
-#    When all e-mails have been sent
-#    And I go to the homepage of the "NC to request deletion" collection
-#    And I click the contextual link "Edit" in the Header region
-#    And I press "Request deletion"
-#    Then the following email should have been sent:
-#      | recipient | NC moderator                                                                                                              |
-#      | subject   | User NC requested to delete collection NC to request deletion                                                             |
-#      | body      | NC Owner has requested to delete the collection "NC to request deletion". To approve or reject this request, please go to |
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to request deletion" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Request deletion"
+    Then the following email should have been sent:
+      | recipient | NC moderator                                                                                                              |
+      | subject   | User NC requested to delete collection NC to request deletion                                                             |
+      | body      | NC Owner has requested to delete the collection "NC to request deletion". To approve or reject this request, please go to |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent
@@ -124,124 +124,80 @@ Feature: Notification test for the collection transitions.
       | subject   | User NC proposed to edit collection NC to propose edit proposed                                                       |
       | body      | NC Facilitator has proposed to edit collection "NC to propose edit proposed". To modify your collection, please go to |
 
+    # Test the 'approve new' operation.
+    When all e-mails have been sent
+    And I am logged in as "NC moderator"
+    And I go to the homepage of the "NC to validate" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Publish"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                                          |
+      | subject   | Your proposal of collection NC to validate has been approved                      |
+      | body      | Your proposed collection "NC to validate" has been validated as per your request. |
 
+    # Test the 'approve proposed' that was proposed through the 'propose edit' operation.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to propose edit proposed" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Publish"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                                                                                                     |
+      | subject   | Your request to edit collection NC to propose edit proposed has been approved.                                                               |
+      | body      | Your proposal to edit the collection "NC to propose edit proposed" has been accepted. You can verify the edited version of the collection at |
 
+    # Test the 'reject archival' operation.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to reject archival" collection
+    And I click the contextual link "Edit" in the Header region
+    # @todo: This should change into a separate transition.
+    And I press "Publish"
+    Then I should see the error message "This action requires you to fill in the motivation field"
+    When I fill in "Motivation" with "It will not be archived."
+    And I press "Publish"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                                                                                                           |
+      | subject   | Your request to archive collection NC to reject archival has been rejected                                                                         |
+      | body      | NC Moderator has rejected your request to archive the collection "NC to reject archival". The reason for rejection is: It will not be archived. |
 
+    # Test the 'reject deletion' operation.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to reject deletion" collection
+    And I click the contextual link "Edit" in the Header region
+    # @todo: This should change into a separate transition.
+    And I press "Publish"
+    Then I should see the error message "This action requires you to fill in the motivation field"
+    When I fill in "Motivation" with "It will not be deleted."
+    And I press "Publish"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                                                                                                      |
+      | subject   | Your request to delete collection NC to reject deletion has been rejected                                                                     |
+      | body      | NC Moderator has rejected your request to delete the collection "NC to reject deletion". The reason for rejection is: It will not be deleted. |
 
-
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC pre collection" collection
-#    And I click "Add event" in the plus button menu
-#    And I fill in "Title" with "CC notify create publish"
-#    And I fill in "Description" with "CC notify create publish"
-#    And I fill in "Location" with "CC notify create propose"
-#    And I press "Publish"
-#    Then the following email should have been sent:
-#      | recipient | CC owner                                                                                                                                                                   |
-#      | subject   | Joinup: Content has been published                                                                                                                                         |
-#      | body      | CC Facilitator has published the new event - "CC notify create publish" in the collection: "CC pre collection". You can access the new content at the following link: http |
-#
-#    # Test 'update' operation.
-#    When all e-mails have been sent
-#    And I am logged in as "CC member"
-#    And I go to the "CC notify pre propose" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Propose"
-#    Then the following email should have been sent:
-#      | recipient | CC owner                                                                                                              |
-#      | subject   | Joinup: Content has been proposed                                                                                     |
-#      | body      | CC Member has submitted a new event - "CC notify pre propose" for publication in the collection: "CC pre collection". |
-#
-#    When all e-mails have been sent
-#    And I go to the "CC notify pre propose from reported" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Propose"
-#    Then the following email should have been sent:
-#      | recipient | CC owner                                                                                                                                                                     |
-#      | subject   | Joinup: Content has been updated                                                                                                                                             |
-#      | body      | CC Member has updated the content of the event - "CC notify pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
-#
-#    When all e-mails have been sent
-#    And I go to the "CC notify pre request deletion" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Request deletion"
-#    Then I should see the error message "This action requires you to fill in the motivation field"
-#    When I fill in "Motivation" with "I just want to delete it."
-#    And I press "Request deletion"
-#    Then the following email should have been sent:
-#      | recipient | CC owner                                                                                                                                                                           |
-#      | subject   | Joinup: Content has been updated                                                                                                                                                   |
-#      | body      | CC Member has requested to delete the event - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre publish" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Publish"
-#    Then the following email should have been sent:
-#      | recipient | CC owner                                                                                                     |
-#      | subject   | Joinup: Content has been published                                                                           |
-#      | body      | CC Facilitator has published the new event - "CC notify pre publish" in the collection: "CC pre collection". |
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre request changes" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Request changes"
-#    Then I should see the error message "This action requires you to fill in the motivation field"
-#    When I fill in "Motivation" with "Can you do some changes?"
-#    And I press "Request changes"
-#    Then the following email should have been sent:
-#      | recipient | CC member                                                                                                                                                                                                  |
-#      | subject   | Joinup: Content has been updated                                                                                                                                                                           |
-#      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre report" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Report"
-#    Then I should see the error message "This action requires you to fill in the motivation field"
-#    When I fill in "Motivation" with "Your content is reported"
-#    And I press "Request changes"
-#    Then the following email should have been sent:
-#      | recipient | CC member                                                                                                                                                                                         |
-#      | subject   | Joinup: Content has been updated                                                                                                                                                                  |
-#      | body      | the Facilitator, CC Facilitator has requested you to modify the event - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre approve proposed" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Publish"
-#    Then the following email should have been sent:
-#      | recipient | CC member                                                                                                                                                 |
-#      | subject   | Joinup: Content has been updated                                                                                                                          |
-#      | body      | the Facilitator, CC Facilitator has approved your request to publish the event - "CC notify pre approve proposed" in the collection: "CC pre collection". |
-#
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre reject deletion" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I press "Reject deletion"
-#    Then I should see the error message "This action requires you to fill in the motivation field"
-#    When I fill in "Motivation" with "I still like it"
-#    And I press "Reject deletion"
-#    Then the following email should have been sent:
-#      | recipient | CC member                                                                                                                                                                                                     |
-#      | subject   | Joinup: Content has been updated                                                                                                                                                                              |
-#      | body      | the Facilitator, CC Facilitator has not approved your request to delete the event - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
-#
-#    # Test 'delete' operation.
-#    When all e-mails have been sent
-#    And I am logged in as "CC facilitator"
-#    And I go to the "CC notify pre delete" event
-#    And I click "Edit" in the "Entity actions" region
-#    And I click "Delete"
-#    And I press "Delete"
-#    Then the following email should have been sent:
-#      | recipient | CC member                                                                                                         |
-#      | subject   | Joinup: Content has been deleted                                                                                  |
-#      | body      | Facilitator CC Facilitator has deleted the event - "CC notify pre delete" in the collection: "CC pre collection". |
+    # Test the 'archive' operation.
+    When all e-mails have been sent
+    And I go to the homepage of the "NC to archive" collection
+    And I click the contextual link "Edit" in the Header region
+    And I press "Archive"
+    Then I should see the error message "This action requires you to fill in the motivation field"
+    When I fill in "Motivation" with "As you wish."
+    And I press "Archive"
+    Then the following email should have been sent:
+      | recipient | NC owner                                                              |
+      | subject   | Your request to archive collection NC to archive has been approved.   |
+      | body      | The collection "NC to archive" has been archived as per your request. |
+    And the following email should have been sent:
+      | recipient | NCS owner                                                                                                                                                                                                                                         |
+      | subject   | The collection NC to archive was archived. Your solution was affiliated only to the collection NC to archive, and as a consequence, your solution is not currently affiliated to any other collection. Please verify and take appropriate action. |
+      | body      | Since your solution "NC Solution1" was affiliated only with this archived collection, your solution is currently no longer affiliated to any other collection.                                                                                    |
+    And the following email should have been sent:
+      | recipient | NCS owner                                                                                                    |
+      | subject   | The collection NC to archive was archived                                                                    |
+      | body      | The "NC to archive" collection, to which your "NC Solution1" solution was affiliated, was recently archived. |
+    And the following email should have been sent:
+      | recipient | NCS member1                                                                   |
+      | subject   | The collection NC to archive was archived.                                    |
+      | body      | The collection "NC to archive", of which you are a member, has been archived. |
+    And the following email should have been sent:
+      | recipient | NCS member2                                                                   |
+      | subject   | The collection NC to archive was archived.                                    |
+      | body      | The collection "NC to archive", of which you are a member, has been archived. |
