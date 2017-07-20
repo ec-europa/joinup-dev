@@ -18,6 +18,26 @@ function joinup_notification_node_insert(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * It is really hard to keep track of the from_state since state_machine does
+ * not give us access to the initialValue protected property of the StateItem
+ * class.
+ *
+ * Load the unchanged latest version and get the source state and save it to the
+ * entity.
+ */
+function joinup_notification_node_presave(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'event', 'news'])) {
+    return;
+  }
+  /** @var \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager */
+  $revision_manager = \Drupal::service('state_machine_revisions.revision_manager');
+  $revision = $revision_manager->loadLatestRevision($entity);
+  $entity->field_state_initial_value = $revision->get('field_state')->first()->value;
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  */
 function joinup_notification_node_update(EntityInterface $entity) {

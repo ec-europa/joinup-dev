@@ -49,6 +49,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected $motivation;
 
   /**
+   * Whether the community content has a published version.
+   *
+   * @var bool
+   */
+  protected $hasPublished;
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -72,11 +79,12 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
       $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-      $from_state = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : 'draft';
+      $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
       $to_state = $this->entity->get($this->stateField)->first()->value;
       $this->transition = $this->workflow->findTransition($from_state, $to_state);
     }
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
+    $this->hasPublished = $this->hasPublishedVersion($this->entity);
   }
 
   /**
@@ -258,7 +266,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@transition:motivation'] = $motivation;
     $arguments['@group:title'] = $parent->label();
     $arguments['@group:bundle'] = $parent->bundle();
-
+    $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
     if (empty($arguments['@actor:role'])) {
       $membership = $this->membershipManager->getMembership($parent, $actor);
       if (!empty($membership)) {
@@ -275,7 +283,29 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       }
       $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
+
+
     return $arguments;
+  }
+
+  /**
+   * Checks whether the entity has a published version.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity object.
+   *
+   * @return bool
+   *   Whether the entity has a published version.
+   */
+  protected function hasPublishedVersion(EntityInterface $entity) {
+    if ($entity->isNew()) {
+      return FALSE;
+    }
+    if ($entity->isPublished()) {
+      return TRUE;
+    }
+    $published = $this->entityTypeManager->getStorage('node')->load($entity->id());
+    return !empty($published) && $published->isPublished();
   }
 
 }
