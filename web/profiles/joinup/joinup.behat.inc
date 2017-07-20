@@ -1607,6 +1607,29 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Assert that a given attribute is not set for a given element in a region.
+   *
+   * @Then I( should) not see the :tag element with the :attribute attribute set to :value in the :region( region)
+   */
+  public function assertRegionElementAttribute($tag, $attribute, $value, $region) {
+    $regionObj = $this->getRegion($region);
+    $elements = $regionObj->findAll('css', $tag);
+    if (empty($elements)) {
+      return;
+    }
+    if (!empty($attribute)) {
+      foreach ($elements as $element) {
+        $attr = $element->getAttribute($attribute);
+        if (!empty($attr)) {
+          if (strpos($attr, "$value") !== FALSE) {
+            throw new \Exception(sprintf('The "%s" attribute is equal to "%s" on the element "%s" in the "%s" region on the page %s', $attribute, $value, $tag, $region, $this->getSession()->getCurrentUrl()));
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Assert that the persistent url link follows a given pattern.
    *
    * @Then the persistent url should contain :pattern
@@ -1624,6 +1647,32 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function iWaitSeconds($seconds) {
     sleep($seconds);
+  }
+
+  /**
+   * Asserts that a certain link points to a specific path.
+   *
+   * Example: Then the link "Login" should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link should point to :href
+   */
+  public function assertLinkHref($link, $href) {
+    $element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the page.");
+    }
+
+    $attribute = trim($element->getAttribute('href'), '/');
+    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path.");
   }
 
 }
