@@ -177,10 +177,14 @@
 
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
-        <phingcall target="writable-settings-folder" />
+        <phingcall target="include-local-settings" />
         <!-- Copy settings file containing development values, but preserve any existing local settings. -->
         <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
-        <!-- Uncomment the inclusion of the local settings file in settings.php. -->
+    </target>
+
+    <!-- Uncomment the inclusion of the local settings file in settings.php. -->
+    <target name="include-local-settings">
+        <phingcall target="writable-settings-folder" />
         <phingcall target="writable-settings-php" />
         <reflexive>
             <fileset dir="${website.settings.dir}">
