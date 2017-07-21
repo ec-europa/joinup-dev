@@ -28,7 +28,8 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * entity.
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
-  if ($entity->isNew() || !in_array($entity->bundle(), ['document', 'discussion', 'event', 'news'])) {
+  $bundles = ['document', 'discussion', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $bundles)) {
     return;
   }
   /** @var \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager */
