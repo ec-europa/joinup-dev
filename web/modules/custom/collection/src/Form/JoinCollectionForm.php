@@ -50,26 +50,48 @@ class JoinCollectionForm extends FormBase {
     // confirmation form, disguised as a form submit button. The confirmation
     // form should open in a modal dialog for JavaScript-enabled browsers.
     if (Og::isMember($collection, $user)) {
-      $form['leave'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Leave this collection'),
-        '#url' => Url::fromRoute('collection.leave_confirm_form', [
-          'rdf_entity' => $collection->id(),
-        ]),
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
-            'button',
-            'button--small',
-            'button--blue-light',
-            'mdl-button',
-            'mdl-js-button',
-            'mdl-button--raised',
-            'mdl-js-ripple-effect',
-            'mdl-button--accent',
+      $form['leave_wrapper'] = [
+        '#type' => 'dropbutton',
+        '#links' => [
+          'member' => [
+            'type' => 'item',
+            'title' => $this->t("You're a member"),
+            'attributes' => [
+              'class' => [
+                'button',
+                'button--small',
+                'button--blue-light',
+                'mdl-button',
+                'mdl-js-button',
+                'mdl-button--raised',
+                'mdl-js-ripple-effect',
+                'mdl-button--accent',
+              ],
+              'disabled' => TRUE,
+            ],
           ],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => Json::encode(['width' => 'auto']),
+          'leave' => [
+            'type' => 'link',
+            'title' => $this->t('Leave this collection'),
+            'url' => Url::fromRoute('collection.leave_confirm_form', [
+              'rdf_entity' => $collection->id(),
+            ]),
+            'attributes' => [
+              'class' => [
+                'use-ajax',
+                'button',
+                'button--small',
+                'button--blue-light',
+                'mdl-button',
+                'mdl-js-button',
+                'mdl-button--raised',
+                'mdl-js-ripple-effect',
+                'mdl-button--accent',
+              ],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => Json::encode(['width' => 'auto']),
+            ],
+          ],
         ],
       ];
       $form['#attached']['library'][] = 'core/drupal.ajax';
