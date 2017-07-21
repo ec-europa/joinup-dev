@@ -183,6 +183,21 @@
         <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
     </target>
 
+    <!-- Create an empty local settings file, if it doesn't exist yet. -->
+    <target name="create-local-settings">
+        <if>
+            <not>
+                <available file="${website.settings.local.php}" type="file" property="website.settings.local.php.available" />
+            </not>
+            <then>
+                <phingcall target="writable-settings-folder" />
+                <echo
+                    message="&lt;?php${line.separator}"
+                    file="${website.settings.local.php}" />
+            </then>
+        </if>
+    </target>
+
     <!-- Uncomment the inclusion of the local settings file in settings.php. -->
     <target name="include-local-settings">
         <phingcall target="writable-settings-folder" />
