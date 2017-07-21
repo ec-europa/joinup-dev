@@ -141,6 +141,7 @@
     <!-- Override Solr server connection information in the settings.local.php file. -->
     <target name="configure-apache-solr-drupal">
         <phingcall target="include-local-settings" />
+        <phingcall target="create-local-settings" />
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.local.php"/>
