@@ -193,3 +193,29 @@ Feature: Global search
     Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the header search bar and hit enter
     Then the page should show the tiles "Ulysses Freeman"
+
+  Scenario: Collections and solutions are shown first in search results with the same relevance.
+    Given the following solution:
+      | title       | Bird outposts in the wild            |
+      | description | Exotic wings and where to find them. |
+      | state       | validated                            |
+    And collection:
+      | title       | Ornithology: the study of birds     |
+      | description | Ornithology is a branch of zoology. |
+      | state       | validated                           |
+      | affiliates  | Bird outposts in the wild           |
+    And discussion content:
+      | title                             | body                    | collection                      | state     |
+      | Best place to find an exotic bird | Somewhere exotic maybe? | Ornithology: the study of birds | validated |
+    And user:
+      | Username    | Bird watcher |
+      | First name  | Bird         |
+      | Family name | Birdman      |
+
+    # The bird is the word... to search.
+    When I enter "Bird" in the header search bar and hit enter
+    Then I should see the following tiles in the correct order:
+      | Ornithology: the study of birds   |
+      | Bird outposts in the wild         |
+      | Best place to find an exotic bird |
+      | Bird Birdman                      |
