@@ -26,6 +26,11 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  *
  * Load the unchanged latest version and get the source state and save it to the
  * entity.
+ *
+ * This workaround comes because the $entity->original property points to the
+ * latest published version instead of the latest revision.
+ *
+ * @see: https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
   $bundles = ['document', 'discussion', 'event', 'news'];
