@@ -284,7 +284,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
 
-
     return $arguments;
   }
 
