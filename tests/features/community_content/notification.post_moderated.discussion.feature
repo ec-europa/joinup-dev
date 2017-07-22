@@ -86,7 +86,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                        |
       | subject   | Joinup: Content has been updated                                                                                                                                 |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
