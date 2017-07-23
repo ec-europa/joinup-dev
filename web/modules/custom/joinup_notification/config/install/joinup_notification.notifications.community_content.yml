@@ -104,6 +104,15 @@ update:
     request_changes:
       owner:
         - cc_transition_request_changes
+    propose_from_reported:
+      roles:
+        moderator:
+          - cc_transition_propose_reported
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose_reported
+        rdf_entity-solution-administrator:
+          - cc_transition_propose_reported
   'node:discussion:post_moderated':
     publish:
       roles:
@@ -123,6 +132,15 @@ update:
     request_changes:
       owner:
         - cc_transition_request_changes
+    propose_from_reported:
+      roles:
+        moderator:
+          - cc_transition_propose_reported
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose_reported
+        rdf_entity-solution-administrator:
+          - cc_transition_propose_reported
 delete:
   node:pre_moderated:
     deletion_request:
