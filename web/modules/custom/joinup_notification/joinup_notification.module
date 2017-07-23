@@ -37,10 +37,7 @@ function joinup_notification_node_presave(EntityInterface $entity) {
   if ($entity->isNew() || !in_array($entity->bundle(), $bundles)) {
     return;
   }
-  /** @var \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager */
-  $revision_manager = \Drupal::service('state_machine_revisions.revision_manager');
-  $revision = $revision_manager->loadLatestRevision($entity);
-  $entity->field_state_initial_value = $revision->get('field_state')->first()->value;
+  $entity->field_state_initial_value = $entity->get('field_state')->first()->getInitialValue();
 }
 
 /**
