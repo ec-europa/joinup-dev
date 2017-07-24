@@ -14,13 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   /**
-   * The operation string.
-   *
-   * @var string
-   */
-  protected $operation;
-
-  /**
    * The transition object.
    *
    * @var \Drupal\state_machine\Plugin\Workflow\WorkflowTransition
@@ -103,7 +96,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -151,7 +144,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -199,7 +192,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -257,13 +250,17 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    */
   protected function generateArguments(EntityInterface $entity) {
     $arguments = parent::generateArguments($entity);
-    $parent = $this->relationManager->getParent($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
     $arguments['@transition:motivation'] = $motivation;
+    $parent = $this->relationManager->getParent($entity);
+    if (empty($parent)) {
+      return $arguments;
+    }
+
     $arguments['@group:title'] = $parent->label();
     $arguments['@group:bundle'] = $parent->bundle();
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';

@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: col_arc_del_no_request
+label: 'Collection archive/delete without request'
+description: 'Template id 13 - This will be sent in case the deletion/archival happened without request'
+text:
+  1:
+    value: "<p>Your @entity:bundle \"@entity:title\" has been @transition:request_action:past.</p>\r\n\r\n<p>The reason for being @transition:request_action:past is: @transition:motivation.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
