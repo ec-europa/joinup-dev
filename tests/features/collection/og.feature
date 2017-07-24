@@ -23,8 +23,8 @@ Feature: Organic Groups integration
     # least 1 member. In this case however we are creating the group through the
     # API and there is no logged in user, so the collection should not have any
     # members.
-    Then the "Überwaldean Land Eels" collection should have 0 members
-    And the "Folk Dance and Song Society" collection should have 1 members
+    Then the "Überwaldean Land Eels" collection should have 0 active members
+    And the "Folk Dance and Song Society" collection should have 1 active members
 
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
@@ -39,7 +39,7 @@ Feature: Organic Groups integration
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
-    And the "Überwaldean Land Eels" collection should have 1 member
+    And the "Überwaldean Land Eels" collection should have 1 active member
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
     And I should not see the link "Edit"
@@ -50,7 +50,8 @@ Feature: Organic Groups integration
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "Your membership to the Folk Dance and Song Society collection is under approval."
-    And the "Folk Dance and Song Society" collection should have 2 members
+    And the "Folk Dance and Song Society" collection should have 1 active member
+    And the "Folk Dance and Song Society" collection should have 1 pending member
     When I go to the homepage of the "Folk Dance and Song Society" collection
     Then I should not see the "Join this collection" button
     And I should not see the "Leave this collection" button
@@ -63,7 +64,7 @@ Feature: Organic Groups integration
     When I go to the homepage of the "Überwaldean Land Eels" collection
     And I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
-    And the "Überwaldean Land Eels" collection should have 2 members
+    And the "Überwaldean Land Eels" collection should have 2 active members
 
     # Check that both users can leave their respective collections.
     When I click "Leave this collection"
@@ -72,7 +73,7 @@ Feature: Organic Groups integration
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
-    And the "Überwaldean Land Eels" collection should have 1 member
+    And the "Überwaldean Land Eels" collection should have 1 active member
 
     When I am logged in as "Madame Sharn"
     And I go to the homepage of the "Überwaldean Land Eels" collection
@@ -81,7 +82,7 @@ Feature: Organic Groups integration
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
-    And the "Überwaldean Land Eels" collection should have 0 members
+    And the "Überwaldean Land Eels" collection should have 0 active members
 
     When I am logged in as "Kathie Cumberwatch"
     And I go to the homepage of the "Folk Dance and Song Society" collection
@@ -90,4 +91,5 @@ Feature: Organic Groups integration
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
-    And the "Folk Dance and Song Society" collection should have 1 members
+    And the "Folk Dance and Song Society" collection should have 0 active members
+    And the "Folk Dance and Song Society" collection should have 1 pending member
