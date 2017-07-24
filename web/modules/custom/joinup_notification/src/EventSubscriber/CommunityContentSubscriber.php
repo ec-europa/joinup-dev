@@ -240,15 +240,15 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
-    $arguments = parent::generateArguments($entity);
+  protected function generateArguments(EntityInterface $message) {
+    $arguments = parent::generateArguments($message);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
     $arguments['@transition:motivation'] = $motivation;
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationManager->getParent($message);
     if (empty($parent)) {
       return $arguments;
     }
