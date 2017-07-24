@@ -3,7 +3,7 @@ cancel_confirm:
   subject: 'Account cancellation request for [user:display-name] at [site:name]'
 password_reset:
   body: "Dear [user:field_user_first_name],\r\n\r\nA new password has been requested for the account [user:account-name].\r\n\r\nTo confirm the request, please click [user:one-time-login-url].\r\n\r\nIf you didn't ask for a new password, please disregard this message.\r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"
-  subject: 'Replacement login information for [user:display-name] at [site:name]'
+  subject: 'Please confirm the request of a new password.'
 register_admin_created:
   body: "Dear [user:field_user_first_name],\r\n\r\nWelcome to the Joinup community! Your account on Joinup has been created. \r\n\r\nTo quickly familiarise yourself with the functionalities available to registered users, you can follow a short tour of Joinup [user:one-time-login-url].\r\n\r\nIf you believe that a Joinup account linked to this email address was erroneously created, please click <here> to undo this action. \r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"
   subject: 'Your Joinup account was created successfully.'
