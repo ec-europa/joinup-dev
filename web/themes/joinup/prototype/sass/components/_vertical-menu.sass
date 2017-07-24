@@ -1,33 +1,34 @@
-// European Commision menu
-//
+// Vertical menu
+
+
 // Component
 // --------------------------------------------------
-.ec-menu
+.vertical-menu
   list-style-type: none
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
-  justify-content: flex-start
-  align-items: center
-  margin-top: 0
-  margin-bottom: 0
   padding-left: 0
 
 // Elements
 // --------------------------------------------------
-.ec-menu__item
-  margin-right: 20px
-  margin-bottom: 5px
-  
-.ec-menu__link
-  color: #c0d0e3
-  text-decoration: underline
+.vertical-menu__label
+  margin-top: 0
+  margin-bottom: 10px
+
+.vertical-menu__link
+  color: $color-blue-dark
 
 // Modifiers
 // --------------------------------------------------
 
+// Dependiencies
+// --------------------------------------------------
+.section--footer
+  .vertical-menu
+    margin-top: 0
+    margin-bottom: 0
+
 // States
 // --------------------------------------------------
-.ec-menu__link
+.vertical-menu__link
   &:hover
     text-decoration: none
+

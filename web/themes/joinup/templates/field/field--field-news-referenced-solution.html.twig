@@ -45,13 +45,17 @@
   ]
 %}
 
-<div class="listing listing--separated listing--grid mdl-grid">
-  <div class="listing__header mdl-cell mdl-cell--12-col">
-    <h3 class="listing__block-title">{{ label }}</h3>
+<div class="listing listing--separated listing--grid">
+  <div class="row">
+    <div class="mdl-grid">
+      <div class="listing__header mdl-cell mdl-cell--12-col">
+        <h3 class="listing__block-title">{{ label }}</h3>
+      </div>
+      {% for item in items %}
+        <div class="{{ classes|join(' ') }}">
+          {{ item.content }}
+        </div>
+      {% endfor %}
+    </div>
   </div>
-  {% for item in items %}
-  <div class="{{ classes|join(' ') }}">
-    {{ item.content }}
-  </div>
-  {% endfor %}
 </div>
