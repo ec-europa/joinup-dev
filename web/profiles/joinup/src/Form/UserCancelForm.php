@@ -14,24 +14,12 @@ use Drupal\user\Form\UserCancelForm as CoreUserCancelForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Overrides the default form implementation to handle group memberships.
+ * Overrides the default implementation of the form to delete a user account.
  *
  * Deletion of a user account will be denied when the user is the sole owner of
  * a collection.
  */
 class UserCancelForm extends CoreUserCancelForm {
-
-  /**
-   * The role ID for a collection owner.
-   */
-  const COLLECTION_OWNER_ROLE = 'rdf_entity-collection-administrator';
-
-  /**
-   * The OG membership manager.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
 
   /**
    * The relation manager service.
@@ -49,16 +37,13 @@ class UserCancelForm extends CoreUserCancelForm {
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
-   * @param \Drupal\og\MembershipManagerInterface $membershipManager
-   *   The OG membership manager.
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, MembershipManagerInterface $membershipManager = NULL, JoinupRelationManager $relation_manager = NULL) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, JoinupRelationManager $relation_manager = NULL) {
     parent::__construct($entity_manager, $entity_type_bundle_info, $time);
 
     // Replicate the behaviour of the parent implementation.
-    $this->membershipManager = $membershipManager ?: \Drupal::service('og.membership_manager');
     $this->relationManager = $relation_manager ?: \Drupal::service('joinup_core.relations_manager');
   }
 
@@ -70,7 +55,6 @@ class UserCancelForm extends CoreUserCancelForm {
       $container->get('entity.manager'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('og.membership_manager'),
       $container->get('joinup_core.relations_manager')
     );
   }
@@ -79,26 +63,15 @@ class UserCancelForm extends CoreUserCancelForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $memberships = $this->relationManager->getUserMembershipsByRole($this->entity, self::COLLECTION_OWNER_ROLE);
-
     // Prepare a list of collections where the user is the sole owner.
-    $collections = [];
-    if ($memberships) {
-      foreach ($memberships as $membership) {
-        $group = $membership->getGroup();
-        $owners = $this->relationManager->getGroupOwners($group);
-        if (count($owners) === 1 && array_key_exists($this->entity->id(), $owners)) {
-          $collections[$group->id()] = $group;
-        }
-      }
-    }
+    $collections = $this->relationManager->getCollectionsWhereSoleOwner($this->entity);
 
     if (!empty($collections)) {
       $form = [
         'collections' => [
           '#theme' => 'item_list',
-          '#items' => array_map(function (EntityInterface $group) {
-            return $group->toLink($group->label());
+          '#items' => array_map(function (EntityInterface $collection) {
+            return $collection->toLink($collection->label());
           }, $collections),
           '#weight' => 0,
         ],
