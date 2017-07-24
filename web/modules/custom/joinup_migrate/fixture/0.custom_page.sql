@@ -11,7 +11,8 @@ CREATE OR REPLACE VIEW d8_custom_page (
   group_type,
   group_nid,
   group_title,
-  exclude
+  exclude,
+  status
 ) AS
 SELECT
   p.collection,
@@ -26,7 +27,8 @@ SELECT
   g.type,
   g.nid,
   g.title,
-  IF(ctop.field_og_page_exclude_menu_value = 0 AND n.status = 1, 0, 1)
+  ctop.field_og_page_exclude_menu_value,
+  n.status
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 INNER JOIN content_type_og_page ctop ON n.vid = ctop.vid

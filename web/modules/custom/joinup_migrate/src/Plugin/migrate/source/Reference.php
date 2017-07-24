@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Database\Connection;
@@ -217,14 +218,12 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     }
 
     // Build the DOM based on this markup.
-    $dom = new \DOMDocument();
-    @$dom->loadHTML($markup, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT);
-
+    $document = Html::load($markup);
     $changed = FALSE;
     foreach (static::TAGS as $tag => $attribute) {
       /** @var \DOMElement $element */
-      foreach ($dom->getElementsByTagName($tag) as $element) {
-        $incoming_path = trim($element->getAttribute($attribute));
+      foreach ($document->getElementsByTagName($tag) as $element) {
+        $incoming_path = $element->getAttribute($attribute);
         if ($incoming_path && $parts = $this->getRelativePath($incoming_path)) {
           // If not cached, try to extract a valid target and cache it.
           if (!array_key_exists($incoming_path, $this->result)) {
@@ -238,13 +237,29 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
             $element->setAttribute($attribute, $link);
             $element->setAttribute('data-entity-type', $this->result[$incoming_path]['type']);
             $element->setAttribute('data-entity-uuid', $this->result[$incoming_path]['uuid']);
+
+            // Change also the text on elements like:
+            // @code
+            // <a href="http://joinup.ec.europa.eu/some/path">http://joinup.ec.europa.eu/some/path</a>
+            // @endcode
+            if (preg_match('@^(http[s]?://)@', $element->textContent, $found)) {
+              $qualified_incoming_path = $incoming_path;
+              if (!preg_match('@^http[s]?://@', $incoming_path)) {
+                $qualified_incoming_path = ltrim($qualified_incoming_path, '/');
+                $qualified_incoming_path = "{$found[1]}joinup.ec.europa.eu/$qualified_incoming_path";
+              }
+              if ($element->textContent === $qualified_incoming_path) {
+                $element->nodeValue = "{$found[1]}joinup.ec.europa.eu$link";
+              }
+            }
+
             $changed = TRUE;
           }
         }
       }
     }
     if ($changed) {
-      $markup = $dom->saveHTML();
+      $markup = Html::serialize($document);
     }
 
     return $changed;
@@ -264,14 +279,23 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   If the URI of destination object is malformed.
    */
   protected function processPath($path) {
+    // As we've already created redirects for all migrated entities, we already
+    // have a consistent mapping database between the old and the new URLs, in
+    // the {redirect} table, so we simply perform a lookup there to see if we
+    // can rewrite this path. We do not rewrite the canonical paths for the
+    // entities that are preserving their IDs, so a community content, referred
+    // as '/node/123', will not be rewritten but will continue to work because
+    // the ID was preserved during the migration process.
     if (!$uri = $this->db->query(static::SQL, [':path' => $path])->fetchField()) {
       return NULL;
     }
 
     // Get the source entity and remove the scheme from link.
     list($scheme, $link) = explode(':', $uri, 2);
+
+    // A file-system path of a managed file.
     if ($scheme === 'base') {
-      // A managed file system path.
+      // Strip out '/sites/default/files/' prefix.
       $target_path = substr($link, 21);
       $values = ['uri' => "public://{$target_path}"];
       $files = $this->getStorage('file')->loadByProperties($values);
@@ -280,8 +304,8 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       }
       $entity = reset($files);
     }
+    // An alias to an entity canonical path.
     elseif ($scheme === 'internal') {
-      // An entity.
       list($entity_type_id, $entity_id) = explode('/', substr($link, 1), 2);
       // RDF entity IDs are encoded.
       if ($entity_type_id === 'rdf_entity') {
@@ -325,7 +349,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   The relative path parts or NULL.
    */
   protected function getRelativePath($path) {
-    if ((strpos($path, '#') === 0) || !UrlHelper::isValid($path)) {
+    if ((strpos($path, '#') === 0) || !UrlHelper::isValid(UrlHelper::encodePath($path))) {
       // Only fragment or invalid.
       return NULL;
     }
@@ -335,7 +359,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       return NULL;
     }
 
-    $scheme = '';
+    $scheme = 'http://';
     if (!empty($url_parts['scheme'])) {
       if (!in_array($url_parts['scheme'], ['http', 'https'])) {
         // Only HTTP and HTTPS are allowed.
@@ -345,9 +369,23 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     }
 
     if (UrlHelper::isExternal($path)) {
-      if (!UrlHelper::externalIsLocal($path, "{$scheme}joinup.ec.europa.eu")) {
+      if (preg_match('@^(//)?joinup.ec.europa.eu@', $path)) {
+        $path = $scheme . ltrim($path, '/');
+        // Re-extract parts.
+        if (!$url_parts = parse_url($path)) {
+          return NULL;
+        }
+      }
+
+      try {
+        if (!UrlHelper::externalIsLocal($path, "{$scheme}joinup.ec.europa.eu")) {
+          return NULL;
+        }
+      }
+      catch (\Exception $e) {
         return NULL;
       }
+
       // Remove the host part.
       $path = preg_replace('|^http[s]?://joinup.ec.europa.eu(.*)$|', '$1', $path);
     }
@@ -381,8 +419,8 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   TRUE, if process is needed.
    */
   protected static function needsProcessing($markup) {
-    $a_pattern = '@<a\s+[^>]*href\s*=\s*([\'\"])??[http(s)?://joinup.ec.europa.eu/]?([/]?[^\" ]*?)\\1[^>]*>@i';
-    $img_pattern = '@<img\s+[^>]*src\s*=\s*([\'\"])??[http(s)?://joinup.ec.europa.eu/]?([/]?[^\" ]*?)\\1[^>]*>@i';
+    $a_pattern = "@<a\s+[^>]*href\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
+    $img_pattern = "@<img\s+[^>]*src\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
     return preg_match($a_pattern, $markup) || preg_match($img_pattern, $markup);
   }
 
@@ -407,14 +445,14 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    * The list of fields is built by checking if the field uses the 'file_inline'
    * process plugin.
    *
-   * @param string $entity_type_id
+   * @param string $limit_to_entity_type_id
    *   (optional) If passed, only information regarding that entity will be
    *   returned. Defaults to null.
    *
    * @return array[]
    *   A structured array.
    */
-  protected function getFieldInfo($entity_type_id = NULL) {
+  protected function getFieldInfo($limit_to_entity_type_id = NULL) {
     if (!isset($this->fieldInfo)) {
       $this->fieldInfo = [];
       // Iterate over all migrations.
@@ -422,29 +460,50 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
         $definition = $migration->getPluginDefinition();
         // But only on those having an entity destination.
         if (strpos($definition['destination']['plugin'], 'entity:') === 0) {
-          $entity_type = substr($definition['destination']['plugin'], 7);
-          // And a default bundle should be configured for destination.
-          if (!empty($definition['destination']['default_bundle'])) {
-            $bundle = $definition['destination']['default_bundle'];
-            // Collect all fields that are using the 'file_inline' processor.
-            $fields = array_keys(array_filter($migration->getProcessPlugins(), function (array $plugins) {
-              return (bool) array_filter($plugins, function (MigrateProcessInterface $plugin) {
-                return $plugin->getPluginId() === 'file_inline';
-              });
-            }));
-            if ($fields) {
-              // Remove the column: 'body/value' -> 'body'.
-              $this->fieldInfo[$entity_type][$bundle] = array_map(function ($field) {
-                list($field, $key) = explode('/', $field, 2);
-                return $field;
-              }, $fields);
+          $entity_type_id = substr($definition['destination']['plugin'], 7);
+          $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+          // The entity type must support bundles.
+          if ($bundle_key = $entity_type->getKey('bundle')) {
+            $bundles = [];
+            // The bundle is passed as a field mapping.
+            if (isset($definition['process'][$bundle_key])) {
+              // Get all bundles for this entity type.
+              if ($bundle_entity_type_id = $entity_type->getBundleEntityType()) {
+                $bundle_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id);
+                $bundles = array_keys($bundle_storage->loadMultiple());
+              }
+            }
+            // A default bundle is configured in for the destination plugin.
+            elseif (!empty($definition['destination']['default_bundle'])) {
+              $bundles = [$definition['destination']['default_bundle']];
+            }
+
+            foreach ($bundles as $bundle) {
+              if (!empty($this->fieldInfo[$entity_type_id][$bundle])) {
+                // This bundle was already processed in a previous iteration.
+                continue;
+              }
+
+              // Collect all fields that are using the 'file_inline' processor.
+              $fields = array_keys(array_filter($migration->getProcessPlugins(), function (array $plugins) {
+                return (bool) array_filter($plugins, function (MigrateProcessInterface $plugin) {
+                  return $plugin->getPluginId() === 'file_inline';
+                });
+              }));
+              if ($fields) {
+                // Remove the column: 'body/value' -> 'body'.
+                $this->fieldInfo[$entity_type_id][$bundle] = array_map(function ($field) {
+                  list($field,) = explode('/', $field, 2);
+                  return $field;
+                }, $fields);
+              }
             }
           }
         }
       }
     }
 
-    return $entity_type_id ? $this->fieldInfo[$entity_type_id] : $this->fieldInfo;
+    return $limit_to_entity_type_id ? $this->fieldInfo[$limit_to_entity_type_id] : $this->fieldInfo;
   }
 
   /**

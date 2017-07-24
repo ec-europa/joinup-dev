@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
 use Drupal\joinup_migrate\FileUtility;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
@@ -78,13 +79,10 @@ class FileInline extends SourcePluginBase {
             continue;
           }
           // Ensure we have well-formed markup.
-          $markup =& $item->$field;
-          $dom = new \DOMDocument();
-          @$dom->loadHTML($markup);
-          $dom->normalizeDocument();
+          $document = Html::load($item->{$field});
           foreach ($search as $tag => $attribute) {
             /** @var \DOMElement $element */
-            foreach ($dom->getElementsByTagName($tag) as $element) {
+            foreach ($document->getElementsByTagName($tag) as $element) {
               if ($element->hasAttribute($attribute)) {
                 $url = $element->getAttribute($attribute);
                 if (preg_match('|^(http[s]?://joinup\.ec\.europa\.eu)?/sites/default/files/ckeditor_files/(.*)$|', $url, $found)) {
@@ -117,9 +115,7 @@ class FileInline extends SourcePluginBase {
    */
   protected static $bodyFields = [
     'd8_collection' => ['body'],
-    // @todo Disable till ISAICP-3514 gets clarified.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3514
-    // 'd8_comment' => ['comment'],
+    'd8_comment' => ['comment'],
     'd8_custom_page' => ['body'],
     'd8_discussion' => ['body'],
     'd8_distribution' => ['body'],

@@ -5,12 +5,6 @@
  * Assertions for 'contact' and 'contact_email' migration.
  */
 
-// Migration counts.
-$this->assertTotalCount('contact', 3);
-$this->assertSuccessCount('contact', 3);
-$this->assertTotalCount('contact_email', 5);
-$this->assertSuccessCount('contact_email', 5);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $contact */
 $contact = $this->loadEntityByLabel('rdf_entity', 'Geodetic Institute of Slovenia', 'contact_information');
