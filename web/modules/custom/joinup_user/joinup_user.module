@@ -189,6 +189,7 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
     '#title' => t('Account changed by administrator'),
     '#description' => t('Edit the email messages sent to member accounts edited by an administrator.'),
     '#group' => 'email',
+    '#weight' => 100,
   ];
   $form['email_admin_update']['#description'] .= ' ' . $email_token_help;
   $form['email_admin_update']['user_mail_update_account_subject'] = [
@@ -210,6 +211,7 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
     '#title' => t('Role changed inside a group'),
     '#description' => t('Edit the email messages sent to group members when their roles change.'),
     '#group' => 'email',
+    '#weight' => 101,
   ];
   $form['email_og_roles_changed']['#description'] .= ' ' . $email_token_help;
   $form['email_og_roles_changed']['user_mail_og_roles_changed_subject'] = [
