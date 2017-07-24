@@ -18,8 +18,8 @@ Feature: Collection membership administration
       | Gregory House     |       | gregory_house@example.com     | Gregory    | House       |
       | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
     And the following collections:
-      | title             | description               | logo     | banner     | owner        | contact information                    | state     |
-      | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | validated |
+      | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
+      | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following collection user memberships:
       | collection        | user              | roles       | state   |
       | Medical diagnosis | Lisa Cuddy        | facilitator | active  |
