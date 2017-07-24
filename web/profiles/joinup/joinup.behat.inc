@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -34,6 +35,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
+use GuzzleHttp\Client;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 
@@ -1647,6 +1649,62 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function iWaitSeconds($seconds) {
     sleep($seconds);
+  }
+
+  /**
+   * Simulates picking of an autosuggestion value from a field.
+   *
+   * @param string $value
+   *   The value to select from suggestions.
+   * @param string $field
+   *   The field name.
+   *
+   * @throws \Exception
+   *   Thrown when the field is not found, the field is not an autocomplete
+   *   field, when there was a failure retrieving the autocomplete suggestions
+   *   or if the wanted suggestion is not found.
+   *
+   * @When I pick :value from the :field autocomplete suggestions
+   */
+  public function fillFieldWithNormalisedEntityReference($value, $field) {
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("The field '$field' not found in the page.");
+    }
+
+    if (!$element->hasAttribute('data-autocomplete-path')) {
+      throw new \Exception("The field '$field' is not an entity reference autocomplete field.");
+    }
+
+    // Use the Mink base uri.
+    // @see ::locatePath()
+    $client = new Client(['base_uri' => $this->getMinkParameter('base_url')]);
+    $uri = $element->getAttribute('data-autocomplete-path') . '?' . UrlHelper::buildQuery([
+      'q' => $value,
+    ]);
+    $response = $client->get($uri);
+
+    if ($response->getStatusCode() !== 200) {
+      throw new \Exception("Failed to obtain suggestions for field '$field'.");
+    }
+
+    $suggestions = json_decode($response->getBody()->getContents());
+    if ($suggestions === NULL) {
+      throw new \Exception("Failed to decode suggestions for field '$field'.");
+    }
+
+    if (!count($suggestions)) {
+      throw new \Exception("No suggestions for value '$value' found in field '$field'.");
+    }
+
+    foreach ($suggestions as $suggestion) {
+      if ($suggestion->label === $value) {
+        $element->setValue($suggestion->value);
+        return;
+      }
+    }
+
+    throw new \Exception("The value '$value' was not found in the autocomplete suggestions.");
   }
 
   /**

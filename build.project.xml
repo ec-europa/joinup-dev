@@ -75,7 +75,9 @@
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}" />
+            Password="${sparql.password}"
+            SolrUrl="${solr.server.url}"
+            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -199,12 +201,12 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, create-demo-users" />
 
     <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
     <target name="redirect-outgoing-email">
