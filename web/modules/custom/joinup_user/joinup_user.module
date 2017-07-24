@@ -224,6 +224,28 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
     '#default_value' => $mail_config->get('og_roles_changed.body'),
     '#rows' => 15,
   ];
+
+  // Settings for the e-mail sent when a user successfully resets its password.
+  $form['email_password_reset_confirm'] = [
+    '#type' => 'details',
+    '#title' => t('Password reset confirm'),
+    '#description' => t('Edit the email messages sent to users when they successfully reset their password.'),
+    '#group' => 'email',
+    '#weight' => 102,
+  ];
+  $form['email_password_reset_confirm']['#description'] .= ' ' . $email_token_help;
+  $form['email_password_reset_confirm']['user_mail_password_reset_confirm_subject'] = [
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => $mail_config->get('password_reset_confirm.subject'),
+    '#maxlength' => 180,
+  ];
+  $form['email_password_reset_confirm']['user_mail_password_reset_confirm_body'] = [
+    '#type' => 'textarea',
+    '#title' => t('Body'),
+    '#default_value' => $mail_config->get('password_reset_confirm.body'),
+    '#rows' => 15,
+  ];
 }
 
 /**
@@ -235,6 +257,8 @@ function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormSta
     ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
     ->set('og_roles_changed.subject', $form_state->getValue('user_mail_og_roles_changed_subject'))
     ->set('og_roles_changed.body', $form_state->getValue('user_mail_og_roles_changed_body'))
+    ->set('password_reset_confirm.subject', $form_state->getValue('user_mail_password_reset_confirm_subject'))
+    ->set('password_reset_confirm.body', $form_state->getValue('user_mail_password_reset_confirm_body'))
     ->save();
 }
 
@@ -262,7 +286,7 @@ function joinup_user_form_user_form_alter(&$form, FormStateInterface $form_state
 }
 
 /**
- * Submit callback to redirects to the canonical user page.
+ * Submit callback for the user entity form.
  *
  * @param array $form
  *   The form build array.
@@ -270,6 +294,22 @@ function joinup_user_form_user_form_alter(&$form, FormStateInterface $form_state
  *   The current form state.
  */
 function joinup_user_user_form_submit(array $form, FormStateInterface $form_state) {
+  // If the password is changed after opening a password reset link, send a
+  // mail to the user.
+  if ($form_state->get('user_pass_reset') && !$form_state->isValueEmpty('pass')) {
+    /** @var \Drupal\user\UserInterface $account */
+    $account = $form_state->getFormObject()->getEntity();
+    $params = ['account' => $account];
+
+    \Drupal::service('plugin.manager.mail')->mail(
+      'joinup_user',
+      'password_reset_confirm',
+      $account->getEmail(),
+      $account->getPreferredLangcode(),
+      $params
+    );
+  }
+
   /** @var \Drupal\user\AccountForm $form_object */
   $form_object = $form_state->getFormObject();
   $form_state->setRedirectUrl($form_object->getEntity()->toUrl());
