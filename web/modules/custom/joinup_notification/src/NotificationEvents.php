@@ -8,7 +8,7 @@ namespace Drupal\joinup_notification;
 final class NotificationEvents {
 
   /**
-   * An event to be fired for crud operations that require a notification.
+   * An event that sends notifications on community content CRUD operations.
    *
    * @Event
    *
@@ -17,7 +17,7 @@ final class NotificationEvents {
   const COMMUNITY_CONTENT_CRUD = 'joinup_notification.cc.notify';
 
   /**
-   * An event to be fired for crud operations that require a notification.
+   * An event that sends notifications on RDF entity CRUD operations.
    *
    * @Event
    *

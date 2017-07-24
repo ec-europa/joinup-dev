@@ -85,6 +85,9 @@ function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
  *   The entity object.
  */
 function joinup_notification_dispatch_notification($operation, $event_name, EntityInterface $entity) {
+  // @todo Replace this direct access of a custom entity property with the
+  //   temporary entity data API once it lands in core.
+  // @see https://www.drupal.org/node/2896474
   if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
