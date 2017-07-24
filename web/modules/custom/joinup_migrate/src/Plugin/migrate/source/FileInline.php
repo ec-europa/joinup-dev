@@ -125,6 +125,7 @@ class FileInline extends SourcePluginBase {
     'd8_newsletter' => ['body'],
     'd8_release' => ['body'],
     'd8_solution' => ['body'],
+    'd8_user' => ['professional_profile'],
     'd8_video' => ['body'],
   ];
 
