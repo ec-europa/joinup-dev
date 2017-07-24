@@ -50,7 +50,7 @@ content:
     region: content
   field_attachment:
     type: file_table
-    weight: 14
+    weight: 15
     region: content
     label: above
     settings: {  }
@@ -66,7 +66,7 @@ content:
       joinup:
         template_suggestion: with_label
   field_comments:
-    weight: 10
+    weight: 11
     label: above
     settings:
       pager_id: 0
@@ -75,7 +75,7 @@ content:
     type: comment_default
     region: content
   field_event_adtl_address_info:
-    weight: 4
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings:
@@ -91,14 +91,14 @@ content:
     type: basic_string
     region: content
   field_event_agenda:
-    weight: 2
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_event_contact_email:
-    weight: 5
+    weight: 6
     label: above
     settings: {  }
     third_party_settings:
@@ -115,7 +115,7 @@ content:
     type: basic_string
     region: content
   field_event_date:
-    weight: 13
+    weight: 14
     label: hidden
     settings:
       timezone_override: ''
@@ -137,7 +137,7 @@ content:
     type: daterange_condensed
     region: content
   field_event_logo:
-    weight: 3
+    weight: 4
     label: hidden
     settings:
       image_style: image_style_event_logo
@@ -145,8 +145,26 @@ content:
     third_party_settings: {  }
     type: image
     region: content
+  field_event_spatial_coverage:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
   field_event_web_url:
-    weight: 6
+    weight: 7
     label: above
     settings:
       trim_length: 80
@@ -167,7 +185,7 @@ content:
     type: link
     region: content
   field_location:
-    weight: 7
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -175,7 +193,7 @@ content:
     region: content
   field_scope:
     type: list_default
-    weight: 8
+    weight: 9
     region: content
     label: above
     settings: {  }
@@ -192,7 +210,7 @@ content:
         template_suggestion: fieldset
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 9
+    weight: 10
     region: content
     label: above
     settings:
@@ -216,7 +234,7 @@ content:
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 12
+    weight: 13
     region: content
     settings:
       trim_length: 80
@@ -236,12 +254,11 @@ content:
         template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_event_spatial_coverage: true
   field_keywords: true
   field_organisation: true
   field_organisation_type: true
