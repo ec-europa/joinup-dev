@@ -227,4 +227,29 @@ class JoinupRelationManager implements ContainerInjectionInterface {
     return $storage->loadMultiple($result);
   }
 
+  /**
+   * Retrieves all the collections where a user is the sole owner.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to retrieve memberships for.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf[]
+   *   An array of collections.
+   */
+  public function getCollectionsWhereSoleOwner(AccountInterface $user) {
+    $memberships = $this->getUserMembershipsByRole($user, 'rdf_entity-collection-administrator');
+
+    // Prepare a list of collections where the user is the sole owner.
+    $collections = [];
+    foreach ($memberships as $membership) {
+      $group = $membership->getGroup();
+      $owners = $this->getGroupOwners($group);
+      if (count($owners) === 1 && array_key_exists($user->id(), $owners)) {
+        $collections[$group->id()] = $group;
+      }
+    }
+
+    return $collections;
+  }
+
 }
