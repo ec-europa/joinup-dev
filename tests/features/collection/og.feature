@@ -66,7 +66,7 @@ Feature: Organic Groups integration
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 2 active members
 
-    # Check that both users can leave their respective collections.
+    # Check that both users can leave their respective collections if their membership is approved.
     When I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
     And I should not see the link "Leave this collection"

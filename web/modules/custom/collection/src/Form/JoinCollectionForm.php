@@ -76,10 +76,7 @@ class JoinCollectionForm extends FormBase {
     // If the user is already a member of the collection, show a link to the
     // confirmation form, disguised as a form submit button. The confirmation
     // form should open in a modal dialog for JavaScript-enabled browsers.
-    $membership = $this->membershipManager->getMembership($collection, $user, [
-      OgMembershipInterface::STATE_ACTIVE,
-      OgMembershipInterface::STATE_PENDING,
-    ]);
+    $membership = $this->getUserNonBlockedMembership($user, $collection);
     $button_classes = [
       'button',
       'button--blue-light',
@@ -90,6 +87,8 @@ class JoinCollectionForm extends FormBase {
       'mdl-button--accent',
     ];
 
+    // In case the user is not a member or does not have a pending membership,
+    // give the possibility to request one.
     if (empty($membership)) {
       $form['join'] = [
         '#attributes' => [
@@ -99,6 +98,7 @@ class JoinCollectionForm extends FormBase {
         '#value' => $this->t('Join this collection'),
       ];
     }
+    // If the user has an active membership, he can cancel it as well.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $form['leave'] = [
         '#type' => 'link',
@@ -117,6 +117,7 @@ class JoinCollectionForm extends FormBase {
       ];
       $form['#attached']['library'][] = 'core/drupal.ajax';
     }
+    // If the user has a pending membership, do not allow to request a new one.
     elseif ($membership->getState() === OgMembershipInterface::STATE_PENDING) {
       $form['pending'] = [
         '#type' => 'link',
@@ -149,11 +150,8 @@ class JoinCollectionForm extends FormBase {
       ]));
     }
 
-    $membership = $this->membershipManager->getMembership($collection, $user, [
-      OgMembershipInterface::STATE_PENDING,
-      OgMembershipInterface::STATE_ACTIVE,
-    ]);
-
+    $membership = $this->getUserNonBlockedMembership($user, $collection);
+    // Make sure the user is not already a member.
     if (!empty($membership)) {
       $form_state->setErrorByName('collection', $this->t('You already are a member of this collection.'));
     }
@@ -192,6 +190,25 @@ class JoinCollectionForm extends FormBase {
    */
   public function access() {
     return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'collection.leave_confirm_form';
+  }
+
+  /**
+   * Returns a membership of the user that is active or pending.
+   *
+   * @param \Drupal\Core\Session\AccountProxyInterface $user
+   *    The user entity.
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *    The group entity.
+   *
+   * @return \Drupal\og\OgMembershipInterface|null
+   *    The membership of the user or null.
+   */
+  protected function getUserNonBlockedMembership(AccountProxyInterface $user, RdfInterface $collection) {
+    $membership = $this->membershipManager->getMembership($collection, $user, [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+    ]);
+    return $membership;
   }
 
 }
