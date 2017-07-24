@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_core\JoinupRelationManager;
-use Drupal\og\MembershipManagerInterface;
 use Drupal\user\Form\UserCancelForm as CoreUserCancelForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
