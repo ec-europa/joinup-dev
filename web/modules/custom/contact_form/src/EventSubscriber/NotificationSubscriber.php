@@ -195,7 +195,8 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $arguments = [];
     $arguments['@actor:field_user_first_name'] = $message->get('field_contact_first_name')->first()->value;
     $arguments['@actor:field_user_last_name'] = $message->get('field_contact_last_name')->first()->value;
-    // @todo: Open a ticket and set a message here.
+    // @todo: Replace the url with the real legal notice page url.
+    // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3656
     $arguments['@legal_notice:url'] = Url::fromUri('internal:/contact', ['absolute' => TRUE])->toString();
     $arguments['@message:subject'] = $message->get('field_contact_subject')->first()->value;
     $arguments['@message:message'] = strip_tags($message->get('field_contact_message')->first()->value);
