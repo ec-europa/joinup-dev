@@ -57,7 +57,9 @@
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "solarium/solarium": "~3.7",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "webflo/drupal-finder": "^0.3.0",
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -77,9 +79,7 @@
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "^4.8.28",
-        "symfony/css-selector": "~2.8",
-        "webflo/drupal-finder": "^0.3",
-        "webmozart/path-util": "~2.3"
+        "symfony/css-selector": "~2.8"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -144,7 +144,8 @@
                 "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
             },
             "drupal/inline_entity_form": {
-                "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch"
+                "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
+                "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
             },
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
