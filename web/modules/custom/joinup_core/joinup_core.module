@@ -687,8 +687,9 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
 
   $transition = $workflow->findTransition($from_state, $to_state);
   $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
-  // @todo: Remove this when the 'reject_deletion' and 'reject_archival' for
-  // rdf_entities are separate transitions.
+  // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
+  //   rdf_entities are separate transitions.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
   if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
     $required = FALSE;
   }
