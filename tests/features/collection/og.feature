@@ -18,9 +18,11 @@ Feature: Organic Groups integration
       | collection                  | user               |
       | Folk Dance and Song Society | Kathie Cumberwatch |
 
-    # Initially the collection should only have 1 member, the group manager
-    # but since this is created by the api, no user is logged so no user
-    # is assigned as group owner and the collection should not have members.
+    # Note that when a group is created through the UI, the logged in user will
+    # automatically become the group manager, so the group will always have at
+    # least 1 member. In this case however we are creating the group through the
+    # API and there is no logged in user, so the collection should not have any
+    # members.
     Then the "Überwaldean Land Eels" collection should have 0 members
     And the "Folk Dance and Song Society" collection should have 1 members
 
