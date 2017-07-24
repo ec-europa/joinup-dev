@@ -48,6 +48,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/asset_distribution/published'
       draft: 'http://joinup.eu/asset_distribution/draft'
+    entity_id_plugin: joinup_po_namespace
 name: Distribution
 rid: asset_distribution
 description: ''

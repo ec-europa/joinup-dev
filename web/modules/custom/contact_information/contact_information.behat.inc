@@ -8,7 +8,6 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -18,7 +17,6 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class ContactInformationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UserTrait;
 
@@ -179,7 +177,6 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    */
   protected function createContactInformation(array $values) {
     $values['rid'] = 'contact_information';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
 
     // The 'author' key was replaced by 'uid' in the calling function.
     if (!empty($values['uid'])) {

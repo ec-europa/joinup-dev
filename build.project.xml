@@ -29,6 +29,9 @@
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
+    <echo msg="Loading Purge RDF Backend task." />
+    <taskdef name="rdfpurge" classname="\DrupalProject\Phing\RdfPurge" />
+
     <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
@@ -65,6 +68,16 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}" />
+    </target>
+
+    <target name="purge-rdf-backend">
+        <rdfpurge
+            IsqlPath="${isql.bin}"
+            DataSourceName="${sparql.dsn}"
+            Username="${sparql.user}"
+            Password="${sparql.password}"
+            SolrUrl="${solr.server.url}"
+            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -188,12 +201,12 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, acceptance-migration, enable-dev-settings, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, install, purge-rdf-content, import-rdf-fixtures, setup-dev, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, create-demo-users" />
 
     <!-- Overrides "redirect-outgoing-email" from build.dist.xml -->
     <target name="redirect-outgoing-email">

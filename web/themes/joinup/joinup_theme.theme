@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -123,6 +124,10 @@ function joinup_theme_preprocess_page(&$variables) {
  */
 function joinup_theme_preprocess_page_title(&$variables) {
   $route_match = \Drupal::routeMatch();
+  $permalink = joinup_build_permalink($route_match);
+  if ($permalink) {
+    $variables['permalink'] = $permalink;
+  }
   $route_name = $route_match->getRouteName();
 
   // Array contains create pages.
@@ -141,6 +146,46 @@ function joinup_theme_preprocess_page_title(&$variables) {
   if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
     $variables['is_create_page'] = TRUE;
   }
+}
+
+/**
+ * Builds the permalink for the given route.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return string
+ *   The permalink uri.
+ */
+function joinup_build_permalink(RouteMatchInterface $route_match) {
+  $route_name = $route_match->getRouteName();
+  $routes = [
+    'entity.node.canonical',
+    'entity.rdf_entity.canonical',
+    'entity.rdf_entity.about_page',
+  ];
+  if (!in_array($route_name, $routes)) {
+    return FALSE;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = NULL;
+  foreach (['node', 'rdf_entity'] as $type) {
+    $param = $route_match->getParameter($type);
+    $entity = isset($param) ? $param : $entity;
+  }
+
+  if (!$entity) {
+    return FALSE;
+  }
+
+  // Entity id is pointing to the publication office redirect.
+  if (strstr($entity->id(), 'http://data.europa.eu/w21/') !== FALSE) {
+    return $entity->id();
+  }
+
+  // Don't process the path to avoid pathauto aliasing.
+  return $entity->toUrl('canonical', ['path_processing' => FALSE, 'absolute' => TRUE])->toString();
 }
 
 /**
@@ -392,9 +437,29 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   $entity = $variables['element']['#object'];
   $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
 
-  // Get comments status.
+  // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
+
+  // On closed collections community content, anonymous users are not allowed to
+  // comment. Show a message instead.
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
+  $user = \Drupal::currentUser();
+  if (
+    $user->isAnonymous() &&
+    $parent &&
+    $parent->getEntityTypeId() === 'rdf_entity' &&
+    $parent->bundle() === 'collection' &&
+    $parent->get('field_ar_closed')->value
+  ) {
+    $comments_status = 'closed_collection';
+  }
+
   switch ($comments_status) {
+    case 'closed_collection':
+      $variables['comments_status'] = 'closed_collection';
+      break;
+
     case CommentItemInterface::OPEN:
       $variables['comments_status'] = 'open';
       break;
@@ -407,6 +472,9 @@ function joinup_theme_preprocess_field__comment(&$variables) {
       $variables['comments_status'] = 'hidden';
       break;
   }
+
+  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
 /**
