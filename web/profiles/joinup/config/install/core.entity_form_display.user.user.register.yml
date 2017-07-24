@@ -13,6 +13,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_professional_profile
     - field.field.user.user.field_user_subscription_events
   module:
     - user
@@ -57,6 +58,7 @@ hidden:
   field_user_organisation: true
   field_user_photo: true
   field_user_professional_domain: true
+  field_user_professional_profile: true
   field_user_subscription_events: true
   language: true
   timezone: true
