@@ -247,6 +247,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
+    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
     $parent = $this->relationManager->getParent($entity);
     if (empty($parent)) {
@@ -270,7 +271,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
           $arguments['@actor:role'] = t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
     return $arguments;
   }
