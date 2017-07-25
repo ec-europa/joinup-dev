@@ -1,5 +1,5 @@
 @api
-Feature: Organic Groups integration
+Feature: Joining and leaving collections through the web interface
   In order to participate in the activities of a collection
   As an authenticated user
   I need to be able to join and leave collections
