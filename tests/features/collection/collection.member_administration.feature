@@ -24,6 +24,7 @@ Feature: Collection membership administration
       | Medical diagnosis | Lisa Cuddy    | facilitator |
       | Medical diagnosis | Gregory House |             |
 
+  @email
   Scenario: Assign a new role to a member
     # Check that Dr House can't edit the collection.
     When I am logged in as "Gregory House"
@@ -33,6 +34,7 @@ Feature: Collection membership administration
 
     # Dr Cuddy promotes Dr House to facilitator.
     When I am logged in as "Lisa Cuddy"
+    And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     Then I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
@@ -42,6 +44,10 @@ Feature: Collection membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Add the Collection facilitator role to the selected members was applied to 1 item. |
+    And the following system email should have been sent:
+      | recipient | Gregory House                                                                                 |
+      | subject   | Your role has been change to Medical diagnosis                                                |
+      | body      | A collection moderator has changed your role in this group to Member, Collection facilitator. |
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"
