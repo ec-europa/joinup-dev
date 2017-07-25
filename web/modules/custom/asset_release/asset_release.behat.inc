@@ -163,7 +163,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function deleteAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
-    $this->getAssetReleaseByName($asset_release)->delete();
+    $asset_release = $this->getAssetReleaseByName($asset_release);
+    $asset_release->skip_notification = TRUE;
+    $asset_release->delete();
   }
 
   /**
@@ -216,6 +218,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   public function cleanAssetReleases() {
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
+      $asset_release->skip_notification = TRUE;
       $asset_release->delete();
     }
   }

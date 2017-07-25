@@ -686,8 +686,15 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
   $from_state = $entity->get($state_field)->first()->value;
 
   $transition = $workflow->findTransition($from_state, $to_state);
+  $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
+  // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
+  //   rdf_entities are separate transitions.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
+  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
+    $required = FALSE;
+  }
 
-  if (joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId()) && empty($form_state->getValue('transition_motivation'))) {
+  if ($required && empty($form_state->getValue('transition_motivation'))) {
     $form_state->setErrorByName('transition_motivation', t('This action requires you to fill in the motivation field.'));
   }
   $entity->motivation = $form_state->getValue('transition_motivation');
@@ -723,6 +730,12 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
       'node:discussion:post_moderated' => [
         'report',
         'request_changes',
+      ],
+    ],
+    'rdf_entity' => [
+      'collection_workflow' => [
+        'validate',
+        'archive',
       ],
     ],
   ];

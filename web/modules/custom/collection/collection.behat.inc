@@ -375,7 +375,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function deleteCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $this->getCollectionByName($collection)->delete();
+    $collection = $this->getCollectionByName($collection);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
   }
 
   /**
@@ -611,6 +613,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
+      $collection->skip_notification = TRUE;
       $collection->delete();
     }
   }
