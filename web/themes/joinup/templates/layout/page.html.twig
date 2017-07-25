@@ -62,53 +62,57 @@
 
   {%
   set main_classes = [
-    'main-container',
-    'mdl-grid',
-    not page.sidebar_left ? 'main-container--center',
+    not page.sidebar_left ? 'mdl-grid--center',
   ]
   %}
-  <div class="section section--content">
-    <main class="{{ main_classes|join(' ') }}" role="main">
+  <main class="section section--content" role="main">
+    <div class="main-container">
       <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+      <div class="row">
+        <div class="mdl-grid {{ main_classes|join(' ') }}">
+          {% if page.sidebar_left and not has_vertical_tabs %}
+            <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
+              {{ page.sidebar_left }}
+            </aside>
+          {% endif %}
 
-      {% if page.sidebar_left and not has_vertical_tabs %}
-        <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
-          {{ page.sidebar_left }}
-        </aside>
-      {% endif %}
+          <div class="section section--main mdl-cell {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
+            {% if page.content_top %}
+              <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
+                {{ page.content_top }}
+              </div>
+            {% endif %}
 
-      <div class="section section--main mdl-cell {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
-        {% if page.content_top %}
-          <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
-            {{ page.content_top }}
-          </div>
-        {% endif %}
+            {% if page.filters %}
+              <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
+                {{ page.filters }}
+              </div>
+            {% endif %}
 
-        {% if page.filters %}
-          <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
-            {{ page.filters }}
-          </div>
-        {% endif %}
+            <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+              {{ page.content }}
+            </div>
 
-        <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
-          {{ page.content }}
-        </div>
-
-        {% if page.content_bottom %}
-          <div class="section section--content-bottom">
-            {{ page.content_bottom }}
-          </div>
-        {% endif %}
-      </div>{# /.content-container #}
-
-    </main>{# /.main-container #}
-  </div>
+            {% if page.content_bottom %}
+              <div class="section section--content-bottom">
+                {{ page.content_bottom }}
+              </div>
+            {% endif %}
+          </div>{# /.content-container #}
+        </div>  
+      </div>
+    </div>{# /.main-container #}
+  </main>
 
   {% if page.footer %}
     <footer class="section section--footer" role="contentinfo">
-      <div class="footer-container mdl-grid">
-        <div class="mdl-cell mdl-cell--8-offset">
-          {{ page.footer }}
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell mdl-cell--8-col mdl-cell--2-offset">
+              {{ page.footer }}
+            </div>
+          </div>
         </div>
       </div>
     </footer>
