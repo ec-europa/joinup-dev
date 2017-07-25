@@ -10,9 +10,7 @@
  * @ingroup themeable
  */
 #}
-<form{{ attributes }}>
-  <div class="form__content">
-    {{ form|without('actions') }}
-  </div>
-  {{ form.actions }}
-</form>
+<div class="form__content">
+  {{ form|without('actions') }}
+</div>
+{{ form.actions }}
