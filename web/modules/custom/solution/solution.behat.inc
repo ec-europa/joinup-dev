@@ -281,7 +281,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $this->getSolutionByName($solution)->delete();
+    $solution = $this->getSolutionByName($solution);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
   }
 
   /**
@@ -424,6 +426,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     foreach ($this->solutions as $solution) {
       $name = $solution->getName();
       try {
+        $solution->skip_notification = TRUE;
         $solution->delete();
       }
       catch (Throwable $e) {
