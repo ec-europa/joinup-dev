@@ -57,7 +57,9 @@
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "solarium/solarium": "~3.7",
-        "typhonius/behattask": "1.0"
+        "typhonius/behattask": "1.0",
+        "webflo/drupal-finder": "^0.3.0",
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -77,9 +79,7 @@
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "^4.8.28",
-        "symfony/css-selector": "~2.8",
-        "webflo/drupal-finder": "^0.3",
-        "webmozart/path-util": "~2.3"
+        "symfony/css-selector": "~2.8"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -152,8 +152,7 @@
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
-                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
-                "Boost by content type @see https://www.drupal.org/node/2851436": "https://www.drupal.org/files/issues/2851436-18--type_boost_processor.patch"
+                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
             },
             "drupal/search_api_solr": {
                 "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
@@ -167,7 +166,7 @@
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
             "drupal/pathauto": {
-                "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-15.patch"
+                "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-21.patch"
             },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
