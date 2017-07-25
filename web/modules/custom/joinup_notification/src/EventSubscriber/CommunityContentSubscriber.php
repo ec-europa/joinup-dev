@@ -255,7 +255,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
+    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
+    $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
+
+    // Add arguments related to the parent collection or solution.
     $parent = $this->relationManager->getParent($entity);
     if (empty($parent)) {
       return $arguments;
@@ -263,7 +267,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
 
     $arguments['@group:title'] = $parent->label();
     $arguments['@group:bundle'] = $parent->bundle();
-    $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
+
+    // If the role is not yet set, get it from the parent collection|solution.
     if (empty($arguments['@actor:role'])) {
       $membership = $this->membershipManager->getMembership($parent, $actor);
       if (!empty($membership)) {
@@ -278,7 +283,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
           $arguments['@actor:role'] = t('Facilitator');
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
 
     return $arguments;
@@ -293,7 +297,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @return bool
    *   Whether the entity has a published version.
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected  function hasPublishedVersion(EntityInterface $entity) {
     if ($entity->isNew()) {
       return FALSE;
     }

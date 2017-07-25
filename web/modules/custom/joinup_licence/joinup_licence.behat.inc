@@ -150,6 +150,9 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   public function deleteLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
     $licence = $this->getLicenceByName($licence);
+    // Do not send email for entities created by the API.
+    // @todo: Convert the dynamic property to a proper temporary storage.
+    // @see: https://www.drupal.org/node/2896474
     $licence->skip_notification = TRUE;
     $licence->delete();
   }
