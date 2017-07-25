@@ -4,3 +4,8 @@ services:
     arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
     tags:
       - { name: event_subscriber }
+  joinup_notification.collection.rdf.subscriber:
+    class: Drupal\joinup_notification\EventSubscriber\CollectionRdfSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
+    tags:
+      - { name: event_subscriber }

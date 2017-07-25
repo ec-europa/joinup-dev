@@ -6,7 +6,7 @@ label: 'Community content on Request deletion'
 description: 'Template id 7'
 text:
   -
-    value: "<p>Joinup: Content has been updated</p>"
+    value: '<p>Joinup: Content has been updated</p>'
     format: content_editor
   -
     value: '<p>@actor:full_name has requested to delete the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title", with the following motivation: "@transition:motivation".</p><p>You can access your content at the following link: @entity:url</p>'
