@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: col_arc_del_rej
+label: 'Collection archive/delete reject - Owner'
+description: 'Template id 10'
+text:
+  -
+    value: "<p>Your request to @transition:request_action @entity:bundle @entity:title has been rejected</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has rejected your request to @transition:request_action the @entity:bundle \"@entity:title\".</p>\r\n\r\n<p>The reason for rejection is: @transition:motivation.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
