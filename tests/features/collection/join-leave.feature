@@ -10,13 +10,9 @@ Feature: Joining and leaving collections through the web interface
       | Überwaldean Land Eels       | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | no     | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators      | yes        | validated |
       | Folk Dance and Song Society | Cats are cool!                             | http://mashable.com/category/cats/     | yes    | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | members           | no         | validated |
     And users:
-      | Username           |
-      | Madame Sharn       |
-      | Goodie Whemper     |
-      | Kathie Cumberwatch |
-    And the following collection user memberships:
-      | collection                  | user               |
-      | Folk Dance and Song Society | Kathie Cumberwatch |
+      | Username       |
+      | Madame Sharn   |
+      | Goodie Whemper |
 
     # Note that when a group is created through the UI, the logged in user will
     # automatically become the group manager, so the group will always have at
@@ -24,7 +20,7 @@ Feature: Joining and leaving collections through the web interface
     # API and there is no logged in user, so the collection should not have any
     # members.
     Then the "Überwaldean Land Eels" collection should have 0 active members
-    And the "Folk Dance and Song Society" collection should have 1 active members
+    And the "Folk Dance and Song Society" collection should have 0 active members
 
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
@@ -45,17 +41,16 @@ Feature: Joining and leaving collections through the web interface
     And I should not see the link "Edit"
     But I should see the link "Leave this collection"
 
-    # Check that it is possible to join a second collection.
+    # Check that it is possible to join a closed collection.
     When I go to the homepage of the "Folk Dance and Song Society" collection
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "Your membership to the Folk Dance and Song Society collection is under approval."
-    And the "Folk Dance and Song Society" collection should have 1 active member
+    And the "Folk Dance and Song Society" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 1 pending member
     When I go to the homepage of the "Folk Dance and Song Society" collection
     Then I should not see the "Join this collection" button
     And I should not see the "Leave this collection" button
-    # Pending membership.
     But I should see the link "Membership is pending"
 
     # Check that a second authenticated user can join, the form should not be
@@ -84,7 +79,12 @@ Feature: Joining and leaving collections through the web interface
     And I should see the "Join this collection" button
     And the "Überwaldean Land Eels" collection should have 0 active members
 
-    When I am logged in as "Kathie Cumberwatch"
+    # @todo It currently is not possible to cancel a pending membership, so for
+    #   the moment we approve the membership and then leave the collection as a
+    #   normal member. When ISAICP-3658 is implemented this should be replaced
+    #   with a test for the cancellation of a pending membership.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3658
+    Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
     And I go to the homepage of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
@@ -92,4 +92,4 @@ Feature: Joining and leaving collections through the web interface
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
     And the "Folk Dance and Song Society" collection should have 0 active members
-    And the "Folk Dance and Song Society" collection should have 1 pending member
+    And the "Folk Dance and Song Society" collection should have 0 pending members

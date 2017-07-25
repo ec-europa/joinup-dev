@@ -158,6 +158,35 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Changes the membership state of a user within a collection or solution.
+   *
+   * Use this to e.g. test approval of pending memberships, or blocking users.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $state
+   *   The new membership state, one of 'active', 'pending' or 'blocked'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes to :state
+   */
+  public function updateGroupState($rdf_entity, $rdf_entity_bundle, $state) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, [], $state);
+  }
+
+  /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
    * If the user has more than the required roles, he might have permissions
