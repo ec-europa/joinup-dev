@@ -251,7 +251,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@transition:motivation'] = $motivation;
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationManager->getParent($message);
     if (!empty($parent)) {
       $arguments['@group:title'] = $parent->label();
       $arguments['@group:bundle'] = $parent->bundle();
