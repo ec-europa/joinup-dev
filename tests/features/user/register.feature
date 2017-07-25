@@ -30,6 +30,7 @@ Feature: User registration
     Given users:
       | Username      | Roles     |
       | Mr. Moderator | Moderator |
+    And all e-mails have been sent
     And I am logged in as "Mr. Moderator"
     When I am on the homepage
     Then I click "People"
@@ -43,3 +44,7 @@ Feature: User registration
       | Password                   | SuperSecret           |
       | Confirm password           | SuperSecret           |
       | Notify user of new account | 1                     |
+    And the following system email should have been sent:
+      | recipient | SuperUser                                                                                                                     |
+      | subject   | Your Joinup account was created successfully.                                                                                 |
+      | body      | To quickly familiarise yourself with the functionalities available to registered users, you can follow a short tour of Joinup |
