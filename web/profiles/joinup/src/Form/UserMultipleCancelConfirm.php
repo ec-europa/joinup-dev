@@ -85,14 +85,15 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
               return $collection->toLink($collection->label());
             }, $collections),
           ],
-          'suffix' => [
-            '#markup' => $this->t('Before removing this account, please verify and take action to modify the owner of the collections mentioned above.'),
-          ],
         ];
       }
     }
 
     if (!empty($build)) {
+      $build['suffix'] = [
+        '#markup' => $this->t('Before removing this account(s), please verify and take action to modify the owner of the collections mentioned above.'),
+      ];
+
       $build['actions'] = [
         '#type' => 'actions',
         // @see \Drupal\Core\Form\ConfirmFormBase::buildForm()
