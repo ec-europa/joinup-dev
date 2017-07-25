@@ -14,21 +14,64 @@ use Drupal\joinup_notification\NotificationEvents;
  * Implements hook_ENTITY_TYPE_insert().
  */
 function joinup_notification_node_insert(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('create', $entity);
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
 function joinup_notification_node_update(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('update', $entity);
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
  */
 function joinup_notification_node_delete(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('delete', $entity);
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ */
+function joinup_notification_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_rdf_entity_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_rdf_entity_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::RDF_ENTITY_CRUD, $entity);
 }
 
 /**
@@ -36,16 +79,21 @@ function joinup_notification_node_delete(EntityInterface $entity) {
  *
  * @param string $operation
  *   The CRUD operation string.
+ * @param string $event_name
+ *   The event name.
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity object.
  */
-function joinup_notification_dispatch_notification($operation, EntityInterface $entity) {
+function joinup_notification_dispatch_notification($operation, $event_name, EntityInterface $entity) {
+  // @todo Replace this direct access of a custom entity property with the
+  //   temporary entity data API once it lands in core.
+  // @see https://www.drupal.org/node/2896474
   if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
   $event = new NotificationEvent($operation, $entity);
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
-  $event_dispatcher->dispatch(NotificationEvents::COMMUNITY_CONTENT_CRUD, $event);
+  $event_dispatcher->dispatch($event_name, $event);
 }
 
 /**

@@ -123,6 +123,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   public function cleanOwners() {
     // Remove any owners that were created.
     foreach ($this->owners as $owner) {
+      $owner->skip_notification = TRUE;
       $owner->delete();
     }
   }

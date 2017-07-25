@@ -159,6 +159,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    */
   public function cleanContactInformationEntities() {
     foreach ($this->contactInformations as $entity) {
+      $entity->skip_notification = TRUE;
       $entity->delete();
     }
   }

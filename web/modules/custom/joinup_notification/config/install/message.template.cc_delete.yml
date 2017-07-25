@@ -6,7 +6,7 @@ label: 'Community content on Delete'
 description: 'Template id 9'
 text:
   -
-    value: "<p>Joinup: Content has been deleted</p>"
+    value: '<p>Joinup: Content has been deleted</p>'
     format: content_editor
   -
     value: '<p>@actor:role @actor:field_user_first_name @actor:field_user_family_name has deleted the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title".</p>'
