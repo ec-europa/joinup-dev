@@ -27,5 +27,6 @@ config_devel:
   - field.storage.user.field_user_organisation
   - field.storage.user.field_user_photo
   - field.storage.user.field_user_professional_domain
+  - joinup_user.mail
   - og.og_membership_type.og_membership_type
   - user.role.administrator

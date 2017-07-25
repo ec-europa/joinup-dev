@@ -6,3 +6,9 @@ joinup_user.mail:
   email_admin_update:
     type: mail
     label: 'Account updated by administrator confirmation'
+  og_roles_changed:
+    type: mail
+    label: 'Og roles changes'
+  password_reset_confirm:
+    type: mail
+    label: 'Password reset confirmation'
