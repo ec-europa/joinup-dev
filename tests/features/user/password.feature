@@ -58,3 +58,12 @@ Feature: Password management
       | recipient | Charlie Change                                                   |
       | subject   | Please confirm the request of a new password.                    |
       | body      | A new password has been requested for the account Charlie Change |
+    # Click the one time log in url in the email.
+    When I go to the one time log in page of the user "Charlie Change"
+    And I fill in "Password" with "1qazxsw@"
+    And I fill in "Confirm password" with "1qazxsw@"
+    And I press "Save"
+    Then the following email should have been sent:
+      | recipient | Charlie Change                                      |
+      | subject   | Your password has been changed                      |
+      | body      | Your Joinup password has been successfully changed. |

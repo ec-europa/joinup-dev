@@ -29,4 +29,24 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     $this->visitPath($this->getUserByName($user)->url());
   }
 
+  /**
+   * Navigates to the one time log in page of the user.
+   *
+   * @param string $user
+   *   The user name.
+   *
+   * @throws \Exception
+   *   Thrown when a user is not found.
+   *
+   * @When I go to the one time log in page of (the user ):user
+   */
+  public function visitOneTimeLogIn($user) {
+    $user = $this->getUserByName($user);
+    if (empty($user)) {
+      throw new \Exception("User {$user->getAccountName()} was not found.");
+    }
+
+    $this->visitPath(user_pass_reset_url($user) . '/login');
+  }
+
 }
