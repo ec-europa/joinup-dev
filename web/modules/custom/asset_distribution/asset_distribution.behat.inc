@@ -212,7 +212,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function deleteAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $this->getAssetDistributionByName($asset_distribution)->delete();
+    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+    $asset_distribution->skip_notification = TRUE;
+    $asset_distribution->delete();
   }
 
   /**
@@ -286,6 +288,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function cleanAssetDistributions() {
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
+      $asset_distribution->skip_notification = TRUE;
       $asset_distribution->delete();
     }
   }
