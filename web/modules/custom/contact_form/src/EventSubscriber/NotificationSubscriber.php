@@ -163,9 +163,6 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    */
   protected function getReportUserData() {
     return [
-      'owner' => [
-        'report_contact_form',
-      ],
       'roles' => [
         'moderator' => [
           'report_contact_form',
