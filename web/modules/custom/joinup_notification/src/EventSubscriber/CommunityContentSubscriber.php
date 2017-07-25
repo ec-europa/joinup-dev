@@ -249,29 +249,31 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
 
     $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
+
+    // Add arguments related to the parent collection or solution.
     $parent = $this->relationManager->getParent($entity);
-    if (empty($parent)) {
-      return $arguments;
-    }
+    if (!empty($parent)) {
+      $arguments['@group:title'] = $parent->label();
+      $arguments['@group:bundle'] = $parent->bundle();
 
-    $arguments['@group:title'] = $parent->label();
-    $arguments['@group:bundle'] = $parent->bundle();
+      // If the role is not yet set, get it from the parent collection|solution.
+      if (empty($arguments['@actor:role'])) {
+        $membership = $this->membershipManager->getMembership($parent, $actor);
+        if (!empty($membership)) {
+          $role_names = array_map(function (OgRoleInterface $og_role) {
+            return $og_role->getName();
+          }, $membership->getRoles());
 
-    if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($parent, $actor);
-      if (!empty($membership)) {
-        $role_names = array_map(function (OgRoleInterface $og_role) {
-          return $og_role->getName();
-        }, $membership->getRoles());
-
-        if (in_array('administrator', $role_names)) {
-          $arguments['@actor:role'] = t('Owner');
-        }
-        elseif (in_array('facilitator', $role_names)) {
-          $arguments['@actor:role'] = t('Facilitator');
+          if (in_array('administrator', $role_names)) {
+            $arguments['@actor:role'] = t('Owner');
+          }
+          elseif (in_array('facilitator', $role_names)) {
+            $arguments['@actor:role'] = t('Facilitator');
+          }
         }
       }
     }
+
     return $arguments;
   }
 
