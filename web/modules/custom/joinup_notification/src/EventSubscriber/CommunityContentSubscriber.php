@@ -247,31 +247,33 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
+    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
-    $parent = $this->relationManager->getParent($message);
-    if (empty($parent)) {
-      return $arguments;
-    }
 
-    $arguments['@group:title'] = $parent->label();
-    $arguments['@group:bundle'] = $parent->bundle();
+    // Add arguments related to the parent collection or solution.
+    $parent = $this->relationManager->getParent($entity);
+    if (!empty($parent)) {
+      $arguments['@group:title'] = $parent->label();
+      $arguments['@group:bundle'] = $parent->bundle();
 
-    if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($parent, $actor);
-      if (!empty($membership)) {
-        $role_names = array_map(function (OgRoleInterface $og_role) {
-          return $og_role->getName();
-        }, $membership->getRoles());
+      // If the role is not yet set, get it from the parent collection|solution.
+      if (empty($arguments['@actor:role'])) {
+        $membership = $this->membershipManager->getMembership($parent, $actor);
+        if (!empty($membership)) {
+          $role_names = array_map(function (OgRoleInterface $og_role) {
+            return $og_role->getName();
+          }, $membership->getRoles());
 
-        if (in_array('administrator', $role_names)) {
-          $arguments['@actor:role'] = t('Owner');
-        }
-        elseif (in_array('facilitator', $role_names)) {
-          $arguments['@actor:role'] = t('Facilitator');
+          if (in_array('administrator', $role_names)) {
+            $arguments['@actor:role'] = t('Owner');
+          }
+          elseif (in_array('facilitator', $role_names)) {
+            $arguments['@actor:role'] = t('Facilitator');
+          }
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
+
     return $arguments;
   }
 
