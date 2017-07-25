@@ -51,12 +51,8 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $message = $event->getEntity();
     $message->save();
 
-    foreach ($user_ids as $user_id) {
+    foreach ($this->entityTypeManager->getStorage('user')->loadMultiple(array_filter($user_ids)) as $user_id => $user) {
       /** @var \Drupal\user\Entity\User $user */
-      $user = $this->entityTypeManager->getStorage('user')->load($user_id);
-      if ($user->isAnonymous()) {
-        continue;
-      }
       $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
       $this->messageNotifier->send($message, $options);
     }
