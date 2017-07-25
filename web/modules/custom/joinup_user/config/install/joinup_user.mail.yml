@@ -2,8 +2,8 @@ email_admin_update:
   body: "[user:display-name],\r\n\r\nA site administrator at [site:name] has updated your account for you.\r\n\r\n[user:changes]\r\n\r\n--  [site:name] team"
   subject: 'An administrator updated your account for you at [site:name]'
 og_roles_changed:
-  subject: ''
-  body: ''
+  subject: 'Your role has been change to [group:label]'
+  body: "Dear [user:field_user_first_name],\r\n\r\nA [group:bundle] moderator has changed your role in this group to [group:roles].\r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"
 password_reset_confirm:
   subject: 'Your password has been changed'
   body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup password has been successfully changed.\r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"

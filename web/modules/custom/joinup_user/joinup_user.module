@@ -127,6 +127,7 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
       $roles[$role->id()] = $role->label();
     }
 
+    $replacements['[group:label]'] = $membership->getGroup()->label();
     $replacements['[group:bundle]'] = $membership->getGroup()->bundle();
     $replacements['[group:roles]'] = implode(', ', $roles);
   }
