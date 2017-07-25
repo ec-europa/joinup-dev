@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "456cdc55f5a712aa09c95b0aac722a5a",
+    "content-hash": "e5342e98eafe850c4adbe9dbb4d504fc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1525,7 +1525,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta2",
                 "shasum": "273fc694723be24107161ae778a01000eecefe3d"
             },
             "require": {
@@ -2066,7 +2066,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ctools-8.x-3.0.zip",
-                "reference": null,
+                "reference": "8.x-3.0",
                 "shasum": "302e869ecd1e59fe55663673999fee2ccac5daa8"
             },
             "require": {
@@ -2207,7 +2207,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "rötzi",
+                    "name": "r?tzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -2285,7 +2285,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/ds-8.x-3.1.zip",
-                "reference": null,
+                "reference": "8.x-3.1",
                 "shasum": "1f7fd1bafed43844976d69b8c78513c84362facf"
             },
             "require": {
@@ -2354,7 +2354,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/editor_file-8.x-1.2.zip",
-                "reference": null,
+                "reference": "8.x-1.2",
                 "shasum": "e1fdfec93f98c219a6adea133033f1d21b8c53de"
             },
             "require": {
@@ -2397,7 +2397,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha10.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha10",
                 "shasum": "3475249f89af0db594a3dd8341ccc6afc6dc532d"
             },
             "require": {
@@ -2465,8 +2465,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6+5-dev",
-                    "datestamp": "1484436184"
+                    "version": "8.x-1.0-rc6",
+                    "datestamp": "1480365484"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2512,7 +2512,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "47b63c5ffa62a71b976b9b79146b731a04286daf"
             },
             "require": {
@@ -2579,7 +2579,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/honeypot-8.x-1.27.zip",
-                "reference": null,
+                "reference": "8.x-1.27",
                 "shasum": "b40f86ef45a7f4325343e8aa455ecbdceab51ffe"
             },
             "require": {
@@ -2726,7 +2726,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29 21:27:56"
+            "time": "2017-05-29T21:27:56+00:00"
         },
         {
             "name": "drupal/mailsystem",
@@ -2739,7 +2739,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/mailsystem-8.x-4.1.zip",
-                "reference": null,
+                "reference": "8.x-4.1",
                 "shasum": "318b87f1fdf96e6db30b04a98108af02a0fc3dcc"
             },
             "require": {
@@ -2826,7 +2826,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "085a628bd859b4fb861bb46a8c8a00d668a248ad"
             },
             "require": {
@@ -2902,6 +2902,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -2923,7 +2931,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha4",
                 "shasum": "eca1d7edac198ddea5fe831948b9cdfe999db435"
             },
             "require": {
@@ -2969,7 +2977,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta4.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta4",
                 "shasum": "5d60e2e381916831c7c01f6b870a7c6df8f3697b"
             },
             "require": {
@@ -3049,7 +3057,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha2",
                 "shasum": "cdb0cae343a91e49e21c83164d9cd1b7e9896b67"
             },
             "require": {
@@ -3155,7 +3163,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27 15:47:09"
+            "time": "2017-02-27T15:47:09+00:00"
         },
         {
             "name": "drupal/pathauto",
@@ -3176,11 +3184,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1+2-dev",
-                    "datestamp": "1493467743"
+                    "version": "8.x-1.0+1-dev",
+                    "datestamp": "1494086885"
                 },
                 "patches_applied": {
-                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-15.patch"
+                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-21.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3209,8 +3217,7 @@
             "homepage": "https://www.drupal.org/project/pathauto",
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
-            },
-            "time": "2017-05-06 16:06:59"
+            }
         },
         {
             "name": "drupal/persistent_login",
@@ -3363,7 +3370,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.1.zip",
-                "reference": null,
+                "reference": "8.x-1.1",
                 "shasum": "a2b5b77a92da5c7198b93bb264eac7ef4795089a"
             },
             "require": {
@@ -3415,7 +3422,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta2",
                 "shasum": "5b2e3bebd3f96e0dde3c29759747485cd53f0313"
             },
             "require": {
@@ -3534,7 +3541,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.0-alpha5.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha5",
                 "shasum": "927aa4c8d8b40b0cd2442bee86f2f386d25e53ca"
             },
             "require": {
@@ -3585,7 +3592,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.3.zip",
-                "reference": null,
+                "reference": "8.x-1.3",
                 "shasum": "e064dc8769a95ce3ebb3f30cdfe0fba8ea661dfb"
             },
             "require": {
@@ -3596,79 +3603,16 @@
             },
             "type": "drupal-module",
             "extra": {
-                "installer-paths": {
-                    "web/core": [
-                        "type:drupal-core"
-                    ],
-                    "web/libraries/{$name}": [
-                        "type:drupal-library"
-                    ],
-                    "web/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "web/profiles/contrib/{$name}": [
-                        "type:drupal-profile"
-                    ],
-                    "web/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ],
-                    "drush/contrib/{$name}": [
-                        "type:drupal-drush"
-                    ],
-                    "web/themes/joinup/vendor/{$name}": [
-                        "type:drupal-theme-library"
-                    ]
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
                 },
-                "patches": {
-                    "drupal/core": {
-                        "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
-                        "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
-                        "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-19.patch",
-                        "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
-                        "Soft reload does not clean up user inputs like in D7 (Firefox only) @see https://www.drupal.org/node/2596597": "https://www.drupal.org/files/issues/2596597-8.patch",
-                        "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/support_fast_rollbacks-2821988-30.patch",
-                        "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-87.patch",
-                        "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
-                        "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
-                        "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-28.patch",
-                        "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-2.patch"
-                    },
-                    "drupal/better_formats": {
-                        "Provide config schema for field 3rd party settings @see https://www.drupal.org/node/2895045": "https://www.drupal.org/files/issues/2895045-2.patch"
-                    },
-                    "drupal/file_url": {
-                        "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
-                    },
-                    "drupal/inline_entity_form": {
-                        "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
-                        "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
-                    },
-                    "drupal/linkit": {
-                        "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
-                    },
-                    "drupal/search_api": {
-                        "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
-                        "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
-                        "Boost by content type @see https://www.drupal.org/node/2851436": "https://www.drupal.org/files/issues/2851436-18--type_boost_processor.patch"
-                    },
-                    "drupal/search_api_solr": {
-                        "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
-                    },
-                    "drupal/state_machine": {
-                        "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                        "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
-                        "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch"
-                    },
-                    "drupal/password_policy": {
-                        "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
-                    },
-                    "drupal/pathauto": {
-                        "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-15.patch"
-                    },
-                    "drupal/redirect": {
-                        "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
-                        "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
-                    }
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1500483242"
+                },
+                "patches_applied": {
+                    "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
+                    "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3851,7 +3795,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta3",
                 "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
             },
             "require": {
@@ -3947,7 +3891,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/swiftmailer-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "d49a50638a629c24d681181b82255fd50c1b2642"
             },
             "require": {
@@ -4001,7 +3945,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0.zip",
-                "reference": null,
+                "reference": "8.x-1.0",
                 "shasum": "d24c7f1ffddbd0fc56bc92bacae1c4ff769a4442"
             },
             "require": {
@@ -4064,7 +4008,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": null,
+                "reference": "8.x-1.5",
                 "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
             },
             "require": {
@@ -4238,7 +4182,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupré",
+                    "name": "Antoine Beaupr?",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4246,7 +4190,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Araña Cruz",
+                    "name": "Jonathan Ara?a Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4939,7 +4883,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch?nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5025,7 +4969,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5552,6 +5496,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -5562,10 +5507,6 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
             "time": "2017-07-17 09:33:42"
         },
         {
@@ -6669,7 +6610,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran?ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9130,7 +9071,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.0.zip",
-                "reference": null,
+                "reference": "8.x-1.0",
                 "shasum": "148d408827c570e725b08d7e4c1c46d321dc1efa"
             },
             "require": {
@@ -9193,7 +9134,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "3ba3a31ea02323203ceae7ef7f80c091ced2e2f3"
             },
             "require": {
@@ -9215,7 +9156,7 @@
             ],
             "authors": [
                 {
-                    "name": "Gábor Hojtsy",
+                    "name": "G?bor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -9361,7 +9302,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.0-rc2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-rc2",
                 "shasum": "011322bf9c263dab29f94640829f4b654e9c5632"
             },
             "require": {
@@ -9695,7 +9636,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9752,7 +9693,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
