@@ -1069,6 +1069,26 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the plus button menu is shown on the page.
+   *
+   * @Then I should see the plus button menu
+   */
+  public function assertPlusButtonMenuPresent() {
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
+    \PHPUnit_Framework_Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Checks that the plus button menu is not shown on the page.
+   *
+   * @Then I should not see the plus button menu
+   */
+  public function assertPlusButtonMenuNotPresent() {
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
+    \PHPUnit_Framework_Assert::assertEmpty($element);
+  }
+
+  /**
    * Click the given link in the plus button menu.
    *
    * On JavaScript enabled browsers this will first click the plus button to

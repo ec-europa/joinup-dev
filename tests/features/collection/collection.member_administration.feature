@@ -30,7 +30,7 @@ Feature: Collection membership administration
     # Check that a member with pending state does not have access to add new content.
     When I am logged in as "Kathie Cumbershot"
     And I go to the "Medical diagnosis" collection
-    Then I should not see the "Plus button menu" region
+    Then I should not see the plus button menu
 
     # Approve a membership.
     When I am logged in as "Lisa Cuddy"
@@ -47,7 +47,8 @@ Feature: Collection membership administration
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
     And I go to the "Medical diagnosis" collection
-    # Check that I see one of the random links that requires and active membership.
+    # Check that I see one of the random links that requires an active membership.
+    Then I should see the plus button menu
     Then I should see the link "Add news"
 
   Scenario: Assign a new role to a member
