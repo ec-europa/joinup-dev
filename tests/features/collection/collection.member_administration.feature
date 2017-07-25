@@ -31,6 +31,7 @@ Feature: Collection membership administration
     When I am logged in as "Kathie Cumbershot"
     And I go to the "Medical diagnosis" collection
     Then I should not see the plus button menu
+    And I should not see the link "Add news"
 
     # Approve a membership.
     When I am logged in as "Lisa Cuddy"
