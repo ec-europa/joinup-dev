@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Url;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -150,15 +151,15 @@ abstract class NotificationSubscriberBase {
    *
    * @param array $user_data
    *   A structured array of user ownership and roles and their corresponding
-   *    message ids.
-   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *   The event object.
+   *   message ids.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   Optionally alter the entity to be checked.
    *
    * @return array
-   *   An array of user ids that every key is an array of message ids.
+   *   An array of message ids that every key is an array of user ids.
    */
-  protected function getUsersMessages(array $user_data, NotificationEvent $event) {
-    $entity = $event->getEntity();
+  protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
+    $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [
       'roles' => [],
@@ -183,7 +184,7 @@ abstract class NotificationSubscriberBase {
     }
 
     foreach ($user_data['og_roles'] as $role_id => $messages) {
-      $recipients = $this->getRecipientIdsByOgRole($this->entity, $role_id);
+      $recipients = $this->getRecipientIdsByOgRole($entity, $role_id);
       $recipients = array_diff(array_values($recipients), $uids_to_skip);
       foreach ($recipients as $uid) {
         $message_data[$uid] = $messages;
@@ -296,6 +297,7 @@ abstract class NotificationSubscriberBase {
       $arguments['@actor:role'] = $role->label();
       $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
     }
+    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
 
     return $arguments;
   }
@@ -305,9 +307,11 @@ abstract class NotificationSubscriberBase {
    *
    * @param array $user_data
    *   An array of user ids and their corresponding messages.
+   * @param array $arguments
+   *   Optionally pass additional arguments.
    */
-  protected function sendUserDataMessages(array $user_data) {
-    $arguments = $this->generateArguments($this->entity);
+  protected function sendUserDataMessages(array $user_data, array $arguments = []) {
+    $arguments += $this->generateArguments($this->entity);
 
     foreach ($user_data as $template_id => $user_ids) {
       $values = ['template' => $template_id, 'arguments' => $arguments];
