@@ -17,13 +17,6 @@
     margin: 40px 60px
 
 .page__content
-  min-height: min-content
-  padding: 20px
-  background-color: #fff
-  +breakpoint(tablet)
-    padding: 40px 30px
-  +breakpoint(desktop)
-    padding: 40px 60px
   @media print
     padding: 0
     padding-bottom: 20px
@@ -52,3 +45,7 @@
 .page__title-wrapper
   @media print
     margin: 0
+
+.content-container--default
+  .page__content
+    @extend .white-box

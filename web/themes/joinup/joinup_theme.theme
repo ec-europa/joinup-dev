@@ -26,6 +26,9 @@ function joinup_theme_theme() {
     'share_content_form' => [
       'render element' => 'form',
     ],
+    'custom_form' => [
+      'render element' => 'form',
+    ],
   ];
 }
 
@@ -38,6 +41,9 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Set page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+  // Check if page is form page and page content has no white background.
+  $is_form_container = FALSE;
 
   // We need to show the header in a blue variant on certain routes:
   // node and rdf entity forms, user forms.
@@ -53,6 +59,17 @@ function joinup_theme_preprocess_page(&$variables) {
     'user.pass',
     'user.register',
   ];
+
+  // Forms without blue header.
+  $other_forms = [
+    'joinup_subscription.subscription_settings',
+    'entity.user.edit_form',
+    'simplenews.newsletter_subscriptions_user',
+  ];
+
+  if (!empty($route_name) && in_array($route_name, $other_forms)) {
+    $is_form_container = TRUE;
+  }
 
   // We need to show the header in a navy blue variant on certain routes:
   // search page.
@@ -86,6 +103,7 @@ function joinup_theme_preprocess_page(&$variables) {
 
     if (in_array($rdf_type, ['collection', 'solution'])) {
       $variables['has_vertical_tabs'] = TRUE;
+      $is_form_container = TRUE;
     }
   }
 
@@ -96,11 +114,13 @@ function joinup_theme_preprocess_page(&$variables) {
   if ($route_length > $pattern_length) {
     if (substr_compare($route_name, $form_pattern, $route_length - $pattern_length, $pattern_length) === 0) {
       $variables['is_blue_header'] = TRUE;
+      $is_form_container = TRUE;
     }
   }
 
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
     $variables['is_blue_header'] = TRUE;
+    $is_form_container = TRUE;
   }
 
   if (isset($variables['is_blue_header'])) {
@@ -126,6 +146,12 @@ function joinup_theme_preprocess_page(&$variables) {
     }
   }
 
+  if ($is_form_container) {
+    $variables['container_class'] = 'content-container--form';
+  }
+  else {
+    $variables['container_class'] = 'content-container--default';
+  }
   $variables['title'] = $title;
 }
 
@@ -400,9 +426,14 @@ function joinup_theme_preprocess_container(&$variables) {
     }
   }
 
+  // Entities with vertical tabs on edit form.
+  $tabs_entities = [
+    'collection',
+    'solution',
+  ];
   // Check if action buttons are on collection propose form.
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $rdf_type === 'collection') {
-    $variables['is_collection'] = TRUE;
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && in_array($rdf_type, $tabs_entities, TRUE)) {
+    $variables['has_vertical_tabs'] = TRUE;
   }
 }
 
@@ -1029,6 +1060,36 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
+
+  // Set templates for forms where actions button are separated.
+  $custom_forms = [
+    'node_form',
+    'rdf_entity_form',
+    'message_contact_form_submission_form',
+    'adms_validator_form',
+    'user_login_form',
+    'user_form',
+    'user_pass',
+    'simplenews_subscriber_account_form',
+  ];
+
+  // Exclude forms with tabs.
+  $tab_forms = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_collection_propose_form',
+    'rdf_entity_solution_form',
+    'rdf_entity_solution_edit_form',
+  ];
+  if (is_array($form['#theme'])) {
+    if (array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
+      $form['#theme'][] = 'custom_form';
+    }
+  }
+  else {
+    if (in_array($form['#theme'], $custom_forms) && !in_array($form['#theme'], $tab_forms)) {
+      $form['#theme'][] = 'custom_form';
+    }
+  }
 }
 
 /**

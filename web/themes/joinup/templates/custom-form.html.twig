@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Template to render the custom form.
+ * The form content and actions are separated.
+ *
+ * Available variables:
+ * - form: the form build array.
+ *
+ * @ingroup themeable
+ */
+#}
+<form{{ attributes }}>
+  <div class="form__content">
+    {{ form|without('actions') }}
+  </div>
+  {{ form.actions }}
+</form>
