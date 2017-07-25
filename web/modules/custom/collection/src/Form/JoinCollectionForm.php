@@ -192,7 +192,7 @@ class JoinCollectionForm extends FormBase {
       ->save();
 
     $parameters = ['%collection' => $collection->getName()];
-    $message = ($state === OgMembership::STATE_ACTIVE) ?
+    $message = $state === OgMembership::STATE_ACTIVE ?
       $this->t('You are now a member of %collection.', $parameters) :
       $this->t('Your membership to the %collection collection is under approval.', $parameters);
     drupal_set_message($message);
