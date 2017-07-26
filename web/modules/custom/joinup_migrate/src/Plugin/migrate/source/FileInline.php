@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
 use Drupal\joinup_migrate\FileUtility;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
 
@@ -15,7 +16,9 @@ use Drupal\migrate\Row;
  *   id = "file_inline"
  * )
  */
-class FileInline extends SourcePluginBase {
+class FileInline extends SourcePluginBase implements RedirectImportInterface {
+
+  use DefaultFileRedirectTrait;
 
   /**
    * {@inheritdoc}
@@ -106,6 +109,13 @@ class FileInline extends SourcePluginBase {
     $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
     $row->setSourceProperty('path', $source_path);
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRedirectSources(Row $row) {
+    return ['sites/default/files/' . $row->getSourceProperty('fid')];
   }
 
   /**
