@@ -6,26 +6,24 @@ Feature:
 
   Background:
     Given users:
-      | Username      | Roles     | E-mail                   |
-      | Robin Kelley  | Moderator | RobinKelley@example.com  |
-      | Hazel Olson   |           | HazelOlson@example.com   |
-      | Amelia Barker |           | AmeliaBarker@example.com |
-      | Alicia Potter |           | AliciaPotter@example.com |
+      | Username      | Roles     | E-mail                   | First name | Family name |
+      | Robin Kelley  | Moderator | RobinKelley@example.com  | Robin      | Kelley      |
+      | Hazel Olson   |           | HazelOlson@example.com   | Hazel      | Olson       |
+      | Amelia Barker |           | AmeliaBarker@example.com | Amelia     | Barker      |
+      | Alicia Potter |           | AliciaPotter@example.com | Alicia     | Potter      |
     And collections:
-      | title                           | state     |
-      | Lugia was just released         | validated |
-      | Articuno is hunted              | validated |
-      | Moltress is nowhere to be found | validated |
+      | title                   | state     |
+      | Lugia was just released | validated |
+      | Articuno is hunted      | validated |
     # Assign facilitator role in order to allow creation of a solution.
     # In UAT this can be done by creating the collection through the UI
     # with the related user.
     And the following collection user memberships:
-      | collection                      | user          | roles                      |
-      | Lugia was just released         | Hazel Olson   | administrator, facilitator |
-      | Articuno is hunted              | Amelia Barker | administrator, facilitator |
-      | Moltress is nowhere to be found | Alicia Potter | administrator, facilitator |
+      | collection              | user          | roles                      |
+      | Lugia was just released | Hazel Olson   | administrator, facilitator |
+      | Articuno is hunted      | Amelia Barker | administrator, facilitator |
 
-  Scenario: Cancel a single user account as a moderator.
+  Scenario: Canceling users that are the sole owners of collections cannot be done.
     When I am logged in as a moderator
     And I click "People"
     And I check "Hazel Olson"
@@ -36,3 +34,20 @@ Feature:
     And I should see the text "User Amelia Barker cannot be deleted as it is currently the sole owner of these collections:"
     And I should see the link "Lugia was just released"
     And I should see the link "Articuno is hunted"
+
+  @javascript
+  Scenario: A moderator deletes a user.
+    When all e-mails have been sent
+    And I am logged in as a moderator
+    And I click "People"
+    And I click "Alicia Potter"
+    And I click "Edit" in the "Entity actions" region
+    And I press "Cancel account"
+    And I select the radio button "Delete the account and its content." with the id "edit-user-cancel-method-user-cancel-delete"
+    And I check "Notify user when account is canceled"
+    And I press "Cancel account"
+    And I wait for the batch job to finish
+    And the following system email should have been sent:
+      | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                                |
+      | subject        | Your account has been deleted.                                                                                                                                                                                                                                          |
+      | body           | Your account Alicia Potter has been deleted. This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
