@@ -140,6 +140,29 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
 }
 
 /**
+ * Implements hook_mail_alter().
+ */
+function joinup_user_mail_alter(&$message) {
+  if ($message['key'] !== 'status_canceled') {
+    return;
+  }
+
+  $current_user = \Drupal::currentUser()->getAccount();
+  $account = user_load_by_mail($message['to']);
+  // Email should only fire when a user alters another user's account.
+  if ($account->isAnonymous() || $current_user->isAnonymous() || $current_user->id() == $account->id()) {
+    $moderation_text = '</p><p>';
+  }
+  else {
+    $moderation_text = '</p><p>This action has been done in the framework of moderation activities regularly conducted on the Joinup platform.</p><p>';
+  }
+
+  $body = $message['body'][0];
+  $body = str_replace('@joinup_user:moderation_text', $moderation_text, $body);
+  $message['body'][0] = $body;
+}
+
+/**
  * Turn account changes into human readable text.
  */
 function joinup_user_account_changes(AccountInterface $old_account, AccountInterface $new_account) {
