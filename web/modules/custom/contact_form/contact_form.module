@@ -72,3 +72,26 @@ function contact_form_form_message_contact_form_submission_submit(&$form, FormSt
   $event_dispatcher->dispatch(ContactFormEvents::CONTACT_FORM_EVENT, $event);
   drupal_set_message(t('Your message has been submitted. Thanks for your feedback.'));
 }
+
+/**
+ * Implements hook_token_info().
+ */
+function contact_form_token_info() {
+  $info['tokens']['site']['contact-form'] = array(
+    'name' => t('The contact form of the site'),
+    'description' => t('The absolute url of the contact form of the site.'),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function contact_form_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type === 'site' && !empty($tokens['contact-form'])) {
+    $replacements[$tokens['contact-form']] = \Drupal::urlGenerator()->generateFromRoute('contact_form.contact_page', [], ['absolute' => TRUE]);
+  }
+  return $replacements;
+}
