@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_professional_profile
+  module:
+    - text
+    - user
+id: user.user.field_user_professional_profile
+field_name: field_user_professional_profile
+entity_type: user
+bundle: user
+label: 'Professional profile'
+description: 'Brief description of the main points to highlight about the professional profile.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

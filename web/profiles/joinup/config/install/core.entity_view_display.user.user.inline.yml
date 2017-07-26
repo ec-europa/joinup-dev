@@ -15,6 +15,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_professional_profile
     - field.field.user.user.field_user_subscription_events
     - image.style.profile_icon
   module:
@@ -89,6 +90,7 @@ hidden:
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
+  field_user_professional_profile: true
   field_user_subscription_events: true
   langcode: true
   member_for: true
