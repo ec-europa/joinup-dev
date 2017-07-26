@@ -48,6 +48,7 @@ Feature: Password management
   @email
   Scenario: A user can request a one-time-login link.
     When I am an anonymous user
+    And all e-mails have been sent
     And I am on the homepage
     And I click "Log in"
     And I click "Reset your password"
