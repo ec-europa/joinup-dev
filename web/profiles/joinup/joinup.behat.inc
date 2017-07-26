@@ -1652,6 +1652,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Wait until the id="updateprogress" element is gone, or until timeout.
+   *
+   * @Given /^I wait for the batch job to finish$/
+   */
+  public function iWaitForTheBatchJobToFinish() {
+    $this->getSession()->wait(180000, 'jQuery("#updateprogress").length === 0');
+  }
+
+  /**
    * Simulates picking of an autosuggestion value from a field.
    *
    * @param string $value

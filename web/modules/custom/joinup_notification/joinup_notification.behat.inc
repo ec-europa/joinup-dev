@@ -152,10 +152,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Asserts that a system email has been sent.
    *
    * Table format:
-   * | recipient | username0123     |
-   * | subject   | The mail subject |
-   * | body      | The message body |
-   * | html      | yes/no           |
+   * | recipient      | username0123     |
+   * | recipient_mail | user@example.com |
+   * | subject        | The mail subject |
+   * | body           | The message body |
+   * | html           | yes/no           |
    *
    * The 'body' is a partial text based match.
    * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
@@ -171,6 +172,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   public function assertSystemEmailSent(TableNode $table) {
     /** @var string $body */
     /** @var string $recipient */
+    /** @var string $recipient_mail */
     /** @var string $subject */
     extract($table->getRowsHash());
 
@@ -178,12 +180,15 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     // and 'no' to FALSE.
     $html = (isset($html) ? $html : 'yes') === 'yes';
 
-    $user = user_load_by_name($recipient);
-    if (empty($user)) {
-      throw new \Exception("User $recipient was not found.");
-    }
-    if (empty($user->getEmail())) {
-      throw new \Exception("User $recipient does not have an e-mail address.");
+    if (empty($recipient_mail)) {
+      $user = user_load_by_name($recipient);
+      if (empty($user)) {
+        throw new \Exception("User $recipient was not found.");
+      }
+      if (empty($user->getEmail())) {
+        throw new \Exception("User $recipient does not have an e-mail address.");
+      }
+      $recipient_mail = $user->getEmail();
     }
 
     \Drupal::state()->resetCache();
@@ -194,7 +199,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
 
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $user->getEmail()) {
+      if ($mail['to'] !== $recipient_mail) {
         continue;
       }
 
@@ -230,7 +235,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient' with subject '$subject'.");
+    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient_mail' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
