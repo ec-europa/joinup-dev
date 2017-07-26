@@ -58,10 +58,11 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    * Non-Drupal top-level directories that are providing files/images.
    */
   const NON_DRUPAL_SERVICES = [
-    'svn',
     'mailman',
+    'nexus',
     'site',
-    // 'nexus',.
+    'svn',
+    'webdav',
   ];
 
   /**
