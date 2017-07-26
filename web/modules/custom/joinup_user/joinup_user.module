@@ -486,3 +486,26 @@ function joinup_user_invalidate_user_cache_tags(EntityInterface $entity) {
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disallow access to the cancellation method.
+ */
+function joinup_user_form_user_multiple_cancel_confirm_alter(&$form, FormStateInterface $form_state, $form_id) {
+  joinup_user_form_user_cancel_form_alter($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disallow access to the cancellation method.
+ */
+function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['user_cancel_method']['#default_value'] = 'user_cancel_delete';
+  $form['user_cancel_method']['#access'] = FALSE;
+  $form['user_cancel_confirm']['#access'] = FALSE;
+  $form['user_cancel_notify']['#default_value'] = TRUE;
+  $form['user_cancel_notify']['#access'] = FALSE;
+  $form['description']['#markup'] = t('This action cannot be undone.');
+}
