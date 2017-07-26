@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -39,7 +40,14 @@ trait OgTrait {
     }
 
     // If a membership already exists, load it. Otherwise create a new one.
-    $membership = \Drupal::service('og.membership_manager')->getMembership($group, $user);
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $states = [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_BLOCKED,
+    ];
+    $membership = $membership_manager->getMembership($group, $user, $states);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setUser($user)
