@@ -51,3 +51,23 @@ Feature:
       | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                                |
       | subject        | Your account has been deleted.                                                                                                                                                                                                                                          |
       | body           | Your account Alicia Potter has been deleted. This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
+
+  @javascript
+  Scenario: Delete own account.
+    When I am logged in as "Alicia Potter"
+    And all e-mails have been sent
+    And I visit "/user"
+    And I click "Edit" in the "Entity actions" region
+    And I press "Cancel account"
+    And I press "Cancel account"
+    And the following system email should have been sent:
+      | recipient | Alicia Potter                                                      |
+      | subject   | Account cancellation request for Alicia Potter at Joinup           |
+      | body      | by clicking this link or copying and pasting it into your browser: |
+    # Click the confirmation link in the email.
+    And I click the delete confirmation link for the user "Alicia Potter" from the last email
+    And I wait for the batch job to finish
+    Then the following system email should have been sent:
+      | recipient_mail | AliciaPotter@example.com                                                                                                                                 |
+      | subject        | Your account has been deleted.                                                                                                                           |
+      | body           | Your account Alicia Potter has been deleted.  If you believe that this action has been performed by mistake, please contact the Joinup Community team at |

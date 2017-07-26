@@ -49,4 +49,52 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     $this->visitPath(user_pass_reset_url($user) . '/login');
   }
 
+  /**
+   * Navigates to the one time log in page of the user.
+   *
+   * @param string $user
+   *   The user name.
+   *
+   * @throws \Exception
+   *   Thrown when a user is not found.
+   *
+   * @When I click the delete confirmation link for (the user ):user from the last email
+   */
+  public function clickDeleteConfirmationLink($user) {
+    $user = $this->getUserByName($user);
+    if (empty($user)) {
+      throw new \Exception("User {$user->getAccountName()} was not found.");
+    }
+
+    $user_email = $user->getEmail();
+    \Drupal::state()->resetCache();
+    $mails = \Drupal::state()->get('system.test_mail_collector');
+    if (empty($mails)) {
+      throw new Exception('No mail was sent.');
+    }
+
+    $link = NULL;
+    $matches = [];
+    foreach ($mails as $mail) {
+      if ($mail['to'] !== $user_email) {
+        continue;
+      }
+
+      $pattern = '#https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?[\r\n\s]#';
+      $body = (string) $mail['body'];
+      preg_match_all($pattern, $body, $matches);
+      $matches = array_filter($matches);
+      if (empty($matches[0])) {
+        continue;
+      }
+      break;
+    }
+
+    if (empty($matches)) {
+      throw new Exception('Deletion confirmation url was not found');
+    }
+    $url = $matches[0][0];
+    $this->visitPath($url);
+  }
+
 }

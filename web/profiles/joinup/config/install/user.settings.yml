@@ -10,7 +10,7 @@ notify:
   register_no_approval_required: true
   register_pending_approval: true
 register: visitors
-cancel_method: user_cancel_reassign
+cancel_method: user_cancel_delete
 password_reset_timeout: 86400
 password_strength: false
 langcode: en
