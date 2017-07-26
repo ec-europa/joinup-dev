@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_migrate\FileUtility;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;

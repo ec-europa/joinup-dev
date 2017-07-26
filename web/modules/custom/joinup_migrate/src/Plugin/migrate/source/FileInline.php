@@ -46,13 +46,14 @@ class FileInline extends SourcePluginBase implements RedirectImportInterface {
   public function initializeIterator() {
     $rows = [];
     $timestamp = \Drupal::time()->getRequestTime();
+    $legacy_site_files = FileUtility::getLegacySiteFiles();
 
     foreach ($this->getInlineFiles() as $file) {
       list($type, $basename) = explode('/', $file, 2);
-      $path = "ckeditor_files/$file";
+      $path = "sites/default/files/ckeditor_files/$file";
       $rows[$path] = [
         'fid' => $path,
-        'path' => $path,
+        'path' => "$legacy_site_files/$path",
         'timestamp' => $timestamp,
         'uid' => 1,
         'destination_uri' => "public://inline-$type/$basename",
@@ -78,10 +79,10 @@ class FileInline extends SourcePluginBase implements RedirectImportInterface {
       $items = $db->select($table)->fields($table, $fields)->execute()->fetchAll();
       foreach ($items as $item) {
         foreach ($fields as $field) {
-          if (!$item->$field) {
+          if (!$item->{$field}) {
             continue;
           }
-          // Ensure we have well-formed markup.
+
           $document = Html::load($item->{$field});
           foreach ($search as $tag => $attribute) {
             /** @var \DOMElement $element */
@@ -104,18 +105,8 @@ class FileInline extends SourcePluginBase implements RedirectImportInterface {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
-    // Assure a full-qualified path for managed files.
-    $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
-    $row->setSourceProperty('path', $source_path);
-    return parent::prepareRow($row);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getRedirectSources(Row $row) {
-    return ['sites/default/files/' . $row->getSourceProperty('fid')];
+    return [$row->getSourceProperty('fid')];
   }
 
   /**

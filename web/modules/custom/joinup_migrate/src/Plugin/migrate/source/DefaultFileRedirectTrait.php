@@ -3,7 +3,6 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\migrate\Row;
 
 /**
  * Default implementation of RedirectImportInterface methods for files.
