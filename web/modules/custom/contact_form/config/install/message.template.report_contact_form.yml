@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: report_contact_form
+label: 'Report contact form'
+description: 'The message template for reporting content'
+text:
+  -
+    value: "<p>Joinup: @message:subject</p>"
+    format: content_editor
+  -
+    value: "<p>@actor:field_user_first_name has reported the item \"@entity:title\" as abusive due to @message:message.</p><p>To avoid your activity being reported in the future, please read our community guidelines at @legal_notice:url.</p>"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

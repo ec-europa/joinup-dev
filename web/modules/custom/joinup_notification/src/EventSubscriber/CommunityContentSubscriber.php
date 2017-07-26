@@ -14,13 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
   /**
-   * The operation string.
-   *
-   * @var string
-   */
-  protected $operation;
-
-  /**
    * The transition object.
    *
    * @var \Drupal\state_machine\Plugin\Workflow\WorkflowTransition
@@ -95,7 +88,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -143,7 +136,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->transition->getId()]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -191,7 +184,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value], $event);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value]);
     $this->sendUserDataMessages($user_data);
   }
 
@@ -247,34 +240,40 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
-    $arguments = parent::generateArguments($entity);
-    $parent = $this->relationManager->getParent($entity);
+  protected function generateArguments(EntityInterface $message) {
+    $arguments = parent::generateArguments($message);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
 
+    $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@group:title'] = $parent->label();
-    $arguments['@group:bundle'] = $parent->bundle();
 
-    if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($parent, $actor);
-      if (!empty($membership)) {
-        $role_names = array_map(function (OgRoleInterface $og_role) {
-          return $og_role->getName();
-        }, $membership->getRoles());
+    // Add arguments related to the parent collection or solution.
+    $parent = $this->relationManager->getParent($message);
+    if (!empty($parent)) {
+      $arguments['@group:title'] = $parent->label();
+      $arguments['@group:bundle'] = $parent->bundle();
 
-        if (in_array('administrator', $role_names)) {
-          $arguments['@actor:role'] = t('Owner');
-        }
-        elseif (in_array('facilitator', $role_names)) {
-          $arguments['@actor:role'] = t('Facilitator');
+      // If the role is not yet set, get it from the parent collection|solution.
+      if (empty($arguments['@actor:role'])) {
+        $membership = $this->membershipManager->getMembership($parent, $actor);
+        if (!empty($membership)) {
+          $role_names = array_map(function (OgRoleInterface $og_role) {
+            return $og_role->getName();
+          }, $membership->getRoles());
+
+          if (in_array('administrator', $role_names)) {
+            $arguments['@actor:role'] = t('Owner');
+          }
+          elseif (in_array('facilitator', $role_names)) {
+            $arguments['@actor:role'] = t('Facilitator');
+          }
         }
       }
-      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     }
+
     return $arguments;
   }
 

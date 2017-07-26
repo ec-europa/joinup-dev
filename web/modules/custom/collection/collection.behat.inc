@@ -375,7 +375,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function deleteCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $this->getCollectionByName($collection)->delete();
+    $collection = $this->getCollectionByName($collection);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
   }
 
   /**
@@ -400,24 +402,35 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The name of the collection to check.
    * @param int $number
    *   The expected number of members in the collection.
+   * @param int $membership_state
+   *   The state of the membership. Can be either active, pending or blocked.
    *
    * @throws \Exception
    *   Thrown when the number of members does not not match the expectation.
    *
-   * @Then the :collection collection should have :number member(s)
+   * @Then the :collection collection should have :number :membership_state member(s)
    */
-  public function assertMemberCount($collection, $number) {
-    $collection = $this->getCollectionByName($collection);
+  public function assertMemberCount($collection, $number, $membership_state) {
+    $states = [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_BLOCKED,
+    ];
 
+    if (!in_array($membership_state, $states)) {
+      throw new \Exception("Invalid membership state '{$membership_state}' found.");
+    }
+
+    $collection = $this->getCollectionByName($collection);
     $actual = \Drupal::entityQuery('og_membership')
       ->condition('entity_type', 'rdf_entity')
       ->condition('entity_id', $collection->id())
-      ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+      ->condition('state', $membership_state)
       ->count()
       ->execute();
 
     if ($actual != $number) {
-      throw new \Exception("Wrong number of members. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of {$membership_state} members. Expected number: $number, actual number: $actual.");
     }
   }
 
@@ -611,6 +624,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
+      $collection->skip_notification = TRUE;
       $collection->delete();
     }
   }

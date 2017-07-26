@@ -124,11 +124,11 @@ update:
       owner:
         - cc_transition_request_changes
 delete:
-  node:pre_moderated:
+  'node:pre_moderated':
     deletion_request:
       owner:
         - cc_delete
-  node:post_moderated:
+  'node:post_moderated':
     validated:
       owner:
         - cc_delete
@@ -138,7 +138,7 @@ delete:
     proposed:
       owner:
         - cc_delete
-  node:discussion:post_moderated:
+  'node:discussion:post_moderated':
     validated:
       owner:
         - cc_delete
