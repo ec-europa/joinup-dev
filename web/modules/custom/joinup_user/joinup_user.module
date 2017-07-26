@@ -28,6 +28,12 @@ function joinup_user_user_update(UserInterface $account) {
     return;
   }
 
+  // Additionally, if the status of the user changed, do not send an e-mail as
+  // it is already handled.
+  if ($account->isActive() !== $account->original->isActive()) {
+    return;
+  }
+
   /** @var \Drupal\joinup_user\ActiveFormSubmit $active_form */
   $active_form = \Drupal::getContainer()->get('joinup_user.active_form_submit');
   $active_form_id = $active_form->getFormId();
