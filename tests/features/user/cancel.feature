@@ -46,9 +46,9 @@ Feature:
     And I press "Cancel account"
     And I wait for the batch job to finish
     And the following system email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                                |
-      | subject        | Your account has been deleted.                                                                                                                                                                                                                                          |
-      | body           | Your account Alicia Potter has been deleted. This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
+      | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                               |
+      | subject        | Your account has been deleted.                                                                                                                                                                                                                                         |
+      | body           | Your account Alicia Potter has been deleted.This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
 
   @javascript
   Scenario: Delete own account.
