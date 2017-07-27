@@ -280,7 +280,7 @@ function joinup_community_content_theme_suggestions_container_alter(array &$sugg
  * @return array
  *   The translated array.
  */
-function joinup_community_content_translate_facet_arguments($arguments) {
+function joinup_community_content_translate_facet_arguments(array $arguments) {
   $mapping = [
     'collection_policy_domain' => 'policy_domain',
     'collection_type' => 'type',
