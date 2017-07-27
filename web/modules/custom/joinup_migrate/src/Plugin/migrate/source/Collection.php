@@ -146,7 +146,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
    */
   protected function getSpatialCoverage(Row $row) {
     // The country list is inherited from corresponding Drupal 6 node.
-    if (in_array($row->getSourceProperty('type'), ['repository', 'community'])) {
+    if (in_array($row->getSourceProperty('type'), ['repository', 'community'], TRUE)) {
       $vids = [$row->getSourceProperty('vid')];
     }
     // The country list is compiled from the compounding content-types.

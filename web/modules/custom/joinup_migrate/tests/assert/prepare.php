@@ -74,6 +74,12 @@ $expected_values = [
   ],
 ];
 
+// Imported content check.
+$imported = $this->legacyDb->select('d8_prepare')
+  ->fields('d8_prepare')
+  ->execute()
+  ->fetchAllAssoc('collection', PDO::FETCH_ASSOC);
+
 foreach ($expected_values as $collection => $expected_value) {
   $import = $imported[$collection];
 
@@ -100,4 +106,6 @@ foreach ($expected_values as $collection => $expected_value) {
   ];
   ksort($expected_value);
   ksort($import);
+
+  $this->assertSame($expected_value, $import);
 }
