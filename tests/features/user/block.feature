@@ -20,7 +20,6 @@ Feature: Block users
     And I select "Block the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Block the selected user(s) was applied to 1 item."
-    And I should see the success message "An e-mail has been send to the user to notify him on the change to his account."
     And the following system email should have been sent:
       | recipient | Liam Lego                                                                                                                 |
       | subject   | Your account was just blocked.                                                                                            |
@@ -32,7 +31,6 @@ Feature: Block users
     Then I select "Unblock the selected user(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the success message "Unblock the selected user(s) was applied to 1 item."
-    And I should see the success message "An e-mail has been send to the user to notify him on the change to his account."
     And the following system email should have been sent:
       | recipient | Liam Lego                                                                                                                 |
       | subject   | Your account was just unblocked.                                                                   |
