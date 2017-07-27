@@ -6,7 +6,7 @@ label: 'Group membership approval/rejection'
 description: 'Group privileged user decides on a membership request.'
 text:
   -
-    value: "<p>Your request to join the @entity:bundle @entity:title was @membership:decision:state</p>\r\n"
+    value: "<p>Joinup: Your request to join the @entity:bundle @entity:title was @membership:decision:state</p>\r\n"
     format: content_editor
   -
     value: "<p>@actor:full_name has @membership:decision:state your request to join the \"@entity:title\" @entity:bundle.</p>\r\n"
