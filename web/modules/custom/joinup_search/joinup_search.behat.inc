@@ -26,8 +26,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then I should be on the search page
    */
-  public function assertSearchPage()
-  {
+  public function assertSearchPage() {
     $this->assertSession()->addressEquals($this->locatePath('/search'));
   }
 
