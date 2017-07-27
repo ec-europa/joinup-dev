@@ -26,6 +26,9 @@ function joinup_theme_theme() {
     'share_content_form' => [
       'render element' => 'form',
     ],
+    'join_collection_form' => [
+      'render element' => 'form',
+    ],
   ];
 }
 
