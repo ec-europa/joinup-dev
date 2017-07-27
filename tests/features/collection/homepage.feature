@@ -127,6 +127,19 @@ Feature: Collection homepage
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
+  Scenario: Forward search facets to the search page (Advanced search)
+    Given I go to the homepage of the "Middle earth daily" collection
+    When I click the News content tab
+    And I click "Supplier exchange" in the "collection policy domain" inline facet
+    And I click "Advanced search"
+    Then I should be on the search page
+    Then the News content tab should be selected
+    And "Middle earth daily" should be selected in the "from" inline facet
+    And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
+    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
+    But I should not see the "Rohirrim make extraordinary deal" tile
+    And I should not see the "Big hobbit feast - fireworks at midnight" tile
+
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.

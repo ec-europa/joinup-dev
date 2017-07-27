@@ -45,6 +45,23 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given tab facet is selected.
+   *
+   * @param string $type
+   *   The text of the content tab that should be selected.
+   *
+   * @throws \Exception
+   *   Thrown when the tab facet is not selected or not present in the page.
+   *
+   * @Then the :type content tab should be selected
+   */
+  public function assertContentTypeFacetSelected($type) {
+    $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ') and contains(concat(' ', normalize-space(@class), ' '), ' is-active ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')][normalize-space(string(.)) = '$type']";
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    \PHPUnit_Framework_Assert::assertNotEmpty($element);
+  }
+
+  /**
    * Asserts that certain content type facet items are not shown on the page.
    *
    * @param string $labels
