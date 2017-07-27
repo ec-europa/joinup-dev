@@ -1,6 +1,6 @@
 @api @email
 Feature:
-  In order to efficiently mange users
+  In order to efficiently manage users
   As a moderator of the website
   I need to be able to cancel user accounts
 
