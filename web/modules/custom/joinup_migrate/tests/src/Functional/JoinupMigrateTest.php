@@ -97,7 +97,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $new_collection = $this->loadEntityByLabel('rdf_entity', 'New collection');
 
     // Assertions for each migrations are defined under assert/ directory.
-    foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
+    foreach (file_scan_directory(__DIR__ . '/../../assert', '|\.php$|') as $file) {
       require __DIR__ . '/../../assert/' . $file->filename;
     }
   }
