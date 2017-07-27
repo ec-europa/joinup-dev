@@ -19,6 +19,41 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 
 /**
+ * Check if route is special.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return array
+ *   The route type.
+ */
+function joinup_check_route(RouteMatchInterface $route_match) {
+  $route_name = $route_match->getRouteName();
+
+  // Declare available types.
+  $types = [
+    'create' => FALSE,
+  ];
+
+  // Array contains create pages.
+  $create_content_routes = [
+    'collection.propose_form',
+    'rdf_entity.propose_form',
+  ];
+
+  // Check if string has 'add' on the end.
+  if (preg_match('/.add$/', $route_name)) {
+    $types['create'] = TRUE;
+  }
+
+  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
+    $types['create'] = TRUE;
+  }
+
+  return $types;
+}
+
+/**
  * Implements hook_theme().
  */
 function joinup_theme_theme() {
@@ -108,14 +143,10 @@ function joinup_theme_preprocess_page(&$variables) {
   }
 
   // Check pattern for add pages.
-  $form_pattern = '.add';
-  $route_length = strlen($route_name);
-  $pattern_length = strlen($form_pattern);
-  if ($route_length > $pattern_length) {
-    if (substr_compare($route_name, $form_pattern, $route_length - $pattern_length, $pattern_length) === 0) {
-      $variables['is_blue_header'] = TRUE;
-      $is_form_container = TRUE;
-    }
+  $route_check = joinup_check_route($route_match);
+  if ($route_check['create']) {
+    $variables['is_blue_header'] = TRUE;
+    $is_form_container = TRUE;
   }
 
   if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
@@ -165,26 +196,10 @@ function joinup_theme_preprocess_page_title(&$variables) {
     $variables['permalink'] = $permalink;
   }
 
-  $route_name = $route_match->getRouteName();
-
-  // Array contains create pages.
-  $create_content_routes = [
-    'collection.propose_form',
-    'rdf_entity.propose_form',
-  ];
-
   // Set a flag when we are on content creation routes
   // in order to customise some templates.
-  $form_pattern = '.add';
-  $route_length = strlen($route_name);
-  $pattern_length = strlen($form_pattern);
-  if ($route_length > $pattern_length) {
-    if (substr_compare($route_name, $form_pattern, $route_length - $pattern_length, $pattern_length) === 0) {
-      $variables['is_create_page'] = TRUE;
-    }
-  }
-
-  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
+  $route_check = joinup_check_route($route_match);
+  if ($route_check['create']) {
     $variables['is_create_page'] = TRUE;
   }
 }
