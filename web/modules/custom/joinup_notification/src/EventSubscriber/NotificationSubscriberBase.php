@@ -262,7 +262,7 @@ abstract class NotificationSubscriberBase {
   /**
    * Generates a list of arguments to be passed to the message entities.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $message
    *   The $entity object.
    *
    * @return array
@@ -279,15 +279,15 @@ abstract class NotificationSubscriberBase {
    *   - Actor full name (This will be 'the Joinup Moderation Team' if the user
    *   has the moderator role)
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $message) {
     $arguments = [];
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
     $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
-    $arguments['@entity:title'] = $entity->label();
-    $arguments['@entity:bundle'] = $entity->bundle();
-    $arguments['@entity:url'] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments['@entity:title'] = $message->label();
+    $arguments['@entity:bundle'] = $message->bundle();
+    $arguments['@entity:url'] = $message->toUrl('canonical', ['absolute' => TRUE])->toString();
     $arguments['@actor:field_user_first_name'] = $actor_first_name;
     $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
