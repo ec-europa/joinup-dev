@@ -33,9 +33,10 @@ function joinup_check_route(RouteMatchInterface $route_match) {
   // Declare available types.
   $types = [
     'create' => FALSE,
+    'tabs' => FALSE,
   ];
 
-  // Array contains create pages.
+  // Check if page has a create form.
   $create_content_routes = [
     'collection.propose_form',
     'rdf_entity.propose_form',
@@ -50,6 +51,31 @@ function joinup_check_route(RouteMatchInterface $route_match) {
     $types['create'] = TRUE;
   }
 
+  // Check if page has form vertical tabs.
+  $tabs_routes = [
+    'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'solution.collection_solution.add',
+    'rdf_entity.rdf_add',
+  ];
+
+  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
+    // Get entity type on edit form.
+    $entity = $route_match->getParameter('rdf_entity');
+    if (!empty($entity)) {
+      $rdf_type = $entity->getType();
+    }
+    else {
+      // Get entity type on create form.
+      $rdf_type = $route_match->getParameter('rdf_type');
+      $rdf_type = $rdf_type->id();
+    }
+
+    if (in_array($rdf_type, ['collection', 'solution'], TRUE)) {
+      $types['tabs'] = TRUE;
+    }
+  }
+
   return $types;
 }
 
@@ -61,7 +87,7 @@ function joinup_theme_theme() {
     'share_content_form' => [
       'render element' => 'form',
     ],
-    'custom_form' => [
+    'buttons_separated_form' => [
       'render element' => 'form',
     ],
   ];
@@ -73,6 +99,9 @@ function joinup_theme_theme() {
 function joinup_theme_preprocess_page(&$variables) {
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
+
+  // Check if route is special.
+  $route_check = joinup_check_route($route_match);
 
   // Set page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
@@ -118,32 +147,12 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Check if page is form with vertical tabs.
   // It is needed for proper display of vertical tabs.
-  $tabs_routes = [
-    'entity.rdf_entity.edit_form',
-    'rdf_entity.propose_form',
-    'solution.collection_solution.add',
-  ];
-
-  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
-    // Get entity type on edit form.
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
-      $rdf_type = $entity->getType();
-    }
-    else {
-      // Get entity type on create form.
-      $rdf_type = $route_match->getParameter('rdf_type');
-      $rdf_type = $rdf_type->id();
-    }
-
-    if (in_array($rdf_type, ['collection', 'solution'])) {
-      $variables['has_vertical_tabs'] = TRUE;
-      $is_form_container = TRUE;
-    }
+  if ($route_check['tabs']) {
+    $variables['has_vertical_tabs'] = TRUE;
+    $is_form_container = TRUE;
   }
 
   // Check pattern for add pages.
-  $route_check = joinup_check_route($route_match);
   if ($route_check['create']) {
     $variables['is_blue_header'] = TRUE;
     $is_form_container = TRUE;
@@ -399,6 +408,10 @@ function joinup_theme_preprocess_container__stats_topic(&$variables) {
 function joinup_theme_preprocess_container(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
+
+  // Check if route is special.
+  $route_check = joinup_check_route($route_match);
+
   $form_routes = [
     'node.add',
     'rdf_entity.propose_form',
@@ -418,36 +431,9 @@ function joinup_theme_preprocess_container(&$variables) {
     $variables['is_form_wrapper'] = TRUE;
   }
 
-  // Check if page is collection propose form.
-  // It is needed for proper display buttons
-  // on forms with vertical tabs.
-  $tabs_routes = [
-    'entity.rdf_entity.edit_form',
-    'rdf_entity.propose_form',
-    'solution.collection_solution.add',
-  ];
-
-  $rdf_type = '';
-  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
-    // Get entity type on edit form.
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
-      $rdf_type = $entity->getType();
-    }
-    else {
-      // Get entity type on create form.
-      $rdf_type = $route_match->getParameter('rdf_type');
-      $rdf_type = $rdf_type->id();
-    }
-  }
-
-  // Entities with vertical tabs on edit form.
-  $tabs_entities = [
-    'collection',
-    'solution',
-  ];
-  // Check if action buttons are on collection propose form.
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && in_array($rdf_type, $tabs_entities, TRUE)) {
+  // Check if page has vertical tabs.
+  // It is needed for proper display action buttons.
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $route_check['tabs']) {
     $variables['has_vertical_tabs'] = TRUE;
   }
 }
@@ -1094,15 +1080,18 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'rdf_entity_collection_propose_form',
     'rdf_entity_solution_form',
     'rdf_entity_solution_edit_form',
+    'rdf_entity_collection_add_form',
+    'rdf_entity_solution_add_form',
   ];
+
   if (is_array($form['#theme'])) {
     if (array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
-      $form['#theme'][] = 'custom_form';
+      $form['#theme'][] = 'buttons_separated_form';
     }
   }
   else {
     if (in_array($form['#theme'], $custom_forms) && !in_array($form['#theme'], $tab_forms)) {
-      $form['#theme'][] = 'custom_form';
+      $form['#theme'][] = 'buttons_separated_form';
     }
   }
 }
