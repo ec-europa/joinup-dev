@@ -14,12 +14,14 @@
 {{ form|without('leave') }}
 
 {# Dropdown menu for leave link. #}
-<div class="dropdown-menu">
-  <a id="you_are_member" class="dropdown-menu__button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-    {{ "You're a member"|t }}
-  </a>
+{% if form.leave %}
+  <div class="dropdown-menu">
+    <a id="you_are_member" class="dropdown-menu__button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      {{ "You're a member"|t }}
+    </a>
 
-  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="you_are_member">
-    <li class="dropdown-menu__item mdl-menu__item">{{ form.leave }}</li>
-  </ul>
-</div>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="you_are_member">
+      <li class="dropdown-menu__item mdl-menu__item">{{ form.leave }}</li>
+    </ul>
+  </div>
+{% endif %}
