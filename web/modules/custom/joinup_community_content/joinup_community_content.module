@@ -252,6 +252,20 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_community_content_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  // Add a theme suggestion to the container of the inline facets region of
+  // collections and solutions so that a fake "Advanced search" facet can be
+  // appended to the inline facets.
+  if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
+    if (in_array($variables['element']['#entity']->bundle(), ['collection', 'solution'])) {
+      $suggestions[] = $variables['theme_hook_original'] . '__with_advanced_search';
+    }
+  }
+}
+
+/**
  * Translates facet IDs in a facet arguments array for use on the search page.
  *
  * The collection and solution homepages are a different 'facet source' than the
