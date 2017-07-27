@@ -43,8 +43,6 @@ Feature:
     And I click "Alicia Potter"
     And I click "Edit" in the "Entity actions" region
     And I press "Cancel account"
-    And I select the radio button "Delete the account and its content." with the id "edit-user-cancel-method-user-cancel-delete"
-    And I check "Notify user when account is canceled"
     And I press "Cancel account"
     And I wait for the batch job to finish
     And the following system email should have been sent:
