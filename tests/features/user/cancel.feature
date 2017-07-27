@@ -68,6 +68,6 @@ Feature:
     And I click the delete confirmation link for the user "Alicia Potter" from the last email
     And I wait for the batch job to finish
     Then the following system email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                                                                                                                 |
-      | subject        | Your account has been deleted.                                                                                                                           |
-      | body           | Your account Alicia Potter has been deleted.  If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
+      | recipient_mail | AliciaPotter@example.com                                                                                   |
+      | subject        | Your account has been deleted.                                                                             |
+      | body           | If you believe that this action has been performed by mistake, please contact the Joinup Community team at |
