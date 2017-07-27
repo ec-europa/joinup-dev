@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5342e98eafe850c4adbe9dbb4d504fc",
+    "content-hash": "91e19d5aa7e1678c8886322fd4de2e52",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2207,7 +2207,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r?tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -9156,7 +9156,7 @@
             ],
             "authors": [
                 {
-                    "name": "G?bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
