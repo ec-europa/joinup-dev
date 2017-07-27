@@ -19,6 +19,19 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use UtilityTrait;
 
   /**
+   * Checks that the user is on the search page.
+   *
+   * The search page currently doesn't have a title so our common practice of
+   * checking the page title falls short here.
+   *
+   * @Then I should be on the search page
+   */
+  public function assertSearchPage()
+  {
+    $this->assertSession()->addressEquals($this->locatePath('/search'));
+  }
+
+  /**
    * Click a specific tab facet in the page.
    *
    * @param string $type
