@@ -54,6 +54,7 @@
  * - title_suffix: Additional output populated by modules, intended to be
  *   displayed after the main title tag that appears in the template.
  * - view_mode: View mode; for example, "teaser" or "full".
+ * - view_mode: View mode; for example, "teaser" or "full".
  * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
  * - page: Flag for the full page state. Will be true if view_mode is 'full'.
  * - readmore: Flag for more state. Will be true if the teaser content of the
@@ -84,7 +85,7 @@
       {{ title_suffix }}
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
+      <p class="listing__teaser">{{ content.body|render|striptags }}</p>
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat is-only-placeholder">
