@@ -7,82 +7,67 @@
 // Component
 // --------------------------------------------------
 .tab
-  background-color: $color-grey-light
-
-.tabs
-  border-bottom: 1px solid $color-grey-light
+  background-color: transparent
 
 // Elements
 // --------------------------------------------------
-.tab
-  a
-    color: $color-base
-    text-decoration: none
-    &:hover,
-    &:focus,
-    &:active
-      color: $color-orange
+.tab__container
+  display: flex
+  flex-direction: column
+  flex-wrap: nowrap
+  margin-bottom: 40px
+  border-bottom: 1px solid darken($color-grey-light, 5%)
+  +breakpoint(xs)
+    flex-direction: row
+    align-items: center
+    margin: 30px 0
+    border-bottom: none
 
 // Modifiers
 // --------------------------------------------------
 .tab--horizontal
+  background-color: $color-grey-light
   border-bottom: 1px solid $color-grey-light
-
-.tabs--content-type
-  margin: 30px 0
-  border-bottom: 1px solid darken($color-grey-light, 5%)
-  @media (min-width: 600px)
-    display: flex
-    flex-wrap: nowrap
-    justify-content: flex-start
-    align-items: flex-start
-    text-align: center
-    border-bottom: none
-  +breakpoint(tablet, tablet)
-    margin: 40px -60px 0 -60px
+  a
+    color: $color-base
+    text-decoration: none
+    &:hover
+      color: $color-orange
 
 .tab--content-type
   position: relative
-  color: $color-base
+  display: flex
+  margin-bottom: 20px
+  padding-right: 5px
+  padding-left: 5px
   text-decoration: none
-  +breakpoint(sm-mobile, mobile)
-    margin-bottom: 30px
-    &:last-of-type
-      margin-bottom: 0
-  @media (min-width: 600px)
-    width: 30%
-    height: 100px
-    margin-right: 5%
-  @media (min-width: 700px)
-    width: 25%
-    margin-right: 0
+  color: $color-base
+  +breakpoint(xs)
+    margin-bottom: 0
   .tab__icon
     color: lighten($color-grey-medium, 10%)
-    position: absolute
-    top: 6px
-    left: 0
     +icon-size(45px)
   .tab__text
     margin-bottom: 15px
-    padding-left: 60px
-  .tab__text--upper,
-  .tab__text--lower
-    text-align: left
+    margin-left: 15px
   .tab__text--upper
     font-size: 32px
     font-weight: $font-weight-bold
+    line-height: 1
+    margin-bottom: 4px
 
 .tab--more
   position: relative
-  text-align: center
-  margin-top: 25px
-  text-decoration: none
+  display: inline-block
+  width: 90px
+  margin: 0 auto 15px auto
+  padding-bottom: 10px
   cursor: pointer
-  +breakpoint(sm-mobile, tablet)
-    margin-bottom: 25px
-  @media (min-width: 600px)
-    width: 90px
-    height: 100px
+  text-align: center
+  text-decoration: none
+  +breakpoint(xs)
+    width: auto
+    margin: 0 0 10px 0
   .tab__text,
   .tab__icon
     display: inline-block
@@ -90,18 +75,29 @@
     color: $color-orange
   .tab__text
     font-size: $font-size-small
-    text-transform: uppercase
     font-weight: $font-weight-bold
+    text-transform: uppercase
   .tab__icon
     margin-left: 4px
     +icon-size(14px)
 
-.tabs--content-type .tab--more
-  height: auto
-  padding-bottom: 10px
+.tab__container--narrow
+  +breakpoint(md)
+    justify-content: flex-start
+
+.tab__container--wide
+  +breakpoint(xs)
+    justify-content: space-between
 
 // Dependiencies
 // --------------------------------------------------
+.tab__container--narrow
+  .tab
+    +breakpoint(xs)
+      margin-right: 10%
+      &:last-child
+        margin-right: 0  
+
 .timeline
   .tab--more
     position: absolute
@@ -119,34 +115,34 @@
     .tab--content-type
       color: #fff
       margin-right: 40px
-
       .tab__icon
         color: #fff
-
       .tab__text--upper
         font-weight: 500
 
 // States
 // --------------------------------------------------
-.tab--horizontal.is-active
-  border-bottom: 1px solid #fff
-  background-color: #fff
-  font-weight: $font-weight-medium
+.tab--horizontal
+  &.is-active
+    font-weight: $font-weight-medium
+    border-bottom: 1px solid #fff
+    background-color: #fff
 
-.tab--content-type.is-active
-  position: relative
-  border-bottom: 2px solid $color-orange
-  .tab__icon
-    color: $color-base
-  &:after
-    content: ""
-    position: absolute
-    right: 0
-    left: 0
-    bottom: -6px
-    margin: 0 auto
-    width: 0
-    height: 0
-    border-left: 4px solid transparent
-    border-right: 4px solid transparent
-    border-top: 4px solid $color-orange
+.tab--content-type
+  &.is-active
+    border-bottom: 2px solid $color-orange
+    .tab__icon
+      color: $color-base
+    &:before
+      position: absolute
+      right: 0
+      bottom: -6px
+      left: 0
+      display: block
+      width: 0
+      height: 0
+      margin: 0 auto
+      content: ''
+      border-top: 4px solid $color-orange
+      border-right: 4px solid transparent
+      border-left: 4px solid transparent

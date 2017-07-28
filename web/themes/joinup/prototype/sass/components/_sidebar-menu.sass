@@ -42,8 +42,7 @@
   text-decoration: none
   &:hover,
   &:active,
-  &:focus,
-  &.is-active
+  &:focus
     background-color: #fff
     border-left-color: $color-orange
     font-weight: $font-weight-medium
@@ -57,7 +56,7 @@
 // Modifiers
 // --------------------------------------------------
 .sidebar-menu__button--mobile
-  margin-top: -80px
+  margin-top: -130px
   .icon
     color: #fff
   +breakpoint(desktop)
@@ -83,7 +82,7 @@
 .section--sidebar-left
   .sidebar-menu
     +breakpoint(desktop)
-      margin-top: 60px
+      //margin-top: 60px
       .mdl-menu
         position: relative
         opacity: 1
