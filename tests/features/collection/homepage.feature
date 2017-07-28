@@ -134,7 +134,7 @@ Feature: Collection homepage
     And I click "Advanced search"
     Then I should be on the search page
     Then the News content tab should be selected
-    And "Middle earth daily" should be selected in the "from" inline facet
+    And "Middle earth daily (1)" should be selected in the "from" inline facet
     And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
     And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
     But I should not see the "Rohirrim make extraordinary deal" tile
