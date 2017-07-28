@@ -53,8 +53,13 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: view_mode_tile
 content:
+  download_total:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_is_description:
-    weight: 26
+    weight: 3
     label: hidden
     settings:
       trim_length: 200
@@ -70,7 +75,7 @@ content:
     region: content
   field_is_logo:
     type: image
-    weight: 25
+    weight: 2
     label: hidden
     settings:
       image_style: horizontal_medium_image
@@ -85,7 +90,7 @@ content:
             classes: {  }
     region: content
   field_is_solution_category:
-    weight: 3
+    weight: 0
     label: above
     settings:
       link: true
@@ -94,7 +99,7 @@ content:
     region: content
   label:
     type: string
-    weight: 24
+    weight: 1
     label: hidden
     settings:
       link_to_entity: true

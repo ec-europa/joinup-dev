@@ -1061,6 +1061,18 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
  *
+ * Get raw number of members.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
+  if (isset($variables['elements']['members']['#markup'])) {
+    $arguments = $variables['elements']['members']['#markup']->getArguments();
+    $variables['member_count'] = $arguments['@member_count'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ *
  * Hides the separator and end date as only the start date is shown in tiles.
  */
 function joinup_theme_preprocess_node__event__listing_item(&$variables) {
