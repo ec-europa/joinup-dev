@@ -314,7 +314,7 @@ function joinup_theme($existing, $type, $theme, $path) {
   return [
     'joinup_legal_notice' => [
       'variables' => [],
-      'path' => drupal_get_path('profile', 'joinup') . '/src/templates',
+      'path' => drupal_get_path('profile', 'joinup') . '/templates',
     ],
   ];
 }
