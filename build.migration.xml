@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Joinup migration" default="help">
-    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
-
     <target name="disable-solr-index"
         description="Disable immediate indexing in Solr index.">
         <drush
@@ -151,12 +149,11 @@
     <target name="import-legacy-test-db"
             description="Import the legacy D6 testing database."
             depends="create-d6-test-db">
-        <mkdir dir="tmp" />
         <pdosqlexec
                 url="${drupal.db.type}:host=${drupal.db.host};dbname=${phpunit.migrate.legacy_db.name}"
                 userid="${drupal.db.user}"
                 password="${drupal.db.password}">
-            <transaction src="${phpunit.migrate.legacy_site.db_dump}"/>
+            <transaction src="resources/migrate/d6-joinup-test.sql"/>
         </pdosqlexec>
     </target>
     <target name="acceptance-migration"
