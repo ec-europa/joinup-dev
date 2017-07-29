@@ -50,7 +50,7 @@ process:
     plugin: default_value
     source: 'Collection state'
     default_value: validated
-  roles: roles
+  collection_owner: 'Collection Owner'
   url: URL
 destination:
   plugin: prepare

@@ -121,8 +121,9 @@
  'init_commands' => [${line.separator}
    'set_timezone_to_utc' => &quot;SET time_zone='+00:00';&quot;,${line.separator}
  ],${line.separator}];${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.files'] = '${migration.source.files}';${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.mock_filesystem'] = ${migration.mock_filesystem};${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.source.files'] = '${migration.source.files}';${line.separator}" />
     </target>
 
     <!-- Enable migration modules. -->

@@ -25,6 +25,7 @@ class UserProfile extends UserBase {
       'company_name' => $this->t('Company'),
       'country' => $this->t('Nationality'),
       'photo_id' => $this->t('User photo ID'),
+      'professional_profile' => $this->t('Professional profile'),
     ];
   }
 
@@ -37,6 +38,7 @@ class UserProfile extends UserBase {
       'first_name',
       'company_name',
       'photo_id',
+      'professional_profile',
     ]);
   }
 

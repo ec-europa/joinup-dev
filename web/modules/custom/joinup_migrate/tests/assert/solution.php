@@ -8,10 +8,6 @@
 use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\Rdf;
 
-// Migration counts.
-$this->assertTotalCount('solution', 13);
-$this->assertSuccessCount('solution', 13);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
 $solution = $this->loadEntityByLabel('rdf_entity', 'The administrative geography and civil voting area ontology', 'solution');
@@ -30,6 +26,7 @@ $this->assertReferences(['Ordnance Survey'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/58694',
   'catalogue/asset_release/administrative-geography-and-civil-voting-area-ontology',
@@ -65,6 +62,7 @@ $this->assertEquals('public://solution/logo/CIPA_e-Delivery_70x70.png', $logo->g
 $this->assertFileExists('public://solution/logo/CIPA_e-Delivery_70x70.png');
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('proposed', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/49860',
   'software/cipaedelivery/description',
@@ -87,6 +85,7 @@ $this->assertReferences([
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('joinup_semantic_editor', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/76726',
   'catalogue/asset_release/styles-layer-descriptor',
@@ -119,6 +118,7 @@ $translation = $solution->getTranslation('ro');
 $this->assertEquals('RO variant for name', $translation->label());
 $translation = $solution->getTranslation('et');
 $this->assertContains('Lastiliigi liigid on kooskõlas', $translation->field_is_description->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 
 $solution = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary', 'solution');
 $this->assertEquals('Core Location Vocabulary', $solution->label());
@@ -141,6 +141,7 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/42444',
   'asset/core_location/description',
@@ -174,6 +175,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('joinup_semantic_editor', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/63567',
   'asset/dcat_application_profile/description',
@@ -205,6 +207,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('joinup_semantic_editor', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/42438',
   'asset/adms/description',
@@ -234,6 +237,7 @@ $this->assertReferences([
 $this->assertEquals('http://www.eurofiling.info/corepTaxonomy/taxonomy.shtml#1.3.1', $solution->get('field_is_translation')->target_id);
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/59180',
   'catalogue/asset_release/common-reporting-framework-xbrl-project-0',
@@ -256,6 +260,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/59183',
   'catalogue/asset_release/common-reporting-framework-xbrl-project-1',
@@ -280,6 +285,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/60208',
   'catalogue/asset_release/evaluation-and-report-language-earl-10-schema',
@@ -328,6 +334,7 @@ $this->assertEquals(1, $solution->field_is_elibrary_creation->value);
 $this->assertTrue($solution->get('field_is_owner')->isEmpty());
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/27024',
   'asset/sd-dss/description',
