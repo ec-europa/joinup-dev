@@ -8,7 +8,7 @@ joinup_user.mail:
     label: 'Account updated by administrator confirmation'
   og_roles_changed:
     type: mail
-    label: 'Og roles changes'
+    label: 'Og roles changed'
   password_reset_confirm:
     type: mail
     label: 'Password reset confirmation'
