@@ -23,7 +23,7 @@ Feature: User registration
     Then I should see the success message "A welcome message with further instructions has been sent to your email address."
     And the following system email should have been sent:
       | recipient | TeStUSer                                                                                                                                                                               |
-      | subject   | You're one step away to create your Joinup account. Please confirm your email address before you can login to Joinup.                                                                  |
+      | subject   | You're one step away to create your Joinup account. Please confirm your email address before you can log in to Joinup.                                                                 |
       | body      | You are one step away from creating your in Joinup, the European Commission collaborative platform for Interoperability solutions for public administrations, businesses and citizens. |
 
   Scenario: A moderator can register a user
