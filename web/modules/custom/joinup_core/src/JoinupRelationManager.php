@@ -156,7 +156,7 @@ class JoinupRelationManager implements ContainerInjectionInterface {
       }
     }
 
-    return array_filter($users);
+    return $users;
   }
 
   /**
