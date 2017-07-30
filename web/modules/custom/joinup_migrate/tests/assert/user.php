@@ -17,6 +17,7 @@ $this->assertEquals('Europe/Rome', $account->getTimeZone());
 $this->assertEquals('pietrodabbra@msn.com', $account->getInitialEmail());
 $this->assertEquals('Dabbra', $account->get('field_user_family_name')->value);
 $this->assertEquals('Pietro', $account->get('field_user_first_name')->value);
+$this->assertEquals('Professional Profile for Pietro.', $account->get('field_user_professional_profile')->value);
 $this->assertRedirects([
   'profile/pietrodabbra-profile',
   'people/7217',

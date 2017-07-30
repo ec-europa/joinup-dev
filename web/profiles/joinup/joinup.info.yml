@@ -43,6 +43,7 @@ dependencies:
   - joinup_user
   - joinup_video
   - language
+  - link
   - linkit
   - menu_ui
   - moderation
