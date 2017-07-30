@@ -467,6 +467,8 @@ function joinup_user_og_membership_presave(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
  */
 function joinup_user_og_membership_predelete(EntityInterface $entity) {
+  // When a membership changes, clear the user's cache so that the related
+  // content on the user profile page matches the new group memberships.
   joinup_user_invalidate_user_cache_tags($entity);
 }
 
