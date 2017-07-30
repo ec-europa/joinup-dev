@@ -12,6 +12,7 @@ CREATE OR REPLACE VIEW d8_collection (
   body,
   access_url,
   elibrary,
+  uid,
   owner,
   owner_text_name,
   owner_text_type,
@@ -38,6 +39,8 @@ SELECT
   IF (p.description IS NOT NULL AND TRIM(p.description) <> '', TRIM(p.description), IF(nr.body IS NOT NULL AND TRIM(nr.body) <> '', TRIM(nr.body), NULL)),
   IF(n.type = 'community', ctc.field_community_url_url, cfru.field_repository_url_url),
   p.elibrary,
+  -- Pick-up the first, if there are more.
+  SUBSTRING_INDEX(p.collection_owner, ',', 1),
   p.publisher,
   p.owner_text_name,
   p.owner_text_type,
@@ -56,6 +59,6 @@ LEFT JOIN content_field_id_uri uri ON n.vid = uri.vid
 LEFT JOIN content_type_community ctc ON n.vid = ctc.vid
 LEFT JOIN files fc ON ctc.field_community_logo_fid = fc.fid
 LEFT JOIN content_type_repository ctr ON n.vid = ctr.vid
-LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid
+LEFT JOIN content_field_repository_url cfru ON ctr.vid = cfru.vid AND cfru.delta = 0
 LEFT JOIN files fr ON ctr.field_repository_logo_fid = fr.fid
 LEFT JOIN og o ON n.nid = o.nid

@@ -1,0 +1,67 @@
+// Footer social media
+// 
+// Markup: html/footer-social-media.html
+// 
+// Joinup social media menu with icons placed in the footer first
+// 
+// Styleguide 2.14.1
+
+// Component
+// --------------------------------------------------
+// .social-media
+
+// Elements
+// --------------------------------------------------
+.social-media__label
+  font-weight: $font-weight-bold
+  margin-top: 0
+  margin-bottom: 0
+
+.social-media__menu
+  display: inline-flex
+  flex-direction: row
+  flex-wrap: wrap
+  justify-content: flex-start
+  align-items: center
+  margin-top: 0
+  margin-bottom: 0
+  padding-left: 0
+  list-style-type: none
+
+.social-media__item
+  margin-right: 10px
+  margin-bottom: 10px
+  &:last-child
+    margin-right: 0
+
+.social-media__link
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  justify-content: flex-start
+  align-items: center
+  text-decoration: none
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.social-media__link
+  span:first-child
+    margin-right: 10px
+    &:last-child
+      margin-right: 0
+  .icon,
+  .text
+    color: $color-blue-dark
+  .text
+    text-decoration: underline
+
+// States
+// --------------------------------------------------
+.social-media__link
+  &:hover
+    .text
+      text-decoration: none
+
