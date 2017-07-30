@@ -50,7 +50,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Navigates to the one time log in page of the user.
+   * Searches the delete confirmation link from an email and navigates to it.
    *
    * @param string $user
    *   The user name.
