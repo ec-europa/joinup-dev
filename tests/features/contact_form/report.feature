@@ -33,7 +33,7 @@ Feature: Submit the contact form
       | Subject        | This content has invalid location                                              |
       | Message        | The location described as "Somewhere" could not be found by my map application |
     # We need to wait 5 seconds for the honeypot validation to pass.
-    Then I wait 5 seconds
+    Then I wait for the honeypot validation to pass
     And I press "Submit"
 
     # The moderator, the collection owner and the owner should receive the notifications.
