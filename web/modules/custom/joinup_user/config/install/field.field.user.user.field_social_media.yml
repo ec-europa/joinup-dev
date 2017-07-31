@@ -21,19 +21,19 @@ default_value:
     platform_values:
       facebook:
         value: ''
+      twitter:
+        value: ''
+      linkedin:
+        value: ''
       github:
         value: ''
       googleplus:
         value: ''
-      linkedin:
-        value: ''
       slideshare:
         value: ''
-      twitter:
+      youtube:
         value: ''
       vimeo:
-        value: ''
-      youtube:
         value: ''
 default_value_callback: ''
 settings:
@@ -41,74 +41,74 @@ settings:
   platforms:
     behance:
       description: ''
-      weight: '-28'
-      enabled: 0
+      weight: -28
+      enabled: false
     bitbucket:
       description: ''
-      weight: '-27'
-      enabled: 0
+      weight: -27
+      enabled: false
     contact:
       description: ''
-      weight: '-26'
-      enabled: 0
+      weight: -26
+      enabled: false
     drupal:
       description: ''
-      weight: '-25'
-      enabled: 0
+      weight: -25
+      enabled: false
     email:
       description: ''
-      weight: '-24'
-      enabled: 0
+      weight: -24
+      enabled: false
     facebook:
-      enabled: '1'
+      enabled: true
       description: ''
-      weight: '-23'
-    twitter:
-      enabled: '1'
-      description: ''
-      weight: '-22'
-    linkedin:
-      enabled: '1'
-      description: ''
-      weight: '-21'
-    github:
-      enabled: '1'
-      description: ''
-      weight: '-20'
+      weight: -23
     googleplus:
-      enabled: '1'
+      enabled: true
       description: ''
-      weight: '-19'
-    slideshare:
-      enabled: '1'
+      weight: -22
+    github:
+      enabled: true
       description: ''
-      weight: '-18'
+      weight: -21
     instagram:
       description: ''
-      weight: '-17'
-      enabled: 0
+      weight: -20
+      enabled: false
+    linkedin:
+      enabled: true
+      description: ''
+      weight: -19
     pinterest:
       description: ''
-      weight: '-16'
-      enabled: 0
+      weight: -18
+      enabled: false
     rss:
       description: ''
-      weight: '-15'
-      enabled: 0
+      weight: -17
+      enabled: false
+    slideshare:
+      enabled: true
+      description: ''
+      weight: -16
     tumblr:
       description: ''
-      weight: '-14'
-      enabled: 0
-    youtube:
-      enabled: '1'
+      weight: -15
+      enabled: false
+    twitter:
+      enabled: true
       description: ''
-      weight: '-13'
+      weight: -14
     vimeo:
-      enabled: '1'
+      enabled: true
       description: ''
-      weight: '-12'
+      weight: -13
+    youtube:
+      enabled: true
+      description: ''
+      weight: -12
     youtube_channel:
       description: ''
-      weight: '-11'
-      enabled: 0
+      weight: -11
+      enabled: false
 field_type: social_media_links_field

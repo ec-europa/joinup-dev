@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "62cdc8e9ccafe560b3ca750d441e4018",
+    "content-hash": "b926fecf38ddcd8e67a691923f86b543",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3810,6 +3810,9 @@
                 "drupal": {
                     "version": "8.x-2.5",
                     "datestamp": "1500374942"
+                },
+                "patches_applied": {
+                    "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

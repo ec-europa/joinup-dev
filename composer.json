@@ -172,6 +172,9 @@
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
                 "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
+            },
+            "drupal/social_media_links": {
+                "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch"
             }
         }
     },
