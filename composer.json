@@ -43,6 +43,7 @@
         "drupal/search_api": "~1.0-rc2",
         "drupal/search_api_solr": "~1.0-rc2",
         "drupal/simplenews": "~1.0-alpha3",
+        "drupal/social_media_links": "^2.5",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
