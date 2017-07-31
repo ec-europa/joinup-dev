@@ -11,7 +11,7 @@ field_name: field_social_media
 entity_type: user
 bundle: user
 label: 'Social media accounts'
-description: ''
+description: 'Enter your social media accounts, but only the relative part for each. The website will automatically prepend the full URL. For example if your Facebook page is <em>https://www.facebook.com/myname</em>, then add only <em>myname</em>.'
 required: false
 translatable: false
 default_value:
