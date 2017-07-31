@@ -13,6 +13,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\UserInterface;
 
@@ -440,33 +441,31 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 /**
  * Implements hook_ENTITY_TYPE_presave() for OG Membership entities.
  */
-function joinup_user_og_membership_presave(EntityInterface $entity) {
+function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 
-  if ($entity->getEntityTypeId() === 'og_membership') {
-    /** @var \Drupal\user\Entity\User $account */
-    $account = $entity->getUser();
+  /** @var \Drupal\user\Entity\User $account */
+  $account = $entity->getUser();
 
-    $params = [
-      'account' => $account,
-      'membership' => $entity,
-    ];
+  $params = [
+    'account' => $account,
+    'membership' => $entity,
+  ];
 
-    $params['account'] = $account;
-    \Drupal::service('plugin.manager.mail')->mail(
-      'joinup_user',
-      'og_roles_changed',
-      $account->getEmail(),
-      $account->getPreferredLangcode(),
-      $params
-    );
-  }
+  $params['account'] = $account;
+  \Drupal::service('plugin.manager.mail')->mail(
+    'joinup_user',
+    'og_roles_changed',
+    $account->getEmail(),
+    $account->getPreferredLangcode(),
+    $params
+  );
 }
 
 /**
  * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
  */
-function joinup_user_og_membership_predelete(EntityInterface $entity) {
+function joinup_user_og_membership_predelete(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 }
 
@@ -476,17 +475,15 @@ function joinup_user_og_membership_predelete(EntityInterface $entity) {
  * When a membership changes, clear the user's cache so that the related
  * content on the user profile page matches the new group memberships.
  *
- * @param \Drupal\Core\Entity\EntityInterface $entity
+ * @param \Drupal\og\OgMembershipInterface $entity
  *   The OG membership entity.
  */
-function joinup_user_invalidate_user_cache_tags(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() === 'og_membership') {
-    $user = $entity->getUser();
-    if (!empty($user)) {
-      /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator */
-      $invalidator = \Drupal::service('cache_tags.invalidator');
-      $invalidator->invalidateTags($entity->getUser()->getCacheTagsToInvalidate());
-    }
+function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
+  $user = $entity->getUser();
+  if (!empty($user)) {
+    /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator */
+    $invalidator = \Drupal::service('cache_tags.invalidator');
+    $invalidator->invalidateTags($entity->getUser()->getCacheTagsToInvalidate());
   }
 }
 
