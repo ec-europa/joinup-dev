@@ -306,3 +306,15 @@ function joinup_install_tasks_alter(&$tasks, $install_state) {
     'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
   ];
 }
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_theme($existing, $type, $theme, $path) {
+  return [
+    'joinup_legal_notice' => [
+      'variables' => [],
+      'path' => drupal_get_path('profile', 'joinup') . '/templates',
+    ],
+  ];
+}
