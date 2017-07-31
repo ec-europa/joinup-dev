@@ -6,10 +6,10 @@ label: 'Comment create'
 description: 'Sent when a comment is created.'
 text:
   -
-    value: "<p>Joinup: A new comment has been created.</p>\r\n"
+    value: '<p>Joinup: A new comment has been created.</p>'
     format: content_editor
   -
-    value: "<p>@actor:field_user_first_name posted the comment \"<a href=\"@entity:url\">@entity:title</a>\" in collection \"@group:title\".</p>\r\n"
+    value: '<p>@actor:field_user_first_name posted a comment in collection "@group:title".</p><p>To view the comment click <a href="@entity:url">here</a>.</p>'
     format: full_html
 settings:
   'token options':

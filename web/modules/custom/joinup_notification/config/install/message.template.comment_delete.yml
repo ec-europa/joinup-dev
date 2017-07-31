@@ -6,10 +6,10 @@ label: 'Comment delete'
 description: 'Sent when a comment is deleted.'
 text:
   -
-    value: "<p>Joinup: Your comment has been deleted.</p>\r\n"
+    value: '<p>Joinup: Your comment has been deleted.</p>'
     format: content_editor
   -
-    value: "<p>@actor:full_name deleted your comment \"@entity:title\".</p>\r\n<p>To avoid comment moderation in the future, please read our community guidelines at @site:legal_notice_url.</p>"
+    value: '<p>@actor:full_name deleted your comment in "@parent:title".</p><p>To avoid comment moderation in the future, please read our community guidelines at @site:legal_notice_url.</p>'
     format: full_html
 settings:
   'token options':

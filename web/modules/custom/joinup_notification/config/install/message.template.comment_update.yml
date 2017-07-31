@@ -6,10 +6,10 @@ label: 'Comment update'
 description: 'Sent when a comment is updated.'
 text:
   -
-    value: "<p>Joinup: A new comment has been created.</p>\r\n"
+    value: '<p>Joinup: A new comment has been created.</p>'
     format: content_editor
   -
-    value: "<p>@actor:field_user_first_name updated comment \"<a href=\"@entity:url\">@entity:title</a>\".</p>\r\n"
+    value: '<p>@actor:field_user_first_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p>'
     format: full_html
 settings:
   'token options':
