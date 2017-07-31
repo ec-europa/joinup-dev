@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "83dec05c70b71c79d08aaee125f0e194",
+    "content-hash": "ab1f5c9b1cfa73c87527fae311f30e07",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3796,7 +3796,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/social_media_links-8.x-2.5.zip",
-                "reference": "8.x-2.5",
+                "reference": null,
                 "shasum": "b55fa3d5a15ebdb039d77f2a9b3e7a8ee8ffccd2"
             },
             "require": {
@@ -3812,7 +3812,8 @@
                     "datestamp": "1500374942"
                 },
                 "patches_applied": {
-                    "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch"
+                    "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch",
+                    "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
