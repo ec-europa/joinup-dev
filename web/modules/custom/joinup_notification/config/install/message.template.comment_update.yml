@@ -6,7 +6,7 @@ label: 'Comment update'
 description: 'Sent when a comment is updated.'
 text:
   -
-    value: '<p>Joinup: A new comment has been created.</p>'
+    value: '<p>Joinup: A comment has been updated.</p>'
     format: content_editor
   -
     value: '<p>@actor:full_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p>'
