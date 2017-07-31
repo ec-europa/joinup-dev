@@ -125,3 +125,27 @@ function joinup_notification_mail_alter(&$message) {
     $message['body'] = $body;
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_og_membership_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_notification_og_membership_presave(EntityInterface $entity) {
+  if ($entity->isNew()) {
+    return;
+  }
+  joinup_notification_dispatch_notification('update', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_notification_og_membership_predelete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
