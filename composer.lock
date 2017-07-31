@@ -2902,14 +2902,6 @@
             ],
             "authors": [
                 {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -4230,7 +4222,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupr?",
+                    "name": "Antoine Beaupré",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4238,7 +4230,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara?a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4335,12 +4327,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "ee9831acf24efeeb6923cdcc04e0ebe28018e3aa"
+                "reference": "68317ec3f25a4167c44222d210c4f5a5964b5976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/ee9831acf24efeeb6923cdcc04e0ebe28018e3aa",
-                "reference": "ee9831acf24efeeb6923cdcc04e0ebe28018e3aa",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/68317ec3f25a4167c44222d210c4f5a5964b5976",
+                "reference": "68317ec3f25a4167c44222d210c4f5a5964b5976",
                 "shasum": ""
             },
             "require": {
@@ -4365,7 +4357,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-04 09:13:01"
+            "time": "2017-07-31 12:05:17"
         },
         {
             "name": "egulias/email-validator",
@@ -4920,7 +4912,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch?nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5006,7 +4998,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26 17:09:44"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6647,7 +6639,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran?ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9683,7 +9675,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9740,7 +9732,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
