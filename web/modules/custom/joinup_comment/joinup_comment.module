@@ -5,11 +5,9 @@
  * Joinup comment logic.
  */
 
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\message\Entity\Message;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().

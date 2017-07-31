@@ -5,7 +5,6 @@ namespace Drupal\joinup_notification\EventSubscriber;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -182,8 +181,8 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     }
 
     // Skip notifications for orphaned comments.
-    if(empty($this->group)) {
-      return false;
+    if (empty($this->group)) {
+      return FALSE;
     }
 
     return TRUE;
