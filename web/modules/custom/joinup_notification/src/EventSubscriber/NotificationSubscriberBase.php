@@ -281,6 +281,7 @@ abstract class NotificationSubscriberBase {
    */
   protected function generateArguments(EntityInterface $entity) {
     $arguments = [];
+    /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
     $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
@@ -296,6 +297,11 @@ abstract class NotificationSubscriberBase {
       $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
       $arguments['@actor:role'] = $role->label();
       $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
+    }
+    elseif (!$actor->isAnonymous()) {
+      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
+        $actor_first_name . ' ' . $actor_family_name :
+        $actor->get('full_name')->value;
     }
     $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
     $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
