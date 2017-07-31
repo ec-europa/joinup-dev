@@ -40,17 +40,14 @@
     }
   };
 
+  // Refreshes MDL checkbox classes after ajax callbacks.
   Drupal.behaviors.ajaxReload = {
     attach: function (context, settings) {
       $(context).find('form').once('ajaxReload').each(function () {
         $(document).ajaxComplete(function (event, xhr, settings) {
           componentHandler.upgradeAllRegistered();
           $('.mdl-js-checkbox').each(function (index, element) {
-            // Overridden MDL Checkbox classes.
             element.MaterialCheckbox.updateClasses_();
-
-            // Remove is-focused class for checkboxes processed by ajax.
-            $(this).removeClass('is-focused');
           })
         });
       });
