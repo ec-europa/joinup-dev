@@ -6,6 +6,7 @@ package: Joinup
 dependencies:
   - og
   - search_api_field
+  - social_media_links_field
   - user
 
 config_devel:
