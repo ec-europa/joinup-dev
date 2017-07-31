@@ -1708,15 +1708,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Wait until the id="updateprogress" element is gone, or until timeout.
+   * Wait until a running batch job has finished.
    *
-   * The "updateprogress" is the css id of the progress bar that is shown on the
-   * frontend. When this is not shown, it means that the batch process either
+   * This will periodically check if the progress bar is still visible on the
+   * page. When this is no longer shown, it means that the batch process either
    * finished or failed.
    *
-   * @Given /^I wait for the batch job to finish$/
+   * @Given I wait for the batch job to finish
    */
   public function iWaitForTheBatchJobToFinish() {
+    // The progress bar has the CSS ID '#updateprogress'.
     $this->getSession()->wait(180000, 'jQuery("#updateprogress").length === 0');
   }
 
