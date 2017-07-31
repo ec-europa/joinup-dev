@@ -40,7 +40,7 @@ Feature:
     When all e-mails have been sent
     And I am logged in as a moderator
     And I click "People"
-    And I click "Alicia Potter"
+    And I click "alicia__1997"
     And I click "Edit" in the "Entity actions" region
     And I press "Cancel account"
     And I press "Cancel account"
@@ -52,18 +52,18 @@ Feature:
 
   @javascript
   Scenario: Delete own account.
-    When I am logged in as "Alicia Potter"
+    When I am logged in as "alicia__1997"
     And all e-mails have been sent
     And I visit "/user"
     And I click "Edit" in the "Entity actions" region
     And I press "Cancel account"
     And I press "Cancel account"
     And the following system email should have been sent:
-      | recipient | Alicia Potter                                                      |
-      | subject   | Account cancellation request for Alicia Potter at Joinup           |
-      | body      | by clicking this link or copying and pasting it into your browser: |
+      | recipient_mail | AliciaPotter@example.com                                           |
+      | subject        | Account cancellation request for alicia__1997 at Joinup            |
+      | body           | by clicking this link or copying and pasting it into your browser: |
     # Click the confirmation link in the email.
-    And I click the delete confirmation link for the user "Alicia Potter" from the last email
+    And I click the delete confirmation link for the user "alicia__1997" from the last email
     And I wait for the batch job to finish
     Then the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                                                                   |
