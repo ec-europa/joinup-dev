@@ -2207,7 +2207,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r?tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -2726,7 +2726,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29T21:27:56+00:00"
+            "time": "2017-05-29 21:27:56"
         },
         {
             "name": "drupal/mailsystem",
@@ -3163,7 +3163,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27T15:47:09+00:00"
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/pathauto",
@@ -3217,7 +3217,8 @@
             "homepage": "https://www.drupal.org/project/pathauto",
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
-            }
+            },
+            "time": "2017-05-06 16:06:59"
         },
         {
             "name": "drupal/persistent_login",
@@ -4459,17 +4460,6 @@
                 "orm"
             ],
             "time": "2017-03-07T22:26:54+00:00"
-        },
-        {
-            "name": "google/material-design-lite",
-            "version": "dev-v1.1.3",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:google/material-design-lite.git",
-                "reference": "v1.1.3"
-            },
-            "type": "drupal-theme-library",
-            "time": "2016-03-17 16:08:51"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -7936,6 +7926,16 @@
             "time": "2017-06-01T20:52:29+00:00"
         },
         {
+            "name": "tom-waat/material-design-lite",
+            "version": "dev-v1.1.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:tom-waat/material-design-lite.git",
+                "reference": "version-1.1.3"
+            },
+            "type": "drupal-theme-library"
+        },
+        {
             "name": "twig/twig",
             "version": "v1.34.4",
             "source": {
@@ -9157,7 +9157,7 @@
             ],
             "authors": [
                 {
-                    "name": "G?bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -10922,9 +10922,9 @@
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
-        "google/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
+        "tom-waat/material-design-lite": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/default_content": 20,

@@ -12,17 +12,45 @@ Feature: Collection membership administration
       | name  | Princeton-Plainsboro Teaching Hospital |
       | email | info@princeton-plainsboro.us           |
     And users:
-      | Username      | Roles | E-mail                    | First name | Family name |
+      | Username          | Roles | E-mail                        | First name | Family name |
       # Authenticated user.
-      | Lisa Cuddy    |       | lisa_cuddy@example.com    | Lisa       | Cuddy       |
-      | Gregory House |       | gregory_house@example.com | Gregory    | House       |
+      | Lisa Cuddy        |       | lisa_cuddy@example.com        | Lisa       | Cuddy       |
+      | Gregory House     |       | gregory_house@example.com     | Gregory    | House       |
+      | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
     And the following collections:
-      | title             | description               | logo     | banner     | owner        | contact information                    | state     |
-      | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | validated |
+      | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
+      | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following collection user memberships:
-      | collection        | user          | roles       |
-      | Medical diagnosis | Lisa Cuddy    | facilitator |
-      | Medical diagnosis | Gregory House |             |
+      | collection        | user              | roles       | state   |
+      | Medical diagnosis | Lisa Cuddy        | facilitator | active  |
+      | Medical diagnosis | Gregory House     |             | active  |
+      | Medical diagnosis | Kathie Cumbershot |             | pending |
+
+  Scenario: Approve a membership
+    # Check that a member with pending state does not have access to add new content.
+    When I am logged in as "Kathie Cumbershot"
+    And I go to the "Medical diagnosis" collection
+    Then I should not see the plus button menu
+    And I should not see the link "Add news"
+
+    # Approve a membership.
+    When I am logged in as "Lisa Cuddy"
+    And I go to the "Medical diagnosis" collection
+    Then I click "Members" in the "Left sidebar"
+    # Assert that the user does not see the default OG tab.
+    Then I should not see the link "Group"
+    And I check the box "Update the member Kathie Cumbershot"
+    Then I select "Approve the pending membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | Approve the pending membership(s) was applied to 1 item. |
+
+    # Check new privileges.
+    When I am logged in as "Kathie Cumbershot"
+    And I go to the "Medical diagnosis" collection
+    # Check that I see one of the random links that requires an active membership.
+    Then I should see the plus button menu
+    Then I should see the link "Add news"
 
   Scenario: Assign a new role to a member
     # Check that Dr House can't edit the collection.

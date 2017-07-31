@@ -61,7 +61,7 @@ Feature: Proposing a collection
     And I should see a banner on the header
 
     # The user that proposed the collection should be auto-subscribed.
-    And the "Ancient and Classical Mythology" collection should have 1 member
+    And the "Ancient and Classical Mythology" collection should have 1 active member
     # The overview and about links should be added automatically in the menu.
     And I should see the following collection menu items in the specified order:
       | text     |

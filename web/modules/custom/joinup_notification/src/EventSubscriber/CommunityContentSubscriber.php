@@ -248,8 +248,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
-    $arguments = parent::generateArguments($entity);
+  protected function generateArguments(EntityInterface $message) {
+    $arguments = parent::generateArguments($message);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -260,7 +260,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationManager->getParent($message);
     if (empty($parent)) {
       return $arguments;
     }
