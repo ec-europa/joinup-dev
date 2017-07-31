@@ -1,9 +1,7 @@
 {#
 /**
  * @file
- * Template to render the share content form.
- *
- * Note that the form tag will be added through a theme wrapper.
+ * Template to render the join and leave collection form.
  *
  * Available variables:
  * - form: the form build array.
@@ -11,17 +9,16 @@
  * @ingroup themeable
  */
 #}
+{# There is a bug in the drupal core, which prevents moving this template to a subfoder https://www.drupal.org/node/2817103 #}
 {{ form|without('leave') }}
 
 {# Dropdown menu for leave link. #}
 {% if form.leave %}
-  <div class="dropdown-menu">
-    <a id="you-are-member-button" class="dropdown-menu__button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-      {{ "You're a member"|t }}
-    </a>
+  <button id="you-are-member-button" class="button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button">
+    {{ "You're a member"|t }}
+  </button>
 
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="you-are-member-button">
-      <li class="dropdown-menu__item mdl-menu__item">{{ form.leave }}</li>
-    </ul>
-  </div>
+  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="you-are-member-button">
+    <li class="mdl-menu__item">{{ form.leave }}</li>
+  </ul>
 {% endif %}
