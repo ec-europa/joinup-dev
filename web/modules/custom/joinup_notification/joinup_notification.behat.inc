@@ -64,7 +64,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
-    $html = (isset($html) ? $html : 'yes') === 'yes';
+    $html = empty($html) || $html === 'yes';
 
     $user = user_load_by_name($recipient);
     if (empty($user)) {
