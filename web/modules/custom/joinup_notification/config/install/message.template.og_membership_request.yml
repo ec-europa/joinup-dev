@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: og_membership_request
+label: 'Group membership request'
+description: 'A user requests to join a closed collection.'
+text:
+  -
+    value: "<p>Joinup: A user has requested to join your collection</p>\r\n"
+    format: content_editor
+  -
+    value: "<p>@actor:full_name has requested to join your @entity:bundle \"@entity:title\" as a member.</p>\r\n\r\n<p>To approve or reject this request, click on @group:members_page:url.</p>\r\n"
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
