@@ -93,7 +93,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   }
 
   /**
-   * Checks if the event applies for the update operation.
+   * Checks if the event applies for the create operation.
    *
    * @return bool
    *   Whether the event applies.
@@ -240,8 +240,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
-    $arguments = parent::generateArguments($message);
+  protected function generateArguments(EntityInterface $entity) {
+    $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -251,7 +251,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@transition:motivation'] = $motivation;
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($message);
+    $parent = $this->relationManager->getParent($entity);
     if (!empty($parent)) {
       $arguments['@group:title'] = $parent->label();
       $arguments['@group:bundle'] = $parent->bundle();

@@ -204,7 +204,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
+  protected function generateArguments(EntityInterface $entity) {
     return [];
   }
 
