@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad9de2f833b987babfdefddab220fbe9",
+    "content-hash": "ab1f5c9b1cfa73c87527fae311f30e07",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2902,6 +2902,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -3415,7 +3423,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta2",
                 "shasum": "5b2e3bebd3f96e0dde3c29759747485cd53f0313"
             },
             "require": {
@@ -3585,7 +3593,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.3.zip",
-                "reference": null,
+                "reference": "8.x-1.3",
                 "shasum": "e064dc8769a95ce3ebb3f30cdfe0fba8ea661dfb"
             },
             "require": {
@@ -3775,6 +3783,54 @@
             "homepage": "https://www.drupal.org/project/simplenews",
             "support": {
                 "source": "http://cgit.drupalcode.org/simplenews"
+            }
+        },
+        {
+            "name": "drupal/social_media_links",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/social_media_links",
+                "reference": "8.x-2.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/social_media_links-8.x-2.5.zip",
+                "reference": null,
+                "shasum": "b55fa3d5a15ebdb039d77f2a9b3e7a8ee8ffccd2"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.5",
+                    "datestamp": "1500374942"
+                },
+                "patches_applied": {
+                    "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch",
+                    "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "cbeier",
+                    "homepage": "https://www.drupal.org/user/1500710"
+                }
+            ],
+            "description": "The module provides a block that display links (icons) to your profiles on various social networking sites.",
+            "homepage": "https://www.drupal.org/project/social_media_links",
+            "support": {
+                "source": "http://cgit.drupalcode.org/social_media_links",
+                "issues": "https://www.drupal.org/project/issues/social_media_links"
             }
         },
         {
@@ -4176,7 +4232,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupré",
+                    "name": "Antoine Beaupr?",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4184,7 +4240,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Araña Cruz",
+                    "name": "Jonathan Ara?a Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4866,7 +4922,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch?nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -4952,7 +5008,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6593,7 +6649,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran?ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9629,7 +9685,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9686,7 +9742,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
