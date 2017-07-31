@@ -56,12 +56,13 @@ third_party_settings:
       weight: 6
       format_type: tab
       format_settings:
+        label: 'Main fields'
+        formatter: open
+        description: 'Contains all the fields to be mandatorily filled to create a collection'
+        required_fields: true
         id: ''
         classes: ''
-        formatter: open
-        description: ''
-        required_fields: true
-      label: Main
+      label: 'Main fields'
     group_description:
       children:
         - field_ar_abstract
@@ -79,12 +80,13 @@ third_party_settings:
       weight: 7
       format_type: tab
       format_settings:
+        label: 'Additional fields'
+        formatter: open
+        description: 'Contains all optional fields providing additional information on the collection'
+        required_fields: true
         id: ''
         classes: ''
-        formatter: open
-        description: 'Describe the collection.'
-        required_fields: true
-      label: Description
+      label: 'Additional fields'
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
