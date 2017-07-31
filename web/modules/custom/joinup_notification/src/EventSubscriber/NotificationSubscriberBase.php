@@ -298,6 +298,7 @@ abstract class NotificationSubscriberBase {
       $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
     }
     $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
+    $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
 
     return $arguments;
   }
