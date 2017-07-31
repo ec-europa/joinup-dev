@@ -35,3 +35,5 @@ config_devel:
   - message.template.comment_create
   - message.template.comment_update
   - message.template.comment_delete
+  - message.template.og_membership_decision
+  - message.template.og_membership_request
