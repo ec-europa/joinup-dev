@@ -25,4 +25,13 @@ final class NotificationEvents {
    */
   const RDF_ENTITY_CRUD = 'joinup_notification.rdf.notify';
 
+  /**
+   * An event that sends notifications on comment CRUD operations.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const COMMENT_CRUD = 'joinup_notification.comment.notify';
+
 }
