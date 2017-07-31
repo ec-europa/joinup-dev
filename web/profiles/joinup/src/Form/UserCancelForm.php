@@ -39,11 +39,10 @@ class UserCancelForm extends CoreUserCancelForm {
    * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, JoinupRelationManager $relation_manager = NULL) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManager $relation_manager) {
     parent::__construct($entity_manager, $entity_type_bundle_info, $time);
 
-    // Replicate the behaviour of the parent implementation.
-    $this->relationManager = $relation_manager ?: \Drupal::service('joinup_core.relations_manager');
+    $this->relationManager = $relation_manager;
   }
 
   /**
