@@ -222,6 +222,10 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $arguments['@group:bundle'] = $this->group->bundle();
     $arguments['@group:url'] = $this->group->toUrl('canonical', ['absolute' => TRUE])->toString();
 
+    if (empty($arguments['@actor:full_name'])) {
+      $arguments['@actor:full_name'] = $this->currentUser->isAnonymous() ? t('an anonymous user') : t('a Joinup user');
+    }
+
     return $arguments;
   }
 
