@@ -88,11 +88,8 @@ config_devel:
   - block.block.entity_bundle_facet
   - block.block.exposed_form_search_page
   - block.block.footer_menu
-  - block.block.rdf_entities_in_proposed_state
-  - block.block.recommended_content
+  - block.block.group_facet
   - block.block.groupheader
-  - block.block.menusubpages
-  - block.block.userheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
@@ -100,10 +97,13 @@ config_devel:
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
+  - block.block.menusubpages
   - block.block.navigation
   - block.block.pagetitle
   - block.block.policy_domain_facet
   - block.block.primaryadminactions
+  - block.block.rdf_entities_in_proposed_state
+  - block.block.recommended_content
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -117,6 +117,7 @@ config_devel:
   - block.block.statistics
   - block.block.unpublished_content_of_group
   - block.block.unpublished_content_of_user
+  - block.block.userheader
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -170,17 +171,17 @@ config_devel:
   - language.content_settings.rdf_entity.solution
   - linkit.linkit_profile.default
   - mailsystem.settings
-  - og_menu.ogmenu.navigation
   - og.settings
+  - og_menu.ogmenu.navigation
   - password_policy.password_policy.generic_policy
   - pathauto.pattern.community_content
   - pathauto.pattern.custom_page
   - pathauto.pattern.rdf_entities_generic
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
-  - system.theme
-  - swiftmailer.transport
   - swiftmailer.message
+  - swiftmailer.transport
+  - system.theme
   - user.flood
   - user.mail
   - user.settings
