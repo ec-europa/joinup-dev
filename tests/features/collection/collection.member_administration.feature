@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -17,14 +17,26 @@ Feature: Collection membership administration
       | Lisa Cuddy        |       | lisa_cuddy@example.com        | Lisa       | Cuddy       |
       | Gregory House     |       | gregory_house@example.com     | Gregory    | House       |
       | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
+      | Donald Duck       |       | donald_duck@example.com       | Donald     | Duck        |
     And the following collections:
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following collection user memberships:
-      | collection        | user              | roles       | state   |
-      | Medical diagnosis | Lisa Cuddy        | facilitator | active  |
-      | Medical diagnosis | Gregory House     |             | active  |
-      | Medical diagnosis | Kathie Cumbershot |             | pending |
+      | collection        | user              | roles                      | state   |
+      | Medical diagnosis | Lisa Cuddy        | administrator, facilitator | active  |
+      | Medical diagnosis | Gregory House     |                            | active  |
+      | Medical diagnosis | Kathie Cumbershot |                            | pending |
+
+  Scenario: Request a membership
+    When I am logged in as "Donald Duck"
+    And all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+    And I press the "Join this collection" button
+    Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
+    And the following email should have been sent:
+      | recipient | Lisa Cuddy                                                                                                                     |
+      | subject   | Joinup: A user has requested to join your collection                                                                           |
+      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
 
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
@@ -35,6 +47,7 @@ Feature: Collection membership administration
 
     # Approve a membership.
     When I am logged in as "Lisa Cuddy"
+    And all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     Then I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
@@ -44,6 +57,10 @@ Feature: Collection membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Approve the pending membership(s) was applied to 1 item. |
+    And the following email should have been sent:
+      | recipient | Kathie Cumbershot                                                               |
+      | subject   | Joinup: Your request to join the collection Medical diagnosis was approved      |
+      | body      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -51,6 +68,31 @@ Feature: Collection membership administration
     # Check that I see one of the random links that requires an active membership.
     Then I should see the plus button menu
     Then I should see the link "Add news"
+
+  @email
+  Scenario: Reject a membership
+    When I am logged in as "Lisa Cuddy"
+    And all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+    Then I click "Members" in the "Left sidebar"
+    # Assert that the user does not see the default OG tab.
+    Then I should not see the link "Group"
+    And I check the box "Update the member Kathie Cumbershot"
+    Then I select "Delete the selected membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | Delete the selected membership(s) was applied to 1 item. |
+    And the following email should have been sent:
+      | recipient | Kathie Cumbershot                                                               |
+      | subject   | Joinup: Your request to join the collection Medical diagnosis was rejected      |
+      | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
+
+    # Check new privileges.
+    When I am logged in as "Kathie Cumbershot"
+    And I go to the "Medical diagnosis" collection
+    # Check that I see one of the random links that requires an active membership.
+    Then I should not see the plus button menu
+    And I should see the button "Join this collection"
 
   @email
   Scenario: Assign a new role to a member

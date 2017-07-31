@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -21,6 +22,7 @@ dependencies:
     - image
     - path
     - search_api_field
+    - social_media_links_field
     - text
     - user
 id: user.user.default
@@ -33,6 +35,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_social_media:
+    weight: 31
+    settings: {  }
+    third_party_settings: {  }
+    type: social_media_links_field_default
+    region: content
   field_user_business_title:
     type: text_textarea
     weight: 6

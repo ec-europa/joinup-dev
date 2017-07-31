@@ -6,11 +6,13 @@ package: Joinup
 dependencies:
   - og
   - search_api_field
+  - social_media_links_field
   - user
 
 config_devel:
   - facets.facet.user_content_bundle
   - facets.facet_source.search_api_field__user.field_user_content
+  - field.field.user.user.field_social_media
   - field.field.user.user.field_user_business_title
   - field.field.user.user.field_user_content
   - field.field.user.user.field_user_family_name
@@ -20,6 +22,7 @@ config_devel:
   - field.field.user.user.field_user_photo
   - field.field.user.user.field_user_professional_domain
   - field.field.user.user.field_user_professional_profile
+  - field.storage.user.field_social_media
   - field.storage.user.field_user_business_title
   - field.storage.user.field_user_content
   - field.storage.user.field_user_family_name
