@@ -171,12 +171,13 @@ class JoinupRelationManager implements ContainerInjectionInterface {
    *   An array of users that are members of the entity group.
    */
   public function getGroupUsers(EntityInterface $entity, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
-    $users = array_map(function (OgMembershipInterface $membership) {
+    return array_reduce($this->getGroupMemberships($entity, $state), function ($users, OgMembershipInterface $membership) {
       $user = $membership->getUser();
-      return empty($user) ? NULL : $user->id();
-    }, $this->getGroupMemberships($entity, $state));
-
-    return array_filter($users);
+      if (!empty($user)) {
+        $users[] = $user;
+      }
+      return $users;
+    }, []);
   }
 
   /**
