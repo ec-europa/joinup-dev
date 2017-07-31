@@ -15,6 +15,16 @@ use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
+ * Implements hook_entity_type_alter().
+ *
+ * Adds the solution releases overview page as link template so the OG context
+ * can be resolved automatically.
+ */
+function asset_release_entity_type_alter(array &$entity_types) {
+  $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {

@@ -62,6 +62,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
       'state' => $this->t('Workflow state'),
       'banner' => $this->t('Banner'),
       'logo_id' => $this->t('Logo ID'),
+      'uid' => $this->t('Author'),
       'i18n' => $this->t('Field translations'),
     ];
   }
@@ -91,6 +92,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
       'state',
       'banner',
       'logo_id',
+      'uid',
     ]);
   }
 
@@ -144,7 +146,7 @@ class Collection extends JoinupSqlBase implements RedirectImportInterface, Field
    */
   protected function getSpatialCoverage(Row $row) {
     // The country list is inherited from corresponding Drupal 6 node.
-    if (in_array($row->getSourceProperty('type'), ['repository', 'community'])) {
+    if (in_array($row->getSourceProperty('type'), ['repository', 'community'], TRUE)) {
       $vids = [$row->getSourceProperty('vid')];
     }
     // The country list is compiled from the compounding content-types.

@@ -9,6 +9,7 @@ source:
 process:
   id: uri
   label: collection
+  uid: uid
   field_ar_abstract: abstract
   field_ar_access_url: access_url
   field_ar_affiliates:
