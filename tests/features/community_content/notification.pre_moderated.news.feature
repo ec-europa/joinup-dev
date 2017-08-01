@@ -47,6 +47,23 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | subject   | Joinup: Content has been proposed                                                                                       |
       | body      | CC Member has submitted a new news - "CC notify create propose" for publication in the collection: "CC pre collection". |
 
+    # Regression test for proposing an item with a published version.
+    When I am logged in as "CC facilitator"
+    And I go to the "CC notify create propose" news
+    And I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    And I am logged in as "CC member"
+    And I go to the "CC notify create propose" news
+    And I click "Edit" in the "Entity actions" region
+    And I press "Save new draft"
+    When all e-mails have been sent
+    And I click "Edit" in the "Entity actions" region
+    And I press "Propose"
+    Then the following email should have been sent:
+      | recipient | Notify moderator                                                                                                                   |
+      | subject   | Joinup: Content has been proposed                                                                                                  |
+      | body      | CC Member has submitted an update of the news - "CC notify create propose" for publication in the collection: "CC pre collection". |
+
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC pre collection" collection
@@ -134,9 +151,9 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                |
-      | subject   | Joinup: Content has been updated                                                                                                                         |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the news - "CC notify pre approve proposed" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                                                    |
+      | subject   | Joinup: Content has been updated                                                                                                                                             |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

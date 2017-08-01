@@ -10,6 +10,7 @@ use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\search_api\Entity\Index;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -97,7 +98,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $new_collection = $this->loadEntityByLabel('rdf_entity', 'New collection');
 
     // Assertions for each migrations are defined under assert/ directory.
-    foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
+    foreach (file_scan_directory(__DIR__ . '/../../assert', '|\.php$|') as $file) {
       require __DIR__ . '/../../assert/' . $file->filename;
     }
   }
@@ -196,6 +197,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     chmod($settings_file, 0444);
 
     $this->manager = $this->container->get('plugin.manager.migration');
+
+    foreach (['published', 'unpublished'] as $index) {
+      Index::load($index)->setOption('index_directly', 0)->save();
+    }
   }
 
   /**

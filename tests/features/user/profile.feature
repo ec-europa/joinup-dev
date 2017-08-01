@@ -15,6 +15,7 @@ Feature: User profile
     Then I click "Edit"
     Then the following fields should be present "Current password, Email address, Password, Confirm password, First name"
     Then the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain"
+    Then the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
     Then the following fields should not be present "Time zone"
     And I fill in "First name" with "Leoke"
     And I fill in "Family name" with "di ser Piero da Vinci"
