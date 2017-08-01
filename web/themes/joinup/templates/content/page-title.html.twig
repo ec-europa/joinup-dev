@@ -14,7 +14,7 @@
 #}
 {{ title_prefix }}
 {% if title|render %}
-  <div class="page__title-wrapper">
+  <div class="page__title-wrapper{{ visually_hidden_class }}">
       {% if is_create_page %}
         <h1 class="page__title">
           <span class="icon icon--plus"></span>
