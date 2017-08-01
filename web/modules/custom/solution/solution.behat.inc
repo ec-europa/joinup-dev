@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -17,6 +18,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -562,6 +564,49 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
       $this->assertAvailableTransitions($solution, $states, $user);
     }
+  }
+
+  /**
+   * Enable a given language.
+   *
+   * @Given the language :langcode is enabled
+   */
+  public function languageEnabled($langcode) {
+    // Create the needed language.
+    $language_manager = \Drupal::languageManager();
+    if (!$language_manager->getLanguage($langcode)) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+  }
+
+  /**
+   * Creates a simple multilingual solution.
+   *
+   * @Given the multilingual :title solution
+   */
+  public function theMultilingualSolution($title) {
+    $values = [
+      'rid' => 'solution',
+      'label' => $title,
+      'field_is_state' => 'validated',
+      'field_is_description' => "English description",
+    ];
+    $solution = Rdf::create($values);
+    $solution->save();
+    // Fill with the specific content translation fields and fall-back to
+    // the remaining values from the base translation.
+    $solution_values = $solution->toArray();
+    $solution_values += [
+      'content_translation_source' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      'content_translation_status' => TRUE,
+      'content_translation_uid' => 1,
+      'content_translation_outdated' => FALSE,
+    ];
+    $solution_values['field_is_description'] = "Catalan description";
+    // Create the translation.
+    $solution->addTranslation('ca', $solution_values)->save();
+    $this->solutions[$solution->id()] = $solution;
+
   }
 
   /**

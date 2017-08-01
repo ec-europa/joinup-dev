@@ -522,6 +522,9 @@ QUERY;
    */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
+    if (empty($entities)) {
+      return [];
+    }
     $uuid_key = $this->entityType->getKey('uuid');
     array_walk($entities, function (ContentEntityInterface $rdf_entity) use ($uuid_key) {
       // The ID of 'rdf_entity' is universally unique because it's a URI. As
