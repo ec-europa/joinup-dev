@@ -36,6 +36,14 @@ class RouteSubscriber extends RouteSubscriberBase {
         $route->addRequirements(['_uid_1_only' => 'TRUE']);
       }
     }
+
+    // Override the confirmation form to delete multiple users with our version
+    // that prevents deletion of users that are sole owners of collections.
+    if ($route = $collection->get('user.multiple_cancel_confirm')) {
+      $route->addDefaults([
+        '_form' => '\Drupal\joinup\Form\UserMultipleCancelConfirm',
+      ]);
+    }
   }
 
 }

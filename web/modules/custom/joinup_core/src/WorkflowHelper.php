@@ -232,6 +232,10 @@ class WorkflowHelper implements WorkflowHelperInterface {
    */
   public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
     $parent = $this->getEntityParent($entity);
+    if (empty($parent)) {
+      return FALSE;
+    }
+
     $membership = $this->membershipManager->getMembership($parent, $account);
 
     // First check the 'any' permissions.
