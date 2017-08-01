@@ -104,18 +104,6 @@
     </div>{# /.main-container #}
   </main>
 
-  {% if page.footer %}
-    <footer class="section section--footer" role="contentinfo">
-      <div class="main-container">
-        <div class="row">
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell mdl-cell--8-col mdl-cell--2-offset">
-              {{ page.footer }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  {% endif %}
+  {% include directory ~ '/templates/parts/footer.html.twig' %}
 
 </div>{# /.layout-container #}

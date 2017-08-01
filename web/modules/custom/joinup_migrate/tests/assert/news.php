@@ -7,10 +7,6 @@
 
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('news', 3);
-$this->assertSuccessCount('news', 3);
-
 // Imported content check.
 $news = Node::load(155894);
 $this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->label());

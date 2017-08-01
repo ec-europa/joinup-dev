@@ -6,6 +6,7 @@ dependencies:
   module:
     - ckeditor
     - editor_file
+    - linkit
 third_party_settings:
   editor_file:
     status: true

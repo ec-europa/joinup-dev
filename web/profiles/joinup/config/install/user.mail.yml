@@ -2,14 +2,14 @@ cancel_confirm:
   body: "[user:display-name],\r\n\r\nA request to cancel your account has been made at [site:name].\r\n\r\nYou may now cancel your account on [site:url-brief] by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:cancel-url]\r\n\r\nNOTE: The cancellation of your account is not reversible.\r\n\r\nThis link expires in one day and nothing will happen if it is not used.\r\n\r\n--  [site:name] team"
   subject: 'Account cancellation request for [user:display-name] at [site:name]'
 password_reset:
-  body: "[user:display-name],\r\n\r\nA request to reset the password for your account has been made at [site:name].\r\n\r\nYou may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password. It expires after one day and nothing will happen if it's not used.\r\n\r\n--  [site:name] team"
-  subject: 'Replacement login information for [user:display-name] at [site:name]'
+  body: "Dear [user:field_user_first_name],\r\n\r\nA new password has been requested for the account [user:account-name].\r\n\r\nTo confirm the request, please click [user:one-time-login-url].\r\n\r\nIf you didn't ask for a new password, please disregard this message.\r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"
+  subject: 'Please confirm the request of a new password.'
 register_admin_created:
-  body: "[user:display-name],\r\n\r\nA site administrator at [site:name] has created an account for you. You may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
-  subject: 'An administrator created an account for you at [site:name]'
+  body: "Dear [user:field_user_first_name],\r\n\r\nWelcome to the Joinup community! Your account on Joinup has been created. \r\n\r\nTo quickly familiarise yourself with the functionalities available to registered users, you can follow a short tour of Joinup [user:one-time-login-url].\r\n\r\nIf you believe that a Joinup account linked to this email address was erroneously created, please contact the Joinup Community team at [site:contact-form]. \r\n\r\nKind regards,\r\n\r\nThe Joinup Community Team"
+  subject: 'Your Joinup account was created successfully.'
 register_no_approval_required:
-  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. You may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
-  subject: 'Account details for [user:display-name] at [site:name]'
+  body: "Dear [user:field_user_first_name],\r\n\r\nYou are one step away from creating your account in Joinup, the European Commission collaborative platform for Interoperability solutions for public administrations, businesses and citizens.\r\n\r\nPlease confirm your email address by clicking [user:one-time-login-url] to complete the creation of your new Joinup account.\r\n\r\nIf you think that this email was erroneously sent to you, please disregard this message. \r\n\r\nKind regards\r\n\r\nThe Joinup Community Team"
+  subject: 'You''re one step away to create your Joinup account. Please confirm your email address before you can log in to Joinup.'
 register_pending_approval:
   body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to log in, set your password, and other details.\r\n\r\n\r\n--  [site:name] team"
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
@@ -17,12 +17,12 @@ register_pending_approval_admin:
   body: "[user:display-name] has applied for an account.\r\n\r\n[user:edit-url]"
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
 status_activated:
-  body: "[user:display-name],\r\n\r\nYour account at [site:name] has been activated.\r\n\r\nYou may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:account-name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
-  subject: 'Account details for [user:display-name] at [site:name] (approved)'
+  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently unblocked by our moderators. \r\nFor more information about how to avoid your account being blocked in the future, please visit our FAQ section.\r\n\r\nKind regards,\r\nThe Joinup Moderation Team."
+  subject: 'Your account was just unblocked.'
 status_blocked:
-  body: "[user:display-name],\r\n\r\nYour account on [site:name] has been blocked.\r\n\r\n--  [site:name] team"
-  subject: 'Account details for [user:display-name] at [site:name] (blocked)'
+  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently blocked by our moderators. \r\nFor more information about blocked accounts, please visit our FAQ section.\r\n\r\nKind regards,\r\nThe Joinup Moderation Team."
+  subject: 'Your account was just blocked.'
 status_canceled:
-  body: "[user:display-name],\r\n\r\nYour account on [site:name] has been canceled.\r\n\r\n--  [site:name] team"
-  subject: 'Account details for [user:display-name] at [site:name] (canceled)'
+  body: "Dear Joinup user,\r\n\r\nYour account [user:account-name] has been deleted.@joinup_user:moderation_text If you believe that this action has been performed by mistake, please contact the Joinup Community team at [site:contact-form].\r\n\r\nKind regards,\r\n\r\nThe Joinup Moderation Team"
+  subject: 'Your account has been deleted.'
 langcode: en

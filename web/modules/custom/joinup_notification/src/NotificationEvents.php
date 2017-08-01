@@ -25,4 +25,13 @@ final class NotificationEvents {
    */
   const RDF_ENTITY_CRUD = 'joinup_notification.rdf.notify';
 
+  /**
+   * An event that sends notifications when a membership state is changed.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const OG_MEMBERSHIP_MANAGEMENT = 'joinup_notification.og_membership.management';
+
 }

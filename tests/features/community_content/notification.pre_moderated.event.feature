@@ -136,7 +136,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                 |
       | subject   | Joinup: Content has been updated                                                                                                                          |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the event - "CC notify pre approve proposed" in the collection: "CC pre collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the event - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
