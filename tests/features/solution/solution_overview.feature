@@ -24,6 +24,7 @@ Feature: Solutions Overview
       | logo  | logo.png              |
       | state | validated             |
     And solutions:
+    # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |
       | Closed data           | Facilitate access to data sets | validated |
@@ -61,12 +62,11 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the link "Non electronic health"
-    # Changed after ISAICP-3618
     And I should not see the text "Supports health-related fields"
     And I should see the link "Closed data"
-    And I should see the text "Facilitate access to data sets"
+    And I should not see the text "Facilitate access to data sets"
     And I should see the link "Isolating Europe"
-    And I should see the text "Reusable tools and services"
+    And I should not see the text "Reusable tools and services"
     When I click "Non electronic health"
     Then I should see the heading "Non electronic health"
 
