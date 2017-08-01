@@ -130,6 +130,13 @@ function joinup_theme_preprocess_page_title(&$variables) {
   }
   $route_name = $route_match->getRouteName();
 
+  $variables['visually_hidden_class'] = '';
+
+  // Early bail out.
+  if (empty($route_name)) {
+    return;
+  }
+
   // Array contains create pages.
   $create_content_routes = [
     'collection.propose_form',
@@ -141,10 +148,21 @@ function joinup_theme_preprocess_page_title(&$variables) {
     'solution.collection_solution.add',
   ];
 
+  // Array contains overview pages.
+  $overview_routes = [
+    'view.solutions.page_1',
+    'view.collections.page_1',
+    'view.content_overview.page_1',
+  ];
+
   // Set a flag when we are on content creation routes
   // in order to customise some templates.
-  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
+  if (in_array($route_name, $create_content_routes)) {
     $variables['is_create_page'] = TRUE;
+  }
+  // Set visually hidden class on overview pages.
+  elseif (in_array($route_name, $overview_routes)) {
+    $variables['visually_hidden_class'] = ' visually-hidden';
   }
 }
 
@@ -1067,6 +1085,18 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_rdf_entity(&$variables) {
   if ($variables['view_mode'] == 'about') {
     $variables['is_label_hidden'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ *
+ * Get raw number of members.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
+  if (isset($variables['elements']['members']['#markup'])) {
+    $arguments = $variables['elements']['members']['#markup']->getArguments();
+    $variables['member_count'] = $arguments['@member_count'];
   }
 }
 
