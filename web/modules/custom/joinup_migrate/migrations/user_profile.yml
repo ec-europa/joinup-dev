@@ -16,6 +16,12 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
+  field_user_professional_profile/value:
+    plugin: file_inline
+    source: professional_profile
+  field_user_professional_profile/format:
+    plugin: default_value
+    default_value: content_editor
   field_user_organisation: company_name
   field_user_photo:
     plugin: migration

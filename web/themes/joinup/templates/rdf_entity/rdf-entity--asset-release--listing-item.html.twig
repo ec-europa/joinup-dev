@@ -18,7 +18,7 @@
       <h2 class="listing__title"><a href="{{ url }}">{{ label }} {{ content.field_isr_release_number }}</a></h2>
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_isr_release_notes }}</p>
+      <p class="listing__teaser">{{ content.field_isr_release_notes|render|striptags }}</p>
       </div>
       <div class="listing__field listing__stats mdl-card__actions">
         {#todo: Stats are only placeholder #}

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - social_media_links_field
+    - user
+id: user.field_social_media
+field_name: field_social_media
+entity_type: user
+type: social_media_links_field
+settings: {  }
+module: social_media_links_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -47,9 +47,12 @@ process:
   changed: timestamp
   status: status
   thread: thread
-  field_body:
-    plugin: html_to_plain_text
+  field_body/value:
+    plugin: file_inline
     source: comment
+  field_body/format:
+    plugin: default_value
+    default_value: simple_html
   field_attachment:
     plugin: migration
     source: fids
