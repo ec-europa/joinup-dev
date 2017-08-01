@@ -43,6 +43,7 @@
         "drupal/search_api": "~1.0-rc2",
         "drupal/search_api_solr": "~1.0-rc2",
         "drupal/simplenews": "~1.0-alpha3",
+        "drupal/social_media_links": "^2.5",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
@@ -172,6 +173,10 @@
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
                 "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
+            },
+            "drupal/social_media_links": {
+                "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch",
+                "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             }
         }
     },
