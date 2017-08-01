@@ -45,7 +45,8 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "E-health"
-    And I should see the text "Supports health-related fields"
+    # Changed after ISAICP-3618
+    And I should not see the text "Supports health-related fields"
     And I should see the link "Open Data"
     And I should see the text "Facilitate access to data sets"
     And I should see the link "Connecting Europe"

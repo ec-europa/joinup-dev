@@ -61,7 +61,8 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the link "Non electronic health"
-    And I should see the text "Supports health-related fields"
+    # Changed after ISAICP-3618
+    And I should not see the text "Supports health-related fields"
     And I should see the link "Closed data"
     And I should see the text "Facilitate access to data sets"
     And I should see the link "Isolating Europe"
