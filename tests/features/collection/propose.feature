@@ -157,7 +157,7 @@ Feature: Proposing a collection
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
-    When I click "Description" tab
+    When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
