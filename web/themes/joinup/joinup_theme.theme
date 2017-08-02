@@ -19,7 +19,7 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 
 /**
- * Check if route is special.
+ * Gives meta info about routes which should have additional classes.
  *
  * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
  *   The route object.
@@ -28,7 +28,6 @@ use Drupal\image\Entity\ImageStyle;
  *   The route type.
  */
 function joinup_check_route(RouteMatchInterface $route_match) {
-  $route_name = $route_match->getRouteName();
 
   // Declare available types.
   $types = [
@@ -36,47 +35,76 @@ function joinup_check_route(RouteMatchInterface $route_match) {
     'tabs' => FALSE,
   ];
 
+  if ($route_name = $route_match->getRouteName()) {
+
+    if (_joinup_is_create_route($route_name)) {
+      $types['create'] = TRUE;
+    }
+
+    // Get pages where the tabs should be shown.
+    $tabs_routes = _joinup_vertical_tabs_routes();
+
+    if (in_array($route_name, $tabs_routes)) {
+
+      // Get entity type on edit form.
+      if ($entity = $route_match->getParameter('rdf_entity')) {
+        $rdf_type = $entity->getType();
+      }
+
+      // Get entity type on create form.
+      elseif ($entity = $route_match->getParameter('rdf_type')) {
+        $rdf_type = $entity->id();
+      }
+
+      if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'], TRUE)) {
+        $types['tabs'] = TRUE;
+      }
+    }
+  }
+
+  return $types;
+
+}
+
+/**
+ * Get a list of routes which should have tabs.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_vertical_tabs_routes() {
+  return [
+    'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'solution.collection_solution.add',
+    'rdf_entity.rdf_add',
+  ];
+}
+
+/**
+ * Check whether a route is one for a create content form.
+ *
+ * @param string $route_name
+ *   The route name.
+ *
+ * @return boolean
+ */
+function _joinup_is_create_route($route_name) {
   // Check if page has a create form.
   $create_content_routes = [
     'collection.propose_form',
     'rdf_entity.propose_form',
   ];
 
-  // Check if string has 'add' on the end.
-  if (preg_match('/.add$/', $route_name)) {
-    $types['create'] = TRUE;
+  if (
+    preg_match('/.add$/', $route_name) ||
+    in_array($route_name, $create_content_routes)
+  ) {
+    return TRUE;
   }
 
-  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
-    $types['create'] = TRUE;
-  }
+  return FALSE;
 
-  // Check if page has form vertical tabs.
-  $tabs_routes = [
-    'entity.rdf_entity.edit_form',
-    'rdf_entity.propose_form',
-    'solution.collection_solution.add',
-    'rdf_entity.rdf_add',
-  ];
-
-  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
-    // Get entity type on edit form.
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
-      $rdf_type = $entity->getType();
-    }
-    else {
-      // Get entity type on create form.
-      $rdf_type = $route_match->getParameter('rdf_type');
-      $rdf_type = $rdf_type->id();
-    }
-
-    if (in_array($rdf_type, ['collection', 'solution'], TRUE)) {
-      $types['tabs'] = TRUE;
-    }
-  }
-
-  return $types;
 }
 
 /**
