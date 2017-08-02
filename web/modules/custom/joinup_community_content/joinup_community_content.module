@@ -161,6 +161,11 @@ function joinup_community_content_preprocess_node(&$variables) {
   if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
     $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
   }
+
+  if ($node->isSticky()) {
+    $variables['attributes']['class'][] = 'is-sticky';
+    $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
+  }
 }
 
 /**
