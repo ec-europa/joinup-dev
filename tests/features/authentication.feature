@@ -18,11 +18,12 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path          |
-      | collections   |
-      | user/login    |
-      | user/password |
-      | user/register |
+      | path                |
+      | collections         |
+      | user/login          |
+      | user/password       |
+      | user/register       |
+      | joinup/legal-notice |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -64,11 +65,12 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path               |
-      | propose/collection |
-      | collections        |
-      | dashboard          |
-      | user               |
+      | path                |
+      | propose/collection  |
+      | collections         |
+      | dashboard           |
+      | user                |
+      | joinup/legal-notice |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
