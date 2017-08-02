@@ -779,14 +779,18 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
  * Implements hook_entity_update().
  *
  * Re index all children on an entity update that includes a status change.
+ *
+ * The hasPublished flag ensures that this will occur only when an entity is
+ * published for the first time.
+ *
+ * @see \joinup_core_rdf_entity_presave()
  */
 function joinup_core_entity_update(EntityInterface $entity) {
   if ($entity->getEntityTypeId() !== 'rdf_entity' || !in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
 
-  $source_states = ['draft', 'proposed'];
-  if ($entity->get('field_ar_state')->first()->value === 'validated' && in_array($entity->original->get('field_ar_state')->first()->value, $source_states)) {
+  if ($entity->isPublished() && isset($entity->hasPublished) && $entity->hasPublished === FALSE) {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
     $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
