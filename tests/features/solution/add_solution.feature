@@ -162,3 +162,47 @@ Feature: "Add solution" visibility options.
     # The owner entity state buttons should not be shown.
     But I should not see the button "Request deletion"
     And I should not see the button "Update"
+
+  Scenario: Create a solution with a name that already exists
+    Given the following collections:
+      | title              | state     |
+      | Ocean studies      | validated |
+      | Glacier monitoring | validated |
+    And the following solution:
+      | title             | Climate change tracker                            |
+      | description       | Atlantic salmon arrived after the Little Ice Age. |
+      | collection        | Ocean studies                                     |
+
+    # No two solutions with the same name may be created in the same collection.
+    Given I am logged in as a member of the "Ocean studies" collection
+    When I go to the homepage of the "Ocean studies" collection
+    And I click "Add solution" in the plus button menu
+    And I fill in "Title" with "Climate change tracker"
+    And I press "Propose"
+    Then I should see the error message "A solution titled Climate change tracker already exists in this collection. Please choose a different title."
+
+    # If a solution with a duplicate name is created in a different collection
+    # then this is allowed to be submitted but a warning should be shown to the
+    # moderator when approving the proposal.
+    Given I am logged in as a member of the "Glacier monitoring" collection
+    When I go to the homepage of the "Glacier monitoring" collection
+    And I click "Add solution" in the plus button menu
+    And I fill in the following:
+      | Title            | Climate change tracker                      |
+      | Description      | Logs retreat of 40 glaciers in Switzerland. |
+      | Spatial coverage | Switzerland                                 |
+      | Name             | Angela Crespi                               |
+      | E-mail address   | angela_crespi@glacmon.basel-uni.ch          |
+    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "[ABB59] Logging Service" from "Solution type"
+    And I press "Add existing" at the "Owner" field
+    And I fill in "Owner" with "University of Basel"
+    And I press "Add owner"
+    And I press "Propose"
+    Then I should see the heading "Climate change tracker"
+    But I should not see the warning message "A solution with the same name already exists in a different collection."
+
+    Given I am logged in as a moderator
+    And I go to my dashboard
+    And I click "Climate change tracker"
+    Then I should see the warning message "A solution with the same name already exists in a different collection."
