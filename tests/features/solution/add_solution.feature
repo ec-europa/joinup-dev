@@ -41,6 +41,9 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
+    # Regression test for ensuring that obsolete eLibrary value is removed.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
+    And I should not see the text "Only members can create new content"
     # The TRR fieldgroup should only be visible inside the TRR collection.
     And I should not see the text "TRR"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
