@@ -44,6 +44,7 @@ class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
       'collection' => $this->t('Collection'),
       'fids' => $this->t('Attachments'),
       'exclude' => $this->t('Exclude from menu'),
+      'status' => $this->t('Published status'),
     ];
   }
 
@@ -63,6 +64,7 @@ class CustomPage extends JoinupSqlBase implements RedirectImportInterface {
       'collection',
       'group_nid',
       'exclude',
+      'status',
     ]);
   }
 
