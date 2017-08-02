@@ -771,12 +771,16 @@ function joinup_core_entity_update(EntityInterface $entity) {
     return;
   }
 
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
-  $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
-  foreach ($entities as $entity_item) {
-    $entity_item->original = $entity_item;
-    search_api_entity_update($entity_item);
+  $source_states = ['draft', 'proposed'];
+  if ($entity->get('field_ar_state')->first()->value === 'validated' && in_array($entity->original->get('field_ar_state')->first()->value, $source_states)) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
+    $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
+    foreach ($entities as $entity_item) {
+      $entity_item->original = $entity_item;
+      search_api_entity_update($entity_item);
+    }
   }
+
 }
