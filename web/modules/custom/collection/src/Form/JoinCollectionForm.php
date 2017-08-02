@@ -117,10 +117,9 @@ class JoinCollectionForm extends FormBase {
           'rdf_entity' => $collection->id(),
         ]),
         '#attributes' => [
-          'class' => array_merge($button_classes, [
+          'class' => [
             'use-ajax',
-            'button--small',
-          ]),
+          ],
           'data-dialog-type' => 'modal',
           'data-dialog-options' => Json::encode(['width' => 'auto']),
         ],
