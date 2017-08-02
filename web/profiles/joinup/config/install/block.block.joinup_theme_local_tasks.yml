@@ -6,7 +6,7 @@ dependencies:
 id: joinup_theme_local_tasks
 theme: joinup_theme
 region: featured
-weight: -6
+weight: 1
 provider: null
 plugin: local_tasks_block
 settings:
