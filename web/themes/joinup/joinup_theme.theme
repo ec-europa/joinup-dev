@@ -147,7 +147,8 @@ function _joinup_overview_page_routes() {
  * @param string $route_name
  *   The route name.
  *
- * @return boolean
+ * @return bool
+ *   Whether the route contains a create form.
  */
 function _joinup_is_create_form_route($route_name) {
 
@@ -202,7 +203,7 @@ function joinup_theme_preprocess_page(&$variables) {
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
 
-  // Get additional information about forms which should have logic in templates.
+  // Get additional info about forms which should have logic in templates.
   $form_meta = _joinup_form_meta_by_route($route_match);
 
   // Get page title.
@@ -255,6 +256,7 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Remove title on pages, where title is already in the header.
   if ($route_name == 'entity.rdf_entity.canonical') {
+
     if ($entity = $route_match->getParameter('rdf_entity')) {
       $rdf_type = $entity->getType();
     }
