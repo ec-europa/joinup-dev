@@ -19,26 +19,26 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 
 /**
- * Gives meta info about routes which should have additional classes.
+ * Gives meta properties about forms based on routes.
  *
  * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
  *   The route object.
  *
  * @return array
- *   The route type.
+ *   The additional properties or features a given form should have.
  */
-function joinup_check_route(RouteMatchInterface $route_match) {
+function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 
   // Declare available types.
-  $types = [
-    'create' => FALSE,
-    'tabs' => FALSE,
+  $form_meta = [
+    'is_create_form' => FALSE,
+    'has_tabs' => FALSE,
   ];
 
   if ($route_name = $route_match->getRouteName()) {
 
-    if (_joinup_is_create_route($route_name)) {
-      $types['create'] = TRUE;
+    if (_joinup_is_create_form_route($route_name)) {
+      $form_meta['is_create_form'] = TRUE;
     }
 
     // Get pages where the tabs should be shown.
@@ -57,12 +57,12 @@ function joinup_check_route(RouteMatchInterface $route_match) {
       }
 
       if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'], TRUE)) {
-        $types['tabs'] = TRUE;
+        $form_meta['has_tabs'] = TRUE;
       }
     }
   }
 
-  return $types;
+  return $form_meta;
 
 }
 
@@ -82,6 +82,52 @@ function _joinup_vertical_tabs_routes() {
 }
 
 /**
+ * Get a list of routes which should have blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_blue_header_routes() {
+  return [
+    'adms_validator.adms_validator_form',
+    'collection.propose_form',
+    'contact_form.contact_page',
+    'entity.node.edit_form',
+    'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'user.login',
+    'user.pass',
+    'user.register',
+  ];
+}
+
+/**
+ * Get a list of routes which should not have blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_non_blue_header_routes() {
+  return [
+    'joinup_subscription.subscription_settings',
+    'entity.user.edit_form',
+    'simplenews.newsletter_subscriptions_user',
+  ];
+}
+
+/**
+ * Get a list of routes which should have navy blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_navy_blue_header_routes() {
+  return [
+    'view.search.page_1',
+  ];
+}
+
+/**
  * Check whether a route is one for a create content form.
  *
  * @param string $route_name
@@ -89,7 +135,7 @@ function _joinup_vertical_tabs_routes() {
  *
  * @return boolean
  */
-function _joinup_is_create_route($route_name) {
+function _joinup_is_create_form_route($route_name) {
   // Check if page has a create form.
   $create_content_routes = [
     'collection.propose_form',
@@ -128,10 +174,10 @@ function joinup_theme_preprocess_page(&$variables) {
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
 
-  // Check if route is special.
-  $route_check = joinup_check_route($route_match);
+  // Get additional information about forms which should have logic in templates.
+  $form_meta = _joinup_form_meta_by_route($route_match);
 
-  // Set page title.
+  // Get page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
 
   // Check if page is form page and page content has no white background.
@@ -140,54 +186,36 @@ function joinup_theme_preprocess_page(&$variables) {
   // We need to show the header in a blue variant on certain routes:
   // node and rdf entity forms, user forms.
   $route_name = $route_match->getRouteName();
-  $blue_header_routes = [
-    'adms_validator.adms_validator_form',
-    'collection.propose_form',
-    'contact_form.contact_page',
-    'entity.node.edit_form',
-    'entity.rdf_entity.edit_form',
-    'rdf_entity.propose_form',
-    'user.login',
-    'user.pass',
-    'user.register',
-  ];
 
-  // Forms without blue header.
-  $other_forms = [
-    'joinup_subscription.subscription_settings',
-    'entity.user.edit_form',
-    'simplenews.newsletter_subscriptions_user',
-  ];
+  // Get routes which should have modifications.
+  $blue_header_routes = _joinup_blue_header_routes();
+  $navy_header_routes = _joinup_navy_blue_header_routes();
+  $other_forms = _joinup_non_blue_header_routes();
 
-  if (!empty($route_name) && in_array($route_name, $other_forms)) {
-    $is_form_container = TRUE;
-  }
+  if (!empty($route_name)) {
+    if (in_array($route_name, $other_forms)) {
+      $is_form_container = TRUE;
+    }
 
-  // We need to show the header in a navy blue variant on certain routes:
-  // search page.
-  $navy_header_routes = [
-    'view.search.page_1',
-  ];
+    if (in_array($route_name, $blue_header_routes)) {
+      $variables['is_blue_header'] = TRUE;
+      $is_form_container = TRUE;
+    }
 
-  if (!empty($route_name) && in_array($route_name, $navy_header_routes)) {
-    $variables['is_navy_header'] = TRUE;
-  }
-
-  // Check if page is form with vertical tabs.
-  // It is needed for proper display of vertical tabs.
-  if ($route_check['tabs']) {
-    $variables['has_vertical_tabs'] = TRUE;
-    $is_form_container = TRUE;
+    if (in_array($route_name, $navy_header_routes)) {
+      $variables['is_navy_header'] = TRUE;
+    }
   }
 
   // Check pattern for add pages.
-  if ($route_check['create']) {
+  if ($form_meta['is_create_form']) {
     $variables['is_blue_header'] = TRUE;
     $is_form_container = TRUE;
   }
 
-  if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
-    $variables['is_blue_header'] = TRUE;
+  // Check whether a form should accommodate tabs.
+  if ($form_meta['has_tabs']) {
+    $variables['has_vertical_tabs'] = TRUE;
     $is_form_container = TRUE;
   }
 
@@ -199,27 +227,24 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Remove title on pages, where title is already in the header.
   if ($route_name == 'entity.rdf_entity.canonical') {
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
+    if ($entity = $route_match->getParameter('rdf_entity')) {
       $rdf_type = $entity->getType();
     }
 
-    $rdfs_no_title = [
-      'collection',
-      'solution',
-    ];
-
-    if (isset($rdf_type) && in_array($rdf_type, $rdfs_no_title)) {
+    if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution' ])) {
       unset($variables['page']['content']['pagetitle']);
     }
   }
 
+  // Set adjusting class on form when necessary.
   if ($is_form_container) {
     $variables['container_class'] = 'content-container--form';
   }
   else {
     $variables['container_class'] = 'content-container--default';
   }
+
+  // Set title back in the global page variables.
   $variables['title'] = $title;
 }
 
@@ -228,15 +253,16 @@ function joinup_theme_preprocess_page(&$variables) {
  */
 function joinup_theme_preprocess_page_title(&$variables) {
   $route_match = \Drupal::routeMatch();
-  $permalink = joinup_build_permalink($route_match);
-  if ($permalink) {
+
+  if ($permalink = joinup_build_permalink($route_match)) {
     $variables['permalink'] = $permalink;
   }
 
-  // Set a flag when we are on content creation routes
-  // in order to customise some templates.
-  $route_check = joinup_check_route($route_match);
-  if ($route_check['create']) {
+  // Get any custom properties for forms.
+  $form_meta = _joinup_form_meta_by_route($route_match);
+
+  // Flag title for create pages to have additional logic in display.
+  if ($form_meta['is_create_form']) {
     $variables['is_create_page'] = TRUE;
   }
 }
@@ -438,7 +464,7 @@ function joinup_theme_preprocess_container(&$variables) {
   $route_name = $route_match->getRouteName();
 
   // Check if route is special.
-  $route_check = joinup_check_route($route_match);
+  $form_meta = _joinup_form_meta_by_route($route_match);
 
   $form_routes = [
     'node.add',
@@ -461,7 +487,7 @@ function joinup_theme_preprocess_container(&$variables) {
 
   // Check if page has vertical tabs.
   // It is needed for proper display action buttons.
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $route_check['tabs']) {
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $form_meta['has_tabs']) {
     $variables['has_vertical_tabs'] = TRUE;
   }
 }
