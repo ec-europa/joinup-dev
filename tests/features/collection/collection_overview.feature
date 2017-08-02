@@ -19,6 +19,7 @@ Feature: Collections Overview
       | Username      | E-mail                       |
       | Madam Shirley | i.see.the.future@example.com |
     Given collections:
+    # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title             | description                    | state     |
       | E-health          | Supports health-related fields | validated |
       | Open Data         | Facilitate access to data sets | validated |
@@ -45,11 +46,11 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "E-health"
-    And I should see the text "Supports health-related fields"
+    And I should not see the text "Supports health-related fields"
     And I should see the link "Open Data"
-    And I should see the text "Facilitate access to data sets"
+    And I should not see the text "Facilitate access to data sets"
     And I should see the link "Connecting Europe"
-    And I should see the text "Reusable tools and services"
+    And I should not see the text "Reusable tools and services"
     When I click "E-health"
     Then I should see the heading "E-health"
 

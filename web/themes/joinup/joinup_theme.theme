@@ -128,6 +128,20 @@ function _joinup_navy_blue_header_routes() {
 }
 
 /**
+ * Get a list of overview page routes.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_overview_page_routes() {
+  return [
+    'view.solutions.page_1',
+    'view.collections.page_1',
+    'view.content_overview.page_1',
+  ];
+}
+
+/**
  * Check whether a route is one for a create content form.
  *
  * @param string $route_name
@@ -136,10 +150,16 @@ function _joinup_navy_blue_header_routes() {
  * @return boolean
  */
 function _joinup_is_create_form_route($route_name) {
-  // Check if page has a create form.
+
+  // Routes known to be create forms.
   $create_content_routes = [
     'collection.propose_form',
+    'node.add',
+    'node.add_page',
     'rdf_entity.propose_form',
+    'rdf_entity.rdf_add',
+    'rdf_entity.rdf_add_page',
+    'solution.collection_solution.add',
   ];
 
   if (
@@ -157,12 +177,20 @@ function _joinup_is_create_form_route($route_name) {
  * Implements hook_theme().
  */
 function joinup_theme_theme() {
+  $theme_path = \Drupal::theme()->getActiveTheme()->getPath();
+
   return [
     'share_content_form' => [
       'render element' => 'form',
+      'path' => $theme_path . '/templates/form',
+    ],
+    'join_collection_form' => [
+      'render element' => 'form',
+      'path' => $theme_path . '/templates/form',
     ],
     'buttons_separated_form' => [
       'render element' => 'form',
+      'path' => $theme_path . '/templates/form',
     ],
   ];
 }
@@ -254,6 +282,8 @@ function joinup_theme_preprocess_page(&$variables) {
 function joinup_theme_preprocess_page_title(&$variables) {
   $route_match = \Drupal::routeMatch();
 
+  $variables['visually_hidden_class'] = '';
+
   if ($permalink = joinup_build_permalink($route_match)) {
     $variables['permalink'] = $permalink;
   }
@@ -261,9 +291,17 @@ function joinup_theme_preprocess_page_title(&$variables) {
   // Get any custom properties for forms.
   $form_meta = _joinup_form_meta_by_route($route_match);
 
-  // Flag title for create pages to have additional logic in display.
-  if ($form_meta['is_create_form']) {
-    $variables['is_create_page'] = TRUE;
+  if ($route_name = $route_match->getRouteName()) {
+
+    // Flag title for create pages to have additional logic in display.
+    if ($form_meta['is_create_form'] || _joinup_is_create_form_route($route_name)) {
+      $variables['is_create_page'] = TRUE;
+    }
+
+    // Set visually hidden class on overview pages.
+    if (in_array($route_name, _joinup_overview_page_routes())) {
+      $variables['visually_hidden_class'] = ' visually-hidden';
+    }
   }
 }
 
@@ -278,17 +316,20 @@ function joinup_theme_preprocess_page_title(&$variables) {
  */
 function joinup_build_permalink(RouteMatchInterface $route_match) {
   $route_name = $route_match->getRouteName();
+
   $routes = [
     'entity.node.canonical',
     'entity.rdf_entity.canonical',
     'entity.rdf_entity.about_page',
   ];
+
   if (!in_array($route_name, $routes)) {
     return FALSE;
   }
 
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = NULL;
+
   foreach (['node', 'rdf_entity'] as $type) {
     $param = $route_match->getParameter($type);
     $entity = isset($param) ? $param : $entity;
@@ -1201,6 +1242,18 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_rdf_entity(&$variables) {
   if ($variables['view_mode'] == 'about') {
     $variables['is_label_hidden'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ *
+ * Get raw number of members.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
+  if (isset($variables['elements']['members']['#markup'])) {
+    $arguments = $variables['elements']['members']['#markup']->getArguments();
+    $variables['member_count'] = $arguments['@member_count'];
   }
 }
 
