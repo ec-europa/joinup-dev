@@ -28,6 +28,8 @@ use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Utility\Utility;
 
 /**
  * Implements hook_theme().
@@ -741,4 +743,20 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
   ];
 
   return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
+}
+
+/**
+ * Only index English content.
+ *
+ * Implements hook_search_api_index_items_alter().
+ */
+function joinup_core_search_api_index_items_alter(IndexInterface $index, array &$items) {
+  foreach ($items as $item_id => $item) {
+    list($datasource_id, $raw_id) = Utility::splitCombinedId($item_id);
+    list($id, $langcode) = Utility::splitPropertyPath($raw_id);
+    // Unset non-english content from the index.
+    if ($langcode != 'en') {
+      unset($items[$item_id]);
+    }
+  }
 }

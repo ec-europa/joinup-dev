@@ -15,8 +15,3 @@ Feature:
     And I should see the text "The page you are looking for does not exist; It may have been moved, or removed altogether. You might want to:"
     And I should see the link "search function"
     And I should see the link "home page"
-
-  Scenario: Legal notice page is accessible by anyone.
-    When I am not logged in
-    And I visit "/joinup/legal-notice"
-    Then I should not see the heading "Page not found"
