@@ -912,7 +912,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) not see the( following) tiles in the :region region:
    */
   public function assertTilesNotPresentInBlock(TableNode $titles_table, $region) {
-    $results = $this->getTiles($region);
+    try {
+      // This will fail if the region does not exist. The region does not exist
+      // if there is no content rendered inside.
+      $results = $this->getTiles($region);
+    } catch (Exception $e) {
+      return;
+    }
     $headings_in_page = array_map(function ($result) {
       return $result->getText();
     }, $results);
