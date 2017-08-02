@@ -135,16 +135,28 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Creates a solution with data provided in a table.
    *
    * Table format:
-   * | title             | Sample solution                         |
-   * | description       | A sample solution                       |
-   * | documentation     | text.pdf                                |
-   * | moderation        | no|yes                                  |
-   * | closed            | no|yes                                  |
-   * | elibrary creation | facilitators|members|registered users   |
-   * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | no|yes                                  |
-   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
-   * | wiki              | http://example.wiki/foobar/wiki         |
+   * | title               | Sample solution                         |
+   * | description         | A sample solution                       |
+   * | banner              | banner.png                              |
+   * | logo                | logo.jpg                                |
+   * | moderation          | no|yes                                  |
+   * | closed              | no|yes                                  |
+   * | collection          | Example collection                      |
+   * | contact information | Grahame Paterson, Aulay MacFarlane      |
+   * | documentation       | text.pdf                                |
+   * | elibrary creation   | facilitators|members|registered users   |
+   * | landing page        | http://example.com/foobar/landing       |
+   * | language            | Greek, German                           |
+   * | owner               | Zapsum, Holdline Accountants            |
+   * | policy domain       | Demography, E-inclusion                 |
+   * | related solutions   | Solution 2, Solution 3                  |
+   * | solution type       | [ABB159] Service Discovery Service, ... |
+   * | spatial coverage    | Denmark, Serbia                         |
+   * | state               | validated|...                           |
+   * | status              | Under development                       |
+   * | webdav creation     | no|yes                                  |
+   * | webdav url          | http://joinup.eu/solution/foobar/webdav |
+   * | wiki                | http://example.wiki/foobar/wiki         |
    *
    * Fields title, description and elibrary creation are required.
    *
