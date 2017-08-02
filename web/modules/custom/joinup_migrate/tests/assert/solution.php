@@ -21,7 +21,7 @@ $this->assertReferences([
 $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
 $this->assertEquals("<p>An ontology describing the administrative and voting area geography of Great Britain</p>\r\n", $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['Ordnance Survey'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
@@ -78,7 +78,7 @@ $this->assertReferences(['Styles Layer Descriptor'], $solution->field_is_distrib
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertContains('user-defined symbols and colors to be used in geographic information.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Forumstandaardisatie.nl',
 ], $solution->get('field_is_owner'));
@@ -101,7 +101,7 @@ $this->assertReferences(['KASPeR - Mapping application of statistical data e-dim
 $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertContains('The KASPeR application enables downloading of images and selected spatial layers with the data in vector (*. shp) format.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Geodetic Institute of Slovenia',
 ], $solution->get('field_is_owner'));
@@ -137,7 +137,7 @@ $this->assertReferences([
 ], $solution->get('field_is_contact_information'));
 $this->assertContains('Virtual Meeting 2012.04.03', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences(['ACME University'], $solution->get('field_is_owner'));
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
@@ -161,7 +161,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertContains('Open Data Support Community', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $solution->get('field_is_owner'));
@@ -186,7 +186,7 @@ $this->assertReferences([
 $this->assertReferences(['contact@semic.eu'], $solution->get('field_is_contact_information'));
 $this->assertContains('Towards Open Government Metadata', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $solution->get('field_is_owner'));
@@ -212,7 +212,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Ignacio Boixo'], $solution->get('field_is_contact_information'));
 $this->assertContains('XBRL+Taxonomy+v2.0.0.pdf', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'European Banking Authority',
 ], $solution->get('field_is_owner'));
@@ -239,7 +239,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['Romain Loth'], $solution->get('field_is_contact_information'));
 $this->assertContains('EU capital requirements regime.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'European Banking Authority',
 ], $solution->get('field_is_owner'));
@@ -264,7 +264,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertContains('validation purposes.', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'World Wide Web Consortium',
 ], $solution->get('field_is_owner'));
@@ -291,7 +291,7 @@ $this->assertReferences(['Open government'], $solution->field_policy_domain);
 $this->assertReferences(['david.naramski@nowina.lu'], $solution->get('field_is_contact_information'));
 $this->assertContains('release note and support, can be found at:', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertTrue($solution->get('field_is_owner')->isEmpty());
 $this->assertTrue($solution->get('field_status')->isEmpty());
 $this->assertEquals('validated', $solution->field_is_state->value);
