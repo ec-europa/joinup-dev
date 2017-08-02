@@ -18,7 +18,7 @@ settings:
   allowed_values:
     -
       value: 0
-      label: 'Only collection facilitators can create new content'
+      label: 'Only solution facilitators can create new content'
     -
       # Keep the value to 2 to be generically handled along with the collection's corresponding field.
       value: 2
