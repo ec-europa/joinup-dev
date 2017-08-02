@@ -14,4 +14,4 @@ Feature: Multilingual search
       | spatial coverage | Belgium                      |
       | state            | validated                    |
     When I go to the "Molecular cooking collection" collection
-    Then I should see 2 tiles
+    Then I should see 1 tile
