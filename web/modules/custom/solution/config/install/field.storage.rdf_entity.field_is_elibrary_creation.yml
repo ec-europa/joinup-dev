@@ -20,9 +20,7 @@ settings:
       value: 0
       label: 'Only collection facilitators can create new content'
     -
-      value: 1
-      label: 'Only members can create new content'
-    -
+      # Keep the value to 2 to be generically handled along with the collection's corresponding field.
       value: 2
       label: 'Any registered user can create new content'
   allowed_values_function: ''
