@@ -17,7 +17,7 @@
   Drupal.theme.sharedContentCue = function (collection) {
     var label = Drupal.t('Shared from @collection', { '@collection': collection });
 
-    return '<div class="listing__stat" title="' + label + '"><div class="listing__icon icon icon--shared"></div></div>'
+    return '<div class="listing__stat" title="' + label + '"><div class="listing__icon icon icon--shared"></div></div>';
   };
 
   /**
@@ -47,7 +47,7 @@
           return;
         }
 
-        $(this).find('.listing__stats').append(Drupal.theme('sharedContentCue', $this.data('drupal-parent-label')));
+        $this.find('.listing__stats').append(Drupal.theme('sharedContentCue', $this.data('drupal-parent-label')));
       });
     }
   };
