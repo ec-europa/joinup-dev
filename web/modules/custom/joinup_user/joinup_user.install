@@ -60,9 +60,9 @@ function joinup_user_install() {
 
   $directory = \Drupal::service('file_system')->realpath(drupal_get_path('module', 'joinup_user') . '/includes');
   $file_name = 'user_icon.png';
-  $file_path = $directory . '/' .$file_name;
+  $file_path = $directory . '/' . $file_name;
   $internal_path = "public://default_images";
-  if (is_file($file_path) && file_prepare_directory($internal_path, FILE_CREATE_DIRECTORY|FILE_MODIFY_PERMISSIONS)) {
+  if (is_file($file_path) && file_prepare_directory($internal_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
     $file_path = file_unmanaged_copy($file_path, $internal_path, FILE_EXISTS_REPLACE);
   }
   $file = File::create(['uri' => $file_path]);
