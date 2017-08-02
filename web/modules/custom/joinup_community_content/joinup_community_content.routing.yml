@@ -21,3 +21,27 @@ joinup_community_content.unshare_content_form:
     parameters:
       node:
         type: entity:node
+
+joinup_community_content.pin_content:
+  path: '/pin/{node}'
+  defaults:
+    _controller: '\Drupal\joinup_community_content\Controller\PinContentController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::pinAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+joinup_community_content.unpin_content:
+  path: '/unpin/{node}'
+  defaults:
+    _controller: '\Drupal\joinup_community_content\Controller\PinContentController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::unpinAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
