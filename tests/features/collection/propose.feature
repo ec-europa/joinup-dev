@@ -38,6 +38,7 @@ Feature: Proposing a collection
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
+    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
