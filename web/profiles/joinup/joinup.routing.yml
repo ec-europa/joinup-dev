@@ -26,3 +26,10 @@ joinup.collection_tca_form:
     _title: 'Why create a Collection?'
   requirements:
     _permission: 'propose collection rdf entity'
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
+  requirements:
+    _access: 'TRUE'

@@ -821,6 +821,25 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Count the tiles on the page.
+   *
+   * @param string $number
+   *   The expected number of tiles.
+   *
+   * @throws \Exception
+   *   Thrown when the expected number of tiles is not found.
+   *
+   * @Then I (should )see :number tile(s)
+   */
+  public function assertTileCount($number) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    $nr_found = count($results);
+    if ($nr_found != $number) {
+      throw new \Exception("Found $nr_found tiles, expected $number");
+    }
+  }
+
+  /**
    * Asserts that there are no tile elements with a certain heading.
    *
    * @param string $heading
