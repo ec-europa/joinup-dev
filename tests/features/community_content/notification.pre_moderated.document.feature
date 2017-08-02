@@ -134,7 +134,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                    |
       | subject   | Joinup: Content has been updated                                                                                                                             |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the document - "CC notify pre approve proposed" in the collection: "CC pre collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

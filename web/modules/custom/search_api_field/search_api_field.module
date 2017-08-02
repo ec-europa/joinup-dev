@@ -108,6 +108,7 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
     }
 
     foreach ($pseudo_fields as $name => $region_name) {
+      // Wrap the facet region in a container.
       $build[$name] += [
         '#theme_wrappers' => [
           'container__facet_region__' . $region_name => [
@@ -117,6 +118,9 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
                 'facet-region--' . Html::getClass($region_name),
               ],
             ],
+            // Pass some information about the parent entity and field.
+            '#entity' => $entity,
+            '#field_name' => $field_name,
           ],
         ],
       ];

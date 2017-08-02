@@ -84,7 +84,7 @@
       {{ title_suffix }}
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
+      <p class="listing__teaser">{{ content.body|render|striptags }}</p>
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat is-only-placeholder">

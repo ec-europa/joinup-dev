@@ -1711,12 +1711,33 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Block test execution for a given time.
+   * Waits for a few moments to bypass spam bot validation.
    *
-   * @Then I wait :seconds seconds
+   * The Honeypot module is intended to block spam bots and detect if actual
+   * humans are entering forms. One of its checks is that it assumes a human
+   * takes at least 5 seconds to fill in a form.
+   *
+   * Use this on forms that are protected by Honeypot before submitting the
+   * form.
+   *
+   * @Then I wait for the honeypot validation to pass
    */
-  public function iWaitSeconds($seconds) {
-    sleep($seconds);
+  public function iWaitForHoneypot() {
+    sleep(5);
+  }
+
+  /**
+   * Wait until a running batch job has finished.
+   *
+   * This will periodically check if the progress bar is still visible on the
+   * page. When this is no longer shown, it means that the batch process either
+   * finished or failed.
+   *
+   * @Given I wait for the batch job to finish
+   */
+  public function iWaitForTheBatchJobToFinish() {
+    // The progress bar has the CSS ID '#updateprogress'.
+    $this->getSession()->wait(180000, 'jQuery("#updateprogress").length === 0');
   }
 
   /**
