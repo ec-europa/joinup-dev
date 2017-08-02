@@ -261,7 +261,7 @@ function joinup_theme_preprocess_page(&$variables) {
       $rdf_type = $entity->getType();
     }
 
-    if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution' ])) {
+    if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'])) {
       unset($variables['page']['content']['pagetitle']);
     }
   }
