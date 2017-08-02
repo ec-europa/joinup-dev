@@ -37,9 +37,9 @@
         return;
       }
 
-      $(context).find('[data-drupal-shared-from-id]').once('shared-cue').each(function () {
+      $(context).find('[data-drupal-parent-id]').once('shared-cue').each(function () {
         var $this = $(this);
-        var parent = $this.data('drupal-shared-from-id');
+        var parent = $this.data('drupal-parent-id');
 
         // If the content comes from the current global collection context,
         // do not add any cue.
@@ -47,7 +47,7 @@
           return;
         }
 
-        $(this).find('.listing__stats').append(Drupal.theme('sharedContentCue', $this.data('drupal-shared-from-label')));
+        $(this).find('.listing__stats').append(Drupal.theme('sharedContentCue', $this.data('drupal-parent-label')));
       });
     }
   };
