@@ -10,6 +10,10 @@ Feature: "Add solution" visibility options.
       | logo  | logo.png                 |
       | state | validated                |
 
+    When I am logged in as a moderator
+    And I go to the homepage of the "Collection solution test" collection
+    Then I should see the link "Add solution"
+
     When I am logged in as a "facilitator" of the "Collection solution test" collection
     And I go to the homepage of the "Collection solution test" collection
     Then I should see the link "Add solution"
