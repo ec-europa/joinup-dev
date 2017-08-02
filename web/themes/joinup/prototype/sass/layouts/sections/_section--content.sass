@@ -17,7 +17,6 @@
     margin: 40px 60px
 
 .page__content
-  min-height: min-content
   padding: 20px
   background-color: #fff
   +breakpoint(tablet)
@@ -27,11 +26,6 @@
   @media print
     padding: 0
     padding-bottom: 20px
-
-.page__content-image
-  img
-    max-width: 100%
-    height: auto
 
 // Modifiers
 // --------------------------------------------------
@@ -52,3 +46,9 @@
 .page__title-wrapper
   @media print
     margin: 0
+
+.page__content
+  img
+    max-width: 100%
+    height: auto
+
