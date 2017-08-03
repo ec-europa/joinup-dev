@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Pinning content inside collections
   As a facilitator of a collection
   I want to pin content at the top of the collection homepage
@@ -80,8 +80,70 @@ Feature: Pinning content inside collections
       | Very important              |
 
     Examples:
-      | content type | label |
-      | event        | Event |
+      | content type | label      |
+      | event        | Event      |
       | document     | Document   |
       | discussion   | Discussion |
       | news         | News       |
+
+  @javascript
+  Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
+    Given the following collections:
+      | title             | state     |
+      | Gloomy Lantern    | validated |
+      | Digital scarecrow | validated |
+    And <content type> content:
+      | title         | collection     | state     | sticky | shared in         |
+      | Lantern FAQs  | Gloomy Lantern | validated | 1      | Digital scarecrow |
+      | Lantern terms | Gloomy Lantern | validated | 0      |                   |
+
+    When I go to the homepage of the "Gloomy Lantern" collection
+    Then the "Lantern FAQs" tile should be marked as pinned
+    But the "Lantern terms" tile should not be marked as pinned
+
+    # When shared in other collection, content shouldn't show the pin icon.
+    When I go to the homepage of the "Digital scarecrow" collection
+    Then the "Lantern FAQs" tile should not be marked as pinned
+
+    When I am at "/search"
+    Then the "Lantern FAQs" tile should not be marked as pinned
+
+    # Verify that changes in the pinned state are reflected to the tile.
+    When I am logged in as a facilitator of the "Gloomy Lantern" collection
+    When I go to the homepage of the "Gloomy Lantern" collection
+    Then the "Lantern FAQs" tile should be marked as pinned
+    But the "Lantern terms" tile should not be marked as pinned
+
+    When I click the contextual link "Pin" in the "Lantern terms" tile
+    Then the "Lantern terms" tile should be marked as pinned
+    And the "Lantern FAQs" tile should be marked as pinned
+
+    When I click the contextual link "Unpin" in the "Lantern FAQs" tile
+    Then the "Lantern FAQs" tile should not be marked as pinned
+    And the "Lantern terms" tile should be marked as pinned
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
+
+  Scenario Outline: Content cannot be pinned inside solutions.
+    Given the following solution:
+      | title | Space Silver |
+      | state | validated    |
+    And <content type> content:
+      | title        | solution     | state     |
+      | To be pinned | Space Silver | validated |
+
+    When I am logged in as a facilitator of the "Space Silver" solution
+    And I go to the homepage of the "Space Silver" solution
+    Then I should not see the contextual link "Pin" in the "To be pinned" tile
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
