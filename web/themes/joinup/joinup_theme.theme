@@ -126,6 +126,19 @@ function _joinup_navy_blue_header_routes() {
 }
 
 /**
+ * Get a list of routes which should have blue header, but they are not forms.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_not_forms_routes() {
+  return [
+    'node.add_page',
+    'rdf_entity.rdf_add_page',
+  ];
+}
+
+/**
  * Get a list of overview page routes.
  *
  * @return array
@@ -214,6 +227,7 @@ function joinup_theme_preprocess_page(&$variables) {
   $blue_header_routes = _joinup_blue_header_routes();
   $navy_header_routes = _joinup_navy_blue_header_routes();
   $other_forms = _joinup_non_blue_header_routes();
+  $not_forms = _joinup_not_forms_routes();
 
   if (!empty($route_name)) {
     if (in_array($route_name, $other_forms)) {
@@ -240,6 +254,12 @@ function joinup_theme_preprocess_page(&$variables) {
   if ($form_meta['has_tabs']) {
     $variables['has_vertical_tabs'] = TRUE;
     $is_form_container = TRUE;
+  }
+
+  // Check if it is add content or rdf overview page.
+  // It needs to be called after other checks.
+  if (!empty($route_name) && in_array($route_name, $not_forms)) {
+    $is_form_container = FALSE;
   }
 
   if (isset($variables['is_blue_header'])) {
