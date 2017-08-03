@@ -69,4 +69,42 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     }
   }
 
+  /**
+   * Asserts that a tile is marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as pinned.
+   *
+   * @Then the :tile tile should be marked as pinned
+   */
+  public function assertTileMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is not marked as pinned, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as pinned.
+   *
+   * @Then the :tile tile should not be marked as pinned
+   */
+  public function assertTileNotMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
+    }
+  }
+
 }
