@@ -30,8 +30,7 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   public function assertTileNotMarkedAsShared($heading) {
     $element = $this->getTileByHeading($heading);
 
-    $share = $element->find('css', '.icon--shared');
-    if ($share) {
+    if ($element->find('css', '.icon--shared')) {
       throw new \Exception("The tile '$heading' is marked as shared, but it shouldn't be.");
     }
   }
