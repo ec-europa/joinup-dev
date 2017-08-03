@@ -50,7 +50,7 @@ $this->assertReferences([
 $this->assertReferences(['eProcurement'], $solution->field_policy_domain);
 $this->assertContains('eSENS eDelivery', $solution->field_is_description->value);
 $this->assertEquals('content_editor', $solution->field_is_description->format);
-$this->assertEquals(1, $solution->field_is_elibrary_creation->value);
+$this->assertEquals(0, $solution->field_is_elibrary_creation->value);
 $this->assertReferences([
   'Dark Side of The Force',
 ], $solution->get('field_is_owner'));
