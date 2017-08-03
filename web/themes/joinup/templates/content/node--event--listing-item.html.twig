@@ -86,9 +86,11 @@
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {{ title_suffix }}
     </div>
+    {% if view_mode == 'view_mode_featured' %}
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body }}</p>
+      <p class="listing__teaser">{{ content.body|render|striptags }}</p>
     </div>
+    {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
         <span class="listing__text">{{ content.field_event_date }}</span>

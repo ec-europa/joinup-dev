@@ -208,6 +208,7 @@ trait TraversingTrait {
    */
   protected static function getFacetIdFromAlias($alias) {
     $mappings = [
+      'collection type' => 'collection_type',
       'collection policy domain' => 'collection_policy_domain',
       'from' => 'group',
       'policy domain' => 'policy_domain',

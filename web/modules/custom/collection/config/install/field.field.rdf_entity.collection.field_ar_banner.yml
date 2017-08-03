@@ -11,7 +11,7 @@ field_name: field_ar_banner
 entity_type: rdf_entity
 bundle: collection
 label: Banner
-description: ''
+description: 'For best result the image must be larger than 2400x770 pixels.'
 required: false
 translatable: false
 default_value: {  }
@@ -21,7 +21,7 @@ settings:
   file_extensions: 'png jpg jpeg'
   max_filesize: '3 MB'
   max_resolution: ''
-  min_resolution: 2400x770
+  min_resolution: ''
   alt_field: false
   alt_field_required: true
   title_field: false

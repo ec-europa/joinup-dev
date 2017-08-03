@@ -18,15 +18,16 @@
     <div class="listing__field">
       <h2 class="listing__title">{{ label }}</h2>
     </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_is_description }}</p>
+    {% if view_mode == 'view_mode_featured' %}
+      <div class="listing__field">
+        <p class="listing__teaser">{{ content.field_is_description|render|striptags }}</p>
       </div>
-      <div class="listing__field listing__stats mdl-card__actions">
-        {#todo: Stats are only placeholder #}
-        <div class="listing__stat is-only-placeholder">
-          <span class="listing__text">22</span>
-          <span class="listing__icon icon icon--like"></span>
-        </div>
+    {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ content.downloads.0 }}</span>
+        <span class="listing__icon icon icon--download"></span>
       </div>
     </div>
   </div>
+</div>
