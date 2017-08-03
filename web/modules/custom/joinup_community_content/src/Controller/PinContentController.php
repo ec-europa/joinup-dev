@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -100,6 +101,9 @@ class PinContentController extends ControllerBase {
   /**
    * Access check for the pin route.
    *
+   * A node can be pinned only if it's not pinned, if its bundle is a community
+   * content one and if the user is a facilitator in the parent collection.
+   *
    * @param \Drupal\node\NodeInterface $node
    *   The node entity being pinned.
    * @param \Drupal\Core\Session\AccountInterface $account
@@ -109,11 +113,18 @@ class PinContentController extends ControllerBase {
    *   The access result.
    */
   public function pinAccess(NodeInterface $node, AccountInterface $account) {
-    return AccessResult::allowedIf(!$node->isSticky() && $this->hasFacilitatorRoleInParent($node, $account));
+    return AccessResult::allowedIf(
+      !$node->isSticky() &&
+      in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
+      $this->hasFacilitatorRoleInParent($node, $account)
+    );
   }
 
   /**
    * Access check for the unpin route.
+   *
+   * A node can be unpinned only if it's pinned, if its bundle is a community
+   * content one and if the user is a facilitator in the parent collection.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The node entity being unpinned.
@@ -124,7 +135,11 @@ class PinContentController extends ControllerBase {
    *   The access result.
    */
   public function unpinAccess(NodeInterface $node, AccountInterface $account) {
-    return AccessResult::allowedIf($node->isSticky() && $this->hasFacilitatorRoleInParent($node, $account));
+    return AccessResult::allowedIf(
+      $node->isSticky() &&
+      in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
+      $this->hasFacilitatorRoleInParent($node, $account)
+    );
   }
 
   /**
