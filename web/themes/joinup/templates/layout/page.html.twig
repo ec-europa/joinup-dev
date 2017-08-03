@@ -76,7 +76,7 @@
             </aside>
           {% endif %}
 
-          <div class="section section--main mdl-cell {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing content-container--form' : 'mdl-cell--8-col content-container' }}">
+          <div class="section section--main mdl-cell {{ container_class }} {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing' : 'mdl-cell--8-col' }}">
             {% if page.content_top %}
               <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
                 {{ page.content_top }}
@@ -99,23 +99,11 @@
               </div>
             {% endif %}
           </div>{# /.content-container #}
-        </div>  
+        </div>
       </div>
     </div>{# /.main-container #}
   </main>
 
-  {% if page.footer %}
-    <footer class="section section--footer" role="contentinfo">
-      <div class="main-container">
-        <div class="row">
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell mdl-cell--8-col mdl-cell--2-offset">
-              {{ page.footer }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  {% endif %}
+  {% include directory ~ '/templates/parts/footer.html.twig' %}
 
 </div>{# /.layout-container #}

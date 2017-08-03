@@ -42,6 +42,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected $motivation;
 
   /**
+   * Whether the community content has a published version.
+   *
+   * @var bool
+   */
+  protected $hasPublished;
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -65,11 +72,12 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
       $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
-      $from_state = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : 'draft';
+      $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
       $to_state = $this->entity->get($this->stateField)->first()->value;
       $this->transition = $this->workflow->findTransition($from_state, $to_state);
     }
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
+    $this->hasPublished = $this->hasPublishedVersion($this->entity);
   }
 
   /**
@@ -93,7 +101,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   }
 
   /**
-   * Checks if the event applies for the update operation.
+   * Checks if the event applies for the create operation.
    *
    * @return bool
    *   Whether the event applies.
@@ -240,8 +248,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
-    $arguments = parent::generateArguments($message);
+  protected function generateArguments(EntityInterface $entity) {
+    $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -249,9 +257,10 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
 
     $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
     $arguments['@transition:motivation'] = $motivation;
+    $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($message);
+    $parent = $this->relationManager->getParent($entity);
     if (!empty($parent)) {
       $arguments['@group:title'] = $parent->label();
       $arguments['@group:bundle'] = $parent->bundle();
@@ -275,6 +284,26 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     return $arguments;
+  }
+
+  /**
+   * Checks whether the entity has a published version.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity object.
+   *
+   * @return bool
+   *   Whether the entity has a published version.
+   */
+  protected  function hasPublishedVersion(EntityInterface $entity) {
+    if ($entity->isNew()) {
+      return FALSE;
+    }
+    if ($entity->isPublished()) {
+      return TRUE;
+    }
+    $published = $this->entityTypeManager->getStorage('node')->load($entity->id());
+    return !empty($published) && $published->isPublished();
   }
 
 }

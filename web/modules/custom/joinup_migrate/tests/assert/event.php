@@ -8,12 +8,6 @@
 use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('file__event_logo', 2);
-$this->assertSuccessCount('file__event_logo', 2);
-$this->assertTotalCount('event', 3);
-$this->assertSuccessCount('event', 3);
-
 // Imported content check.
 $event = Node::load(145278);
 $this->assertEquals('Euritas summit 2015: “Innovate, cooperate, take the challenge!”', $event->label());

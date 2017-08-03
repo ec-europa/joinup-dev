@@ -34,6 +34,11 @@
 .sidebar-menu__item
   padding: 0
 
+.sidebar-menu__link--active
+  background-color: #fff
+  border-left-color: $color-orange
+  font-weight: $font-weight-medium
+
 .sidebar-menu__link
   display: block
   padding: 15px 15px 15px 20px
@@ -44,9 +49,8 @@
   &:active,
   &:focus,
   &.is-active
-    background-color: #fff
-    border-left-color: $color-orange
-    font-weight: $font-weight-medium
+    @extend .sidebar-menu__link--active
+
 
 .sidebar-menu
   .icon
@@ -96,3 +100,7 @@
         position: relative
         &.desktop-hidden
           visibility: hidden
+
+.menu-item--active-trail
+  .sidebar-menu__link
+    @extend .sidebar-menu__link--active

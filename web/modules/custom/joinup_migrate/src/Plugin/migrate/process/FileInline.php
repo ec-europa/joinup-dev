@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\process;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
@@ -28,13 +29,12 @@ class FileInline extends ProcessPluginBase {
     $file_storage = \Drupal::entityTypeManager()->getStorage('file');
     $public_dir = \Drupal::service('stream_wrapper.public')->getDirectoryPath();
 
-    $dom = new \DOMDocument();
-    @$dom->loadHTML($value, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    $document = Html::load($value);
     $search = ['img' => 'src', 'a' => 'href'];
     $changed = FALSE;
     foreach ($search as $tag => $attribute) {
       /** @var \DOMElement $element */
-      foreach ($dom->getElementsByTagName($tag) as $element) {
+      foreach ($document->getElementsByTagName($tag) as $element) {
         if ($element->hasAttribute($attribute)) {
           $url = $element->getAttribute($attribute);
           if (preg_match('|^(http[s]?://joinup\.ec\.europa\.eu)?(/sites/default/files/ckeditor_files/(.*))$|', $url, $found)) {
@@ -60,7 +60,7 @@ class FileInline extends ProcessPluginBase {
     }
 
     if ($changed) {
-      $value = $dom->saveHTML();
+      $value = Html::serialize($document);
     }
 
     return $value;
