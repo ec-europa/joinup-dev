@@ -13,9 +13,9 @@ Feature: Pinning content inside collections
       | title                       | collection    | state     |
       | What is the HEX for orange? | Orange Wrench | validated |
     And <content type> content:
-      | title              | collection    | state     | sticky |
-      | Very important     | Orange Wrench | validated | 1      |
-      | Useful information | Orange Wrench | validated | 0      |
+      | title              | collection    | state     | pinned |
+      | Very important     | Orange Wrench | validated | yes    |
+      | Useful information | Orange Wrench | validated | no     |
     And users:
       | Username        | E-mail                      |
       | Rozanne Minett  | rozanne.minett@example.com  |
@@ -93,9 +93,9 @@ Feature: Pinning content inside collections
       | Gloomy Lantern    | validated |
       | Digital scarecrow | validated |
     And <content type> content:
-      | title         | collection     | state     | sticky | shared in         |
-      | Lantern FAQs  | Gloomy Lantern | validated | 1      | Digital scarecrow |
-      | Lantern terms | Gloomy Lantern | validated | 0      |                   |
+      | title         | collection     | state     | pinned | shared in         |
+      | Lantern FAQs  | Gloomy Lantern | validated | yes    | Digital scarecrow |
+      | Lantern terms | Gloomy Lantern | validated | no     |                   |
 
     When I go to the homepage of the "Gloomy Lantern" collection
     Then the "Lantern FAQs" tile should be marked as pinned
