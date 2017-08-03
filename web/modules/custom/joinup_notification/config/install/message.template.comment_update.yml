@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: comment_update
+label: 'Comment update'
+description: 'Sent when a comment is updated.'
+text:
+  -
+    value: '<p>Joinup: A comment has been updated.</p>'
+    format: content_editor
+  -
+    value: '<p>@actor:full_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
