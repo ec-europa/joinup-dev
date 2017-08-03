@@ -139,3 +139,40 @@ Feature: Add distribution through the UI
 
       Given I select the radio button "Upload file"
       Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
+
+    Scenario: Adding a distribution with a duplicate title
+      Given the following solution:
+        | title       | Solubility of gases     |
+        | description | Affected by temperature |
+        | state       | validated               |
+      And the following release:
+        | title         | 1.0.0 Adolf Sieverts |
+        | description   | First public release |
+        | is version of | Solubility of gases  |
+
+      # Distributions should have a unique title within a single release.
+      And I am logged in as a facilitator of the "Solution random x name" solution
+      When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+      And I click "Add distribution" in the plus button menu
+      When I fill in "Title" with "MacOSX binary"
+      And I select "WTFPL" from "License"
+      And I press "Save"
+      Then I should have 1 distribution
+      When I click "Add distribution" in the plus button menu
+      When I fill in "Title" with "MacOSX binary"
+      And I select "WTFPL" from "License"
+      And I press "Save"
+      Then I should see the error message "Content with title MacOSX binary already exists. Please choose a different title."
+      And I should have 1 distribution
+
+      Given I am logged in as a facilitator of the "Solubility of gases" solution
+      When I go to the homepage of the "1.0.0 Adolf Sieverts" release
+      And I click "Add distribution" in the plus button menu
+      When I fill in "Title" with "MacOSX binary"
+      And I select "WTFPL" from "License"
+      And I press "Save"
+      Then I should have 2 distributions
+
+      # Clean up the entities created through the user interface.
+      Then I delete the "MacOSX binary" asset distribution
+      And I delete the "MacOSX binary" asset distribution
