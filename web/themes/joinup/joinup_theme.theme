@@ -1187,15 +1187,8 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'rdf_entity_solution_add_form',
   ];
 
-  if (is_array($form['#theme'])) {
-    if (array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
-      $form['#theme'][] = 'buttons_separated_form';
-    }
-  }
-  else {
-    if (in_array($form['#theme'], $custom_forms) && !in_array($form['#theme'], $tab_forms)) {
-      $form['#theme'][] = 'buttons_separated_form';
-    }
+  if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
+    $form['#theme'][] = 'buttons_separated_form';
   }
 }
 
