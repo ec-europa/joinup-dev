@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab1f5c9b1cfa73c87527fae311f30e07",
+    "content-hash": "79705dda26789ff8745b0fe8050cfffa",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3796,7 +3796,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/social_media_links-8.x-2.5.zip",
-                "reference": null,
+                "reference": "8.x-2.5",
                 "shasum": "b55fa3d5a15ebdb039d77f2a9b3e7a8ee8ffccd2"
             },
             "require": {
@@ -4058,7 +4058,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": "8.x-1.5",
+                "reference": null,
                 "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
             },
             "require": {
@@ -4078,6 +4078,9 @@
                     "version": "8.x-1.x",
                     "datestamp": "1493246342",
                     "package": "Field types"
+                },
+                "patches_applied": {
+                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
