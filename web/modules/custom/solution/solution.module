@@ -70,15 +70,15 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  *
  * This function grants the 'owner' and 'facilitator' roles to the user that
  * creates the solution.
  *
  * @see https://www.w3.org/TR/vocab-adms/#the-adms-domain-model
  */
-function solution_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'solution') {
+function solution_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() !== 'solution') {
     return;
   }
 
@@ -93,12 +93,11 @@ function solution_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = Og::getMembership($entity, $entity->getOwner());
-    if (!empty($membership)) {
-      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
-      $membership->save();
-    }
+    $membership = Og::createMembership($entity, $entity->getOwner());
+    $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+    $membership->save();
   }
+  solution_invalidate_collection($entity);
 }
 
 /**
@@ -490,13 +489,6 @@ function solution_invalidate_collection(EntityInterface $entity) {
     }
     Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_insert().
- */
-function solution_rdf_entity_insert(EntityInterface $entity) {
-  solution_invalidate_collection($entity);
 }
 
 /**
