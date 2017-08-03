@@ -185,15 +185,6 @@ Feature: Navigation menu for custom pages
       | The Slaves of the Mountains |
       | The Slaves of the Sea       |
 
-    When I am not logged in
-    And I go to the homepage of the "Hidden Ship" collection
-    And I click "The Burning Angel" in the "Navigation menu block" region
-    Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores    |
-      | Snake of Pleasure           |
-      | The Slaves of the Mountains |
-      | The Slaves of the Sea       |
-
     # Disabled links should not be shown in the sub pages menu.
     When I am logged in as a facilitator of the "Hidden Ship" collection
     And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
