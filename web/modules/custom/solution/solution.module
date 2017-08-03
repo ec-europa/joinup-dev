@@ -84,7 +84,7 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
 
   // When a new solution is created, give the current user the 'group owner'
   // role, if it is not the anonymous user.
-  if (!empty($entity->getOwner())) {
+  if (!empty($entity->getOwner()) && !$entity->getOwner()->isAnonymous()) {
     // The group owner inherits all roles of a solution facilitator and
     // administrator.
     $roles = [

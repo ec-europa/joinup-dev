@@ -155,7 +155,7 @@ function collection_rdf_entity_insert(EntityInterface $entity) {
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !empty($entity->getOwner())) {
+  if (!empty($entity->getOwner()) && !$entity->getOwner()->isAnonymous()) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
