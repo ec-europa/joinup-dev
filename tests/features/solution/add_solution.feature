@@ -41,10 +41,15 @@ Feature: "Add solution" visibility options.
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
     And the following fields should not be present "Groups audience, Other groups, Current workflow state, Langcode, Translation, Motivation"
+    # Regression test for ensuring that obsolete eLibrary value is removed.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
+    And I should not see the text "Only members can create new content"
+    And I should see the text "Only solution facilitators can create new content"
     # The TRR fieldgroup should only be visible inside the TRR collection.
     And I should not see the text "TRR"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
+    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
     And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View" option groups
     When I fill in the following:
       | Title            | Espresso is the solution                                      |

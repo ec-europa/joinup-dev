@@ -7,10 +7,3 @@ type: module
 
 dependencies:
   - og_comment
-
-config_devel:
-  - message.template.comment_deletion
-  - field.field.message.comment_deletion.field_page
-  - field.field.message.comment_deletion.field_comment_text
-  - field.storage.message.field_comment_text
-  - field.storage.message.field_page

@@ -26,7 +26,7 @@ textarea
 .messages
   background-image: none
 
-/* Fix wrapper width in forms with vertical tabs.
+// Fix wrapper width in forms with vertical tabs.
 .field-group-tabs-wrapper
   width: 100%
 
@@ -183,5 +183,38 @@ form .description
       +icon-size(15px)
       content: '\e617'
 
+// Prevent overlaping contextal button and local tasks button.
 .section--featured .contextual
   top: 50px
+
+// Additional styling for dropbutton.
+.dropbutton-action
+  .button
+    margin: 0
+  &.secondary-action
+    position: absolute
+    white-space: nowrap
+    .button
+      margin-top: 5px
+
+.dropbutton-widget
+  .dropbutton
+    overflow: visible !important
+
+.dropbutton-toggle
+  .dropbutton-arrow
+    color: #fff
+
+.dropbutton-multiple
+  &.open
+    .dropbutton-arrow
+      top: 40% !important
+  .dropbutton-widget
+    padding-right: 0 !important
+
+.dropbutton-wrapper
+  width: auto !important
+
+.form__actions_inner
+  .dropbutton-multiple
+    @extend .button-inline
