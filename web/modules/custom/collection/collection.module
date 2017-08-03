@@ -165,11 +165,9 @@ function collection_rdf_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = Og::getMembership($entity, $entity->getOwner());
-    if (!empty($membership)) {
-      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
-      $membership->save();
-    }
+    $membership = Og::createMembership($entity, $entity->getOwner());
+    $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+    $membership->save();
   }
 }
 

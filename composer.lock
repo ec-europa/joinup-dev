@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab1f5c9b1cfa73c87527fae311f30e07",
+    "content-hash": "89fca4cc64b378a312b4a4c1d1299979",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3022,18 +3022,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "6f2d808b1904d894fcdb6f2f0f3612863454250b"
+                "reference": "93cf1e15c1c72b17484445af98a9cf72af594735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/6f2d808b1904d894fcdb6f2f0f3612863454250b",
-                "reference": "6f2d808b1904d894fcdb6f2f0f3612863454250b",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/93cf1e15c1c72b17484445af98a9cf72af594735",
+                "reference": "93cf1e15c1c72b17484445af98a9cf72af594735",
                 "shasum": ""
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -3044,7 +3049,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-07-20 09:55:16"
+            "time": "2017-07-25 08:45:02"
         },
         {
             "name": "drupal/og_menu",
@@ -3796,7 +3801,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/social_media_links-8.x-2.5.zip",
-                "reference": null,
+                "reference": "8.x-2.5",
                 "shasum": "b55fa3d5a15ebdb039d77f2a9b3e7a8ee8ffccd2"
             },
             "require": {
@@ -4232,7 +4237,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupr?",
+                    "name": "Antoine Beaupré",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4240,7 +4245,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara?a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4922,7 +4927,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch?nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5008,7 +5013,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26 17:09:44"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6649,7 +6654,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran?ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9685,7 +9690,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9742,7 +9747,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
