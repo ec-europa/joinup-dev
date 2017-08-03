@@ -72,7 +72,8 @@ function asset_release_rdf_entity_update(EntityInterface $entity) {
         ->set('field_isr_owner', $entity->get('field_is_owner')->getValue());
       // Do not send emails for this change.
       $release->skip_notification = TRUE;
-      $release->save();unset($release->skip_notification);
+      $release->save();
+      unset($release->skip_notification);
     }
   }
 }
