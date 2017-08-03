@@ -127,7 +127,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     // returning an empty array here and using proper cache context and tags to
     // invalidate it.
     if (empty($child_links)) {
-      return $build;
+      return [];
     }
     foreach ($child_links as $link) {
       $parameters = $link->getUrlObject()->getRouteParameters();
