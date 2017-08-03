@@ -116,7 +116,7 @@ class PinContentController extends ControllerBase {
     return AccessResult::allowedIf(
       !$node->isSticky() &&
       in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
-      $this->hasFacilitatorRoleInParent($node, $account)
+      $this->isFacilitatorInParentCollection($node, $account)
     );
   }
 
@@ -138,12 +138,12 @@ class PinContentController extends ControllerBase {
     return AccessResult::allowedIf(
       $node->isSticky() &&
       in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
-      $this->hasFacilitatorRoleInParent($node, $account)
+      $this->isFacilitatorInParentCollection($node, $account)
     );
   }
 
   /**
-   * Checks if a user has the facilitator role in the parent entity of the node.
+   * Checks if a user has facilitator role in the parent collection of a node.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The node entity.
@@ -153,10 +153,10 @@ class PinContentController extends ControllerBase {
    * @return bool
    *   True if the user has the facilitator role in the parent of the node.
    */
-  protected function hasFacilitatorRoleInParent(NodeInterface $node, AccountInterface $account) {
+  protected function isFacilitatorInParentCollection(NodeInterface $node, AccountInterface $account) {
     $collection = $this->relationManager->getParent($node);
 
-    if (!$collection) {
+    if (!$collection || $collection->bundle() !== 'collection') {
       return FALSE;
     }
 
