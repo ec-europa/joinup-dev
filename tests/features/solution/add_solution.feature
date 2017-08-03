@@ -173,6 +173,7 @@ Feature: "Add solution" visibility options.
       | title             | Climate change tracker                            |
       | description       | Atlantic salmon arrived after the Little Ice Age. |
       | collection        | Ocean studies                                     |
+      | state             | validated                                         |
 
     # No two solutions with the same name may be created in the same collection.
     Given I am logged in as a member of the "Ocean studies" collection

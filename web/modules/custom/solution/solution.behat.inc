@@ -160,7 +160,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | webdav url          | http://joinup.eu/solution/foobar/webdav |
    * | wiki                | http://example.wiki/foobar/wiki         |
    *
-   * Fields title, description and elibrary creation are required.
+   * Fields "title", "description" and "state" are required.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
