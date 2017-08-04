@@ -37,12 +37,13 @@ Feature:
 
   @javascript
   Scenario: A moderator deletes a user.
+    When I maximize the browser window
     When all e-mails have been sent
     And I am logged in as a moderator
     And I click "People"
     And I click "alicia__1997"
-    And I click "Edit" in the "Entity actions" region
-    And I press "Cancel account"
+    And I open the "local-tasks-primary" MDL dropdown
+    And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And I wait for the batch job to finish
     And the following system email should have been sent:
@@ -55,8 +56,8 @@ Feature:
     When I am logged in as "alicia__1997"
     And all e-mails have been sent
     And I visit "/user"
-    And I click "Edit" in the "Entity actions" region
-    And I press "Cancel account"
+    And I open the "local-tasks-primary" MDL dropdown
+    And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                           |
