@@ -169,6 +169,7 @@ Feature: "Add solution" visibility options.
     But I should not see the button "Request deletion"
     And I should not see the button "Update"
 
+  @terms
   Scenario: Create a solution with a name that already exists
     Given the following collections:
       | title              | state     |
@@ -179,6 +180,9 @@ Feature: "Add solution" visibility options.
       | description       | Atlantic salmon arrived after the Little Ice Age. |
       | collection        | Ocean studies                                     |
       | state             | validated                                         |
+    And the following owner:
+      | name                | type                             |
+      | University of Basel | Academia/Scientific organisation |
 
     # No two solutions with the same name may be created in the same collection.
     Given I am logged in as a member of the "Ocean studies" collection
