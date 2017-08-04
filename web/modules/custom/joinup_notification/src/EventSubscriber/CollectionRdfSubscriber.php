@@ -479,8 +479,8 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
-    $arguments = parent::generateArguments($message);
+  protected function generateArguments(EntityInterface $entity) {
+    $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -488,7 +488,7 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     $arguments['@transition:motivation'] = $motivation;
 
     if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($message, $actor);
+      $membership = $this->membershipManager->getMembership($entity, $actor);
       if (!empty($membership)) {
         $role_names = array_map(function (OgRoleInterface $og_role) {
           return $og_role->getName();
