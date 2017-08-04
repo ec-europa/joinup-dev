@@ -79,10 +79,10 @@ Feature: Solution membership administration
       | subject   | Your role has been change to The Missing Sons                                             |
       | body      | A solution moderator has changed your role in this group to Member, Solution facilitator. |
     Then I check the box "Update the member Marcia Garcia"
-    Then I select "Remove the Solution facilitator role from the selected members" from "Action"
+    Then I select "Remove the facilitator role from the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
-      | Remove the Solution facilitator role from the selected members was applied to 1 item. |
+      | Remove the facilitator role from the selected members was applied to 1 item. |
     And the following system email should have been sent:
       | recipient | Marcia Garcia                                                       |
       | subject   | Your role has been change to The Missing Sons                       |
