@@ -1177,6 +1177,33 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Opens a specific MDL dropdown menu on JS-enabled browsers.
+   * A single ID target should be re-usable for every MDL dropdown,
+   * as each dropdown of that type must have a unique ID.
+   *
+   * @When I open the :dropdown_id MDL dropdown
+   */
+  public function iOpenTheMdlDropdown($dropdown_id) {
+    //*[@id="local-tasks-primary"]
+    $xpath = '//*[@id="' . $dropdown_id . '"]';
+
+    if ($this->browserSupportsJavascript()) {
+      $driver = $this->getSession()->getDriver();
+      $this->getSession()->getDriver()->click($xpath);
+
+      // Wait for the menu opening animation to end before continuing.
+      $end = microtime(TRUE) + 5;
+      do {
+        usleep(100000);
+        // The plus button opening animation runs from the top right to the
+        // bottom left. Wait for the last element to become visible to ensure
+        // the menu is fully opened.
+      } while (microtime(TRUE) < $end && !$driver->isVisible($xpath));
+    }
+  }
+
+
+  /**
    * Asserts that the plus button menu is empty.
    *
    * @When the plus button menu should be empty
