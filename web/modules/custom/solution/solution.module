@@ -61,6 +61,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setDescription(t('The collections this solution belongs to.'))
     ->setTranslatable(FALSE)
     ->setTargetEntityTypeId('rdf_entity')
+    ->setSetting('target_type', 'rdf_entity')
     ->setComputed(TRUE)
     ->setReadOnly(TRUE);
 
