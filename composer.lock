@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab1f5c9b1cfa73c87527fae311f30e07",
+    "content-hash": "ab3417a905f48a4e62e4d4605bd7d9f6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2528,7 +2528,8 @@
                     "datestamp": "1499090343"
                 },
                 "patches_applied": {
-                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
+                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch",
+                    "Critical error thrown when creating a new revision of an entity @see https://www.drupal.org/node/2899697": "https://www.drupal.org/files/issues/2899697-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2901,14 +2902,6 @@
                 "GPL-2.0+"
             ],
             "authors": [
-                {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -4232,7 +4225,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupr?",
+                    "name": "Antoine Beaupré",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4240,7 +4233,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara?a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4922,7 +4915,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch?nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5008,7 +5001,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26 17:09:44"
+            "time": "2016-04-20 05:45:29"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5535,7 +5528,6 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -5546,6 +5538,10 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
+            "support": {
+                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
+                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
+            },
             "time": "2017-07-17 09:33:42"
         },
         {
@@ -6649,7 +6645,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran?ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9685,7 +9681,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9742,7 +9738,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder?n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
