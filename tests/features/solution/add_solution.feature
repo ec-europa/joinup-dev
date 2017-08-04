@@ -122,6 +122,7 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     Then I should see the heading "Belgian barista's"
     And I should see the link "Espresso is the solution"
+    # The proposed solution should not be visible since it's not yet validated.
     But I should not see the link "V60 filter coffee solution"
 
     When I visit "/user"
