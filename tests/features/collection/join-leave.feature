@@ -63,7 +63,9 @@ Feature: Joining and leaving collections through the web interface
 
     # Check that both users can leave their respective collections.
     When I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
+    And I should see the text "By leaving the collection you will be no longer able to publish content in it and to receive notification about the content you published."
+    And I should see the text "In any case you will continue to have access to all the Collection's contents and in whenever you want you will be able to join the collection again."
     And I should not see the link "Leave this collection"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
@@ -73,7 +75,7 @@ Feature: Joining and leaving collections through the web interface
     When I am logged in as "Madame Sharn"
     And I go to the homepage of the "Überwaldean Land Eels" collection
     And I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
@@ -87,7 +89,7 @@ Feature: Joining and leaving collections through the web interface
     Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
     And I go to the homepage of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
+    Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
