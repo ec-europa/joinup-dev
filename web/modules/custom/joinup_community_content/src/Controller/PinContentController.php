@@ -9,7 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\node\NodeInterface;
-use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,11 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PinContentController extends ControllerBase {
 
   /**
-   * The OG membership manager service.
+   * The OG access service.
    *
-   * @var \Drupal\og\MembershipManagerInterface
+   * @var \Drupal\og\OgAccessInterface
    */
-  protected $membershipManager;
+  protected $ogAccess;
 
   /**
    * The Joinup relation manager.
@@ -36,12 +36,12 @@ class PinContentController extends ControllerBase {
    *
    * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
    *   The Joinup relation manager.
-   * @param \Drupal\og\MembershipManagerInterface $membershipManager
-   *   The OG membership manager service.
+   * @param \Drupal\og\OgAccessInterface $ogAccess
+   *   The OG access service.
    */
-  public function __construct(JoinupRelationManager $relationManager, MembershipManagerInterface $membershipManager) {
+  public function __construct(JoinupRelationManager $relationManager, OgAccessInterface $ogAccess) {
     $this->relationManager = $relationManager;
-    $this->membershipManager = $membershipManager;
+    $this->ogAccess = $ogAccess;
   }
 
   /**
@@ -50,7 +50,7 @@ class PinContentController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('joinup_core.relations_manager'),
-      $container->get('og.membership_manager')
+      $container->get('og.access')
     );
   }
 
@@ -111,11 +111,14 @@ class PinContentController extends ControllerBase {
    *   The access result.
    */
   public function pinAccess(NodeInterface $node, AccountInterface $account) {
+    $collection = $this->relationManager->getParent($node);
+
     return AccessResult::allowedIf(
+      !empty($collection) &&
+      $collection->bundle() === 'collection' &&
       !$node->isSticky() &&
-      in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
-      $this->isFacilitatorInParentCollection($node, $account)
-    );
+      in_array($node->bundle(), CommunityContentHelper::getBundles())
+    )->andIf($this->ogAccess->userAccess($collection, 'pin community content', $account));
   }
 
   /**
@@ -133,33 +136,14 @@ class PinContentController extends ControllerBase {
    *   The access result.
    */
   public function unpinAccess(NodeInterface $node, AccountInterface $account) {
-    return AccessResult::allowedIf(
-      $node->isSticky() &&
-      in_array($node->bundle(), CommunityContentHelper::getBundles()) &&
-      $this->isFacilitatorInParentCollection($node, $account)
-    );
-  }
-
-  /**
-   * Checks if a user has facilitator role in the parent collection of a node.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account to check the OG role for.
-   *
-   * @return bool
-   *   True if the user has the facilitator role in the parent of the node.
-   */
-  protected function isFacilitatorInParentCollection(NodeInterface $node, AccountInterface $account) {
     $collection = $this->relationManager->getParent($node);
 
-    if (!$collection || $collection->bundle() !== 'collection') {
-      return FALSE;
-    }
-
-    $membership = $this->membershipManager->getMembership($collection, $account);
-    return !empty($membership) && $membership->hasRole('rdf_entity-collection-facilitator');
+    return AccessResult::allowedIf(
+      !empty($collection) &&
+      $collection->bundle() === 'collection' &&
+      $node->isSticky() &&
+      in_array($node->bundle(), CommunityContentHelper::getBundles())
+    )->andIf($this->ogAccess->userAccess($collection, 'unpin community content', $account));
   }
 
   /**
