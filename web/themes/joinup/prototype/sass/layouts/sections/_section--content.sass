@@ -17,12 +17,9 @@
     margin: 40px 60px
 
 .page__content
-  padding: 20px
-  background-color: #fff
-  +breakpoint(tablet)
-    padding: 40px 30px
-  +breakpoint(desktop)
-    padding: 40px 60px
+  img
+    max-width: 100%
+    height: auto
   @media print
     padding: 0
     padding-bottom: 20px
@@ -47,8 +44,6 @@
   @media print
     margin: 0
 
-.page__content
-  img
-    max-width: 100%
-    height: auto
-
+.content-container--default
+  .page__content
+    @extend .white-box
