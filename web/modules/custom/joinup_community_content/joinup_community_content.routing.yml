@@ -23,7 +23,7 @@ joinup_community_content.unshare_content_form:
         type: entity:node
 
 joinup_community_content.pin_content:
-  path: '/pin/{node}'
+  path: '/node/{node}/pin'
   defaults:
     _controller: '\Drupal\joinup_community_content\Controller\PinContentController::pin'
     _title: 'Pin'
@@ -35,7 +35,7 @@ joinup_community_content.pin_content:
         type: entity:node
 
 joinup_community_content.unpin_content:
-  path: '/unpin/{node}'
+  path: '/node/{node}/unpin'
   defaults:
     _controller: '\Drupal\joinup_community_content\Controller\PinContentController::unpin'
     _title: 'Unpin'
