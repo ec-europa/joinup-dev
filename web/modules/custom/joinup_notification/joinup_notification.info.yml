@@ -32,3 +32,8 @@ config_devel:
   - message.template.col_propose_edit_own
   - message.template.col_propose_new
   - message.template.col_req_arch_del
+  - message.template.comment_create
+  - message.template.comment_update
+  - message.template.comment_delete
+  - message.template.og_membership_decision
+  - message.template.og_membership_request

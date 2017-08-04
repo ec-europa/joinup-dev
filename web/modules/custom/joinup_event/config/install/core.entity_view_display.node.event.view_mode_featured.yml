@@ -27,6 +27,7 @@ dependencies:
     - image.style.vertical_medium_image
     - node.type.event
   module:
+    - datetime_range
     - ds
     - image
     - text
@@ -51,6 +52,25 @@ content:
             lb-col: false
             classes: {  }
     region: content
+  field_event_date:
+    type: daterange_default
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: date_only
+      separator: '-'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_event_logo:
     weight: 1
     label: hidden
@@ -81,7 +101,6 @@ hidden:
   field_event_adtl_address_info: true
   field_event_agenda: true
   field_event_contact_email: true
-  field_event_date: true
   field_event_spatial_coverage: true
   field_event_web_url: true
   field_keywords: true

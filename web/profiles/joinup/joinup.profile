@@ -83,6 +83,10 @@ function joinup_entity_type_alter(array &$entity_types) {
   if (!drupal_installation_attempted()) {
     /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
     $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+
+    // Swap the default user cancel form implementation with a custom one that
+    // prevents deleting users when they are the sole owner of a collection.
+    $entity_types['user']->setFormClass('cancel', 'Drupal\joinup\Form\UserCancelForm');
   }
 }
 
@@ -304,5 +308,17 @@ function joinup_views_pre_view(ViewExecutable $view) {
 function joinup_install_tasks_alter(&$tasks, $install_state) {
   $tasks['joinup_remove_simplenews_defaults'] = [
     'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_theme($existing, $type, $theme, $path) {
+  return [
+    'joinup_legal_notice' => [
+      'variables' => [],
+      'path' => drupal_get_path('profile', 'joinup') . '/templates',
+    ],
   ];
 }

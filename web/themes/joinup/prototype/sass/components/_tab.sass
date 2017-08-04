@@ -17,57 +17,63 @@
   flex-wrap: nowrap
   margin-bottom: 40px
   border-bottom: 1px solid darken($color-grey-light, 5%)
-  +breakpoint(xs)
+  +breakpoint(sm)
     flex-direction: row
     align-items: center
-    margin: 30px 0
+    margin-bottom: 30px
     border-bottom: none
 
 // Modifiers
 // --------------------------------------------------
 .tab--horizontal
-  background-color: $color-grey-light
   border-bottom: 1px solid $color-grey-light
+  background-color: $color-grey-light
   a
-    color: $color-base
     text-decoration: none
+    color: $color-base
     &:hover
       color: $color-orange
 
 .tab--content-type
   position: relative
-  display: flex
   margin-bottom: 20px
-  padding-right: 5px
-  padding-left: 5px
+  padding: 15px 5px
+  text-align: center
   text-decoration: none
   color: $color-base
-  +breakpoint(xs)
+  +breakpoint(sm)
     margin-bottom: 0
+  .tab__content
+    display: inline-flex
+    min-width: 140px
+    margin: 0 auto
   .tab__icon
     color: lighten($color-grey-medium, 10%)
     +icon-size(45px)
   .tab__text
-    margin-bottom: 15px
     margin-left: 15px
+    text-align: left
   .tab__text--upper
     font-size: 32px
     font-weight: $font-weight-bold
     line-height: 1
+    display: block
     margin-bottom: 4px
+  .tab__text--lower
+    display: block
 
 .tab--more
   position: relative
   display: inline-block
   width: 90px
-  margin: 0 auto 15px auto
+  margin: 15px auto 15px auto
   padding-bottom: 10px
   cursor: pointer
   text-align: center
   text-decoration: none
-  +breakpoint(xs)
+  +breakpoint(sm)
     width: auto
-    margin: 0 0 10px 0
+    margin: 0
   .tab__text,
   .tab__icon
     display: inline-block
@@ -111,14 +117,15 @@
     top: 50%
 
 .section--featured-navy-blue
-  .tabs--content-type
-    .tab--content-type
+  .tab--content-type
+    .tab__icon,
+    .tab__text
       color: #fff
-      margin-right: 40px
+    .tab__text--upper
+      font-weight: $font-weight
+    &.is-active
       .tab__icon
         color: #fff
-      .tab__text--upper
-        font-weight: 500
 
 // States
 // --------------------------------------------------

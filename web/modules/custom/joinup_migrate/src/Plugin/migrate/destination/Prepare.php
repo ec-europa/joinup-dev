@@ -90,7 +90,7 @@ class Prepare extends DestinationBase implements MigrateDestinationFastRollbackI
       'contact' => $this->t('Contact'),
       'contact_email' => $this->t('Contact E-mail'),
       'state' => $this->t('State'),
-      'roles' => $this->t('Roles'),
+      'collection_owner' => $this->t('Collection owner'),
       'url' => $this->t('Collection ID as URL'),
     ];
   }
