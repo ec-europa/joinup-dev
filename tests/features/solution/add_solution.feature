@@ -45,6 +45,7 @@ Feature: "Add solution" visibility options.
     And I should not see the text "TRR"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
+    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
     And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View" option groups
     When I fill in the following:
       | Title            | Espresso is the solution                                      |

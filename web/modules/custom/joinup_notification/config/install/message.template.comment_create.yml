@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: comment_create
+label: 'Comment create'
+description: 'Sent when a comment is created.'
+text:
+  -
+    value: '<p>Joinup: A new comment has been created.</p>'
+    format: content_editor
+  -
+    value: '<p>@actor:full_name posted a comment in collection "@group:title".</p><p>To view the comment click <a href="@entity:url">here</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
