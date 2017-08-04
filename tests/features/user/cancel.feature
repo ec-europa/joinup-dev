@@ -37,7 +37,6 @@ Feature:
 
   @javascript
   Scenario: A moderator deletes a user.
-    When I maximize the browser window
     When all e-mails have been sent
     And I am logged in as a moderator
     And I click "People"
