@@ -5,7 +5,6 @@
  * Contains \CustomPageSubContext.
  */
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -260,7 +259,6 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $enabled = (string) ($operation === 'enable');
     $menu_link->set('enabled', $enabled);
     $menu_link->save();
-    Cache::invalidateTags($og_menu_instance->getCacheTagsToInvalidate());
   }
 
   /**
