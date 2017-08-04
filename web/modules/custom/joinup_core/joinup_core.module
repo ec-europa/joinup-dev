@@ -25,7 +25,6 @@ use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
-use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
@@ -758,46 +757,6 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
     // Unset non-english content from the index.
     if ($langcode != 'en') {
       unset($items[$item_id]);
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_load().
- *
- * Actions with IDs like 'og_membership_(add|remove)_single_role_action.*' are
- * created for each OG role name. But a role name can be used in more than one
- * OG role, because the same role name can be configured with different group
- * types and group bundles. Thus an action label should reflect the group
- * context where is used. When loading such an action, we check the group
- * context and we build the correct label for the action.
- */
-function joinup_core_action_load(array $actions) {
-  /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
-  if (!$group = \Drupal::service('og.context')->getGroup()) {
-    return;
-  }
-
-  /** @var \Drupal\system\ActionConfigEntityInterface $action */
-  foreach ($actions as $action_id => $action) {
-    $plugin_id = $action->getPlugin()->getPluginId();
-    if (!in_array($plugin_id, ['og_membership_add_single_role_action', 'og_membership_remove_single_role_action'])) {
-      continue;
-    }
-
-    $og_role_id = implode('-', [
-      $group->getEntityTypeId(),
-      $group->bundle(),
-      $action->get('configuration')['role_name'],
-    ]);
-
-    if ($og_role = OgRole::load($og_role_id)) {
-      if ($plugin_id === 'og_membership_add_single_role_action') {
-        $action->set('label', t('Add the @label role to the selected members', ['@label' => $og_role->label()]));
-      }
-      else {
-        $action->set('label', t('Remove the @label role from the selected members', ['@label' => $og_role->label()]));
-      }
     }
   }
 }
