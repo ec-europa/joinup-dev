@@ -64,8 +64,7 @@ class PinContentController extends ControllerBase {
    *   The redirect response.
    */
   public function pin(NodeInterface $node) {
-    $node->setSticky(TRUE);
-    $node->save();
+    $node->setSticky(TRUE)->save();
 
     drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
       '@bundle' => $node->get('type')->entity->label(),
@@ -86,8 +85,7 @@ class PinContentController extends ControllerBase {
    *   The redirect response.
    */
   public function unpin(NodeInterface $node) {
-    $node->setSticky(FALSE);
-    $node->save();
+    $node->setSticky(FALSE)->save();
 
     drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
       '@bundle' => $node->get('type')->entity->label(),
