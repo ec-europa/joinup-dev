@@ -1,5 +1,5 @@
 joinup_community_content.share_content_form:
-  path: '/share/{node}'
+  path: '/node/{node}/share'
   defaults:
     _form: '\Drupal\joinup_community_content\Form\ShareContentForm'
     _title_callback: '\Drupal\joinup_community_content\Form\ShareContentForm::getTitle'
@@ -11,12 +11,36 @@ joinup_community_content.share_content_form:
         type: entity:node
 
 joinup_community_content.unshare_content_form:
-  path: '/unshare/{node}'
+  path: '/node/{node}/unshare'
   defaults:
     _form: '\Drupal\joinup_community_content\Form\UnshareContentForm'
     _title_callback: '\Drupal\joinup_community_content\Form\UnshareContentForm::getTitle'
   requirements:
     _custom_access: '\Drupal\joinup_community_content\Form\UnshareContentForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+joinup_community_content.pin_content:
+  path: '/node/{node}/pin'
+  defaults:
+    _controller: '\Drupal\joinup_community_content\Controller\PinContentController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::pinAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+joinup_community_content.unpin_content:
+  path: '/node/{node}/unpin'
+  defaults:
+    _controller: '\Drupal\joinup_community_content\Controller\PinContentController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::unpinAccess'
   options:
     parameters:
       node:

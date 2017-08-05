@@ -69,14 +69,13 @@
 #}
 {%
   set classes = [
-    'contextual-region',
     'listing__card',
     'mdl-card',
     view_mode == 'view_mode_tile' ? 'listing__card--detail-container',
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div {{ attributes.setAttribute('class', classes) }}>
+<div {{ attributes.addClass(classes) }}>
   {% if view_mode == 'view_mode_featured' %}
     <div class="listing__image listing__image--default">
       <span class="icon icon--mime-{{ extension }}"></span>
