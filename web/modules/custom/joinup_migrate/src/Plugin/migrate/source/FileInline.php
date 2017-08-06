@@ -50,9 +50,10 @@ class FileInline extends SourcePluginBase implements RedirectImportInterface {
 
     foreach ($this->getInlineFiles() as $file) {
       list($type, $basename) = explode('/', $file, 2);
-      $path = "sites/default/files/ckeditor_files/$file";
-      $rows[$path] = [
-        'fid' => $path,
+      $path = "ckeditor_files/$file";
+      $fid = "sites/default/files/$path";
+      $rows[$fid] = [
+        'fid' => $fid,
         'path' => "$legacy_site_files/$path",
         'timestamp' => $timestamp,
         'uid' => 1,

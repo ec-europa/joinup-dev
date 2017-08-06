@@ -62,6 +62,7 @@ class PolicyDomain extends ProcessPluginBase {
    * Returns the RDF taxonomy term storage.
    *
    * @return \Drupal\rdf_taxonomy\TermRdfStorage
+   *   The RDF taxonomy term storage.
    */
   protected function getTermStorage() {
     if (!isset($this->termStorage)) {
