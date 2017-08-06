@@ -1,0 +1,17 @@
+filter_settings.joinup_video:
+  type: filter
+  label: 'Joinup Video Embed'
+  mapping:
+    allowed_providers:
+      type: sequence
+      label: 'Allowed providers'
+      sequence:
+        # Could be string of integer.
+        type: ignore
+        label: Provider
+    autoplay:
+      type: boolean
+      label: 'Autoplay video'
+    responsive:
+      type: boolean
+      label: Responsive

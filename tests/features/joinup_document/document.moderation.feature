@@ -43,7 +43,7 @@ Feature: Document moderation
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check the box "Moderated"
     Then I press "Publish"
     And I should see the capitalised heading "The Naked Ashes"
@@ -62,7 +62,7 @@ Feature: Document moderation
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check "Closed collection"
     And I wait for AJAX to finish
     And I select "Only members can create new content." from "eLibrary creation"
