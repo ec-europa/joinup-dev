@@ -22,7 +22,6 @@ dependencies:
   module:
     - ds
     - image
-    - text
     - user
 id: user.user.view_mode_tile
 targetEntityType: user
@@ -30,11 +29,11 @@ bundle: user
 mode: view_mode_tile
 content:
   field_user_business_title:
-    type: text_trimmed
+    type: string
     weight: 3
     label: hidden
     settings:
-      trim_length: 200
+      link_to_entity: false
     third_party_settings:
       ds:
         ft:
