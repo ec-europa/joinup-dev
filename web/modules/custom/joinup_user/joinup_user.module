@@ -443,6 +443,18 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 
+  if ($entity->isNew()) {
+    return;
+  }
+
+  /** @var \Drupal\og\OgMembershipInterface $original_membership */
+  $original_membership = $entity->original;
+  // Do not send a notification about changes in the membership if the roles did
+  // not change.
+  if ($entity->getRolesIds() === $original_membership->getRolesIds()) {
+    return;
+  }
+
   /** @var \Drupal\user\Entity\User $account */
   $account = $entity->getUser();
 
