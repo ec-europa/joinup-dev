@@ -156,7 +156,7 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
  */
 function solution_add_form_set_collection($entity_type_id, EntityInterface $entity, array &$form, FormStateInterface $form_state) {
   $collection_id = $form_state->getStorage()['collection'];
-  solution_relate_collection_id($collection_id);
+  $entity->set('collection', [$collection_id]);
 }
 
 /**
