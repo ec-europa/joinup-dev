@@ -282,6 +282,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
 
+    // If a collection is affiliated, update the collection. In ADMS-AP the
+    // reference between a solution and a collection is backwards.
+    if (!empty($values['field_ar_affiliates'])) {
+      foreach ($values['field_ar_affiliates'] as $collection_label) {
+        $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
+        solution_update_collection_affiliation($solution->id(), $collection->id());
+      }
+    }
+
     return $solution;
   }
 
@@ -489,7 +498,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+      'collection' => 'field_ar_affiliates',
     ];
   }
 
