@@ -50,7 +50,7 @@ Feature: Password management
     When I am an anonymous user
     And all e-mails have been sent
     And I am on the homepage
-    And I click "Log in"
+    And I click "Sign in"
     And I click "Reset your password"
     And I fill in "Username or email address" with "Charlie Change"
     And I press the "Submit" button
@@ -59,8 +59,8 @@ Feature: Password management
       | recipient | Charlie Change                                                   |
       | subject   | Please confirm the request of a new password.                    |
       | body      | A new password has been requested for the account Charlie Change |
-    # Click the one time log in url in the email.
-    When I go to the one time log in page of the user "Charlie Change"
+    # Click the one time sign in url in the email.
+    When I go to the one time sign in page of the user "Charlie Change"
     And I fill in "Password" with "1qazxsw@"
     And I fill in "Confirm password" with "1qazxsw@"
     And I press "Save"

@@ -11,24 +11,24 @@ Feature: User login
 
     # Login without keeping the session open.
     When I go to the homepage
-    And I click "Log in"
+    And I click "Sign in"
     And I fill in "Username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Garnett Tyrell"
     When I close and reopen the browser
     And I go to the homepage
-    Then I should see the link "Log in"
+    Then I should see the link "Sign in"
 
     # Login keeping the session open.
-    When I click "Log in"
+    When I click "Sign in"
     And I fill in "Username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
     And I check the box "Remember me"
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Garnett Tyrell"
     When I close and reopen the browser
     And I go to the homepage
-    Then I should not see the link "Log in"
+    Then I should not see the link "Sign in"
     But I should see the link "My account"
 
