@@ -27,7 +27,7 @@ Feature: Contact Information moderation
     When I am logged in as "Sæwine Cynebald"
     And I go to the homepage of the "Games of the Anglo-Saxon age" collection
     And I click "Edit" in the "Entity actions" region
-    And I click the 'Description' tab
+    And I click the 'Additional fields' tab
     And I press "Add new" at the "Contact information" field
     And I fill in "Name" with "Mildþryð Mildgyð"
     And I fill in "E-mail address" with "mildred@anglo-saxon-museum.co.uk"

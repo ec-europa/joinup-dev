@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Content Overview
 
   Scenario: Check visibility of "Content" menu link.
