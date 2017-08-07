@@ -3,7 +3,6 @@
 namespace Drupal\solution\Plugin\Validation\Constraint;
 
 use Drupal\Component\Utility\Unicode;
-use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -27,17 +26,10 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
       return;
     }
 
-    $field_name = $items->getFieldDefinition()->getName();
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $items->getEntity();
 
-    $entity_type_id = $entity->getEntityTypeId();
-    $id_key = $entity->getEntityType()->getKey('id');
-
-
-    $unique = solution_title_is_unique($entity);
-
-    if (!$unique) {
+    if (!solution_title_is_unique($entity)) {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
         '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
