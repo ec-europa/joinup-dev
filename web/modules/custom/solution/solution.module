@@ -547,9 +547,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
  * Only use this function if you need to retrieve a fresh set of collections
  * from the database. For all other cases, use the computed 'collection' field:
  *
- * @startcode
- *   $collections = $solution->collection->getValue();
- * @endcode
+ * $collections = $solution->collection->getValue();
  *
  * @param \Drupal\rdf_entity\RdfInterface $solution
  *   The solution for which to retrieve the affiliated collections.
@@ -745,7 +743,7 @@ function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_co
     throw new \Exception('Title uniqueness within a collection can only be checked for solutions.');
   }
 
-  // The relationship between a solution and its collections is not on the child'field_ar_affiliates'
+  // The relationship between a solution and its collections is not on the child
   // entity but on the parent. This means we cannot use a simple query.
   // Retrieve all solutions with the same title.
   $query = \Drupal::entityQuery('rdf_entity')
