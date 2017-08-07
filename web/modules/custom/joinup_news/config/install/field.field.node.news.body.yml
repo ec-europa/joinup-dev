@@ -5,27 +5,15 @@ dependencies:
     - field.storage.node.body
     - node.type.news
   module:
-    - better_formats
+    - allowed_formats
     - text
 third_party_settings:
-  better_formats:
-    allowed_formats_toggle: true
-    allowed_formats:
-      content_editor: content_editor
-      basic_html: 0
-      simple_html: 0
-      simple_text: 0
-    default_order_toggle: false
-    default_order_wrapper:
-      formats:
-        content_editor:
-          weight: '-10'
-        basic_html:
-          weight: '0'
-        simple_html:
-          weight: '0'
-        simple_text:
-          weight: '5'
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
 id: node.news.body
 field_name: body
 entity_type: node

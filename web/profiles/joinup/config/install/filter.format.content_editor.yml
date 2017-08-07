@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - editor
     - joinup_video
 name: 'Content Editor'
 format: content_editor
@@ -54,3 +55,15 @@ filters:
         youtube_playlist: 0
       autoplay: false
       responsive: true
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 0
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }

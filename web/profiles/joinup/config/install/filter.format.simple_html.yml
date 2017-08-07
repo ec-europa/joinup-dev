@@ -7,12 +7,6 @@ name: 'Simple HTML'
 format: simple_html
 weight: 0
 filters:
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: true
-    weight: -50
-    settings: {  }
   filter_url:
     id: filter_url
     provider: filter

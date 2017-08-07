@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2242d692193de4610985d8644902da1",
+    "content-hash": "3c53ef5673301742924864785dc993f8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1470,15 +1470,21 @@
             "time": "2017-05-05T21:26:28+00:00"
         },
         {
-            "name": "drupal/better_formats",
-            "version": "dev-1.x",
+            "name": "drupal/allowed_formats",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/better_formats",
-                "reference": "9b3b5fa792c1dfe0d1121021a230086f3599b7e4"
+                "url": "https://git.drupal.org/project/allowed_formats",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/allowed_formats-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "b7bfc78d7e64f1df37ca6cad118a1ff8f7228b64"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -1486,11 +1492,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1474656839"
-                },
-                "patches_applied": {
-                    "Provide config schema for field 3rd party settings @see https://www.drupal.org/node/2895045": "https://www.drupal.org/files/issues/2895045-2.patch"
+                    "version": "8.x-1.1",
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1499,20 +1502,15 @@
             ],
             "authors": [
                 {
-                    "name": "Devin Carlson",
-                    "homepage": "https://www.drupal.org/user/290182"
-                },
-                {
-                    "name": "dragonwize",
-                    "homepage": "https://www.drupal.org/user/137882"
+                    "name": "floretan",
+                    "homepage": "https://www.drupal.org/user/66163"
                 }
             ],
-            "description": "Enhances the core input format system by managing input format defaults and settings.",
-            "homepage": "https://www.drupal.org/project/better_formats",
+            "description": "Limit which text formats are available for each field instance.",
+            "homepage": "https://www.drupal.org/project/allowed_formats",
             "support": {
-                "source": "http://cgit.drupalcode.org/better_formats"
-            },
-            "time": "2016-09-23 18:53:21"
+                "source": "http://cgit.drupalcode.org/allowed_formats"
+            }
         },
         {
             "name": "drupal/cached_computed_field",
@@ -10958,7 +10956,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
-        "drupal/better_formats": 20,
         "drupal/diff": 5,
         "drupal/inline_entity_form": 20,
         "drupal/linkit": 20,

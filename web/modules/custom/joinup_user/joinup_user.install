@@ -47,6 +47,7 @@ function joinup_user_install() {
     'access content',
     'access tour',
     'access user profiles',
+    'use text format basic_html',
     'use text format simple_text',
     'view rdf entity',
     'export rdf metadata',
