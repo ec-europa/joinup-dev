@@ -116,7 +116,7 @@ class SparqlEntityQueryTest extends JoinupKernelTestBase {
     $return[] = [
       'field_text' => [
         'value' => '<html><body><p>Hello world!</p></body></html>',
-        'format' => filter_default_format(),
+        'format' => 'basic_html',
       ],
       'field_text_multi' => [
         'test text multi 1',

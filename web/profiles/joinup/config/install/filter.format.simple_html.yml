@@ -5,7 +5,7 @@ dependencies:
     - editor
 name: 'Simple HTML'
 format: simple_html
-weight: 0
+weight: 3
 filters:
   filter_url:
     id: filter_url
