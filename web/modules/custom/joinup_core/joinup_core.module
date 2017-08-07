@@ -760,3 +760,20 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Sign in');
+  $form['#title'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function joinup_core_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_core\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
