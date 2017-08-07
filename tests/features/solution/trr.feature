@@ -1,11 +1,11 @@
 # At the moment this test uses the data from the joinup_demo module, and can therefore not be ran on the CI.
 # This test will be enabled in ISAICP-3493.
-@api @wip
+@api
 Feature: Creating a test (solution) in the TRR collection.
   In order to create tests
   As a collection facilitator
   I need to be able to add 'test'-enabled solutions.
-
+ @wip
   Scenario: Create a TRR solution
     And the following owner:
       | name | type                         |
@@ -46,3 +46,47 @@ Feature: Creating a test (solution) in the TRR collection.
 
     Then I press "Propose"
     Then I should see the heading "Linked Open Data"
+
+  Scenario: TRR distribution
+    Given the following solution:
+      | title         | TRR solution foo       |
+      | description   | The test repository    |
+      | state         | validated              |
+      | solution type | [ABB130] Test Scenario |
+    And the following solution:
+      | title       | TRR solution bar    |
+      | description | The test repository |
+      | state       | validated           |
+    And the following distribution:
+      | title       | TRR Distribution foo                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | solution    | TRR solution foo                      |
+    And the following distribution:
+      | title       | TRR Distribution bar                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | solution    | TRR solution bar                      |
+    And the following release:
+      | title          | TRR release foo         |
+      | description    | TRR release description |
+      | documentation  | text.pdf                |
+      | release number | 1                       |
+      | release notes  | Changed release         |
+      | distribution   | TRR Distribution foo    |
+      | is version of  | TRR solution foo        |
+    And the following release:
+      | title          | TRR release bar         |
+      | description    | TRR release description |
+      | documentation  | text.pdf                |
+      | release number | 1                       |
+      | release notes  | Changed release         |
+      | distribution   | TRR Distribution bar    |
+      | is version of  | TRR solution bar        |
+    # The GITB compliant field is only shown when the solution has a certain solution type.
+    When I am logged in as a "facilitator" of the "TRR solution foo" solution
+    When I go to the "TRR Distribution foo" asset distribution edit form
+    Then the following fields should be present "GITB compliant"
+    When I am logged in as a "facilitator" of the "TRR solution bar" solution
+    When I go to the "TRR Distribution bar" asset distribution edit form
+    Then the following fields should not be present "GITB compliant"
