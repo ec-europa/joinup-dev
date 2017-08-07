@@ -50,7 +50,7 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() != 'rdf_entity' || $bundle != 'solution') {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'solution') {
     return;
   }
 

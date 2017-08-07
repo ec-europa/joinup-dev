@@ -29,6 +29,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator {
     if (!$item = $items->first()) {
       return;
     }
+
     $field_name = $items->getFieldDefinition()->getName();
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $items->getEntity();
