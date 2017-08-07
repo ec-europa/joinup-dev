@@ -211,9 +211,10 @@ Feature: "Add solution" visibility options.
     And I press "Add owner"
     And I press "Propose"
     Then I should see the heading "Climate change tracker"
-    But I should not see the warning message "A solution with the same name already exists in a different collection."
+    But I should not see the warning message "A solution with the same name exists in a different collection."
 
     Given I am logged in as a moderator
     And I go to my dashboard
     And I click "Climate change tracker"
-    Then I should see the warning message "A solution with the same name already exists in a different collection."
+    And I click "Edit" in the "Entity actions" region
+    Then I should see the warning message "A solution with the same name exists in a different collection."

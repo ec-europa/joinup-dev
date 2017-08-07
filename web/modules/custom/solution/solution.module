@@ -11,6 +11,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -109,6 +110,31 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
   if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
     $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
     $form['#entity_builders'][] = 'solution_add_form_set_collection';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * When editing a solution, show a message to moderators informing them if a
+ * solution with the same name already exists in a different collection. They
+ * can then evaluate if the conflict is acceptable or not before approving a
+ * proposed solution.
+ */
+function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  // Bail out if the user is not a moderator.
+  if (!in_array('moderator', \Drupal::currentUser()->getRoles())) {
+    return;
+  }
+
+  // Bail out if this is an AJAX request to avoid showing duplicate messages,
+  // for example in inline forms.
+  if (\Drupal::request()->query->has(FormBuilderInterface::AJAX_FORM_REQUEST)) {
+    return;
+  }
+
+  if (!solution_title_is_unique($form_state->getFormObject()->getEntity(), TRUE)) {
+    drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
   }
 }
 
