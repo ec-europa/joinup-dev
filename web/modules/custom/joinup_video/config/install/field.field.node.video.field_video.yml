@@ -18,7 +18,8 @@ default_value: {  }
 default_value_callback: ''
 settings:
   allowed_providers:
-    vimeo: vimeo
+    joinup_ec_video: joinup_ec_video
     youtube: youtube
-    youtube_playlist: youtube_playlist
+    vimeo: '0'
+    youtube_playlist: '0'
 field_type: video_embed_field

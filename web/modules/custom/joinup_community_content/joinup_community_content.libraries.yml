@@ -3,3 +3,9 @@ shared_content:
     js/shared_content.js: {}
   dependencies:
     - core/jquery
+
+pinned_content:
+  js:
+    js/pinned_content.js: {}
+  dependencies:
+    - core/jquery

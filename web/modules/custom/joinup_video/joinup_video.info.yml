@@ -7,7 +7,7 @@ package: Joinup
 dependencies:
   - joinup_community_content
   - og
-  - video_embed_field
+  - video_embed_wysiwyg
 
 config_devel:
   - core.entity_form_display.node.video.default
