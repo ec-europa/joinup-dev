@@ -1027,7 +1027,7 @@ QUERY;
       switch ($type) {
         case 'text_long':
           if (!isset($value['format'])) {
-            $value['format'] = 'full_html';
+            $value['format'] = filter_default_format();
           }
           break;
 
