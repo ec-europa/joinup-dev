@@ -60,7 +60,8 @@ Feature: "Add release" visibility options.
     And I press "Publish"
     Then I should have 2 releases
 
-    # Verify that the "Release Test 1 v2" is registered as a release to "Release Test 1" solution.
+    # Verify that the "Chasing shadows 1.1." release is registered as a release
+    # of the "Release Test 1" solution.
     When I go to the homepage of the "Release Test 1" solution
     Then I should see the text "Download releases"
     When I click "Download releases"
