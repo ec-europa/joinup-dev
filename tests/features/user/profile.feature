@@ -22,11 +22,23 @@ Feature: User profile
     And I select "Supplier exchange" from "Professional domain"
     And I fill in "Professional profile" with "SAP expert"
     And I fill in "Country of origin" with "Italy"
+    And I fill in "Facebook" with "leodavinci"
+    And I fill in "Twitter" with "therealdavinci"
+    And I fill in "LinkedIn" with "leonardo.davinci"
+    And I fill in "GitHub" with "davinci"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
     And I should see the heading "Leoke di ser Piero da Vinci" in the "Header" region
     And I should see the text "Supplier exchange"
     And I should see the link "Edit"
+    And the link "Facebook" in the "Header" region should point to "https://www.facebook.com/leodavinci"
+    And the link "Twitter" in the "Header" region should point to "https://www.twitter.com/therealdavinci"
+    And the link "LinkedIn" in the "Header" region should point to "https://www.linkedin.com/leonardo.davinci"
+    And the link "GitHub" in the "Header" region should point to "https://github.com/davinci"
+    And I should not see the link "Google+" in the "Header" region
+    And I should not see the link "SlideShare" in the "Header" region
+    And I should not see the link "Youtube" in the "Header" region
+    And I should not see the link "Vimeo" in the "Header" region
     # @todo The nationality will be rendered as flag image.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"
