@@ -37,6 +37,7 @@ default:
         Subpages menu: '.block-menu-sub-pages'
         Modal content: '#drupal-modal'
         Modal buttons: '.ui-dialog-buttonpane'
+        Contact information inline form: '#edit-field-ar-contact-information-wrapper'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
