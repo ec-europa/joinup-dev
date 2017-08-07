@@ -69,17 +69,18 @@ class SolutionController extends ControllerBase {
   }
 
   /**
-   * Creates a new solution entity.
+   * Creates a new solution entity that is affiliated with the given collection.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the solution will be associated.
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The collection to affiliate with the new solution.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The unsaved solution entity.
    */
-  protected function createNewSolution(RdfInterface $rdf_entity) {
+  protected function createNewSolution(RdfInterface $collection) {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
+      'collection' => [$collection->id()],
     ]);
   }
 
