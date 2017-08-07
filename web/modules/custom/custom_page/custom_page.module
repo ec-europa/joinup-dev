@@ -99,7 +99,12 @@ function custom_page_entity_insert(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_update().
  *
- * Invalidate the og menu until a proper invalidation occurs.
+ * This is a temporary workaround to invalidate the OG Menu cache, until a
+ * proper invalidation will be added in ISAICP-3546.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3546
+ *
+ * @todo Remove this workaround when ISAICP-3546 lands.
  */
 function custom_page_node_update(EntityInterface $entity) {
   if ($entity->bundle() !== 'custom_page') {
