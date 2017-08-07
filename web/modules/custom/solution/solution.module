@@ -709,3 +709,63 @@ function solution_field_group_pre_render_alter(&$element, $group, $rendering_obj
     $element['#access'] = FALSE;
   }
 }
+
+/**
+ * Checks whether the given solution has a unique title.
+ *
+ * A solution may be affiliated with several collections, but to avoid confusion
+ * we should avoid having multiple solutions within a given collection with the
+ * same name.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The solution to check.
+ * @param bool $check_unaffiliated_collections
+ *   Whether or not to check solutions that are shared in collections that are
+ *   not affiliated with the given solution.
+ *   - When this is TRUE the function will return TRUE if any other solution has
+ *     the same name as the given solution, regardless of the collections they
+ *     are affiliated with.
+ *   - When this is FALSE the function will only return TRUE if any of the
+ *     collections that are affiliated with this solution contain a solution
+ *     with a duplicate title. Solutions that belong to unaffiliated colletions
+ *     will be ignored.
+ *
+ * @return bool
+ *   TRUE if the title is unique within all affiliated collections.
+ *
+ * @throws \Exception
+ *   Thrown when anything but a solution entity is passed in.
+ */
+function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_collections = FALSE) {
+  if ($solution->bundle() !== 'solution') {
+    throw new \Exception('Title uniqueness within a collection can only be checked for solutions.');
+  }
+
+  // The relationship between a solution and its collections is not on the child'field_ar_affiliates'
+  // entity but on the parent. This means we cannot use a simple query.
+  // Retrieve all solutions with the same title.
+  $query = \Drupal::entityQuery('rdf_entity')
+    ->condition('label', $solution->label())
+    ->condition('rid', 'solution');
+  if (!empty($solution->id())) {
+    $query->condition('id', $solution->id(), '<>');
+  }
+  $result = $query->execute();
+
+  // Filter all solutions that do not share a collection with the solution.
+  if (!$check_unaffiliated_collections) {
+    $get_collections_from_solution = function (RdfInterface $solution) {
+      return array_map(function ($reference) {
+        return $reference['target_id'];
+      }, $solution->collection->getValue());
+    };
+
+    $collections = $get_collections_from_solution($solution);
+
+    $result = array_filter(Rdf::loadMultiple($result), function ($solution) use ($collections, $get_collections_from_solution) {
+      return (bool) array_intersect($get_collections_from_solution($solution), $collections);
+    });
+  }
+
+  return empty($result);
+}
