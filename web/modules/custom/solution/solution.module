@@ -179,10 +179,14 @@ function solution_relate_collection_id($collection_id = NULL) {
 }
 
 /**
+ * Submit handler for the add solution form.
+ *
  * Links the solution to the collection to which it belongs.
  *
  * In order for a solution to be affiliated with a collection when it is
  * created, the collection should be passed to the form_state object.
+ *
+ * @see \Drupal\solution\Controller\SolutionController::add()
  */
 function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
   $solution_id = $form_state->getFormObject()->getEntity()->id();
