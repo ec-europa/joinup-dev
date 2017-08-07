@@ -89,12 +89,13 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
+        label: 'Main fields'
+        formatter: open
+        description: 'Contains all the fields to be mandatorily filled to create a solution'
+        required_fields: true
         id: ''
         classes: ''
-        formatter: open
-        description: ''
-        required_fields: true
-      label: Main
+      label: 'Main fields'
     group_management:
       children:
         - field_is_landing_page

@@ -585,6 +585,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (!empty($node->field_state)) {
       $node->field_state = self::translateWorkflowStateAlias($node->field_state);
     }
+
+    if (isset($node->sticky)) {
+      throw new \Exception('Please use "pinned" instead of "sticky".');
+    }
+
+    if (isset($node->pinned)) {
+      $mapping = [
+        'yes' => 1,
+        'no' => 0,
+      ];
+
+      // Force the use of human readable values in Behat test scenarios, throw
+      // an exception if the numeric values are used.
+      if (!array_key_exists($node->pinned, $mapping)) {
+        $supported_values = implode(', ', array_keys($mapping));
+        throw new \UnexpectedValueException("Unexpected value for pinned '{$node->pinned}'. Supported values are: $supported_values.");
+      }
+
+      // Replace the human readable value with the expected boolean.
+      $node->sticky = $mapping[$node->pinned];
+      unset($node->pinned);
+    }
   }
 
   /**

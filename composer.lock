@@ -2207,7 +2207,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "rötzi",
+                    "name": "r??tzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -2528,7 +2528,8 @@
                     "datestamp": "1499090343"
                 },
                 "patches_applied": {
-                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch"
+                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch",
+                    "Critical error thrown when creating a new revision of an entity @see https://www.drupal.org/node/2899697": "https://www.drupal.org/files/issues/2899697-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2901,14 +2902,6 @@
                 "GPL-2.0+"
             ],
             "authors": [
-                {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -4063,7 +4056,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": "8.x-1.5",
+                "reference": null,
                 "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
             },
             "require": {
@@ -4083,6 +4076,9 @@
                     "version": "8.x-1.x",
                     "datestamp": "1493246342",
                     "package": "Field types"
+                },
+                "patches_applied": {
+                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4237,7 +4233,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupré",
+                    "name": "Antoine Beaupr??",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4245,7 +4241,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Araña Cruz",
+                    "name": "Jonathan Ara??a Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4927,7 +4923,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch??nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5013,7 +5009,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20 06:45:09"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5540,7 +5536,6 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -5551,6 +5546,10 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
+            "support": {
+                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
+                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
+            },
             "time": "2017-07-17 09:33:42"
         },
         {
@@ -6654,7 +6653,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran??ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9210,7 +9209,7 @@
             ],
             "authors": [
                 {
-                    "name": "Gábor Hojtsy",
+                    "name": "G??bor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -9690,7 +9689,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder??n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9747,7 +9746,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder??n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
