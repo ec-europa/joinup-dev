@@ -221,3 +221,10 @@ Feature: "Add solution" visibility options.
     And I click "Climate change tracker"
     And I click "Edit" in the "Entity actions" region
     Then I should see the warning message "A solution with the same name exists in a different collection."
+
+    # Clean up the entities that were created through the UI. We have no control
+    # over which of the two identically named solutions is deleted first, so
+    # let's just get rid of both.
+    Then I delete the "Climate change tracker" solution
+    And I delete the "Climate change tracker" solution
+    And I delete the "Angela Crespi" contact information
