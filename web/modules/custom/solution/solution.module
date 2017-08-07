@@ -152,22 +152,38 @@ function solution_relate_collection_id($collection_id = NULL) {
 /**
  * Links the solution to the collection to which it belongs.
  *
- * According to the ADMS model, the linked solutions of a collection are
- * stored as a property of the collection itself, called affiliates.
- * The process of linking a solution to a collection is:
- * - Request an affiliation. This request is registered by adding the
- *   collection to the affiliation_request field of the solution.
- * - Accept the affiliation. The collection is removed from the affiliation
- *   request of the solution and the solution is added to the affiliates
- *   field of the collection.
  * In order for a solution to be affiliated with a collection when it is
  * created, the collection should be passed to the form_state object.
  */
 function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
+  $solution_id = $form_state->getFormObject()->getEntity()->id();
   $collection_id = $form_state->getStorage()['collection'];
+  solution_update_collection_affiliation($solution_id, $collection_id);
+}
 
+/**
+ * Links the solution to the collection to which it belongs.
+ *
+ * According to the ADMS model, the linked solutions of a collection are stored
+ * as a property of the collection itself, called affiliates. The process of
+ * linking a solution to a collection is:
+ * - Request an affiliation. This request is registered by adding the collection
+ *   to the affiliation_request field of the solution.
+ * - Accept the affiliation. The collection is removed from the affiliation
+ *   request of the solution and the solution is added to the affiliates field
+ *   of the collection.
+ *
+ * @param string $solution_id
+ *   The ID of the solution to affiliate.
+ * @param string $collection_id
+ *   The ID of the collection to affiliate.
+ *
+ * @throws \Exception
+ *   Thrown when the collection ID does not belong to a collection.
+ */
+function solution_update_collection_affiliation($solution_id, $collection_id) {
   /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-  $storage = \Drupal::entityManager()->getStorage('rdf_entity');
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
 
   // Add the reference field both to the published and the draft collection.
   foreach (['default', 'draft'] as $graph) {
@@ -181,9 +197,8 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
     }
     $storage->setSaveGraph($graph);
 
-    $entity_id = $form_state->getFormObject()->getEntity()->id();
     $values = $collection->get('field_ar_affiliates')->getValue();
-    $values[] = ['target_id' => $entity_id];
+    $values[] = ['target_id' => $solution_id];
     $collection->set('field_ar_affiliates', $values);
     $collection->save();
   }
