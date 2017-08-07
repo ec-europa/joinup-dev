@@ -301,17 +301,17 @@ function solution_rdf_entity_load($entities) {
     // The reverse relation would have been more logical,
     // and this is quite inconvenient, especially for the search index.
     // To work around this, we add a computed field here.
-    $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->condition('field_ar_affiliates', $entity->id())
-      ->execute();
+    $ids = solution_get_collection_ids($entity);
     // This will only be set when submitting a new solution form.
     $pending_collection_id = solution_relate_collection_id();
     if ($pending_collection_id) {
-      $ids[$pending_collection_id] = $pending_collection_id;
+      $ids[] = $pending_collection_id;
     }
     if ($ids) {
-      $entity->set('collection', array_keys($ids));
+      $ids = array_map(function ($id) {
+        return ['target_id' => $id];
+      }, $ids);
+      $entity->set('collection', $ids);
     }
   }
 }
@@ -535,6 +535,33 @@ function solution_invalidate_collection(EntityInterface $entity) {
     }
     Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
   }
+}
+
+/**
+ * Retrieves collections affiliated with the given solution from the database.
+ *
+ * Only use this function if you need to retrieve a fresh set of collections
+ * from the database. For all other cases, use the computed 'collection' field:
+ *
+ * @startcode
+ *   $collections = $solution->collection->getValue();
+ * @endcode
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The solution for which to retrieve the affiliated collections.
+ *
+ * @return array
+ *   The collection IDs.
+ *
+ * @see solution_rdf_entity_load()
+ */
+function solution_get_collection_ids(RdfInterface $solution) {
+  $result = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+
+  return !empty($result) ? array_keys($result) : [];
 }
 
 /**
