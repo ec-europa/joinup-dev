@@ -44,15 +44,144 @@ dependencies:
     - rdf_entity.rdfentity.solution
   module:
     - ds
+    - field_group
+    - file_url
+    - options
     - text
     - user
+third_party_settings:
+  field_group:
+    group_categorisation:
+      children:
+        - field_is_solution_type
+        - field_status
+        - field_is_language
+      parent_name: ''
+      weight: 2
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Categorisation
+    group_moderation:
+      children:
+        - field_is_elibrary_creation
+        - field_is_moderation
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Moderation
+    group_owner_contact_information:
+      children:
+        - field_is_owner
+        - field_is_contact_information
+      parent_name: ''
+      weight: 1
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Owner/Contact Information'
+    group_documentation:
+      children:
+        - field_is_documentation
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Documentation
+    group_trr_information:
+      children:
+        - field_is_test_resource_type
+        - field_is_actor
+        - field_is_business_process
+        - field_is_product_type
+        - field_is_standardization_level
+      parent_name: ''
+      weight: 5
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'TRR Information'
 id: rdf_entity.solution.about
 targetEntityType: rdf_entity
 bundle: solution
 mode: about
 content:
+  field_is_actor:
+    type: entity_reference_label
+    weight: 8
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_is_business_process:
+    type: entity_reference_label
+    weight: 9
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_is_contact_information:
-    weight: 2
+    weight: 7
     label: above
     settings:
       view_mode: about
@@ -77,9 +206,33 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_is_documentation:
+    type: file_url_default
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      mode: link
+    third_party_settings: {  }
+  field_is_elibrary_creation:
+    type: list_default
+    weight: 19
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_is_language:
     type: entity_reference_label
-    weight: 6
+    weight: 7
     region: content
     label: above
     settings:
@@ -95,8 +248,27 @@ content:
             classes: {  }
       joinup:
         template_suggestion: fieldset
+  field_is_moderation:
+    type: boolean
+    weight: 21
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_is_owner:
-    weight: 1
+    weight: 6
     label: above
     settings:
       view_mode: about
@@ -114,9 +286,9 @@ content:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
-  field_is_related_solutions:
+  field_is_product_type:
     type: entity_reference_label
-    weight: 8
+    weight: 10
     region: content
     label: above
     settings:
@@ -150,16 +322,15 @@ content:
             classes: {  }
       joinup:
         template_suggestion: fieldset
-  field_policy_domain:
+  field_is_standardization_level:
     type: entity_reference_label
-    weight: 7
+    weight: 11
     region: content
     label: above
     settings:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
         ft:
           id: default
           settings:
@@ -168,16 +339,15 @@ content:
             classes: {  }
       joinup:
         template_suggestion: fieldset
-  field_spatial_coverage:
+  field_is_test_resource_type:
     type: entity_reference_label
-    weight: 3
+    weight: 7
     region: content
-    label: above
+    label: hidden
     settings:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
         ft:
           id: default
           settings:
@@ -204,35 +374,31 @@ content:
       joinup:
         template_suggestion: fieldset
 hidden:
-  field_is_actor: true
+  download_total: true
   field_is_affiliations_requests: true
   field_is_banner: true
-  field_is_business_process: true
   field_is_content: true
   field_is_creation_date: true
   field_is_distribution: true
-  field_is_documentation: true
-  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
   field_is_landing_page: true
   field_is_logo: true
   field_is_metrics_page: true
-  field_is_moderation: true
   field_is_modification_date: true
-  field_is_product_type: true
+  field_is_related_solutions: true
   field_is_solution_category: true
   field_is_source_code_repository: true
-  field_is_standardization_level: true
   field_is_state: true
-  field_is_test_resource_type: true
   field_is_translation: true
   field_is_version: true
   field_is_webdav_creation: true
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  field_policy_domain: true
+  field_spatial_coverage: true
   label: true
   langcode: true
   licence: true
