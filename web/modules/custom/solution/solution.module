@@ -53,6 +53,9 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   if ($entity_type->id() != 'rdf_entity' || $bundle != 'solution') {
     return;
   }
+
+  // @todo Rename to "collections" since this contains multiple collections.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3686
   // Add a computed field, that represents the collections a solution is part
   // of.
   // @see solution_rdf_entity_load().
@@ -65,6 +68,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setComputed(TRUE)
     ->setReadOnly(TRUE);
 
+  // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }

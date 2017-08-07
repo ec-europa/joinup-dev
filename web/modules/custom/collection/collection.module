@@ -413,13 +413,13 @@ function collection_member_count(RdfInterface $entity) {
 }
 
 /**
- * Amount of solutions in the collection.
+ * Amount of validated solutions in the collection.
  *
  * @param \Drupal\rdf_entity\RdfInterface $entity
  *   The collection.
  *
  * @return int
- *   Amount of solutions.
+ *   Amount of validated solutions.
  */
 function collection_solution_count(RdfInterface $entity) {
   $solutions = $entity->get('field_ar_affiliates');

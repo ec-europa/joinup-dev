@@ -10,13 +10,15 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Validates that a field is unique for the given entity type within a bundle.
  *
- * This is the validator for the UniqueSolutionInTitle constraint.
+ * This is the validator for the UniqueSolutionTitleConstraint.
  * The solutions and the releases are actually the same entity. A solution
  * can have many releases and a release belongs to one solution. A release
  * cannot have releases or multiple solutions.
  *
  * The following checks make sure that a solution must have a unique title among
- * solutions.
+ * within their collections.
+ *
+ * @see \Drupal\solution\Plugin\Validation\Constraint\UniqueSolutionTitleConstraint
  */
 class UniqueSolutionTitleValidator extends ConstraintValidator {
 
