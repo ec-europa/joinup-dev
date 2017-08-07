@@ -34,9 +34,6 @@
   .field-prefix
     display: none
 
-.mdl-layout
-  overflow: initial !important
-
 .mdl-spinner
   position: fixed
   top: 48.5%
@@ -52,4 +49,23 @@
     color: $color-blue-default
   .mdl-menu__container
     margin-top: $field-margin
+
+// Fix for iOS overflow issue caused by not respecting % height value
+.mdl-layout__container
+  height: auto
+
+.mdl-layout
+  min-height: 100vh
+
+// Fix for Internet Explorer unstretched content section (once empty) and footer overflow issues caused by not respecting the min-height value
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active)
+  .mdl-layout__container
+    height: 100vh
+    .section--header,
+    .section--footer
+      flex-shrink: 0
+    .section--featured,
+    .section--content
+      flex-grow: 1
+      flex-shrink: 0
 

@@ -97,6 +97,35 @@ function custom_page_entity_insert(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * This is a temporary workaround to invalidate the OG Menu cache, until a
+ * proper invalidation will be added in ISAICP-3546.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3546
+ *
+ * @todo Remove this workaround when ISAICP-3546 lands.
+ */
+function custom_page_node_update(EntityInterface $entity) {
+  if ($entity->bundle() !== 'custom_page') {
+    return;
+  }
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
+  if (empty($parent)) {
+    return;
+  }
+
+  $results = \Drupal::service('og.membership_manager')->getGroupContentIds($parent, ['ogmenu_instance']);
+  if (!empty($results)) {
+    $og_menu_instance_id = reset($results['ogmenu_instance']);
+    $og_menu_instance = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->load($og_menu_instance_id);
+    if (!empty($og_menu_instance)) {
+      Cache::invalidateTags($og_menu_instance->getCacheTags());
+    }
+  }
+}
+
+/**
  * Implements hook_entity_type_alter().
  *
  * Replaces the standard OG Menu Instance form with a customized one that is
