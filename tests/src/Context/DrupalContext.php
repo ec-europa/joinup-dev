@@ -40,16 +40,4 @@ class DrupalContext extends DrupalExtensionDrupalContext {
     }
   }
 
-  /**
-   * Override 'Log' term and convert it to 'Sign'.
-   *
-   * @param array $parameters
-   *   An array of parameters.
-   */
-  public function setDrupalParameters(array $parameters) {
-    $parameters['text']['log_in'] = 'Sign in';
-    $parameters['text']['log_out'] = 'Sign out';
-    parent::setDrupalParameters($parameters);
-  }
-
 }
