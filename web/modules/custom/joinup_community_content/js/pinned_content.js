@@ -12,7 +12,7 @@
    *   The HTML for the pinned content visual cue.
    */
   Drupal.theme.pinnedContentCue = function () {
-    return '<div class="pinned-markup"><div class="icon icon--pin"></div></div>';
+    return '<div class="listing__pin"><span class="icon icon--pin"></span></div>';
   };
 
   /**
@@ -42,7 +42,11 @@
           return;
         }
 
-        $this.append(Drupal.theme('pinnedContentCue'));
+        // It is needed for listing title padding if image doesn't exist.
+        if (!$this.find('.listing__image').length) {
+          $this.addClass('listing__card--title-pin');
+        }
+        $this.prepend(Drupal.theme('pinnedContentCue'));
       });
     }
   };
