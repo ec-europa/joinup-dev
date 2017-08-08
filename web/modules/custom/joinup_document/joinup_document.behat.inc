@@ -22,6 +22,18 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
   use TraversingTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Navigates to the canonical page display of a document.
    *
    * @param string $title

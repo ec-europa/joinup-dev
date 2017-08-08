@@ -31,6 +31,18 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   protected $savedMailDefaults;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Asserts that an email has been sent.
    *
    * Table format:

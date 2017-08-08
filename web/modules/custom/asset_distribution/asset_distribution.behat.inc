@@ -26,6 +26,18 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   use EntityReferenceTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Test asset distributions.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

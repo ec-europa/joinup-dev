@@ -35,6 +35,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use WorkflowTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Test collections.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

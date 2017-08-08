@@ -17,6 +17,18 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   use TraversingTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Asserts that a tile is not marked as shared from another collection.
    *
    * @param string $heading

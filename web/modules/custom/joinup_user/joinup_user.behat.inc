@@ -17,6 +17,18 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   use UserTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Navigates to the canonical page display of a collection.
    *
    * @param string $user

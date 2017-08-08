@@ -27,6 +27,18 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   use UtilityTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function cleanUsers() {
+    try {
+      parent::cleanUsers();
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  /**
    * Test owner rdf entities.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
