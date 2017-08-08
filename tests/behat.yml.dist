@@ -49,5 +49,8 @@ default:
       subcontexts:
         paths:
           - '${behat.subcontexts.path}'
+      text:
+        log_in: 'Sign in'
+        log_out: 'Sign out'
   formatters:
     ${behat.formatter.name}: ~

@@ -163,7 +163,7 @@ Feature: User profile
     And the HTML title tag should contain the text delwin999
     And I should not see the "Page title" region
 
-  Scenario: The user profile page is updated when the user joins a collection
+  Scenario: The user profile page is updated when the user joins or leaves a collection
     Given users:
       | Username      | E-mail                           |
       | Korben Dallas | k.dallas@cabs.services.zorg.corp |
@@ -191,6 +191,22 @@ Feature: User profile
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
     Then I should see the "Federated Army Veterans" tile
+    And the page should not be cached
+
+    # Verify the page can be cached correctly.
+    When I reload the page
+    Then the page should be cached
+
+    # Leave the collection. Now the cache of the user profile page should be
+    # cleared and the collection that was left should no longer show up.
+    Given I am logged in as "Korben Dallas"
+    And I go to the homepage of the "Federated Army Veterans" collection
+    And I click "Leave this collection"
+    And I press the "Confirm" button
+
+    When I am an anonymous user
+    And I go to the public profile of "Korben Dallas"
+    Then I should not see the "Federated Army Veterans" tile
     And the page should not be cached
 
     # Verify the page can be cached correctly.
