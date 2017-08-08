@@ -119,7 +119,6 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function build() {
-    $build = [];
     $items = [];
     $child_links = $this->getChildLinks();
 
@@ -128,7 +127,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
     // returning an empty array here and using proper cache context and tags to
     // invalidate it.
     if (empty($child_links)) {
-      return $build;
+      return [];
     }
     foreach ($child_links as $link) {
       $parameters = $link->getUrlObject()->getRouteParameters();
@@ -138,6 +137,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       $items[$link->getWeight()] = [
         '#type' => 'container',
         '#weight' => $link->getWeight(),
+        '#access' => $link->getUrlObject()->access(),
         '#attributes' => [
           'class' => [
             'listing__item',
@@ -150,18 +150,21 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       ];
     }
 
-    $build = [
-      // The 'listing' child key is needed to avoid copying the #attributes to
-      // the parent block.
-      // @see \Drupal\block\BlockViewBuilder::preRender()
-      'listing' => [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => ['listing', 'listing--grid', 'mdl-grid'],
+    $build = [];
+    if (count(array_filter(array_column($items, '#access'))) > 0) {
+      $build = [
+        // The 'listing' child key is needed to avoid copying the #attributes to
+        // the parent block.
+        // @see \Drupal\block\BlockViewBuilder::preRender()
+        'listing' => [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['listing', 'listing--grid', 'mdl-grid'],
+          ],
         ],
-      ],
-    ];
-    $build['listing'] += $items;
+      ];
+      $build['listing'] += $items;
+    }
 
     return $build;
   }
