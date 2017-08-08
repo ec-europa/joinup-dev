@@ -23,7 +23,6 @@ dependencies:
     - ds
     - image
     - joinup
-    - text
     - user
 id: user.user.group_header
 targetEntityType: user
@@ -33,9 +32,10 @@ content:
   field_user_business_title:
     weight: 5
     label: hidden
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    type: text_default
+    type: string
     region: content
   field_user_family_name:
     weight: 1

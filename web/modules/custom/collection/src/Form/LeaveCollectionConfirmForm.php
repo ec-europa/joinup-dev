@@ -81,7 +81,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = User::load($this->currentUser()->id());
     if ($user->isAnonymous()) {
-      $form_state->setErrorByName('user', $this->t('<a href=":login">Log in</a> or <a href=":register">register</a> to change your group membership.', [
+      $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => Url::fromRoute('user.login'),
         ':register' => Url::fromRoute('user.register'),
       ]));

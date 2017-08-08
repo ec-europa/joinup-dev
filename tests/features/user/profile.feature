@@ -14,7 +14,7 @@ Feature: User profile
     Then I click "My account"
     Then I click "Edit"
     Then the following fields should be present "Current password, Email address, Password, Confirm password, First name"
-    And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain"
+    And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain, Business title"
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
     And the following fields should not be present "Time zone"
     And I should see the text "Username: Leonardo Da Vinci"
@@ -23,9 +23,17 @@ Feature: User profile
     And I select "Supplier exchange" from "Professional domain"
     And I fill in "Professional profile" with "SAP expert"
     And I fill in "Country of origin" with "Italy"
+
+    # Verify that the business title is a field limited to 255 characters.
+    When I fill in "Business title" with "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sagittis justo ornare justo porta tristique vitae eu ligula. Mauris iaculis eros id nulla posuere, id luctus orci ultricies. Aenean at leo diam. Aliquam dapibus nibh et est pharetra, quis interdum"
+    And I press the "Save" button
+    Then I should see the error message "Business title cannot be longer than 255 characters but is currently 262 characters long."
+
+    When I fill in "Business title" with "Italian Renaissance polymath"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
     And I should see the heading "Leoke di ser Piero da Vinci" in the "Header" region
+    And I see the text "Italian Renaissance polymath" in the "Header" region
     And I should see the text "Supplier exchange"
     And I should see the link "Edit"
     # @todo The nationality will be rendered as flag image.
@@ -155,7 +163,7 @@ Feature: User profile
     And the HTML title tag should contain the text delwin999
     And I should not see the "Page title" region
 
-  Scenario: The user profile page is updated when the user joins a collection
+  Scenario: The user profile page is updated when the user joins or leaves a collection
     Given users:
       | Username      | E-mail                           |
       | Korben Dallas | k.dallas@cabs.services.zorg.corp |
@@ -183,6 +191,22 @@ Feature: User profile
     When I am an anonymous user
     And I go to the public profile of "Korben Dallas"
     Then I should see the "Federated Army Veterans" tile
+    And the page should not be cached
+
+    # Verify the page can be cached correctly.
+    When I reload the page
+    Then the page should be cached
+
+    # Leave the collection. Now the cache of the user profile page should be
+    # cleared and the collection that was left should no longer show up.
+    Given I am logged in as "Korben Dallas"
+    And I go to the homepage of the "Federated Army Veterans" collection
+    And I click "Leave this collection"
+    And I press the "Confirm" button
+
+    When I am an anonymous user
+    And I go to the public profile of "Korben Dallas"
+    Then I should not see the "Federated Army Veterans" tile
     And the page should not be cached
 
     # Verify the page can be cached correctly.
