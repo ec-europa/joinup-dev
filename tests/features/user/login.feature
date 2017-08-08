@@ -12,6 +12,7 @@ Feature: User login
     # Login without keeping the session open.
     When I go to the homepage
     And I click "Sign in"
+    Then I should not see the text "Log in"
     And I fill in "Username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
     And I press "Sign in"
