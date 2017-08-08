@@ -119,9 +119,9 @@ Feature: Collections Overview
     And I should see the text "This collection is intended to show ways of being fit while working."
     And I should see the text "Tamsin Irwin"
     And I should see the text "Irwin BVBA made-up company"
-    # Policy domain should not be visible after change request in ISAICP-3664.
+    # The following 2 fields should not be visible after change request in ISAICP-3664.
     And I should not see the text "E-health"
-    And I should see the text "Belgium"
+    And I should not see the text "Belgium"
 
   @terms
   Scenario: Custom pages should not be visible on the overview page
