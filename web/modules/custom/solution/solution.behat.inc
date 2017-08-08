@@ -37,18 +37,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use UtilityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Test solutions.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

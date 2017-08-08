@@ -21,18 +21,6 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
   use UserTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Test contact information rdf entities.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

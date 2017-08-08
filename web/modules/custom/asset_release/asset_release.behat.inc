@@ -23,18 +23,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   use RdfEntityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Test releases.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

@@ -13,18 +13,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 class ContactFormSubContext extends DrupalSubContextBase {
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Navigates to the contact form.
    *
    * @When (I )go to the contact form

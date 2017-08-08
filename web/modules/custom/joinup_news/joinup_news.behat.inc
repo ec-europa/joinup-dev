@@ -17,18 +17,6 @@ class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInt
   use NodeTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Navigates to the canonical page display of a news page.
    *
    * @param string $title

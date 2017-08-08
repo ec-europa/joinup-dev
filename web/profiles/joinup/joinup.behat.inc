@@ -58,18 +58,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use WysiwygTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Creates a user with data provided in a table.
    *
    * Table format:

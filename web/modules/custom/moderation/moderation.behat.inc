@@ -17,18 +17,6 @@ class ModerationSubContext extends DrupalSubContextBase implements DrupalSubCont
   use EntityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Checks that the moderation preview for the given node contains the text.
    *
    * @param string $title

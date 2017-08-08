@@ -19,18 +19,6 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use UtilityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Checks that the user is on the search page.
    *
    * The search page currently doesn't have a title so our common practice of

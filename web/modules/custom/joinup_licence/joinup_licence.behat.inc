@@ -21,18 +21,6 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   use RdfEntityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Test licences.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]

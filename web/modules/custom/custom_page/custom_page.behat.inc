@@ -27,18 +27,6 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   use RdfEntityTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
-
-  /**
    * Checks if the given custom page belongs to the given collection.
    *
    * If there are multiple custom pages or collections with the same name, then
