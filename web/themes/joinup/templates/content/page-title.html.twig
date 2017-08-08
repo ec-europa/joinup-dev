@@ -18,15 +18,15 @@
       {% if is_create_page %}
         <h1 class="page__title">
           <span class="icon icon--plus"></span>
-          {{ title }}
+          <span>{{ title }}</span>
         </h1>
       {% else %}
         <h1 class="page__title">
           {{ title }}
+          {% if permalink %}
+            <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+          {% endif %}
         </h1>
-        {% if permalink %}
-          <a class="permalink" href="{{ permalink }}" title="Permalink">#</a>
-        {% endif %}
       {% endif %}
   </div>
 {% endif %}

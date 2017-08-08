@@ -20,10 +20,12 @@
         <div class="value gray">{{ title }}</div>
       </div>
     </div>
-      <h1 class="page__title">{{ additional_content.field_news_headline }}</h1>
-      {% if permalink %}
-          <a class="permalink" href="{{ permalink }}" title="Permalink">#</a>
-      {% endif %}
+      <h1 class="page__title">
+        <span>{{ additional_content.field_news_headline }}</span>
+        {% if permalink %}
+          <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+        {% endif %}
+      </h1>
       <div class="details">
         {{ additional_content.author }}
         <div class="details__element">
