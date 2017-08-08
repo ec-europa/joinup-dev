@@ -489,12 +489,7 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
  * Implements hook_ENTITY_TYPE_delete() for OG Membership entities.
  */
 function joinup_user_og_membership_delete(OgMembershipInterface $entity) {
-  try {
-    joinup_user_invalidate_user_cache_tags($entity);
-  }
-  catch (Exception $exception) {
-    var_dump($exception->getMessage());
-  }
+  joinup_user_invalidate_user_cache_tags($entity);
 }
 
 /**
