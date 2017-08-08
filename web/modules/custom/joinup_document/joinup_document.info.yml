@@ -9,6 +9,7 @@ dependencies:
   - file_url
   - joinup_community_content
   - joinup_licence
+  - language
 
 config_devel:
   - core.base_field_override.node.document.title
