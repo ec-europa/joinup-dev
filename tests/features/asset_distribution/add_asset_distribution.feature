@@ -176,3 +176,15 @@ Feature: Add distribution through the UI
       # Clean up the entities created through the user interface.
       Then I delete the "MacOSX binary" asset distribution
       And I delete the "MacOSX binary" asset distribution
+
+    Scenario: Licences shown in the solution header should be comma separated.
+      Given the following licence:
+        | title       | Boost Software License                                                         |
+        | description | It is a permissive license in the style of the BSD license and the MIT license |
+      And distributions:
+        | title        | licence                | solution               |
+        | Hot Snake    | WTFPL                  | Solution random x name |
+        | Quality Yard | Boost Software License | Solution random x name |
+
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should see the text "WTFPL, Boost Software License"
