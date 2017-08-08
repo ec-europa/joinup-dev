@@ -32,6 +32,14 @@ Feature: Unpublished content of the website
       | Mists in the Thought            | Ed Abbott | Invisible Boyfriend | draft     |
       | Mists that are published maybe? | Ed Abbott | Grey Swords         | validated |
 
+    # The owner should be able to see all content.
+    When I am logged in as "Ed Abbott"
+    And I go to the "Invisible Boyfriend" collection
+    Then I should see the "The Ragged Streams" tile
+    And I should see the "Storms of Touch" tile
+    And I should see the "The Male of the Gift" tile
+    And I should see the "Mists in the Thought" tile
+
     # The facilitator should not be able to see content that only have a draft state.
     When I am logged in as "Phillip Shaw"
     And I go to the "Invisible Boyfriend" collection
