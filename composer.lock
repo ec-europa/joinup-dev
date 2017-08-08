@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "79705dda26789ff8745b0fe8050cfffa",
+    "content-hash": "b2242d692193de4610985d8644902da1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2903,6 +2903,14 @@
             ],
             "authors": [
                 {
+                    "name": "Eli-T",
+                    "homepage": "https://www.drupal.org/user/516878"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
                 }
@@ -4051,7 +4059,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": null,
+                "reference": "8.x-1.5",
                 "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
             },
             "require": {
@@ -4228,7 +4236,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupré",
+                    "name": "Antoine Beaupr?",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4236,7 +4244,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Araña Cruz",
+                    "name": "Jonathan Ara?a Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4918,7 +4926,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch?nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5004,7 +5012,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2016-04-20 05:45:29"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5531,6 +5539,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -5541,10 +5550,6 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
             "time": "2017-07-17 09:33:42"
         },
         {
@@ -6648,7 +6653,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran?ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9684,7 +9689,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9741,7 +9746,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calderón Zumba",
+                    "name": "Juan Francisco Calder?n Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }

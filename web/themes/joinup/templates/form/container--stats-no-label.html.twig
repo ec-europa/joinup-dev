@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Theme override of a container to render a stat that has no label.
+ *
+ * Used to show the collections a solution belongs to.
+ */
+#}
+{% if children is not empty %}
+  <div class="stats__column">
+    <div class="stats__wrapper">
+      <span class="stats__text">{{ children }}</span>
+    </div>
+  </div>
+{% endif %}
