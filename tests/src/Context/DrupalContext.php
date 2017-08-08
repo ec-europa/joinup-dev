@@ -4,7 +4,6 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
-use Drupal\facets\Exception\Exception;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\UserTrait;
 
@@ -38,19 +37,6 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   public function createUsers(TableNode $usersTable) {
     foreach ($usersTable->getHash() as $userHash) {
       $this->createUser($userHash);
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function cleanUsers() {
-    try {
-      parent::cleanUsers();
-    }
-    catch (Exception $e) {
-      var_dump($e);
-      var_dump($this->getMinkParameters());
     }
   }
 
