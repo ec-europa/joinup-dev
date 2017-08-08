@@ -15,15 +15,15 @@
 {{ title_prefix }}
 {% if title %}
   <div class="page__title-wrapper">
-      <h1 class="page__title">{{ title }}</h1>
+    <div class="details">
+      <div class="details__element details__element-headline">
+        <div class="value gray">{{ title }}</div>
+      </div>
+    </div>
+      <h1 class="page__title">{{ additional_content.field_news_headline }}</h1>
       {% if permalink %}
           <a class="permalink" href="{{ permalink }}" title="Permalink">#</a>
       {% endif %}
-      <div class="details">
-        <div class="details__element details__element-headline">
-          <div class="value gray">{{ additional_content.field_news_headline }}</div>
-        </div>
-      </div>
       <div class="details">
         {{ additional_content.author }}
         <div class="details__element">
