@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Context;
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalContext as DrupalExtensionDrupalContext;
 use Drupal\facets\Exception\Exception;
@@ -42,15 +43,16 @@ class DrupalContext extends DrupalExtensionDrupalContext {
   }
 
   /**
-   * {@inheritdoc}
+   * Test.
+   *
+   * @AfterScenario
    */
-  public function cleanUsers() {
+  public function myCleanUsers(AfterScenarioScope $scope) {
     try {
-      parent::cleanUsers();
+      $this->cleanUsers();
     }
     catch (Exception $e) {
-      var_dump($e);
-      var_dump($this->getMinkParameters());
+      var_dump($scope->getFeature());
     }
   }
 
