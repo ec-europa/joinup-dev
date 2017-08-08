@@ -194,6 +194,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_visit_count
+  sticky:
+    label: 'Sticky at top of lists'
+    datasource_id: 'entity:node'
+    property_path: sticky
+    type: boolean
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'

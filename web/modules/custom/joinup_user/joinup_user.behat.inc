@@ -30,7 +30,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Navigates to the one time log in page of the user.
+   * Navigates to the one time sign in page of the user.
    *
    * @param string $user
    *   The user name.
@@ -38,7 +38,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a user is not found.
    *
-   * @When I go to the one time log in page of (the user ):user
+   * @When I go to the one time sign in page of (the user ):user
    */
   public function visitOneTimeLogIn($user) {
     $user = $this->getUserByName($user);

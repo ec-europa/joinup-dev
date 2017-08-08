@@ -9,9 +9,9 @@ register_admin_created:
   subject: 'Your Joinup account was created successfully.'
 register_no_approval_required:
   body: "Dear [user:field_user_first_name],\r\n\r\nYou are one step away from creating your account in Joinup, the European Commission collaborative platform for Interoperability solutions for public administrations, businesses and citizens.\r\n\r\nPlease confirm your email address by clicking [user:one-time-login-url] to complete the creation of your new Joinup account.\r\n\r\nIf you think that this email was erroneously sent to you, please disregard this message. \r\n\r\nKind regards\r\n\r\nThe Joinup Community Team"
-  subject: 'You''re one step away to create your Joinup account. Please confirm your email address before you can log in to Joinup.'
+  subject: 'You''re one step away to create your Joinup account. Please confirm your email address before you can sign in to Joinup.'
 register_pending_approval:
-  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to log in, set your password, and other details.\r\n\r\n\r\n--  [site:name] team"
+  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to sign in, set your password, and other details.\r\n\r\n\r\n--  [site:name] team"
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
 register_pending_approval_admin:
   body: "[user:display-name] has applied for an account.\r\n\r\n[user:edit-url]"

@@ -180,6 +180,7 @@ config_devel:
   - pathauto.pattern.rdf_entities_generic
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
+  - r4032login.settings
   - swiftmailer.message
   - swiftmailer.transport
   - system.theme

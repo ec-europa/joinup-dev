@@ -6,11 +6,11 @@ Feature: User authentication
   Scenario: Anonymous user can see the user login page
     Given I am not logged in
     When I visit "user"
-    Then I should see the text "Log in"
+    Then I should see the text "Sign in"
     And I should see the text "Reset your password"
     And I should see the text "Username"
     And I should see the text "Password"
-    But I should not see the text "Log out"
+    But I should not see the text "Sign out"
     And I should not see the text "My account"
 
   Scenario Outline: Anonymous user can access public pages
@@ -28,7 +28,7 @@ Feature: User authentication
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
     When I go to "<path>"
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
 
     Examples:
       | path                               |
