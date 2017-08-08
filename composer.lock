@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "88ae59e601a6d6d6cccb6550453a2048",
+    "content-hash": "b0817924e23570a9ceddbb9b4655b771",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15,7 +15,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-03-23T16:26:10+00:00"
+            "time": "2017-03-23 16:26:10"
         },
         {
             "name": "alchemy/zippy",
@@ -1513,7 +1513,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/better_formats"
             },
-            "time": "2016-09-23T18:53:21+00:00"
+            "time": "2016-09-23 18:53:21"
         },
         {
             "name": "drupal/cached_computed_field",
@@ -2389,17 +2389,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.0.0-alpha11",
+            "version": "1.0.0-alpha10",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets",
-                "reference": "8.x-1.0-alpha11"
+                "reference": "8.x-1.0-alpha10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha11.zip",
-                "reference": null,
-                "shasum": "7b53517e7049048a4379a5e30a2ca4a243ca1fe9"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha10.zip",
+                "reference": "8.x-1.0-alpha10",
+                "shasum": "3475249f89af0db594a3dd8341ccc6afc6dc532d"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2413,8 +2413,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha11",
-                    "datestamp": "1500888543"
+                    "version": "8.x-1.0-alpha10",
+                    "datestamp": "1499507343"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2681,7 +2681,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
             },
-            "time": "2016-11-14T20:32:26+00:00"
+            "time": "2016-11-14 20:32:26"
         },
         {
             "name": "drupal/linkit",
@@ -2728,7 +2728,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29T21:27:56+00:00"
+            "time": "2017-05-29 21:27:56"
         },
         {
             "name": "drupal/mailsystem",
@@ -2815,7 +2815,7 @@
                 "source": "https://github.com/Gizra/message/tree/8.x-1.x",
                 "issues": "https://github.com/Gizra/message/issues"
             },
-            "time": "2017-04-03T16:46:18+00:00"
+            "time": "2017-04-03 16:46:18"
         },
         {
             "name": "drupal/message_notify",
@@ -3038,7 +3038,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-08-03T19:39:23+00:00"
+            "time": "2017-08-03 19:39:23"
         },
         {
             "name": "drupal/og_menu",
@@ -3157,7 +3157,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27T15:47:09+00:00"
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/pathauto",
@@ -3174,15 +3174,87 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ],
+                    "web/libraries/{$name}": [
+                        "type:drupal-library"
+                    ],
+                    "web/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "web/profiles/contrib/{$name}": [
+                        "type:drupal-profile"
+                    ],
+                    "web/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ],
+                    "drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ],
+                    "web/themes/joinup/vendor/{$name}": [
+                        "type:drupal-theme-library"
+                    ]
                 },
-                "drupal": {
-                    "version": "8.x-1.0+1-dev",
-                    "datestamp": "1494086885"
-                },
-                "patches_applied": {
-                    "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-21.patch"
+                "patches": {
+                    "drupal/core": {
+                        "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
+                        "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
+                        "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-22.patch",
+                        "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
+                        "Soft reload does not clean up user inputs like in D7 (Firefox only) @see https://www.drupal.org/node/2596597": "https://www.drupal.org/files/issues/2596597-8.patch",
+                        "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/2821988-35.patch",
+                        "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-87.patch",
+                        "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
+                        "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
+                        "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-28.patch",
+                        "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch"
+                    },
+                    "drupal/better_formats": {
+                        "Provide config schema for field 3rd party settings @see https://www.drupal.org/node/2895045": "https://www.drupal.org/files/issues/2895045-2.patch"
+                    },
+                    "drupal/file_url": {
+                        "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch",
+                        "Critical error thrown when creating a new revision of an entity @see https://www.drupal.org/node/2899697": "https://www.drupal.org/files/issues/2899697-3.patch"
+                    },
+                    "drupal/inline_entity_form": {
+                        "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
+                        "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
+                    },
+                    "drupal/linkit": {
+                        "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
+                    },
+                    "drupal/search_api": {
+                        "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
+                        "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
+                    },
+                    "drupal/search_api_solr": {
+                        "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
+                    },
+                    "drupal/state_machine": {
+                        "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
+                        "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
+                        "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/static_cache_disable_for_workflow_callback-2846986-2.patch",
+                        "Allow access to the initialValue protected property. @see https://www.drupal.org/node/2896479": "https://www.drupal.org/files/issues/allow_access_to_initial_value-2896479-2-D8.patch"
+                    },
+                    "drupal/password_policy": {
+                        "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                    },
+                    "drupal/pathauto": {
+                        "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-21.patch"
+                    },
+                    "drupal/redirect": {
+                        "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
+                        "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
+                    },
+                    "drupal/social_media_links": {
+                        "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-3.patch",
+                        "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
+                    },
+                    "drupal/video_embed_field": {
+                        "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3212,7 +3284,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
             },
-            "time": "2017-05-06T16:06:59+00:00"
+            "time": "2017-05-06 16:06:59"
         },
         {
             "name": "drupal/persistent_login",
@@ -3266,7 +3338,7 @@
                 "source": "http://cgit.drupalcode.org/persistent_login",
                 "issues": "http://drupal.org/project/issues/persistent_login"
             },
-            "time": "2017-03-03T10:53:37+00:00"
+            "time": "2017-03-03 10:53:37"
         },
         {
             "name": "drupal/phingdrushtask",
@@ -3352,7 +3424,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2016-12-02T20:39:55+00:00"
+            "time": "2016-12-02 20:39:55"
         },
         {
             "name": "drupal/piwik",
@@ -3523,7 +3595,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
             },
-            "time": "2017-02-08T04:20:19+00:00"
+            "time": "2017-02-08 04:20:19"
         },
         {
             "name": "drupal/rdf_entity",
@@ -3581,7 +3653,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-08-08T15:25:00+00:00"
+            "time": "2017-08-08 15:25:00"
         },
         {
             "name": "drupal/redirect",
@@ -4422,7 +4494,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-31T12:05:17+00:00"
+            "time": "2017-07-31 12:05:17"
         },
         {
             "name": "egulias/email-validator",
@@ -4833,7 +4905,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2017-07-12 23:38:25"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -5063,7 +5135,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20T06:45:09+00:00"
+            "time": "2017-01-20 06:45:09"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5565,7 +5637,7 @@
                 }
             ],
             "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2015-11-04T13:03:54+00:00"
+            "time": "2015-11-04 13:03:54"
         },
         {
             "name": "pfrenssen/piwik-reporting-api",
@@ -5604,7 +5676,7 @@
                 "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
                 "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
             },
-            "time": "2017-07-17T09:33:42+00:00"
+            "time": "2017-07-17 09:33:42"
         },
         {
             "name": "phing/phing",
@@ -5826,7 +5898,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-08-03T10:59:52+00:00"
+            "time": "2017-08-03 10:59:52"
         },
         {
             "name": "psr/cache",
@@ -9053,7 +9125,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -9509,7 +9581,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -9644,7 +9717,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-09T08:39:37+00:00"
+            "time": "2017-04-09 08:39:37"
         },
         {
             "name": "drupal/drupal-extension",
