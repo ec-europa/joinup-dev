@@ -110,10 +110,10 @@ Feature: Collection membership administration
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     Then I check the box "Update the member Gregory House"
-    Then I select "Add the Collection facilitator role to the selected members" from "Action"
+    Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
-      | Add the Collection facilitator role to the selected members was applied to 1 item. |
+      | Add the facilitator role to the selected members was applied to 1 item. |
     And the following system email should have been sent:
       | recipient | Gregory House                                                                                 |
       | subject   | Your role has been change to Medical diagnosis                                                |

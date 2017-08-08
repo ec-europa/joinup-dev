@@ -76,6 +76,27 @@ function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_comment_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_comment_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_notification_comment_delete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
  * Dispatches a generic notification event.
  *
  * @param string $operation

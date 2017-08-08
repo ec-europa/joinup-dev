@@ -19,6 +19,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: entity.user.canonical
+    routes: "entity.user.canonical\r\nentity.user.edit_form"
     negate: true
     context_mapping: {  }

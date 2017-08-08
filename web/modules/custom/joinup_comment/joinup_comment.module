@@ -5,11 +5,9 @@
  * Joinup comment logic.
  */
 
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\message\Entity\Message;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -20,46 +18,6 @@ function joinup_comment_comment_view_alter(array &$build, EntityInterface $entit
     'route_parameters' => ['comment' => $entity->id()],
     'metadata' => ['changed' => $entity->getChangedTime()],
   ];
-}
-
-/**
- * Implements hook_entity_delete().
- */
-function joinup_comment_entity_delete(EntityInterface $entity) {
-  if (!$entity instanceof CommentInterface) {
-    return;
-  }
-
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
-  $build = $view_builder->view($entity, 'full');
-  $html = \Drupal::service('renderer')->renderRoot($build);
-  // Keep a log record of all comment deletions.
-  $message =
-    "Author: @author_id<br>Deleted by @moderator_uid<br>Comment: @comment<br>";
-  $args = [
-    '@author_id' => $entity->getOwnerId(),
-    '@moderator_uid' => \Drupal::currentUser()->id(),
-    '@comment' => check_markup(strip_tags($html)),
-  ];
-
-  \Drupal::logger('joinup_comment_delete')->notice($message, $args);
-
-  if ($entity->getOwnerId()) {
-    // Create the actual message and save it to the db.
-    $msg = [
-      'template' => 'comment_deletion',
-    ];
-    $message = Message::create($msg);
-    $message->set('field_comment_text', $entity->get('field_body')->getValue());
-    $message->set('field_page', $entity->getCommentedEntityId());
-    $message->setOwner($entity->getOwner());
-    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    $message->setLanguage($langcode);
-    $message->save();
-    // Send the saved message as an e-mail.
-    \Drupal::getContainer()->get('message_notify.sender')->send($message, [], 'email');
-  }
-
 }
 
 /**

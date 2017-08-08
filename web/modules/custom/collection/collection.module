@@ -471,6 +471,8 @@ function collection_last_change(RdfInterface $entity) {
  * homepage:
  * - Only show content related to the collection.
  * - Do not show the collection itself in the search results.
+ * - Exclude custom pages.
+ * - Sort by sticky and score.
  */
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
@@ -490,6 +492,11 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 
   // Exclude custom pages from the collection overview.
   $query->addCondition('entity_bundle', 'custom_page', '<>');
+
+  // Sort by sticky and then by score. The "score" field has the special name
+  // "search_api_relevance".
+  $query->sort('sticky', QueryInterface::SORT_DESC);
+  $query->sort('search_api_relevance', QueryInterface::SORT_DESC);
 }
 
 /**

@@ -249,12 +249,34 @@
     </target>
 
     <target name="redirect-outgoing-email">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
         <if>
             <equals arg1="${drupal.redirect.email}" arg2="yes" />
             <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="devel" />
+                </phingcall>
                 <append
                     destFile="${website.settings.local.php}"
-                    text="$config['system.mail']['interface']['default'] = 'devel_mail_log';" />
+                    text="${line.separator}$config['system.mail']['interface']['default'] = 'devel_mail_log';${line.separator}" />
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';${line.separator}" />
             </then>
             <else>
                 <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
@@ -294,7 +316,7 @@
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, enable-dev-modules, redirect-outgoing-email" />
+        depends="enable-dev-settings, redirect-outgoing-email, enable-dev-modules" />
 
     <target
         name="setup-acceptance"

@@ -38,6 +38,7 @@ Feature: Proposing a collection
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
+    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
@@ -100,7 +101,7 @@ Feature: Proposing a collection
   Scenario: E-library options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner.jpg"
@@ -111,7 +112,7 @@ Feature: Proposing a collection
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
 
     # Initially the collection is open, check if the eLibrary options are OK.
     Then the option "Only members can create new content." should be selected
@@ -157,7 +158,7 @@ Feature: Proposing a collection
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
-    When I click "Description" tab
+    When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
@@ -173,14 +174,14 @@ Feature: Proposing a collection
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # This form has two elements only that have browser-side validation.
     When I fill in "Title" with "Constraint validation API"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I press "Propose"
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # Fill the required field.
     When I select "HR" from "Policy domain"
     And I press "Propose"
