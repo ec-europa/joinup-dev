@@ -127,3 +127,20 @@ Feature: Solutions Overview
     When I go to the homepage of the "Jira restarters" solution
     Then I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
+
+  Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
+    Given the following solutions:
+      | title       | state     |
+      | Robotic arm | validated |
+      | ARM9        | validated |
+    And collections:
+      | title              | affiliates        | state     |
+      | Disappointed Steel | Robotic arm, ARM9 | validated |
+      | Random Arm         | ARM9              | validated |
+
+    When I go to the homepage of the "Robotic arm" solution
+    Then I should see the link "Disappointed Steel"
+
+    When I go to the homepage of the "ARM9" solution
+    Then I should see the link "Disappointed Steel"
+    But I should not see the link "Random Arm"

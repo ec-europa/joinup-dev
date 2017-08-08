@@ -139,3 +139,15 @@ Feature: Add distribution through the UI
 
     Given I select the radio button "Upload file"
     Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
+
+    Scenario: Licences shown in the solution header should be comma separated.
+      Given the following licence:
+        | title       | Boost Software License                                                         |
+        | description | It is a permissive license in the style of the BSD license and the MIT license |
+      And distributions:
+        | title        | licence                | solution               |
+        | Hot Snake    | WTFPL                  | Solution random x name |
+        | Quality Yard | Boost Software License | Solution random x name |
+
+      When I go to the homepage of the "Solution random x name" solution
+      Then I should see the text "WTFPL, Boost Software License"
