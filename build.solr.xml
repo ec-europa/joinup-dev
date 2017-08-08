@@ -149,9 +149,9 @@
             <filterchain>
                 <replaceregexp>
                     <regexp
-                        multiline="true"
-                        pattern="\s*\$config\['search_api.server.solr_(un)?published'\]\['backend_config'\]\['connector_config'\]\['(scheme|host|port|path|core)'] = '[^'].*';\s*\n"
-                        replace="${line.separator}"/>
+                        pattern="^\$config\['search_api.server.solr_(un)?published'\]\['backend_config'\]\['connector_config'\]\['(scheme|host|port|path|core)'] = '.*';\s*"
+                        replace=""
+                        modifiers="m"/>
                 </replaceregexp>
             </filterchain>
         </reflexive>

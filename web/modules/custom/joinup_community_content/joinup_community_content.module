@@ -150,16 +150,21 @@ function joinup_community_content_preprocess_node(&$variables) {
     return;
   }
 
-  // If the node cannot be shared or isn't shared anywhere, bail out.
-  if (!$node->hasField('field_shared_in') || $node->get('field_shared_in')->isEmpty()) {
-    return;
-  }
-
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
   $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
   if ($parent) {
-    $variables['attributes']['data-drupal-shared-from-id'] = $parent->id();
-    $variables['attributes']['data-drupal-shared-from-label'] = $parent->label();
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+
+  // If the node is shared somewhere, attach the related library.
+  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
     $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
+  }
+
+  if ($node->isSticky()) {
+    $variables['attributes']['class'][] = 'is-sticky';
+    $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
   }
 }
 

@@ -80,6 +80,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  collections: true
+  download_total: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_banner: true
