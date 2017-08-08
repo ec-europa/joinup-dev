@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @wip
 Feature: Unpublished content of the website
   In order to manage unpublished entities
   As a user of the website
