@@ -15,8 +15,8 @@
   display: flex
   flex-direction: column
   flex-wrap: nowrap
+  justify-content: space-around
   margin-bottom: 40px
-  border-bottom: 1px solid darken($color-grey-light, 5%)
   +breakpoint(sm)
     flex-direction: row
     align-items: center
@@ -36,23 +36,27 @@
 
 .tab--content-type
   position: relative
-  margin-bottom: 20px
   padding: 15px 5px
   text-align: center
   text-decoration: none
   color: $color-base
-  +breakpoint(sm)
-    margin-bottom: 0
+  +breakpoint(xxs, xs)
+    margin-bottom: 20px
+    border-bottom: 1px solid darken($color-grey-light, 5%)
   .tab__content
     display: inline-flex
-    min-width: 140px
-    margin: 0 auto
+    width: 100%
   .tab__icon
     color: lighten($color-grey-medium, 10%)
     +icon-size(45px)
+    +breakpoint(xxs, xs)
+      +centered($horizontal: false, $vertical: true)
   .tab__text
-    margin-left: 15px
-    text-align: left
+    +breakpoint(xxs, xs)
+      margin: 0 auto
+    +breakpoint(sm)
+      margin-left: 15px
+      text-align: left
   .tab__text--upper
     font-size: 32px
     font-weight: $font-weight-bold
@@ -87,23 +91,8 @@
     margin-left: 4px
     +icon-size(14px)
 
-.tab__container--narrow
-  +breakpoint(md)
-    justify-content: flex-start
-
-.tab__container--wide
-  +breakpoint(xs)
-    justify-content: space-between
-
 // Dependiencies
 // --------------------------------------------------
-.tab__container--narrow
-  .tab
-    +breakpoint(xs)
-      margin-right: 10%
-      &:last-child
-        margin-right: 0  
-
 .timeline
   .tab--more
     position: absolute
