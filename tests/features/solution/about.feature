@@ -93,8 +93,6 @@ Feature: About this solution
 
     # Moderation grey area.
     And I should see the text "Moderation"
-    And I should see the text "Validated"
-
 
     # The rest of the fields should not be seen at the moment.
     # Multiple spatial coverage entries.
