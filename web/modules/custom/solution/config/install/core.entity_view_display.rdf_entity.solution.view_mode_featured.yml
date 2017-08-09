@@ -113,6 +113,7 @@ content:
             classes: {  }
     region: content
 hidden:
+  collections: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_banner: true

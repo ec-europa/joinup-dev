@@ -130,10 +130,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 10
+    region: content
 hidden:
   created: true
   field_shared_in: true
   field_visit_count: true
+  langcode: true
   og_audience: true
   path: true
   promote: true

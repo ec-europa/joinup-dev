@@ -30,7 +30,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Navigates to the one time log in page of the user.
+   * Navigates to the one time sign in page of the user.
    *
    * @param string $user
    *   The user name.
@@ -38,7 +38,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @throws \Exception
    *   Thrown when a user is not found.
    *
-   * @When I go to the one time log in page of (the user ):user
+   * @When I go to the one time sign in page of (the user ):user
    */
   public function visitOneTimeLogIn($user) {
     $user = $this->getUserByName($user);
@@ -95,6 +95,24 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
     $url = $matches[0][0];
     $this->visitPath($url);
+  }
+
+  /**
+   * Checks that a given image is present in the page.
+   *
+   * This step is copied because the original requires that the link ends in the
+   * extension while modern techniques add extra query parameters in the uri.
+   *
+   * @Then I (should )see the avatar :filename
+   */
+  public function assertImagePresent($filename) {
+    // Drupal appends an underscore and a number to the filename when duplicate
+    // files are uploaded, for example when a test is run more than once.
+    // We split up the filename and extension and match for both.
+    $parts = pathinfo($filename);
+    $extension = $parts['extension'];
+    $filename = $parts['filename'];
+    $this->assertSession()->elementExists('css', "[src*='$filename.$extension']");
   }
 
 }
