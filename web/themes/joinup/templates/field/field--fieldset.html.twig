@@ -39,9 +39,9 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes.addClass('fieldset__field') }}>
+    <div{{ attributes.addClass('fieldset__field fieldset__field--multiple') }}>
       {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
+        <div{{ item.attributes.addClass('fieldset__field-item') }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
@@ -56,7 +56,7 @@
       <div>
     {% endif %}
     {% for item in items %}
-      <div{{ item.attributes }}>{{ item.content }}</div>
+      <div{{ item.attributes.addClass('fieldset__field-item') }}>{{ item.content }}</div>
     {% endfor %}
     {% if multiple %}
       </div>
