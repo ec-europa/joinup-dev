@@ -59,6 +59,9 @@ website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
 
+# Set the transaction type to READ-COMMITTED.
+website.transactions = $databases['default']['default']['init_commands'] = ['isolation' => "SET SESSION tx_isolation='READ-COMMITTED'"];
+
 
 # Behat configuration
 # -------------------
