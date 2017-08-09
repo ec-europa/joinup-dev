@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - rdf_entity
-id: rdf_entity.rdf_draft
-label: Draft
-targetEntityType: rdf_entity
-cache: true
