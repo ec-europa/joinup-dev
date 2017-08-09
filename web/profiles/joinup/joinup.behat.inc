@@ -676,8 +676,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Presses button with specified id|name|title|alt|value at a widget.
    *
-   * Example: When I press "Log In" at "Fieldset"
-   * Example: And I press "Log In" at "Custom widget".
+   * Example: When I press "Sign In" at "Fieldset"
+   * Example: And I press "Sign In" at "Custom widget".
    *
    * @When I press :button at( the) :field( field)
    */
