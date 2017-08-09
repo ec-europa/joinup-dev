@@ -3561,7 +3561,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha5",
-                    "datestamp": "1492182542"
+                    "datestamp": "1501443542"
                 },
                 "patches_applied": {
                     "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",

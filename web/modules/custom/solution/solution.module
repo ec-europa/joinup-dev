@@ -61,6 +61,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setDescription(t('The collections this solution belongs to.'))
     ->setTranslatable(FALSE)
     ->setTargetEntityTypeId('rdf_entity')
+    ->setSetting('target_type', 'rdf_entity')
     ->setComputed(TRUE)
     ->setReadOnly(TRUE);
 
@@ -238,6 +239,11 @@ function solution_entity_extra_field_info() {
       'description' => t('The total downloads of all distributions in this collection.'),
       'visible' => FALSE,
     ];
+    $fields['rdf_entity'][$solution->id()]['display']['collections'] = [
+      'label' => t('Collections'),
+      'description' => t('The collections this solution is affiliated to.'),
+      'visible' => FALSE,
+    ];
   }
   return $fields;
 }
@@ -326,6 +332,19 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#type' => 'container',
       '#stats_topic' => t('Downloads'),
       0 => ['#markup' => (string) $total],
+    ];
+  }
+
+  // Show the collection the solution belongs to. A solution can be affiliated
+  // to multiple collections, but for now we show only the first one.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
+  if ($display->getComponent('collections') && !$entity->get('collection')->isEmpty()) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+    $collection = $entity->get('collection')->first()->entity;
+    $build['collections'] = [
+      '#theme_wrappers' => ['container__stats_no_label'],
+      'prefix' => ['#markup' => '<span class="icon icon--collections"></span>'],
+      'link' => $collection->toLink($collection->label())->toRenderable(),
     ];
   }
 }

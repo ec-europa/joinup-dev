@@ -155,7 +155,7 @@ class JoinCollectionForm extends FormBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = $this->entityTypeManager->getStorage('user')->load($user_id);
     if ($user->isAnonymous()) {
-      $form_state->setErrorByName('user', $this->t('<a href=":login">Log in</a> or <a href=":register">register</a> to change your group membership.', [
+      $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => $this->urlGenerator->generateFromRoute('user.login'),
         ':register' => $this->urlGenerator->generateFromRoute('user.register'),
       ]));
