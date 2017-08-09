@@ -1052,6 +1052,22 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
       $suggestions[] = 'container__edit_actions__search_bar';
     }
   }
+
+  // Early bail out.
+  if (!isset($variables['element']['#extra_suggestion'])) {
+    return;
+  }
+
+  // Add extra suggestion for grid elements.
+  switch ($variables['element']['#extra_suggestion']) {
+    case 'container_grid':
+      $suggestions[] = 'container__grid';
+      break;
+
+    case 'container_grid_item':
+      $suggestions[] = 'container__grid_item';
+      break;
+  }
 }
 
 /**

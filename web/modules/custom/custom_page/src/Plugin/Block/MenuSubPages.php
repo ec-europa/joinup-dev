@@ -136,16 +136,9 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       $build = $this->entityTypeManager->getViewBuilder('node')->view($custom_page, 'view_mode_tile');
       $items[$link->getWeight()] = [
         '#type' => 'container',
+        '#extra_suggestion' => 'container_grid_item',
         '#weight' => $link->getWeight(),
         '#access' => $link->getUrlObject()->access(),
-        '#attributes' => [
-          'class' => [
-            'listing__item',
-            'listing__item--tile',
-            'mdl-cell',
-            'mdl-cell--4-col',
-          ],
-        ],
         $custom_page->id() => $build,
       ];
     }
@@ -158,9 +151,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
         // @see \Drupal\block\BlockViewBuilder::preRender()
         'listing' => [
           '#type' => 'container',
-          '#attributes' => [
-            'class' => ['listing', 'listing--grid', 'mdl-grid'],
-          ],
+          '#extra_suggestion' => 'container_grid',
         ],
       ];
       $build['listing'] += $items;

@@ -129,9 +129,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       // @see \Drupal\block\BlockViewBuilder::preRender()
       'listing' => [
         '#type' => 'container',
-        '#attributes' => [
-          'class' => ['listing', 'listing--grid', 'mdl-grid'],
-        ],
+        '#extra_suggestion' => 'container_grid',
       ],
     ];
 
@@ -163,15 +161,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $rows[$weight] = [
         '#type' => 'container',
+        '#extra_suggestion' => 'container_grid_item',
         '#weight' => $weight,
-        '#attributes' => [
-          'class' => [
-            'listing__item',
-            'listing__item--tile',
-            'mdl-cell',
-            'mdl-cell--4-col',
-          ],
-        ],
         $weight => $view,
       ];
     }
