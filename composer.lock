@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1ad4b11f0c2d263b88159d79eeae38c",
+    "content-hash": "0d3238ae57b01aa0fc3b0f5e739d7d81",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3019,22 +3019,27 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2709-predelete",
+            "version": "dev-ISAICP-2709",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "b2ecb38018272264fa16bf7a88cf39066adc6ec6"
+                "reference": "0457ed83ed5a7ba14a33d296bc08cda9de631cd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/b2ecb38018272264fa16bf7a88cf39066adc6ec6",
-                "reference": "b2ecb38018272264fa16bf7a88cf39066adc6ec6",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/0457ed83ed5a7ba14a33d296bc08cda9de631cd7",
+                "reference": "0457ed83ed5a7ba14a33d296bc08cda9de631cd7",
                 "shasum": ""
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -3045,7 +3050,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-08-09 08:54:26"
+            "time": "2017-08-03 19:39:23"
         },
         {
             "name": "drupal/og_menu",
@@ -10945,7 +10950,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-2709-predelete",
+            "version": "dev-ISAICP-2709",
             "package": "drupal/og"
         },
         {
