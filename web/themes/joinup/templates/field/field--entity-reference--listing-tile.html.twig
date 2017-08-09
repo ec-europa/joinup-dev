@@ -42,8 +42,8 @@
       'listing__item',
       'listing__item--tile',
       'mdl-cell',
-      item.content['#view_mode'] == 'view_mode_tile' ? 'mdl-cell--4-col',
-      item.content['#view_mode'] == 'view_mode_featured' ? 'mdl-cell--12-col',
+      item.content['#view_mode'] == 'view_mode_tile' ? 'mdl-cell--4-col mdl-cell--3-col-wide',
+      item.content['#view_mode'] == 'view_mode_featured' ? 'mdl-cell--12-col mdl-cell--9-col-wide',
     ]
   %}
   <div class="{{ field_classes|join(' ') }}">{{ item.content }}</div>
