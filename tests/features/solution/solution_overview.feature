@@ -12,8 +12,6 @@ Feature: Solutions Overview
     When I click "Solutions"
     Then I should see the heading "Solutions"
 
-  # @todo: The small header, which contains solutions link, should be removed for anonymous users on the homepage
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
   @terms
   Scenario: View solution overview as an anonymous user
     Given users:

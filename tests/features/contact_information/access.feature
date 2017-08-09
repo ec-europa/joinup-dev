@@ -11,7 +11,7 @@ Feature: Contact information access
       | Website URL | http://shield.gov       |
     When I am an anonymous user
     When I go to the "Phil Coulson" contact information page
-    Then I should see the text "Access denied. You must log in to view this page. "
+    Then I should see the text "Access denied. You must sign in to view this page. "
 
   Scenario: Facilitator can edit contact information
     Given the following owner:

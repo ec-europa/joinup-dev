@@ -15,7 +15,7 @@ Feature: Collection TCA agreement
     When I am not logged in
     And I visit "/collections"
     And I click "Create collection"
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
 
   Scenario: Authenticated users can access the TCA agreement page.
     When I am logged in as a user with the "authenticated" role
