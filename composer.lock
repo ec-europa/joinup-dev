@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2242d692193de4610985d8644902da1",
+    "content-hash": "d1ad4b11f0c2d263b88159d79eeae38c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2207,7 +2207,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -3019,27 +3019,22 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-2709-predelete",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/og.git",
-                "reference": "0457ed83ed5a7ba14a33d296bc08cda9de631cd7"
+                "reference": "b2ecb38018272264fa16bf7a88cf39066adc6ec6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/og/zipball/0457ed83ed5a7ba14a33d296bc08cda9de631cd7",
-                "reference": "0457ed83ed5a7ba14a33d296bc08cda9de631cd7",
+                "url": "https://api.github.com/repos/ec-europa/og/zipball/b2ecb38018272264fa16bf7a88cf39066adc6ec6",
+                "reference": "b2ecb38018272264fa16bf7a88cf39066adc6ec6",
                 "shasum": ""
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
-            "extra": {
-                "patches_applied": {
-                    "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
-                }
-            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -3050,7 +3045,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-08-03 19:39:23"
+            "time": "2017-08-09 08:54:26"
         },
         {
             "name": "drupal/og_menu",
@@ -3561,7 +3556,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha5",
-                    "datestamp": "1492182542"
+                    "datestamp": "1501443542"
                 },
                 "patches_applied": {
                     "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
@@ -4241,7 +4236,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupr??",
+                    "name": "Antoine Beaupré",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4249,7 +4244,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara??a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4931,7 +4926,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch??nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -6658,7 +6653,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran??ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9214,7 +9209,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -9694,7 +9689,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9751,7 +9746,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -10950,7 +10945,7 @@
         {
             "alias": "dev-1.x",
             "alias_normalized": "dev-1.x",
-            "version": "dev-ISAICP-2709",
+            "version": "dev-ISAICP-2709-predelete",
             "package": "drupal/og"
         },
         {

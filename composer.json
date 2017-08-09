@@ -30,7 +30,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha4",
         "drupal/migrate_spreadsheet": "~1.0-beta4",
-        "drupal/og": "dev-ISAICP-2709 as dev-1.x",
+        "drupal/og": "dev-ISAICP-2709-predelete as dev-1.x",
         "drupal/og_menu": "~1.0@alpha",
         "drupal/password_policy": "3.x-dev#8ee51e4e58b1b9493867c43ddfecbdac20e04b0c",
         "drupal/pathauto": "1.x-dev#ab05b7956a61d102e42ceb789a3857dd37aa11f6",
@@ -151,9 +151,6 @@
             },
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
-            },
-            "drupal/og": {
-                "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
