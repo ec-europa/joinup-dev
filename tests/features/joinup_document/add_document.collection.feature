@@ -53,9 +53,11 @@ Feature: "Add document" visibility options.
     When I fill in the following:
       | Title       | An amazing document |
       | Short title | Amazing document    |
-    And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
+    And I press "Save as draft"
+    Then I should see the error message "Description field is required."
+    When I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I press "Save as draft"
     Then I should see the heading "An amazing document"
     And I should see the success message "Document An amazing document has been created."
