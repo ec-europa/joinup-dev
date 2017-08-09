@@ -146,7 +146,7 @@ mode: about
 content:
   field_is_actor:
     type: entity_reference_label
-    weight: 8
+    weight: 1
     region: content
     label: above
     settings:
@@ -164,7 +164,7 @@ content:
         template_suggestion: fieldset
   field_is_business_process:
     type: entity_reference_label
-    weight: 9
+    weight: 2
     region: content
     label: above
     settings:
@@ -213,7 +213,17 @@ content:
     label: hidden
     settings:
       mode: link
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_is_elibrary_creation:
     type: list_default
     weight: 19
@@ -288,7 +298,7 @@ content:
     region: content
   field_is_product_type:
     type: entity_reference_label
-    weight: 10
+    weight: 3
     region: content
     label: above
     settings:
@@ -324,7 +334,7 @@ content:
         template_suggestion: fieldset
   field_is_standardization_level:
     type: entity_reference_label
-    weight: 11
+    weight: 4
     region: content
     label: above
     settings:
@@ -341,7 +351,7 @@ content:
         template_suggestion: fieldset
   field_is_test_resource_type:
     type: entity_reference_label
-    weight: 7
+    weight: 0
     region: content
     label: hidden
     settings:
