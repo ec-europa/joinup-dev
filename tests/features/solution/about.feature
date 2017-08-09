@@ -91,10 +91,6 @@ Feature: About this solution
       | Kallawaya |
       | Italian   |
 
-    # Documentation grey area.
-    And I should see the text "Documentation"
-    And I should see the text "text.pdf"
-
     # Moderation grey area.
     And I should see the text "Moderation"
     And I should see the text "Validated"
