@@ -1,3 +1,4 @@
+langcode: en
 status: true
 dependencies:
   config:
@@ -17,8 +18,8 @@ bundle: contact_information
 mode: about
 content:
   field_ci_email:
-    weight: 2
-    label: hidden
+    weight: 1
+    label: above
     settings: {  }
     third_party_settings:
       ds:
@@ -35,8 +36,8 @@ content:
     region: content
   field_ci_name:
     type: string
-    weight: 1
-    label: hidden
+    weight: 0
+    label: above
     settings:
       link_to_entity: false
     third_party_settings:
@@ -52,8 +53,8 @@ content:
         template_suggestion: fieldset
     region: content
   field_ci_webpage:
-    weight: 3
-    label: hidden
+    weight: 2
+    label: above
     settings:
       trim_length: 80
       target: _blank
@@ -73,14 +74,7 @@ content:
         template_suggestion: fieldset
     type: link
     region: content
-  label:
-    type: string
-    weight: 0
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    region: content
 hidden:
   field_ci_state: true
+  label: true
   langcode: true

@@ -98,8 +98,10 @@
         visibility: visible
         background: transparent
         position: relative
-        &.desktop-hidden
+        &.is-hidden
           visibility: hidden
+        &:not(.is-hidden)
+          height: auto
 
 .menu-item--active-trail
   .sidebar-menu__link

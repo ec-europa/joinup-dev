@@ -69,14 +69,13 @@
 #}
 {%
   set classes = [
-    'contextual-region',
     'listing__card',
     'mdl-card',
     'listing__card--stats-container',
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div {{ attributes.setAttribute('class', classes) }}>
+<div {{ attributes.addClass(classes) }}>
   {% if content.field_event_logo|render %}
     <div class="listing__image">{{ content.field_event_logo }}</div>
   {% endif %}
@@ -95,11 +94,6 @@
       <div class="listing__stat">
         <span class="listing__text">{{ content.field_event_date }}</span>
         <span class="listing__icon icon icon--events"></span>
-      </div>
-      <div class="listing__stat is-only-placeholder">
-        {# todo:  Location is only placeholder. #}
-        <span class="listing__text">BE</span>
-        <span class="listing__icon icon icon--location"></span>
       </div>
     </div>
   </div>

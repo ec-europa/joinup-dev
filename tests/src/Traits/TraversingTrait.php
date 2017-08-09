@@ -163,7 +163,7 @@ trait TraversingTrait {
     if (!$tile) {
       // Throw a specific exception, so it can be catched by steps that need to
       // assert that a tile is not present.
-      throw new ElementNotFoundException($this->getDriver(), "Tile '$heading'");
+      throw new ElementNotFoundException($this->getSession()->getDriver(), "Tile '$heading'");
     }
 
     return $tile;
