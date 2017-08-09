@@ -149,6 +149,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
         // The 'listing' child key is needed to avoid copying the #attributes to
         // the parent block.
         // @see \Drupal\block\BlockViewBuilder::preRender()
+        '#extra_suggestion' => 'separated_block',
         'listing' => [
           '#type' => 'container',
           '#extra_suggestion' => 'container_grid',

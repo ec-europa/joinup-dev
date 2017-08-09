@@ -1133,6 +1133,16 @@ function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for block.html.twig.
+ */
+function joinup_theme_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+  // Provide suggestion for blocks which have top padding and border.
+  if (isset($variables['elements']['content']['#extra_suggestion']) && $variables['elements']['content']['#extra_suggestion'] == 'separated_block') {
+    $suggestions[] = 'block__separated';
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_alter().
  */
 function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {

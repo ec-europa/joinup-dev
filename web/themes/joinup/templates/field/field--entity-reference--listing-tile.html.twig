@@ -36,15 +36,24 @@
  * @see template_preprocess_field()
  */
 #}
-{% for item in items %}
-  {%
-    set field_classes = [
-      'listing__item',
-      'listing__item--tile',
-      'mdl-cell',
-      item.content['#view_mode'] == 'view_mode_tile' ? 'mdl-cell--4-col mdl-cell--3-col-wide',
-      item.content['#view_mode'] == 'view_mode_featured' ? 'mdl-cell--12-col mdl-cell--9-col-wide',
-    ]
-  %}
-  <div class="{{ field_classes|join(' ') }}">{{ item.content }}</div>
-{% endfor %}
+<div class="block--separated">
+  <h3 class="block__title">{{ label }}</h3>
+  <div class="listing listing--grid">
+    <div class="row">
+      <div class="mdl-grid">
+        {% for item in items %}
+          {%
+          set field_classes = [
+            'listing__item',
+            'listing__item--tile',
+            'mdl-cell',
+            item.content['#view_mode'] == 'view_mode_tile' ? 'mdl-cell--4-col mdl-cell--3-col-wide',
+            item.content['#view_mode'] == 'view_mode_featured' ? 'mdl-cell--12-col mdl-cell--9-col-wide',
+          ]
+          %}
+          <div class="{{ field_classes|join(' ') }}">{{ item.content }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
