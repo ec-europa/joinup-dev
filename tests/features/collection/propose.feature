@@ -10,18 +10,18 @@ Feature: Proposing a collection
 
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
-  # though you need to log in to do so.
-  Scenario: Anonymous user needs to log in before creating a collection
+  # though you need to sign in to do so.
+  Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
       | Username      | Password |
       | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
       | Password | claps         |
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Propose collection"
 
   @terms
@@ -101,7 +101,7 @@ Feature: Proposing a collection
   Scenario: E-library options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner.jpg"
@@ -112,7 +112,7 @@ Feature: Proposing a collection
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
 
     # Initially the collection is open, check if the eLibrary options are OK.
     Then the option "Only members can create new content." should be selected
@@ -158,7 +158,7 @@ Feature: Proposing a collection
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
-    When I click "Description" tab
+    When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
@@ -174,14 +174,14 @@ Feature: Proposing a collection
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # This form has two elements only that have browser-side validation.
     When I fill in "Title" with "Constraint validation API"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I press "Propose"
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # Fill the required field.
     When I select "HR" from "Policy domain"
     And I press "Propose"

@@ -1,0 +1,7 @@
+pin community content:
+  title: 'Pin community content'
+  description: 'Pin a community content at the top of its groups lists.'
+
+unpin community content:
+  title: 'Unpin community content'
+  description: 'Unpin a community content from the top of its groups lists.'

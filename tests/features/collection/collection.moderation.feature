@@ -182,7 +182,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I fill in "Name" with "Katsumoto"
     And I check the box "Academia/Scientific organisation"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
@@ -205,13 +205,13 @@ Feature: Collection moderation
     When I am logged in as a user with the "moderator" role
     And I go to the homepage of the "Spectres in fog" collection
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
     # Also when saving and reopening the edit form the eLibrary creation option
     # should remain unchanged.
     When I press "Publish"
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
 
     # Clean up the entities that were created.
@@ -232,7 +232,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I fill in "Name" with "Garnett Clifton"
     And I check the box "Supra-national authority"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
@@ -247,7 +247,7 @@ Feature: Collection moderation
     Then I should see the capitalised heading "Domestic bovins"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
 
     # Clean up the entities that were created.
@@ -268,7 +268,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I fill in "Name" with "Coretta Simonson"
     And I check the box "Private Individual(s)"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
@@ -286,7 +286,7 @@ Feature: Collection moderation
     Then I should see the capitalised heading "Theft of Body"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
     # Clean up the entities that were created.
@@ -309,7 +309,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I fill in "Name" with "Terrance Nash"
     And I check the box "Regional authority"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
@@ -329,7 +329,7 @@ Feature: Collection moderation
     Then I should see the capitalised heading "Silken Emperor"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
     # Clean up the entities that were created.
@@ -351,7 +351,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I fill in "Name" with "Mable Pelley"
     And I check the box "National authority"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "logo.png" to "Logo"
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
@@ -372,7 +372,7 @@ Feature: Collection moderation
     Then I should see the capitalised heading "The blue ships"
     # Edit again.
     When I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
     # Clean up the entities that were created.

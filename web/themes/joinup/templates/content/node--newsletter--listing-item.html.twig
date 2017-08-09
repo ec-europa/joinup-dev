@@ -75,7 +75,7 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
-<div {{ attributes.setAttribute('class', classes) }}>
+<div {{ attributes.addClass(classes) }}>
   <div class="listing__metadata">
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>

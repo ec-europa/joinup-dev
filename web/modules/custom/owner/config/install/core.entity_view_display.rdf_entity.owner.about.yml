@@ -1,3 +1,4 @@
+langcode: en
 status: true
 dependencies:
   config:
@@ -16,9 +17,9 @@ mode: about
 content:
   field_owner_name:
     type: string
-    weight: 1
+    weight: 0
     region: content
-    label: hidden
+    label: above
     settings:
       link_to_entity: false
     third_party_settings:
@@ -33,7 +34,7 @@ content:
         template_suggestion: fieldset
   field_owner_type:
     type: entity_reference_label
-    weight: 2
+    weight: 1
     region: content
     label: above
     settings:
@@ -49,14 +50,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: fieldset
-  label:
-    label: hidden
-    type: string
-    weight: 0
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
 hidden:
   field_owner_state: true
+  label: true
   langcode: true

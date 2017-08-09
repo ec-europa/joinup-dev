@@ -22,18 +22,57 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
+    - ds
+    - field_group
     - link
     - options
     - text
     - user
+third_party_settings:
+  field_group:
+    group_moderation:
+      children:
+        - field_ar_closed
+        - field_ar_elibrary_creation
+        - field_ar_moderation
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Moderation
+    group_owner_contact_information:
+      children:
+        - field_ar_owner
+        - field_ar_contact_information
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Owner/Contact Information'
 id: rdf_entity.collection.about
 targetEntityType: rdf_entity
 bundle: collection
 mode: about
 content:
   field_ar_abstract:
-    weight: 9
-    label: above
+    weight: 0
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -43,86 +82,119 @@ content:
     label: above
     settings:
       trim_length: 80
+      target: _blank
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: link
     region: content
   field_ar_closed:
-    weight: 10
-    label: above
+    weight: 6
+    label: hidden
     settings:
       format: default
-      format_custom_false: ''
       format_custom_true: ''
-    third_party_settings: {  }
+      format_custom_false: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: boolean
     region: content
   field_ar_contact_information:
-    weight: 4
+    weight: 5
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      view_mode: about
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: two_columns
+    type: entity_reference_entity_view
     region: content
   field_ar_description:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_ar_elibrary_creation:
-    weight: 11
-    label: above
+    weight: 7
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: list_default
     region: content
   field_ar_moderation:
-    weight: 12
-    label: above
+    weight: 8
+    label: hidden
     settings:
       format: default
-      format_custom_false: ''
       format_custom_true: ''
-    third_party_settings: {  }
+      format_custom_false: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: boolean
     region: content
   field_ar_owner:
-    weight: 5
+    weight: 4
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_policy_domain:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_spatial_coverage:
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  label:
-    label: hidden
-    type: string
-    weight: 0
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
+      view_mode: about
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: two_columns
+    type: entity_reference_entity_view
     region: content
 hidden:
   field_ar_affiliates: true
@@ -132,7 +204,10 @@ hidden:
   field_ar_modification_date: true
   field_ar_state: true
   field_collection_content: true
+  field_policy_domain: true
+  field_spatial_coverage: true
   join_collection: true
+  label: true
   langcode: true
   last_update: true
   members: true
