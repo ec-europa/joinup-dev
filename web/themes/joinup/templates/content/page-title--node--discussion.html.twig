@@ -15,12 +15,10 @@
 {{ title_prefix }}
 {% if title %}
   <div class="page__title-wrapper">
-      <h1 class="page__title">
-        <span>{{ title }}</span>
-        {% if permalink %}
-          <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
-        {% endif %}
-      </h1>
+      <h1 class="page__title">{{ title }}</h1>
+      {% if permalink %}
+        <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+      {% endif %}
       <div class="details">
         {{ additional_content.author }}
         <div class="details__element">
