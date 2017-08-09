@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.comment.default
     - field.field.node.news.body
     - field.field.node.news.field_attachment
     - field.field.node.news.field_comments
@@ -17,6 +18,7 @@ dependencies:
     - field.field.node.news.og_audience
     - node.type.news
   module:
+    - comment
     - ds
     - field_group
     - file
@@ -70,16 +72,34 @@ content:
             classes: {  }
       joinup:
         template_suggestion: with_label
+  field_comments:
+    type: comment_default
+    weight: 6
+    region: content
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
   field_news_headline:
     weight: 1
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: string
     region: content
   field_news_referenced_solution:
-    weight: 6
+    weight: 7
     label: above
     settings:
       view_mode: view_mode_tile
@@ -121,7 +141,7 @@ content:
     region: content
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 7
+    weight: 8
     region: content
     label: above
     settings:
@@ -165,7 +185,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_comments: true
   field_keywords: true
   field_news_spatial_coverage: true
   field_policy_domain: true

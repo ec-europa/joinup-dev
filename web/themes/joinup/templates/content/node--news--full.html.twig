@@ -71,13 +71,14 @@
  */
 #}
 <article{{ attributes.addClass('page__content') }}>
-    {{ content.body }}
-    {{ content.group_references }}
-    {{ content.field_attachment }}
-    <div class="action-link__wrapper right">
-      {{ content.report }}
-      {{ content.share_link }}
-    </div>
+  {{ content.body }}
+  {{ content.group_references }}
+  {{ content.field_attachment }}
+  <div class="action-link__wrapper right">
+    {{ content.report }}
+    {{ content.share_link }}
+  </div>
 </article>
+{{ content.field_comments }}
 {{ content.field_shared_in }}
 {{ content.field_news_referenced_solution }}
