@@ -229,11 +229,11 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     if ($collection->bundle() !== 'collection') {
       throw new \Exception('Only collections can be referenced in affiliation requests.');
     }
-    $storage->setSaveGraph($graph);
 
     $values = $collection->get('field_ar_affiliates')->getValue();
     $values[] = ['target_id' => $solution_id];
     $collection->set('field_ar_affiliates', $values);
+    $collection->set('graph', $graph);
     $collection->save();
   }
 }
