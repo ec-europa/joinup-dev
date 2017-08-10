@@ -675,7 +675,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @throws \Exception
    *   Thrown when the solution is not affiliated with the collection.
    *
-   * @Then the :collection collection should be affiliated with the :solution solution
+   * @Then the :solution solution should be affiliated with the :collection collection
    */
   public function assertCollectionAffiliation($collection, $solution) {
     $collection_entity = $this->getRdfEntityByLabel($collection, 'collection');
