@@ -40,7 +40,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                  |
       | subject   | Joinup: Content has been published                                                                                                                                        |
-      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection". You can access the new content at the following link: http |
+      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
