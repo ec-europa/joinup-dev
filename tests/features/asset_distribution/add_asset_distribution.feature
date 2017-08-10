@@ -162,7 +162,7 @@ Feature: Add distribution through the UI
       When I fill in "Title" with "MacOSX binary"
       And I select "WTFPL" from "License"
       And I press "Save"
-      Then I should see the error message "Content with title MacOSX binary already exists. Please choose a different title."
+      Then I should see the error message "A distribution with title MacOSX binary already exists in this release. Please choose a different title."
       And I should have 1 distribution
 
       Given I am logged in as a facilitator of the "Solubility of gases" solution

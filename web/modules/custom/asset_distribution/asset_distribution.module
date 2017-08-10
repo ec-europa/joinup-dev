@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\file_url\FileUrlHandler;
@@ -14,6 +15,16 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function asset_distribution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure a distribution's title is unique in its release.
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_distribution' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueAssetDistributionTitle', []);
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -270,4 +281,38 @@ QUERY;
   }
 
   return NULL;
+}
+
+/**
+ * Checks if the given distribution has a unique title within its release.
+ *
+ * A release might have different distributions associated with it. To avoid
+ * confusion we should avoid having distributions with identical names within
+ * the same release.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
+ *   The distribution to check.
+ *
+ * @return bool
+ *   TRUE if the title is unique.
+ *
+ * @throws \Exception
+ *   Thrown when anything but an asset distribution entity is passed in.
+ */
+function asset_distribution_title_is_unique(RdfInterface $asset_distribution) {
+  if ($asset_distribution->bundle() !== 'asset_distribution') {
+    throw new \Exception('Title uniqueness within a release can only be checked for asset distributions.');
+  }
+
+  $query = \Drupal::entityQuery('rdf_entity')
+    ->condition('label', $asset_distribution->label())
+    ->condition('rid', 'asset_distribution')
+    ->condition('og_audience', $asset_distribution->get('og_audience')->first()->getValue()['target_id']);
+  if (!empty($asset_distribution->id())) {
+    $query->condition('id', $asset_distribution->id(), '<>');
+  }
+
+  $result = $query->execute();
+
+  return empty($result);
 }
