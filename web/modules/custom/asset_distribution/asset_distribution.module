@@ -296,7 +296,7 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
       $solution = $rdf;
     }
     // This distribution is being added to a release.
-    else {
+    elseif ($rdf->bundle() == 'collection') {
       $solution = $rdf->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
     }
   }
