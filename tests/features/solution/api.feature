@@ -51,7 +51,7 @@ Feature: Solution API
       | state             | validated                      |
       | collection        | Inflatable mascots             |
     Then I should have 1 solution
-    And the "Inflatable mascots" collection should be affiliated with the "Inflatable rooster" solution
+    And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" collection
 
   @terms
   Scenario: Assign ownership during creation of solutions through UI
