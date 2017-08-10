@@ -640,4 +640,35 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution->save();
   }
 
+  /**
+   * Checks that the given solution is affiliated with the given collection.
+   *
+   * If there are multiple custom pages or collections with the same name, then
+   * only the first one is checked.
+   *
+   * @param string $collection
+   *   The name of the collection to check.
+   * @param string $solution
+   *   The name of the solution to check.
+   *
+   * @throws \Exception
+   *   Thrown when the solution is not affiliated with the collection.
+   *
+   * @Then the :collection collection should be affiliated with the :solution solution
+   */
+  public function assertCollectionAffiliation($collection, $solution) {
+    $collection_entity = $this->getRdfEntityByLabel($collection, 'collection');
+    $solution_entity = $this->getRdfEntityByLabel($solution, 'solution');
+
+    $affiliated_solutions = $collection_entity->get('field_ar_affiliates')->referencedEntities();
+
+    foreach ($affiliated_solutions as $affiliated_solution) {
+      if ($affiliated_solution->id() === $solution_entity->id()) {
+        return;
+      }
+    }
+
+    throw new \Exception("The '$solution' solution is not affiliated with the '$collection' collection.");
+  }
+
 }
