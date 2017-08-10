@@ -42,11 +42,11 @@ content:
     type: social_media_links_field_default
     region: content
   field_user_business_title:
-    type: text_textarea
+    type: string_textfield
     weight: 6
     region: content
     settings:
-      rows: 5
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_user_content:

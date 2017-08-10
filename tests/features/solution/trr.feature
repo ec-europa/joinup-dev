@@ -11,10 +11,10 @@ Feature: Creating a test (solution) in the TRR collection.
       | name | type                         |
       | W3C  | Company, Industry consortium |
     When I go to the homepage
-    And I click "Log in"
+    And I click "Sign in"
     And I fill in "Username" with "collection_facilitator"
     And I fill in "Password" with "collection_facilitator"
-    And I press "Log in"
+    And I press "Sign in"
     Given I am on "rdf_entity/http_e_f_fplaceHolder_f4e56d06c_bc8c3_b40fd_bb2a0_b773301ebe9b8"
     And I click "Add solution"
     And I should see the text "TRR"
