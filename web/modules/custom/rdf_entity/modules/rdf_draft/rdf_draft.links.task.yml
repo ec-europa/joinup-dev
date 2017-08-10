@@ -1,3 +1,0 @@
-rdf_draft.entities:
-  class: \Drupal\Core\Menu\LocalTaskDefault
-  deriver: \Drupal\rdf_draft\Plugin\Derivative\RdfDraftLocalTask

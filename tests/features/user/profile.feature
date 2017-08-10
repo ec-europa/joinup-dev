@@ -12,7 +12,8 @@ Feature: User profile
     When I am logged in as "Leonardo Da Vinci"
     And I am on the homepage
     Then I click "My account"
-    Then I click "Edit"
+    And I should see the avatar "user_icon.png"
+    When I click "Edit"
     Then the following fields should be present "Current password, Email address, Password, Confirm password, First name"
     And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain, Business title"
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
