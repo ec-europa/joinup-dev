@@ -54,6 +54,11 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: group_header
 content:
+  collections:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   download_total:
     weight: 5
     region: content

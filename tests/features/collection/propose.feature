@@ -10,18 +10,18 @@ Feature: Proposing a collection
 
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
-  # though you need to log in to do so.
-  Scenario: Anonymous user needs to log in before creating a collection
+  # though you need to sign in to do so.
+  Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
       | Username      | Password |
       | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
       | Password | claps         |
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Propose collection"
 
   @terms
