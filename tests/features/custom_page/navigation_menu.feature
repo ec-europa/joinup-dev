@@ -209,6 +209,7 @@ Feature: Navigation menu for custom pages
     # Publish an entity will result in showing it to the menu if it is meant to.
     When I am logged in as a moderator
     And I go to the "The Slaves of the Air" custom page
+    When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I press "Save and publish"
     Then I should see the heading "The Slaves of the Air"
