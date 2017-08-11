@@ -72,6 +72,87 @@
     -ms-transform: translate(0, -50%)
     transform: translate(0, -50%)
 
+// Hidden print
 =hidden-print()
   @media print
     display: none !important
+
+// Flexbox
+// Defines a block flex container; enables a flex context for all its direct children.
+=flex
+  display: -webkit-box
+  display: -webkit-flex
+  display: -moz-flex
+  display: -ms-flexbox
+  display: flex
+
+// Inline flex
+// Defines an inline flex container; enables a flex context for all its direct children.
+=inline-flex
+  display: -webkit-inline-box
+  display: -webkit-inline-flex
+  display: -moz-inline-flex
+  display: -ms-inline-flexbox
+  display: inline-flex
+
+// Flex flow direction
+// Defines the main axis around which the items are placed in the flex container.
+=flex-direction($value: row)
+  -webkit-flex-direction: $value
+  -moz-flex-direction: $value
+  -ms-flex-direction: $value
+  flex-direction: $value
+  @if $value == row
+    -webkit-box-direction: normal
+    -webkit-box-orient: horizontal
+  @else if $value == column
+    -webkit-box-direction: normal
+    -webkit-box-orient: vertical
+
+// Flex wrap
+// Defines whether flex items will be wrap.
+=flex-wrap($value: nowrap)
+  -webkit-flex-wrap: $value
+  -moz-flex-wrap: $value
+  flex-wrap: $value
+  @if $value == nowrap
+    -ms-flex-wrap: none
+  @else
+    -ms-flex-wrap: $value
+
+// Justify content
+// Defines the alignment along the main axis.
+=justify-content($value: flex-start)
+  -webkit-justify-content: $value
+  -moz-justify-content: $value
+  justify-content: $value
+  @if $value == flex-start
+    -webkit-box-pack: start
+    -ms-flex-pack: start
+  @else if $value == flex-end
+    -webkit-box-pack: end
+    -ms-flex-pack: end
+  @else if $value == space-between
+    -webkit-box-pack: justify
+    -ms-flex-pack: justify
+  @else if $value == space-around
+    -ms-flex-pack: distribute
+  @else
+    -webkit-box-pack: $value
+    -ms-flex-pack: $value
+
+// Align items
+// Defines the default behaviour of the flex items along the cross axis on the current line.
+=align-items($value: stretch)
+  -webkit-align-items: $value
+  -moz-align-items: $value
+  align-items: $value
+  @if $value == flex-start
+    -webkit-box-align: start
+    -ms-flex-align: start
+  @else if $value == flex-end
+    -webkit-box-align: end
+    -ms-flex-align: end
+  @else
+    -webkit-box-align: $value
+    -ms-flex-align: $value

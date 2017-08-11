@@ -12,16 +12,16 @@
 // Elements
 // --------------------------------------------------
 .tab__container
-  display: flex
-  flex-direction: column
-  flex-wrap: nowrap
-  justify-content: space-around
   margin-bottom: 40px
+  +flex
+  +flex-direction(column)
+  +flex-wrap(nowrap)
+  +justify-content(space-around)
   +breakpoint(sm)
-    flex-direction: row
-    align-items: center
     margin-bottom: 30px
     border-bottom: none
+    +flex-direction(row)
+    +align-items(center)
 
 // Modifiers
 // --------------------------------------------------
@@ -44,7 +44,7 @@
     margin-bottom: 20px
     border-bottom: 1px solid darken($color-grey-light, 5%)
   .tab__content
-    display: inline-flex
+    +inline-flex
     width: 100%
   .tab__icon
     color: lighten($color-grey-medium, 10%)
