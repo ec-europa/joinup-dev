@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "942aa3be76f5f8115388ba9242dc009f",
+    "content-hash": "da2877fa882ca54c79c707ed87264881",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.32.5",
+            "version": "3.32.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6d9a29bd750c50e491a4f458bf5e24f2adb35a5f"
+                "reference": "db5bd8d617012d4afb3e5e1f3e8f4b9899242b62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6d9a29bd750c50e491a4f458bf5e24f2adb35a5f",
-                "reference": "6d9a29bd750c50e491a4f458bf5e24f2adb35a5f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/db5bd8d617012d4afb3e5e1f3e8f4b9899242b62",
+                "reference": "db5bd8d617012d4afb3e5e1f3e8f4b9899242b62",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-09T18:19:19+00:00"
+            "time": "2017-08-10T20:29:21+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -3536,7 +3536,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "2cced19541c6b9bf2a29292fe21d1910030498bb"
+                "reference": "ce003dd4d3a90d8cc8bfb16d232aa866e8bc7377"
             },
             "require": {
                 "drupal/core": "*"
@@ -3553,9 +3553,6 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Remove unreliable methods to set the target graph globally. @see https://www.drupal.org/node/2901217": "https://www.drupal.org/files/issues/2901217-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3593,7 +3590,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-08-08T15:25:00+00:00"
+            "time": "2017-08-11T11:29:33+00:00"
         },
         {
             "name": "drupal/redirect",
