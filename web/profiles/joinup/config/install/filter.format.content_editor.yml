@@ -4,8 +4,6 @@ dependencies:
   module:
     - editor
     - joinup_video
-    - linkit
-    - video_embed_wysiwyg
 name: 'Content Editor'
 format: content_editor
 weight: -10
@@ -38,12 +36,6 @@ filters:
     weight: -46
     settings:
       filter_url_length: 72
-  filter_autop:
-    id: filter_autop
-    provider: filter
-    status: true
-    weight: -47
-    settings: {  }
   filter_html_image_secure:
     id: filter_html_image_secure
     provider: filter
@@ -59,7 +51,19 @@ filters:
       allowed_providers:
         joinup_ec_video: joinup_ec_video
         youtube: youtube
-        vimeo: '0'
-        youtube_playlist: '0'
+        vimeo: 0
+        youtube_playlist: 0
       autoplay: false
       responsive: true
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 0
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
