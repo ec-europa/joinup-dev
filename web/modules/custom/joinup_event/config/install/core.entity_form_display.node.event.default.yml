@@ -26,6 +26,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.event
   module:
+    - allowed_formats
     - comment
     - datetime_range
     - file
@@ -43,9 +44,12 @@ content:
     weight: 2
     settings:
       rows: 9
-      summary_rows: 3
       placeholder: ''
-    third_party_settings: {  }
+      summary_rows: 3
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
     region: content
   current_workflow_state:
     type: current_workflow_state_widget

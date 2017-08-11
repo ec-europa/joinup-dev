@@ -94,7 +94,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = str_replace("\n", ' ', $mail['body']);
+      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
       $mail_body = trim($mail_body);
 
       // If the original mail body is markup, we need to:
@@ -211,7 +211,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = str_replace("\n", ' ', $mail['body']);
+      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
       $mail_body = trim($mail_body);
 
       // If the original mail body is markup, we need to:
