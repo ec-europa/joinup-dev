@@ -19,6 +19,8 @@
   text-align: center
 
 .search-bar__label
+  position: absolute
+  top: 0
   width: 40px
   height: 40px
 
@@ -55,27 +57,23 @@
     color: lighten($color-grey-medium, 10%)
 
 .search-bar__input-container
-  margin-left: 0
-  padding: 10px 0
-
-.search-bar__block
-  position: relative
-  max-width: 570px
-  margin: 20px auto
-  +breakpoint(tablet)
-    margin-top: 40px
-    margin-bottom: 40px
+  margin-left: 40px
 
 // Modifiers
 // --------------------------------------------------
 .search-bar--header
-  position: absolute
-  z-index: 1
-  top: 0
   right: 75px
-  overflow: hidden
-  height: 64px
+  width: 120px
   padding: 0
+  +centered($horizontal: false, $vertical: true)
+  +breakpoint(tablet)
+    width: 200px
+  .search-bar__input
+    font-weight: $font-weight-thin
+    border-bottom: 1px solid #fff
+  .search-bar__label
+    margin-left: -4px
+    +centered($horizontal: false, $vertical: true)
 
 .search-bar--section
   width: 85%
@@ -83,28 +81,15 @@
   padding: 0
   +breakpoint(tablet)
     width: 570px
-
-// Dependiencies
-// --------------------------------------------------
-.search-bar--header
   .search-bar__label
-    position: relative
-    bottom: auto
-    display: inline-block
-    vertical-align: middle
+    left: -7px
+    padding: 0
+    +border-radius(50%)
+    +centered($horizontal: false, $vertical: true)
+
   .search-bar__input
     font-weight: $font-weight-thin
-    display: inline-block
-    vertical-align: middle
-    border-bottom: 1px solid #fff
-
-.search-bar--section
-  .search-bar__label
-    top: 0
-    left: 0
-  .search-bar__input
-    font-weight: $font-weight-thin
-    padding-left: 45px
+    padding-left: 40px
     border-bottom: 2px solid lighten($color-grey-medium, 10%)
 
 .search-bar--white
@@ -123,44 +108,31 @@
       color: #fff
 
 .search-bar__block
+  margin: 20px auto
+  position: relative
+  max-width: 570px
+  +breakpoint(tablet)
+    margin-bottom: 40px
+    margin-top: 40px
   .search-bar__button-container
-    position: relative
     left: 20px
+    padding: 0
     width: 25px
     height: 25px
-    padding: 0
+    position: relative
     +border-radius(50%)
     +centered($horizontal: false, $vertical: true)
     +breakpoint(tablet)
       left: -10px
   .search-bar__button
-    font-size: 0
-    z-index: 10
     width: 25px
     height: 25px
     padding: 0
-    cursor: pointer
-    border: none
-    background: none
     +centered
+    z-index: 10
+    background: none
+    font-size: 0
+    border: none
+    cursor: pointer
   label
     display: none
-
-// States
-// --------------------------------------------------
-.search-bar--header
-  &.is-focused,
-  &.is-dirty
-    z-index: 3
-    width: calc(100% - 130px)
-    background-color: $color-blue-default
-    +breakpoint(tablet)
-      width: calc(100% - 200px)
-    @media (min-width: 1200px)
-      width: 230px
-    @media (min-width: 1520px)
-      width: 400px
-    .search-bar__input-container
-      width: calc(100% - 50px)
-      max-width: 100%
-
