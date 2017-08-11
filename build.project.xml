@@ -57,6 +57,9 @@
         </drush>
         <!-- Set the auto-increment default values for some tables. -->
         <setmysqlautoincrement />
+        <phingcall target="writable-settings-folder" />
+        <phingcall target="writable-settings-php" />
+        <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
