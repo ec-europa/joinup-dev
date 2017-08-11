@@ -144,18 +144,18 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  */
-function collection_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'collection') {
+function collection_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
-  collection_entity_update($entity);
+  collection_rdf_entity_update($entity);
 
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !empty($entity->getOwner())) {
+  if (!empty($entity->getOwner()) && !$entity->getOwner()->isAnonymous()) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
@@ -165,11 +165,9 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = Og::getMembership($entity, $entity->getOwner());
-    if (!empty($membership)) {
-      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
-      $membership->save();
-    }
+    $membership = Og::createMembership($entity, $entity->getOwner());
+    $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+    $membership->save();
   }
 }
 
@@ -257,13 +255,12 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  *
  * Performs the following actions:
- * - Invalidates group content cache tags for the entity that is being changed.
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
-function collection_entity_update(EntityInterface $entity) {
+function collection_rdf_entity_update(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
   if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
@@ -278,7 +275,7 @@ function collection_entity_update(EntityInterface $entity) {
  * Implements hook_module_implements_alter().
  */
 function collection_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'entity_insert') {
+  if ($hook === 'rdf_entity_insert') {
     // Make sure collection_entity_insert() runs after og_entity_insert(). The
     // latter creates an OgMembership entry for the collection owner when a new
     // collection is proposed, and collection_entity_insert() needs to modify

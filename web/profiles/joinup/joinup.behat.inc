@@ -925,6 +925,31 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that non of the given tiles are available on the page.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) not see the( following) tiles in the :region region:
+   */
+  public function assertTilesNotPresentInBlock(TableNode $titles_table, $region) {
+    try {
+      // This will fail if the region does not exist. The region does not exist
+      // if there is no content rendered inside.
+      $results = $this->getTiles($region);
+    }
+    catch (Exception $e) {
+      return;
+    }
+    $headings_in_page = array_map(function ($result) {
+      return $result->getText();
+    }, $results);
+    $headings_not_expected = $titles_table->getColumn(0);
+    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
+  }
+
+  /**
    * Assert that the text is visible in a given region.
    *
    * @Then I (should )see the text :text in the :region region
