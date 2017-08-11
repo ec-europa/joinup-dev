@@ -5,7 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - better_formats
+  - allowed_formats
   - cached_computed_field
   - comment
   - ds
