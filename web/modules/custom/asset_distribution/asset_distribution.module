@@ -299,6 +299,9 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
     elseif ($rdf->bundle() == 'collection') {
       $solution = $rdf->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
     }
+    elseif ($rdf->bundle() == 'asset_distribution') {
+      $solution = AssetDistributionRelations::getDistributionSolution($rdf);
+    }
   }
   // During update.
   else {
