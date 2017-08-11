@@ -1855,7 +1855,36 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $attribute = trim($element->getAttribute('href'), '/');
-    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path.");
+    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
+  }
+
+  /**
+   * Asserts that a certain link in a certain region points to a specific path.
+   *
+   * Example: Then the link "Login" in the "Header" region
+   *          should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   * @param string $href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link in the :region region should point to :href
+   */
+  public function assertRegionLinkHref($link, $region, $href) {
+    $element = $this->getRegion($region)->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the region $region.");
+    }
+
+    $attribute = trim($element->getAttribute('href'), '/');
+    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
   }
 
   /**
