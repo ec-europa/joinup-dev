@@ -178,12 +178,12 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
     if ($collection->bundle() !== 'collection') {
       throw new \Exception('Only collections can be referenced in affiliation requests.');
     }
-    $storage->setSaveGraph($graph);
 
     $entity_id = $form_state->getFormObject()->getEntity()->id();
     $values = $collection->get('field_ar_affiliates')->getValue();
     $values[] = ['target_id' => $entity_id];
     $collection->set('field_ar_affiliates', $values);
+    $collection->set('graph', $graph);
     $collection->save();
   }
 }
