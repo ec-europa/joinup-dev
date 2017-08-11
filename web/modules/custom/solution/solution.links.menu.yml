@@ -1,5 +1,5 @@
 solution.solution_overview:
   title: 'Solutions'
-  weight: 1
+  weight: 0
   url: 'internal:/solutions'
   menu_name: main
