@@ -181,7 +181,7 @@ Feature: Add distribution through the UI
         | title       | Windows - source       |
         | description | Sample description     |
         | access url  | test.zip               |
-        | solution    | Solution random x name |
+        | parent      | Solution random x name |
       And I am logged in as a facilitator of the "Solution random x name" solution
       When I go to the homepage of the "Solution random x name" solution
       And I click "Add distribution" in the plus button menu
