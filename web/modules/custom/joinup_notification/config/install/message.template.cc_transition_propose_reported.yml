@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: cc_transition_propose_reported
+label: 'Community content on Propose reported'
+description: 'Template id 10'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: content_editor
+  -
+    value: '<p>@actor:field_user_first_name @actor:field_user_family_name has updated the content of the @entity:bundle - "@entity:title" as advised and requests again its publication in the @group:bundle: "@group:title".</p><p>You can access the proposed new content at the following link: @entity:url</p>'
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

@@ -24,14 +24,25 @@ class RouteSubscriber extends RouteSubscriberBase {
     // routes.
     // To prevent this we're adding our own access handler to those routes here.
     $routes = [
-      'rdf_entity.rdf_add_page',
       'node.add',
       'node.add_page',
+      'rdf_entity.rdf_add',
+      'rdf_entity.rdf_add_page',
+      'view.frontpage.feed_1',
+      'view.frontpage.page_1',
     ];
     foreach ($routes as $route) {
       if ($route = $collection->get($route)) {
         $route->addRequirements(['_uid_1_only' => 'TRUE']);
       }
+    }
+
+    // Override the confirmation form to delete multiple users with our version
+    // that prevents deletion of users that are sole owners of collections.
+    if ($route = $collection->get('user.multiple_cancel_confirm')) {
+      $route->addDefaults([
+        '_form' => '\Drupal\joinup\Form\UserMultipleCancelConfirm',
+      ]);
     }
   }
 

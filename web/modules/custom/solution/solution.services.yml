@@ -1,9 +1,4 @@
 services:
-  solution.solution_route_context:
-    class: Drupal\solution\ContextProvider\SolutionRouteContext
-    arguments: ['@current_route_match']
-    tags:
-      - { name: 'context_provider' }
   cache_context.solution:
     class: Drupal\solution\Cache\SolutionCacheContext
     arguments: ['@request_stack']
@@ -11,6 +6,6 @@ services:
       - { name: cache.context }
   solution.fulfillment_guard:
     class: Drupal\solution\Guard\SolutionFulfillmentGuard
-    arguments: ['@joinup_core.workflow.user_provider']
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: solution }

@@ -1,0 +1,142 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.group_header
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_social_media
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
+    - field.field.user.user.field_user_family_name
+    - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_group_types
+    - field.field.user.user.field_user_nationality
+    - field.field.user.user.field_user_organisation
+    - field.field.user.user.field_user_photo
+    - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_professional_profile
+    - field.field.user.user.field_user_subscription_events
+    - image.style.image_style_collection_logo
+  module:
+    - ds
+    - image
+    - joinup
+    - user
+id: user.user.group_header
+targetEntityType: user
+bundle: user
+mode: group_header
+content:
+  field_user_business_title:
+    weight: 5
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_user_family_name:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: string
+    region: content
+  field_user_first_name:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: string
+    region: content
+  field_user_nationality:
+    weight: 3
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_user_organisation:
+    weight: 7
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_user_photo:
+    weight: 2
+    label: hidden
+    settings:
+      image_style: image_style_collection_logo
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: image
+    region: content
+  field_user_professional_domain:
+    weight: 4
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: entity_reference_label
+    region: content
+  member_for:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_last_password_reset: true
+  field_password_expiration: true
+  field_social_media: true
+  field_user_content: true
+  field_user_frequency: true
+  field_user_group_types: true
+  field_user_professional_profile: true
+  field_user_subscription_events: true
+  langcode: true
+  simplenews: true
+  user_field_user_content_top: true

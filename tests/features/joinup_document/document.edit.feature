@@ -4,13 +4,10 @@ Feature: "Document page" editing.
   As an owner of the document
   I need to be able to edit it.
 
-  # This is a smokescreen test as the full behaviour should be tested in workflows.
-  # @todo: To be removed after ISAICP-2266 is implemented.
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2266
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
-      | name   |
-      | <user> |
+      | Username |
+      | <user>   |
     And the following collections:
       | title        | description        | state     |
       | <collection> | Sample description | validated |
@@ -18,8 +15,8 @@ Feature: "Document page" editing.
       | collection   | user   | roles  |
       | <collection> | <user> | <role> |
     And "document" content:
-      | title      | author | collection   |
-      | <document> | <user> | <collection> |
+      | title      | author | collection   | state     |
+      | <document> | <user> | <collection> | validated |
     When I am logged in as "<user>"
     And I go to the "<document>" document
     Then I should see the link "Edit" in the "Entity actions" region
@@ -34,7 +31,7 @@ Feature: "Document page" editing.
 
   Scenario: A solution facilitator can edit his content.
     Given users:
-      | name        |
+      | Username    |
       | Peter Floyd |
     And the following solutions:
       | title                  | description        | state     |
@@ -43,8 +40,8 @@ Feature: "Document page" editing.
       | solution               | user        | roles       |
       | Predator in the Future | Peter Floyd | facilitator |
     And "document" content:
-      | title        | author      | solution               |
-      | Prized Cloud | Peter Floyd | Predator in the Future |
+      | title        | author      | solution               | state     |
+      | Prized Cloud | Peter Floyd | Predator in the Future | validated |
     When I am logged in as "Peter Floyd"
     And I go to the "Prized Cloud" document
     Then I should see the link "Edit" in the "Entity actions" region

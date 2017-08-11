@@ -70,11 +70,12 @@
  *   in different view modes.
  */
 #}
-{% set topics = content.field_topic|render %}
-{% set spatial_coverage = content.field_spatial_coverage|render %}
+{% set topics = content.field_policy_domain|render %}
+{% set spatial_coverage = content.field_news_spatial_coverage|render %}
 <article{{ attributes }}>
   <div class="page__content page__content-image">
     {{ content.body }}
+    {{ content.field_attachment }}
     <div class="details__bottom">
       {% if topics and spatial_coverage %}
         {% trans %}This news is about {{ topics }} in {{ spatial_coverage }} area{% endtrans %}
@@ -85,12 +86,12 @@
       {% endif %}
     </div>
     <div class="action-link__wrapper right">
-      {# todo: It is only placeholder #}
-      <a href="/" class="action-link is-only-placeholder">
-        <span class="action-link__icon icon icon--share"></span>
-        <span class="action-link__link">{{ 'Share'|t }}</a>
-      </a>
+      {{ content.share_link }}
     </div>
   </div>
+
+  {{ content.report }}
+  {{ content.field_news_referenced_solution }}
+
   {{ content.field_comments }}
 </article>

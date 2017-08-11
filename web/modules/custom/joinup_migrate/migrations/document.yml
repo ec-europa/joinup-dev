@@ -1,0 +1,60 @@
+id: document
+label: Document
+migration_tags:
+  - node
+  - og
+  - document
+source:
+  plugin: document
+  track_changes: true
+process:
+  nid: nid
+  title: title
+  created: created
+  changed: changed
+  body/value:
+    plugin: file_inline
+    source: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_type: document_type
+  field_document_publication_date: publication_date
+  field_file: field_file
+  field_keywords: keywords
+  field_document_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_licence:
+    plugin: migration
+    source: licence
+    migration: licence
+    no_stub: true
+
+  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
+  # field_policy_domain
+
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+  field_state: state
+destination:
+  plugin: entity:node
+  default_bundle: document
+migration_dependencies:
+ required:
+   - file:document_case
+   - file:document_document
+   - file:document_factsheet
+   - file:document_presentation
+   - file:inline
+   - collection

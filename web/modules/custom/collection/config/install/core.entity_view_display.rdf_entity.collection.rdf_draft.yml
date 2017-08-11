@@ -1,0 +1,142 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.rdf_draft
+    - field.field.rdf_entity.collection.field_ar_abstract
+    - field.field.rdf_entity.collection.field_ar_access_url
+    - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
+    - field.field.rdf_entity.collection.field_ar_closed
+    - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_creation_date
+    - field.field.rdf_entity.collection.field_ar_description
+    - field.field.rdf_entity.collection.field_ar_elibrary_creation
+    - field.field.rdf_entity.collection.field_ar_logo
+    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_modification_date
+    - field.field.rdf_entity.collection.field_ar_owner
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_spatial_coverage
+    - rdf_entity.rdfentity.collection
+  module:
+    - link
+    - options
+    - text
+    - user
+id: rdf_entity.collection.rdf_draft
+targetEntityType: rdf_entity
+bundle: collection
+mode: rdf_draft
+content:
+  field_ar_abstract:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_ar_access_url:
+    weight: 2
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_ar_closed:
+    weight: 10
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_ar_contact_information:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ar_description:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_ar_elibrary_creation:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_ar_moderation:
+    weight: 12
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_ar_owner:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_policy_domain:
+    weight: 6
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_spatial_coverage:
+    weight: 7
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_ar_affiliates: true
+  field_ar_banner: true
+  field_ar_creation_date: true
+  field_ar_logo: true
+  field_ar_modification_date: true
+  field_ar_state: true
+  field_collection_content: true
+  join_collection: true
+  langcode: true
+  last_update: true
+  members: true
+  og_group: true
+  rdf_entity_field_collection_content_inline_facets: true
+  rdf_entity_field_collection_content_top: true
+  solutions: true

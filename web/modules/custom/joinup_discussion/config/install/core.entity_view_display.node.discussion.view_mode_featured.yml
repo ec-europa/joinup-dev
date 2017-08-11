@@ -3,15 +3,18 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.view_mode_featured
-    - field.field.node.discussion.field_comments
-    - field.field.node.discussion.field_discussion_active
-    - field.field.node.discussion.field_discussion_content
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_state
-    - field.field.node.discussion.field_topic
+    - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - ds
+    - joinup_core
     - text
     - user
 id: node.discussion.view_mode_featured
@@ -19,8 +22,8 @@ targetEntityType: node
 bundle: discussion
 mode: view_mode_featured
 content:
-  field_discussion_content:
-    weight: 1
+  body:
+    weight: 2
     label: hidden
     settings:
       trim_length: 200
@@ -33,8 +36,11 @@ content:
             lb-col: false
             classes: {  }
     type: text_trimmed
-  field_topic:
+    region: content
+  field_policy_domain:
+    type: entity_reference_label
     weight: 0
+    region: content
     label: hidden
     settings:
       link: false
@@ -48,11 +54,15 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: entity_reference__listing_tag
-    type: entity_reference_label
+        template_suggestion: ''
 hidden:
-  field_comments: true
-  field_discussion_active: true
+  field_attachment: true
+  field_replies: true
+  field_shared_in: true
   field_state: true
+  field_visit_count: true
+  langcode: true
   links: true
   og_audience: true
+  report: true
+  share_link: true

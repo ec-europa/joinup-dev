@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scope
+field_name: field_scope
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: cross_border
+      label: Cross-border
+    -
+      value: pan_european
+      label: Pan-European
+    -
+      value: international
+      label: International
+    -
+      value: european
+      label: European
+    -
+      value: national
+      label: National
+    -
+      value: regional
+      label: Regional
+    -
+      value: local
+      label: 'Local (city or municipality)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

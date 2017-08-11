@@ -1,5 +1,5 @@
 id: distribution
-label: 'Distributions migration'
+label: 'Distribution'
 migration_tags:
   - distribution
 source:
@@ -7,21 +7,14 @@ source:
 process:
   id: uri
   label: title
-
-  # These two fields will be merged into a single one in ISAICP-3007
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3007
-  # field_ad_access_url:
-  # field_ad_file:
-
+  field_ad_access_url: access_url
   field_ad_creation_date: created_time
-  field_ad_description/value: body
+  field_ad_description/value:
+    plugin: file_inline
+    source: body
   field_ad_description/format:
     plugin: default_value
     default_value: content_editor
-
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2843
-  # field_ad_format:
-
   field_ad_licence:
     plugin: migration
     source: licence
@@ -29,8 +22,7 @@ process:
     no_stub: true
   field_ad_modification_date: changed_time
   field_ad_repr_technique:
-    -
-      plugin: static_map
+    - plugin: static_map
       source: technique
       bypass: true
       map:
@@ -52,16 +44,15 @@ process:
         'UML (Unified Modeling Language)': 'Unified Modelling Language'
         'WSDL (Web Service Description Language)': 'Web Service Description Language'
         'WSMO (Web Service Modeling Ontology)': 'Web Service Modelling Ontology'
-    -
-      plugin: term_reference
+    - plugin: term_reference
       vocabulary: representation_technique
-
-  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3068
-  # field_status:
-
+  field_status: status
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: asset_distribution
 migration_dependencies:
- required:
-   - distribution_file
+  required:
+    - licence
+    - file:distribution
+    - file:inline

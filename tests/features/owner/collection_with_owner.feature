@@ -4,24 +4,27 @@ Feature: Creation of owners through UI
   As a user
   I need to be able to create owners, or add existing, through the UI when proposing a collection.
 
+  @terms
   Scenario: Propose a collection
     Given the following owner:
       | name            | type    |
-      | My organisation | Company |
+      | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus | Company |
     And I am logged in as a user with the "authenticated" role
-    When I am on the homepage
-    And I click "Propose collection"
+    When I go to the propose collection form
     Then the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
       | Title         | Classical and Ancient Mythology                                                                      |
       | Description   | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-    When I select "European Policies" from "Policy domain"
+    When I select "EU and European Policies" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
 
     # Click the button to create an organisation owner.
     And I press "Add new" at the "Owner" field
-    And I set the Owner type to "Company"
+    # Since it is a 'propose' form, the field is not shown for the parent either.
+    # It is safe to check that the field is not found in the entire form.
+    Then the following fields should not be present "Current workflow state, Langcode, Translation"
+    When I set the Owner type to "Company"
     And I fill in "Name" with "Acme"
     And I press "Create owner"
     Then I should see "Acme"
@@ -57,10 +60,14 @@ Feature: Creation of owners through UI
 
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
-    And I fill in "Owner" with "My organisation"
+    # Regression test for a bug that occurred when the entities being
+    # referenced had a very long title.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3444
+    And I pick "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus" from the "Owner" autocomplete suggestions
     And I press "Add owner"
-    And I press "Save"
+    Then I should see the text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus"
 
+    When I press "Save"
     Then I should see the heading "Classical and Ancient Mythology"
 
     # Clean up the collection that was created.

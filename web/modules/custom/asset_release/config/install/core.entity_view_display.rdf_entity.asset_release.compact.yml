@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
-    - field.field.rdf_entity.asset_release.field_isr_has_version
     - field.field.rdf_entity.asset_release.field_isr_included_asset
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
@@ -30,6 +29,7 @@ dependencies:
   module:
     - ds
     - text
+    - user
 id: rdf_entity.asset_release.compact
 targetEntityType: rdf_entity
 bundle: asset_release
@@ -42,6 +42,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_asset_release_category:
     weight: 3
     label: above
@@ -49,6 +50,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_asset_release_type:
     weight: 4
     label: above
@@ -56,6 +58,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_distribution:
     type: entity_reference_entity_view
     weight: 3
@@ -72,12 +75,14 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_isr_elibrary_creation:
     weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
   field_isr_issue_tracker:
     weight: 19
     label: above
@@ -89,6 +94,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_landing_page:
     weight: 17
     label: above
@@ -100,6 +106,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_metrics_page:
     weight: 18
     label: above
@@ -111,6 +118,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_moderation:
     weight: 14
     label: above
@@ -120,6 +128,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_isr_related_asset_releases:
     weight: 2
     label: above
@@ -127,12 +136,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   field_isr_release_notes:
     type: text_default
     weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_isr_release_number:
     type: string
     weight: 1
@@ -147,6 +158,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_isr_source_code_repository:
     weight: 21
     label: above
@@ -158,6 +170,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_webdav_creation:
     weight: 15
     label: above
@@ -167,6 +180,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
   field_isr_webdav_url:
     weight: 16
     label: above
@@ -178,6 +192,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   field_isr_wiki:
     weight: 20
     label: above
@@ -189,6 +204,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   label:
     type: string
     weight: 0
@@ -196,13 +212,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
 hidden:
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_creation_date: true
   field_isr_description: true
   field_isr_documentation: true
-  field_isr_has_version: true
   field_isr_included_asset: true
   field_isr_is_version_of: true
   field_isr_language: true
@@ -217,4 +233,5 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  langcode: true
   og_audience: true

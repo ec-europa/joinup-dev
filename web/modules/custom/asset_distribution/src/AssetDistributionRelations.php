@@ -5,13 +5,12 @@ namespace Drupal\asset_distribution;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service containing methods to get associated entities like parent solution.
- *
- * @package Drupal\asset_distribution
  */
 class AssetDistributionRelations implements ContainerInjectionInterface {
 
@@ -56,10 +55,10 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
    * Returns the solution that a release belongs to.
    *
    * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *    The asset release rdf entity.
+   *   The asset release rdf entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *    The solution rdf entity that the release is version of.
+   *   The solution rdf entity that the release is version of.
    */
   public function getReleaseSolution(RdfInterface $asset_release) {
     if ($asset_release->bundle() != 'asset_release') {
@@ -67,6 +66,19 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
     }
     $target_id = $asset_release->field_isr_is_version_of->first()->target_id;
     return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
+  }
+
+  /**
+   * Returns the solution to which a distribution belongs.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $distribution
+   *   The distribution for which to return the solution.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The solution.
+   */
+  public static function getDistributionSolution(RdfInterface $distribution) {
+    return $distribution->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
   }
 
   /**
@@ -88,7 +100,7 @@ class AssetDistributionRelations implements ContainerInjectionInterface {
     /** @var array $group_content */
     $group_content = $this->entityTypeManager->getStorage('rdf_entity')
       ->loadMultiple($group_content_ids['rdf_entity']);
-    /** @var RdfInterface[] $distributions */
+    /** @var \Drupal\rdf_entity\RdfInterface[] $distributions */
     $distributions = array_filter($group_content, function (RdfInterface $entity) {
       return ($entity->bundle() === 'asset_distribution');
     });

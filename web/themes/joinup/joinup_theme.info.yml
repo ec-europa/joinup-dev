@@ -2,12 +2,9 @@ name: Joinup Theme
 description: Joinup theme based on Material design lite.
 package: Custom
 type: theme
-version: 8.1.1
 core: 8.x
-#Libraries
+
 libraries:
-  - joinup_theme/icons
-  - joinup_theme/fonts
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
@@ -21,6 +18,7 @@ regions:
   featured: Featured
   sidebar_left: 'Sidebar left'
   content_top: 'Content top'
+  filters: 'Filters'
   content: Content  # the content region is required
   content_bottom: 'Content bottom'
   footer: Footer

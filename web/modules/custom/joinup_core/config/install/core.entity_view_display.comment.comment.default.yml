@@ -4,48 +4,6 @@ dependencies:
   config:
     - comment.type.comment
     - field.field.comment.comment.field_body
-  module:
-    - ds
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - comment_title
-        - comment_author
-        - comment_post_date
-        - field_body
-    fields:
-      comment_title:
-        plugin_id: comment_title
-        weight: 0
-        label: hidden
-        formatter: default
-      comment_post_date:
-        plugin_id: comment_post_date
-        weight: 2
-        label: hidden
-        formatter: ds_post_date_long
-      comment_author:
-        plugin_id: comment_author
-        weight: 1
-        label: hidden
-        formatter: default
 id: comment.comment.default
 targetEntityType: comment
 bundle: comment
@@ -53,9 +11,11 @@ mode: default
 content:
   field_body:
     weight: 3
-    label: visually_hidden
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
 hidden:
+  langcode: true
   links: true

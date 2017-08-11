@@ -1,0 +1,44 @@
+id: video
+label: Video
+migration_tags:
+  - node
+  - video
+  - og
+source:
+  plugin: video
+  track_changes: true
+process:
+  nid: nid
+  title: title
+  created: created
+  changed: changed
+  body/value:
+    plugin: file_inline
+    source: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_video: video
+  field_keywords: keywords
+  field_video_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+destination:
+  plugin: entity:node
+  default_bundle: video
+migration_dependencies:
+  required:
+    - collection
+    - file:inline

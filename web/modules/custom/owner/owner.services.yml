@@ -1,6 +1,6 @@
 services:
   owner.fulfillment_guard:
     class: Drupal\owner\Guard\OwnerFulfillmentGuard
-    arguments: ['@entity_type.manager', '@joinup_core.workflow.user_provider']
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: owner }

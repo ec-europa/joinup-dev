@@ -3,20 +3,23 @@ status: true
 dependencies:
   module:
     - rdf_entity
+    - taxonomy
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'http://joinup.eu/is/business_process'
+      target_id:
+        predicate: 'http://joinup.ec.europa.eu/trr#businessProcess'
+        format: resource
 id: rdf_entity.field_is_business_process
 field_name: field_is_business_process
 entity_type: rdf_entity
 type: entity_reference
 settings:
-  target_type: rdf_entity
+  target_type: taxonomy_term
 module: core
 locked: false
-cardinality: 1
-translatable: true
+cardinality: -1
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

@@ -6,16 +6,16 @@ Feature:
 
   Background:
     Given the following collections:
-      | title      | logo     | banner     | state |
-      | Nintendo64 | logo.png | banner.jpg | draft |
-      | Emulators  | logo.png | banner.jpg | draft |
+      | title      | logo     | banner     | state     |
+      | Nintendo64 | logo.png | banner.jpg | validated |
+      | Emulators  | logo.png | banner.jpg | validated |
     And news content:
-      | title                                 | collection | content                          |
-      | Rare Nintendo64 disk drive discovered | Nintendo64 | Magnetic drive called 64DD.      |
-      | NEC VR4300 CPU                        | Emulators  | Update of the emulation library. |
+      | title                                 | collection | content                          | state     |
+      | Rare Nintendo64 disk drive discovered | Nintendo64 | Magnetic drive called 64DD.      | validated |
+      | NEC VR4300 CPU                        | Emulators  | Update of the emulation library. | validated |
     And event content:
-      | title               | collection | body                                        |
-      | 20 year anniversary | Nintendo64 | The console was released in September 1996. |
+      | title               | collection | body                                        | state     |
+      | 20 year anniversary | Nintendo64 | The console was released in September 1996. | validated |
 
     Scenario: Community content listing widget should be shown only to moderators
       Given I am logged in as a facilitator of the "Nintendo64" collection
@@ -39,7 +39,7 @@ Feature:
         | Title | Latest news                        |
         | Body  | Shows all news for this collection |
       And I check "Display a community content listing"
-      And I fill in "Query presets" with "aggregated_field|news"
+      And I fill in "Query presets" with "entity_bundle|news"
       And I press "Save"
       Then I should see the heading "Latest news"
       And I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -67,12 +67,12 @@ Feature:
       # Events tile template is not yet in place. See #ISAICP-2723.
       And I should see the heading "20 year anniversary"
       # Filter on news.
-      When I click the news content tab
+      When I click the News content tab
       Then I should see the "Rare Nintendo64 disk drive discovered" tile
       And I should not see the heading "20 year anniversary"
       # Some unwanted facets were showing after selecting one of the tabs.
       And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, owner, solution"
       # Filter on events.
-      When I click the event content tab
+      When I click the Event content tab
       Then I should see the heading "20 year anniversary"
       Then I should not see the heading "Rare Nintendo64 disk drive discovered"

@@ -41,16 +41,14 @@ Feature: Solution API
       | state             | validated                   |
     Then I should have 1 solution
 
+  @terms
   Scenario: Assign ownership during creation of solutions through UI
     Given the following owner:
       | name      | type            |
       | Leechidna | Local Authority |
-    And the following contact:
-      | name  | Gopheadow               |
-      | email | solutionAPI@example.com |
     And users:
-      | name              | pass |
-      | Solution API user | pass |
+      | Username          | Password |
+      | Solution API user | pass     |
     And the following collection:
       | title             | This is a klm collection |
       | logo              | logo.png                 |
@@ -68,19 +66,17 @@ Feature: Solution API
     Then I should see the link "Add solution"
     And I click "Add solution"
     When I fill in the following:
-      | Title       | Solution API example                         |
-      | Description | We do not care that much about descriptions. |
+      | Title          | Solution API example                         |
+      | Description    | We do not care that much about descriptions. |
+      | Name           | Gopheadow                                    |
+      | E-mail address | solutionAPI@example.com                      |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
-    And I press "Add existing" at the "Contact information" field
-    # Then I wait for AJAX to finish
-    And I fill in "Contact information" with "Gopheadow"
-    And I press "Add contact information"
     And I press "Add existing" at the "Owner" field
     # Then I wait for AJAX to finish
     And I fill in "Owner" with "Leechidna"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "Maritime and inland waterway transport"
+    And I select "EU and European Policies" from "Policy domain"
     And I select "[ABB8] Citizen" from "Solution type"
     And I press "Add owner"
     And I press "Save"

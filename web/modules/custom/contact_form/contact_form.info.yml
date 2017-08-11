@@ -1,0 +1,31 @@
+name: Contact form
+type: module
+description: The contact form for the Joinup project.
+core: 8.x
+package: Joinup
+
+config_devel:
+ - core.entity_form_display.message.contact_form_submission.default
+ - core.entity_view_display.message.contact_form_submission.default
+ - core.entity_view_display.message.contact_form_submission.mail_body
+ - core.entity_view_display.message.contact_form_submission.mail_subject
+ - field.field.message.contact_form_submission.field_contact_attachment
+ - field.field.message.contact_form_submission.field_contact_category
+ - field.field.message.contact_form_submission.field_contact_email
+ - field.field.message.contact_form_submission.field_contact_first_name
+ - field.field.message.contact_form_submission.field_contact_last_name
+ - field.field.message.contact_form_submission.field_contact_message
+ - field.field.message.contact_form_submission.field_contact_organisation
+ - field.field.message.contact_form_submission.field_contact_subject
+ - field.field.message.contact_form_submission.field_contact_url
+ - field.storage.message.field_contact_attachment
+ - field.storage.message.field_contact_category
+ - field.storage.message.field_contact_email
+ - field.storage.message.field_contact_first_name
+ - field.storage.message.field_contact_last_name
+ - field.storage.message.field_contact_message
+ - field.storage.message.field_contact_organisation
+ - field.storage.message.field_contact_subject
+ - field.storage.message.field_contact_url
+ - message.template.contact_form_submission
+ - message.template.report_contact_form

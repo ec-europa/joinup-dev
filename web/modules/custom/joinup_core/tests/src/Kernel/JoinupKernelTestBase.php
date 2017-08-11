@@ -2,8 +2,7 @@
 
 namespace Drupal\Tests\joinup_core\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
+use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 
 /**
  * Provides a base class for Joinup kernel tests.
@@ -21,18 +20,13 @@ use Drupal\Tests\rdf_entity\RdfDatabaseConnectionTrait;
  * cleaning it after the test. You can extend the tearDown() method for this
  * purpose.
  */
-abstract class JoinupKernelTestBase extends KernelTestBase {
-
-  use RdfDatabaseConnectionTrait;
+abstract class JoinupKernelTestBase extends RdfKernelTestBase {
 
   /**
    * {@inheritdoc}
    */
   public static $modules = [
-    'rdf_entity',
-    'field',
-    'system',
-    'user',
+    'datetime',
     'rdf_entity_test',
   ];
 
@@ -41,18 +35,7 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
-    if (!$this->setUpSparql()) {
-      $this->markTestSkipped('No Sparql connection available.');
-    }
-    // Test is not compatible with Virtuoso 6.
-    if ($this->detectVirtuoso6()) {
-      $this->markTestSkipped('Skipping: Not running on Virtuoso 6.');
-    }
-    $this->installSchema('system', 'sequences');
     $this->installEntitySchema('user');
-    $this->installConfig(['rdf_entity']);
-    $this->installEntitySchema('rdf_entity');
     $this->installConfig(['rdf_entity_test']);
   }
 
@@ -61,20 +44,22 @@ abstract class JoinupKernelTestBase extends KernelTestBase {
    */
   public function tearDown() {
     // Delete all data produced by testing module.
-    foreach (['published', 'draft'] as $graph) {
-      $query = <<<EndOfQuery
+    foreach (['dummy', 'with_owner', 'multifield'] as $bundle) {
+      foreach (['published', 'draft'] as $graph) {
+        $query = <<<EndOfQuery
 DELETE {
-  GRAPH <http://example.com/dummy/$graph> {
+  GRAPH <http://example.com/$bundle/$graph> {
     ?entity ?field ?value
   }
 }
 WHERE {
-  GRAPH <http://example.com/dummy/$graph> {
+  GRAPH <http://example.com/$bundle/$graph> {
     ?entity ?field ?value
   }
 }
 EndOfQuery;
-      $this->sparql->query($query);
+        $this->sparql->query($query);
+      }
     }
 
     parent::tearDown();

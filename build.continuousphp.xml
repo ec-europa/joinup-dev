@@ -31,9 +31,12 @@
         <exec dir="${project.basedir}"
               command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
 sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
-sudo /opt/solr/bin/solr create_core -c drupal;
-sudo mkdir /opt/solr/server/solr/drupal;
-sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/drupal/conf/"
+sudo /opt/solr/bin/solr create_core -c drupal_published;
+sudo mkdir /opt/solr/server/solr/drupal_published;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_published/conf/;
+sudo /opt/solr/bin/solr create_core -c drupal_unpublished;
+sudo mkdir /opt/solr/server/solr/drupal_unpublished;
+sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_unpublished/conf/"
               checkreturn="true"
               passthru="true" />
         <echo message="Report Solr status" />
@@ -66,6 +69,12 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/5.x/ /opt/solr/server/solr/d
         <echo message="Install the SASS compiler" />
         <exec dir="${project.basedir}"
               command="gem install sass"
+              checkreturn="true"
+              passthru="true" />
+        <echo message="Copy CPHP pipeline variables to local properties file" />
+        <echoproperties prefix="cphp." destfile="build.properties.local" />
+        <exec dir="${project.basedir}"
+              command="sed -i 's/^cphp\.//' build.properties.local"
               checkreturn="true"
               passthru="true" />
     </target>

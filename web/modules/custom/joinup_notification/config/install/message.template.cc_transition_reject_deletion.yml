@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: cc_transition_reject_deletion
+label: 'Community content on Reject deletion'
+description: 'Template id 8'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: content_editor
+  -
+    value: 'the @actor:role, @actor:field_user_first_name @actor:field_user_family_name has not approved your request to delete the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title", with the following motivation: "@transition:motivation".'
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

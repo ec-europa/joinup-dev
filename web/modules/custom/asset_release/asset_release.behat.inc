@@ -10,7 +10,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -21,7 +20,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityReferenceTrait;
   use FileTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -58,7 +56,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Fields title, release number and release notes are required.
    *
-   * @param TableNode $asset_release_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
    *   The asset_release data.
    *
    * @throws \Exception
@@ -101,7 +99,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * Fields title, release number and release notes required.
    *
-   * @param TableNode $asset_release_table
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
    *   The asset_release data.
    *
    * @throws \Exception
@@ -142,11 +140,12 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   protected function createAssetRelease(array $values) {
     if (!empty($values['field_isr_documentation'])) {
-      $values['field_isr_documentation'] = [$this->createFile($values['field_isr_documentation'], $this->getMinkParameter('files_path'))];
+      foreach ($values['field_isr_documentation'] as &$filename) {
+        $filename = [$this->createFile($filename)->id()];
+      }
     }
 
     $values['rid'] = 'asset_release';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $asset_release = Rdf::create($values);
     $asset_release->save();
     $this->assetReleases[$asset_release->id()] = $asset_release;
@@ -164,7 +163,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function deleteAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
-    $this->getAssetReleaseByName($asset_release)->delete();
+    $asset_release = $this->getAssetReleaseByName($asset_release);
+    $asset_release->skip_notification = TRUE;
+    $asset_release->delete();
   }
 
   /**
@@ -202,7 +203,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
     // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_release')
-      ->exists('field_isr_is_version_of')
       ->count()
       ->execute();
     if ($actual != $number) {
@@ -218,6 +218,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   public function cleanAssetReleases() {
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
+      $asset_release->skip_notification = TRUE;
       $asset_release->delete();
     }
   }
@@ -226,7 +227,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function assetReleaseFieldAliases() {
     // Mapping alias - field name.
@@ -259,25 +260,25 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
   protected function convertValueAliases(array $fields) {
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $fields);
-
-    // Conver the name of the is version of field to an id.
-    // This is handled separatelly as it is not an entity reference but an
+    // Convert the name of the is version of field to an id.
+    // This is handled separately as it is not an entity reference but an
     // og_standard_reference.
     if (isset($fields['field_isr_is_version_of'])) {
       $solution = $this->getRdfEntityByLabel($fields['field_isr_is_version_of'], 'solution');
       $fields['field_isr_is_version_of'] = $solution->id();
     }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'asset_release', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
@@ -287,8 +288,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * This step is meant for the releases overview page within a solution.
    *
-   * @param TableNode $asset_release_table
-   *    The asset release titles.
+   * @param \Behat\Gherkin\Node\TableNode $asset_release_table
+   *   The asset release titles.
    *
    * @throws \Exception
    *    Thrown when a wrong number of releases is found or the releases are not
@@ -321,23 +322,29 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * This step is meant for the releases overview page within a solution.
    *
    * @param string $release
-   *    The name of the release.
+   *   The name of the release.
    *
    * @throws \Exception
    *    Thrown if the release is not marked as latest in the page or not found.
    *
    * @Then the :release release should be marked as the latest release
    */
-  public function assertLinkDistribution($release) {
+  public function assertReleaseIsLatest($release) {
     $release = $this->getAssetReleaseByName($release);
 
-    $latest_release = $this->getSession()->getPage()->find('css', '.is-latest');
-    if (empty($latest_release)) {
-      throw new \Exception("No release marked as latest was found in the page.");
+    $latest_releases = $this->getSession()->getPage()->findAll('css', '.is-latest');
+    if (empty($latest_releases)) {
+      throw new \Exception('No release marked as latest was found in the page.');
     }
-    $release_version = $release->field_isr_release_number->value;
+
+    if (count($latest_releases) > 1) {
+      throw new \Exception('Multiple releases marked as latest were found in the page.');
+    }
+
+    $release_version = $release->get('field_isr_release_number')->value;
     $name_with_version = $release->label() . " " . $release_version;
 
+    $latest_release = reset($latest_releases);
     if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
       throw new \Exception("{$release->label()} is not marked as the latest release.");
     }

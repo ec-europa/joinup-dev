@@ -7,8 +7,9 @@
   font-size: $font-size-xsmall
   display: inline-block
   margin-right: 10px
+  margin-top: 5px
   padding-right: 10px
-  vertical-align: top
+  vertical-align: middle
   border-right: 1px solid $color-grey-medium
   &:last-of-type
     margin-right: 0
@@ -22,7 +23,7 @@
   font-weight: $font-weight-bold
 
 .details__user
-  margin: 10px 0 0 0
+  margin: 5px 0 0 0
   display: inline-block
 
 .details__avatar
@@ -45,9 +46,9 @@
 .details__element-created
   display: inline-block
   vertical-align: middle
+  margin-top: 0
 
 .details__bottom
-  font-weight: $font-weight-bold
   .tag
     margin-right: 1px
     &:after
@@ -59,6 +60,12 @@
 
 // Modifiers
 // --------------------------------------------------
+.details__element--block
+  display: block
+  border: none
+  a
+    color: $color-grey-medium
+    font-weight: $font-weight-medium
 
 // Dependiencies
 // --------------------------------------------------

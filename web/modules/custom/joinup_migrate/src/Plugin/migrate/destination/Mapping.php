@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\Plugin\migrate\destination;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Database;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
@@ -55,7 +56,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
       $plugin_id,
       $plugin_definition,
       $migration,
-      $container->get('database')
+      Database::getConnection('default', 'migrate')
     );
   }
 
@@ -78,15 +79,12 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
       'collection' => $this->t('Collection'),
       'policy' => $this->t('Policy domain 1'),
       'policy2' => $this->t('Policy domain 2'),
-      'new_collection' => $this->t('Is new collection?'),
-      'migrate' => $this->t('Migrate?'),
-      'abstract' => $this->t('Abstract'),
       'logo' => $this->t('Logo'),
       'banner' => $this->t('Banner'),
       'owner' => $this->t('Owner'),
-      'elibrary' => $this->t('Elibrary Creation'),
-      'collection_status' => $this->t('Collection status'),
-      'content_item_status' => $this->t('Content item status'),
+      'owner_name' => $this->t('Owner name'),
+      'owner_type' => $this->t('Owner type'),
+      'content_item_state' => $this->t('Content item state'),
       'row_index' => $this->t('Excel row index'),
     ];
   }
@@ -111,14 +109,14 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
     $nid = $values['nid'];
     try {
       if (empty($old_destination_id_values)) {
-        $this->database->insert('joinup_migrate_mapping')
+        $this->database->insert('d8_mapping')
           ->fields(array_keys($this->fields()))
           ->values($values)
           ->execute();
       }
       else {
         unset($values['nid']);
-        $this->database->update('joinup_migrate_mapping')
+        $this->database->update('d8_mapping')
           ->fields($values)
           ->condition('nid', $nid)
           ->execute();
@@ -135,7 +133,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    */
   public function rollback(array $destination_identifier) {
     parent::rollback($destination_identifier);
-    $this->database->delete('joinup_migrate_mapping')
+    $this->database->delete('d8_mapping')
       ->condition('nid', $destination_identifier['nid'])
       ->execute();
   }
@@ -147,7 +145,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
     $nids = array_map(function (array $item) {
       return $item['nid'];
     }, $destination_ids);
-    $this->database->delete('joinup_migrate_mapping')
+    $this->database->delete('d8_mapping')
       ->condition('nid', $nids, 'IN')
       ->execute();
   }
@@ -156,7 +154,7 @@ class Mapping extends DestinationBase implements MigrateDestinationFastRollbackI
    * {@inheritdoc}
    */
   public function rollbackAll() {
-    $this->database->truncate('joinup_migrate_mapping')->execute();
+    $this->database->truncate('d8_mapping')->execute();
   }
 
 }

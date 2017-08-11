@@ -33,12 +33,13 @@ In order to start a migration we will need to do some preparation:
 1. Mount the `joinup2` S3 Bucket on your local filesystem:
 
    Use the appropriate software. The most used is
-   [FUSE-based file system backed by Amazon S3](https://github.com/s3fs-fuse/s3fs-fuse),
-   which is supported on most ***nix** systems. Install the software following
-   the [README.md](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/README.md).
+   [FUSE-based file system backed by Amazon
+   S3](https://github.com/s3fs-fuse/s3fs-fuse), which is supported on most
+   ***nix** systems. Install the software following the
+   [README.md](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/README.md).
 
-   Steps to mount files with
-   [FUSE-based file system backed by Amazon S3](https://github.com/s3fs-fuse/s3fs-fuse):
+   Steps to mount files with [FUSE-based file system backed by Amazon
+   S3](https://github.com/s3fs-fuse/s3fs-fuse):
 
    * Create a password file and secure it (the file name and location should be
      adapted on according to your preferences):
@@ -52,17 +53,15 @@ In order to start a migration we will need to do some preparation:
      ```
    * Mount the S3 Bucket files:
      ```bash
-     $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs -o use_cache=/tmp -o allow_other -o umask=0002
+     $ s3fs joinup2 /path/to/mount/point -o passwd_file=~/.passwd-s3fs \
+       -o allow_other -o umask=0002
      ```
      You can use a dedicated directory for cache in `-o use_cache=`.
    * Test the mount. Legacy D6 files should be under `joinupv2.0/` directory:
      ```bash
      $ ls /path/to/mount/point/joinupv2.0
-     sites
-     $ ls /path/to/mount/point/joinupv2.0/sites/default
-     files
      ```
-     This should contain the `sites/default/files` directory.
+     This directory should be the same as the `sites/default/files` directory.
    * Unmount the S3 Bucket:
      ```bash
      $ umount -f /path/to/mount/point
@@ -78,8 +77,8 @@ In order to start a migration we will need to do some preparation:
     migration.db.name = my_db_name
     migration.db.import_path = /my/path/to/d6-joinup.sql
 
-    # Files path. Point to the webroot of legacy site.
-    migration.source.root = /path/to/mount/point/joinupv2.0
+    # Files path. Point to the files directory of the legacy site.
+    migration.source.files = /path/to/mount/point/joinupv2.0/files
 
     # How the migration will run: 'production' or 'test' mode.
     migration.mode = production

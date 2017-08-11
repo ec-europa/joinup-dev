@@ -1,5 +1,0 @@
-services:
-  joinup_news.fulfillment_guard:
-    class: Drupal\joinup_news\Guard\JoinupNewsFulfillmentGuard
-    tags:
-      - { name: state_machine.guard, group: news }

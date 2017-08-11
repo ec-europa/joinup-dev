@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
@@ -11,45 +12,6 @@ dependencies:
     - ds
     - text
     - user
-third_party_settings:
-  ds:
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: ''
-          class: ''
-        ft:
-          id: expert
-          settings:
-            lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
-            lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
 id: node.custom_page.view_mode_tile
 targetEntityType: node
 bundle: custom_page
@@ -69,8 +31,12 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
+  field_attachment: true
   field_cp_content_listing: true
+  langcode: true
   links: true
   node_field_cp_content_listing_top: true
   og_audience: true
+  report: true

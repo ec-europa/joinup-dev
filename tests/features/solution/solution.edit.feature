@@ -12,7 +12,7 @@ Feature: Solution editing.
       | name      | type    |
       | Acme inc. | Company |
     And users:
-      | name         | mail                     |
+      | Username     | E-mail                   |
       | Yancy Burton | yancy.burton@example.com |
     And collection:
       | title | Collection example |
@@ -32,24 +32,23 @@ Feature: Solution editing.
       | owner               | Acme inc.         |
       | state               | validated         |
 
+  @terms
   Scenario: A solution owner can edit only its own solutions.
     When I am logged in as "Yancy Burton"
     And I go to the homepage of the "Collection example" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     When I fill in the following:
-      | Title       | Solution A   |
-      | Description | First letter |
+      | Title          | Solution A         |
+      | Description    | First letter       |
+      | Name           | Yancy Burton       |
+      | E-mail address | yancyb@example.com |
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I fill in "Language" with "http://publications.europa.eu/resource/authority/language/VLS"
-    And I fill in "Policy Domain" with "Air and space transport"
+    And I select "EU and European Policies" from "Policy domain"
     And I select "[ABB8] Citizen" from "Solution type"
 
-    # Click the button to select an existing contact information.
-    And I press "Add existing" at the "Contact information" field
-    And I fill in "Contact information" with "Seward Shawn"
-    And I press "Add contact information"
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Acme inc."
@@ -60,8 +59,8 @@ Feature: Solution editing.
     And I should see the link "Edit"
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
-    And the following fields should be present "Title, Description, Documentation, Related Solutions, Moderated, Landing page, Metrics page"
-    And the following fields should not be present "Issue tracker, Wiki"
+    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Related Solutions, Moderated, Landing page, Metrics page, Motivation"
+    And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
     And the following field widgets should be present "Contact information, Owner, eLibrary creation"
     # Logo and banner fields are required, so they are filled up during
     # the creation of the solution. Unfortunately, file fields with a file
@@ -69,6 +68,10 @@ Feature: Solution editing.
     # related labels.
     And I should see the text "Logo"
     And I should see the text "Banner"
+
+    # The TRR fieldgroup should only be visible inside the TRR collection.
+    And I should not see the text "TRR"
+
     When I fill in "Title" with "Solution A revised"
     And I press "Propose"
     Then I should see the heading "Solution A revised"

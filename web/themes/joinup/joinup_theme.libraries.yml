@@ -19,19 +19,10 @@ form-components:
   Version: 1.x
   js:
     js/form.js: {}
+    vendor/autosize/dist/autosize.js: {}
   dependencies:
     - core/jquery
     - core/jquery.once
     - core/jquery.ui.slider
     - core/drupal
     - core/drupalSettings
-
-fonts:
-  css:
-    theme:
-      '//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic': { type: external, minified: true }
-
-icons:
-  css:
-    theme:
-      '//fonts.googleapis.com/icon?family=Material+Icons': { type: external, minified: true }

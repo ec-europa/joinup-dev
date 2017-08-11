@@ -1,28 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Joinup migration" default="help">
+    <target name="disable-solr-index"
+        description="Disable immediate indexing in Solr index.">
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.published</param>
+            <param>options.index_directly 0</param>
+        </drush>
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.unpublished</param>
+            <param>options.index_directly 0</param>
+        </drush>
+    </target>
 
     <!-- Run the migration IDs specified in the configuration. -->
-    <target name="run-migration"
-            description="Run the migration."
-            depends="enable-migration-modules">
-        <echo message="Run migration" />
+    <target name="run-migrations"
+            description="Run the migrations."
+            depends="enable-migration-modules, disable-solr-index">
+        <echo message="Running migration IDs" />
         <drush
             command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <param>${migration.ids}</param>
+            <option name="all" />
             <option name="feedback" value="1000" />
             <option name="force" />
+            <option name="timestamp" />
+        </drush>
+
+        <!-- If a migration crashes, it's possible that the system mailer is not
+            restored. Thus we are forcing the restore of system mailer. -->
+        <drush
+            command="cset"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>system.mail</param>
+            <param>interface.default</param>
+            <param>php_mail</param>
+        </drush>
+        <drush
+            command="cset"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <param>mailsystem.settings</param>
+            <param>defaults.sender</param>
+            <param>swiftmailer</param>
+        </drush>
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.published</param>
+            <param>options.index_directly 1</param>
+        </drush>
+        <drush
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>search_api.index.unpublished</param>
+            <param>options.index_directly 1</param>
+        </drush>
+        <drush
+                command="sapi-i"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="batch-size" value="500" />
         </drush>
     </target>
 
     <target name="import-legacy-db"
             description="Import the legacy D6 database."
             depends="create-d6-db">
-        <pdosqlexec url="${migration.db.type}:host=localhost;dbname=${migration.db.name}"
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host};dbname=${migration.db.name}"
                     userid="${migration.db.user}"
                     password="${migration.db.password}">
             <transaction src="${migration.db.import_path}"/>
@@ -42,9 +113,15 @@
  'host' => '${migration.db.host}',${line.separator}
  'port' => '${migration.db.port}',${line.separator}
  'namespace' => 'Drupal\\Core\\Database\\Driver\\${migration.db.type}',${line.separator}
- 'driver' => '${migration.db.type}',${line.separator}];${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.source.root'] = '${migration.source.root}';${line.separator}" />
-        <append destFile="${website.settings.php}" text="${line.separator}$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
+ 'driver' => '${migration.db.type}',${line.separator}
+ // We set the timezone to UTC to force MySQL time functions to correctly${line.separator}
+ // convert timestamps into date/time.${line.separator}
+ 'init_commands' => [${line.separator}
+   'set_timezone_to_utc' => &quot;SET time_zone='+00:00';&quot;,${line.separator}
+ ],${line.separator}];${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.mode'] = '${migration.mode}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.mock_filesystem'] = ${migration.mock_filesystem};${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['joinup_migrate.source.files'] = '${migration.source.files}';${line.separator}" />
     </target>
 
     <!-- Enable migration modules. -->
@@ -68,5 +145,37 @@
         </pdosqlexec>
     </target>
 
-</project>
+    <!-- Import the legacy database testing data -->
+    <target name="import-legacy-test-db"
+            description="Import the legacy D6 testing database."
+            depends="create-d6-test-db">
+        <pdosqlexec
+                url="${drupal.db.type}:host=${drupal.db.host};dbname=${phpunit.migrate.legacy_db.name}"
+                userid="${drupal.db.user}"
+                password="${drupal.db.password}">
+            <transaction src="resources/migrate/d6-joinup-test.sql"/>
+        </pdosqlexec>
+    </target>
+    <target name="acceptance-migration"
+            description="Wrapper around execute-migration that gets executed only when the related property is set."
+            if="migration.acceptance">
+        <phingcall target="execute-migration" />
+    </target>
 
+    <target
+        name="execute-migration"
+        description="Configure and import the migration database, run the migration tasks."
+        depends="setup-migration, import-legacy-db, run-migrations" />
+
+    <!-- Create the legacy testing database -->
+    <target name="create-d6-test-db">
+        <pdosqlexec url="${drupal.db.type}:host=${drupal.db.host}"
+                    userid="${drupal.db.user}" password="${drupal.db.password}">
+            DROP DATABASE IF EXISTS ${phpunit.migrate.legacy_db.name};
+        </pdosqlexec>
+        <pdosqlexec url="${drupal.db.type}:host=${drupal.db.host}"
+                    userid="${drupal.db.user}" password="${drupal.db.password}">
+            CREATE DATABASE ${phpunit.migrate.legacy_db.name};
+        </pdosqlexec>
+    </target>
+</project>

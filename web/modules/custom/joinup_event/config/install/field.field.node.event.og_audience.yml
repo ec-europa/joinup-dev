@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.og_audience
     - node.type.event
     - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
   module:
     - og
 id: node.event.og_audience
@@ -14,7 +15,7 @@ bundle: event
 label: 'Groups audience'
 description: 'OG group audience reference field.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

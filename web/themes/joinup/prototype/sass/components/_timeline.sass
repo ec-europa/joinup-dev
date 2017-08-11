@@ -89,6 +89,9 @@
 
 .timeline__release-title
   margin: 0 0 10px 0
+  > a
+    text-decoration: none
+    color: #000
 
 .timeline__release-abstract
   color: $color-grey-medium
@@ -132,7 +135,7 @@
 // States
 // --------------------------------------------------
 .timeline__release
-  &.is-latest
+  &:first-child
     .timeline__release-progression
       overflow: hidden
     .timeline__release-content

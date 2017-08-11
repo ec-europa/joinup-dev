@@ -1,0 +1,168 @@
+create:
+  'node:pre_moderated':
+    propose:
+      roles:
+        moderator:
+          - cc_transition_propose
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose
+        rdf_entity-solution-administrator:
+          - cc_transition_propose
+    publish:
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+  'node:post_moderated':
+    propose:
+      roles:
+        moderator:
+          - cc_transition_propose
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose
+        rdf_entity-solution-administrator:
+          - cc_transition_propose
+    publish:
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+  'node:discussion:post_moderated':
+    publish:
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+update:
+  'node:pre_moderated':
+    propose:
+      roles:
+        moderator:
+          - cc_transition_propose
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose
+        rdf_entity-solution-administrator:
+          - cc_transition_propose
+    propose_from_reported:
+      roles:
+        moderator:
+          - cc_transition_propose_reported
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose_reported
+        rdf_entity-solution-administrator:
+          - cc_transition_propose_reported
+    publish:
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+    approve_proposed:
+      owner:
+        - cc_transition_approve_proposed
+    report:
+      owner:
+        - cc_transition_report
+    request_changes:
+      owner:
+        - cc_transition_request_changes
+    request_deletion:
+      roles:
+        moderator:
+          - cc_transition_request_deletion
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_request_deletion
+        rdf_entity-solution-administrator:
+          - cc_transition_request_deletion
+    reject_deletion:
+      owner:
+        - cc_transition_reject_deletion
+  'node:post_moderated':
+    publish:
+      roles:
+        moderator:
+          - cc_transition_publish
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+    approve_proposed:
+      owner:
+        - cc_transition_approve_proposed
+    report:
+      owner:
+        - cc_transition_report
+    request_changes:
+      owner:
+        - cc_transition_request_changes
+    propose_from_reported:
+      roles:
+        moderator:
+          - cc_transition_propose_reported
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose_reported
+        rdf_entity-solution-administrator:
+          - cc_transition_propose_reported
+  'node:discussion:post_moderated':
+    publish:
+      roles:
+        moderator:
+          - cc_transition_publish
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_publish
+        rdf_entity-solution-administrator:
+          - cc_transition_publish
+    approve_proposed:
+      owner:
+        - cc_transition_approve_proposed
+    report:
+      owner:
+        - cc_transition_report
+    request_changes:
+      owner:
+        - cc_transition_request_changes
+    propose_from_reported:
+      roles:
+        moderator:
+          - cc_transition_propose_reported
+      og_roles:
+        rdf_entity-collection-administrator:
+          - cc_transition_propose_reported
+        rdf_entity-solution-administrator:
+          - cc_transition_propose_reported
+delete:
+  'node:pre_moderated':
+    deletion_request:
+      owner:
+        - cc_delete
+  'node:post_moderated':
+    validated:
+      owner:
+        - cc_delete
+    needs_update:
+      owner:
+        - cc_delete
+    proposed:
+      owner:
+        - cc_delete
+  'node:discussion:post_moderated':
+    validated:
+      owner:
+        - cc_delete
+    needs_update:
+      owner:
+        - cc_delete
+    proposed:
+      owner:
+        - cc_delete

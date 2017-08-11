@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service containing methods to get associated entities like parent solution.
- *
- * @package Drupal\asset_release
  */
 class AssetReleaseRelations implements ContainerInjectionInterface {
 
@@ -56,10 +54,10 @@ class AssetReleaseRelations implements ContainerInjectionInterface {
    * Returns the solution that a release belongs to.
    *
    * @param \Drupal\rdf_entity\RdfInterface $asset_release
-   *    The asset release rdf entity.
+   *   The asset release rdf entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface
-   *    The solution rdf entity that the release is version of.
+   *   The solution rdf entity that the release is version of.
    */
   public function getReleaseSolution(RdfInterface $asset_release) {
     if ($asset_release->bundle() != 'asset_release') {

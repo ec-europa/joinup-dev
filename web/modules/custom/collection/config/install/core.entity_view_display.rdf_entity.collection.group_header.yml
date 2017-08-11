@@ -16,7 +16,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
-    - field.field.rdf_entity.collection.field_ar_shared_content
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
@@ -28,6 +27,7 @@ dependencies:
     - ds
     - image
     - joinup_core
+    - user
 id: rdf_entity.collection.group_header
 targetEntityType: rdf_entity
 bundle: collection
@@ -47,6 +47,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_ar_logo:
     type: image
     weight: 1
@@ -64,8 +65,10 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   join_collection:
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
   label:
@@ -84,6 +87,22 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
+  last_update:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  members:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  solutions:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_ar_abstract: true
   field_ar_access_url: true
@@ -96,10 +115,11 @@ hidden:
   field_ar_moderation: true
   field_ar_modification_date: true
   field_ar_owner: true
-  field_ar_shared_content: true
   field_ar_state: true
   field_collection_content: true
   field_policy_domain: true
   field_spatial_coverage: true
+  langcode: true
   og_group: true
+  rdf_entity_field_collection_content_inline_facets: true
   rdf_entity_field_collection_content_top: true

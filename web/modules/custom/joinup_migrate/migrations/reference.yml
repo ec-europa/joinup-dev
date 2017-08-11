@@ -1,0 +1,29 @@
+id: reference
+label: Reference
+migration_tags:
+  - og
+  - node
+source:
+  plugin: reference
+  track_changes: true
+process:
+  entity_type_id: entity_type_id
+  bundle: bundle
+  entity_id: entity_id
+  values: values
+destination:
+  plugin: reference
+migration_dependencies:
+  required:
+    - collection
+    - comment
+    - custom_page
+    - discussion
+    - distribution
+    - document
+    - event
+    - news
+    - newsletter
+    - release
+    - solution
+    - video

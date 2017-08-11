@@ -3,10 +3,13 @@ status: true
 dependencies:
   config:
     - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - allowed_formats
+    - file
     - search_api_field
     - text
 id: node.custom_page.default
@@ -19,14 +22,32 @@ content:
     weight: 2
     settings:
       rows: 9
-      summary_rows: 3
       placeholder: ''
+      summary_rows: 3
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
+    region: content
+  field_attachment:
+    weight: 27
+    settings:
+      progress_indicator: throbber
     third_party_settings: {  }
+    type: file_generic
+    region: content
   field_cp_content_listing:
     weight: 26
     settings: {  }
     third_party_settings: {  }
     type: search_api_field_default
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -34,8 +55,10 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   created: true
+  current_workflow_state: true
   og_audience: true
   path: true
   promote: true

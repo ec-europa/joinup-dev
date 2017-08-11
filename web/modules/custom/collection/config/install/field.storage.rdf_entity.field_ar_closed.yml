@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://purl.org/dc/terms/RightsStatement'
+      value:
+        predicate: 'http://purl.org/dc/terms/RightsStatement'
+        format: 'xsd:boolean'
 id: rdf_entity.field_ar_closed
 field_name: field_ar_closed
 entity_type: rdf_entity
@@ -15,7 +17,7 @@ settings: {  }
 module: core
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

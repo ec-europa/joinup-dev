@@ -9,40 +9,71 @@
 
 // Component
 // --------------------------------------------------
-.search-bar
+// .search-bar
   
 
 // Elements
 // --------------------------------------------------
 .search-bar__wrapper
-  text-align: center
   margin-bottom: 40px
+  text-align: center
 
 .search-bar__label
   position: absolute
-  top: 17px
+  top: 0
+  width: 40px
+  height: 40px
 
 .search-bar__icon
   padding: 0
-  color: #fff
-  +icon-size(50px)
+  color: lighten($color-grey-medium, 10%)
+  +icon-size(25px)
   +border-radius(50%)
   +centered
 
+.search-bar__input
+  font-weight: $font-weight-thin
+  color: lighten($color-grey-medium, 10%)
+  border-bottom-color: lighten($color-grey-medium, 10%)
+  &::-webkit-input-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &:-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &::-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &:-ms-input-placeholder 
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+
 .search-bar__input-container
   margin-left: 40px
-  padding-top: 7px
 
 // Modifiers
 // --------------------------------------------------
 .search-bar--header
-  position: absolute
-  top: 0
   right: 75px
   width: 120px
   padding: 0
+  +centered($horizontal: false, $vertical: true)
   +breakpoint(tablet)
     width: 200px
+  .search-bar__input
+    font-weight: $font-weight-thin
+    border-bottom: 1px solid #fff
+  .search-bar__label
+    margin-left: -4px
+    +centered($horizontal: false, $vertical: true)
 
 .search-bar--section
   width: 85%
@@ -51,50 +82,57 @@
   +breakpoint(tablet)
     width: 570px
   .search-bar__label
-    position: absolute
-    top: auto
-    bottom: 0
-    left: -12px
-    min-width: auto
+    left: -7px
     padding: 0
-    color: lighten($color-grey-medium, 10%)
-    +icon-size(50px)
     +border-radius(50%)
+    +centered($horizontal: false, $vertical: true)
+
   .search-bar__input
     font-weight: $font-weight-thin
     padding-left: 40px
     border-bottom: 2px solid lighten($color-grey-medium, 10%)
-  .search-bar__input::-webkit-input-placeholder
-    font-size: $font-size-base
-    font-weight: $font-weight-thin
-    font-style: italic
-    color: lighten($color-grey-medium, 10%)
-  .search-bar__input:-moz-placeholder
-    font-size: $font-size-base
-    font-weight: $font-weight-thin
-    font-style: italic
-    color: lighten($color-grey-medium, 10%)
-  .search-bar__input::-moz-placeholder
-    font-size: $font-size-base
-    font-weight: $font-weight-thin
-    font-style: italic
-    color: lighten($color-grey-medium, 10%)
-  .search-bar__input:-ms-input-placeholder 
-    font-size: $font-size-base
-    font-weight: $font-weight-thin
-    font-style: italic
-    color: lighten($color-grey-medium, 10%)
 
 .search-bar--white
-  .search-bar__label
+  .search-bar__icon
     color: #fff
   .search-bar__input
+    color: #fff
     border-bottom-color: #fff
-  .search-bar__input::-webkit-input-placeholder
-    color: #fff
-  .search-bar__input:-moz-placeholder
-    color: #fff
-  .search-bar__input::-moz-placeholder
-    color: #fff
-  .search-bar__input:-ms-input-placeholder 
-    color: #fff
+    &::-webkit-input-placeholder
+      color: #fff
+    &:-moz-placeholder
+      color: #fff
+    &::-moz-placeholder
+      color: #fff
+    &:-ms-input-placeholder
+      color: #fff
+
+.search-bar__block
+  margin: 20px auto
+  position: relative
+  max-width: 570px
+  +breakpoint(tablet)
+    margin-bottom: 40px
+    margin-top: 40px
+  .search-bar__button-container
+    left: 20px
+    padding: 0
+    width: 25px
+    height: 25px
+    position: relative
+    +border-radius(50%)
+    +centered($horizontal: false, $vertical: true)
+    +breakpoint(tablet)
+      left: -10px
+  .search-bar__button
+    width: 25px
+    height: 25px
+    padding: 0
+    +centered
+    z-index: 10
+    background: none
+    font-size: 0
+    border: none
+    cursor: pointer
+  label
+    display: none

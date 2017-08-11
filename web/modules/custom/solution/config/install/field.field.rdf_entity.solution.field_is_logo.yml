@@ -12,12 +12,12 @@ entity_type: rdf_entity
 bundle: solution
 label: Logo
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: 'solution/[date:custom:Y]-[date:custom:m]'
+  file_directory: 'solution/logo/[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
   max_filesize: '1 MB'
   max_resolution: ''

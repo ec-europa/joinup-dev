@@ -5,10 +5,12 @@
  * The entity hooks needed to display facets in pseudo-fields.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -87,6 +89,7 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
     // The facets available for the facet source offered by this field have been
     // organized into pseudo fields. Loop over the configuration to render them
     // in the correct place.
+    $pseudo_fields = [];
     foreach ($settings['fields'] as $facet_name => $facet_data) {
       // If the facet is not found between the ones provided by the facet
       // source, skip it.
@@ -99,7 +102,28 @@ function search_api_field_entity_view(array &$build, EntityInterface $entity, En
       if ($display->getComponent($name)) {
         // Let the facet_manager build the facets.
         $build[$name][] = $facet_manager->build($facets[$facet_name]);
+        // Keep track of created pseudo-fields so we can add wrappers later on.
+        $pseudo_fields[$name] = $facet_data['region'];
       }
+    }
+
+    foreach ($pseudo_fields as $name => $region_name) {
+      // Wrap the facet region in a container.
+      $build[$name] += [
+        '#theme_wrappers' => [
+          'container__facet_region__' . $region_name => [
+            '#attributes' => [
+              'class' => [
+                'facet-region',
+                'facet-region--' . Html::getClass($region_name),
+              ],
+            ],
+            // Pass some information about the parent entity and field.
+            '#entity' => $entity,
+            '#field_name' => $field_name,
+          ],
+        ],
+      ];
     }
   }
 }
@@ -135,6 +159,10 @@ function search_api_field_theme() {
         'search_help' => NULL,
         'results' => NULL,
         'pager' => NULL,
+        'entity_type' => NULL,
+        'bundle' => NULL,
+        'field_name' => NULL,
+        'entity' => NULL,
       ],
     ],
     'search_api_field_result' => [
@@ -144,4 +172,37 @@ function search_api_field_theme() {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Adds suggestions to the search_api_field theme hook.
+ * Loosely based on the field theme suggestions.
+ *
+ * @see system_theme_suggestions_field()
+ */
+function search_api_field_theme_suggestions_search_api_field(array $variables) {
+  $suggestions = [];
+
+  $suggestions[] = 'search_api_field__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'];
+  $suggestions[] = 'search_api_field__' . $variables['entity_type'] . '__' . $variables['field_name'] . '__' . $variables['bundle'];
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Adds the search_api_field facets to the facet query.
+ *
+ * @see facets_search_api_query_alter()
+ */
+function search_api_field_search_api_query_alter(QueryInterface &$query) {
+  if ($query->getIndex()->getServerInstance()->supportsFeature('search_api_facets')) {
+    $facet_manager = \Drupal::service('facets.manager');
+    $facet_source = 'search_api_field:' . $query->getSearchId();
+    $facet_manager->alterQuery($query, $facet_source);
+  }
 }

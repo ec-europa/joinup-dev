@@ -5,16 +5,21 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - facets
+  - allowed_formats
+  - cached_computed_field
   - comment
   - ds
+  - facets
   - image
+  - link
+  - message
+  - message_notify
   - og
+  - piwik_reporting_api
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
-  - message
-  - message_notify
+  - redirect
   - search_api
   - search_api_solr
   - state_machine
@@ -24,26 +29,37 @@ config_devel:
   - core.entity_form_display.comment.comment.default
   - core.entity_form_mode.rdf_entity.inline
   - core.entity_view_display.comment.comment.default
+  - core.entity_view_mode.node.moderation
   - core.entity_view_mode.node.view_mode_tile
+  - core.entity_view_mode.rdf_entity.about
   - core.entity_view_mode.rdf_entity.group_header
   - core.entity_view_mode.rdf_entity.view_mode_featured
   - core.entity_view_mode.rdf_entity.view_mode_tile
   - field.field.comment.comment.field_body
+  - field.field.taxonomy_term.file_type.extension
+  - field.field.taxonomy_term.file_type.mime_type
   - field.storage.comment.field_body
-  - field.storage.node.field_comments
-  - field.storage.node.field_spatial_coverage
-  - field.storage.node.field_state
-  - field.storage.node.field_topic
+  - field.storage.node.field_download_count
+  - field.storage.node.field_shared_in
+  - field.storage.node.field_visit_count
+  - field.storage.node.og_audience
+  - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
   - field.storage.rdf_entity.og_audience
+  - field.storage.taxonomy_term.extension
+  - field.storage.taxonomy_term.mime_type
+  - honeypot.settings
   - image.style.banner
+  - joinup_core.piwik_settings
   - rdf_draft.settings
+  - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
+  - taxonomy.vocabulary.file_type
   - taxonomy.vocabulary.language
   - taxonomy.vocabulary.licence_type
   - taxonomy.vocabulary.owner_type

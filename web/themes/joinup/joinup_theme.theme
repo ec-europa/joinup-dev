@@ -5,11 +5,203 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Gives meta properties about forms based on routes.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return array
+ *   The additional properties or features a given form should have.
+ */
+function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
+  // Declare available types.
+  $form_meta = [
+    'is_create_form' => FALSE,
+    'has_tabs' => FALSE,
+  ];
+
+  if ($route_name = $route_match->getRouteName()) {
+
+    if (_joinup_is_create_form_route($route_name)) {
+      $form_meta['is_create_form'] = TRUE;
+    }
+
+    // Get pages where the tabs should be shown.
+    $tabs_routes = _joinup_vertical_tabs_routes();
+
+    if (in_array($route_name, $tabs_routes)) {
+
+      // Get entity type on edit form.
+      if ($entity = $route_match->getParameter('rdf_entity')) {
+        $rdf_type = $entity->getType();
+      }
+
+      // Get entity type on create form.
+      elseif ($entity = $route_match->getParameter('rdf_type')) {
+        $rdf_type = $entity->id();
+      }
+
+      if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'], TRUE)) {
+        $form_meta['has_tabs'] = TRUE;
+      }
+    }
+  }
+
+  return $form_meta;
+}
+
+/**
+ * Get a list of routes which should have tabs.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_vertical_tabs_routes() {
+  return [
+    'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'solution.collection_solution.add',
+    'rdf_entity.rdf_add',
+  ];
+}
+
+/**
+ * Get a list of routes which should have blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_blue_header_routes() {
+  return [
+    'adms_validator.adms_validator_form',
+    'collection.propose_form',
+    'contact_form.contact_page',
+    'entity.node.edit_form',
+    'entity.rdf_entity.edit_form',
+    'rdf_entity.propose_form',
+    'user.login',
+    'user.pass',
+    'user.register',
+  ];
+}
+
+/**
+ * Get a list of routes which should not have blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_non_blue_header_routes() {
+  return [
+    'joinup_subscription.subscription_settings',
+    'entity.user.edit_form',
+    'simplenews.newsletter_subscriptions_user',
+  ];
+}
+
+/**
+ * Get a list of routes which should have navy blue header.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_navy_blue_header_routes() {
+  return [
+    'view.search.page_1',
+  ];
+}
+
+/**
+ * Get a list of routes which should have blue header, but they are not forms.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_not_forms_routes() {
+  return [
+    'node.add_page',
+    'rdf_entity.rdf_add_page',
+  ];
+}
+
+/**
+ * Get a list of overview page routes.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_overview_page_routes() {
+  return [
+    'view.solutions.page_1',
+    'view.collections.page_1',
+    'view.content_overview.page_1',
+  ];
+}
+
+/**
+ * Check whether a route is one for a create content form.
+ *
+ * @param string $route_name
+ *   The route name.
+ *
+ * @return bool
+ *   Whether the route contains a create form.
+ */
+function _joinup_is_create_form_route($route_name) {
+  // Routes known to be create forms.
+  $create_content_routes = [
+    'collection.propose_form',
+    'node.add',
+    'node.add_page',
+    'rdf_entity.propose_form',
+    'rdf_entity.rdf_add',
+    'rdf_entity.rdf_add_page',
+    'solution.collection_solution.add',
+  ];
+
+  if (
+    preg_match('/.add$/', $route_name) ||
+    in_array($route_name, $create_content_routes)
+  ) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_theme_theme($existing, $type, $theme, $path) {
+  return [
+    'share_content_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'join_collection_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+    'buttons_separated_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
+  ];
+}
 
 /**
  * Implements hook_preprocess_page().
@@ -18,57 +210,85 @@ function joinup_theme_preprocess_page(&$variables) {
   $request = \Drupal::request();
   $route_match = \Drupal::routeMatch();
 
-  // Set page title.
+  // Get additional info about forms which should have logic in templates.
+  $form_meta = _joinup_form_meta_by_route($route_match);
+
+  // Get page title.
   $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+  // Check if page is form page and page content has no white background.
+  $is_form_container = FALSE;
 
   // We need to show the header in a blue variant on certain routes:
   // node and rdf entity forms, user forms.
   $route_name = $route_match->getRouteName();
-  $blue_header_routes = array(
-    'collection.propose_form',
-    'entity.node.edit_form',
-    'entity.rdf_entity.edit_form',
-    'node.add',
-    'node.add_page',
-    'rdf_entity.propose_form',
-    'rdf_entity.rdf_add',
-    'rdf_entity.rdf_add_page',
-    'user.login',
-    'user.pass',
-    'user.register',
-  );
 
-  // Check if page is collection propose form.
-  // It is needed for proper display of vertical tabs.
-  $tabs_routes = array(
-    'rdf_entity.propose_form',
-    'entity.rdf_entity.edit_form',
-  );
+  // Get routes which should have modifications.
+  $blue_header_routes = _joinup_blue_header_routes();
+  $navy_header_routes = _joinup_navy_blue_header_routes();
+  $other_forms = _joinup_non_blue_header_routes();
+  $not_forms = _joinup_not_forms_routes();
 
-  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
-    // Get entity type on edit form.
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
-      $rdf_type = $entity->getType();
-    }
-    else {
-      // Get entity type on create form.
-      $rdf_type = $route_match->getParameter('rdf_type');
-      $rdf_type = $rdf_type->id();
+  if (!empty($route_name)) {
+    if (in_array($route_name, $other_forms)) {
+      $is_form_container = TRUE;
     }
 
-    if ($rdf_type === 'collection') {
-      $variables['is_propose_collection'] = TRUE;
+    if (in_array($route_name, $blue_header_routes)) {
+      $variables['is_blue_header'] = TRUE;
+      $is_form_container = TRUE;
+    }
+
+    if (in_array($route_name, $navy_header_routes)) {
+      $variables['is_navy_header'] = TRUE;
     }
   }
 
-  if (!empty($route_name) && in_array($route_name, $blue_header_routes)) {
+  // Check pattern for add pages.
+  if ($form_meta['is_create_form']) {
     $variables['is_blue_header'] = TRUE;
+    $is_form_container = TRUE;
+  }
+
+  // Check whether a form should accommodate tabs.
+  if ($form_meta['has_tabs']) {
+    $variables['has_vertical_tabs'] = TRUE;
+    $is_form_container = TRUE;
+  }
+
+  // Check if it is add content or rdf overview page.
+  // It needs to be called after other checks.
+  if (!empty($route_name) && in_array($route_name, $not_forms)) {
+    $is_form_container = FALSE;
+  }
+
+  if (isset($variables['is_blue_header'])) {
     // Move the title from the content region to featured region.
     $title = $variables['page']['content']['pagetitle'];
     unset($variables['page']['content']['pagetitle']);
   }
 
+  // Remove title on pages, where title is already in the header.
+  if ($route_name == 'entity.rdf_entity.canonical') {
+
+    if ($entity = $route_match->getParameter('rdf_entity')) {
+      $rdf_type = $entity->getType();
+    }
+
+    if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'])) {
+      unset($variables['page']['content']['pagetitle']);
+    }
+  }
+
+  // Set adjusting class on form when necessary.
+  if ($is_form_container) {
+    $variables['container_class'] = 'content-container--form';
+  }
+  else {
+    $variables['container_class'] = 'content-container--default';
+  }
+
+  // Set title back in the global page variables.
   $variables['title'] = $title;
 }
 
@@ -77,23 +297,71 @@ function joinup_theme_preprocess_page(&$variables) {
  */
 function joinup_theme_preprocess_page_title(&$variables) {
   $route_match = \Drupal::routeMatch();
+
+  $variables['visually_hidden_class'] = '';
+
+  if ($permalink = joinup_build_permalink($route_match)) {
+    $variables['permalink'] = $permalink;
+  }
+
+  // Get any custom properties for forms.
+  $form_meta = _joinup_form_meta_by_route($route_match);
+
+  if ($route_name = $route_match->getRouteName()) {
+
+    // Flag title for create pages to have additional logic in display.
+    if ($form_meta['is_create_form'] || _joinup_is_create_form_route($route_name)) {
+      $variables['is_create_page'] = TRUE;
+    }
+
+    // Set visually hidden class on overview pages.
+    if (in_array($route_name, _joinup_overview_page_routes())) {
+      $variables['visually_hidden_class'] = ' visually-hidden';
+    }
+  }
+}
+
+/**
+ * Builds the permalink for the given route.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return string
+ *   The permalink uri.
+ */
+function joinup_build_permalink(RouteMatchInterface $route_match) {
   $route_name = $route_match->getRouteName();
 
-  // Array contains create pages.
-  $create_content_routes = array(
-    'node.add',
-    'node.add_page',
-    'rdf_entity.propose_form',
-    'rdf_entity.rdf_add',
-    'rdf_entity.rdf_add_page',
-    'collection.propose_form',
-  );
+  $routes = [
+    'entity.node.canonical',
+    'entity.rdf_entity.canonical',
+    'entity.rdf_entity.about_page',
+  ];
 
-  // Set a flag when we are on content creation routes
-  // in order to customise some templates.
-  if (!empty($route_name) && in_array($route_name, $create_content_routes)) {
-    $variables['is_create_page'] = TRUE;
+  if (!in_array($route_name, $routes)) {
+    return FALSE;
   }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = NULL;
+
+  foreach (['node', 'rdf_entity'] as $type) {
+    $param = $route_match->getParameter($type);
+    $entity = isset($param) ? $param : $entity;
+  }
+
+  if (!$entity) {
+    return FALSE;
+  }
+
+  // Entity id is pointing to the publication office redirect.
+  if (strstr($entity->id(), 'http://data.europa.eu/w21/') !== FALSE) {
+    return $entity->id();
+  }
+
+  // Don't process the path to avoid pathauto aliasing.
+  return $entity->toUrl('canonical', ['path_processing' => FALSE, 'absolute' => TRUE])->toString();
 }
 
 /**
@@ -117,6 +385,7 @@ function joinup_theme_preprocess_menu(&$variables) {
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
   }
+  $variables['#cache']['contexts'][] = 'user';
 }
 
 /**
@@ -126,17 +395,16 @@ function joinup_theme_preprocess_block(&$variables) {
   if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
-
     // Indicate if page contains listing
     // and should not have white background.
     $is_listing = FALSE;
-
     switch ($route_name) {
       case 'entity.rdf_entity.canonical':
         $entities = [
-          'collection',
-          'asset_release',
           'asset_distribution',
+          'asset_release',
+          'collection',
+          'solution',
         ];
         // Get entity type.
         $entity = $route_match->getParameter('rdf_entity');
@@ -152,21 +420,26 @@ function joinup_theme_preprocess_block(&$variables) {
         // Get node type.
         $node = $route_match->getParameter('node');
         if (!empty($node)) {
+          $node_types = [
+            'news',
+            'event',
+            'discussion',
+            'custom_page',
+          ];
           $node_type = $node->getType();
-          if ($node_type == 'custom_page') {
-            // Check if page contains community listing.
-            $community = $node->get('field_cp_content_listing')->getValue();
-            if ($community[0]['value']['enabled']) {
-              $is_listing = TRUE;
-            }
-          }
-          elseif ($node_type == 'news') {
+          if (in_array($node_type, $node_types)) {
             $is_listing = TRUE;
           }
         }
         break;
 
+      case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
+      case 'view.search.page_1':
+      case 'view.solutions.page_1':
+      case 'view.content_overview.page_1':
+      case 'entity.rdf_entity.member_overview':
+      case 'entity.user.canonical':
         $is_listing = TRUE;
         break;
     }
@@ -178,6 +451,10 @@ function joinup_theme_preprocess_block(&$variables) {
   // @see joinup_theme_theme_suggestions_menu_alter().
   if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
     $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  }
+  // The front page is also shown as a listing of entities.
+  if ($variables['elements']['#id'] === 'frontpageblock') {
+    $variables['is_listing'] = TRUE;
   }
 }
 
@@ -194,6 +471,25 @@ function joinup_theme_preprocess_fieldset(&$variables) {
 }
 
 /**
+ * Prepares variables for file form widget templates.
+ *
+ * Default template: file-managed-file.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: A render element representing the file.
+ */
+function joinup_preprocess_file_managed_file(array &$variables) {
+  // Workaround for https://www.drupal.org/node/2705471
+  // Restore states related attributes.
+  $element = &$variables['element'];
+  if (!empty($element['#states'])) {
+    $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
+  }
+
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
@@ -202,9 +498,19 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
   // Block ID is provided in the preprocess function.
   // @see joinup_theme_preprocess_block().
   if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(array('block-', '-'), array('', '_'), $variables['attributes']['block']);
+    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
     $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for the stats topic container.
+ *
+ * This is used for the statistics in the group header, like 'licence' and
+ * 'downloads'.
+ */
+function joinup_theme_preprocess_container__stats_topic(&$variables) {
+  $variables['topic'] = $variables['element']['#stats_topic'];
 }
 
 /**
@@ -213,14 +519,19 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
 function joinup_theme_preprocess_container(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
-  $form_routes = array(
+
+  // Check if route is special.
+  $form_meta = _joinup_form_meta_by_route($route_match);
+
+  $form_routes = [
     'node.add',
     'rdf_entity.propose_form',
     'rdf_entity.rdf_add',
     'entity.node.edit_form',
     'collection.propose_form',
     'entity.rdf_entity.edit_form',
-  );
+    'solution.collection_solution.add',
+  ];
 
   // Check if container is field element - it has only one parent.
   if (!empty($route_name) && in_array($route_name, $form_routes)
@@ -231,32 +542,23 @@ function joinup_theme_preprocess_container(&$variables) {
     $variables['is_form_wrapper'] = TRUE;
   }
 
-  // Check if page is collection propose form.
-  // It is needed for proper display buttons
-  // on forms with vertical tabs.
-  $tabs_routes = array(
-    'rdf_entity.propose_form',
-    'entity.rdf_entity.edit_form',
-  );
-
-  $rdf_type = '';
-  if (!empty($route_name) && in_array($route_name, $tabs_routes)) {
-    // Get entity type on edit form.
-    $entity = $route_match->getParameter('rdf_entity');
-    if (!empty($entity)) {
-      $rdf_type = $entity->getType();
-    }
-    else {
-      // Get entity type on create form.
-      $rdf_type = $route_match->getParameter('rdf_type');
-      $rdf_type = $rdf_type->id();
-    }
+  // Check if page has vertical tabs.
+  // It is needed for proper display action buttons.
+  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $form_meta['has_tabs']) {
+    $variables['has_vertical_tabs'] = TRUE;
   }
+}
 
-  // Check if action buttons are on collection propose form.
-  if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $rdf_type === 'collection') {
-    $variables['is_collection'] = TRUE;
-  }
+/**
+ * Implements hook_preprocess_HOOK() for an advanced search inline facet region.
+ *
+ * Template: 'container--facet-region--inline-facets--with-advanced-search'.
+ */
+function joinup_theme_preprocess_container__facet_region__inline_facets__with_advanced_search(&$variables) {
+  $variables['advanced_search'] = [
+    '#theme' => 'advanced_search_pseudo_facet',
+    '#entity' => $variables['element']['#entity'],
+  ];
 }
 
 /**
@@ -271,11 +573,11 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
     $label = $variables['element']['#title'];
     $variables['label']['content'] = $label;
     // Lists of element types.
-    $elements = array(
+    $elements = [
       'target_id',
       'value',
       'uri',
-    );
+    ];
 
     // Fixes link form element title,.
     // @see joinup_theme_preprocess_form_element().
@@ -295,6 +597,54 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for field--comment.html.twig.
+ */
+function joinup_theme_preprocess_field__comment(&$variables) {
+  // Get entity url needed for login and register routes.
+  $entity = $variables['element']['#object'];
+  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+
+  // Get the comment status from the entity itself.
+  $comments_status = $variables['element']['#items']->status;
+
+  // On closed collections community content, anonymous users are not allowed to
+  // comment. Show a message instead.
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
+  $user = \Drupal::currentUser();
+  if (
+    $user->isAnonymous() &&
+    $parent &&
+    $parent->getEntityTypeId() === 'rdf_entity' &&
+    $parent->bundle() === 'collection' &&
+    $parent->get('field_ar_closed')->value
+  ) {
+    $comments_status = 'closed_collection';
+  }
+
+  switch ($comments_status) {
+    case 'closed_collection':
+      $variables['comments_status'] = 'closed_collection';
+      break;
+
+    case CommentItemInterface::OPEN:
+      $variables['comments_status'] = 'open';
+      break;
+
+    case CommentItemInterface::CLOSED:
+      $variables['comments_status'] = 'closed';
+      break;
+
+    case CommentItemInterface::HIDDEN:
+      $variables['comments_status'] = 'hidden';
+      break;
+  }
+
+  $variables['login_path'] = Url::fromRoute('user.login')->toString();
+  $variables['register_path'] = Url::fromRoute('user.register')->toString();
 }
 
 /**
@@ -400,8 +750,199 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_compact = $viewBuilder->view($author, 'compact');
-  $variables['additional_content']['author'] = $author_compact;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_page_title__node__discussion().
+ */
+function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $variables['additional_content']['created'] = $created;
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_comment().
+ */
+function joinup_theme_preprocess_comment(&$variables) {
+  /** @var \Drupal\user\Entity\User $user */
+  $user = $variables['user_picture']['#user'];
+  $photo_target = $user->get('field_user_photo')->getValue();
+
+  if ($photo_target) {
+    $photo_target = $photo_target[0]['target_id'];
+    /** @var \Drupal\file\Entity\File $file */
+    if ($file = File::load($photo_target)) {
+      $uri = $file->getFileUri();
+      $url = ImageStyle::load('profile_icon_big')->buildUrl($uri);
+      $variables['profile_icon'] = [
+        '#markup' => $url,
+        '#cache' => [
+          'tags' => Cache::mergeTags($user->getCacheTags(), $user->getEntityType()
+            ->getListCacheTags()),
+          'contexts' => $user->getCacheContexts(),
+          'max-age' => $user->getCacheMaxAge(),
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_image().
+ */
+function joinup_theme_preprocess_image(&$variables) {
+  if ($variables['style_name'] == 'profile_icon') {
+    $variables['attributes']['class'][] = 'details__avatar';
+    $variables['attributes']['class'][] = 'avatar';
+    $variables['attributes']['class'][] = 'avatar--25';
+  }
+}
+
+/**
+ * Implements hook_preprocess_user().
+ */
+function joinup_theme_preprocess_user(&$variables) {
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
+}
+
+/**
+ * Implements hook_preprocess_user__group_header().
+ */
+function joinup_theme_preprocess_user__group_header(&$variables) {
+  // Create customizable 'member for' field.
+  // It creates a timespan without label and with lower granularity.
+  $variables['member_for'] = \Drupal::service('date.formatter')->formatTimeDiffSince($variables['user']->getCreatedTime(), ['granularity' => 1]);
+  $variables['full_name'] = $variables['user']->get('full_name')->value;
+}
+
+/**
+ * Implements hook_preprocess_page_title__node__event().
+ */
+function joinup_theme_preprocess_page_title__node__event(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+
+  // Get dates and location fields.
+  $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
+  $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
+
+  $variables['additional_content']['field_event_date'] = $field_event_date;
+  $variables['additional_content']['field_location'] = $field_event_location;
+}
+
+/**
+ * Implements hook_preprocess_search_api_field__user__field_user_content().
+ *
+ * Provides a nicer message when the user hasn't created any content.
+ */
+function joinup_theme_preprocess_search_api_field__user__field_user_content(&$variables) {
+  // The "no_results_found" render array is not there if there are results.
+  if (empty($variables['no_results_found'])) {
+    return;
+  }
+
+  $first_name = $variables['entity']->get('field_user_first_name')->value;
+  if (!empty($first_name)) {
+    $markup = t('@name does not have any content yet.', ['@name' => $first_name]);
+  }
+  else {
+    $markup = t('This user does not have any content yet.');
+  }
+  $variables['no_results_found'] = [
+    '#prefix' => '<div class="page__content">',
+    '#suffix' => '</div>',
+    '#markup' => $markup,
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for joinup-tiles--collections.html.twig.
+ */
+function joinup_theme_preprocess_joinup_tiles__collections(&$variables) {
+  // Add a link to propose a collection. This should appear as the final tile.
+  $variables['add_collection_link'] = [
+    '#type' => 'link',
+    '#title' => t('Create collection'),
+    '#url' => Url::fromRoute('joinup.collection_tca_form'),
+    '#attributes' => [
+      'class' => ['listing__create-tile'],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for joinup-tiles--members-overview.html.twig.
+ */
+function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
+  // The members overview is a view of OgMembership entities, but these have no
+  // view modes. Replace them with standard User tiles.
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  /** @var \Drupal\og\OgMembershipInterface $row */
+  foreach ($variables['rows'] as &$row) {
+    /** @var \Drupal\og\OgMembershipInterface $membership */
+    $membership = $row['content']['#og_membership'];
+    $row['content'] = $view_builder->view($membership->getUser(), 'view_mode_tile');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-action.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_action(&$variables) {
+  // Add mdl classes for local action button.
+  $mdl_button_classes = ['button--blue-light',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ];
+  $variables['link']['#options']['attributes']['class'] = array_merge($variables['link']['#options']['attributes']['class'], $mdl_button_classes);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--moderation.html.twig.
+ *
+ * - Removes the contextual links.
+ * - Adds an edit URL.
+ */
+function joinup_theme_preprocess_node__moderation(&$variables) {
+  joinup_theme_remove_contextual_links($variables);
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $variables['edit_url'] = $node->toUrl('edit-form')->toString();
+}
+
+/**
+ * Remove the contextual links from a template preprocess variable array.
+ *
+ * @param array $variables
+ *   An array of template preprocess variables.
+ *
+ * @see contextual_preprocess()
+ */
+function joinup_theme_remove_contextual_links(array &$variables) {
+  if (!empty($variables['attributes']['class'])) {
+    $key = array_search('contextual-region', $variables['attributes']['class']);
+    if ($key !== FALSE) {
+      unset($variables['attributes']['class'][$key]);
+    }
+  }
+  unset($variables['title_suffix']['contextual_links']);
 }
 
 /**
@@ -411,56 +952,65 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
  * buttons.
  */
 function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-  if (empty($variables['element']['#is_button'])) {
-    return;
-  }
+  if (!empty($variables['element']['#is_button'])) {
 
-  // Skip dropbuttons since we have no custom styling for them. These can be
-  // recognized by not having an '#array_parents' property .
-  // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
-  if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
-    return;
-  }
-
-  // We need to have different styling on some buttons. The key of this
-  // multi-dimension array represents the suggestion name, while its values
-  // are the build array key of the button being rendered.
-  $input_suggestions = [
-    'input__ief_add_another' => [
-      // Generic "Add more" button for multi-value widgets.
-      'add_more',
-      'ief_add_existing',
-      'ief_add',
-      'ief_reference_save',
-      'ief_add_save',
-      'ief_edit_save',
-    ],
-    'input__ief_edit' => [
-      'ief_entity_edit',
-      'ief_entity_edit_save',
-    ],
-    'input__ief_cancel' => [
-      'ief_entity_cancel',
-      'ief_remove_cancel',
-    ],
-    'input__ief_cancel_circle' => [
-      'ief_add_cancel',
-      'ief_edit_cancel',
-      'ief_reference_cancel',
-    ],
-    'input__remove_button' => [
-      'ief_entity_remove',
-      'ief_remove_confirm',
-      'remove_button',
-    ],
-  ];
-
-  // The last key of #array_parents is the build array key used in the code.
-  $element_key = end($variables['element']['#array_parents']);
-  foreach ($input_suggestions as $suggestion => $names) {
-    if (in_array($element_key, $names)) {
-      $suggestions[] = $suggestion;
+    // Skip dropbuttons since we have no custom styling for them. These can be
+    // recognized by not having an '#array_parents' property .
+    // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
+    if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
+      return;
     }
+
+    // We need to have different styling on some buttons. The key of this
+    // multi-dimension array represents the suggestion name, while its values
+    // are the build array key of the button being rendered.
+    $input_suggestions = [
+      'input__ief_add_another' => [
+        // Generic "Add more" button for multi-value widgets.
+        'add_more',
+        'ief_add_existing',
+        'ief_add',
+        'ief_reference_save',
+        'ief_add_save',
+        'ief_edit_save',
+      ],
+      'input__ief_edit' => [
+        'ief_entity_edit',
+        'ief_entity_edit_save',
+      ],
+      'input__ief_cancel' => [
+        'ief_entity_cancel',
+        'ief_remove_cancel',
+      ],
+      'input__ief_cancel_circle' => [
+        'ief_add_cancel',
+        'ief_edit_cancel',
+        'ief_reference_cancel',
+      ],
+      'input__remove_button' => [
+        'ief_entity_remove',
+        'ief_remove_confirm',
+        'remove_button',
+      ],
+    ];
+
+    // The last key of #array_parents is the build array key used in the code.
+    $element_key = end($variables['element']['#array_parents']);
+    foreach ($input_suggestions as $suggestion => $names) {
+      if (in_array($element_key, $names)) {
+        $suggestions[] = $suggestion;
+      }
+    }
+  }
+
+  // Suggestion based on data twig suggestion created in form alter.
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
+  }
+
+  // Suggestion for search form submit.
+  if (isset($variables['element']['#id']) && strpos($variables['element']['#id'], 'edit-submit-search') !== FALSE) {
+    $suggestions[] = 'input__submit__search_bar';
   }
 }
 
@@ -469,6 +1019,11 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
  */
 function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form_element__' . str_replace('-', '_', $variables['element']['#type']);
+
+  // Suggestion based on data twig suggestion created in form alter.
+  if (isset($variables['element']['#extra_suggestion'])) {
+    $suggestions[] = 'form_element__' . $variables['element']['#type'] . '__' . $variables['element']['#extra_suggestion'];
+  }
 }
 
 /**
@@ -476,11 +1031,11 @@ function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, 
  */
 function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array $variables) {
   // Array contains all select elements ids, which are displayed as slider.
-  $slider_ids = [
-    'edit-field-ar-elibrary-creation',
+  $slider_field_names = [
+    'field_ar_elibrary_creation',
   ];
 
-  if (in_array($variables['element']['#id'], $slider_ids)) {
+  if (in_array($variables['element']['#name'], $slider_field_names)) {
     $suggestions[] = 'select__slider';
   }
 }
@@ -491,13 +1046,19 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+
+    // Suggestion for search form submit container.
+    if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
+      $suggestions[] = 'container__edit_actions__search_bar';
+    }
   }
 }
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for page-title.html.twig.
  *
- * Adds suggestions when the route is the canonical view of a rdf entity.
+ * Adds suggestions when the route is the canonical view of a rdf entity or a
+ * node.
  */
 function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, array &$variables) {
   $route_match = \Drupal::routeMatch();
@@ -578,9 +1139,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
       }
     }
 
-    if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'licence') {
+    // Add a theme suggestion for statistic topics which are being shown in the
+    // group header, such as 'licence' and 'downloads'.
+    if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'container' && !empty($variables['element']['#stats_topic'])) {
       $original_theme_hook = $variables['theme_hook_original'];
-      $suggestions[] = $original_theme_hook . '__licence';
+      $suggestions[] = $original_theme_hook . '__stats_topic';
     }
   }
 
@@ -621,4 +1184,164 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
 function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'joinup_theme/form-components';
   $form['#attached']['drupalSettings']['widthBreakpoint'] = 100;
+
+  // Set templates for forms where actions button are separated.
+  $custom_forms = [
+    'node_form',
+    'rdf_entity_form',
+    'message_contact_form_submission_form',
+    'adms_validator_form',
+    'user_login_form',
+    'user_form',
+    'user_pass',
+    'simplenews_subscriber_account_form',
+  ];
+
+  // Exclude forms with tabs.
+  $tab_forms = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_collection_propose_form',
+    'rdf_entity_solution_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_collection_add_form',
+    'rdf_entity_solution_add_form',
+  ];
+
+  if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
+    $form['#theme'][] = 'buttons_separated_form';
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds extension and file size to the available variables when rendering a
+ * document node.
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
+    return;
+  }
+
+  /** @var \Drupal\file\FileInterface $file */
+  $file = $node->get('field_file')->first()->entity;
+  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
+
+  if (!$is_remote) {
+    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+    $variables['file_name'] = $file->getFilename();
+
+    if ($file->getSize()) {
+      $variables['file_size'] = format_size(round($file->getSize()));
+    }
+  }
+  else {
+    $variables['extension'] = t('External');
+  }
+}
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ *
+ * Hide label for certain displays.
+ */
+function joinup_theme_preprocess_rdf_entity(&$variables) {
+  if ($variables['view_mode'] == 'about') {
+    $variables['is_label_hidden'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ *
+ * Get raw number of members.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
+  if (isset($variables['elements']['members']['#markup'])) {
+    $arguments = $variables['elements']['members']['#markup']->getArguments();
+    $variables['member_count'] = $arguments['@member_count'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ *
+ * Hides the separator and end date as only the start date is shown in tiles.
+ */
+function joinup_theme_preprocess_node__event__listing_item(&$variables) {
+  if (!empty($variables['content']['field_event_date'])) {
+    $element = &$variables['content']['field_event_date'];
+    foreach (Element::children($element) as $key) {
+      // The "start_date" render array is present when more then one date is
+      // rendered.
+      // @see \Drupal\joinup_core\Plugin\Field\FieldFormatter\CondensedDateRangeFormatter::viewElements()
+      if (!empty($element[$key]['start_date'])) {
+        $element[$key]['separator']['#access'] = FALSE;
+        $element[$key]['end_date']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add theme suggestions directly to the comment body field.
+ */
+function joinup_theme_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['field_body']['widget'][0]['value']['#theme'] = 'textarea__comment';
+  $form['field_body']['widget'][0]['value']['#theme_wrappers'] = ['form_element__textarea__comment'];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for table--file-formatter-table.html.twig.
+ *
+ * Extracts the file extension and makes it available on the row level.
+ */
+function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
+  if (!empty($variables['rows'])) {
+    foreach ($variables['rows'] as $index => $row) {
+      /** @var \Drupal\file\Entity\File $file */
+      $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
+      $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+
+      // List of available icons.
+      $available_icons = [
+        'doc',
+        'exe',
+        'gif',
+        'jpg',
+        'pdf',
+        'png',
+        'ppt',
+        'rar',
+        'xls',
+        'zip',
+      ];
+
+      // Check if icon exist, otherwise set default icon.
+      if (in_array($file_icon, $available_icons)) {
+        $variables['rows'][$index]['#file_extension'] = $file_icon;
+      }
+      else {
+        $variables['rows'][$index]['#file_extension'] = 'default';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add theme suggestions and classes in search form.
+ */
+function joinup_theme_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (strpos($form['#id'], 'views-exposed-form-search-page-') !== FALSE) {
+    $form['keys']['#extra_suggestion'] = 'search_bar';
+    $form['keys']['#attributes']['class'][] = 'search-bar__input';
+    $form['keys']['#attributes']['placeholder'] = t('Start typing to search...');
+  }
 }

@@ -10,13 +10,13 @@ field_name: field_is_solution_type
 entity_type: rdf_entity
 bundle: solution
 label: 'Solution type'
-description: 'EIA Building block'
+description: 'EIRA Building block'
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:taxonomy_term'
+  handler: grouped_rdf_taxonomy_term_selection
   handler_settings:
     target_bundles:
       eira: eira

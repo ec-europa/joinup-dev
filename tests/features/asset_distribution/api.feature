@@ -25,7 +25,7 @@ Feature: Distribution API
     And the following distribution:
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
-      | file        | test.zip                              |
+      | access url  | test.zip                              |
       | solution    | Asset distribution solution           |
     And the following release:
       | title          | Asset distribution asset release   |
@@ -55,7 +55,7 @@ Feature: Distribution API
     And the following distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |
-      | file        | test.zip                              |
+      | access url  | test.zip                              |
       | solution    | AD first solution mandatory short     |
     And the following release:
       | title          | AD first release                    |

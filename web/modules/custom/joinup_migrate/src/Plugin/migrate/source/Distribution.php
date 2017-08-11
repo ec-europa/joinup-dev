@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,46 +13,66 @@ use Drupal\migrate\Row;
  *   id = "distribution"
  * )
  */
-class Distribution extends DistributionBase {
+class Distribution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
-  use UriTrait;
+  use DefaultRdfRedirectTrait;
+  use FieldTranslationTrait;
+  use FileUrlFieldTrait;
+  use LicenceTrait;
+  use StatusTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection', 'solution', 'release'];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 'd',
+      ],
+    ];
+  }
 
   /**
    * {@inheritdoc}
    */
   public function fields() {
     return [
+      'nid' => $this->t('Node ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Name'),
+      'access_url' => $this->t('Access URL'),
       'created_time' => $this->t('Created time'),
       'body' => $this->t('Description'),
       'licence' => $this->t('Licence'),
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
-    ] + parent::fields();
+      'status' => $this->t('Status'),
+      'i18n' => $this->t('Field translations'),
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['node_revision'] = $query->join('node_revisions', 'node_revision', "{$this->alias['node']}.vid = %alias.vid");
-
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-
-    $this->alias['content_field_distribution_licence'] = $query->leftJoin('content_field_distribution_licence', 'content_field_distribution_licence', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_licence'] = $query->leftJoin('node', 'node_licence', "{$this->alias['content_field_distribution_licence']}.field_distribution_licence_nid = %alias.nid AND %alias.type = 'licence'");
-
-    $query->addExpression("{$this->alias['node_licence']}.nid", 'licence');
-
-    return $query
-      ->fields($this->alias['node'], ['title', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return $this->select('d8_distribution', 'd')->fields('d', [
+      'nid',
+      'uri',
+      'vid',
+      'title',
+      'body',
+      'created_time',
+      'changed_time',
+      'licence',
+      'file_id',
+      'access_url',
+    ]);
   }
 
   /**
@@ -59,9 +81,6 @@ class Distribution extends DistributionBase {
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
-
-    // Normalize URI.
-    $this->normalizeUri('uri', $row, FALSE);
 
     // Representation technique.
     $query = $this->select('term_node', 'tn');
@@ -76,7 +95,40 @@ class Distribution extends DistributionBase {
       ->fetchCol();
     $row->setSourceProperty('technique', $representation_technique);
 
+    // Resolve 'access_url'.
+    $fid = $row->getSourceProperty('file_id');
+    $file_source_id_values = $fid ? [['fid' => $fid]] : [];
+    $urls = $row->getSourceProperty('access_url') ? [$row->getSourceProperty('access_url')] : [];
+    $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', $urls);
+
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // Licence.
+    $this->setLicence($row, 'distribution');
+
+    // Translations.
+    $this->setFieldTranslations($row);
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_distribution_name',
+        'field' => 'field_distribution_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_ad_description' => [
+        'table' => 'content_field_distribution_description',
+        'field' => 'field_distribution_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

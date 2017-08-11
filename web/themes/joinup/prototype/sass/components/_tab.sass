@@ -34,7 +34,7 @@
   @media (min-width: 600px)
     display: flex
     flex-wrap: nowrap
-    justify-content: space-between
+    justify-content: flex-start
     align-items: flex-start
     text-align: center
     border-bottom: none
@@ -59,9 +59,9 @@
   .tab__icon
     color: lighten($color-grey-medium, 10%)
     position: absolute
-    top: -12px
-    left: -18px
-    +icon-size(80px)
+    top: 6px
+    left: 0
+    +icon-size(45px)
   .tab__text
     margin-bottom: 15px
     padding-left: 60px
@@ -93,7 +93,8 @@
     text-transform: uppercase
     font-weight: $font-weight-bold
   .tab__icon
-    +icon-size(25px)
+    margin-left: 4px
+    +icon-size(14px)
 
 .tabs--content-type .tab--more
   height: auto
@@ -112,6 +113,18 @@
     padding: 0
   .tab--more-wrapper
     top: 50%
+
+.section--featured-navy-blue
+  .tabs--content-type
+    .tab--content-type
+      color: #fff
+      margin-right: 40px
+
+      .tab__icon
+        color: #fff
+
+      .tab__text--upper
+        font-weight: 500
 
 // States
 // --------------------------------------------------

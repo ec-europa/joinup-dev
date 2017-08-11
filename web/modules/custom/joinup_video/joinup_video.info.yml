@@ -1,0 +1,23 @@
+name: 'Joinup video'
+type: module
+description: 'Provides video functionality'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - joinup_community_content
+  - og
+  - video_embed_wysiwyg
+
+config_devel:
+  - core.entity_form_display.node.video.default
+  - core.entity_view_display.node.video.default
+  - field.field.node.video.body
+  - field.field.node.video.field_comments
+  - field.field.node.video.field_keywords
+  - field.field.node.video.field_video
+  - field.field.node.video.field_video_spatial_coverage
+  - field.field.node.video.og_audience
+  - field.storage.node.field_video
+  - field.storage.node.field_video_spatial_coverage
+  - node.type.video

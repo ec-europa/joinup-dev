@@ -25,7 +25,7 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   protected $revisionManager;
 
   /**
-   * Constructs a new EntityRevisionConverter object.
+   * Constructs a new WorkflowTransitionEventSubscriber object.
    *
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revisionManager
    *   The revision manager.
@@ -124,12 +124,11 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       $label = $workflow->getLabel();
       throw new \InvalidArgumentException("The '$label' workflow is not plugin based.");
     }
+
     // Retrieve the raw plugin definition, as all additional plugin settings
     // are stored there.
     $raw_workflow_definition = $workflow->getPluginDefinition();
-    $state_id = $state->getId();
-
-    return !empty($raw_workflow_definition['states'][$state_id]['published']);
+    return !empty($raw_workflow_definition['states'][$state->getId()]['published']);
   }
 
 }

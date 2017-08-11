@@ -7,40 +7,60 @@ distribution:
   name: Joinup
 
 dependencies:
+  - adms_validator
   - asset_distribution
   - asset_release
   - block
   - ckeditor
   - collection
+  - contact_form
+  - content_translation
   - contextual
   - custom_page
   - dashboard
+  - diff
   - ds
   - dynamic_page_cache
   - editor
+  - editor_file
   - field_group
   - file
   - help
+  - honeypot
   - image
   - inline_entity_form
   - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_invite
   - joinup_licence
   - joinup_news
+  - joinup_newsletter
   - joinup_notification
   - joinup_search
   - joinup_subscription
   - joinup_user
+  - joinup_video
+  - language
+  - link
+  - linkit
   - menu_ui
+  - moderation
   - node
   - og
   - og_menu
   - options
   - owner
   - page_cache
+  - password_policy
+  - password_policy_character_types
+  - password_policy_characters
+  - password_policy_length
   - path
+  - pathauto
+  - persistent_login
+  - piwik
   - r4032login
   - rdf_draft
   - rdf_entity
@@ -48,11 +68,15 @@ dependencies:
   - rdf_taxonomy
   - search_api
   - search_api_db
+  - social_media_links_field
   - solution
   - state_machine
   - state_machine_revisions
+  - swiftmailer
   - text
   - toolbar
+  - tour
+  - trr
   - user
   - view_unpublished
   - views
@@ -62,22 +86,25 @@ themes:
   - joinup_theme
 
 config_devel:
-  - block.block.addcontent
+  - block.block.entity_bundle_facet
+  - block.block.exposed_form_search_page
+  - block.block.footer_menu
+  - block.block.group_facet
   - block.block.groupheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
-  - block.block.joinup_theme_footer
   - block.block.joinup_theme_help
-  - block.block.joinup_theme_local_actions
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
-  - block.block.joinup_theme_solutioncontent
+  - block.block.menusubpages
   - block.block.navigation
   - block.block.pagetitle
-  - block.block.policydomain
+  - block.block.policy_domain_facet
   - block.block.primaryadminactions
+  - block.block.rdf_entities_in_proposed_state
+  - block.block.recommended_content
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -87,9 +114,13 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
-  - block.block.spatialcoverage
-  - block.block.status
-  - block.block.type
+  - block.block.spatial_coverage_facet
+  - block.block.statistics
+  - block.block.unpublished_content_of_group
+  - block.block.unpublished_content_of_user
+  - block.block.userheader
+  - core.date_format.date_only
+  - core.date_format.date_only_text_month
   - core.date_format.fallback
   - core.date_format.html_date
   - core.date_format.html_datetime
@@ -98,61 +129,67 @@ config_devel:
   - core.date_format.html_week
   - core.date_format.html_year
   - core.date_format.html_yearless_date
-  - core.date_format.date_only
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
-  - core.entity_form_display.user.user.register
   - core.entity_form_mode.node.collection_custom_page
-  - core.entity_form_mode.rdf_entity.propose
   - core.entity_form_mode.user.register
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
+  - core.entity_view_display.user.user.group_header
+  - core.entity_view_display.user.user.inline
   - core.entity_view_display.user.user.view_mode_featured
   - core.entity_view_display.user.user.view_mode_tile
   - core.entity_view_mode.node.full
   - core.entity_view_mode.user.full
+  - core.entity_view_mode.user.inline
   - core.entity_view_mode.user.view_mode_featured
   - core.entity_view_mode.user.view_mode_tile
   - ds.settings
+  - editor.editor.basic_html
   - editor.editor.content_editor
+  - editor.editor.restricted_html
+  - editor.editor.simple_html
   - field.field.ogmenu_instance.navigation.og_audience
-  - field.field.user.user.field_user_family_name
-  - field.field.user.user.field_user_first_name
-  - field.field.user.user.field_user_nationality
-  - field.field.user.user.field_user_organisation
-  - field.field.user.user.field_user_photo
-  - field.field.user.user.field_user_professional_domain
-  - field.field.user.user.field_user_business_title
   - field.storage.node.body
-  - field.storage.node.og_audience
   - field.storage.ogmenu_instance.og_audience
-  - field.storage.user.field_user_family_name
-  - field.storage.user.field_user_first_name
-  - field.storage.user.field_user_nationality
-  - field.storage.user.field_user_organisation
-  - field.storage.user.field_user_photo
-  - field.storage.user.field_user_professional_domain
-  - field.storage.user.field_user_business_title
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - filter.format.simple_html
+  - filter.format.simple_text
   - image.style.profile_icon
-  - og_menu.ogmenu.navigation
+  - image.style.profile_icon_big
+  - language.content_settings.rdf_entity.asset_distribution
+  - language.content_settings.rdf_entity.asset_release
+  - language.content_settings.rdf_entity.collection
+  - language.content_settings.rdf_entity.licence
+  - language.content_settings.rdf_entity.solution
+  - linkit.linkit_profile.default
+  - mailsystem.settings
   - og.settings
+  - og_menu.ogmenu.navigation
+  - password_policy.password_policy.generic_policy
+  - pathauto.pattern.community_content
+  - pathauto.pattern.custom_page
+  - pathauto.pattern.rdf_entities_generic
+  - pathauto.pattern.rdf_entities_releases
+  - piwik.settings
+  - r4032login.settings
+  - swiftmailer.message
+  - swiftmailer.transport
   - system.theme
-  - views.view.collection_content
-  - views.view.collections
-  - views.view.user_admin_people
   - user.flood
   - user.mail
-  - user.role.anonymous
-  - user.role.authenticated
   - user.settings
+  - views.view.collection_content
   - views.view.collections
+  - views.view.content_overview
+  - views.view.members_overview
+  - views.view.solutions
   - views.view.user_admin_people

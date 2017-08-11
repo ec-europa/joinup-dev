@@ -6,7 +6,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      target_id: 'https://www.w3.org/ns/dcat#contactPoint'
+      target_id:
+        predicate: 'https://www.w3.org/ns/dcat#contactPoint'
+        format: resource
 id: rdf_entity.field_ar_contact_information
 field_name: field_ar_contact_information
 entity_type: rdf_entity
@@ -16,7 +18,7 @@ settings:
 module: core
 locked: false
 cardinality: -1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

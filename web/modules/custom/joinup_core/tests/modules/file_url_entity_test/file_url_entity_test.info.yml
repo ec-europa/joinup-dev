@@ -1,0 +1,9 @@
+name: 'File URL integration test'
+type: module
+description: 'Tests integration with File URL module.'
+core: 8.x
+package: Testing
+dependencies:
+  - rdf_entity
+  - rdf_entity_test
+  - file_url

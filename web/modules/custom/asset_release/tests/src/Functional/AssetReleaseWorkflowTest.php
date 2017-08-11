@@ -9,7 +9,7 @@ use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.
@@ -94,10 +94,10 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Creates a user with roles.
    *
    * @param array $roles
-   *    An array of roles to initialize the user with.
+   *   An array of roles to initialize the user with.
    *
    * @return \Drupal\Core\Session\AccountInterface
-   *    The created user object.
+   *   The created user object.
    */
   public function createUserWithRoles(array $roles = []) {
     $user = $this->createUser();
@@ -137,7 +137,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $user_var = $test_data[0];
         $expected_result = $test_data[1];
 
-        $access = $this->ogAccess->userAccessEntity('create', $content, $this->{$user_var})->isAllowed();
+        $access = $this->ogAccess->userAccessEntity('create', $content, $this->$user_var)->isAllowed();
         $result = $expected_result ? t('have') : t('not have');
         $message = "User {$user_var} should {$result} {$operation} access for bundle 'asset_release'.";
         $this->assertEquals($expected_result, $access, $message);
@@ -164,8 +164,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $user_var = $test_data_array[1];
           $expected_result = $test_data_array[2];
 
-          $this->userProvider->setUser($this->{$user_var});
-          $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
+          $access = $this->entityAccess->access($content, $operation, $this->$user_var);
           $result = $expected_result ? t('have') : t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
           $this->assertEquals($expected_result, $access, $message);
@@ -191,8 +190,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $this->userProvider->setUser($this->{$user_var});
-        $actual_transitions = $content->field_isr_state->first()->getTransitions();
+        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
         $actual_transitions = array_map(function ($transition) {
           return $transition->getId();
         }, $actual_transitions);
@@ -208,12 +206,18 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Generates a solution entity and initializes default memberships.
    *
    * @param string $state
-   *    The state of the entity.
+   *   The state of the entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *    The created solution entity.
+   *   The created solution entity.
    */
   protected function createDefaultParent($state) {
+    // Make sure the current user is set to anonymous when creating solutions
+    // through the API so we can assign the administrator manually. If a user is
+    // logged in during creation of the solution they will automatically become
+    // the administrator.
+    $this->setCurrentUser($this->userAnonymous);
+
     $parent = Rdf::create([
       'rid' => 'solution',
       'field_is_state' => $state,
@@ -230,11 +234,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Creates and asserts an Og membership.
    *
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The Og group.
+   *   The Og group.
    * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user this membership refers to.
+   *   The user this membership refers to.
    * @param array $roles
-   *    An array of role objects.
+   *   An array of role objects.
    */
   public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
@@ -340,7 +344,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
@@ -394,7 +398,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           ['delete', 'userOgFacilitator', FALSE],
           ['delete', 'userOgAdministrator', FALSE],
         ],
-        'in_assessment' => [
+        'needs_update' => [
           ['view', 'userAnonymous', FALSE],
           ['view', 'userAuthenticated', FALSE],
           ['view', 'userModerator', TRUE],
@@ -459,7 +463,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         ],
         'userOgAdministrator' => [],
       ],
-      'in_assessment' => [
+      'needs_update' => [
         'userAuthenticated' => [],
         'userModerator' => [
           'update_changes',

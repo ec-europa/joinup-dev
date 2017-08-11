@@ -5,16 +5,16 @@
 // Component
 // --------------------------------------------------
 .vertical-tabs
-  margin-bottom: 40px
 
 // Elements
 // --------------------------------------------------
 .vertical-tabs__wrapper
   width: 100%
 
-.vertical-tabs__panes
+.vertical-tabs__pane
   padding: 20px
   background-color: #fff
+  margin-bottom: 0 !important
   +breakpoint(tablet)
     padding: 40px 30px
   +breakpoint(desktop)
@@ -28,11 +28,14 @@
 
 .vertical-tabs__menu
   padding-left: 0
+  display: none
+  +breakpoint(mobile)
+    display: block
 
 .vertical-tabs__menu-item
   display: block
   border-bottom: 1px solid $color-grey-light
-  background-color: $color-grey-ligher
+  background-color: $color-grey-lighter
   a
     display: block
     padding: 20px 30px
@@ -41,6 +44,7 @@
 .vertical-tabs__menu-item-title
   color: $color-base
   display: block
+  font-weight: $font-weight
 
 .vertical-tabs__menu-item-summary
   font-size: $font-size-small - 1px
@@ -52,6 +56,12 @@
 .vertical-tabs__actions
   .button
     margin-bottom: 5px
+
+.vertical-tabs__menu-item--mobile
+  display: block
+  +breakpoint(mobile)
+    display: none
+
 
 // Modifiers
 // --------------------------------------------------

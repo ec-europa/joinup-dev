@@ -2,18 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_ar_description
-    - search_api.index.collections
+    - search_api.index.published
   module:
     - joinup_core
     - search_api
-    - text
 id: collections
 label: Collections
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_collections
+base_table: search_api_index_published
 base_field: search_api_id
 core: 8.x
 display:
@@ -47,10 +45,15 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -59,11 +62,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
           quantity: 9
       style:
         type: tiles
@@ -88,7 +86,7 @@ display:
               solution: view_mode_tile
       fields:
         search_api_language:
-          table: search_api_index_collections
+          table: search_api_index_published
           field: search_api_language
           id: search_api_language
           entity_type: null
@@ -143,7 +141,7 @@ display:
           multi_separator: ', '
         search_api_id:
           id: search_api_id
-          table: search_api_index_collections
+          table: search_api_index_published
           field: search_api_id
           relationship: none
           group_type: group
@@ -200,7 +198,7 @@ display:
           plugin_id: numeric
         label:
           id: label
-          table: search_api_datasource_collections_entity_rdf_entity
+          table: search_api_datasource_published_entity_rdf_entity
           field: label
           relationship: none
           group_type: group
@@ -317,7 +315,7 @@ display:
           plugin_id: search_api_field
         field_ar_description:
           id: field_ar_description
-          table: search_api_index_collections
+          table: search_api_index_published
           field: field_ar_description
           relationship: none
           group_type: group
@@ -433,7 +431,7 @@ display:
       filters:
         rid:
           id: rid
-          table: search_api_index_collections
+          table: search_api_index_published
           field: rid
           relationship: none
           group_type: group
@@ -488,9 +486,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags:
-        - 'config:field.storage.rdf_entity.field_ar_description'
+      tags: {  }
   page_1:
     display_plugin: page
     id: page_1
@@ -505,6 +501,4 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags:
-        - 'config:field.storage.rdf_entity.field_ar_description'
+      tags: {  }

@@ -4,21 +4,36 @@ description: Handles notifications for joinup project.
 core: 8.x
 package: Joinup
 dependencies:
+  - joinup_core
   - message
   - message_notify
   - solution
 
 config_devel:
-  - core.entity_view_display.message.rdf_entity_solution_delete.mail_body
-  - core.entity_view_display.message.rdf_entity_solution_delete.mail_subject
-  - core.entity_view_display.message.rdf_entity_solution_request_del.mail_subject
-  - core.entity_view_display.message.rdf_entity_solution_request_del.mail_subject
-  - core.entity_view_display.message.rdf_entity_solution_validate.mail_body
-  - core.entity_view_display.message.rdf_entity_solution_validate.mail_subject
-  - field.field.message.rdf_entity_solution_delete.field_message_content
-  - field.field.message.rdf_entity_solution_request_del.field_message_content
-  - field.field.message.rdf_entity_solution_validate.field_message_content
-  - field.storage.message.field_message_content
-  - message.template.rdf_entity_solution_delete
-  - message.template.rdf_entity_solution_request_del
-  - message.template.rdf_entity_solution_validate
+  - joinup_notification.notifications.community_content
+  - message.template.cc_transition_publish
+  - message.template.cc_transition_propose
+  - message.template.cc_transition_request_changes
+  - message.template.cc_transition_report
+  - message.template.cc_transition_approve_proposed
+  - message.template.cc_transition_request_deletion
+  - message.template.cc_transition_reject_deletion
+  - message.template.cc_delete
+  - message.template.cc_transition_propose_reported
+  - message.template.col_approve_edit
+  - message.template.col_approve_new
+  - message.template.col_arc_del_apr_own
+  - message.template.col_arc_del_members
+  - message.template.col_arc_del_no_request
+  - message.template.col_arc_del_rej
+  - message.template.col_arc_del_sol_generic
+  - message.template.col_arc_del_sol_no_affiliates
+  - message.template.col_propose_edit_mod
+  - message.template.col_propose_edit_own
+  - message.template.col_propose_new
+  - message.template.col_req_arch_del
+  - message.template.comment_create
+  - message.template.comment_update
+  - message.template.comment_delete
+  - message.template.og_membership_decision
+  - message.template.og_membership_request

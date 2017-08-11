@@ -7,31 +7,37 @@
     <!-- Section featured start -->
     <div class="section section--featured">
 
-      {{> partials/featured--solutions }}
+      {{> partials/featured--solution }}
 
     </div>
     <!-- Section featured end -->
     <!-- Section content start -->
     <div class="section section--content">
-      <div class="main-container mdl-grid">  
-        <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
-            
-          {{> partials/sidebar-menu--solutions }}
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid">
+            <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+                
+              {{> partials/sidebar-menu--solutions }}
 
-        </div>
-        <div class="section section--main mdl-cell mdl-cell--8-col">
+            </div>
+            <div class="section section--main mdl-cell mdl-cell--8-col">
 
-          {{> partials/tabs }}
+              {{> partials/tabs }}
 
-          <div class="listing listing--grid">
-            <div class="row">
-              <div class="mdl-grid">
-              
-                {{> partials/listing-item--event-col-12 }}
-                {{> partials/listing-item--event-col-4 }}
-                {{> partials/listing-item--event-col-4 }}
-                {{> partials/listing-item--event-col-4 }}
+              <div class="listing listing--grid">
+                <div class="row">
+                  <div class="mdl-grid">
+                  
+                    {{> partials/listing-item--event-col-9 }}
+                    {{> partials/listing-item--event-col-3 }}
+                    {{> partials/listing-item--event-col-3 }}
+                    {{> partials/listing-item--event-col-3 }}
+                    {{> partials/listing-item--event-col-3 }}
+                    {{> partials/listing-item--event-col-3 }}
 
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -41,22 +47,27 @@
     <!-- Section content end -->
     <!-- Section post-content start -->
     <div class="section section--post-content">
-      <div class="main-container mdl-grid">
-        <div class="listing listing--grid listing--separated mdl-cell--8-col mdl-cell--2-offset-desktop">
-          <div class="row">
-            <div class="mdl-grid">
-              <div class="listing__header mdl-cell mdl-cell--12-col">
-                <h3 class="listing__block-title">Related content from other solutions filtred by</h3>
-                <div class="filter">
-                  <div class="filter__term">similar tags</div>
-                  <div class="filter__icon icon icon--arrow-down"></div>
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid mdl-grid--center">
+            <div class="listing listing--grid listing--separated mdl-cell--8-col">
+              <div class="row">
+                <div class="mdl-grid">
+                  <div class="listing__header mdl-cell mdl-cell--12-col">
+                    <h3 class="listing__block-title">Related content from other solutions filtred by</h3>
+                    <div class="filter">
+                      <div class="filter__term">similar tags</div>
+                      <div class="filter__icon icon icon--arrow-down"></div>
+                    </div>
+                  </div>
+
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+                  {{> partials/listing-item--default }}
+
                 </div>
               </div>
-
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-              {{> partials/listing-item--default }}
-
             </div>
           </div>
         </div>

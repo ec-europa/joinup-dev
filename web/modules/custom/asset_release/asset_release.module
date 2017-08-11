@@ -6,12 +6,23 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Adds the solution releases overview page as link template so the OG context
+ * can be resolved automatically.
+ */
+function asset_release_entity_type_alter(array &$entity_types) {
+  $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -38,6 +49,8 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);
+    // Avoid triggering notification e-mails during this programmatic update.
+    $parent->skip_notification = TRUE;
     $parent->save();
   }
 }
@@ -56,8 +69,10 @@ function asset_release_rdf_entity_update(EntityInterface $entity) {
     if ($release->get('field_isr_owner')->getValue() !== $entity->get('field_is_owner')->getValue()) {
       // Release owners are in sync with solution owners.
       $release
-        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue())
-        ->save();
+        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue());
+      // Do not send emails for this change.
+      $release->skip_notification = TRUE;
+      $release->save();unset($release->skip_notification);
     }
   }
 }
@@ -73,27 +88,41 @@ function asset_release_preprocess_rdf_entity(&$variables) {
   }
   $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
 
-  // Make some alterations for the Release download page.
-  // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
-  if ($variables['view_mode'] === 'compact') {
-    // Provide a flag that indicates if this is displayed at the top of the
-    // timeline.
-    $variables['is_top_of_timeline'] = !empty($rdf_entity->top_of_timeline);
-    return;
-  }
+  /** @var \Drupal\rdf_entity\Entity\Rdf $parent_solution */
+  $parent_solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf_entity);
 
+  // Mark the release as latest.
   $is_latest_release = FALSE;
-  $field_solution = $rdf_entity->get('field_isr_is_version_of');
-  if (!empty($field_solution) && ($solution = $field_solution->entity)) {
+  if ($variables['view_mode'] === 'compact') {
+    // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
+    $is_latest_release = !empty($rdf_entity->is_latest_release);
+  }
+  elseif ($parent_solution) {
     // @todo Find a better way of marking the latest release that doesn't
     //   involve performing a database query in the theme layer.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
-    $latest_release = solution_get_latest_release($solution);
+    $latest_release = solution_get_latest_release($parent_solution);
     if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
       $is_latest_release = TRUE;
     }
   }
+
   $variables['is_latest_release'] = $is_latest_release;
+
+  // Whenever a new release gets created, the parent solution gets updated.
+  // Invalidate the rendered template cache of the latest release in that case,
+  // so the latest release flag gets updated.
+  if ($parent_solution && $is_latest_release) {
+    $cache_tags = isset($variables['#cache']['tags']) ? $variables['#cache']['tags'] : [];
+    $cache_tags = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+
+    // Add the group content tag belonging to the parent too. We need to
+    // invalidate the cache also when a release is first saved as draft and then
+    // published. In that case the solution won't be updated, so we need to
+    // manually take care of this.
+    $group_tag = Cache::buildTags('og-group-content', [$parent_solution->getEntityTypeId() . ':' . $parent_solution->id()]);
+    $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
+  }
 }
 
 /**
@@ -123,6 +152,12 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
     case 'view':
       $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
 
+      // If for any reason access is requested to an entity without a parent,
+      // deny that access.
+      if (empty($parent)) {
+        return AccessResult::forbidden();
+      }
+
       /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
       $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
       if (!$access_handler->access($parent, 'view', $account)) {
@@ -142,7 +177,7 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
       break;
 
     case 'edit':
-      $allowed_transitions = $entity->field_isr_state->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
 
@@ -161,7 +196,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   $state = $entity->field_isr_state->value;
-  if (in_array($state, ['draft', 'in_assessment'])) {
+  if (in_array($state, ['draft', 'needs_update'])) {
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
   }
   elseif (in_array($state, ['validated'])) {
@@ -195,4 +230,17 @@ function asset_release_entity_update(EntityInterface $entity) {
   if ($entity->field_isr_state->value === 'validated') {
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
+}
+
+/**
+ * Prepares variables for the 'asset_release_releases_download' template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - releases: a list of releases and distributions to be rendered.
+ */
+function template_preprocess_asset_release_releases_download(array &$variables) {
+  $releases = $variables['releases'];
+
+  $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity')->viewMultiple($releases, 'compact');
 }

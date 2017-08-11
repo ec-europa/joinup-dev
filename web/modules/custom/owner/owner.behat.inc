@@ -9,8 +9,8 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\MaterialDesignTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
@@ -22,8 +22,8 @@ use Drupal\taxonomy\TermInterface;
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use MaterialDesignTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
+  use UserTrait;
   use UtilityTrait;
 
   /**
@@ -37,18 +37,20 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Creates one or many owners with data provided in a table.
    *
    * Table format:
-   * | type                        | name        | id                      |
-   * | Company,Industry consortium | Acme Inc.   | http://example.com/path |
-   * | Local authority             | Gotham City |                         |
-   * | Private Individual(s)       | Jane Roe    |                         |
+   * @codingStandardsIgnoreStart
+   * | type                        | name        | id                      | state        |
+   * | Company,Industry consortium | Acme Inc.   | http://example.com/path | validated    |
+   * | Local authority             | Gotham City |                         | needs_update |
+   * | Private Individual(s)       | Jane Roe    |                         |              |
+   * @codingStandardsIgnoreEnd
    *
-   * @param TableNode $owners_table
+   * @param \Behat\Gherkin\Node\TableNode $owners_table
    *   The owners table.
    *
    * @throws \Exception;
-   *   If a wrong type has been passed.
+   *   If a wrong type has been passed or if the author cannot be loaded.
    *
-   * @Given (the following )owner/owners:
+   * @Given (the following )owner(s):
    */
   public function givenOwner(TableNode $owners_table) {
     foreach ($owners_table->getHash() as $row) {
@@ -66,15 +68,20 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       }, Term::loadMultiple($tids));
 
       if ($not_found = array_diff($types, $found)) {
-        throw new \Exception("Non-existent owner types: " . implode(', ', $not_found));
+        throw new \Exception('Non-existent owner types: ' . implode(', ', $not_found));
       }
 
-      $owner = Rdf::create([
+      $values = [
         'rid' => 'owner',
-        'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
         'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
-      ]);
+      ];
+
+      if (!empty($row['author'])) {
+        $values['uid'] = $this->getUserByName($row['author'])->id();
+      }
+
+      $owner = Rdf::create($values);
       $owner->save();
 
       $this->owners[$owner->id()] = $owner;
@@ -116,6 +123,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   public function cleanOwners() {
     // Remove any owners that were created.
     foreach ($this->owners as $owner) {
+      $owner->skip_notification = TRUE;
       $owner->delete();
     }
   }
@@ -124,7 +132,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * Sets type(s) of the owner field.
    *
    * @param string $options
-   *    A comma delimited list of options to be checked.
+   *   A comma delimited list of options to be checked.
    *
    * @throws \Exception
    *   Thrown when the owner field appears empty in the page.
@@ -167,7 +175,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    */
   public function visitOwner($owner) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
-    $owner = $this->getRdfEntityByLabel($owner);
+    $owner = $this->getRdfEntityByLabel($owner, 'owner');
     $this->visitPath($owner->url());
   }
 

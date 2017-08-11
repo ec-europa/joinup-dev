@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ad_format
     - rdf_entity.rdfentity.asset_distribution
+    - taxonomy.vocabulary.file_type
 id: rdf_entity.asset_distribution.field_ad_format
 field_name: field_ad_format
 entity_type: rdf_entity
@@ -15,6 +16,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:rdf_entity'
-  handler_settings: {  }
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      file_type: file_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

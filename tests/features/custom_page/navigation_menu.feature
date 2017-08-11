@@ -10,42 +10,46 @@ Feature: Navigation menu for custom pages
       | Rainbow tables   | logo.png | validated |
       | Cripple Mr Onion | logo.png | validated |
 
-    # Initially there are no items in the navigation menu, instead we see a help
-    # text inviting the user to add a page to the menu.
+    # By default, a link to the collection canonical page and a link to the
+    # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
     And I go to the homepage of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
-    And I should see the text "There are no pages yet. Why don't you start by creating an About page?"
-    And I should see the link "Add a new page"
-    # Check that the 'Edit menu' local action is not present.
-    But I should not see the contextual link "Edit menu" in the "Left sidebar" region
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
+    And I should see the following collection menu items in the specified order:
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
+    # Check that the 'Edit menu' local action is present.
+    And I should see the contextual link "Edit menu" in the "Left sidebar" region
     # The 'Add link' local action that is present in the default implementation
     # of OG Menu should not be visible. We are managing the menu links behind
     # the scenes. The end user should not be able to interact with these.
-    And I should not see the contextual link "Add link" in the "Left sidebar" region
+    But I should not see the contextual link "Add link" in the "Left sidebar" region
 
     # When we create a custom page it should automatically show up in the menu.
-    When I click "Add a new page"
+    When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About us              |
+      | Title | About us |
     And I enter "A short introduction." in the "Body" wysiwyg editor
     And I press "Save"
     Then I should see the success message "Custom page About us has been created."
-    And the navigation menu of the "Rainbow tables" collection should have 1 visible item
-    And I should not see the text "There are no custom pages yet."
+    And the navigation menu of the "Rainbow tables" collection should have 4 visible items
 
     When I click the contextual link "Edit menu" in the "Left sidebar" region
-    Then the navigation menu of the "Rainbow tables" collection should have 1 item
-    But I should not see the text "There are no custom pages yet."
+    Then the navigation menu of the "Rainbow tables" collection should have 4 items
 
     # It should be possible to hide an item from the menu by disabling it.
     When I disable "About us" in the navigation menu of the "Rainbow tables" collection
-    Then the navigation menu of the "Rainbow tables" collection should have 0 visible items
+    Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
 
     # When all the pages are disabled in the navigation menu, a message should
     # be shown to the user.
-    When I go to the homepage of the "Rainbow tables" collection
+    When I disable "Overview" in the navigation menu of the "Rainbow tables" collection
+    And I disable "Members" in the navigation menu of the "Rainbow tables" collection
+    And I disable "About" in the navigation menu of the "Rainbow tables" collection
+    And I go to the homepage of the "Rainbow tables" collection
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
@@ -147,3 +151,73 @@ Feature: Navigation menu for custom pages
     When I click the contextual links button in the "Navigation menu block"
     Then the "Edit menu" link in the "Navigation menu block" should not be visible
     And the "Add new page" link in the "Navigation menu block" should not be visible
+
+  Scenario: The menu sub pages should be shown in a separate block.
+    Given the following collection:
+      | title  | Hidden Ship |
+      | logo   | logo.png    |
+      | banner | banner.jpg  |
+      | state  | validated   |
+    And custom_page content:
+      | title                       | body      | collection  | status      |
+      | The Burning Angel           | Test body | Hidden Ship | published   |
+      | Snake of Pleasure           | Test body | Hidden Ship | published   |
+      | The Slaves of the Shores    | Test body | Hidden Ship | published   |
+      | The Slaves of the Sea       | Test body | Hidden Ship | published   |
+      | The Slaves of the Mountains | Test body | Hidden Ship | published   |
+      | The Slaves of the Air       | Test body | Hidden Ship | unpublished |
+    # The custom page menu items were created automatically in the above step.
+    And the following custom page menu structure:
+      | title                       | parent            | weight |
+      | Snake of Pleasure           | The Burning Angel | 2      |
+      | The Slaves of the Shores    | The Burning Angel | 1      |
+      | The Slaves of the Sea       | The Burning Angel | 4      |
+      | The Slaves of the Mountains | The Burning Angel | 3      |
+      | The Slaves of the Air       | The Burning Angel | 5      |
+    And I go to the "Hidden Ship" collection
+    When I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the link "The Burning Angel" in the "Navigation menu block" region
+    But I should not see the link "Snake of Pleasure" in the "Navigation menu block" region
+    And I should not see the link "The Slaves of the Shores" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores    |
+      | Snake of Pleasure           |
+      | The Slaves of the Mountains |
+      | The Slaves of the Sea       |
+
+    # Disabled links should not be shown in the sub pages menu.
+    When I am logged in as a facilitator of the "Hidden Ship" collection
+    And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
+      | The Slaves of the Sea    |
+      # The Slaves of the Air is unpublished and the facilitator can see it.
+      | The Slaves of the Air    |
+    But I should not see the "The Slaves of the Mountains" tile
+
+    When I am not logged in
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores    |
+      | Snake of Pleasure           |
+      | The Slaves of the Sea       |
+
+    # Publish an entity will result in showing it to the menu if it is meant to.
+    When I am logged in as a moderator
+    And I go to the "The Slaves of the Air" custom page
+    And I click "Edit" in the "Entity actions" region
+    And I press "Save and publish"
+    Then I should see the heading "The Slaves of the Air"
+
+    When I am not logged in
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
+      | The Slaves of the Sea    |
+      | The Slaves of the Air    |

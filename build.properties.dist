@@ -12,7 +12,7 @@ website.site.name = MyDrupalProject
 
 # Database settings.
 drupal.db.type = mysql
-drupal.db.name = myproject
+drupal.db.name = ${project.name}
 drupal.db.user = root
 drupal.db.password =
 drupal.db.host = 127.0.0.1
@@ -25,7 +25,8 @@ drupal.admin.password = admin
 drupal.admin.email = admin@example.com
 
 # Comma-separated list of demo users to create. The username and password will
-# be taken from the role.
+# be taken from the role. A normal authenticated user with username and password
+# 'user' will also be created.
 drupal.demo.users = administrator
 
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
@@ -50,11 +51,16 @@ website.settings.dir = ${website.sites.dir}/default
 website.settings.php = ${website.settings.dir}/settings.php
 website.settings.local.php.example = ${website.sites.dir}/example.settings.local.php
 website.settings.local.php = ${website.settings.dir}/settings.local.php
+website.services.yml = ${website.settings.dir}/services.yml
+website.services.yml.default = ${website.settings.dir}/default.services.yml
 website.files.dir = ${website.settings.dir}/files
 
 website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
+
+# Set the transaction type to READ-COMMITTED.
+website.transactions = $databases['default']['default']['init_commands'] = ['isolation' => "SET SESSION tx_isolation='READ-COMMITTED'"];
 
 
 # Behat configuration
@@ -173,7 +179,12 @@ phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.t
 # -------------------
 
 # Development modules to enable.
-drupal.modules.dev = config_update field_ui menu_ui views_ui
+drupal.modules.dev = config_update devel field_ui menu_ui views_ui
 
 # Verbosity of Drush commands. Set to 'yes' for verbose output.
 drush.verbose = no
+
+# Redirect outgoing e-mail to disk. This prevents e-mail from being
+# accidentally sent out on development machines. The mails can be found in the
+# folder temporary://devel-mails. This requires the devel module to be enabled.
+drupal.redirect.email = yes

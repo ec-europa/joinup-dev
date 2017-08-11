@@ -13,8 +13,6 @@ use Drupal\Core\Entity\EntityTypeManager;
  *
  * This overview replaces the system's content overview so that we can
  * show the entities to user with no access to the admin area.
- *
- * @package Drupal\joinup_licence\Controller
  */
 class LicenceOverviewController extends ControllerBase {
 
@@ -73,12 +71,12 @@ class LicenceOverviewController extends ControllerBase {
       $rows[] = $this->buildRow($licence);
     }
 
-    $build['table'] = array(
+    $build['table'] = [
       '#type' => 'table',
       '#header' => $this->buildHeader(),
-      '#rows' => array(),
+      '#rows' => [],
       '#empty' => $this->t('There are no licences yet.'),
-    );
+    ];
     foreach ($licences as $licence) {
       if ($row = $this->buildRow($licence)) {
         $build['table']['#rows'][$licence->id()] = $row;
@@ -92,18 +90,18 @@ class LicenceOverviewController extends ControllerBase {
    * Building the header and content lines for the Rdf list.
    */
   public function buildHeader() {
-    $header = array(
-      'id' => array(
+    $header = [
+      'id' => [
         'data' => $this->t('URI'),
         'field' => 'id',
         'specifier' => 'id',
-      ),
-      'rid' => array(
+      ],
+      'rid' => [
         'data' => $this->t('Bundle'),
         'field' => 'rid',
         'specifier' => 'rid',
-      ),
-    );
+      ],
+    ];
     return $header;
   }
 

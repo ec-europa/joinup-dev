@@ -5,15 +5,23 @@ dependencies:
     - field.storage.node.body
     - node.type.document
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
 id: node.document.body
 field_name: body
 entity_type: node
 bundle: document
 label: Description
 description: ''
-required: false
-translatable: true
+required: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Contact Form module.
+ */
+
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\contact_form\ContactFormEvents;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * This changes the contact form which is provided by the
+ * 'contact_form_submission' message template:
+ *  - Prefill the user's name and e-mail address if the user is logged in.
+ *  - Only show the 'Page URL' field when the 'bug' or 'report' category is
+ *    chosen.
+ *  - Change the text of the submit button to "Submit".
+ *  - Add a submit handler that sends notifications to moderators and shows a
+ *    success message informing the user that their message has been
+ *    successfully sent.
+ */
+function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Fill in the credentials if the user is logged in.
+  $user = \Drupal::currentUser();
+  if ($user->isAuthenticated()) {
+    $user = User::load($user->id());
+    $form['field_contact_first_name']['widget'][0]['value']['#default_value'] = $user->get('field_user_first_name')->value;
+    $form['field_contact_last_name']['widget'][0]['value']['#default_value'] = $user->get('field_user_family_name')->value;
+    $form['field_contact_email']['widget'][0]['value']['#default_value'] = $user->getEmail();
+  }
+
+  // Only show the 'Page URL' field when the 'bug' or 'report' category is
+  // chosen.
+  $form['field_contact_url']['#states'] = [
+    'visible' => [
+      [
+        [':input[name="field_contact_category"]' => ['value' => 'bug']],
+        [':input[name="field_contact_category"]' => ['value' => 'report']],
+      ],
+    ],
+  ];
+
+  // If honeypot is enabled, add protection to the form.
+  if (function_exists('honeypot_add_form_protection')) {
+    honeypot_add_form_protection(
+      $form,
+      $form_state,
+      ['honeypot', 'time_restriction']
+    );
+  }
+
+  // Change the text of the submit button to "Submit".
+  $form['actions']['submit']['#value'] = t('Submit');
+
+  // Add a submit handler that sends a notification to moderators and shows a
+  // success message informing the user that their message has been successfully
+  // sent.
+  $form['actions']['submit']['#submit'][] = 'contact_form_form_message_contact_form_submission_submit';
+}
+
+/**
+ * Form submission handler for the contact form.
+ */
+function contact_form_form_message_contact_form_submission_submit(&$form, FormStateInterface $form_state) {
+  $event = new NotificationEvent('contact', $form_state->getFormObject()->getEntity());
+
+  $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+  $event_dispatcher->dispatch(ContactFormEvents::CONTACT_FORM_EVENT, $event);
+  drupal_set_message(t('Your message has been submitted. Thanks for your feedback.'));
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function contact_form_token_info() {
+  $info['tokens']['site']['contact-form'] = [
+    'name' => t('The contact form of the site'),
+    'description' => t('The absolute url of the contact form of the site.'),
+  ];
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function contact_form_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type === 'site' && !empty($tokens['contact-form'])) {
+    $replacements[$tokens['contact-form']] = \Drupal::urlGenerator()->generateFromRoute('contact_form.contact_page', [], ['absolute' => TRUE]);
+  }
+  return $replacements;
+}

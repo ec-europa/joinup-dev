@@ -6,11 +6,11 @@ Feature: User authentication
   Scenario: Anonymous user can see the user login page
     Given I am not logged in
     When I visit "user"
-    Then I should see the text "Log in"
+    Then I should see the text "Sign in"
     And I should see the text "Reset your password"
     And I should see the text "Username"
     And I should see the text "Password"
-    But I should not see the text "Log out"
+    But I should not see the text "Sign out"
     And I should not see the text "My account"
 
   Scenario Outline: Anonymous user can access public pages
@@ -18,37 +18,46 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path          |
-      | collections   |
-      | user/login    |
-      | user/password |
-      | user/register |
+      | path                |
+      | collections         |
+      | user/login          |
+      | user/password       |
+      | user/register       |
+      | joinup/legal-notice |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
     When I go to "<path>"
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | propose/collection        |
-      | propose/solution          |
-      | dashboard                 |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
-      | licence                   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | admin/structure/views              |
+      | propose/collection                 |
+      | propose/solution                   |
+      | dashboard                          |
+      | node                               |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
+      | licence                            |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -56,12 +65,12 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path               |
-      | propose/collection |
-      | propose/solution   |
-      | collections        |
-      | dashboard          |
-      | user               |
+      | path                |
+      | propose/collection  |
+      | collections         |
+      | dashboard           |
+      | user                |
+      | joinup/legal-notice |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -70,22 +79,32 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
-      | licence                   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | admin/structure/views              |
+      | propose/solution                   |
+      | licence                            |
+      | licence/add                        |
+      | node                               |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -93,11 +112,13 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path              |
-      | admin/people      |
-      | admin/content/rdf |
-      | dashboard         |
-      | licence           |
+      | path               |
+      | admin/people       |
+      | admin/content/rdf  |
+      | dashboard          |
+      | licence            |
+      | licence/add        |
+      | propose/collection |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages
@@ -106,19 +127,28 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
-      | rdf_entity/add/solution   |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/structure                    |
+      | admin/structure/views              |
+      | propose/solution                   |
+      | node                               |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |
 
   @api
   Scenario Outline: Administrator can access pages they are authorized to
@@ -137,17 +167,25 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                      |
-      | admin                     |
-      | admin/config              |
-      | admin/content             |
-      | admin/content/rdf         |
-      | admin/people              |
-      | admin/structure           |
-      | node/add                  |
-      | node/add/custom_page      |
-      | node/add/document         |
-      | node/add/event            |
-      | node/add/news             |
-      | rdf_entity/add            |
-      | rdf_entity/add/collection |
+      | path                               |
+      | admin                              |
+      | admin/config                       |
+      | admin/content                      |
+      | admin/content/rdf                  |
+      | admin/people                       |
+      | admin/structure                    |
+      | node                               |
+      | node/add                           |
+      | node/add/custom_page               |
+      | node/add/discussion                |
+      | node/add/document                  |
+      | node/add/event                     |
+      | node/add/news                      |
+      | rdf_entity/add                     |
+      | rdf_entity/add/asset_distribution  |
+      | rdf_entity/add/asset_release       |
+      | rdf_entity/add/collection          |
+      | rdf_entity/add/contact_information |
+      | rdf_entity/add/licence             |
+      | rdf_entity/add/owner               |
+      | rdf_entity/add/solution            |

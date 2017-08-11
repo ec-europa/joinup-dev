@@ -8,21 +8,27 @@ use Drupal\comment\CommentInterface;
 use Drupal\comment\CommentManagerInterface;
 use Drupal\comment\Plugin\Field\FieldFormatter\CommentDefaultFormatter;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\GroupTypeManager;
+use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Overrides the default comment formatter.
  */
 class OgCommentDefaultFormatter extends CommentDefaultFormatter {
+
+  /**
+   * A list of og group entities.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface[]
+   */
+  protected $groups;
 
   /**
    * Active database connection.
@@ -32,18 +38,18 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
   protected $database;
 
   /**
-   * The OG access service.
+   * The og group type manager.
    *
-   * @var \Drupal\og\OgAccessInterface
+   * @var \Drupal\og\GroupTypeManager
    */
-  protected $ogAccess;
+  protected $groupTypeManager;
 
   /**
-   * Helper for dealing with group audience fields.
+   * The og membership manager.
    *
-   * @var \Drupal\og\OgGroupAudienceHelperInterface
+   * @var \Drupal\og\MembershipManagerInterface
    */
-  protected $ogGroupAudienceHelper;
+  protected $membershipManager;
 
   /**
    * {@inheritdoc}
@@ -62,43 +68,51 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $container->get('entity.form_builder'),
       $container->get('current_route_match'),
       $container->get('database'),
-      $container->get('og.group_audience_helper'),
-      $container->get('og.access')
+      $container->get('og.group_type_manager'),
+      $container->get('og.membership_manager')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, OgGroupAudienceHelperInterface $og_group_audience_helper, OgAccessInterface $og_access) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, GroupTypeManager $group_type_manager, MembershipManagerInterface $membership_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $entity_manager, $entity_form_builder, $route_match);
     $this->database = $database;
-    $this->ogAccess = $og_access;
-    $this->ogGroupAudienceHelper = $og_group_audience_helper;
+    $this->groupTypeManager = $group_type_manager;
+    $this->membershipManager = $membership_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
+    /** @var \Drupal\comment\CommentFieldItemList $items */
+    $entity = $items->getEntity();
+
+    // Retrieve the parent entities.
+    if ($this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
+      $this->groups = [$entity];
+    }
+    if ($this->groupTypeManager->isGroupContent($entity->getEntityTypeId(), $entity->bundle())) {
+      $this->groups = $this->membershipManager->getGroups($entity);
+    }
+    // If $groups is empty, fallback to the global rendering.
+    if (empty($this->groups)) {
+      return parent::viewElements($items, $langcode);
+    }
+
     $elements = [];
     $output = [];
 
     $field_name = $this->fieldDefinition->getName();
-    $entity = $items->getEntity();
-
     $status = $items->status;
-
-    // If not Og content, fall back to normal comment rendering.
-    if (!$this->ogGroupAudienceHelper->hasGroupAudienceField($entity->getEntityTypeId(), $entity->bundle())) {
-      return parent::viewElements($items, $langcode);
-    }
 
     if ($status != CommentItemInterface::HIDDEN && empty($entity->in_preview) &&
       // Comments are added to the search results and search index by
       // comment_node_update_index() instead of by this formatter, so don't
       // return anything if the view mode is search_index or search_result.
-      !in_array($this->viewMode, array('search_result', 'search_index'))) {
+      !in_array($this->viewMode, ['search_result', 'search_index'])) {
       $comment_settings = $this->getFieldSettings();
 
       // Only attempt to render comments if the entity has visible comments.
@@ -106,12 +120,10 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       // $entity->get($field_name)->comment_count, but unpublished comments
       // should display if the user is an administrator.
       $elements['#cache']['contexts'][] = 'user.permissions';
-      // @todo Fix in ISAICP-2898.
-      $elements['#cache']['max-age'] = 0;
-      if ($this->hasPermission('access comments', $items) || $this->hasPermission('administer comments', $items)) {
+      if ($items->access('access comments') || $items->access('administer comments')) {
         $output['comments'] = [];
 
-        if ($entity->get($field_name)->comment_count || $this->hasPermission('administer comments', $items)) {
+        if ($entity->get($field_name)->comment_count || $items->access('administer comments')) {
           $mode = $comment_settings['default_mode'];
           $comments_per_page = $comment_settings['per_page'];
           $comments = $this->loadThread($items, $entity, $field_name, $mode, $comments_per_page, $this->getSetting('pager_id'));
@@ -136,7 +148,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       // display below the entity. Do not show the form for the print view mode.
       if ($status == CommentItemInterface::OPEN && $comment_settings['form_location'] == CommentItemInterface::FORM_BELOW && $this->viewMode != 'print') {
         // Only show the add comment form if the user has permission.
-        if ($this->hasPermission('post comments', $items)) {
+        if ($items->access('post comments')) {
           $output['comment_form'] = [
             '#lazy_builder' => ['comment.lazy_builders:renderForm', [
               $entity->getEntityTypeId(),
@@ -150,53 +162,15 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
         }
       }
 
-      $elements[] = $output + array(
+      $elements[] = $output + [
         '#comment_type' => $this->getFieldSetting('comment_type'),
         '#comment_display_mode' => $this->getFieldSetting('default_mode'),
-        'comments' => array(),
-        'comment_form' => array(),
-      );
+        'comments' => [],
+        'comment_form' => [],
+      ];
     }
 
     return $elements;
-  }
-
-  /**
-   * Check if user has either global or group permission.
-   *
-   * @param string $permission
-   *   The permission string to check.
-   * @param \Drupal\Core\Field\FieldItemListInterface $items
-   *   The field values to be rendered.
-   *
-   * @return bool|\Drupal\Core\Access\AccessResult
-   *   True if the user has access to the items, false otherwise.
-   */
-  protected function hasPermission($permission, FieldItemListInterface $items) {
-    $access = $this->currentUser->hasPermission($permission);
-    // User has side-wide permission.
-    if ($access) {
-      return TRUE;
-    }
-    $host_entity = $entity = $items->getEntity();
-
-    // Get group.
-    $group_id = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->target_id;
-    if (!$group_id) {
-      return $access;
-    }
-    /** @var \Drupal\field\Entity\FieldConfig $field_config */
-    $field_config = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->getFieldDefinition();
-    /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
-    $storage_definition = $field_config->getFieldStorageDefinition();
-    $entity_type = $storage_definition->getSetting('target_type');
-
-    $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-    $group = $entity_storage->load($group_id);
-
-    $access = $this->ogAccess->userAccess($group, $permission, $this->currentUser);
-    return ($access instanceof AccessResultAllowed);
-
   }
 
   /**
@@ -263,7 +237,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $query->setCountQuery($count_query);
     }
 
-    if (!$this->hasPermission('administer comments', $items)) {
+    if (!$items->access('administer comments')) {
       $query->condition('c.status', CommentInterface::PUBLISHED);
       if ($comments_per_page) {
         $count_query->condition('c.status', CommentInterface::PUBLISHED);
@@ -282,7 +256,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
 
     $cids = $query->execute()->fetchCol();
 
-    $comments = array();
+    $comments = [];
     if ($cids) {
       $comments = $this->storage->loadMultiple($cids);
     }

@@ -6,11 +6,6 @@
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
         },
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
-            {
-                "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
             {
                 "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4e56d06c-c8c3-40fd-b2a0-773301ebe9b8?_format=hal_json"
@@ -29,7 +24,7 @@
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
             {
                 "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5Cwww.w3.org%5Cns%5Cperson%23?_format=hal_json",
-                "lang": "und"
+                "lang": "en"
             }
         ]
     },
@@ -46,7 +41,7 @@
     "label": [
         {
             "value": "Gzip tarball",
-            "lang": "und"
+            "lang": "en"
         }
     ],
     "uuid": [
@@ -74,28 +69,6 @@
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_file": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "0313ec7c-90aa-4bd8-b20f-fb8c675ff263"
-                    }
-                ],
-                "uri": [
-                    {
-                        "value": "http:\/\/default\/sites\/default\/files\/2016-09\/drupal-8.1.9.tar_4.gz"
-                    }
-                ]
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
             {
                 "_links": {
@@ -145,15 +118,10 @@
                         "value": "http:\/\/www.w3.org\/ns\/person#"
                     }
                 ],
-                "lang": "und"
+                "lang": "en"
             }
         ]
     },
-    "field_ad_file_size": [
-        {
-            "value": "12648210"
-        }
-    ],
     "field_ad_gitb_compliant": [
         {
             "value": "0"

@@ -4,7 +4,7 @@
 
 // Component
 // --------------------------------------------------
-.action-link
+.action-link, .action-link__wrapper a
   font-size: $font-size-xsmall
   font-weight: $font-weight-medium
   margin-right: 10px
@@ -22,10 +22,14 @@
   vertical-align: middle
 
 .action-link__icon
-  +icon-size(25px)
+  margin-right: 6px
+  +icon-size(16px)
 
 // Modifiers
 // --------------------------------------------------
+.action-link__wrapper--normal-case a
+  font-weight: $font-weight-medium
+  text-transform: none
 
 // Dependiencies
 // --------------------------------------------------

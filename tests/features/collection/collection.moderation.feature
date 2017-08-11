@@ -1,4 +1,4 @@
-@api
+@api @email
 Feature: Collection moderation
   In order to manage collections programmatically
   As a user of the website
@@ -7,14 +7,12 @@ Feature: Collection moderation
   # Access checks are not being made here. They are run in the collection add feature.
   Scenario: 'Draft' and 'Propose' states are available but moderators should also see 'Validated' state.
     When I am logged in as an "authenticated user"
-    And I go to the homepage
-    And I click "Propose collection"
+    And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request archival, Request deletion, Archive"
 
     When I am logged in as a user with the "moderator" role
-    And I go to the homepage
-    And I click "Propose collection"
+    And I go to the propose collection form
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
@@ -26,7 +24,7 @@ Feature: Collection moderation
       | name  | Francis             |
       | email | Francis@example.com |
     And users:
-      | name            | roles     |
+      | Username        | Roles     |
       # Authenticated user.
       | Velma Smith     |           |
       # Moderator.
@@ -130,6 +128,7 @@ Feature: Collection moderation
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
+  @terms
   Scenario: Published collections should be shown in the collections overview page.
     # Regression test for ticket ISAICP-2889.
     Given the following owner:
@@ -145,7 +144,7 @@ Feature: Collection moderation
       | banner              | banner.jpg         |
       | owner               | Carpet Sandation   |
       | contact information | Partyanimal        |
-      | policy domain       | eProcurement       |
+      | policy domain       | Supplier exchange  |
       | state               | proposed           |
     When I am on the homepage
     And I click "Collections"
@@ -153,9 +152,10 @@ Feature: Collection moderation
     When I am logged in as a moderator
     And I am on the homepage
     And I click "Collections"
-    # Tile view modes in the "Collections" page are not using heading markup
-    # for titles.
-    Then I should see the text "Some berry pie"
+    Then I should not see the text "Some berry pie"
+
+    When I go to my dashboard
+    Then I should see the "Some berry pie" tile
     When I go to the homepage of the "Some berry pie" collection
     And I click "Edit"
     And I fill in "Title" with "No berry pie"
@@ -166,3 +166,215 @@ Feature: Collection moderation
     And I click "Collections"
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"
+
+  @terms @javascript
+  Scenario: Moderate an open collection
+    # Regression test for a bug that caused the slider that controls the
+    # eLibrary creation setting to revert to default state when the form is
+    # resubmitted, as happens during moderation. Ref. ISAICP-3200.
+    Given I am logged in as a user with the "authenticated" role
+    # Propose a collection, filling in the required fields.
+    When I go to the propose collection form
+    And I fill in "Title" with "Spectres in fog"
+    And I enter "The samurai are attacking the railroads" in the "Description" wysiwyg editor
+    And I select "Employment and Support Allowance" from "Policy domain"
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Katsumoto"
+    And I check the box "Academia/Scientific organisation"
+    And I click the "Additional fields" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Any registered user can create new content." should be selected
+
+    # Regression test for a bug that caused the eLibrary creation setting to be
+    # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+    Then the option "Any registered user can create new content." should be selected
+
+    # Submit the form and approve it as a moderator. This should not cause the
+    # eLibrary creation option to change.
+    When I press "Propose"
+    Then I should see the capitalised heading "Spectres in fog"
+    When I am logged in as a user with the "moderator" role
+    And I go to the homepage of the "Spectres in fog" collection
+    And I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Any registered user can create new content." should be selected
+    # Also when saving and reopening the edit form the eLibrary creation option
+    # should remain unchanged.
+    When I press "Publish"
+    And I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Any registered user can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Spectres in fog" collection
+    Then I delete the "Katsumoto" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #1
+    # Regression test for a bug that happens when a change on the eLibrary
+    # creation setting happens after an ajax callback.
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I fill in "Title" with "Domestic bovins"
+    And I enter "Yaks and goats are friendly pets." in the "Description" wysiwyg editor
+    And I select "Statistics and Analysis" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Garnett Clifton"
+    And I check the box "Supra-national authority"
+    And I click the "Additional fields" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Any registered user can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the capitalised heading "Domestic bovins"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Any registered user can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Domestic bovins" collection
+    Then I delete the "Garnett Clifton" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #2
+    # Regression test for a bug that causes the wrong eLibrary creation value
+    # to be saved after the "Closed collection" checkbox is checked.
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I fill in "Title" with "Theft of Body"
+    And I enter "Kleptomaniac to the bone." in the "Description" wysiwyg editor
+    And I select "Supplier exchange" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Coretta Simonson"
+    And I check the box "Private Individual(s)"
+    And I click the "Additional fields" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the capitalised heading "Theft of Body"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Theft of Body" collection
+    Then I delete the "Coretta Simonson" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #3
+    # Regression test for a bug that happens when an "Add more" button on a
+    # multi-value widget is clicked and then the "Closed collection" checkbox
+    # is checked.
+    # @see collection_form_rdf_entity_form_alter()
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I fill in "Title" with "Silken Emperor"
+    And I enter "So smooth." in the "Description" wysiwyg editor
+    And I select "Data gathering, data processing" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Terrance Nash"
+    And I check the box "Regional authority"
+    And I click the "Additional fields" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the capitalised heading "Silken Emperor"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "Silken Emperor" collection
+    Then I delete the "Terrance Nash" owner
+
+  @terms @javascript
+  Scenario: Changing eLibrary creation value - regression #4
+    # Regression test for a bug that happens when the "Closed collection" checkbox
+    # is checked and then an "Add more" button on a multi-value widget is clicked.
+    # @see collection_form_rdf_entity_form_alter()
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I fill in "Title" with "The blue ships"
+    And I enter "Invisible ships on deep sea." in the "Description" wysiwyg editor
+    And I select "Employment and Support Allowance" from "Policy domain"
+    # An ajax callback is executed now.
+    And I press "Add new" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Name" with "Mable Pelley"
+    And I check the box "National authority"
+    And I click the "Additional fields" tab
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I attach the file "banner.jpg" to "Banner"
+    And I wait for AJAX to finish
+
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+
+    # Configure eLibrary creation for all registered users.
+    When I move the "eLibrary creation" slider to the right
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    When I press "Add another item" at the "Spatial coverage" field
+    And I wait for AJAX to finish
+
+    # Save the collection.
+    When I press "Propose"
+    Then I should see the capitalised heading "The blue ships"
+    # Edit again.
+    When I click "Edit" in the "Entity actions" region
+    And I click the "Additional fields" tab
+    Then the option "Only collection facilitators can create new content." should be selected
+
+    # Clean up the entities that were created.
+    Then I delete the "The blue ships" collection
+    Then I delete the "Mable Pelley" owner

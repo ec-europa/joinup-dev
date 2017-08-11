@@ -7,9 +7,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://xmlns.com/foaf/spec/#term_homepage'
-      title: ''
-      options: ''
+      uri:
+        predicate: 'http://xmlns.com/foaf/spec/#term_homepage'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ar_access_url
 field_name: field_ar_access_url
 entity_type: rdf_entity
@@ -18,7 +24,7 @@ settings: {  }
 module: link
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

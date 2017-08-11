@@ -1,0 +1,63 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+{#
+/**
+ * @file
+ * Themeing for group header.
+ *
+ * This template is used when viewing a registered user's page.
+ * Available variables:
+ * - member_for: A custom variable, which contains a 'member for' timespan.
+ */
+#}
+<div class="featured__outer-wrapper">
+  <div class="featured__overlay"></div>
+  <div class="featured__inner-wrapper">
+    {# @todo This is temporary, once all fields are available, it will be replaced. #}
+    <a href="{{ path('entity.user.canonical',{'user': user.id()}) }}">
+      <div class="featured__logo">{{ content.field_user_photo }}</div>
+      <div class="featured__text featured__text--double">
+        <h1><span>{{ full_name }}</span></h1>
+        {% if content.field_user_business_title|render %}
+          <div class="featured__text-small">{{ content.field_user_business_title }}</div>
+        {% endif %}
+      </div>
+    </a>
+      <div class="featured__stats">
+        <div class="stats__column">
+          <div class="stats__wrapper">
+            <span class="stats__text">{{ 'Member for'|t }}:</span>
+            <span class="stats__text bold">{{ member_for }}</span>
+          </div>
+          {% if content.field_user_organisation|render %}
+            <div class="stats__wrapper">
+              <span class="stats__text">{{ 'Organisation'|t }}:</span>
+              <span class="stats__text bold">{{ content.field_user_organisation }}</span>
+            </div>
+          {% endif %}
+          {% if content.field_user_professional_domain|render %}
+            <div class="stats__wrapper">
+              <span class="stats__text">{{ 'Domains'|t }}:</span>
+              <span class="stats__text bold">{{ content.field_user_professional_domain }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+  </div>
+</div>

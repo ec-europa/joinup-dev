@@ -1,0 +1,51 @@
+id: release
+label: 'Release'
+migration_tags:
+  - release
+source:
+  plugin: release
+  track_changes: true
+process:
+  id: uri
+  label: title
+  field_isr_creation_date: created_time
+  field_isr_distribution:
+    plugin: migration
+    source: distribution
+    migration: distribution
+    no_stub: true
+  field_isr_documentation: documentation
+  field_isr_is_version_of:
+    plugin: migration
+    source: solution
+    migration: solution
+    no_stub: true
+  field_keywords: keywords
+  field_isr_language: language
+  field_isr_modification_date: changed_time
+  field_isr_description/value:
+    plugin: file_inline
+    source: body
+  field_isr_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_isr_release_notes/value: version_notes
+  field_isr_release_notes/format:
+    plugin: default_value
+    default_value: content_editor
+  field_isr_release_number: version_number
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_isr_state: state
+  field_status: status
+  i18n: i18n
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: asset_release
+migration_dependencies:
+  required:
+    - solution
+    - file:documentation
+    - file:inline

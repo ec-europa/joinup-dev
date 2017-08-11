@@ -5,18 +5,23 @@ dependencies:
     - field.storage.rdf_entity.field_ad_access_url
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - link
+    - file_url
 id: rdf_entity.asset_distribution.field_ad_access_url
 field_name: field_ad_access_url
 entity_type: rdf_entity
 bundle: asset_distribution
 label: 'Access URL'
-description: "If the file(s) exist in an external server, you can provide the URL here directly.\r\nYou can alternatively host your distribution in Joinup by using the Distribution file field below."
+description: 'If the file(s) exist in an external server, you can provide the URL here directly. You can alternatively host your distribution in Joinup by using the Distribution file field above.'
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  link_type: 17
-  title: 0
-field_type: link
+  file_directory: 'distribution/access_url/[date:custom:Y]-[date:custom:m]'
+  file_extensions: '7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip'
+  max_filesize: ''
+  description_field: false
+  description_field_required: false
+  handler: 'file_url_default:file'
+  handler_settings: {  }
+field_type: file_url

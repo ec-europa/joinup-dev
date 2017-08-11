@@ -5,7 +5,7 @@ dependencies:
     - og_menu.ogmenu.navigation
   module:
     - collection
-    - facets
+    - og
   theme:
     - joinup_theme
 id: navigation
@@ -16,17 +16,19 @@ provider: null
 plugin: 'collection_menu_block:navigation'
 settings:
   id: 'collection_menu_block:navigation'
-  label: 'Collection menu'
+  label: 'Collection | Solution menu'
   provider: collection
   label_display: '0'
   level: 1
   depth: 1
   context_mapping:
-    og: '@collection.collection_route_context:og'
+    og: '@og.context:og'
 visibility:
-  other_facet:
-    id: other_facet
-    facets: ''
-    facet_value: ''
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
     negate: false
-    context_mapping: {  }
+    context_mapping:
+      og: '@og.context:og'

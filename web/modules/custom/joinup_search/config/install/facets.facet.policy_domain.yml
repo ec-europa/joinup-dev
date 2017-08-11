@@ -2,57 +2,68 @@ langcode: en
 status: true
 dependencies:
   config:
+    - search_api.index.published
     - views.view.search
   module:
-    - views
+    - search_api
 id: policy_domain
-name: 'Policy Domain'
+name: 'Policy domain'
 url_alias: policy_domain
 weight: 0
 min_count: 1
-show_only_one_result: false
-field_identifier: tid
-facet_source_id: 'views_page:search__page_1'
+show_only_one_result: true
+field_identifier: policy_domain
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: links
+  type: links_inline
   config:
-    show_numbers: false
-    soft_limit: 0
+    show_numbers: true
+    all_text: 'all policy domains'
+    prefix_text: about
+    suffix_text: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
-hard_limit: null
+hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -10
+      sort: -2
     settings:
       sort: DESC
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
+    weights:
+      build: -1
+    settings: {  }
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: 0
+    settings:
+      minimum_items: 1
+      maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -10
+      sort: -1
     settings:
       sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: 0
     settings:
       sort: ASC
-  translate_taxonomy:
-    processor_id: translate_taxonomy
-    weights:
-      build: 5
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -2
     settings: {  }
 empty_behavior:
   behavior: none

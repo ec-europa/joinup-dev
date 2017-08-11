@@ -85,7 +85,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * Get defined facet regions.
    *
    * @return array
-   *    List of facet regions.
+   *   List of facet regions.
    */
   protected function getRegions() {
     $storage = $this->fieldDefinition->getFieldStorageDefinition();
@@ -304,12 +304,12 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * Build draggable facet row.
    *
    * @param \Drupal\facets\Entity\Facet $facet
-   *    Facet.
+   *   Facet.
    * @param \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item
-   *    The search field item.
+   *   The search field item.
    *
    * @return array
-   *    Render array of the row.
+   *   Render array of the row.
    */
   protected function buildFacetRow(Facet $facet, SearchItem $item) {
     $value = $item->get('value')->getValue();
@@ -381,7 +381,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * Get a list of applicable facets.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
-   *    List of facets.
+   *   List of facets.
    */
   protected function getFacets() {
     $storage = $this->fieldDefinition->getFieldStorageDefinition();

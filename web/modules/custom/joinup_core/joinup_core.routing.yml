@@ -1,0 +1,49 @@
+entity.rdf_entity.member_overview:
+  path: 'rdf_entity/{rdf_entity}/members'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\GroupMembersController::membersList'
+    _title: 'Members'
+  requirements:
+    _permission: 'access user profiles'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+    _og_entity_type_id: rdf_entity
+entity.rdf_entity.about_page:
+  path: 'rdf_entity/{rdf_entity}/about'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\CoreController::aboutPage'
+    _title_callback: '\Drupal\joinup_core\Controller\CoreController::aboutPageTitle'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+    _custom_access: '\Drupal\joinup_core\Controller\CoreController::aboutPageAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+joinup_core.not_found:
+  path: '/not-found'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\NotFoundController::build404'
+    _title: 'Page not found'
+  requirements:
+    _access: 'TRUE'
+
+joinup_core.piwik_integration_settings:
+  path: '/admin/statistics/piwik-settings'
+  defaults:
+    _form: '\Drupal\joinup_core\Form\PiwikIntegrationSettingsForm'
+    _title: 'Piwik integration'
+  requirements:
+    _permission: 'administer piwik integration'
+  options:
+    _admin_route: TRUE
+
+joinup_core.file_field_info:
+  path: '/admin/reports/fields/file'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\FileFields::listing'
+    _title: 'File fields'
+  requirements:
+      _permission: 'administer content types'

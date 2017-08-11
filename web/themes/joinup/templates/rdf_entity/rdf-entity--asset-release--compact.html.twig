@@ -5,20 +5,19 @@
  */
 #}
 
-<div class="timeline__release {% if is_top_of_timeline %}is-latest {% endif %}mdl-grid">
+<div class="timeline__release mdl-grid{% if is_latest_release %} is-latest{% endif %}">
   <div class="timeline__release-progression mdl-cell mdl-cell--3-col">
     <div class="timeline__release-info">
       <div class="release__info-element bold">{{ content.field_isr_release_number }}</div>
-      {% if is_top_of_timeline %}
+      {% if is_latest_release %}
         <div class="release__info-element bold blue">Latest release</div>
       {% endif %}
-      <div class="release__info-element underline gray is-only-placeholder">dc9ee36</div>
     </div>
     <div class="timeline__release-bar"></div>
   </div>
   <div class="timeline__release-content mdl-cell mdl-cell--9-col">
     <div class="timeline__meta">
-      <h2 class="timeline__release-title">{{ full_label }}</h2>
+      <h2 class="timeline__release-title"><a class="bold" href="{{ url }}" rel="bookmark">{{ full_label }}</a></h2>
       <p class="timeline__release-abstract">{{ content.field_isr_release_notes }}</p>
     </div>
     <div class="timeline__listing">

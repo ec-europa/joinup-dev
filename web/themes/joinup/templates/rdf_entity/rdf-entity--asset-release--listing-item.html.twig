@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ */
+#}
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+  ]
+%}
+<div class="{{ classes|join(' ') }}">
+  <div class="listing__metadata">
+    <div class="listing__field">
+      <h2 class="listing__title"><a href="{{ url }}">{{ label }} {{ content.field_isr_release_number }}</a></h2>
+    </div>
+    <div class="listing__field">
+      <p class="listing__teaser">{{ content.field_isr_release_notes|render|striptags }}</p>
+      </div>
+      <div class="listing__field listing__stats mdl-card__actions">
+      </div>
+    </div>
+  </div>

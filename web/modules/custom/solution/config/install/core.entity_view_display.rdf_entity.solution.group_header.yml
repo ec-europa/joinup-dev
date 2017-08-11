@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_banner
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
+    - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
@@ -25,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -52,6 +54,16 @@ targetEntityType: rdf_entity
 bundle: solution
 mode: group_header
 content:
+  collections:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  download_total:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_is_banner:
     type: image_url_formatter
     weight: 0
@@ -66,6 +78,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
   field_is_logo:
     type: image
     weight: 1
@@ -83,6 +96,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   field_is_solution_category:
     weight: 3
     label: above
@@ -90,6 +104,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -106,12 +121,15 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
+    region: content
   licence:
-    weight: 3
+    weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
   releases_overview:
-    weight: 4
+    weight: 6
+    region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
@@ -119,6 +137,7 @@ hidden:
   field_is_affiliations_requests: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content: true
   field_is_creation_date: true
   field_is_description: true
   field_is_distribution: true
@@ -149,4 +168,8 @@ hidden:
   field_policy_domain: true
   field_spatial_coverage: true
   field_status: true
+  langcode: true
   og_group: true
+  rdf_entity_field_is_content_inline_facets: true
+  rdf_entity_field_is_content_top: true
+  related_solutions: true

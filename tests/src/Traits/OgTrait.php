@@ -7,12 +7,11 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Contains helper methods regarding the organic groups.
- *
- * @package src\Traits
  */
 trait OgTrait {
 
@@ -20,27 +19,42 @@ trait OgTrait {
    * Creates an Og membership to a group optionally assigning roles as well.
    *
    * @param \Drupal\Core\Session\AccountInterface $user
-   *    The user to be assigned as a group member.
+   *   The user to be assigned as a group member.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The organic group entity.
+   *   The organic group entity.
    * @param \Drupal\og\Entity\OgRole[] $roles
-   *    An array of OgRoles to be passed to the membership.
+   *   An array of OgRoles to be passed to the membership.
+   * @param string $state
+   *   Optional state to assign to the membership. Can be one of:
+   *   - OgMembershipInterface::STATE_ACTIVE
+   *   - OgMembershipInterface::STATE_PENDING
+   *   - OgMembershipInterface::STATE_BLOCKED.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = []) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], $state = NULL) {
     if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
       throw new \Exception("The {$group->label()} is not a group.");
     }
 
     // If a membership already exists, load it. Otherwise create a new one.
-    $membership = \Drupal::service('og.membership_manager')->getMembership($group, $user);
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $states = [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_BLOCKED,
+    ];
+    $membership = $membership_manager->getMembership($group, $user, $states);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setUser($user)
         ->setGroup($group);
+    }
+    if (!empty($state)) {
+      $membership->setState($state);
     }
 
     $membership->setRoles($roles);
@@ -54,12 +68,12 @@ trait OgTrait {
    * a name conversion method.
    *
    * @param array $roles
-   *    An array of roles to convert names.
+   *   An array of roles to convert names.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The group entity.
+   *   The group entity.
    *
    * @return array
-   *    An array with the converted names.
+   *   An array with the converted names.
    */
   protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
@@ -78,12 +92,12 @@ trait OgTrait {
    *
    * An ownership is defined as having a specific set of roles in that group.
    *
-   * @param AccountInterface $user
-   *    The user to be checked.
-   * @param RdfInterface $group
-   *    The group entity. In this project, only rdf entities are groups.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to be checked.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group entity. In this project, only rdf entities are groups.
    * @param array $roles
-   *    An array of roles to be checked. Roles must be passed as simple names
+   *   An array of roles to be checked. Roles must be passed as simple names
    *    and not as full IDs. Names will be converted accordingly to IDs.
    *
    * @throws \Exception
@@ -105,12 +119,12 @@ trait OgTrait {
    * Returns the OgRole objects identified by the given role names.
    *
    * @param array $roles
-   *    An array of role names for which to return the roles.
+   *   An array of role names for which to return the roles.
    * @param \Drupal\Core\Entity\EntityInterface $group
-   *    The group entity to which the roles belong.
+   *   The group entity to which the roles belong.
    *
    * @return \Drupal\og\Entity\OgRole[]
-   *    The OgRole objects.
+   *   The OgRole objects.
    */
   protected function getOgRoles(array $roles, EntityInterface $group) {
     $ids = $this->convertOgRoleNamesToIds($roles, $group);

@@ -1,11 +1,11 @@
 // Component
 // --------------------------------------------------
-.form
+// .form
 
 // Elements
 // --------------------------------------------------
 .form__actions
-  margin-top: 50px
+  margin-top: $form-large-margin
   margin-right: 10px
 
 .form__label
@@ -25,17 +25,73 @@
   .form__label
     margin-bottom: 0
 
-
 .form__field-container
   margin-bottom: 25px
-
-.form__description
-  margin-top: 10px
 
 .form__cell
   margin: 0
   +breakpoint(tablet)
     margin: 8px
+
+.form__actions_inner
+  display: inline-flex
+  flex-wrap: wrap
+  .button
+    @extend .button-inline
+
+.form-item-persistent-login
+  margin-bottom: 20px
+
+.form-select
+  background-color: #fff
+  border: 1px #a0a1a2 solid
+  font-size: 16px
+  height: 35px
+  max-width: 100%
+
+  &[multiple="multiple"]
+    height: auto
+    min-height: 200px
+    padding: 5px
+
+    option
+      padding: 2px 5px
+
+.form-type-date
+  display: inline-block
+
+  input[type="date"],
+  input[type="time"]
+    border: none
+    border-bottom: 1px #a0a1a2 solid
+    font: inherit
+    font-size: 16px
+
+  .form__label
+    margin-bottom: 0
+
+.form__content
+  @extend .white-box
+
+.form__description
+  font-size: $font-size-xsmall
+  font-weight: $font-weight-thin
+  display: block
+  margin-top: 6px
+  color: lighten($color-grey-medium, 10%)
+  ul
+    margin-top: 0
+    margin-bottom: 0
+    padding-left: 30px
+  li
+    font-size: $font-size-xsmall
+    font-weight: $font-weight-thin
+    color: lighten($color-grey-medium, 10%)
+
+.form-wrapper
+  margin-bottom: $form-margin
+  &.form__actions-wrapper
+    margin-bottom: 0
 
 // Modifiers
 // --------------------------------------------------

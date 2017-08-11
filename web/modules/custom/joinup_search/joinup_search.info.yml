@@ -7,21 +7,25 @@ package: Joinup
 dependencies:
   - facets
   - joinup_core
+  - joinup_user
   - node
   - rdf_entity
   - search_api
   - search_api_field
   - search_api_solr
+  - state_machine_revisions
   - taxonomy
   - text
   - views
 
 config_devel:
+ - facets.facet.group
  - facets.facet.policy_domain
  - facets.facet.spatial_coverage
- - facets.facet.status
  - facets.facet.type
  - facets.facet_source.search_api_views__search__page_1
- - search_api.server.solr
- - search_api.index.collections
+ - search_api.index.published
+ - search_api.index.unpublished
+ - search_api.server.solr_published
+ - search_api.server.solr_unpublished
  - views.view.search

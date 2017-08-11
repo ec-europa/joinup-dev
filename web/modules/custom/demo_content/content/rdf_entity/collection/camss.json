@@ -30,7 +30,7 @@
     "label": [
         {
             "value": "Common Assessment Method for Standards and Specifications - CAMSS",
-            "lang": "und"
+            "lang": "en"
         }
     ],
     "uuid": [
@@ -85,6 +85,40 @@
                 "uri": [
                     {
                         "value": "http:\/\/default\/sites\/default\/files\/collection\/2016-09\/generateImage_duhR5g.jpeg"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C3e9231e3-14d9-430c-91f0-626d1e3381e0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/placeHolder\/3e9231e3-14d9-430c-91f0-626d1e3381e0"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%23e-identity?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain#e-identity"
                     }
                 ]
             }

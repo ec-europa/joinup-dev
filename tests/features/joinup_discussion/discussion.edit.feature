@@ -9,8 +9,8 @@ Feature: "Discussion page" editing.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2265
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
-      | name   |
-      | <user> |
+      | Username |
+      | <user>   |
     And the following collections:
       | title        | description        | state     |
       | <collection> | Sample description | validated |
@@ -34,7 +34,7 @@ Feature: "Discussion page" editing.
 
   Scenario: A solution facilitator can edit his content.
     Given users:
-      | name          |
+      | Username      |
       | Toni Holloway |
     And the following solutions:
       | title                | description        | state     |
@@ -43,8 +43,8 @@ Feature: "Discussion page" editing.
       | solution             | user          | roles       |
       | Lights in the Shards | Toni Holloway | facilitator |
     And "discussion" content:
-      | title         | author        | solution             |
-      | Fallen Flames | Toni Holloway | Lights in the Shards |
+      | title         | author        | solution             | state     |
+      | Fallen Flames | Toni Holloway | Lights in the Shards | validated |
     When I am logged in as "Toni Holloway"
     And I go to the "Fallen Flames" discussion
     Then I should see the link "Edit" in the "Entity actions" region

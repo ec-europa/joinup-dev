@@ -12,7 +12,7 @@
     <includepath classpath="src/Phing" />
 
     <echo msg="Loading Drush task." />
-    <taskdef name="drush" classname="\Drush\Task" />
+    <taskdef name="drush" classname="\Phing\Drush\Task" />
 
     <echo msg="Loading PHP Codesniffer Configuration task." />
     <taskdef name="phpcodesnifferconfiguration" classname="\DrupalProject\Phing\PhpCodeSnifferConfigurationTask" />
@@ -25,7 +25,7 @@
         <chmod mode="0755" failonerror="true" verbose="true" quiet="false" file="${website.settings.dir}" />
     </target>
 
-    <!-- Make settings.php writeable so that the installer save it. -->
+    <!-- Make settings.php writeable so that the installer can write to it. -->
     <target name="writable-settings-php">
         <if>
             <available file="${website.settings.php}" type="file" property="website.settings.php.available" />
@@ -128,6 +128,7 @@
                 testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
+                legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 
@@ -177,10 +178,29 @@
 
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
-        <phingcall target="writable-settings-folder" />
+        <phingcall target="include-local-settings" />
         <!-- Copy settings file containing development values, but preserve any existing local settings. -->
         <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
-        <!-- Uncomment the inclusion of the local settings file in settings.php. -->
+    </target>
+
+    <!-- Create an empty local settings file, if it doesn't exist yet. -->
+    <target name="create-local-settings">
+        <if>
+            <not>
+                <available file="${website.settings.local.php}" type="file" property="website.settings.local.php.available" />
+            </not>
+            <then>
+                <phingcall target="writable-settings-folder" />
+                <echo
+                    message="&lt;?php${line.separator}"
+                    file="${website.settings.local.php}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Uncomment the inclusion of the local settings file in settings.php. -->
+    <target name="include-local-settings">
+        <phingcall target="writable-settings-folder" />
         <phingcall target="writable-settings-php" />
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -189,7 +209,7 @@
             <filterchain>
                 <replaceregexp>
                     <regexp
-                        pattern="^# (if \(file_exists\(__DIR__ \. '\/settings\.local\.php'\)\) \{\n)# (  include __DIR__ \. '\/settings\.local\.php';\n)# (\})"
+                        pattern="^# (if \(file_exists\(\$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php'\)\) \{\n)# (  include \$app_root \. '\/' \. \$site_path \. '\/settings\.local\.php';\n)# (\})"
                         replace="\1\2\3"
                         modifiers="m" />
                 </replaceregexp>
@@ -199,7 +219,14 @@
 
     <!-- Enable development modules. -->
     <target name="enable-dev-modules">
-        <foreach list="${drupal.modules.dev}" param="module" target="enable-module" delimiter=" " />
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${drupal.modules.dev}</param>
+        </drush>
     </target>
 
     <!-- Enable a module. -->
@@ -221,6 +248,66 @@
         </composer>
     </target>
 
+    <target name="redirect-outgoing-email">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$config\['system.mail'\]\['interface'\]\['default'\] = 'devel_mail_log';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$config\['mailsystem.settings'\]\['defaults'\]\['sender'\] = 'devel_mail_log';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <if>
+            <equals arg1="${drupal.redirect.email}" arg2="yes" />
+            <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="devel" />
+                </phingcall>
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="${line.separator}$config['system.mail']['interface']['default'] = 'devel_mail_log';${line.separator}" />
+                <append
+                    destFile="${website.settings.local.php}"
+                    text="$config['mailsystem.settings']['defaults']['sender'] = 'devel_mail_log';${line.separator}" />
+            </then>
+            <else>
+                <echo message="Skipping redirection of outgoing e-mail. Set 'drupal.redirect.email = yes' to enable." />
+            </else>
+        </if>
+    </target>
+
+    <!-- Create services.yml by copying the default file. -->
+    <target name="create-services-yml">
+        <if>
+            <not>
+                <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            </not>
+            <then>
+                <copy file="${website.services.yml.default}" tofile="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Make services.yml writeable. -->
+    <target
+        name="writable-services-yml"
+        depends="create-services-yml">
+        <if>
+            <available file="${website.services.yml}" type="file" property="website.services.yml.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.services.yml}" />
+            </then>
+        </if>
+    </target>
+
     <target
         name="build-dev"
         description="Build a development environment."
@@ -229,12 +316,12 @@
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, enable-dev-modules" />
+        depends="enable-dev-settings, redirect-outgoing-email, enable-dev-modules" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users" />
+        depends="create-demo-users, redirect-outgoing-email" />
 
     <target
         name="install-dev"

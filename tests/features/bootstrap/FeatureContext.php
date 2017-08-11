@@ -6,10 +6,15 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ResponseTextException;
+use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
 /**
@@ -20,6 +25,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use TraversingTrait;
   use UtilityTrait;
 
   /**
@@ -53,7 +59,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      $is_found = $page->findField($field);
+      // Complex fields in Drupal might not be directly linked to actual field
+      // elements such as 'select' and 'input', so try both the standard
+      // findField() as well as an XPath expression that finds the given label
+      // inside any element marked as a form item.
+      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
+      $is_found = (bool) $page->findField($field) || (bool) $page->find('xpath', $xpath);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -94,7 +105,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
    *
-   * @Then (the following )fields should be visible :fields
+   * @Then (the following )field(s) should be visible :fields
    */
   public function assertFieldsVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -136,7 +147,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
    *
-   * @Then (the following )fields should not be visible :fields
+   * @Then (the following )field(s) should not be visible :fields
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -379,6 +390,54 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     if ($optionField->getHtml() != $option) {
       throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $optionField->getHtml()));
+    }
+  }
+
+  /**
+   * Checks that a certain radio input is selected in a specific field.
+   *
+   * @param string $radio
+   *   The label of the radio input to find.
+   * @param string $field
+   *   The label of the field the radio is part of.
+   *
+   * @throws \Exception
+   *   Thrown when the field or the radio is not found, or if the radio is not
+   *   selected.
+   *
+   * @Then the radio button :radio from field :field should be selected
+   */
+  public function assertFieldRadioSelected($radio, $field) {
+    // Find the grouping fieldset that contains the radios field.
+    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+
+    if (!$field) {
+      throw new \Exception("The field '$field' was not found in the page.");
+    }
+
+    // Find the field inside the container itself. Use the findField() instead
+    // of custom xpath because we are trying to find the radio by label.
+    $input = $fieldset->findField($radio);
+
+    // Verify that we have found a valid '//input[@type="radio"]'.
+    if (!$input || $input->getTagName() !== 'input' || $input->getAttribute('type') !== 'radio') {
+      throw new \Exception("The radio '$radio' was not found in the page.");
+    }
+
+    if (!$input->isChecked()) {
+      throw new \Exception("The radio '$radio' is not selected.");
+    }
+  }
+
+  /**
+   * @Then the :radio radio button should not be selected
+   */
+  public function assertRadioButtonNotChecked($radio) {
+    $session = $this->getSession();
+    $page = $session->getPage();
+    $radio = $page->find('named', ['radio', $radio]);
+    if ($radio->isChecked()) {
+      throw new ExpectationException($session->getDriver(), 'The radio button is checked but it should not be.');
     }
   }
 
@@ -628,35 +687,355 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a vertical tab given its text and clicks it.
+   * Finds a vertical tab given its title and clicks it.
    *
    * @param string $tab
-   *   The tab text.
+   *   The tab title.
    *
    * @throws \Exception
    *   When the tab is not found on the page.
    *
    * @When I click( the) :tab tab
    */
-  public function assertVerticalTabLink($tab) {
+  public function clickVerticalTabLink($tab) {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
     if (!$this->browserSupportsJavascript()) {
       return;
     }
 
-    $page = $this->getSession()->getPage();
+    $this->findVerticalTab($tab)->clickLink($tab);
+  }
 
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]"
-      . "//a[./@href]/strong[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item-title ')]"
-      . "[normalize-space(string(.)) = '$tab']";
-    $tab = $page->find('xpath', $xpath);
+  /**
+   * Asserts that a vertical tab is active.
+   *
+   * @param string $tab
+   *   The tab title.
+   *
+   * @throws \Exception
+   *   When the tab is not found on the page or it's not active.
+   *
+   * @Then the :tab tab should be active
+   */
+  public function assertVerticalTabActive($tab) {
+    $element = $this->findVerticalTab($tab);
 
-    if ($tab === NULL) {
-      throw new \Exception('Tab not found: ' . $tab);
+    if (!$element->hasClass('is-selected')) {
+      throw new \Exception("The tab '$tab' is not active.");
+    }
+  }
+
+  /**
+   * Creates testing terms for scenarios tagged with @terms tag.
+   *
+   * Limitation: It creates terms with maximum 2 level hierarchy.
+   *
+   * @beforeScenario @terms
+   */
+  public function provideTestingTerms() {
+    $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
+    $hierarchy = Yaml::decode($fixture);
+    foreach ($hierarchy as $vid => $terms) {
+      foreach ($terms as $key => $data) {
+        $has_children = is_array($terms);
+        $name = $has_children ? $key : $data;
+        $term = (object) [
+          'vocabulary_machine_name' => $vid,
+          'name' => $name,
+        ];
+        $this->termCreate($term);
+        $parent_tid = $term->tid;
+        if ($has_children) {
+          foreach ($data as $name) {
+            $term = (object) [
+              'vocabulary_machine_name' => $vid,
+              'name' => $name,
+              'parent' => $parent_tid,
+            ];
+            $this->termCreate($term);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Fills a multi-value field.
+   *
+   * In Drupal a field can have a cardinality bigger than one. In that case,
+   * the field widget will be rendered multiple times. This method will fill
+   * each item with the corresponding value.
+   * This doesn't handle widgets with multiple inputs and it relies on the
+   * number of items to match the number of values. Clicking the
+   * button to add more items is left to the user.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $values
+   *   A comma separated list of values.
+   *
+   * @throws \Exception
+   *   When the field cannot be found or the number of values is different from
+   *   the number of elements found.
+   *
+   * @When I fill in :field with values :values
+   */
+  public function fillFieldWithValues($field, $values) {
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+
+    /** @var \Behat\Mink\Element\NodeElement[] $items */
+    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+
+    if (empty($items)) {
+      throw new \Exception("Cannot find field $field.");
     }
 
-    $tab->click();
+    if (count($items) !== count($values)) {
+      throw new \Exception('Expected ' . count($values) . ' items for field ' . $field . ', found ' . count($items));
+    }
+
+    foreach ($items as $delta => $item) {
+      $item->setValue($values[$delta]);
+    }
+  }
+
+  /**
+   * Asserts that a whole region is not present in the page.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when the region is found in the page.
+   *
+   * @Then I should not see the :region region
+   */
+  public function assertRegionNotPresent($region) {
+    $session = $this->getSession();
+    $element = $session->getPage()->find('region', $region);
+    if ($element) {
+      throw new \Exception(sprintf('Region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+  }
+
+  /**
+   * Asserts that the page title tag contains text.
+   *
+   * @param string $text
+   *   The text to search for.
+   *
+   * @throws \Exception
+   *   Thrown when the title tag is not found or the text doesn't match.
+   *
+   * @Then the HTML title tag should contain the text :text
+   */
+  public function assertPageTitleTagContainsText($text) {
+    $session = $this->getSession();
+    $page_title = $session->getPage()->find('xpath', '//head/title');
+    if (!$page_title) {
+      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+    }
+
+    list($title, $site_name) = explode(' | ', $page_title->getText());
+
+    $title = trim($title);
+    if ($title !== $text) {
+      throw new \Exception(sprintf('Expected page title is "%s", but "%s" found.', $text, $title));
+    }
+  }
+
+  /**
+   * Asserts that the page contains a certain capitalised heading.
+   *
+   * @Then I (should )see the capitalised heading :heading
+   */
+  public function assertCapitalisedHeading($heading) {
+    $heading = strtoupper($heading);
+    $element = $this->getSession()->getPage();
+    foreach (array('h1', 'h2', 'h3', 'h4', 'h5', 'h6') as $tag) {
+      $results = $element->findAll('css', $tag);
+      foreach ($results as $result) {
+        if ($result->getText() == $heading) {
+          return;
+        }
+      }
+    }
+    throw new \Exception(sprintf("The text '%s' was not found in any heading on the page %s", $heading, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Checks multiple headings on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I (should )see the following headings:
+   */
+  public function assertHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key === FALSE) {
+          continue;
+        }
+        unset($headings[$key]);
+      }
+    }
+    if (!empty($headings)) {
+      throw new \Exception(sprintf("The following headings were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $headings)));
+    }
+  }
+
+  /**
+   * Checks if multiple headings are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Heading 1 |
+   * | Heading 2 |
+   * | ...       |
+   *
+   * @Then I should not see the following headings:
+   */
+  public function assertNoHeadings(TableNode $headingsTable) {
+    $page = $this->getSession()->getPage();
+    $headings = $headingsTable->getColumn(0);
+    $found_headings = [];
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
+      $results = $page->findAll('css', $tag);
+      foreach ($results as $result) {
+        $key = array_search($result->getText(), $headings);
+        if ($key !== FALSE) {
+          $found_headings[] = $headings[$key];
+        }
+      }
+    }
+    if (!empty($found_headings)) {
+      throw new \Exception(sprintf("The following headings were found on the page %s, but they shouldn't have been: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $found_headings)));
+    }
+  }
+
+  /**
+   * Checks multiple lines of text on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I (should )see the following lines of text:
+   */
+  public function assertTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks that multiple lines of text are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Text 1 |
+   * | Text 2 |
+   * | ...    |
+   *
+   * @Then I should not see the following lines of text:
+   */
+  public function assertNoTexts(TableNode $table) {
+    $lines = $table->getColumn(0);
+    $errors = [];
+    foreach ($lines as $line) {
+      try {
+        $this->assertSession()->pageTextNotContains($line);
+      }
+      catch (ResponseTextException $e) {
+        $errors[] = $line;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following lines of text were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks multiple links on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I (should )see the following links:
+   */
+  public function assertLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were not found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks if multiple links are not present on the page.
+   *
+   * Provide data in the following format:
+   * | Link text 1 |
+   * | Link text 2 |
+   * | ...         |
+   *
+   * @Then I should not see the following links:
+   */
+  public function assertNoLinks(TableNode $table) {
+    $links = $table->getColumn(0);
+    $errors = [];
+    foreach ($links as $link) {
+      $element = $this->getSession()->getPage()->findLink($link);
+      if (!empty($element)) {
+        $errors[] = $link;
+      }
+    }
+    if (!empty($errors)) {
+      throw new \Exception(sprintf("The following links were found on the page %s: '%s'", $this->getSession()->getCurrentUrl(), implode(', ', $errors)));
+    }
+  }
+
+  /**
+   * Checks that the page is cached.
+   *
+   * @Then the page should be cached
+   */
+  public function assertPageCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the page is not cached.
+   *
+   * @Then the page should not be cached
+   */
+  public function assertPageNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
   }
 
 }

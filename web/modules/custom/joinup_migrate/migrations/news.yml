@@ -1,0 +1,52 @@
+id: news
+label: 'News'
+migration_tags:
+  - node
+  - news
+  - og
+source:
+  plugin: news
+  track_changes: true
+process:
+  nid: nid
+  title: title
+  field_news_headline: title
+  created: created
+  changed: changed
+  body/value:
+    plugin: file_inline
+    source: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_news_source_url: source_url
+  field_keywords: keywords
+  field_news_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_state: state
+  field_attachment:
+    plugin: migration
+    migration: file:news_attachment
+    source: fids
+    no_stub: true
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+destination:
+  plugin: entity:node
+  default_bundle: news
+migration_dependencies:
+  required:
+    - collection
+    - file:news_attachment
+    - file:inline

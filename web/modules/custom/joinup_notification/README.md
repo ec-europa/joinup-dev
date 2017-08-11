@@ -45,12 +45,16 @@ found with the provided role).
 To add a new notification, use the following procedure:
 
 * Using the Message module UI, create a new message template. For consistency
-reasons, the title of the template should be `[Entity type] - [bundle] - [transition/action]`
+  reasons, the title of the template should be `[Entity type] - [bundle] -
+  [transition/action]`
 * Make sure that the description is a human readable description because it is
-used in behat to verify the type of the email sent. For consistency reasons the
-description should follow the pattern `Message sent to the [recipient type(role)] when [action being taken] on [entity that the action is being taken]`.
+  used in behat to verify the type of the email sent. For consistency reasons
+  the description should follow the pattern `Message sent to the [recipient
+  type(role)] when [action being taken] on [entity that the action is being
+  taken]`.
 * Configure the message texts and view modes.
-* Export the template of the notification message to the joinup_notification/config/install directory.
+* Export the template of the notification message to the
+  joinup_notification/config/install directory.
 This list should include:
     * The message template file.
     * The message view modes for the subject and the body.
@@ -66,3 +70,8 @@ method.
 If you set the information in a correct way, the notification should be sent
 either in the event subscriber, or in the joinup_notification_entity_delete
 hook.
+
+## Skip notification
+In order for an entity to not send notifications during a transition it needs
+to have the `skip_notification` property set to true. See
+`asset_release_rdf_entity_update` for an example.

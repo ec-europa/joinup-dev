@@ -1,5 +1,5 @@
 id: contact
-label: 'Contact information migration'
+label: 'Contact information'
 migration_tags:
   - contact
 source:
@@ -10,9 +10,12 @@ process:
   field_ci_name: title
   field_ci_email: mail
   field_ci_webpage: webpage
+  field_ci_state:
+    plugin: default_value
+    default_value: validated
 destination:
   plugin: entity:rdf_entity
   default_bundle: contact_information
 migration_dependencies:
  required:
-   - mapping
+   - prepare

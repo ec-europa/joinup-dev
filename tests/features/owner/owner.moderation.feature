@@ -1,29 +1,29 @@
-@api
+@api @terms
 Feature: Owner moderation
   In order to manage owners
   As a user of the website
   I need to be able to transit the owners from one state to another.
 
+  @terms
   Scenario: Publish, update, request changes, publish again and ask to delete an owner.
     Given users:
-      | name            |
+      | Username        |
       | Raeburn Hibbert |
     And owner:
       | name             | type                    |
       | Good food eaters | Non-Profit Organisation |
 
     When I am logged in as "Raeburn Hibbert"
-    And I am on the homepage
-    And I click "Propose collection" in the plus button menu
+    And I go to the propose collection form
     And I fill in "Title" with "The healthy food European project"
     And I enter "Keep Europe healthy through healthy eating." in the "Description" wysiwyg editor
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     And I click the 'Categorisation' tab
-    And I select "European Policies" from "Policy domain"
+    And I select "EU and European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
-    When I click the 'Description' tab
+    When I click the 'Additional fields' tab
     And I press "Add new" at the "Owner" field
     And I set the Owner type to "Academia/Scientific organisation"
     And I fill in "Name" with "EU healthy movement"
@@ -69,7 +69,7 @@ Feature: Owner moderation
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Owner EU healthy group"
     And the following 1 button should be present "Update"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I should not see the link "Delete"
     # Do the changes.
     When I set the Owner type to "Non-Governmental Organisation"
@@ -81,7 +81,7 @@ Feature: Owner moderation
     And I go to the homepage of the "EU healthy group" owner
     And I click "Edit" in the "Entity actions" region
     And the following 2 buttons should be present "Update, Approve changes"
-    And the current workflow state should be "In assessment"
+    And the current workflow state should be "Needs update"
     And I press "Approve changes"
     Then I should see the heading "EU healthy group"
 
@@ -104,7 +104,7 @@ Feature: Owner moderation
     # Change the owner in the collection.
     When I go to the homepage of the "The healthy food European project" collection
     And I click "Edit"
-    And I click the 'Description' tab
+    And I click the 'Additional fields' tab
     And I press "Remove" at the "Owner" field
     # Confirm removal.
     And I press "Remove" at the "Owner" field

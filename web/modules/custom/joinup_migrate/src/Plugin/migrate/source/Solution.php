@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\joinup_migrate\FieldTranslationInterface;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -11,26 +13,53 @@ use Drupal\migrate\Row;
  *   id = "solution"
  * )
  */
-class Solution extends SolutionBase {
+class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTranslationInterface {
 
-  use ContactTrait;
   use CountryTrait;
-  use ElibraryCreationTrait;
-  use MappingTrait;
-  use OwnerTrait;
-  use UriTrait;
+  use DefaultRdfRedirectTrait;
+  use DocumentationTrait;
+  use FieldTranslationTrait;
+  use FileUrlFieldTrait;
+  use KeywordsTrait;
+  use StateTrait;
+  use StatusTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $reservedUriTables = ['collection'];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $uriProperties = ['uri', 'landing_page', 'metrics_page'];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getIds() {
+    return [
+      'nid' => [
+        'type' => 'integer',
+        'alias' => 's',
+      ],
+    ];
+  }
 
   /**
    * {@inheritdoc}
    */
   public function fields() {
     return [
+      'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
       'created_time' => $this->t('Creation date'),
       'body' => $this->t('Description'),
       'changed_time' => $this->t('Last changed date'),
       'owner' => $this->t('Owners'),
+      'owner_name' => $this->t('Text owner name'),
+      'owner_type' => $this->t('Text owner type'),
       'keywords' => $this->t('Keywords'),
       'landing_page' => $this->t('Landing page'),
       'logo' => $this->t('Logo'),
@@ -40,38 +69,41 @@ class Solution extends SolutionBase {
       'country' => $this->t('Country'),
       'status' => $this->t('Status'),
       'contact' => $this->t('Contact info'),
+      'contact_email' => $this->t('Contact E-mail'),
       'distribution' => $this->t('Distribution'),
-      'elibrary' => $this->t('Elibrary creation'),
-    ] + parent::fields();
+      'documentation' => $this->t('Documentation'),
+      'state' => $this->t('State'),
+      'item_state' => $this->t('Item state'),
+      'uid' => $this->t('Author ID'),
+      'i18n' => $this->t('Field translations'),
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    $query = parent::query();
-
-    $this->alias['content_type_asset_release'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_asset_release", 'content_type_asset_release', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_documentation', "{$this->alias['content_type_asset_release']}.field_asset_homepage_doc_nid = %alias.nid");
-    $this->alias['content_type_documentation'] = $query->leftJoin("{$this->getSourceDbName()}.content_type_documentation", 'content_type_documentation', "{$this->alias['node_documentation']}.vid = %alias.vid");
-    $this->alias['state'] = $query->leftJoin("{$this->getSourceDbName()}.workflow_node", 'state', "{$this->alias['node']}.nid = %alias.nid");
-
-    $this->alias['content_field_asset_sw_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_asset_sw_metrics", 'content_field_asset_sw_metrics', "{$this->alias['node']}.vid = %alias.vid");
-    $this->alias['node_metrics'] = $query->leftJoin("{$this->getSourceDbName()}.node", 'node_metrics', "{$this->alias['content_field_asset_sw_metrics']}.field_asset_sw_metrics_nid = %alias.nid");
-    $this->alias['data_set_uri'] = $query->leftJoin("{$this->getSourceDbName()}.content_field_id_uri", 'data_set_uri', "{$this->alias['node_metrics']}.vid = %alias.vid");
-
-    $query->addExpression("TRIM({$this->alias['content_type_documentation']}.field_documentation_access_url1_url)", 'landing_page');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.created, '%Y-%m-%dT%H:%i:%s')", 'created_time');
-    $query->addExpression("FROM_UNIXTIME({$this->alias['node']}.changed, '%Y-%m-%dT%H:%i:%s')", 'changed_time');
-    $query->addExpression("TRIM({$this->alias['data_set_uri']}.field_id_uri_value)", 'metrics_page');
-
-    return $query
-      ->fields('m', ['elibrary', 'policy2'])
-      ->fields($this->alias['node'], ['title', 'created', 'changed', 'vid'])
-      ->fields($this->alias['node_revision'], ['body'])
-      ->fields($this->alias['state'], ['sid'])
-      // Assure the URI field.
-      ->addTag('uri');
+    return $this->select('d8_solution', 's')->fields('s', [
+      'nid',
+      'vid',
+      'uid',
+      'type',
+      'title',
+      'uri',
+      'created_time',
+      'changed_time',
+      'body',
+      'policy2',
+      'landing_page',
+      'metrics_page',
+      'state',
+      'item_state',
+      'contact_email',
+      'owner_name',
+      'owner_type',
+      'logo_id',
+      'banner',
+    ]);
   }
 
   /**
@@ -81,61 +113,31 @@ class Solution extends SolutionBase {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
 
-    // Destroy self lookup URIs.
-    $uri = $row->getSourceProperty('uri');
-    if ($uri == "https://joinup.ec.europa.eu/node/$nid") {
-      $row->setSourceProperty('uri', NULL);
-    }
-    else {
-      $alias = $this->select('url_alias', 'a')
-        ->fields('a', ['dst'])
-        ->condition('a.src', "node/$nid")
-        ->orderBy('a.pid', 'DESC')
-        ->range(0, 1)
-        ->execute()
-        ->fetchField();
-      if ($alias && ($uri === $alias)) {
-        $row->setSourceProperty('uri', NULL);
-      }
-    }
-
-    // Assure a created date.
-    if (!$row->getSourceProperty('created_time')) {
-      $row->setSourceProperty('created_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-    // Assure a changed date.
-    if (!$row->getSourceProperty('changed_time')) {
-      $row->setSourceProperty('changed_time', date('Y-m-d\TH:i:s', REQUEST_TIME));
-    }
-
     // Keywords.
-    $query = $this->select('term_node', 'tn');
-    $query->join('term_data', 'td', 'tn.tid = td.tid');
-    $keywords = $query
-      ->fields('td', ['name'])
-      ->condition('tn.nid', $nid)
-      ->condition('tn.vid', $vid)
-      // The keywords vocabulary vid is 28.
-      ->condition('td.vid', 28)
-      ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('keywords', array_unique($keywords));
+    $this->setKeywords($row, 'keywords', $nid, $vid);
 
-    // Filter and fix landing and metrics pages.
-    foreach (['landing', 'metrics'] as $name) {
-      if ($page = $row->getSourceProperty($name . '_page')) {
-        $this->normalizeUri($name, $row, FALSE);
-      }
-    }
+    // Resolve documentation.
+    list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
+    $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
     // Spatial coverage.
     $row->setSourceProperty('country', $this->getCountries([$vid]));
 
     // Owners.
-    $row->setSourceProperty('owner', $this->getSolutionOwners($vid) ?: NULL);
+    $owner = $this->select('d8_owner_solution', 'o')
+      ->fields('o', ['nid'])
+      ->condition('o.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('owner', $owner);
 
     // Contacts.
-    $row->setSourceProperty('contact', $this->getSolutionContacts($vid) ?: NULL);
+    $contact = $this->select('d8_contact_solution', 'c')
+      ->fields('c', ['nid'])
+      ->condition('c.solution', $nid)
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('contact', $contact);
 
     // Distributions.
     $query = $this->select('content_field_asset_distribution', 'd')
@@ -145,10 +147,66 @@ class Solution extends SolutionBase {
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
 
-    // Elibrary creation.
-    $this->elibraryCreation($row);
+    // Status.
+    $this->setStatus($vid, $row);
+
+    // State.
+    $this->setState($row);
+
+    // Only 'asset_release' type provides field translation.
+    if ($row->getSourceProperty('type') === 'asset_release') {
+      $this->setFieldTranslations($row);
+    }
 
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Gets the (D6) 'asset_release' documentation given its node revision ID.
+   *
+   * @param int $vid
+   *   The (D6) 'asset_release' node revision ID.
+   *
+   * @return array[]
+   *   An indexed array where the first item is a list of file IDs, each one
+   *   represented as source IDs (example [['fid' => 123, 'fid' => 987]]) and
+   *   the second item is a simple array of URLs.
+   */
+  protected function getAssetReleaseDocumentation($vid) {
+    $items = $this->select('d8_file_documentation', 'd')->fields('d')
+      ->condition('d.vid', $vid)
+      ->execute()
+      ->fetchAll();
+
+    $return = [[], []];
+    foreach ($items as $item) {
+      if (!empty($item['fid'])) {
+        $return[0][] = ['fid' => $item['fid']];
+      }
+      if (!empty($item['url'])) {
+        $return[1][] = $item['url'];
+      }
+    }
+
+    return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslatableFields() {
+    return [
+      'label' => [
+        'table' => 'content_field_asset_name',
+        'field' => 'field_asset_name_value',
+        'sub_field' => 'field_language_textfield_name',
+      ],
+      'field_is_description' => [
+        'table' => 'content_field_asset_description',
+        'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+    ];
   }
 
 }

@@ -1,0 +1,49 @@
+id: discussion
+label: 'Discussion'
+migration_tags:
+  - node
+  - discussion
+  - og
+source:
+  plugin: discussion
+  track_changes: true
+process:
+  nid: nid
+  title: title
+  created: created
+  changed: changed
+  body/value:
+    plugin: file_inline
+    source: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  status: status
+  field_state:
+    plugin: default_value
+    default_value: validated
+  og_audience:
+    plugin: migration
+    source: solution
+    migration: solution
+    no_stub: true
+  field_attachment:
+    plugin: migration
+    migration: file:discussion_attachment
+    source: fids
+    no_stub: true
+destination:
+  plugin: entity:node
+  default_bundle: discussion
+migration_dependencies:
+  required:
+    - solution
+    - file:discussion_attachment
+    - file:inline

@@ -1,5 +1,11 @@
-<div class="listing listing--grid mdl-grid">
-  {{ results }}
-</div>
+{% if results %}
+  <div class="listing listing--grid">
+    <div class="row">
+      <div class="mdl-grid">
+        {{ results }}
+      </div>
+    </div>
+  </div>
 
-{{ pager }}
+  {{ pager }}
+{% endif %}

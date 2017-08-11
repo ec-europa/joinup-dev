@@ -3,112 +3,129 @@
 namespace Drupal\og_comment;
 
 use Drupal\comment\CommentAccessControlHandler;
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultAllowed;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\node\Plugin\views\filter\Access;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines the access control handler for the comment entity type.
  *
  * @see \Drupal\comment\Entity\Comment
  */
-class OgCommentAccessControlHandler extends CommentAccessControlHandler {
+class OgCommentAccessControlHandler extends CommentAccessControlHandler implements EntityHandlerInterface {
+
+  /**
+   * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructs the access handler class for the og comment.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The comment entity type object.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory service.
+   */
+  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory) {
+    parent::__construct($entity_type);
+    $this->configFactory = $config_factory;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+    return new static(
+      $entity_type,
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    /** @var \Drupal\comment\CommentInterface|\Drupal\user\EntityOwnerInterface $entity */
-    $access = parent::checkAccess($entity, $operation, $account);
-    if ($access instanceof AccessResultAllowed) {
-      return $access;
-    }
-
-    $comment_admin = $this->hasPermission($entity, $account, 'administer comments');
+    $comment_access_strict = $this->configFactory->get('og_comment.settings')->get('entity_access_strict');
+    $host_entity = $entity->getCommentedEntity();
+    $comment_admin = $this->hasPermission('administer comments', $host_entity, $account)->isAllowed();
     if ($operation == 'approve') {
       return AccessResult::allowedIf($comment_admin && !$entity->isPublished())
         ->cachePerPermissions()
         ->addCacheableDependency($entity);
     }
 
-    if ($comment_admin instanceof AccessResultAllowed) {
+    if ($comment_admin) {
       $access = AccessResult::allowed()->cachePerPermissions();
-      $temp = $entity->getCommentedEntity()->access($operation, $account, TRUE);
-      return ($operation != 'view') ? $access : $access->andIf($temp);
+      return ($operation != 'view') ? $access : $access->andIf($host_entity->access($operation, $account, TRUE));
     }
 
     switch ($operation) {
       case 'view':
-        $host_entity_access = $entity->getCommentedEntity()->access($operation, $account, TRUE);
-        return AccessResult::allowedIf($this->hasPermission($entity, $account, 'access comments') && $entity->isPublished())->cachePerPermissions()->addCacheableDependency($entity)
-          ->andIf($host_entity_access);
+        $user_permission = $this->hasPermission('access comments', $host_entity, $account)->isAllowed();
+        $return = AccessResult::allowedIf($user_permission && $entity->isPublished())->cachePerPermissions()->addCacheableDependency($entity);
+        break;
 
       case 'update':
-        return AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission($entity, $account, 'edit own comments'))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('edit own comments', $host_entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        break;
 
       case 'delete':
-        return AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission($entity, $account, 'delete own comments'))->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        $return = AccessResult::allowedIf($account->id() && $account->id() == $entity->getOwnerId() && $entity->isPublished() && $this->hasPermission('delete own comments', $host_entity, $account)->isAllowed())->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+        break;
 
       default:
         // No opinion.
         return AccessResult::neutral()->cachePerPermissions();
+
     }
+
+    if (!$comment_access_strict) {
+      $override = parent::checkAccess($entity, $operation, $account);
+      return $return->orIf($override);
+    }
+
+    return $return;
   }
 
   /**
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    // @todo ISAICP-3013 Implement create access...
-    // For now this module only works when users have global create comments
-    // permissions.
-    return parent::checkCreateAccess($account, $context, $entity_bundle);
+    $commented_entity = !empty($context['commented_entity']) ? $context['commented_entity'] : NULL;
+    $has_permission = $this->hasPermission('post comment', $commented_entity, $account);
+    return $has_permission->isAllowed() ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
-   * Check if user has either global or group permission.
+   * Returns whether the account has the given permission.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check access for.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   User account to check access with.
    * @param string $permission
    *   The permission to check.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The commented entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account object.
    *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Access object.
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result object.
    */
-  protected function hasPermission(EntityInterface $entity, AccountInterface $account, $permission) {
-    if (!$entity instanceof CommentInterface) {
-      throw new \Exception('Only comments can be handled.');
+  protected function hasPermission($permission, EntityInterface $entity, AccountInterface $account) {
+    $access = $entity->access($permission, $account, TRUE);
+
+    if (!$access->isNeutral()) {
+      return $access;
     }
 
-    $host_entity = $entity->getCommentedEntity();
-    // Is group content?
-    if (!Og::isGroupContent($host_entity->getEntityTypeId(), $host_entity->bundle())) {
-      return AccessResult::neutral();
-    }
-    // Get group.
-    $group_id = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->target_id;
-    if (!$group_id) {
-      return AccessResult::neutral();
-    }
-    /** @var \Drupal\field\Entity\FieldConfig $field_config */
-    $field_config = $host_entity->{OgGroupAudienceHelperInterface::DEFAULT_FIELD}->first()->getFieldDefinition();
-    /** @var \Drupal\field\Entity\FieldStorageConfig $storage_definition */
-    $storage_definition = $field_config->getFieldStorageDefinition();
-    $entity_type = $storage_definition->getSetting('target_type');
-
-    $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-    $group = $entity_storage->load($group_id);
-
-    /** @var \Drupal\og\OgAccessInterface $og_access */
-    $og_access = \Drupal::getContainer()->get('og.access');
-    return $og_access->userAccess($group, $permission, $account);
+    // At this point and the group result is neutral.
+    return AccessResult::allowedIf($account->hasPermission($permission));
   }
 
 }

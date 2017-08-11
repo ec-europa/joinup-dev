@@ -7,7 +7,9 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/solution/elibrary_creation'
+      value:
+        predicate: 'http://joinup.eu/solution/elibrary_creation'
+        format: 'xsd:integer'
 id: rdf_entity.field_is_elibrary_creation
 field_name: field_is_elibrary_creation
 entity_type: rdf_entity
@@ -16,18 +18,16 @@ settings:
   allowed_values:
     -
       value: 0
-      label: 'Only collection facilitators can create new content'
+      label: 'Only solution facilitators can create new content'
     -
-      value: 1
-      label: 'Only members can create new content'
-    -
+      # Keep the value to 2 to be generically handled along with the collection's corresponding field.
       value: 2
       label: 'Any registered user can create new content'
   allowed_values_function: ''
 module: options
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

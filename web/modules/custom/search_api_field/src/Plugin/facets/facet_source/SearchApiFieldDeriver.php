@@ -83,6 +83,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
             '%label' => $field_config->label(),
             '%id' => $id,
           ]),
+          'display_id' => $id,
           'description' => $this->t('Provides a facet source.'),
           'search_api_field' => $id,
         ] + $base_plugin_definition;
@@ -92,7 +93,7 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
           '%id' => $id,
         ]);
       }
-      uasort($plugin_derivatives, array($this, 'compareDerivatives'));
+      uasort($plugin_derivatives, [$this, 'compareDerivatives']);
 
       $this->derivatives[$base_plugin_id] = $plugin_derivatives;
     }

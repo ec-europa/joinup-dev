@@ -4,15 +4,25 @@ dependencies:
   config:
     - comment.type.comment
     - field.storage.comment.field_body
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    simple_html: simple_html
+    simple_text: simple_text
+    content_editor: '0'
+    basic_html: '0'
+    plain_text: '0'
 id: comment.comment.field_body
 field_name: field_body
 entity_type: comment
 bundle: comment
-label: Comment
+label: 'Create comment'
 description: ''
 required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long

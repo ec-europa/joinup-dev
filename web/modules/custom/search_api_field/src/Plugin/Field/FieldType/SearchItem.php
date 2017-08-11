@@ -26,11 +26,11 @@ class SearchItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultStorageSettings() {
-    return array(
+    return [
       'index' => NULL,
       'facet_regions' => [],
       'view_modes' => [],
-    ) + parent::defaultStorageSettings();
+    ] + parent::defaultStorageSettings();
   }
 
   /**
@@ -53,15 +53,15 @@ class SearchItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'value' => array(
+    return [
+      'columns' => [
+        'value' => [
           'type' => 'blob',
           'size' => 'big',
           'serialize' => TRUE,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
@@ -169,31 +169,31 @@ class SearchItem extends FieldItemBase {
       $datasource_label = $datasource->label();
       $bundles = $datasource->getBundles();
       if (!$datasource->getViewModes()) {
-        $element[$datasource_id] = array(
+        $element[$datasource_id] = [
           '#type' => 'item',
-          '#title' => $this->t('Default View mode for datasource %name', array('%name' => $datasource_label)),
+          '#title' => $this->t('Default View mode for datasource %name', ['%name' => $datasource_label]),
           '#description' => $this->t("This datasource doesn't have any view modes available. It is therefore not possible to display results of this datasource."),
-        );
+        ];
         continue;
       }
 
       foreach ($bundles as $bundle_id => $bundle_label) {
-        $title = $this->t('View mode for datasource %datasource, bundle %bundle', array('%datasource' => $datasource_label, '%bundle' => $bundle_label));
+        $title = $this->t('View mode for datasource %datasource, bundle %bundle', ['%datasource' => $datasource_label, '%bundle' => $bundle_label]);
         $view_modes = $datasource->getViewModes($bundle_id);
         if (!$view_modes) {
-          $element[$datasource_id][$bundle_id] = array(
+          $element[$datasource_id][$bundle_id] = [
             '#type' => 'item',
             '#title' => $title,
             '#description' => $this->t("This bundle doesn't have any view modes available. It is therefore not possible to display results of this bundle using."),
-          );
+          ];
           continue;
         }
-        $element[$datasource_id][$bundle_id] = array(
+        $element[$datasource_id][$bundle_id] = [
           '#type' => 'select',
           '#options' => $view_modes,
           '#title' => $title,
           '#default_value' => !empty($settings[$datasource_id][$bundle_id]) ? $settings[$datasource_id][$bundle_id] : key($view_modes),
-        );
+        ];
       }
     }
 
@@ -213,7 +213,7 @@ class SearchItem extends FieldItemBase {
    * @param array $element
    *   An associative array containing the properties and children of the
    *   generic form element.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form for the form this element belongs to.
    *
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::validateAllowedValues()
@@ -261,7 +261,7 @@ class SearchItem extends FieldItemBase {
    * @see \Drupal\options\Plugin\Field\FieldType\ListTextItem::allowedValuesString()
    */
   protected static function extractAllowedValues($string, $has_data) {
-    $values = array();
+    $values = [];
 
     $list = explode("\n", $string);
     $list = array_map('trim', $list);
@@ -270,7 +270,7 @@ class SearchItem extends FieldItemBase {
     $generated_keys = $explicit_keys = FALSE;
     foreach ($list as $position => $text) {
       // Check for an explicit key.
-      $matches = array();
+      $matches = [];
       if (preg_match('/(.*)\|(.*)/', $text, $matches)) {
         // Trim key and value to avoid unwanted spaces issues.
         $key = trim($matches[1]);
@@ -330,7 +330,7 @@ class SearchItem extends FieldItemBase {
    * @see \Drupal\options\Plugin\Field\FieldType\ListItemBase::allowedValuesString()
    */
   protected function allowedValuesString(array $values) {
-    $lines = array();
+    $lines = [];
     foreach ($values as $key => $value) {
       $lines[] = "$key|$value";
     }
@@ -341,7 +341,7 @@ class SearchItem extends FieldItemBase {
    * Description for the allowed values.
    *
    * @return string
-   *    Field description.
+   *   Field description.
    */
   protected function allowedValuesDescription() {
     $description = '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.');

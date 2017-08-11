@@ -4,10 +4,12 @@ dependencies:
   config:
     - field.field.rdf_entity.contact_information.field_ci_email
     - field.field.rdf_entity.contact_information.field_ci_name
+    - field.field.rdf_entity.contact_information.field_ci_state
     - field.field.rdf_entity.contact_information.field_ci_webpage
     - rdf_entity.rdfentity.contact_information
   module:
     - link
+    - user
 id: rdf_entity.contact_information.default
 targetEntityType: rdf_entity
 bundle: contact_information
@@ -18,7 +20,8 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: email_mailto
+    region: content
   field_ci_name:
     type: string
     weight: 2
@@ -26,6 +29,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    region: content
   field_ci_webpage:
     weight: 3
     label: above
@@ -37,6 +41,7 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
   label:
     type: string
     weight: 0
@@ -44,4 +49,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-hidden: {  }
+    region: content
+hidden:
+  field_ci_state: true
+  langcode: true

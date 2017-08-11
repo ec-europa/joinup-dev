@@ -6,14 +6,10 @@
 #}
 
 {% if is_standalone %}
-<div class="timeline__release {% if is_top_of_timeline %}is-latest {% endif %}mdl-grid">
+<div class="timeline__release mdl-grid">
   <div class="timeline__release-progression mdl-cell mdl-cell--3-col">
     <div class="timeline__release-info">
       <div class="release__info-element bold">Standalone distribution</div>
-        {% if is_top_of_timeline %}
-          <div class="release__info-element bold blue">Latest release</div>
-        {% endif %}
-      <div class="release__info-element underline gray is-only-placeholder">dc9ee36</div>
     </div>
     <div class="timeline__release-bar"></div>
   </div>
@@ -21,25 +17,22 @@
 {% endif %}
     <div class="timeline__listing-item">
       <div class="timeline__listing-title">
-        {{ content.field_ad_file }}
+        {{ label }}
       </div>
       <div class="timeline__listing-details details">
-        <div class="details__element">
-          <div class="value gray">{{ content.field_ad_file_size }}</div>
-        </div>
-        <div class="details__element hide--phone">
-          <div class="value bold underline">{{ label }}</div>
-        </div>
+        {% if content.field_ad_file_size|render %}
+          <div class="details__element">
+            <div class="value gray">{{ content.field_ad_file_size }}</div>
+          </div>
+        {% endif %}
         <div class="details__element hide--phone">
           <div class="label gray">{{ 'licence:'|t }}</div>
-          <div class="value bold underline action-link">{{ content.field_ad_licence }}</div>
+          <div class="value bold underline action-link__wrapper action-link__wrapper--normal-case">{{ content.field_ad_licence }}</div>
         </div>
       </div>
       <div class="timeline__action-links action-link__wrapper right hide--phone">
         <a href="{{ url }}" class="action-link">{{ 'Details'|t }}</a>
-        {% if content.promoted_download %}
-          <a href="{{ content.promoted_download }}" class="action-link">{{ 'Download'|t }}</a>
-        {% endif %}
+        {{ content.field_ad_access_url }}
       </div>
     </div>
 {% if is_standalone %}

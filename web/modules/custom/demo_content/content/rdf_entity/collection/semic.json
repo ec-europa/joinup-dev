@@ -60,7 +60,7 @@
     "label": [
         {
             "value": "Semantic Interoperability Community - SEMIC",
-            "lang": "und"
+            "lang": "en"
         }
     ],
     "uuid": [
@@ -226,13 +226,25 @@
                     }
                 ]
             }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%23e-identity?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain#e-identity"
+                    }
+                ]
+            }
         ]
     },
-    "field_policy_domain": [
-        {
-            "target_id": "http:\/\/joinup.eu/policy-domain/home-affairs"
-        }
-    ],
     "field_ar_closed": [
         {
             "value": "0"

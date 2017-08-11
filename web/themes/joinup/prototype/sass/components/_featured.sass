@@ -31,8 +31,12 @@
     padding: 40px 0 80px 0
   +breakpoint(tablet)
     padding: 20px 0
+  @media print
+    padding: 0
+    padding-bottom: 20px
 
 .featured__menu-wrapper
+  +hidden-print
   position: relative
   z-index: 2
   max-width: 1200px
@@ -84,6 +88,21 @@
     content: ''
     background-color: $color-blue-lighter
 
+.featured__text-small
+  font-size: $font-size-xsmall
+  text-transform: none
+
+.featured__text--double
+  margin: 0 0 30px 0
+  text-transform: none
+  +breakpoint(mobile)
+    margin-bottom: 20px
+  h1
+    margin: 0
+
+.featured__text-upper
+  text-transform: uppercase
+
 .featured__stats
   display: inline-block
   margin-bottom: 10px
@@ -95,22 +114,28 @@
   +breakpoint(mobile)
     margin: 0 10px
   .stats__column
-    float: left
+    display: inline-block
+    vertical-align: middle
     padding: 15px
     min-width: 0
+  .stats__wrapper
+    margin-bottom: 4px
+    &:last-child
+      margin-bottom: 0
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
-    line-height: 30px
   .stats__icon
-    +icon-size(30px)
+    margin-right: 4px
+    +icon-size(20px)
 
 .featured__action
   display: inline-block
   vertical-align: middle
 
 .featured__form-button
+  +hidden-print
   position: relative
   display: inline-block
   margin: 10px
@@ -130,6 +155,11 @@
       padding-left: 30px
     .stats__column--border
       padding-right: 30px
+
+.featured--navy-blue
+  max-width: 1200px
+  justify-content: center
+
 
 // Dependiencies
 // --------------------------------------------------

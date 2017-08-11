@@ -8,13 +8,6 @@ namespace Drupal\joinup_migrate\Plugin\migrate\source;
 abstract class UserBase extends JoinupSqlBase {
 
   /**
-   * Table aliases.
-   *
-   * @var string[]
-   */
-  protected $alias = [];
-
-  /**
    * {@inheritdoc}
    */
   public function getIds() {
@@ -39,17 +32,7 @@ abstract class UserBase extends JoinupSqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('users', 'u');
-    $query->leftJoin('userpoints', 'up', 'u.uid = up.uid');
-
-    return $query
-      ->fields('u', ['uid'])
-      ->orderBy('u.uid')
-      ->condition('u.uid', 0, '>')
-      // Only active users.
-      ->condition('u.status', 1)
-      // Only with kudos >= 10.
-      ->condition('up.points', 10, '>=');
+    return $this->select('d8_user', 'u')->fields('u', ['uid']);
   }
 
 }

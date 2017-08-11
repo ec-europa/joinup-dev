@@ -2,10 +2,13 @@
 
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'current_workflow_state_widget' widget.
@@ -18,9 +21,50 @@ use Drupal\joinup\Traits\WorkflowTrait;
  *   }
  * )
  */
-class CurrentWorkflowStateWidget extends WidgetBase {
+class CurrentWorkflowStateWidget extends WidgetBase implements ContainerFactoryPluginInterface {
 
-  use WorkflowTrait;
+  /**
+   * The workflow helper service.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
+   * Constructs a SearchWidget object.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the widget.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the widget is associated.
+   * @param array $settings
+   *   The widget settings.
+   * @param array $third_party_settings
+   *   Any third party settings.
+   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   *   The workflow helper service.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, WorkflowHelperInterface $workflow_helper) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+
+    $this->workflowHelper = $workflow_helper;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('joinup_core.workflow.helper')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -29,6 +73,7 @@ class CurrentWorkflowStateWidget extends WidgetBase {
     return [
       'title' => 'Current workflow state',
       'title_display' => 'before',
+      'show_for_new_entities' => FALSE,
     ] + parent::defaultSettings();
   }
 
@@ -54,6 +99,12 @@ class CurrentWorkflowStateWidget extends WidgetBase {
         'attribute' => $this->t('Make it the title attribute (hover tooltip)'),
       ],
     ];
+    $elements['show_for_new_entities'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show when creating a new entity'),
+      '#description' => $this->t('If unchecked, the widget is shown only on forms where an existing entity is being edited.'),
+      '#default_value' => $this->getSetting('show_for_new_entities'),
+    ];
 
     return $elements;
   }
@@ -62,7 +113,7 @@ class CurrentWorkflowStateWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    return [
+    $summary = [
       $this->t('Label: @title', [
         '@title' => $this->getSetting('title'),
       ]),
@@ -70,14 +121,21 @@ class CurrentWorkflowStateWidget extends WidgetBase {
         '@title_display' => $this->getSetting('title_display'),
       ]),
     ];
+
+    if ($this->getSetting('show_for_new_entities')) {
+      $summary[] = $this->t('Show when creating a new entity');
+    }
+
+    return $summary;
   }
 
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface $entity */
     $entity = $items->getEntity();
-    $field = $this->getEntityStateField($entity);
+    $field = $this->workflowHelper->getEntityStateField($entity);
     $state_id = $field->getValue()['value'];
 
     $element['#title'] = $this->getSetting('title');
@@ -90,6 +148,10 @@ class CurrentWorkflowStateWidget extends WidgetBase {
     $element['current_workflow_state']['label'] = [
       '#plain_text' => $field->getWorkflow()->getState($state_id)->getLabel(),
     ];
+
+    // Show the widget only when the entity is not new, or when the specific
+    // setting is turned on.
+    $element['#access'] = !$entity->isNew() || $this->getSetting('show_for_new_entities');
 
     return $element;
   }

@@ -1,5 +1,5 @@
 id: collection
-label: 'Collection migration'
+label: 'Collection'
 migration_tags:
   - og
   - collection
@@ -9,6 +9,7 @@ source:
 process:
   id: uri
   label: collection
+  uid: uid
   field_ar_abstract: abstract
   field_ar_access_url: access_url
   field_ar_affiliates:
@@ -18,34 +19,65 @@ process:
     no_stub: true
   field_ar_banner:
     plugin: migration
-    source: collection
-    migration: collection_banner
+    source: banner
+    migration: file:collection_banner
+    no_stub: true
+  contact_from_node:
+    - plugin: explode
+      source: contact
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: contact
+      no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
     no_stub: true
   field_ar_contact_information:
-    plugin: migration
-    source: contact
-    migration: contact
-    no_stub: true
+    plugin: merge
+    source:
+      - @contact_from_node
+      - @contact_from_email
+    unique: true
   field_ar_creation_date: created_time
-  field_ar_description/value: body
+  field_ar_description/value:
+    plugin: file_inline
+    source: body
   field_ar_description/format:
     plugin: default_value
     default_value: content_editor
   field_ar_elibrary_creation: elibrary
   field_ar_logo:
     plugin: migration
-    source: collection
-    migration: collection_logo
+    source: logo_id
+    migration: file:collection_logo
     no_stub: true
   field_ar_moderation:
     plugin: default_value
     default_value: true
   field_ar_modification_date: changed_time
-  field_ar_owner:
+  owner_from_publisher:
+    - plugin: explode
+      source: owner
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: owner
+      no_stub: true
+  owner_from_text:
     plugin: migration
-    source: owner
-    migration: owner
+    migration: owner_text
+    source:
+      - owner_text_name
+      - owner_text_type
     no_stub: true
+  field_ar_owner:
+    plugin: merge
+    source:
+      - @owner_from_publisher
+      - @owner_from_text
   field_policy_domain:
     plugin: policy_domain
     source: policy2
@@ -53,14 +85,14 @@ process:
     plugin: term_reference
     source: country
     vocabulary: spatial
-  field_ar_state:
-    plugin: default_value
-    default_value: validated
+  field_ar_state: state
+  i18n: i18n
 destination:
   plugin: entity:rdf_entity
   default_bundle: collection
 migration_dependencies:
- required:
-   - collection_logo
-   - collection_banner
-   - solution
+  required:
+    - file:collection_logo
+    - file:collection_banner
+    - file:inline
+    - solution

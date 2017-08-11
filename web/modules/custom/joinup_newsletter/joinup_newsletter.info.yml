@@ -1,0 +1,21 @@
+type: module
+name: 'Joinup Newsletter'
+description: 'Provides newsletter functionality to Joinup'
+core: 8.x
+package: Joinup
+dependencies:
+  - joinup_community_content
+  - simplenews
+
+config_devel:
+  - core.entity_form_display.node.newsletter.default
+  - core.entity_view_display.node.newsletter.default
+  - core.entity_view_display.node.newsletter.view_mode_tile
+  - core.entity_view_display.node.newsletter.email_html
+  - core.entity_view_display.node.newsletter.email_plain
+  - core.entity_view_display.node.newsletter.email_textalt
+  - core.entity_view_display.node.newsletter.teaser
+  - field.field.node.newsletter.body
+  - field.field.node.newsletter.newsletter
+  - field.storage.node.newsletter
+  - node.type.newsletter

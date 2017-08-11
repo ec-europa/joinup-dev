@@ -9,7 +9,6 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -19,7 +18,6 @@ use Drupal\rdf_entity\Entity\Rdf;
 class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -47,7 +45,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   /**
    * Creates a number of licences with data provided in a table.
    *
-   * @param TableNode $licence_table
+   * @param \Behat\Gherkin\Node\TableNode $licence_table
    *   The licence data.
    *
    * @codingStandardsIgnoreStart
@@ -96,7 +94,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    *
    * Fields title and description are required.
    *
-   * @param TableNode $licence_table
+   * @param \Behat\Gherkin\Node\TableNode $licence_table
    *   The licence data.
    *
    * @throws \Exception
@@ -118,7 +116,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       }
     };
 
-    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($values));
 
     $this->createLicence($values);
   }
@@ -134,7 +132,6 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   protected function createLicence(array $values) {
     $values['rid'] = 'licence';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $licence = Rdf::create($values);
     $licence->save();
     $this->licences[$licence->id()] = $licence;
@@ -152,7 +149,12 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   public function deleteLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
-    $this->getLicenceByName($licence)->delete();
+    $licence = $this->getLicenceByName($licence);
+    // Do not send email for entities created by the API.
+    // @todo: Convert the dynamic property to a proper temporary storage.
+    // @see: https://www.drupal.org/node/2896474
+    $licence->skip_notification = TRUE;
+    $licence->delete();
   }
 
   /**
@@ -190,8 +192,9 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   public function cleanLicences() {
     // Remove any asset distributions that were created.
-    foreach ($this->licences as $licences) {
-      $licences->delete();
+    foreach ($this->licences as $licence) {
+      $licence->skip_notification = TRUE;
+      $licence->delete();
     }
   }
 
@@ -199,7 +202,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function licenceFieldAliases() {
     // Mapping alias - field name.

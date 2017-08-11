@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.collections
+    - search_api.index.published
   module:
     - joinup_core
     - search_api
@@ -11,7 +11,7 @@ label: 'Collection content'
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_collections
+base_table: search_api_index_published
 base_field: search_api_id
 core: 8.x
 display:
@@ -43,12 +43,17 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: full
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -57,9 +62,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
+          quantity: 9
       style:
         type: tiles
         options:
@@ -84,7 +87,7 @@ display:
               solution: view_mode_tile
       fields:
         id:
-          table: search_api_index_collections
+          table: search_api_index_published
           field: id
           id: id
           entity_type: null
@@ -159,10 +162,10 @@ display:
       empty: {  }
       relationships: {  }
       arguments:
-        aggregated_field_1:
-          id: aggregated_field_1
-          table: search_api_index_collections
-          field: aggregated_field_1
+        entity_groups:
+          id: entity_groups
+          table: search_api_index_published
+          field: entity_groups
           relationship: none
           group_type: group
           admin_label: ''
@@ -177,7 +180,7 @@ display:
           default_argument_options:
             argument: ''
           default_argument_skip_url: false
-          summary_options: { }
+          summary_options: {  }
           summary:
             sort_order: asc
             number_of_records: 0
@@ -193,9 +196,10 @@ display:
       display_extenders: {  }
       display_comment: 'The collection content as displayed on the collection overview. This is displayed as an extra field on the Collection entity. See collection_entity_extra_field_info() and collection_rdf_entity_view().'
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
       tags: {  }

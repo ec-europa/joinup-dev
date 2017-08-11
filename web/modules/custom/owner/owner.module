@@ -10,8 +10,30 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_create().
+ *
+ * Sets the initial workflow state of an owner to 'validated'.
+ */
+function owner_rdf_entity_create(RdfInterface $entity) {
+  if ($entity->bundle() !== 'owner') {
+    return;
+  }
+
+  // The initial state of an owner is validated. The owner is created as part of
+  // proposing a collection, and in the collection propose form the workflow
+  // state is hidden from the user, so it would remain in the "__new__" state
+  // after submission.
+  // We can safely set the initial state to "validated" because a newly created
+  // owner doesn't need to be validated by a third party.
+  if ($entity->field_owner_state->value === '__new__') {
+    $entity->set('field_owner_state', 'validated');
+  }
+}
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
@@ -55,7 +77,7 @@ function owner_inline_entity_form_entity_form_alter(&$entity_form, &$form_state)
  *
  * @param string $entity_type
  *   The type of the entity being created.
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity being built.
  */
 function owner_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
@@ -112,7 +134,7 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
 /**
  * Generates the entity label from the name field for owner entities.
  *
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to process.
  */
 function owner_entity_auto_label(EntityInterface $entity) {
@@ -146,10 +168,27 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      $allowed_transitions = $entity->get('field_owner_state')->first()->getTransitions();
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_transitions));
   }
-
+  // Revoke access to canonical route for anonymous users.
+  // Only revoke access for anonymous users.
+  if ($account->isAuthenticated()) {
+    return AccessResult::neutral();
+  }
+  // Get entity from route.
+  $route = \Drupal::routeMatch();
+  $route_name = $route->getRouteName();
+  if ($route_name != 'entity.rdf_entity.canonical') {
+    return AccessResult::neutral();
+  }
+  $route_entity = $route->getParameter('rdf_entity');
+  if (empty($route_entity)) {
+    return AccessResult::neutral();
+  }
+  if ($entity->id() == $route_entity->id()) {
+    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+  }
   return AccessResult::neutral();
 }
 
@@ -167,7 +206,7 @@ function owner_is_owner_referenced(EntityInterface $entity) {
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
 
   // Check in Sparql if the owner id is set as object in any triple.
-  return $sparql_endpoint->query("ASK { ?s ?p <{$entity->id()}> }")->isTrue();
+  return $sparql_endpoint->query("ASK { ?s ?p " . SparqlArg::uri($entity->id()) . " }")->isTrue();
 }
 
 /**

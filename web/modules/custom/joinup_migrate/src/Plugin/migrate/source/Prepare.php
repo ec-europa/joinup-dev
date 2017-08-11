@@ -2,8 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Database\Database;
-use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate\Row;
 
 /**
  * Prepares the collection migration.
@@ -12,20 +11,48 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
  *   id = "prepare"
  * )
  */
-class Prepare extends SourcePluginBase {
+class Prepare extends TestableSpreadsheetBase {
 
   /**
-   * {@inheritdoc}
+   * A list of 'community' node revision IDs with creation flags deactivated.
+   *
+   * @var int[]
    */
-  public function __toString() {
-    return 'Prepare';
-  }
+  protected $deactivatedCreationFlags;
+
+  /**
+   * A list of Email contacts.
+   *
+   * @var string[]
+   */
+  protected $emailContact;
+
+  /**
+   * A list of publishers.
+   *
+   * @var int[]
+   */
+  protected $publisher;
+
+  /**
+   * A list of contacts.
+   *
+   * @var int[]
+   */
+  protected $contact;
+
+  /**
+   * A list of imported users.
+   *
+   * @var int[]
+   */
+  protected $importedUsers;
 
   /**
    * {@inheritdoc}
    */
   public function getIds() {
-    return ['collection' => ['type' => 'string']];
+    return ['Collection_name' => ['type' => 'string']];
   }
 
   /**
@@ -33,141 +60,232 @@ class Prepare extends SourcePluginBase {
    */
   public function fields() {
     return [
-      'collection' => $this->t('Collection'),
-      'nid' => $this->t('Node ID'),
       'type' => $this->t('Node type'),
-      'new_collection' => $this->t('New collection'),
-      'policy2' => $this->t('Level2 policy domain'),
-      'abstract' => $this->t('Abstract'),
-      'owner' => $this->t('Owner'),
-      'logo' => $this->t('Logo'),
-      'banner' => $this->t('Banner'),
       'elibrary' => $this->t('Elibrary creation'),
-      'status' => $this->t('Status'),
-    ];
+      'publisher' => $this->t('Publisher'),
+      'contact' => $this->t('Contact'),
+      'contact_email' => $this->t('E-mail contact'),
+    ] + parent::fields();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function initializeIterator() {
-    $map = $this->migration->getIdMap();
-    $publisher = [
-      'asset_release' => ['content_field_asset_publisher', 'field_asset_publisher_nid'],
-      'repository' => ['content_field_repository_publisher', 'field_repository_publisher_nid'],
-    ];
-    $contact = [
-      'asset_release' => ['content_type_asset_release', 'field_asset_contact_point_nid'],
-      'repository' => ['content_type_repository', 'field_repository_contact_point_nid'],
-    ];
+  protected function rowIsValid(array &$row) {
+    $messages = [];
 
-    $db = Database::getConnection();
-    $source = Database::getConnection('default', 'migrate');
+    // Ensure sane defaults.
+    $row += array_fill_keys([
+      'type',
+      'elibrary',
+      'publisher',
+      'contact',
+      'contact_email',
+    ], NULL);
 
-    // Build a list of collections that have at least 1 row with 'migrate' == 1.
-    $allowed = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->fields('m', ['collection'])
-      ->condition('m.migrate', 1)
-      ->condition('m.collection', ['', '#N/A'], 'NOT IN')
-      ->isNotNull('m.policy2')
-      ->groupBy('m.collection')
-      ->orderBy('m.collection', 'ASC')
-      ->execute()
-      ->fetchCol();
+    $nid = !empty($row['Nid']) ? (int) $row['Nid'] : NULL;
+    $vid = NULL;
 
-    $fields = $this->fields();
-    unset($fields['status']);
-    $query = $db->select('joinup_migrate_mapping', 'm', ['fetch' => \PDO::FETCH_ASSOC])
-      ->fields('m', array_keys($fields))
-      ->fields('n', ['vid'])
-      ->orderBy('m.collection', 'ASC');
-
-    if ($allowed) {
-      $query->condition('m.collection', $allowed, 'IN');
-    }
-    else {
-      // Return an empty set if there are no eligible collections.
-      $query->condition(1, 2);
-    }
-
-    $query->leftJoin(JoinupSqlBase::getSourceDbName() . '.node', 'n', 'm.nid = n.nid');
-
-    $collections = [];
-    foreach ($query->execute()->fetchAll() as $row) {
-      $collection = $row['collection'];
-      if (!isset($collections[$collection])) {
-        $collections[$collection] = [
-          'collection' => $collection,
-        ];
+    // Identify the node type.
+    if ($nid) {
+      $node = $this->db->select('node', 'n')
+        ->fields('n', ['vid', 'type'])
+        ->condition('n.nid', $nid)
+        ->condition('n.type', ['project_project', 'community', 'repository'], 'IN')
+        ->execute()
+        ->fetch();
+      if ($node) {
+        $row['type'] = $node->type;
+        $vid = $node->vid;
       }
-
-      // New collections.
-      if ($row['new_collection'] === 'Yes') {
-        $collections[$collection]['nid'] = 0;
-        $collections[$collection]['type'] = '';
-
-        if (!empty($row['abstract'])) {
-          $collections[$collection]['abstract'] = $row['abstract'];
-        }
-        if (!empty($row['logo'])) {
-          $collections[$collection]['logo'] = $row['logo'];
-        }
-        if (!empty($row['banner'])) {
-          $collections[$collection]['banner'] = $row['banner'];
-        }
-        if (!empty($row['elibrary'])) {
-          $collections[$collection]['elibrary'] = (int) $row['elibrary'];
-        }
-      }
-      // Collections inheriting values from 'community' or 'repository'.
       else {
-        if (in_array($row['type'], ['community', 'repository'])) {
-          if (isset($collections[$collection]['nid'])) {
-            $map->saveMessage(['collection' => $collection], "On collection '$collection' nid {$row['nid']} ({$row['type']}) is overriding existing value {$collections[$collection]['nid']} ({$collections[$collection]['type']}).");
-          }
-          $collections[$collection]['nid'] = $row['nid'];
-          $collections[$collection]['type'] = $row['type'];
-        }
-      }
-
-      if (!empty($row['policy2'])) {
-        $collections[$collection]['policy2'] = $row['policy2'];
-      }
-
-      if (!empty($row['owner']) && ($row['owner'] == 'Yes') && in_array($row['type'], array_keys($publisher))) {
-        $publishers = $source
-          ->select($publisher[$row['type']][0])
-          ->fields($publisher[$row['type']][0], [$publisher[$row['type']][1]])
-          ->condition($publisher[$row['type']][0] . '.vid', $row['vid'])
-          ->execute()
-          ->fetchCol();
-        if ($publishers) {
-          $collections[$collection]['publisher'] = '|' . implode('|', $publishers) . '|';
-        }
-        $contacts = $source
-          ->select($contact[$row['type']][0])
-          ->fields($contact[$row['type']][0], [$contact[$row['type']][1]])
-          ->condition($contact[$row['type']][0] . '.vid', $row['vid'])
-          ->execute()
-          ->fetchCol();
-        if ($contacts) {
-          $collections[$collection]['contact'] = '|' . implode('|', $contacts) . '|';
-        }
+        $messages[] = "Node with ID '$nid' doesn't exist or is not of type 'project_project', 'community', 'repository'";
       }
     }
 
-    foreach ($collections as $collection => $data) {
-      // New collections's nid is 0. Collections with a NULL nid are collections
-      // inheriting their data (abstract, etc.) from a Drupal 6 'community' or
-      // 'repository' but not containing any 'community' or 'repository'. Such
-      // cases should not be migrated and the error should be logged.
-      if (!isset($data['nid'])) {
-        $map->saveMessage(['collection' => $collection], "Collection '$collection' should inherit data from D6 but has no 'community' or 'repository' records defined.");
-        unset($collections[$collection]);
+    // Elibrary on 'community' should be computed.
+    $this->setElibraryCreation($row, $vid);
+
+    // Process the publisher and contact point for 'repository'.
+    $this->setPublisher($row, $vid);
+    $this->setContact($row, $vid);
+
+    // Add E-mail contact, if case.
+    $this->setContactEmail($row, $nid);
+
+    // Prepare the collection owner.
+    $this->setCollectionOwner($row);
+
+    // Register inconsistencies.
+    if ($messages) {
+      $row_index = $row['row_index'];
+      $source_ids = ['Nid' => $row['Nid']];
+      foreach ($messages as $message) {
+        $this->migration->getIdMap()->saveMessage($source_ids, "Row: $row_index, Nid: $nid: $message");
       }
     }
 
-    return new \ArrayIterator($collections);
+    return empty($messages);
+  }
+
+  /**
+   * Computes the elibrary creation.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setElibraryCreation(array &$row, $vid) {
+    if (($row['type'] !== 'community') || !$vid) {
+      return;
+    }
+
+    if (!isset($this->deactivatedCreationFlags)) {
+      $this->deactivatedCreationFlags = $this->db->select('content_type_community', 'c')
+        ->fields('c', ['vid'])
+        ->condition('c.field_community_forum_creation_value', 'Deactivated')
+        ->condition('c.field_community_wiki_creation_value', 'Deactivated')
+        ->condition('c.field_community_news_creation_value', 'Deactivated')
+        ->condition('c.field_community_documents_creati_value', 'Deactivated')
+        ->execute()
+        ->fetchCol();
+    }
+
+    if (in_array($vid, $this->deactivatedCreationFlags)) {
+      $row['elibrary'] = 0;
+    }
+  }
+
+  /**
+   * Sets the contact Email.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $nid
+   *   The node ID or NULL.
+   */
+  protected function setContactEmail(array &$row, $nid) {
+    if (!$nid || ($row['type'] !== 'project_project')) {
+      return;
+    }
+
+    if (!isset($this->emailContact)) {
+      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+      $query = $this->db->select('node', 'n')
+        ->fields('n', ['nid'])
+        ->fields('c', ['field_project_common_contact_value'])
+        ->isNotNull('c.field_project_common_contact_value');
+      $query->join('content_field_project_common_contact', 'c', 'n.vid = c.vid');
+      $this->emailContact = $query->execute()->fetchAllKeyed();
+    }
+
+    if (isset($this->emailContact[$nid])) {
+      $row['contact_email'] = $this->emailContact[$nid];
+    }
+  }
+
+  /**
+   * Sets the publishers.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setPublisher(array &$row, $vid) {
+    if (!$vid || ($row['type'] !== 'repository')) {
+      return;
+    }
+
+    if (!isset($this->publisher)) {
+      $result = $this->db->select('content_field_repository_publisher', 'p')
+        ->fields('p', ['vid'])
+        ->fields('p', ['field_repository_publisher_nid'])
+        ->execute()
+        ->fetchAll();
+      foreach ($result as $item) {
+        $this->publisher[(int) $item->vid][] = $item->field_repository_publisher_nid;
+      }
+    }
+
+    if (!empty($this->publisher[$vid])) {
+      $row['publisher'] = implode(',', $this->publisher[$vid]);
+    }
+  }
+
+  /**
+   * Sets the contact.
+   *
+   * @param array $row
+   *   The iterator current row.
+   * @param int|null $vid
+   *   The node revision ID or NULL.
+   */
+  protected function setContact(array &$row, $vid) {
+    if (!$vid || ($row['type'] !== 'repository')) {
+      return;
+    }
+
+    if (!isset($this->contact)) {
+      $result = $this->db->select('content_type_repository', 'c')
+        ->fields('c', ['vid'])
+        ->fields('c', ['field_repository_contact_point_nid'])
+        ->isNotNull('c.field_repository_contact_point_nid')
+        ->execute()
+        ->fetchAll();
+      foreach ($result as $item) {
+        $this->contact[(int) $item->vid][] = $item->field_repository_contact_point_nid;
+      }
+    }
+
+    if (!empty($this->contact[$vid])) {
+      $row['contact'] = implode(',', $this->contact[$vid]);
+    }
+  }
+
+  /**
+   * Sets the collection owner.
+   *
+   * @param array $row
+   *   The iterator current row.
+   */
+  protected function setCollectionOwner(array &$row) {
+    // Convert collection owners E-mails into user IDs.
+    $collection_owner = trim($row['Collection Owner']);
+
+    if ($collection_owner) {
+      // Collection owners is a comma separated string of E-mails.
+      $collection_owner = array_filter(array_map('trim', explode(',', $collection_owner)));
+      // Convert E-mails to UIDs.
+      if (!isset($this->importedUsers)) {
+        $this->importedUsers = $this->db->select('d8_user', 'u')
+          ->fields('u', ['mail', 'uid'])
+          ->execute()
+          ->fetchAllKeyed();
+      }
+      $uids = array_filter(array_map(function ($mail) {
+        return isset($this->importedUsers[$mail]) ? (int) $this->importedUsers[$mail] : NULL;
+      }, $collection_owner));
+      $collection_owner = implode(',', $uids);
+    }
+
+    $row['Collection Owner'] = $collection_owner ?: NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    if (!$row->getSourceProperty('Collection Owner')) {
+      $row_index = $row->getSourceProperty('row_index');
+      $collection = $row->getSourceProperty('Collection_name');
+      $this->migration->getIdMap()->saveMessage(
+        $row->getSourceIdValues(),
+        "Row: $row_index, Collection: '$collection': The collection owner is missed or the user was not migrated");
+    }
+
+    return parent::prepareRow($row);
   }
 
 }

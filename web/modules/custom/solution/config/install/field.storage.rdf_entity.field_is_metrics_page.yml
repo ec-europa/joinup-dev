@@ -7,9 +7,15 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      uri: 'http://joinup.eu/solution/metrics_page'
-      title: ''
-      options: ''
+      uri:
+        predicate: 'http://joinup.eu/solution/metrics_page'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_is_metrics_page
 field_name: field_is_metrics_page
 entity_type: rdf_entity
@@ -18,7 +24,7 @@ settings: {  }
 module: link
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

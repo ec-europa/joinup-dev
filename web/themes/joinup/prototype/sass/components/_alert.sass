@@ -22,12 +22,12 @@
 // Elements
 // --------------------------------------------------
 .alert__icon
-  left: 5px
+  left: 15px
   color: #fff
-  +icon-size(50px)
+  +icon-size(30px)
   +centered($horizontal: false, $vertical: true)
 
-.alert__message
+.alert__message, .alert__message a
   color: #fff
 
 .alert__close
@@ -36,7 +36,7 @@
   right: 0
   opacity: .4
   color: #000
-  +icon-size(50px)
+  +icon-size(30px)
 
 // Modifiers
 // --------------------------------------------------
@@ -53,3 +53,13 @@
 .alert--status
   background-color: $color-success
 
+// Drupal hacks
+.form-managed-file
+  .messages
+    color: #fff
+    position: relative
+    margin-bottom: 20px
+    padding: 20px 60px
+    +border-radius(4px)
+  .messages--error
+    background-color: $color-error

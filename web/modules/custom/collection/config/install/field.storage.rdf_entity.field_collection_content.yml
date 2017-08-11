@@ -7,15 +7,18 @@ dependencies:
 third_party_settings:
   rdf_entity:
     mapping:
-      value: 'http://joinup.eu/search'
+      value:
+        predicate: 'http://joinup.eu/search'
+        format: 'xsd:string'
 id: rdf_entity.field_collection_content
 field_name: field_collection_content
 entity_type: rdf_entity
 type: search_api_field
 settings:
-  index: collections
+  index: published
   facet_regions:
     top: 'Collection content top'
+    inline_facets: 'Inline facets'
   view_modes:
     'entity:node':
       custom_page: view_mode_tile
@@ -23,6 +26,7 @@ settings:
       document: view_mode_tile
       event: view_mode_tile
       news: view_mode_tile
+      newsletter: default
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
       asset_release: default
@@ -34,7 +38,7 @@ settings:
 module: search_api_field
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

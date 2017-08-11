@@ -6,37 +6,52 @@ dependencies:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
     - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
-    - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
     - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - asset_distribution
     - digital_size_formatter
     - ds
-    - file
+    - user
 id: rdf_entity.asset_distribution.view_mode_featured
 targetEntityType: rdf_entity
 bundle: asset_distribution
 mode: view_mode_featured
 content:
-  field_ad_file:
+  field_ad_access_url:
+    type: tracked_hosted_file_download
     weight: 9
+    region: content
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
+    settings:
+      hosted_files_title: Download
+      remote_files_title: External
+      show_remote_files: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_file_size:
     type: digital_size
     weight: 10
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_ad_licence:
     weight: 5
     label: hidden
@@ -44,6 +59,7 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
   label:
     label: hidden
     type: string
@@ -58,13 +74,15 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    region: content
 hidden:
-  field_ad_access_url: true
   field_ad_creation_date: true
   field_ad_description: true
   field_ad_format: true
   field_ad_gitb_compliant: true
   field_ad_modification_date: true
   field_ad_repr_technique: true
+  field_download: true
   field_status: true
+  langcode: true
   og_audience: true

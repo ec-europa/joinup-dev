@@ -1,0 +1,25 @@
+services:
+  joinup_migrate.custom_page_post_save_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\CustomPagePostSaveEventSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_migrate.redirect_creation_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\CreateRedirectEventSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_migrate.post_prepare_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\PostPrepareSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_migrate.translate_field_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\TranslateFieldSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_migrate.solution_owner_check_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\SolutionOwnerCheckSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_migrate.mail_swap_subscriber:
+    class: Drupal\joinup_migrate\EventSubscriber\MailSwapSubscriber
+    tags:
+      - { name: event_subscriber }

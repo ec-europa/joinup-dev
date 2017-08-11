@@ -5,8 +5,10 @@
  * Provides functionality for the contact information module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -27,6 +29,16 @@ function contact_information_rdf_entity_presave(EntityInterface $entity) {
   }
 
   contact_information_entity_auto_label($entity);
+
+  // The initial state of a contact information entity is validated. The contact
+  // is created as part of proposing a collection, and in the collection propose
+  // form the workflow state is hidden from the user, so it would remain in the
+  // "__new__" state after submission.
+  // We can safely set the initial state to "validated" because a newly created
+  // contact information entities don't need to be validated by a third party.
+  if ($entity->field_ci_state->value === '__new__') {
+    $entity->set('field_ci_state', 'validated');
+  }
 }
 
 /**
@@ -67,7 +79,7 @@ function contact_information_inline_entity_form_entity_form_alter(&$entity_form,
  *
  * @param string $entity_type
  *   The type of the entity being created.
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity being built.
  */
 function contact_information_inline_entity_form_entity_builder($entity_type, EntityInterface $entity) {
@@ -85,11 +97,44 @@ function contact_information_inline_entity_form_entity_builder($entity_type, Ent
  * and entity label does not support this. For this reason,
  * the label actually concatenates all values from field_ci_name field.
  *
- * @param EntityInterface $entity
+ * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The entity to process.
  */
 function contact_information_entity_auto_label(EntityInterface $entity) {
   // Generate the label using the values of the name field.
-  $names = array_column($entity->get('field_ci_name')->getValue(), 'value');
+  $names = array_map('trim', array_column($entity->get('field_ci_name')->getValue(), 'value'));
   $entity->set('label', implode(', ', $names));
+}
+
+/**
+ * Revoke access to canonical route for anonymous users for contact information.
+ *
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // Access being checked for a contact information.
+  if ($entity->getEntityTypeId() != 'rdf_entity') {
+    return AccessResult::neutral();
+  }
+  if ($entity->bundle() != 'contact_information') {
+    return AccessResult::neutral();
+  }
+  // Only revoke access for anonymous users.
+  if ($account->isAuthenticated()) {
+    return AccessResult::neutral();
+  }
+  // Get entity from route.
+  $route = \Drupal::routeMatch();
+  $route_name = $route->getRouteName();
+  if ($route_name != 'entity.rdf_entity.canonical') {
+    return AccessResult::neutral();
+  }
+  $route_entity = $route->getParameter('rdf_entity');
+  if (empty($route_entity)) {
+    return AccessResult::neutral();
+  }
+  if ($entity->id() == $route_entity->id()) {
+    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+  }
+  return AccessResult::neutral();
 }

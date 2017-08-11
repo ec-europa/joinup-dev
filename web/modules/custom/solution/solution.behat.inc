@@ -5,17 +5,20 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -29,7 +32,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use FileTrait;
   use NodeTrait;
   use OgTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
   use UtilityTrait;
@@ -44,11 +46,19 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Navigates to the add solution form.
    *
-   * @When (I )go to the add solution form
-   * @When (I )visit the add solution form
+   * @param string $collection
+   *   The parent collection.
+   *
+   * @When (I )go to the add solution form of the :collection collection
+   * @When (I )visit the add solution form of the :collection collection
    */
-  public function visitAddSolutionForm() {
-    $this->visitPath('/rdf_entity/add/solution');
+  public function visitAddSolutionForm($collection) {
+    $collection = $this->getRdfEntityByLabel($collection);
+    $solution_url = Url::fromRoute('solution.collection_solution.add', [
+      'rdf_entity' => $collection->id(),
+    ]);
+
+    $this->visitPath($solution_url->getInternalPath());
   }
 
   /**
@@ -87,14 +97,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * title        | description            | document | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki
-   * Foo solution | This is a foo solution | text.pdf | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com
-   * Bar solution | This is a bar solution | text.pdf | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com
+   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description and elibrary creation are mandatory.
+   * Fields title, description, state and elibrary creation are mandatory.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -129,7 +139,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Table format:
    * | title             | Sample solution                         |
    * | description       | A sample solution                       |
-   * | document          | text.pdf                                |
+   * | documentation     | text.pdf                                |
    * | moderation        | no|yes                                  |
    * | closed            | no|yes                                  |
    * | elibrary creation | facilitators|members|registered users   |
@@ -140,7 +150,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Fields title, description and elibrary creation are required.
    *
-   * @param TableNode $solution_table
+   * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
    *
    * @throws \Exception
@@ -178,7 +188,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @param string $bundle
    *   The bundle of the content entity.
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @Given (the following ):bundle content belong to the corresponding solutions:
@@ -204,9 +214,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * a facilitator.
    *
    * @param string $username
-   *    The name of the user.
+   *   The name of the user.
    * @param string $solution
-   *    The label of the group entity.
+   *   The label of the group entity.
    *
    * @throws \Exception
    *    Throws an exception when the user is not found.
@@ -249,12 +259,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     foreach ($file_fields as $field_name) {
       if (!empty($values[$field_name])) {
-        $values[$field_name] = [$this->createFile($values[$field_name], $this->getMinkParameter('files_path'))];
+        foreach ($values[$field_name] as &$filename) {
+          $filename = [$this->createFile($filename)->id()];
+        }
       }
     }
 
     $values['rid'] = 'solution';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
@@ -272,7 +283,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $this->getSolutionByName($solution)->delete();
+    $solution = $this->getSolutionByName($solution);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
   }
 
   /**
@@ -334,17 +347,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    // We cannot rely on $this->assertRdfEntityCount() because a solution shares
-    // the same bundle with a release. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->notExists('field_is_has_version')
       ->count()
       ->execute();
     if ($actual != $number) {
-      throw new \Exception("Wrong number of releases. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
     }
   }
 
@@ -361,7 +369,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Sample solution A | John | facilitator, administrator |
    * | Sample solution B | Jack |                            |
    *
-   * @param TableNode $membership_table
+   * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
    *
    * @throws \Exception
@@ -399,16 +407,34 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Tracks solutions that are manually deleted and don't need cleaning up.
+   *
+   * @param string $solution
+   *   The name of the solution.
+   *
+   * @Given the :solution solution will be deleted manually
+   */
+  public function skipCleaningOfSolution($solution) {
+    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+  }
+
+  /**
    * Remove any created solutions.
    *
    * @AfterScenario
    */
-  public function cleanSolutions() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::service('entity_type.manager')->getStorage('rdf_entity');
+  public function cleanSolutions(AfterScenarioScope $event) {
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
-      $solution->delete();
+      $name = $solution->getName();
+      try {
+        $solution->skip_notification = TRUE;
+        $solution->delete();
+      }
+      catch (Throwable $e) {
+        // Throw a more helpful error if something goes wrong during cleanup.
+        throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
+      }
     }
   }
 
@@ -416,7 +442,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Field alias mapping.
    *
    * @return array
-   *    Mapping.
+   *   Mapping.
    */
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
@@ -459,10 +485,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Converts values from user friendly to normal machine values.
    *
    * @param array $fields
-   *    An array of fields keyed by field name.
+   *   An array of fields keyed by field name.
    *
    * @return mixed
-   *    The array with the values converted.
+   *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
@@ -473,6 +499,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'field_is_elibrary_creation' =>
         ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
+      'field_is_state' => [
+        'draft' => 'draft',
+        'proposed' => 'proposed',
+        'validated' => 'validated',
+        'deletion request' => 'deletion_request',
+        'needs update' => 'needs_update',
+        'blacklisted' => 'blacklisted',
+      ],
     ];
 
     foreach ($fields as $field => $value) {
@@ -485,8 +519,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    // Convert any entity reference field label value with the entity id.
-    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $fields);
+    // Convert any entity reference field label value with the entity ID.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
 
     return $fields;
   }
@@ -501,7 +535,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | Solution A | John | Status1          |
    * | Solution B | Jack | Status1, Status2 |
    *
-   * @param TableNode $check_table
+   * @param \Behat\Gherkin\Node\TableNode $check_table
    *   The table with the triplets solution-user-options.
    *
    * @throws \Exception
@@ -533,14 +567,57 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Enable a given language.
+   *
+   * @Given the language :langcode is enabled
+   */
+  public function languageEnabled($langcode) {
+    // Create the needed language.
+    $language_manager = \Drupal::languageManager();
+    if (!$language_manager->getLanguage($langcode)) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+  }
+
+  /**
+   * Creates a simple multilingual solution.
+   *
+   * @Given the multilingual :title solution
+   */
+  public function theMultilingualSolution($title) {
+    $values = [
+      'rid' => 'solution',
+      'label' => $title,
+      'field_is_state' => 'validated',
+      'field_is_description' => "English description",
+    ];
+    $solution = Rdf::create($values);
+    $solution->save();
+    // Fill with the specific content translation fields and fall-back to
+    // the remaining values from the base translation.
+    $solution_values = $solution->toArray();
+    $solution_values += [
+      'content_translation_source' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      'content_translation_status' => TRUE,
+      'content_translation_uid' => 1,
+      'content_translation_outdated' => FALSE,
+    ];
+    $solution_values['field_is_description'] = "Catalan description";
+    // Create the translation.
+    $solution->addTranslation('ca', $solution_values)->save();
+    $this->solutions[$solution->id()] = $solution;
+
+  }
+
+  /**
    * Applies a transition to a solution.
    *
    * @param string $username
-   *    The username applying the transition.
+   *   The username applying the transition.
    * @param string $entity_name
-   *    The title of the solution.
+   *   The title of the solution.
    * @param string $to_state
-   *    The state that the solution transits to.
+   *   The state that the solution transits to.
    *
    * @throws \Exception
    *    An exception is thrown if the user is not found or the transition is not

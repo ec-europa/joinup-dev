@@ -8,10 +8,12 @@ dependencies:
   - contact_information
   - datetime
   - ds
+  - file_url
   - image
   - inline_entity_form
   - joinup_core
   - joinup_user
+  - language
   - link
   - og
   - options
@@ -24,13 +26,14 @@ config_devel:
   - core.entity_form_display.rdf_entity.asset_release.default
   - core.entity_view_display.rdf_entity.asset_release.compact
   - core.entity_view_display.rdf_entity.asset_release.default
+  - core.entity_view_display.rdf_entity.asset_release.view_mode_featured
+  - core.entity_view_display.rdf_entity.asset_release.view_mode_tile
   - field.field.rdf_entity.asset_release.field_isr_banner
   - field.field.rdf_entity.asset_release.field_isr_contact_information
   - field.field.rdf_entity.asset_release.field_isr_creation_date
   - field.field.rdf_entity.asset_release.field_isr_description
   - field.field.rdf_entity.asset_release.field_isr_distribution
   - field.field.rdf_entity.asset_release.field_isr_documentation
-  - field.field.rdf_entity.asset_release.field_isr_has_version
   - field.field.rdf_entity.asset_release.field_isr_included_asset
   - field.field.rdf_entity.asset_release.field_isr_is_version_of
   - field.field.rdf_entity.asset_release.field_keywords
@@ -53,7 +56,6 @@ config_devel:
   - field.storage.rdf_entity.field_isr_description
   - field.storage.rdf_entity.field_isr_distribution
   - field.storage.rdf_entity.field_isr_documentation
-  - field.storage.rdf_entity.field_isr_has_version
   - field.storage.rdf_entity.field_isr_included_asset
   - field.storage.rdf_entity.field_isr_is_version_of
   - field.storage.rdf_entity.field_isr_language

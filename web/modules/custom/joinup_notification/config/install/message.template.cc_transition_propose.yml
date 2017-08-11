@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: cc_transition_propose
+label: 'Community content on Propose'
+description: 'Template id 3'
+text:
+  -
+    value: '<p>Joinup: Content has been proposed</p>'
+    format: content_editor
+  -
+    value: '<p>@actor:full_name has submitted @entity:hasPublished:status @entity:bundle - "@entity:title" for publication in the @group:bundle: "@group:title".</p><p>You can access the proposed new content at the following link: @entity:url.</p>'
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
