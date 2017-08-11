@@ -130,7 +130,6 @@ Feature: Add distribution through the UI
     # Clean up the asset distribution that was created through the UI.
     Then I delete the "Source tarball" asset distribution
 
-  @javascript
   Scenario: The distribution access URL field should accept multiple file extensions.
     Given I am logged in as a "facilitator" of the "Solution random x name" solution
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
