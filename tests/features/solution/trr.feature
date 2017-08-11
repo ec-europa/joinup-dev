@@ -1,11 +1,12 @@
-# At the moment this test uses the data from the joinup_demo module, and can therefore not be ran on the CI.
-# This test will be enabled in ISAICP-3493.
 @api
 Feature: Creating a test (solution) in the TRR collection.
   In order to create tests
   As a collection facilitator
   I need to be able to add 'test'-enabled solutions.
- @wip
+
+  @wip
+  # At the moment this test uses the data from the joinup_demo module, and can therefore not be ran on the CI.
+  # This test will be enabled in ISAICP-3493.
   Scenario: Create a TRR solution
     And the following owner:
       | name | type                         |
@@ -83,10 +84,20 @@ Feature: Creating a test (solution) in the TRR collection.
       | release notes  | Changed release         |
       | distribution   | TRR Distribution bar    |
       | is version of  | TRR solution bar        |
+
     # The GITB compliant field is only shown when the solution has a certain solution type.
     When I am logged in as a "facilitator" of the "TRR solution foo" solution
     When I go to the "TRR Distribution foo" asset distribution edit form
     Then the following fields should be present "GITB compliant"
+
+    When I go to the homepage of the "TRR release foo" release
+    And I click "Add distribution" in the plus button menu
+    Then the following fields should be present "GITB compliant"
+
     When I am logged in as a "facilitator" of the "TRR solution bar" solution
     When I go to the "TRR Distribution bar" asset distribution edit form
+    Then the following fields should not be present "GITB compliant"
+
+    When I go to the homepage of the "TRR release bar" release
+    And I click "Add distribution" in the plus button menu
     Then the following fields should not be present "GITB compliant"

@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
@@ -296,8 +295,8 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
       $solution = $rdf;
     }
     // This distribution is being added to a release.
-    elseif ($rdf->bundle() == 'collection') {
-      $solution = $rdf->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
+    elseif ($rdf->bundle() == 'asset_release') {
+      $solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf);
     }
     elseif ($rdf->bundle() == 'asset_distribution') {
       $solution = AssetDistributionRelations::getDistributionSolution($rdf);
