@@ -177,6 +177,20 @@ Feature: Add distribution through the UI
       Then I delete the "MacOSX binary" asset distribution
       And I delete the "MacOSX binary" asset distribution
 
+    Scenario: Distributions with the same name should not be allowed within the same solution.
+      Given the following distribution:
+        | title       | Windows - source       |
+        | description | Sample description     |
+        | access url  | test.zip               |
+        | solution    | Solution random x name |
+      And I am logged in as a facilitator of the "Solution random x name" solution
+      When I go to the homepage of the "Solution random x name" solution
+      And I click "Add distribution" in the plus button menu
+      When I fill in "Title" with "Windows - source"
+      And I select "WTFPL" from "License"
+      And I press "Save"
+      Then I should see the error message "A distribution with title Windows - source already exists in this solution. Please choose a different title."
+
     Scenario: Licences shown in the solution header should be comma separated.
       Given the following licence:
         | title       | Boost Software License                                                         |

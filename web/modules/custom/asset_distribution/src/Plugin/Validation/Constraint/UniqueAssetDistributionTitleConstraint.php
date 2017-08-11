@@ -19,7 +19,7 @@ class UniqueAssetDistributionTitleConstraint extends Constraint {
    *
    * @var string
    */
-  public $message = 'A distribution with title %title already exists in this release. Please choose a different title.';
+  public $message = 'A distribution with title %title already exists in this %bundle. Please choose a different title.';
 
   /**
    * {@inheritdoc}

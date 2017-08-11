@@ -24,10 +24,12 @@ class UniqueAssetDistributionTitleValidator extends ConstraintValidator {
 
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $items->getEntity();
-
+    // Distinguish between solutions and releases.
+    $bundle = empty($entity->get('og_audience')->first()->getValue()['target_id']) ? t('release') : $entity->get('og_audience')->first()->entity->bundle();
     if (!asset_distribution_title_is_unique($entity)) {
       $this->context->addViolation($constraint->message, [
         '%title' => $entity->label(),
+        '%bundle' => $bundle,
       ]);
     }
   }
