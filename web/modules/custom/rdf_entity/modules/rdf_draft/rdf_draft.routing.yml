@@ -1,7 +1,0 @@
-rdf_draft.settings:
-  path: '/admin/config/rdf_entity/draft-settings'
-  defaults:
-    _title: 'RDF draft settings'
-    _form: '\Drupal\rdf_draft\Form\SettingsForm'
-  requirements:
-    _permission: 'administer rdf entity'

@@ -486,9 +486,9 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
+ * Implements hook_ENTITY_TYPE_delete() for OG Membership entities.
  */
-function joinup_user_og_membership_predelete(OgMembershipInterface $entity) {
+function joinup_user_og_membership_delete(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 }
 
@@ -502,11 +502,11 @@ function joinup_user_og_membership_predelete(OgMembershipInterface $entity) {
  *   The OG membership entity.
  */
 function joinup_user_invalidate_user_cache_tags(OgMembershipInterface $entity) {
-  $user = $entity->getUser();
-  if (!empty($user)) {
+  if (!empty($entity->get('uid')->target_id)) {
+    $tags = ['user:' . $entity->get('uid')->target_id];
     /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $invalidator */
     $invalidator = \Drupal::service('cache_tags.invalidator');
-    $invalidator->invalidateTags($entity->getUser()->getCacheTagsToInvalidate());
+    $invalidator->invalidateTags($tags);
   }
 }
 

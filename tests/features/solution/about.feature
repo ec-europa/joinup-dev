@@ -35,7 +35,7 @@ Feature: About this solution
       | policy domain       | Demography, E-inclusion                                             |
       | related solutions   | Gel, Polymer, Protein                                               |
       | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
-      | spatial coverage    | Italy, Egypt                                         |
+      | spatial coverage    | Italy, Egypt                                                        |
       | status              | Under development                                                   |
       | collection          | Monoclonal Antibody Development                                     |
 
@@ -51,50 +51,62 @@ Feature: About this solution
     # The description.
     Then I should see the text "Separating molecules by size."
 
-    # Multiple instances of Contact information, each potentially having
-    # multiple names, e-mail addresses and websites.
-    Then I should see the following lines of text:
-    | Ariel Lucile |
-    | Maiken Bine  |
-    | Peer Milla   |
-    And I should see the following links:
-    | ariel@nova.dk               |
-    | maiken@nova.dk              |
-    | peer@nova.dk                |
-    | http://nova.com             |
-    | http://nova.dk              |
-    | https://innovation.nova.org |
+    # The grey area for owner and contact information.
+    And I should see the text "Owner/Contact Information"
 
     # Multiple owners.
+    And I should see the text "Owner"
     And I should see the following lines of text:
-    | Nova Pharmaceuticals |
-    | Senatier             |
+      | Nova Pharmaceuticals |
+      | Senatier             |
 
-    # Multiple spatial coverage entries.
+    # Multiple instances of Contact information, each potentially having
+    # multiple names, e-mail addresses and websites.
+    And I should see the text "Contact information"
     And I should see the following lines of text:
-    | Egypt                |
-    | Italy |
+      | Ariel Lucile |
+      | Maiken Bine  |
+      | Peer Milla   |
+    And I should see the text "E-mail address"
+    And I should see the text "Website URL"
+    And I should see the following links:
+      | ariel@nova.dk               |
+      | maiken@nova.dk              |
+      | peer@nova.dk                |
+      | http://nova.com             |
+      | http://nova.dk              |
+      | https://innovation.nova.org |
 
-    # Multiple solution types.
+    # Categorisation grey area.
+    And I should see the text "Categorisation"
     And I should see the following lines of text:
-    | [ABB113] Non-binding instrument    |
-    | [ABB159] Service Discovery Service |
+      | [ABB113] Non-binding instrument    |
+      | [ABB159] Service Discovery Service |
 
-    # Solution status.
+    And I should see the text "Status"
     And I should see the text "Under development"
 
-    # Multiple languages.
+    And I should see the text "Languages"
     And I should see the following lines of text:
-    | Kallawaya |
-    | Italian   |
+      | Kallawaya |
+      | Italian   |
+
+    # Moderation grey area.
+    And I should see the text "Moderation"
+
+    # The rest of the fields should not be seen at the moment.
+    # Multiple spatial coverage entries.
+    And I should not see the following lines of text:
+    | Egypt |
+    | Italy |
 
     # Multiple policy domains.
-    And I should see the following lines of text:
+    And I should not see the following lines of text:
     | Demography  |
     | E-inclusion |
 
     # Multiple related solutions.
-    And I should see the following lines of text:
+    And I should not see the following lines of text:
     | Gel     |
     | Polymer |
 

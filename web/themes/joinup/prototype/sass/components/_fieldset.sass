@@ -16,8 +16,11 @@
     margin-bottom: 0
 
 .fieldset__field-label
+  margin-top: 0
   font-weight: $font-weight-medium
 
+.fieldset__title
+  margin-top: 0
 // Modifiers
 // --------------------------------------------------
 .fieldset--separated
@@ -28,9 +31,26 @@
 
 .fieldset--box
   background: $color-grey-lighter
-  margin-bottom: $form-margin
-  &:last-of-type
-    margin-bottom: 0
+  padding: 20px
+  margin: $form-margin -20px
+  +breakpoint(tablet)
+    margin-left: -30px
+    margin-right: -30px
+    padding: 40px 30px
+  +breakpoint(desktop)
+    margin-left: -60px
+    margin-right: -60px
+    padding: 40px 60px
+  &:last-child
+    margin-bottom: -20px
+    +breakpoint(tablet)
+      margin-bottom: -40px
+
+.fieldset__field--multiple
+  .fieldset__field-item
+    margin-bottom: $field-margin
+    &:last-of-type
+      margin-bottom: 0
 
 // Dependiencies
 // --------------------------------------------------

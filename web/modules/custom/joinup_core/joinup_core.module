@@ -493,11 +493,25 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_presave().
  *
- * Provide default images for collections and solutions in case they are empty.
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ *
+ * Also, provide default images for collections and solutions in case they are
+ * empty.
  */
 function joinup_core_rdf_entity_presave(EntityInterface $entity) {
   if (!in_array($entity->bundle(), ['solution', 'collection'])) {
     return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
   }
 
   $field_data = [
@@ -758,5 +772,85 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
     if ($langcode != 'en') {
       unset($items[$item_id]);
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Re-index all group content when a group is saved with a changed status.
+ *
+ * The hasPublished flag ensures that this will occur only when an entity is
+ * published for the first time.
+ *
+ * @see \joinup_core_rdf_entity_presave()
+ */
+function joinup_core_rdf_entity_update(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
+    return;
+  }
+
+  if ($entity->isPublished() && isset($entity->hasPublished) && $entity->hasPublished === FALSE) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
+    $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
+    foreach ($entities as $entity_item) {
+      $entity_item->original = $entity_item;
+      search_api_entity_update($entity_item);
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Sign in');
+  $form['#title'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_core\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['user.login'])) {
+    $local_tasks['user.login']['title'] = t('Sign in');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * Mimic the og_entity_predelete function to delete the memberships of the user
+ * before the user is deleted. The goal is to skip all notification attempts
+ * related to the membership deletion.
+ *
+ * This workaround will prevent extra side loading and saving of entities.
+ */
+function joinup_core_user_predelete(EntityInterface $entity) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
+    $membership->skip_notification = TRUE;
+    $membership->delete();
   }
 }
