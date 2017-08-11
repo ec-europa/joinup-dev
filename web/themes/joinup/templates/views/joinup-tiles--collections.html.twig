@@ -38,11 +38,7 @@
         </div>
       {% endfor %}
       <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col mdl-cell--3-col-wide listing__item--create-tile">
-        <div class="row">
-          <div class="mdl-grid">
-            {% include directory ~ '/templates/parts/rdf-entity--collection--listing-item--add-collection.html.twig' %}
-          </div>
-        </div>
+        {% include directory ~ '/templates/parts/rdf-entity--collection--listing-item--add-collection.html.twig' %}
       </div>
     </div>
   </div>
