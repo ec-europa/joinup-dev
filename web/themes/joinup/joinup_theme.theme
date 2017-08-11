@@ -392,7 +392,9 @@ function joinup_theme_preprocess_menu(&$variables) {
  * Implements hook_preprocess_block().
  */
 function joinup_theme_preprocess_block(&$variables) {
-  if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
+  $block_id = $variables['elements']['#id'];
+
+  if (isset($block_id) && $block_id == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
     // Indicate if page contains listing
@@ -449,11 +451,15 @@ function joinup_theme_preprocess_block(&$variables) {
   // Get the ID of the block and add this to the main menu theme attributes,
   // so it is possible to retrieve block ID in suggestions function.
   // @see joinup_theme_theme_suggestions_menu_alter().
-  if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
-    $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  $is_main_menu = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main';
+  $is_main_local_tasks = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu_local_tasks';
+
+  if ($is_main_menu || $is_main_local_tasks) {
+    $variables['content']['#theme'] = $variables['content']['#theme'] . '__' . $block_id;
   }
+
   // The front page is also shown as a listing of entities.
-  if ($variables['elements']['#id'] === 'frontpageblock') {
+  if ($block_id === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
   }
 }
@@ -487,20 +493,6 @@ function joinup_preprocess_file_managed_file(array &$variables) {
     $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
   }
 
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  // Remove the block and replace dashes with underscores in the block ID to
-  // use for the hook name.
-  // Block ID is provided in the preprocess function.
-  // @see joinup_theme_preprocess_block().
-  if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
-    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
-  }
 }
 
 /**

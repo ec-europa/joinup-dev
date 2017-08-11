@@ -15,9 +15,11 @@
  */
 #}
 {%
-  set classes = [
-    'mdl-menu__item',
-    is_active ? 'is-active',
-  ]
+set classes = [
+  'tab',
+  'tab--horizontal',
+  'mdl-tabs__tab',
+  is_active ? 'is-active',
+]
 %}
 <li{{ attributes.addClass(classes) }}>{{ link }}</li>
