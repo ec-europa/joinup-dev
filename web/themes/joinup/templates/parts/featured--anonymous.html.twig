@@ -2,8 +2,7 @@
   <div class="anonymous-menu">
     <ul class="anonymous-menu__list">
       <li class="anonymous-menu__item">
-        {# @todo The login text should be changed - "Sign in" instead of "Log in" - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639. #}
-        <a class="anonymous-menu__link" href="{{ path("user.login") }}">{{ 'Log in'|t }}</a>
+        <a class="anonymous-menu__link" href="{{ path("user.login") }}">{{ 'Sign in'|t }}</a>
       </li>
     </ul>
   </div>
@@ -17,7 +16,6 @@
         <label class="search-bar__label mdl-button mdl-js-button mdl-button--icon" for="search-bar__input">
           <span class="search-bar__icon icon icon--search"></span>
         </label>
-        {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
         <form action="{{ path("view.search.page_1") }}">
         <input class="search-bar__input mdl-textfield__input" placeholder="Start typing to search..." type="text" name="keys"
           id="search-bar__input">

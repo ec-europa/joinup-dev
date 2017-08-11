@@ -314,6 +314,18 @@ function joinup_user_form_user_form_alter(&$form, FormStateInterface $form_state
     return;
   }
 
+  // Show the user name if the user does not have access to the original account
+  // name field.
+  /** @var \Drupal\user\UserInterface $user */
+  $user = $form_state->getFormObject()->getEntity();
+  $form['user_name'] = [
+    '#type' => 'inline_template',
+    '#template' => '<p><strong>{{ "Username"|t }}:</strong> <em>{{ name }}</em></p>',
+    '#context' => ['name' => $user->getAccountName()],
+    '#access' => !$form['account']['name']['#access'],
+    '#weight' => -100,
+  ];
+
   $form['actions']['submit']['#submit'][] = 'joinup_user_user_form_submit';
 }
 
@@ -443,6 +455,18 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 
+  if ($entity->isNew()) {
+    return;
+  }
+
+  /** @var \Drupal\og\OgMembershipInterface $original_membership */
+  $original_membership = $entity->original;
+  // Do not send a notification about changes in the membership if the roles did
+  // not change.
+  if ($entity->getRolesIds() === $original_membership->getRolesIds()) {
+    return;
+  }
+
   /** @var \Drupal\user\Entity\User $account */
   $account = $entity->getUser();
 
@@ -462,9 +486,9 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_predelete() for OG Membership entities.
+ * Implements hook_ENTITY_TYPE_delete() for OG Membership entities.
  */
-function joinup_user_og_membership_predelete(OgMembershipInterface $entity) {
+function joinup_user_og_membership_delete(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 }
 

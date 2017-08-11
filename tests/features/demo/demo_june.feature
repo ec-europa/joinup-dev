@@ -55,7 +55,7 @@ Feature: June 2016 demo
     When I go to "/user"
     And I fill in "Username" with "Nick Fury"
     And I fill in "Password" with "ihaveasecret"
-    And I press "Log in"
+    And I press "Sign in"
     # Login was successful if I see my profile page.
     Then I should see the heading "Nick Fury"
     And I should see the link "Collections"

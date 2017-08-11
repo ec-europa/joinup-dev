@@ -30,8 +30,7 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   public function assertTileNotMarkedAsShared($heading) {
     $element = $this->getTileByHeading($heading);
 
-    $share = $element->find('css', '.icon--shared');
-    if ($share) {
+    if ($element->find('css', '.icon--shared')) {
       throw new \Exception("The tile '$heading' is marked as shared, but it shouldn't be.");
     }
   }
@@ -67,6 +66,44 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     $title_attribute = $parent->getAttribute('title');
     if ($title_attribute !== "Shared from $collection") {
       throw new \Exception("The tile '$heading' is marked as shared from $title_attribute, but it should be '$collection'.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as pinned.
+   *
+   * @Then the :tile tile should be marked as pinned
+   */
+  public function assertTileMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is not marked as pinned, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as pinned.
+   *
+   * @Then the :tile tile should not be marked as pinned
+   */
+  public function assertTileNotMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
     }
   }
 
