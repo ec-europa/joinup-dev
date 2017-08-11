@@ -776,17 +776,17 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  *
- * Re index all children on an entity update that includes a status change.
+ * Re-index all group content when a group is saved with a changed status.
  *
  * The hasPublished flag ensures that this will occur only when an entity is
  * published for the first time.
  *
  * @see \joinup_core_rdf_entity_presave()
  */
-function joinup_core_entity_update(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'rdf_entity' || !in_array($entity->bundle(), ['collection', 'solution'])) {
+function joinup_core_rdf_entity_update(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
 
