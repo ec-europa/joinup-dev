@@ -24,13 +24,25 @@ class UniqueAssetDistributionTitleValidator extends ConstraintValidator {
 
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $items->getEntity();
-    // Distinguish between solutions and releases.
-    $bundle = empty($entity->get('og_audience')->first()->getValue()['target_id']) ? t('release') : $entity->get('og_audience')->first()->entity->bundle();
-    if (!asset_distribution_title_is_unique($entity)) {
-      $this->context->addViolation($constraint->message, [
-        '%title' => $entity->label(),
-        '%bundle' => $bundle,
-      ]);
+
+    /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+    $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+    // If the entity was not created through the normal route, return.
+    if (empty($rdf_entity)) {
+      return;
+    }
+    $field_name = $rdf_entity->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
+    /** @var \Drupal\rdf_entity\RdfInterface[] $distributions */
+    $distributions = $rdf_entity->get($field_name)->referencedEntities();
+    foreach ($distributions as $distribution) {
+      if ($distribution->label() === $entity->label() && $distribution->id() !== $entity->id()) {
+        $this->context->addViolation($constraint->message, [
+          '%title' => $entity->label(),
+          '%bundle' => strtolower($rdf_entity->get('rid')->entity->label()),
+        ]);
+
+        return;
+      }
     }
   }
 
