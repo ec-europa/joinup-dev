@@ -4,7 +4,7 @@
     "type": "project",
     "license": "EUPL",
     "require": {
-        "php": ">=5.6",
+        "php": ">=5.5.9",
         "SEMICeu/adms-ap_validator": "dev-master",
         "composer/composer": "~1.0",
         "composer/installers": "^1.2",

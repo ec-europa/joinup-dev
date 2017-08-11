@@ -35,7 +35,7 @@ Feature: About this solution
       | policy domain       | Demography, E-inclusion                                             |
       | related solutions   | Gel, Polymer, Protein                                               |
       | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
-      | spatial coverage    | Italy, Egypt                                         |
+      | spatial coverage    | Italy, Egypt                                                        |
       | status              | Under development                                                   |
       | collection          | Monoclonal Antibody Development                                     |
 

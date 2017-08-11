@@ -1,14 +1,12 @@
 .mdl-card
   width: 100% !important
 
+.mdl-layout__header-row
+  height: 64px !important
+
 .mdl-cell--12-col-tablet
   +breakpoint(mobile, tablet)
     width: 100%
-
-.mdl-layout__header-row
-  height: 64px !important
-  +breakpoint(tablet)
-    padding: 0 20px
 
 .mdl-menu
   .mdl-menu__item
@@ -20,14 +18,17 @@
       white-space: normal
 
 .mdl-layout__drawer-button
-  top: 4px
   +hidden-print
-  +breakpoint(tablet)
-    display: none
+  top: 4px
   .material-icons
     font-size: 40px
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
     color: #fff
-    +centered
+  +breakpoint(tablet)
+    display: none
 
 .mdl-textfield--floating-label
   .field-prefix
@@ -35,9 +36,9 @@
 
 .mdl-spinner
   position: fixed
-  z-index: 1000
   top: 48.5%
   left: 49%
+  z-index: 1000
 
 .mdl-grid--center
   justify-content: center
@@ -67,5 +68,4 @@
     .section--content
       flex-grow: 1
       flex-shrink: 0
-
 

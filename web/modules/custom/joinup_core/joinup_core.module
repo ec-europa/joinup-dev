@@ -794,21 +794,3 @@ function joinup_core_local_tasks_alter(&$local_tasks) {
     $local_tasks['user.login']['title'] = t('Sign in');
   }
 }
-
-/**
- * Implements hook_ENTITY_TYPE_predelete().
- *
- * Mimic the og_entity_predelete function to delete the memberships of the user
- * before the user is deleted. The goal is to skip all notification attempts
- * related to the membership deletion.
- *
- * This workaround will prevent extra side loading and saving of entities.
- */
-function joinup_core_user_predelete(EntityInterface $entity) {
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
-    $membership->skip_notification = TRUE;
-    $membership->delete();
-  }
-}

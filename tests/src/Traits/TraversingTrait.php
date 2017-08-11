@@ -265,30 +265,4 @@ trait TraversingTrait {
     return $component_node;
   }
 
-  /**
-   * Returns the active links in the page or in a specific region.
-   *
-   * An "active" link is a link with the class "is-active" or with the class
-   * "active-trail", which indicates that it is in the active trail of the
-   * current page.
-   *
-   * @param string|null $region
-   *   The region label. If no region is provided, the search will be on the
-   *    whole page.
-   *
-   * @return \Behat\Mink\Element\NodeElement[]|null
-   *   An array of node elements matching the search.
-   */
-  protected function findLinksMarkedAsActive($region = NULL) {
-    if ($region === NULL) {
-      /** @var \Behat\Mink\Element\DocumentElement $regionObj */
-      $regionObj = $this->getSession()->getPage();
-    }
-    else {
-      $regionObj = $this->getRegion($region);
-    }
-
-    return $regionObj->findAll('css', 'a.is-active, a.active-trail');
-  }
-
 }
