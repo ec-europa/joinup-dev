@@ -4,6 +4,7 @@ description: User profile fields, user notifications, ...
 core: 8.x
 package: Joinup
 dependencies:
+  - joinup_core
   - og
   - search_api_field
   - social_media_links_field
