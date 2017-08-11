@@ -38,12 +38,12 @@ Feature: Submit the contact form
 
     # The moderator, the collection owner and the owner should receive the notifications.
     Then the following email should have been sent:
-      | template  | Report contact form                                                                                                                                 |
-      | recipient | Report moderator                                                                                                                                    |
-      | subject   | Joinup: This content has invalid location                                                                                                           |
-      | body      | Balourdos has reported the item "Event to report" as abusive due to The location described as "Somewhere" could not be found by my map application. |
+      | template  | Report contact form                                                                                                                                                                     |
+      | recipient | Report moderator                                                                                                                                                                        |
+      | subject   | Joinup: This content has invalid location                                                                                                                                               |
+      | body      | Balourdos has reported the item "Event to report" as abusive due to The location described as "Somewhere" could not be found by my map application. You can access the reported content |
     And the following email should have been sent:
-      | template  | Report contact form                                                                                                                                 |
-      | recipient | Report owner                                                                                                                                    |
-      | subject   | Joinup: This content has invalid location                                                                                                           |
-      | body      | Balourdos has reported the item "Event to report" as abusive due to The location described as "Somewhere" could not be found by my map application. |
+      | template  | Report contact form                                                                                                                                                                     |
+      | recipient | Report owner                                                                                                                                                                            |
+      | subject   | Joinup: This content has invalid location                                                                                                                                               |
+      | body      | Balourdos has reported the item "Event to report" as abusive due to The location described as "Somewhere" could not be found by my map application. You can access the reported content |
