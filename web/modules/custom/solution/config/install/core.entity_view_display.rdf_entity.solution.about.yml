@@ -171,7 +171,6 @@ content:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
         ft:
           id: default
           settings:
@@ -242,14 +241,32 @@ content:
         template_suggestion: fieldset
   field_is_language:
     type: entity_reference_label
-    weight: 7
+    weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_is_moderation:
+    type: boolean
+    weight: 21
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings:
+      ds:
         ft:
           id: default
           settings:
@@ -298,7 +315,7 @@ content:
     region: content
   field_is_product_type:
     type: entity_reference_label
-    weight: 3
+    weight: 0
     region: content
     label: above
     settings:
