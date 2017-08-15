@@ -97,6 +97,29 @@ function custom_page_entity_insert(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_entity_update().
+ */
+function custom_page_entity_update(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
+    return;
+  }
+
+  // Update all links that point to this custom page if the title has changed.
+  /** @var \Drupal\node\NodeInterface $entity */
+  if ($entity->isPublished() && $entity->getTitle() !== $entity->original->getTitle()) {
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
+
+    if (!empty($result)) {
+      foreach ($result as $id => $instance) {
+        $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  *
  * This is a temporary workaround to invalidate the OG Menu cache, until a
