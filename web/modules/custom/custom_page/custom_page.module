@@ -100,9 +100,10 @@ function custom_page_entity_update(EntityInterface $entity) {
     return;
   }
 
-  // Update all links that point to this custom page if the title has changed.
+  // Update all links that point to this custom page if the title has changed,
+  // or if the entity becomes (un)published.
   /** @var \Drupal\node\NodeInterface $entity */
-  if ($entity->isPublished() && $entity->getTitle() !== $entity->original->getTitle()) {
+  if ($entity->isPublished() !== $entity->original->isPublished() || $entity->getTitle() !== $entity->original->getTitle()) {
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
