@@ -57,10 +57,6 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  * Implements hook_entity_insert().
  *
  * Create menu link when a custom page gets saved.
- *
- * @todo This will become obsolete when ISAICP-2369 is in.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
  */
 function custom_page_entity_insert(EntityInterface $entity) {
   if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
