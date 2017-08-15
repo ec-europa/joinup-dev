@@ -249,7 +249,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
       $link = $item->link;
       if ((string) $link->getTitle() === $title) {
         $menu_link_manager_service->updateDefinition($link->getPluginId(), [
-          'enabled' => (bool) $operation === 'enable',
+          'enabled' => (bool) ($operation === 'enable'),
         ]);
         return;
       }
