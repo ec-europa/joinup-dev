@@ -240,20 +240,44 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager_service */
     $menu_link_manager_service = \Drupal::service('plugin.manager.menu.link');
 
+    // Retrieve the menu tree and transform it into a flat array of link items.
     $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
+    $tree = $this->flattenTree($tree);
 
     foreach ($tree as $item) {
       /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $link */
       $link = $item->link;
       if ((string) $link->getTitle() === $title) {
         $menu_link_manager_service->updateDefinition($link->getPluginId(), [
-          'enabled' => (string) ($operation === 'enable'),
+          'enabled' => (bool) $operation === 'enable',
         ]);
         return;
       }
     }
 
     throw new \InvalidArgumentException("No menu link with title $title exists in the $menu menu for the $label $type.");
+  }
+
+  /**
+   * Flattens a menu tree.
+   *
+   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
+   *   The hierarchical menu tree, as returned by MenuLinkTree::load().
+   *
+   * @return array
+   *   The tree, flat as a plank.
+   */
+  protected function flattenTree(array $tree) {
+    $flattened = [];
+    foreach ($tree as $id => $item) {
+      if ($item->count() > 1) {
+        $flattened = array_merge($flattened, $this->flattenTree($item->subtree));
+      }
+      else {
+        $flattened[$id] = $item;
+      }
+    }
+    return $flattened;
   }
 
   /**
