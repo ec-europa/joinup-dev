@@ -121,10 +121,10 @@ third_party_settings:
       label: Documentation
     group_trr_information:
       children:
+        - field_is_product_type
         - field_is_test_resource_type
         - field_is_actor
         - field_is_business_process
-        - field_is_product_type
         - field_is_standardization_level
       parent_name: ''
       weight: 5
@@ -171,7 +171,6 @@ content:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
         ft:
           id: default
           settings:
@@ -242,14 +241,13 @@ content:
         template_suggestion: fieldset
   field_is_language:
     type: entity_reference_label
-    weight: 7
+    weight: 6
     region: content
     label: above
     settings:
       link: false
     third_party_settings:
       ds:
-        ds_limit: ''
         ft:
           id: default
           settings:
@@ -298,7 +296,7 @@ content:
     region: content
   field_is_product_type:
     type: entity_reference_label
-    weight: 3
+    weight: 0
     region: content
     label: above
     settings:
