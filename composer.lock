@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "72a4eb33d589de2fb73246e712991f07",
+    "content-hash": "65842c6c13d6c3b8bd72bc4fbf7c99d5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3932,7 +3932,7 @@
                 "patches_applied": {
                     "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                     "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
-                    "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "./resources/patches/2846986-4.patch",
+                    "Disable static cache for workflow_callback. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/2846986-4.patch",
                     "Allow access to the initialValue protected property. @see https://www.drupal.org/node/2896479": "https://www.drupal.org/files/issues/allow_access_to_initial_value-2896479-2-D8.patch"
                 }
             },
