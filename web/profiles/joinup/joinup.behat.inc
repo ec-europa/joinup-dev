@@ -22,6 +22,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -48,6 +49,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
