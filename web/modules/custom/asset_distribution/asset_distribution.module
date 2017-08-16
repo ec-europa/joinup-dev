@@ -293,10 +293,10 @@ QUERY;
  * In any other case, skip the parent retrieval.
  *
  * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
- *    The distribution entity.
+ *   The distribution entity.
  *
- * @return RdfInterface|null
- *    The solution or release that this distribution belongs to.
+ * @return \Drupal\rdf_entity\Entity\RdfInterface|null
+ *   The solution or release that this distribution belongs to.
  *
  * @throws \Exception
  *    Thrown when more than one parents are found.
