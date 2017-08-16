@@ -1,5 +1,5 @@
 collection.collection_overview:
   title: 'Collections'
-  weight: 1
+  weight: 0
   url: 'internal:/collections'
   menu_name: main
