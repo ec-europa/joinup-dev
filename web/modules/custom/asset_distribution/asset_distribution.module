@@ -318,7 +318,7 @@ function asset_distribution_get_distribution_parent(RdfInterface $asset_distribu
   // If the distribution is now added, get the parent from the route.
   elseif (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
     $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
-    if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'release'])) {
+    if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'asset_release'])) {
       return $parent;
     }
   }
