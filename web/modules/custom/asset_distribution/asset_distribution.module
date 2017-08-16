@@ -316,3 +316,46 @@ function asset_distribution_title_is_unique(RdfInterface $asset_distribution) {
 
   return empty($result);
 }
+
+/**
+ * Returns the parent of the distribution.
+ *
+ * If the distribution is already created, the parent will be retrieved from the
+ * database.
+ * If the distribution is new, it is created though the only allowed route and
+ * the parent can be retrieved from there.
+ * In any other case, skip the parent retrieval.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
+ *    The distribution entity.
+ *
+ * @return RdfInterface|null
+ *    The solution or release that this distribution belongs to.
+ *
+ * @throws \Exception
+ *    Thrown when more than one parents are found.
+ */
+function asset_distribution_get_distribution_parent(RdfInterface $asset_distribution) {
+  if (!$asset_distribution->isNew()) {
+    $query = \Drupal::entityQuery('rdf_entity', 'OR')
+      ->condition('field_is_distribution', $asset_distribution->id())
+      ->condition('field_isr_distribution', $asset_distribution->id());
+    $parents = $query->execute();
+    if (count($parents) > 1) {
+      throw new Exception("More than one parents were found for distribution {$asset_distribution->label()}");
+    }
+    elseif (!empty($parents)) {
+      $rdf_entity_id = reset($parents);
+      return \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($rdf_entity_id);
+    }
+  }
+  // If the distribution is now added, get the parent from the route.
+  elseif (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
+    $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
+    if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'release'])) {
+      return $parent;
+    }
+  }
+
+  return NULL;
+}

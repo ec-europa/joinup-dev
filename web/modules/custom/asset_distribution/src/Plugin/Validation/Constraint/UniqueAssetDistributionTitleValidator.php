@@ -26,7 +26,7 @@ class UniqueAssetDistributionTitleValidator extends ConstraintValidator {
     $entity = $items->getEntity();
 
     /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
-    $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
+    $rdf_entity = asset_distribution_get_distribution_parent($entity);
     // If the entity was not created through the normal route, return.
     if (empty($rdf_entity)) {
       return;
