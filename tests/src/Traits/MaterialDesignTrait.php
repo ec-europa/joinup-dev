@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup\Traits;
 
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
 
 /**
@@ -136,14 +135,14 @@ trait MaterialDesignTrait {
   /**
    * Opens a MDL menu on JS-enabled browsers.
    *
-   * @param \Behat\Mink\Element\NodeElement $wrapper
+   * @param null|\Behat\Mink\Element\NodeElement $wrapper
    *   The element that contains the MDL menu.
    *
    * @throws \Exception
    *   Thrown when the menu wrapper or menu button are not found in the page,
    *   and when the menu doesn't become visible within the allowed time frame.
    */
-  protected function openMaterialDesignMenu(NodeElement $wrapper) {
+  protected function openMaterialDesignMenu($wrapper) {
     if ($this->browserSupportsJavascript()) {
       if (!$wrapper) {
         throw new \Exception('The MDL menu wrapper was not found in the page.');
