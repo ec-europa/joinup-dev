@@ -18,7 +18,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -45,7 +44,6 @@ use WebDriver\Exception\StaleElementReference;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
