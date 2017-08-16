@@ -1,0 +1,18 @@
+diff --git a/src/Plugin/Field/FieldType/StateItem.php b/src/Plugin/Field/FieldType/StateItem.php
+index 7589036..0d45743 100644
+--- a/src/Plugin/Field/FieldType/StateItem.php
++++ b/src/Plugin/Field/FieldType/StateItem.php
+@@ -238,6 +238,13 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
+   public function getWorkflow() {
+     $field_definition = $this->getFieldDefinition();
+     $definition_id = spl_object_hash($field_definition);
++
++    // Workflow callbacks can change the workflow being used at runtime. Don't
++    // use the statically cached workflow in this case.
++    if (!empty($this->getSetting('workflow_callback'))) {
++      return $this->loadWorkflow();
++    }
++
+     if (!isset(static::$workflows[$definition_id])) {
+       static::$workflows[$definition_id] = $this->loadWorkflow();
+     }
