@@ -119,7 +119,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
-    if ($field_definitions = static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
+    if ($field_definitions = $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
       return reset($field_definitions);
     }
 
@@ -148,7 +148,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function hasEntityStateField($entity_type_id, $bundle_id) {
-    return (bool) static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
+    return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**
