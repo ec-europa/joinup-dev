@@ -44,6 +44,7 @@ Feature:
     And I open the header local tasks menu
     And I click "Edit" in the "Header" region
     And I press "Cancel account"
+    And I press "Cancel account"
     And I wait for the batch job to finish
     And the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                               |
@@ -57,6 +58,7 @@ Feature:
     And I visit "/user"
     And I open the header local tasks menu
     And I click "Edit" in the "Header" region
+    And I press "Cancel account"
     And I press "Cancel account"
     And the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                           |
