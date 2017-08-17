@@ -36,12 +36,12 @@
     padding-bottom: 20px
 
 .featured__menu-wrapper
-  +hidden-print
   position: relative
-  z-index: 2
+  z-index: 999
   max-width: 1200px
   margin: 0 auto
   text-align: center
+  +hidden-print
 
 .featured__overlay
   position: absolute
@@ -135,11 +135,11 @@
   vertical-align: middle
 
 .featured__form-button
-  +hidden-print
   position: relative
   display: inline-block
   margin: 10px
-  z-index: 99
+  z-index: 999
+  +hidden-print
 
 // Modifiers
 // --------------------------------------------------
