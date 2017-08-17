@@ -136,7 +136,7 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       $build = $this->entityTypeManager->getViewBuilder('node')->view($custom_page, 'view_mode_tile');
       $items[$link->getWeight()] = [
         '#type' => 'container',
-        '#extra_suggestion' => 'container_grid_item',
+        '#extra_suggestion' => 'container__grid_item',
         '#weight' => $link->getWeight(),
         '#access' => $link->getUrlObject()->access(),
         $custom_page->id() => $build,
@@ -149,10 +149,10 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
         // The 'listing' child key is needed to avoid copying the #attributes to
         // the parent block.
         // @see \Drupal\block\BlockViewBuilder::preRender()
-        '#extra_suggestion' => 'separated_block',
+        '#extra_suggestion' => 'block__separated',
         'listing' => [
           '#type' => 'container',
-          '#extra_suggestion' => 'container_grid',
+          '#extra_suggestion' => 'container__grid',
         ],
       ];
       $build['listing'] += $items;

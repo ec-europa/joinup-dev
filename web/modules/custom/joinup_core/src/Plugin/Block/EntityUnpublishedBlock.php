@@ -127,10 +127,10 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       // The 'listing' child key is needed to avoid copying the #attributes to
       // the parent block.
       // @see \Drupal\block\BlockViewBuilder::preRender()
-      '#extra_suggestion' => 'separated_block',
+      '#extra_suggestion' => 'block__separated',
       'listing' => [
         '#type' => 'container',
-        '#extra_suggestion' => 'container_grid',
+        '#extra_suggestion' => 'container__grid',
       ],
     ];
 
@@ -162,7 +162,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $rows[$weight] = [
         '#type' => 'container',
-        '#extra_suggestion' => 'container_grid_item',
+        '#extra_suggestion' => 'container__grid_item',
         '#weight' => $weight,
         $weight => $view,
       ];
