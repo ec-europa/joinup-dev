@@ -106,6 +106,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         $mail_body = strip_tags($mail_body);
       }
 
+      // Ensure that there are no un-replaced arguments in the mail subject and
+      // body.
+      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+        throw new Exception("There were arguments found in the mail or the body that were not replaced.");
+      }
+
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.
@@ -221,6 +227,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       if ($mail['body'] instanceof MarkupInterface) {
         $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
         $mail_body = strip_tags($mail_body);
+      }
+
+      // Ensure that there are no un-replaced arguments in the mail subject and
+      // body.
+      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+        throw new Exception("There were arguments found in the mail or the body that were not replaced.");
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
