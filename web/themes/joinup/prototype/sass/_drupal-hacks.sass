@@ -166,3 +166,10 @@ form .description
     &:before
       +icon-size(15px)
       content: '\e617'
+
+// Hide select formats in a comment field for anonymous users
+// Remove margin for textarea
+.comment-form-anonymous
+  margin-bottom: 0
+  .filter-wrapper
+    display: none

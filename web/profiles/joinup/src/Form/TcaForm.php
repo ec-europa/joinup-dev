@@ -24,6 +24,18 @@ class TcaForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['warning'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('In order to create the Collection you need first check the field below and then press the <em>Yes</em> button to proceed.'),
+    ];
+
+    $form['collection_tca'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I understand and I commit to manage my collection on a regular basis.'),
+      '#default_value' => FALSE,
+    ];
+
     $form['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('No thanks'),
@@ -39,12 +51,6 @@ class TcaForm extends FormBase {
           ':input[name="collection_tca"]' => ['checked' => FALSE],
         ],
       ],
-    ];
-
-    $form['collection_tca'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I understand and I commit to manage my collection on a regular basis.'),
-      '#default_value' => FALSE,
     ];
 
     return $form;

@@ -11,6 +11,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -49,9 +50,12 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() != 'rdf_entity' || $bundle != 'solution') {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'solution') {
     return;
   }
+
+  // @todo Rename to "collections" since this contains multiple collections.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3686
   // Add a computed field, that represents the collections a solution is part
   // of.
   // @see solution_rdf_entity_load().
@@ -65,6 +69,7 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setComputed(TRUE)
     ->setReadOnly(TRUE);
 
+  // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
   }
@@ -113,6 +118,31 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * When editing a solution, show a message to moderators informing them if a
+ * solution with the same name already exists in a different collection. They
+ * can then evaluate if the conflict is acceptable or not before approving a
+ * proposed solution.
+ */
+function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  // Bail out if the user is not a moderator.
+  if (!in_array('moderator', \Drupal::currentUser()->getRoles())) {
+    return;
+  }
+
+  // Bail out if this is an AJAX request to avoid showing duplicate messages,
+  // for example in inline forms.
+  if (\Drupal::request()->query->has(FormBuilderInterface::AJAX_FORM_REQUEST)) {
+    return;
+  }
+
+  if (!solution_title_is_unique($form_state->getFormObject()->getEntity(), TRUE)) {
+    drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
+  }
+}
+
+/**
  * Keep a reference to the collection being saved.
  *
  * @param string $entity_type_id
@@ -126,7 +156,7 @@ function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInt
  */
 function solution_add_form_set_collection($entity_type_id, EntityInterface $entity, array &$form, FormStateInterface $form_state) {
   $collection_id = $form_state->getStorage()['collection'];
-  solution_relate_collection_id($collection_id);
+  $entity->set('collection', [$collection_id]);
 }
 
 /**
@@ -149,10 +179,14 @@ function solution_relate_collection_id($collection_id = NULL) {
 }
 
 /**
+ * Submit handler for the add solution form.
+ *
  * Links the solution to the collection to which it belongs.
  *
  * In order for a solution to be affiliated with a collection when it is
  * created, the collection should be passed to the form_state object.
+ *
+ * @see \Drupal\solution\Controller\SolutionController::add()
  */
 function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
   $solution_id = $form_state->getFormObject()->getEntity()->id();
@@ -276,17 +310,17 @@ function solution_rdf_entity_load($entities) {
     // The reverse relation would have been more logical,
     // and this is quite inconvenient, especially for the search index.
     // To work around this, we add a computed field here.
-    $ids = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'collection')
-      ->condition('field_ar_affiliates', $entity->id())
-      ->execute();
+    $ids = solution_get_collection_ids($entity);
     // This will only be set when submitting a new solution form.
     $pending_collection_id = solution_relate_collection_id();
     if ($pending_collection_id) {
-      $ids[$pending_collection_id] = $pending_collection_id;
+      $ids[] = $pending_collection_id;
     }
     if ($ids) {
-      $entity->set('collection', array_keys($ids));
+      $ids = array_map(function ($id) {
+        return ['target_id' => $id];
+      }, $ids);
+      $entity->set('collection', $ids);
     }
   }
 }
@@ -526,6 +560,31 @@ function solution_invalidate_collection(EntityInterface $entity) {
 }
 
 /**
+ * Retrieves collections affiliated with the given solution from the database.
+ *
+ * Only use this function if you need to retrieve a fresh set of collections
+ * from the database. For all other cases, use the computed 'collection' field:
+ *
+ * $collections = $solution->collection->getValue();
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The solution for which to retrieve the affiliated collections.
+ *
+ * @return array
+ *   The collection IDs.
+ *
+ * @see solution_rdf_entity_load()
+ */
+function solution_get_collection_ids(RdfInterface $solution) {
+  $result = \Drupal::entityQuery('rdf_entity')
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+
+  return !empty($result) ? array_keys($result) : [];
+}
+
+/**
  * Implements hook_ENTITY_TYPE_update().
  *
  * When the entity is saved into the default graph, the draft must be deleted.
@@ -662,4 +721,64 @@ function solution_field_group_pre_render_alter(&$element, $group, $rendering_obj
   if ($group->group_name == 'group_trr') {
     $element['#access'] = FALSE;
   }
+}
+
+/**
+ * Checks whether the given solution has a unique title.
+ *
+ * A solution may be affiliated with several collections, but to avoid confusion
+ * we should avoid having multiple solutions within a given collection with the
+ * same name.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $solution
+ *   The solution to check.
+ * @param bool $check_unaffiliated_collections
+ *   Whether or not to check solutions that are shared in collections that are
+ *   not affiliated with the given solution.
+ *   - When this is TRUE the function will return TRUE if any other solution has
+ *     the same name as the given solution, regardless of the collections they
+ *     are affiliated with.
+ *   - When this is FALSE the function will only return TRUE if any of the
+ *     collections that are affiliated with this solution contain a solution
+ *     with a duplicate title. Solutions that belong to unaffiliated colletions
+ *     will be ignored.
+ *
+ * @return bool
+ *   TRUE if the title is unique within all affiliated collections.
+ *
+ * @throws \Exception
+ *   Thrown when anything but a solution entity is passed in.
+ */
+function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_collections = FALSE) {
+  if ($solution->bundle() !== 'solution') {
+    throw new \Exception('Title uniqueness within a collection can only be checked for solutions.');
+  }
+
+  // The relationship between a solution and its collections is not on the child
+  // entity but on the parent. This means we cannot use a simple query.
+  // Retrieve all solutions with the same title.
+  $query = \Drupal::entityQuery('rdf_entity')
+    ->condition('label', $solution->label())
+    ->condition('rid', 'solution');
+  if (!empty($solution->id())) {
+    $query->condition('id', $solution->id(), '<>');
+  }
+  $result = $query->execute();
+
+  // Filter all solutions that do not share a collection with the solution.
+  if (!$check_unaffiliated_collections) {
+    $get_collections_from_solution = function (RdfInterface $solution) {
+      return array_map(function ($reference) {
+        return $reference['target_id'];
+      }, $solution->collection->getValue());
+    };
+
+    $collections = $get_collections_from_solution($solution);
+
+    $result = array_filter(Rdf::loadMultiple($result), function ($solution) use ($collections, $get_collections_from_solution) {
+      return (bool) array_intersect($get_collections_from_solution($solution), $collections);
+    });
+  }
+
+  return empty($result);
 }

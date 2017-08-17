@@ -130,7 +130,6 @@ Feature: Add distribution through the UI
     # Clean up the asset distribution that was created through the UI.
     Then I delete the "Source tarball" asset distribution
 
-  @javascript
   Scenario: The distribution access URL field should accept multiple file extensions.
     Given I am logged in as a "facilitator" of the "Solution random x name" solution
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
@@ -140,14 +139,65 @@ Feature: Add distribution through the UI
     Given I select the radio button "Upload file"
     Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
 
-    Scenario: Licences shown in the solution header should be comma separated.
-      Given the following licence:
-        | title       | Boost Software License                                                         |
-        | description | It is a permissive license in the style of the BSD license and the MIT license |
-      And distributions:
-        | title        | licence                | solution               |
-        | Hot Snake    | WTFPL                  | Solution random x name |
-        | Quality Yard | Boost Software License | Solution random x name |
+  Scenario: Adding a distribution with a duplicate title
+    Given the following solution:
+      | title       | Solubility of gases     |
+      | description | Affected by temperature |
+      | state       | validated               |
+    And the following release:
+      | title         | 1.0.0 Adolf Sieverts |
+      | description   | First public release |
+      | is version of | Solubility of gases  |
 
-      When I go to the homepage of the "Solution random x name" solution
-      Then I should see the text "WTFPL, Boost Software License"
+    # Distributions should have a unique title within a single release.
+    And I am logged in as a facilitator of the "Solution random x name" solution
+    When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+    And I click "Add distribution" in the plus button menu
+    When I fill in "Title" with "MacOSX binary"
+    And I select "WTFPL" from "License"
+    And I press "Save"
+    Then I should have 1 distribution
+    When I click "Add distribution" in the plus button menu
+    When I fill in "Title" with "MacOSX binary"
+    And I select "WTFPL" from "License"
+    And I press "Save"
+    Then I should see the error message "A distribution with title MacOSX binary already exists in this release. Please choose a different title."
+    And I should have 1 distribution
+
+    Given I am logged in as a facilitator of the "Solubility of gases" solution
+    When I go to the homepage of the "1.0.0 Adolf Sieverts" release
+    And I click "Add distribution" in the plus button menu
+    When I fill in "Title" with "MacOSX binary"
+    And I select "WTFPL" from "License"
+    And I press "Save"
+    Then I should have 2 distributions
+
+    # Clean up the entities created through the user interface.
+    Then I delete the "MacOSX binary" asset distribution
+    And I delete the "MacOSX binary" asset distribution
+
+  Scenario: Distributions with the same name should not be allowed within the same solution.
+    Given the following distribution:
+      | title       | Windows - source       |
+      | description | Sample description     |
+      | access url  | test.zip               |
+      | parent      | Solution random x name |
+    And I am logged in as a facilitator of the "Solution random x name" solution
+    When I go to the homepage of the "Solution random x name" solution
+    And I click "Add distribution" in the plus button menu
+    When I fill in "Title" with "Windows - source"
+    And I select "WTFPL" from "License"
+    And I press "Save"
+    Then I should see the error message "A distribution with title Windows - source already exists in this solution. Please choose a different title."
+
+  Scenario: Licences shown in the solution header should be comma separated.
+    Given the following licence:
+      | title       | Boost Software License                                                         |
+      | description | It is a permissive license in the style of the BSD license and the MIT license |
+    And distributions:
+      | title        | licence                | solution               |
+      | Hot Snake    | WTFPL                  | Solution random x name |
+      | Quality Yard | Boost Software License | Solution random x name |
+
+    When I go to the homepage of the "Solution random x name" solution
+    Then I should see the text "WTFPL, Boost Software License"
