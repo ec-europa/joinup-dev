@@ -308,7 +308,7 @@ function asset_distribution_get_distribution_parent(RdfInterface $asset_distribu
       ->condition('field_isr_distribution', $asset_distribution->id());
     $parents = $query->execute();
     if (count($parents) > 1) {
-      throw new Exception("More than one parents were found for distribution {$asset_distribution->label()}");
+      throw new Exception("More than one parent was found for distribution {$asset_distribution->label()}");
     }
     elseif (!empty($parents)) {
       $rdf_entity_id = reset($parents);
