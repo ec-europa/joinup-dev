@@ -216,7 +216,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * The page should be dependent on the user's groups.
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
+    return Cache::mergeContexts(parent::getCacheContexts(), ['user', 'og_role']);
   }
 
   /**

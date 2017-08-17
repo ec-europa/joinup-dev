@@ -6,10 +6,10 @@ label: 'Report contact form'
 description: 'The message template for reporting content'
 text:
   -
-    value: "<p>Joinup: @message:subject</p>"
+    value: "<p>Joinup: @message:subject</p>\r\n"
     format: content_editor
   -
-    value: "<p>@actor:field_user_first_name has reported the item \"@entity:title\" as abusive due to @message:message.</p><p>To avoid your activity being reported in the future, please read our community guidelines at @legal_notice:url.</p>"
+    value: "<p>@actor:field_user_first_name has reported the item \"@entity:title\" as abusive due to @message:message.</p>\r\n\r\n<p>You can access the reported content at the following link: @entity:url</p>\r\n"
     format: content_editor
 settings:
   'token options':
