@@ -93,6 +93,14 @@
   &.form__actions-wrapper
     margin-bottom: 0
 
+.form-required
+  position: relative
+  &:before
+    position: absolute
+    right: -15px
+    content: '*'
+    color: $color-error
+
 // Modifiers
 // --------------------------------------------------
 .form__description--checkbox
