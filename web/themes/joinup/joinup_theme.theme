@@ -1047,6 +1047,11 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
 
+    // Suggestion for form actions container if id has suffix.
+    if (end($suggestions) != 'container__edit_actions' && strpos($variables['element']['#id'], 'edit-actions') !== FALSE) {
+      $suggestions[] = 'container__edit_actions';
+    }
+
     // Suggestion for search form submit container.
     if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
       $suggestions[] = 'container__edit_actions__search_bar';
