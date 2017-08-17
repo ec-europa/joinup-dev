@@ -5,19 +5,16 @@ namespace Drupal\solution\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks if a solution's title is unique within the solutions.
- *
- * This constraint takes into account that releases can have same title as the
- * original entity.
+ * Checks if a solution's title is unique within the collections it belongs to.
  *
  * @Constraint(
  *   id = "UniqueSolutionTitle",
- *   label = @Translation("Unique title within a solution constraint", context = "Validation"),
+ *   label = @Translation("Unique solution title within collections", context = "Validation"),
  * )
  */
 class UniqueSolutionTitleConstraint extends Constraint {
 
-  public $message = 'Content with @field_name %value already exists.';
+  public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
 
   /**
    * {@inheritdoc}

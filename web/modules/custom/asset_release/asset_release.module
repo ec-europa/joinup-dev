@@ -13,6 +13,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_type_alter().
@@ -28,8 +29,9 @@ function asset_release_entity_type_alter(array &$entity_types) {
  * Implements hook_entity_bundle_field_info_alter().
  */
 function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure a release's title and version number is unique in its solution.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
-    $fields['label']->addConstraint('UniqueSolutionTitle', []);
+    $fields['label']->addConstraint('UniqueAssetReleaseTitleVersion', []);
   }
 }
 
@@ -72,7 +74,8 @@ function asset_release_rdf_entity_update(EntityInterface $entity) {
         ->set('field_isr_owner', $entity->get('field_is_owner')->getValue());
       // Do not send emails for this change.
       $release->skip_notification = TRUE;
-      $release->save();unset($release->skip_notification);
+      $release->save();
+      unset($release->skip_notification);
     }
   }
 }
@@ -243,4 +246,54 @@ function template_preprocess_asset_release_releases_download(array &$variables) 
   $releases = $variables['releases'];
 
   $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity')->viewMultiple($releases, 'compact');
+}
+
+/**
+ * Checks if the given release has a unique combination of title and version.
+ *
+ * A solution might have releases of different software packages associated with
+ * it, and some of these might have duplicate version numbers, but to avoid
+ * confusion we should avoid having releases with identical names and versions
+ * within the same solution.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $asset_release
+ *   The release to check.
+ * @param bool $check_unaffiliated_solutions
+ *   Whether or not to check if the release title and version are unique in
+ *   solutions that are not related to the release.
+ *   - When this is TRUE the function will return TRUE if any other release has
+ *     the same title and version as the given release, regardless of the
+ *     solutions they are affiliated with.
+ *   - When this is FALSE the function will only return TRUE if the solution
+ *     that is affiliated with this release contains a release with a duplicate
+ *     title and version. Releases that belong to unaffiliated solutions will be
+ *     ignored.
+ *
+ * @return bool
+ *   TRUE if the title and version are unique.
+ *
+ * @throws \Exception
+ *   Thrown when anything but an asset release entity is passed in.
+ */
+function asset_release_title_version_is_unique(RdfInterface $asset_release, $check_unaffiliated_solutions = FALSE) {
+  if ($asset_release->bundle() !== 'asset_release') {
+    throw new \Exception('Title and version uniqueness within a solution can only be checked for asset releases.');
+  }
+
+  $query = \Drupal::entityQuery('rdf_entity')
+    ->condition('label', $asset_release->label())
+    ->condition('field_isr_release_number', $asset_release->get('field_isr_release_number')->first()->getValue()['value'])
+    ->condition('rid', 'asset_release');
+  if (!empty($asset_release->id())) {
+    $query->condition('id', $asset_release->id(), '<>');
+  }
+
+  // Filter all releases that do not belong to the same solution.
+  if (!$check_unaffiliated_solutions) {
+    $query->condition('field_isr_is_version_of', $asset_release->get('field_isr_is_version_of')->first()->getValue()['target_id']);
+  }
+
+  $result = $query->execute();
+
+  return empty($result);
 }
