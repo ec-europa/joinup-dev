@@ -114,9 +114,7 @@ class SolutionContentBlock extends BlockBase implements ContainerFactoryPluginIn
     }
 
     // Also retrieve related collections.
-    $ids = $this->entityManager->getStorage('rdf_entity')->getQuery()
-      ->condition('field_ar_affiliates', $this->solution->id())
-      ->execute();
+    $ids = solution_get_collection_ids($this->solution);
     $entities = Rdf::loadMultiple($ids);
     foreach ($entities as $entity) {
       $items[] = ['#markup' => $entity->link()];
