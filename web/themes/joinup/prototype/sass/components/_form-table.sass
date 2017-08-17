@@ -1,22 +1,30 @@
 // Component
 // --------------------------------------------------
-.form-table
+// .form-table
 
 // Elements
 // --------------------------------------------------
+.form-table__row
+  width: auto
+
 .form-table__button
   margin-top: 15px
   margin-left: 25px
 
 .form-table__cell
-  padding: 15px
+  position: relative
+  display: table-cell
+  width: auto
+  margin: 0
+  padding: 25px 15px
 
-thead th.form-table__header
-  padding: 15px
+.form-table__header
+  margin: 0
+  padding: 20px 10px
 
 .form-table__label
-  color: $color-grey-input
   font-weight: normal
+  color: $color-grey-input
 
 .form-table_link-icon
   +icon-size(40px)
@@ -36,10 +44,50 @@ thead th.form-table__header
 
 // Dependencies
 // --------------------------------------------------
-.form-table__row
-  &.draggable
-    .draggable__icon, .form-managed-file
-      display: table-cell
+.form-table
+  .form-table__row
+    .dropbutton-multiple
+      min-height: auto
+      margin: 0
+      padding: 0
+    .dropbutton
+      display: flex
+    .dropbutton-widget
+      position: static
+    .dropbutton-toggle
+      display: none
+      visibility: none
+    .dropbutton-action
+      position: static
+      display: block
+      margin-right: 10px
+      &:last-child
+        margin-right: 0
+    &.draggable
+      .form-table__cell
+        .tabledrag-handle,
+        .tabledrag-changed,
+        .form-managed-file,
+        .menu-item__link
+          display: table-cell
+          vertical-align: middle
+        .tabledrag-handle + .form-managed-file,
+        .tabledrag-handle + .menu-item__link
+          padding-left: 30px
+        .tabledrag-changed
+          left: 50px
+          +centered($horizontal: false, $vertical: true)
+        .form-managed-file
+          width: 100%
+        .checkbox
+          margin: 0
+
+.table-operations
+  .form-table
+    margin-bottom: 25px
+  .form-table__cell
+    padding-top: 25px
+    padding-bottom: 25px
 
 .adms-validator-form
   .form-table
