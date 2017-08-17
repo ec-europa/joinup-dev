@@ -65,6 +65,38 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 }
 
 /**
+ * Gives information about menu_local_task item being displayed.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return string
+ *   Whether a menu_local_task is of horizontal or menu display type.
+ */
+function _joinup_menu_local_task_by_route(RouteMatchInterface $route_match) {
+  if ($route_name = $route_match->getRouteName()) {
+    if (in_array($route_name, _joinup_horizontal_tabs_routes())) {
+      return 'horizontal';
+    }
+    return 'menu';
+  }
+}
+
+/**
+ * Get a list of routes where menu_local_tasks are normal horizontal tabs.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_horizontal_tabs_routes() {
+  return [
+    'user.login',
+    'user.pass',
+    'user.register',
+  ];
+}
+
+/**
  * Get a list of routes which should have tabs.
  *
  * @return array
@@ -919,7 +951,8 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
  */
 function joinup_theme_preprocess_menu_local_action(&$variables) {
   // Add mdl classes for local action button.
-  $mdl_button_classes = ['button--blue-light',
+  $mdl_button_classes = [
+    'button--blue-light',
     'mdl-button',
     'mdl-js-button',
     'mdl-button--raised',
@@ -927,6 +960,27 @@ function joinup_theme_preprocess_menu_local_action(&$variables) {
     'mdl-button--accent',
   ];
   $variables['link']['#options']['attributes']['class'] = array_merge($variables['link']['#options']['attributes']['class'], $mdl_button_classes);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_task(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $menu_type = _joinup_menu_local_task_by_route($route_match);
+
+  if ($menu_type == 'horizontal') {
+    $variables['attributes']['class'][] = 'tab tab--horizontal mdl-tabs__tab';
+  }
+  else {
+    // Every other occasion, item should be in MDL dropdown menu.
+    $variables['attributes']['class'][] = 'mdl-menu__item';
+  }
+
+  // Active flag.
+  if (isset($variables['is_active']) && $variables['is_active'] == TRUE) {
+    $variables['attributes']['class'][] = 'is-active';
+  }
 }
 
 /**
