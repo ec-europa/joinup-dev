@@ -1912,4 +1912,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
   }
 
+  /**
+   * Assert that fields are present in the given region in the given order.
+   *
+   * @param string $fields
+   *   Fields.
+   * @param string $region
+   *   Region.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present.
+   *
+   * @Then the fields :fields should be correctly ordered in the region :region
+   */
+  public function assertFieldsPresentInOrder($fields, $region) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    /** @var \Behat\Mink\Element\Element $regionObj */
+    $regionObj = $this->getRegion($region);
+    $labels = $regionObj->findAll('xpath', "/.//*[contains(@class, 'form-wrapper')]//label");
+    $labels_on_page = [];
+    /** @var \Behat\Mink\Element\NodeElement $label */
+    foreach ($labels as $label) {
+      $labels_on_page[] = $label->getText();
+    }
+    $previous = -1;
+    foreach ($fields as $field) {
+      $key = array_search($field, $labels_on_page);
+      if ($key === FALSE) {
+        throw new \Exception("Could not find expected field $field in the page");
+      }
+      if (!($key > $previous)) {
+        throw new \Exception("Field out of order: $field");
+      }
+      $previous = $key;
+    }
+  }
+
 }
