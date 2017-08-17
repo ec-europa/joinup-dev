@@ -315,12 +315,19 @@ function asset_distribution_get_distribution_parent(RdfInterface $asset_distribu
       return \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($rdf_entity_id);
     }
   }
+
   // If the distribution is now added, get the parent from the route.
-  elseif (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
-    $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
-    if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'asset_release'])) {
-      return $parent;
+  // @todo The parent is only present on the route when creating distributions
+  //   through the UI. Also support distributions created through the API.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3747
+  else {
+    if (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
+      $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
+      if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'asset_release'])) {
+        return $parent;
+      }
     }
+    throw new \Exception('Retrieving the parent entity from a new distribution that is not created through the add form is not yet supported.');
   }
 
   return NULL;
