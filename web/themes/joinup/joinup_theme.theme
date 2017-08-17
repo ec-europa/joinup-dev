@@ -480,9 +480,6 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['is_listing'] = $is_listing;
   }
 
-  // Get the ID of the block and add this to the main menu theme attributes,
-  // so it is possible to retrieve block ID in suggestions function.
-  // @see joinup_theme_theme_suggestions_menu_alter().
   $is_main_menu = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main';
   $is_main_local_tasks = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu_local_tasks';
 
@@ -533,20 +530,6 @@ function joinup_preprocess_file_managed_file(array &$variables) {
 function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#extra_suggestion']) && $variables['element']['#extra_suggestion'] == 'comment_plain') {
     $suggestions[] = 'textarea__comment_plain';
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  // Remove the block and replace dashes with underscores in the block ID to
-  // use for the hook name.
-  // Block ID is provided in the preprocess function.
-  // @see joinup_theme_preprocess_block().
-  if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
-    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
   }
 }
 
