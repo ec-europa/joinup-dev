@@ -113,11 +113,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       // Ensure that the signature is always placed.
-      $signature_parts = ['Kind regards,', 'The Joinup Moderation Team'];
-      foreach ($signature_parts as $signature_part) {
-        if (!strpos($mail_body, $signature_part)) {
-          throw new Exception("The signature of the email was not found or is not correct.");
-        }
+      // In non user emails, html p tags are used for new lines and these are
+      // stripped instead of replaced. Thus, a regex will be used to properly
+      // identify the signature regrdless of spaces.
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Moderation Team/', $mail_body)) {
+        throw new Exception('The signature of the email was not found or is not correct.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -244,11 +244,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       // Ensure that the signature is always placed.
-      $signature_parts = ['Kind regards,', 'The Joinup Moderation Team'];
-      foreach ($signature_parts as $signature_part) {
-        if (!strpos($mail_body, $signature_part)) {
-          throw new Exception("The signature of the email was not found or is not correct.");
-        }
+      // In non user emails, html p tags are used for new lines and these are
+      // stripped instead of replaced. Thus, a regex will be used to properly
+      // identify the signature regrdless of spaces.
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Moderation Team/', $mail_body)) {
+        throw new Exception('The signature of the email was not found or is not correct.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
