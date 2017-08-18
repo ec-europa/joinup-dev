@@ -23,6 +23,7 @@ use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -31,6 +32,56 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds result counts to the role options on the collection membership overview.
+ */
+function collection_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->getStorage()['view'];
+  if ($view->id() !== 'members_overview') {
+    return;
+  }
+
+  // Bail out if we are executing the views queries that get the result counts.
+  if (!empty($view->do_not_recurse)) {
+    return;
+  }
+
+  // Define a function that gets the result count for a given exposed filter
+  // option.
+  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = Views::getView('members_overview');
+    // Make sure we do not get into an endless loop when building the view,
+    // since it will try to build the exposed form again.
+    $view->do_not_recurse = TRUE;
+    // When the exposed input is not set then Views will take the values from
+    // the request arguments. If we want to override them with "there is no
+    // exposed input" then we need to pass a value that is not considered empty,
+    // hence we use "[TRUE]" instead of "[]".
+    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $view->setExposedInput($exposed_input);
+    $view->executeDisplay($display_id, $arguments);
+    // Apparently it is not guaranteed that the `total_rows` will be populated.
+    // @see \Drupal\views\Plugin\views\area\Result::render()
+    return isset($view->total_rows) ? $view->total_rows : count($view->result);
+  };
+
+  /** @var \Drupal\views\Plugin\views\filter\StringFilter $filter */
+  $filter = $view->filter['roles_target_id'];
+  // Check all options, as well as the "- Any -" option.
+  $exposed_options = array_merge([NULL], array_keys($filter->options['group_info']['group_items']));
+
+  foreach ($exposed_options as $exposed_option) {
+    $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+    $key = $exposed_option ?: 'All';
+    $option_text = (string) $form['roles_target_id']['#options'][$key];
+    $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
+  }
 }
 
 /**
