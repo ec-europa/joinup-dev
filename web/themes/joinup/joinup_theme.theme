@@ -456,6 +456,16 @@ function joinup_theme_preprocess_block(&$variables) {
   if ($variables['elements']['#id'] === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
   }
+
+  // Set default title tag.
+  $variables['title_tag'] = 'h2';
+
+  // Set classes for block__separated.
+  if (isset($variables['content']['#extra_suggestion']) && $variables['content']['#extra_suggestion'] == 'block__separated') {
+    $variables['attributes']['class'][] = 'block--separated';
+    $variables['title_attributes']['class'][] = 'block__title';
+    $variables['title_tag'] = 'h3';
+  }
 }
 
 /**
@@ -1055,11 +1065,6 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
     }
   }
 
-  // Early bail out.
-  if (!isset($variables['element']['#extra_suggestion'])) {
-    return;
-  }
-
   // Add extra suggestion for grid elements.
   if ($has_extra_suggestions) {
     $suggestions[] = $variables['element']['#extra_suggestion'];
@@ -1125,16 +1130,6 @@ function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array
   // Add template suggestion for multiple files widget.
   if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'file_widget_multiple') {
     $suggestions[] = 'details__file_widget_multiple';
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter() for block.html.twig.
- */
-function joinup_theme_theme_suggestions_block_alter(array &$suggestions, array $variables) {
-  // Provide suggestion for blocks which have top padding and border.
-  if (isset($variables['elements']['content']['#extra_suggestion'])) {
-    $suggestions[] = $variables['elements']['content']['#extra_suggestion'];
   }
 }
 
