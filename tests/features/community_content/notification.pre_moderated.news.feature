@@ -32,6 +32,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | CC notify pre approve proposed      | CC member      | body | CC notify pre approve proposed      | CC pre collection | proposed         |
       | CC notify pre reject deletion       | CC member      | body | CC notify pre reject deletion       | CC pre collection | deletion_request |
       | CC notify pre delete                | CC member      | body | CC notify pre delete                | CC pre collection | deletion_request |
+      | CC notify validated to delete       | CC member      | body | CC notify pre to delete             | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -73,8 +74,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Content" with "CC notify create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                  |
-      | subject   | Joinup: Content has been published                                                                                                                                        |
+      | recipient | CC owner                                                                                                                                                                 |
+      | subject   | Joinup: Content has been published                                                                                                                                       |
       | body      | CC Facilitator has published the new news - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -151,8 +152,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                    |
-      | subject   | Joinup: Content has been updated                                                                                                                                             |
+      | recipient | CC member                                                                                                                                                       |
+      | subject   | Joinup: Content has been updated                                                                                                                                |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -168,7 +169,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | subject   | Joinup: Content has been updated                                                                                                                                                                             |
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the news - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
-    # Test 'delete' operation.
+    # Test 'delete' operation on an entity in 'deletion_request' state.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC notify pre delete" news
@@ -176,6 +177,18 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                        |
-      | subject   | Joinup: Content has been deleted                                                                                 |
-      | body      | Facilitator CC Facilitator has deleted the news - "CC notify pre delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                      |
+      | subject   | Joinup: Content has been deleted                                                                                                               |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CC notify pre delete" in the collection: "CC pre collection". |
+
+    # Test 'delete' operation on an entity in 'validated' state.
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CC notify validated to delete" news
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                 |
+      | subject   | Joinup: Content has been deleted                                                                                          |
+      | body      | Facilitator CC Facilitator has deleted the news - "CC notify validated to delete" in the collection: "CC pre collection". |
