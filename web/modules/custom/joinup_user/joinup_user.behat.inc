@@ -80,11 +80,13 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
         continue;
       }
 
-      $pattern = '#https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?[\r\n\s]#';
+      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
-      if (empty($matches[0])) {
+      // $matches[0] is the whole string including href=".
+      // $matches[1] is the actual link.
+      if (empty($matches[1])) {
         continue;
       }
       break;
@@ -93,7 +95,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     if (empty($matches)) {
       throw new Exception('Deletion confirmation url was not found');
     }
-    $url = $matches[0][0];
+    $url = $matches[1][0];
     $this->visitPath($url);
   }
 
