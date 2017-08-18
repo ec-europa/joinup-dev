@@ -456,6 +456,16 @@ function joinup_theme_preprocess_block(&$variables) {
   if ($variables['elements']['#id'] === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
   }
+
+  // Set default title tag.
+  $variables['title_tag'] = 'h2';
+
+  // Set classes for block__separated.
+  if (isset($variables['content']['#extra_suggestion']) && $variables['content']['#extra_suggestion'] == 'block__separated') {
+    $variables['attributes']['class'][] = 'block--separated';
+    $variables['title_attributes']['class'][] = 'block__title';
+    $variables['title_tag'] = 'h3';
+  }
 }
 
 /**
@@ -500,6 +510,15 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
   if (isset($variables['attributes']['block'])) {
     $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
     $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#extra_suggestion']) && $variables['element']['#extra_suggestion'] == 'comment_plain') {
+    $suggestions[] = 'textarea__comment_plain';
   }
 }
 
@@ -645,6 +664,26 @@ function joinup_theme_preprocess_field__comment(&$variables) {
 
   $variables['login_path'] = Url::fromRoute('user.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for form.html.twig.
+ */
+function joinup_theme_preprocess_form(&$variables) {
+  // Exclude collection and solution forms.
+  $form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_collection_propose_form',
+    'rdf_entity_collection_add_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_solution_form',
+    'rdf_entity_solution_add_form',
+  ];
+
+  // Display asterisk for required fields.
+  if (!in_array($variables['element']['#form_id'], $form_ids)) {
+    $variables['attributes']['class'][] = 'form__with-asterisk';
+  }
 }
 
 /**
@@ -928,6 +967,16 @@ function joinup_theme_preprocess_node__moderation(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for details.html.twig.
+ */
+function joinup_theme_preprocess_details(&$variables) {
+  // Add additional class for multiple files widget.
+  if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'file_widget_multiple') {
+    $variables['attributes']['class'][] = 'table-operations';
+  }
+}
+
+/**
  * Remove the contextual links from a template preprocess variable array.
  *
  * @param array $variables
@@ -1044,13 +1093,25 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
+
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+
+    // Suggestion for form actions container if id has suffix.
+    if (end($suggestions) != 'container__edit_actions' && strpos($variables['element']['#id'], 'edit-actions') !== FALSE) {
+      $suggestions[] = 'container__edit_actions';
+    }
 
     // Suggestion for search form submit container.
     if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
       $suggestions[] = 'container__edit_actions__search_bar';
     }
+  }
+
+  // Add extra suggestion for grid elements.
+  if ($has_extra_suggestions) {
+    $suggestions[] = $variables['element']['#extra_suggestion'];
   }
 }
 
@@ -1110,9 +1171,9 @@ function joinup_theme_theme_suggestions_field_alter(array &$suggestions, array $
  * Implements hook_theme_suggestions_HOOK_alter() for details.html.twig.
  */
 function joinup_theme_theme_suggestions_details_alter(array &$suggestions, array $variables) {
-  // Add template suggestion for multiple files widget.
-  if (isset($variables['element']['#theme']) && $variables['element']['#theme'] == 'file_widget_multiple') {
-    $suggestions[] = 'details__file_widget_multiple';
+  // Add template suggestion for vertical tabs.
+  if (isset($variables['element']['#group']) && $variables['element']['#group'] == 'group_general') {
+    $suggestions[] = 'details__vertical_tabs';
   }
 }
 
@@ -1292,8 +1353,10 @@ function joinup_theme_preprocess_node__event__listing_item(&$variables) {
  * Add theme suggestions directly to the comment body field.
  */
 function joinup_theme_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['field_body']['widget'][0]['value']['#theme'] = 'textarea__comment';
-  $form['field_body']['widget'][0]['value']['#theme_wrappers'] = ['form_element__textarea__comment'];
+  if (\Drupal::currentUser()->isAnonymous()) {
+    $form['field_body']['#attributes']['class'][] = 'comment-form-anonymous';
+    $form['field_body']['widget'][0]['#extra_suggestion'] = 'comment_plain';
+  }
 }
 
 /**

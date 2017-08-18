@@ -14,15 +14,16 @@
  * @see template_preprocess_details()
  */
 #}
-<div class="vertical-tabs__menu-item vertical-tabs__menu-item--mobile">
-  <a href="#{{ element['#id'] }}">
-    <span class="vertical-tabs__menu-item-title">{{ title }}</span>
-    <span class="vertical-tabs__menu-item-summary">{{ description }}</span>
-  </a>
-</div>
 <details{{ attributes }}>
+  {%
+    set summary_classes = [
+      required ? 'js-form-required',
+      required ? 'form-required',
+      'form__label',
+    ]
+  %}
   {%- if title -%}
-    <summary{{ summary_attributes }}>{{ title }}</summary>
+    <summary{{ summary_attributes.addClass(summary_classes) }}>{{ title }}</summary>
   {%- endif -%}
 
   {% if errors %}
@@ -30,8 +31,9 @@
       {{ errors }}
     </div>
   {% endif %}
-
-  <span class="vertical-tabs__details-summary">{{ description }}</span>
+  {% if description %}
+    <div class="form__description">{{ description }}</div>
+  {% endif %}
   {{ children }}
   {{ value }}
 </details>
