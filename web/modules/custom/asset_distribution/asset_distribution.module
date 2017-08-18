@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\file_url\FileUrlHandler;
@@ -14,6 +15,16 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function asset_distribution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure a distribution's title is unique in its release.
+  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_distribution' && !empty($fields['label'])) {
+    $fields['label']->addConstraint('UniqueAssetDistributionTitle', []);
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -326,4 +337,54 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
       $form['field_ad_gitb_compliant']['#access'] = TRUE;
     }
   }
+}
+
+/**
+ * Returns the parent of the distribution.
+ *
+ * If the distribution is already created, the parent will be retrieved from the
+ * database.
+ * If the distribution is new, it is created though the only allowed route and
+ * the parent can be retrieved from there.
+ * In any other case, skip the parent retrieval.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
+ *   The distribution entity.
+ *
+ * @return \Drupal\rdf_entity\Entity\RdfInterface|null
+ *   The solution or release that this distribution belongs to.
+ *
+ * @throws \Exception
+ *    Thrown when more than one parents are found.
+ */
+function asset_distribution_get_distribution_parent(RdfInterface $asset_distribution) {
+  if (!$asset_distribution->isNew()) {
+    $query = \Drupal::entityQuery('rdf_entity', 'OR')
+      ->condition('field_is_distribution', $asset_distribution->id())
+      ->condition('field_isr_distribution', $asset_distribution->id());
+    $parents = $query->execute();
+    if (count($parents) > 1) {
+      throw new Exception("More than one parent was found for distribution {$asset_distribution->label()}");
+    }
+    elseif (!empty($parents)) {
+      $rdf_entity_id = reset($parents);
+      return \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($rdf_entity_id);
+    }
+  }
+
+  // If the distribution is now added, get the parent from the route.
+  // @todo The parent is only present on the route when creating distributions
+  //   through the UI. Also support distributions created through the API.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3747
+  else {
+    if (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
+      $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
+      if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'asset_release'])) {
+        return $parent;
+      }
+    }
+    throw new \Exception('Retrieving the parent entity from a new distribution that is not created through the add form is not yet supported.');
+  }
+
+  return NULL;
 }

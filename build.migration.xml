@@ -86,7 +86,7 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="batch-size" value="500" />
+            <option name="batch-size" value="50" />
         </drush>
     </target>
 

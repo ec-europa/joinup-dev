@@ -214,3 +214,10 @@ form .description
 .form__actions_inner
   .dropbutton-multiple
     @extend .button-inline
+
+// Hide select formats in a comment field for anonymous users
+// Remove margin for textarea
+.comment-form-anonymous
+  margin-bottom: 0
+  .filter-wrapper
+    display: none
