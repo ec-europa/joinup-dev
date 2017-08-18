@@ -292,7 +292,14 @@ abstract class NotificationSubscriberBase {
     $arguments['@actor:field_user_first_name'] = $actor_first_name;
     $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
-    if ($actor->hasRole('moderator')) {
+    if ($actor->isAnonymous()) {
+      // If an anonymous is creating content, set the first name to also be 'the
+      // Joinup Moderation Team' because some emails use only the first name
+      // instead of the full name.
+      $arguments['@actor:role'] = 'moderator';
+      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
+    }
+    elseif ($actor->hasRole('moderator')) {
       /** @var \Drupal\user\RoleInterface $role */
       $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
       $arguments['@actor:role'] = $role->label();
