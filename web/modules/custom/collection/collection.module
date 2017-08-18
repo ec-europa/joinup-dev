@@ -41,7 +41,7 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
  */
 function collection_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\views\ViewExecutable $view */
-  $view = $form_state->getStorage()['view'];
+  $view = $form_state->get('view');
   if ($view->id() !== 'members_overview') {
     return;
   }
