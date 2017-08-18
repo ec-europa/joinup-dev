@@ -113,9 +113,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       // Ensure that the signature is always placed.
-      $signature = 'Kind regards, The Joinup Community Team';
-      if (!strpos($mail_body, $signature)) {
-        throw new Exception("The signature of the email was not found or is not correct.");
+      $signature_parts = ['Kind regards,', 'The Joinup Moderation Team'];
+      foreach ($signature_parts as $signature_part) {
+        if (!strpos($mail_body, $signature_part)) {
+          throw new Exception("The signature of the email was not found or is not correct.");
+        }
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -239,6 +241,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
         throw new Exception("There were arguments found in the mail or the body that were not replaced.");
+      }
+
+      // Ensure that the signature is always placed.
+      $signature_parts = ['Kind regards,', 'The Joinup Moderation Team'];
+      foreach ($signature_parts as $signature_part) {
+        if (!strpos($mail_body, $signature_part)) {
+          throw new Exception("The signature of the email was not found or is not correct.");
+        }
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
