@@ -94,7 +94,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
   field_state:
     weight: 5
     label: above

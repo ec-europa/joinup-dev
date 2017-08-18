@@ -226,7 +226,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
   links:
     weight: 0
     region: content

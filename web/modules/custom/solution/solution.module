@@ -469,28 +469,20 @@ function solution_build_related_solutions_list(array $ids) {
     $element = $view_builder->view($referenced_solution, 'view_mode_tile', $referenced_solution->language()->getId());
     $elements[$delta] = [
       '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'listing__item',
-          'listing__item--tile',
-          'mdl-cell',
-          'mdl-cell--4-col',
-        ],
-      ],
+      '#extra_suggestion' => 'container__grid_item',
       $id => $element,
     ];
     $delta++;
   }
   if ($elements) {
     $build = [
-      '#type' => 'item',
+      '#type' => 'container',
+      '#extra_suggestion' => 'container__separated',
       '#title' => t('Related solutions'),
     ];
     $build[0] = [
-      '#type' => 'item',
-      '#wrapper_attributes' => [
-        'class' => ['listing', 'listing--grid', 'mdl-grid'],
-      ],
+      '#type' => 'container',
+      '#extra_suggestion' => 'container__grid',
     ];
     $build[0] += $elements;
   }
