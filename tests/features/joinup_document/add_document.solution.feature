@@ -51,10 +51,7 @@ Feature: "Add document" visibility options.
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
-
-    # The sections about managing revisions and groups should not be visible.
-    And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in, Motivation"
+    And the following fields should not be present "Shared in, Motivation"
 
     When I fill in the following:
       | Title       | The Sparks of the Butterfly              |
