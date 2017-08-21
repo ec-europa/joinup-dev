@@ -10,3 +10,11 @@ joinup_community_content.unpin:
   route_name: joinup_community_content.unpin_content
   title: Unpin
   group: node
+joinup_community_content.feature:
+  route_name: joinup_community_content.feature_content
+  title: Feature
+  group: node
+joinup_community_content.unfeature:
+  route_name: joinup_community_content.unfeature_content
+  title: Remove from featured
+  group: node
