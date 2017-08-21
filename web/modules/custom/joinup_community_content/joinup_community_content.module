@@ -58,9 +58,7 @@ function joinup_community_content_entity_field_storage_info(EntityTypeInterface 
 function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
-  $bundles = ['document', 'discussion', 'event', 'news'];
-
-  foreach ($bundles as $bundle) {
+  foreach (CommunityContentHelper::getBundles() as $bundle) {
     $fields['node'][$bundle]['display']['share_link'] = [
       'label' => t('Share'),
       'description' => t('A link to share the content'),
