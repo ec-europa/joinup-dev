@@ -204,12 +204,14 @@ Feature: Collection moderation
     Then I should see the capitalised heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
     And I go to the homepage of the "Spectres in fog" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
     # Also when saving and reopening the edit form the eLibrary creation option
     # should remain unchanged.
     When I press "Publish"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
@@ -246,7 +248,8 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the capitalised heading "Domestic bovins"
     # Edit again.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Any registered user can create new content." should be selected
 
@@ -285,7 +288,8 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the capitalised heading "Theft of Body"
     # Edit again.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
@@ -328,7 +332,8 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the capitalised heading "Silken Emperor"
     # Edit again.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
@@ -371,7 +376,8 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the capitalised heading "The blue ships"
     # Edit again.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the option "Only collection facilitators can create new content." should be selected
 
