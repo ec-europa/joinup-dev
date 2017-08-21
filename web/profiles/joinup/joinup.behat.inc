@@ -1280,13 +1280,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Create comment entities.
    *
    * Table format:
-   * @codingStandardsIgnoreStart
-   * | subject        | message         | author   | mail          | name      | parent      |
-   * | Subject 1      | Comment body    |          | anon@test.com | Anonymous | Parent node |
-   * | Subject 2      | Comment body    | John Doe |               |           | Parent node |
-   * @codingStandardsIgnoreEnd
+   * | message      | author   | parent      |
+   * | Comment body | Jane Dow | Parent node |
+   * | Comment body | John Doe | Parent node |
    *
-   * If author is filled, mail and name are not required.
+   * The author and parent fields are mandatory.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The comment data.
