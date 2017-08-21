@@ -20,7 +20,7 @@
 
 .listing__image
   position: relative
-  z-index: 1
+  z-index: $z-index-highlight
   overflow: hidden
   height: 140px
   text-align: center
@@ -32,7 +32,7 @@
     +centered
 
 .listing__metadata
-  z-index: 2
+  z-index: $z-index-highlight + 1
   word-wrap: break-word
 
 .listing__avatar
@@ -114,7 +114,7 @@
 
 .listing__pin
   position: absolute
-  z-index: 2
+  z-index: $z-index-highlight + 1
   top: 7px
   right: 7px
   width: 30px

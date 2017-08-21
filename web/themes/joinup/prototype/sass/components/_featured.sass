@@ -21,7 +21,7 @@
 
 .featured__inner-wrapper
   position: relative
-  z-index: 2
+  z-index: $z-index-highlight + 1
   max-width: 1200px
   margin: 0 auto
   text-align: center
@@ -37,7 +37,7 @@
 
 .featured__menu-wrapper
   position: relative
-  z-index: 999
+  z-index: $z-index-navigation
   max-width: 1200px
   margin: 0 auto
   text-align: center
@@ -45,7 +45,7 @@
 
 .featured__overlay
   position: absolute
-  z-index: 1
+  z-index: $z-index-highlight
   top: 0
   left: 0
   width: 100%
@@ -57,14 +57,14 @@
   color: inherit
   text-decoration: none
   position: absolute
-  z-index: 3
+  z-index: $z-index-highlight + 2
   top: 0
   left: 0
   width: 100%
   height: 100%
 
 .featured__link-wrapper--outer
-  z-index: 2
+  z-index: $z-index-highlight + 1
 
 .featured__text
   position: relative
@@ -136,9 +136,9 @@
 
 .featured__form-button
   position: relative
+  z-index: $z-index-max
   display: inline-block
   margin: 10px
-  z-index: 999
   +hidden-print
 
 // Modifiers
