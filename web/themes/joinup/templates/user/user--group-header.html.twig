@@ -39,8 +39,13 @@
         {% endif %}
       </div>
     </a>
+    {% if content.field_social_media|render %}
+      <div class="featured__social-media">
+        {{ content.field_social_media }}
+      </div>
+    {% endif %}
       <div class="featured__stats">
-        <div class="stats__column{{ content.field_social_media|render ? ' stats__column--border' }}">
+        <div class="stats__column">
           <div class="stats__wrapper">
             <span class="stats__text">{{ 'Member for'|t }}:</span>
             <span class="stats__text bold">{{ member_for }}</span>
@@ -58,11 +63,6 @@
             </div>
           {% endif %}
         </div>
-        {%  if content.field_social_media|render %}
-          <div class="stats__column">
-            {{ content.field_social_media }}
-          </div>
-        {% endif %}
       </div>
   </div>
 </div>

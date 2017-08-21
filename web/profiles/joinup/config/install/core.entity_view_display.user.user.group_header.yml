@@ -38,7 +38,7 @@ content:
     settings:
       appearance:
         orientation: h
-        show_name: false
+        show_name: true
       link_attributes:
         target: _blank
         rel: '<none>'
