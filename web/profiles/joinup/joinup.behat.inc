@@ -18,10 +18,10 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -44,10 +44,10 @@ use WebDriver\Exception\StaleElementReference;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
@@ -1222,19 +1222,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I open the plus button menu
    */
   public function openPlusButtonMenu() {
-    if ($this->browserSupportsJavascript()) {
-      $driver = $this->getSession()->getDriver();
-      $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.add-content-menu'));
+  }
 
-      // Wait for the menu opening animation to end before continuing.
-      $end = microtime(TRUE) + 5;
-      do {
-        usleep(100000);
-        // The plus button opening animation runs from the top right to the
-        // bottom left. Wait for the last element to become visible to ensure
-        // the menu is fully opened.
-      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]'));
-    }
+  /**
+   * Opens a specific MDL dropdown menu on JS-enabled browsers.
+   *
+   * @When I open the header local tasks menu
+   */
+  public function iOpenTheMdlDropdown() {
+    $element = $this->getSession()->getPage()->findById('block-joinup-theme-local-tasks');
+    $this->openMaterialDesignMenu($element);
   }
 
   /**

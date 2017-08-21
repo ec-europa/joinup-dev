@@ -98,6 +98,7 @@ config_devel:
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
+  - block.block.joinup_user_local_tasks
   - block.block.menusubpages
   - block.block.navigation
   - block.block.pagetitle
