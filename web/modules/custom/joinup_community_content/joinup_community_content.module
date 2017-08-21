@@ -202,6 +202,10 @@ function joinup_community_content_preprocess_node(&$variables) {
     $variables['attributes']['class'][] = 'is-sticky';
     $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
   }
+
+  if ($node->hasField('featured') && $node->get('featured')->value) {
+    $variables['attributes']['class'][] = 'is-featured';
+  }
 }
 
 /**
