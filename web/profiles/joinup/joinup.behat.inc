@@ -1280,9 +1280,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Create comment entities.
    *
    * Table format:
-   * | message      | author   | parent      |
-   * | Comment body | Jane Dow | Parent node |
-   * | Comment body | John Doe | Parent node |
+   * | message      | author   | parent      | created                   |
+   * | Comment body | Jane Dow | Parent node | 2017-08-21T09:08:36+02:00 |
+   * | Comment body | John Doe | Parent node |                           |
    *
    * The author and parent fields are mandatory.
    *
@@ -1349,6 +1349,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ];
       $comment_values += $values;
       $comment = Comment::create($comment_values);
+
+      // Set creation date if provided.
+      if (!empty($comment_values['created'])) {
+        // Convert creation date to UNIX time if needed.
+        if (!is_int($comment_values['created'])) {
+          $comment_values['created'] = strtotime($comment_values['created']);
+        }
+        $comment->setCreatedTime($comment_values['created']);
+      }
+
       $comment->save();
     }
   }
