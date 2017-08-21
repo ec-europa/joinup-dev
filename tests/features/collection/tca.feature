@@ -22,6 +22,7 @@ Feature: Collection TCA agreement
     And I visit "/collections"
     And I click "Create collection"
     Then I should see the heading "Why create a Collection?"
+    And I should see the text "In order to create the Collection you need first check the field below and then press the Yes button to proceed."
     When I press "No thanks"
     Then the url should match "/collections"
 

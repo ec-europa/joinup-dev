@@ -41,7 +41,8 @@ Feature:
     And I am logged in as a moderator
     And I click "People"
     And I click "alicia__1997"
-    And I click "Edit" in the "Entity actions" region
+    And I open the header local tasks menu
+    And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And I press "Cancel account"
     And I wait for the batch job to finish
@@ -55,7 +56,8 @@ Feature:
     When I am logged in as "alicia__1997"
     And all e-mails have been sent
     And I visit "/user"
-    And I click "Edit" in the "Entity actions" region
+    And I open the header local tasks menu
+    And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And I press "Cancel account"
     And the following system email should have been sent:

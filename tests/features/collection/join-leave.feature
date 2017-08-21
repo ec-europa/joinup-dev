@@ -64,8 +64,8 @@ Feature: Joining and leaving collections through the web interface
     # Check that both users can leave their respective collections.
     When I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
-    And I should see the text "By leaving the collection you will be no longer able to publish content in it and to receive notification about the content you published."
-    And I should see the text "In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to join the collection again."
+    And I should see the text "By leaving the collection you will be no longer able to publish content in it and to receive notifications."
+    And I should see the text "In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to rejoin the collection."
     And I should not see the link "Leave this collection"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
