@@ -322,3 +322,27 @@ function joinup_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for main menu.
+ *
+ * Sets the active trail for the main menu items based on the current group
+ * context.
+ */
+function joinup_preprocess_menu__main(&$variables) {
+  $group = \Drupal::service('og.context')->getGroup();
+  if ($group) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+    switch ($group->bundle()) {
+      case 'collection':
+        $variables['items']['collection.collection_overview']['in_active_trail'] = TRUE;
+        break;
+
+      case 'solution':
+        $variables['items']['solution.solution_overview']['in_active_trail'] = TRUE;
+        break;
+    }
+  }
+
+  $variables['#cache']['contexts'][] = 'og_group_context';
+}
