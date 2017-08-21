@@ -7,36 +7,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 
-// @todo Change this in ISAICP-3493
-const TRR_COLLECTION_ID = 'http://placeHolder/4e56d06c-c8c3-40fd-b2a0-773301ebe9b8';
-
-/**
- * Implements hook_field_group_pre_render_alter().
- */
-function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) {
-  if ($group->group_name != 'group_trr') {
-    return;
-  }
-  $rdf_entity = \Drupal::routeMatch()->getParameter('rdf_entity');
-  if (!$rdf_entity) {
-    return;
-  }
-  $id = NULL;
-  $bundle = $rdf_entity->bundle();
-  // Adding a solution.
-  if ($bundle == 'collection') {
-    $id = $rdf_entity->id();
-  }
-  // Editing a solution.
-  if ($bundle == 'solution' && !empty($rdf_entity->get('collection')->getValue()[0]['target_id'])) {
-    $id = $rdf_entity->get('collection')->getValue()[0]['target_id'];
-  }
-  // @see solution_field_group_pre_render_alter()
-  if ($id == TRR_COLLECTION_ID) {
-    $element['#access'] = TRUE;
-  }
-}
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -50,11 +20,10 @@ function trr_form_rdf_entity_solution_edit_form_alter(&$form, FormStateInterface
  * Implements hook_form_FORM_ID_alter().
  */
 function trr_form_rdf_entity_solution_form_alter(&$form, FormStateInterface $form_state) {
+  $form['#attached']['library'][] = 'trr/solution-trr';
   // Only when the solution category 'Test resource' is selected,
   // a test resource type can be selected.
-  $form['field_is_test_resource_type']['#states']['visible'] = [
-    ':input[name="field_is_solution_category"]' => ['value' => 'http://joinup.eu/taxonomy/solutionCategory#2'],
-  ];
+
   $form['#validate'][] = 'trr_form_rdf_entity_solution_form_alter_validate';
 }
 
@@ -78,6 +47,6 @@ function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInter
     $form_state->setError($form['field_is_test_resource_type'], t('Test resources require a test resource type.'));
   }
   if ($test_resource_type && !$test_resource) {
-    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution caltegory is set to "Test resource".'));
+    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution category is set to "Test resource".'));
   }
 }
