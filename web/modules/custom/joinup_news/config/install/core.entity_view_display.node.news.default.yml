@@ -114,7 +114,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
     region: content
   field_news_source_url:
@@ -157,7 +157,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
   report:
     label: hidden
     weight: 4
