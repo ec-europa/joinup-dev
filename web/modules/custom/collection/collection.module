@@ -23,6 +23,7 @@ use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -31,6 +32,56 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds result counts to the role options on the collection membership overview.
+ */
+function collection_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  if ($view->id() !== 'members_overview') {
+    return;
+  }
+
+  // Bail out if we are executing the views queries that get the result counts.
+  if (!empty($view->do_not_recurse)) {
+    return;
+  }
+
+  // Define a function that gets the result count for a given exposed filter
+  // option.
+  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = Views::getView('members_overview');
+    // Make sure we do not get into an endless loop when building the view,
+    // since it will try to build the exposed form again.
+    $view->do_not_recurse = TRUE;
+    // When the exposed input is not set then Views will take the values from
+    // the request arguments. If we want to override them with "there is no
+    // exposed input" then we need to pass a value that is not considered empty,
+    // hence we use "[TRUE]" instead of "[]".
+    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $view->setExposedInput($exposed_input);
+    $view->executeDisplay($display_id, $arguments);
+    // Apparently it is not guaranteed that the `total_rows` will be populated.
+    // @see \Drupal\views\Plugin\views\area\Result::render()
+    return isset($view->total_rows) ? $view->total_rows : count($view->result);
+  };
+
+  /** @var \Drupal\views\Plugin\views\filter\StringFilter $filter */
+  $filter = $view->filter['roles_target_id'];
+  // Check all options, as well as the "- Any -" option.
+  $exposed_options = array_merge([NULL], array_keys($filter->options['group_info']['group_items']));
+
+  foreach ($exposed_options as $exposed_option) {
+    $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+    $key = $exposed_option ?: 'All';
+    $option_text = (string) $form['roles_target_id']['#options'][$key];
+    $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
+  }
 }
 
 /**
@@ -144,18 +195,18 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  */
-function collection_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'collection') {
+function collection_rdf_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
-  collection_entity_update($entity);
+  collection_rdf_entity_update($entity);
 
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !empty($entity->getOwner())) {
+  if (!empty($entity->getOwner()) && !$entity->getOwner()->isAnonymous()) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
@@ -165,11 +216,9 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = Og::getMembership($entity, $entity->getOwner());
-    if (!empty($membership)) {
-      $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
-      $membership->save();
-    }
+    $membership = Og::createMembership($entity, $entity->getOwner());
+    $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+    $membership->save();
   }
 }
 
@@ -257,13 +306,12 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  *
  * Performs the following actions:
- * - Invalidates group content cache tags for the entity that is being changed.
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
-function collection_entity_update(EntityInterface $entity) {
+function collection_rdf_entity_update(EntityInterface $entity) {
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
   if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
@@ -278,7 +326,7 @@ function collection_entity_update(EntityInterface $entity) {
  * Implements hook_module_implements_alter().
  */
 function collection_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'entity_insert') {
+  if ($hook === 'rdf_entity_insert') {
     // Make sure collection_entity_insert() runs after og_entity_insert(). The
     // latter creates an OgMembership entry for the collection owner when a new
     // collection is proposed, and collection_entity_insert() needs to modify
@@ -413,13 +461,13 @@ function collection_member_count(RdfInterface $entity) {
 }
 
 /**
- * Amount of solutions in the collection.
+ * Amount of validated solutions in the collection.
  *
  * @param \Drupal\rdf_entity\RdfInterface $entity
  *   The collection.
  *
  * @return int
- *   Amount of solutions.
+ *   Amount of validated solutions.
  */
 function collection_solution_count(RdfInterface $entity) {
   $solutions = $entity->get('field_ar_affiliates');
