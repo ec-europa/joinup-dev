@@ -93,7 +93,10 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     if (empty($matches)) {
-      throw new Exception('Deletion confirmation url was not found');
+      $message = t("Deletion confirmation url was not found in the mail body: \n@body", [
+        '@body' => $body,
+      ]);
+      throw new Exception($message);
     }
     $url = $matches[1][0];
     $this->visitPath($url);
