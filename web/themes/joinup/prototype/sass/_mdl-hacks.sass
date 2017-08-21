@@ -48,7 +48,8 @@
 .mdl-grid--center
   justify-content: center
 
-.join-collection-form
+.join-collection-form,
+#block-joinup-theme-local-tasks
   .mdl-menu__item a
     white-space: nowrap
     color: $color-blue-default
@@ -74,4 +75,21 @@
       flex-grow: 1
       flex-shrink: 0
 
+// Prevent overlapping contextal button and local tasks button.
+.section--featured .contextual
+  top: 50px
+
+#block-joinup-theme-local-tasks
+  position: absolute
+  top: 10px
+  right: 10px
+  z-index: 4
+  a
+    text-decoration: none
+  .icon
+    +icon-size(15px)
+    color: #fff
+  &:first-child
+    .icon
+      color: $color-base
 
