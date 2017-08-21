@@ -5,20 +5,22 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-id: pagetitle
+id: joinup_user_local_tasks
 theme: joinup_theme
 region: content
-weight: -12
+weight: -11
 provider: null
-plugin: page_title_block
+plugin: local_tasks_block
 settings:
-  id: page_title_block
-  label: 'Page title'
+  id: local_tasks_block
+  label: 'User local actions tabs'
   provider: core
   label_display: '0'
+  primary: true
+  secondary: true
 visibility:
   request_route:
     id: request_route
-    routes: "entity.user.canonical\r\nentity.user.edit_form"
-    negate: true
+    routes: "user.login\r\nuser.pass\r\nuser.register"
+    negate: false
     context_mapping: {  }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "65842c6c13d6c3b8bd72bc4fbf7c99d5",
+    "content-hash": "2c436036c5d21f8544fc5b424a60a634",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.33.1",
+            "version": "3.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4e680960ae55d29748a60874361a5f3829252fb3"
+                "reference": "027bf2f1489bc6af98cb81494f0612d1f405ff27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4e680960ae55d29748a60874361a5f3829252fb3",
-                "reference": "4e680960ae55d29748a60874361a5f3829252fb3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/027bf2f1489bc6af98cb81494f0612d1f405ff27",
+                "reference": "027bf2f1489bc6af98cb81494f0612d1f405ff27",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-15T19:11:10+00:00"
+            "time": "2017-08-16T17:24:08+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1863,16 +1863,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.6",
+            "version": "8.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0"
+                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
-                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
+                "url": "https://api.github.com/repos/drupal/core/zipball/32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
+                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
                 "shasum": ""
             },
             "require": {
@@ -2027,6 +2027,7 @@
                 "patches_applied": {
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
+                    "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-22.patch",
                     "#2346893: Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Soft reload does not clean up user inputs like in D7 (Firefox only) @see https://www.drupal.org/node/2596597": "https://www.drupal.org/files/issues/2596597-8.patch",
@@ -2059,7 +2060,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-08-02T15:27:39+00:00"
+            "time": "2017-08-16T17:10:35+00:00"
         },
         {
             "name": "drupal/ctools",
@@ -5772,12 +5773,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "cf2c0e51f463a3f65ce816db5be2db2ab9f052c6"
+                "reference": "7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/cf2c0e51f463a3f65ce816db5be2db2ab9f052c6",
-                "reference": "cf2c0e51f463a3f65ce816db5be2db2ab9f052c6",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5",
+                "reference": "7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5",
                 "shasum": ""
             },
             "require": {
@@ -5844,7 +5845,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-08-03T10:59:52+00:00"
+            "time": "2017-08-17T13:17:23+00:00"
         },
         {
             "name": "psr/cache",
@@ -9482,11 +9483,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha6+0-dev",
-                    "datestamp": "1493675943",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1493675943"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9531,7 +9528,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
