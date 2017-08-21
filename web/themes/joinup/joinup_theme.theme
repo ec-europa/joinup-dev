@@ -491,6 +491,16 @@ function joinup_theme_preprocess_block(&$variables) {
   if ($block_id === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
   }
+
+  // Set default title tag.
+  $variables['title_tag'] = 'h2';
+
+  // Set classes for block__separated.
+  if (isset($variables['content']['#extra_suggestion']) && $variables['content']['#extra_suggestion'] == 'block__separated') {
+    $variables['attributes']['class'][] = 'block--separated';
+    $variables['title_attributes']['class'][] = 'block__title';
+    $variables['title_tag'] = 'h3';
+  }
 }
 
 /**
@@ -675,6 +685,26 @@ function joinup_theme_preprocess_field__comment(&$variables) {
 
   $variables['login_path'] = Url::fromRoute('user.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for form.html.twig.
+ */
+function joinup_theme_preprocess_form(&$variables) {
+  // Exclude collection and solution forms.
+  $form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_collection_propose_form',
+    'rdf_entity_collection_add_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_solution_form',
+    'rdf_entity_solution_add_form',
+  ];
+
+  // Display asterisk for required fields.
+  if (!in_array($variables['element']['#form_id'], $form_ids)) {
+    $variables['attributes']['class'][] = 'form__with-asterisk';
+  }
 }
 
 /**
@@ -1106,13 +1136,25 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
+
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+
+    // Suggestion for form actions container if id has suffix.
+    if (end($suggestions) != 'container__edit_actions' && strpos($variables['element']['#id'], 'edit-actions') !== FALSE) {
+      $suggestions[] = 'container__edit_actions';
+    }
 
     // Suggestion for search form submit container.
     if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
       $suggestions[] = 'container__edit_actions__search_bar';
     }
+  }
+
+  // Add extra suggestion for grid elements.
+  if ($has_extra_suggestions) {
+    $suggestions[] = $variables['element']['#extra_suggestion'];
   }
 }
 

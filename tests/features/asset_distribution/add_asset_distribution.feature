@@ -29,7 +29,7 @@ Feature: Add distribution through the UI
 
     When I click "Add distribution"
     Then I should see the heading "Add Distribution"
-    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
+    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique"
     And the following fields should not be present "Langcode, Translation"
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
@@ -100,7 +100,7 @@ Feature: Add distribution through the UI
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     And I click "Add distribution" in the plus button menu
     Then I should see the heading "Add Distribution"
-    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique, GITB compliant"
+    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique"
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
