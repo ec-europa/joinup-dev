@@ -183,6 +183,7 @@ config_devel:
   - r4032login.settings
   - swiftmailer.message
   - swiftmailer.transport
+  - system.date
   - system.theme
   - user.flood
   - user.mail
