@@ -42,6 +42,7 @@ Feature: Event moderation
     # Edit the collection and set it as moderated.
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check the box "Moderated"
@@ -61,6 +62,7 @@ Feature: Event moderation
     # content.
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check "Closed collection"
@@ -94,7 +96,8 @@ Feature: Event moderation
     And I should see the text "30 August to 01 September 2018"
 
     # Publish the content.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
     And the following fields should be present "Motivation"
     When I fill in "Title" with "The Fire of the Nothing"
@@ -105,6 +108,7 @@ Feature: Event moderation
     When I am logged in as "Patricia Lynch"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
     And the current workflow state should be "Published"
@@ -115,6 +119,7 @@ Feature: Event moderation
     When I am logged in as "Rosa Vaughn"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The event is amazing"
@@ -125,6 +130,7 @@ Feature: Event moderation
     When I am logged in as "Patricia Lynch"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Publish"
     And the current workflow state should be "Proposed"
