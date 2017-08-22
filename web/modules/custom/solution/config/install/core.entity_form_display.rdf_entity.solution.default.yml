@@ -39,6 +39,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - image.style.thumbnail
@@ -343,6 +344,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_is_affiliations_requests: true
   field_is_content: true
@@ -359,6 +365,7 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

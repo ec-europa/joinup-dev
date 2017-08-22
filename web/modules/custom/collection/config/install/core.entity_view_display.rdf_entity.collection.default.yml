@@ -18,6 +18,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
@@ -69,6 +70,7 @@ hidden:
   field_ar_owner: true
   field_ar_state: true
   field_policy_domain: true
+  field_site_featured: true
   field_spatial_coverage: true
   join_collection: true
   langcode: true

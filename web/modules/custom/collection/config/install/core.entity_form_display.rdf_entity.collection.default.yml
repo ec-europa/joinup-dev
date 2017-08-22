@@ -19,6 +19,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
@@ -262,6 +263,7 @@ content:
     third_party_settings: {  }
 hidden:
   field_ar_affiliates: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

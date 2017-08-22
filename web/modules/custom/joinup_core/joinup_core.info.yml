@@ -46,6 +46,7 @@ config_devel:
   - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
+  - field.storage.rdf_entity.field_site_featured
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
