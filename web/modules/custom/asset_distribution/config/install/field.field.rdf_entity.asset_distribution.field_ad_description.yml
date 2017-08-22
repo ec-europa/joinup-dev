@@ -5,7 +5,15 @@ dependencies:
     - field.storage.rdf_entity.field_ad_description
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
 id: rdf_entity.asset_distribution.field_ad_description
 field_name: field_ad_description
 entity_type: rdf_entity

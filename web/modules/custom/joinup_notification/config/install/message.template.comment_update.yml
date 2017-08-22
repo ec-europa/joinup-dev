@@ -10,7 +10,7 @@ text:
     format: content_editor
   -
     value: '<p>@actor:full_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p>'
-    format: full_html
+    format: content_editor
 settings:
   'token options':
     clear: false

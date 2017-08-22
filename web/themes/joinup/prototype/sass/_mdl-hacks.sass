@@ -1,12 +1,14 @@
 .mdl-card
   width: 100% !important
 
-.mdl-layout__header-row
-  height: 64px !important
-
 .mdl-cell--12-col-tablet
   +breakpoint(mobile, tablet)
     width: 100%
+
+.mdl-layout__header-row
+  height: 64px !important
+  +breakpoint(tablet)
+    padding: 0 20px
 
 .mdl-menu
   .mdl-menu__item
@@ -18,17 +20,14 @@
       white-space: normal
 
 .mdl-layout__drawer-button
-  +hidden-print
   top: 4px
-  .material-icons
-    font-size: 40px
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    color: #fff
+  +hidden-print
   +breakpoint(tablet)
     display: none
+  .material-icons
+    font-size: 40px
+    color: #fff
+    +centered
 
 .mdl-textfield--floating-label
   .field-prefix
@@ -36,14 +35,15 @@
 
 .mdl-spinner
   position: fixed
+  z-index: 1000
   top: 48.5%
   left: 49%
-  z-index: 1000
 
 .mdl-grid--center
   justify-content: center
 
-.join-collection-form
+.join-collection-form,
+#block-joinup-theme-local-tasks
   .mdl-menu__item a
     white-space: nowrap
     color: $color-blue-default
@@ -68,4 +68,22 @@
     .section--content
       flex-grow: 1
       flex-shrink: 0
+
+// Prevent overlapping contextal button and local tasks button.
+.section--featured .contextual
+  top: 50px
+
+#block-joinup-theme-local-tasks
+  position: absolute
+  top: 10px
+  right: 10px
+  z-index: 4
+  a
+    text-decoration: none
+  .icon
+    +icon-size(15px)
+    color: #fff
+  &:first-child
+    .icon
+      color: $color-base
 

@@ -55,28 +55,6 @@ function joinup_notification_node_delete(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * During the hook_update, the entity is already saved. This renders impossible
- * to determine whether there was a published version before. Yet, the email
- * cannot be sent during the presave because the save action has not completed
- * yet and anything could go wrong. Thus, a property is set to define whether
- * the entity had a published version previously.
- */
-function joinup_notification_rdf_entity_presave(EntityInterface $entity) {
-  if ($entity->bundle() !== 'collection') {
-    return;
-  }
-
-  if ($entity->isNew()) {
-    $entity->hasPublished = FALSE;
-  }
-  else {
-    $entity->hasPublished = $entity->hasGraph('default');
-  }
-}
-
-/**
  * Implements hook_ENTITY_TYPE_insert().
  */
 function joinup_notification_rdf_entity_insert(EntityInterface $entity) {

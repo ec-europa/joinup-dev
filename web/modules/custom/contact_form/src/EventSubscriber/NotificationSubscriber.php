@@ -194,6 +194,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     if (!empty($message->get('field_contact_url')->first()->uri)) {
       $reported = $this->getEntityFromUrl($message->get('field_contact_url')->first()->uri);
       $arguments['@entity:title'] = $reported->label();
+      $arguments['@entity:url'] = $reported->toUrl('canonical', ['absolute' => TRUE])->toString();
     }
 
     return $arguments;

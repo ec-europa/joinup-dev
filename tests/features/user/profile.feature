@@ -24,6 +24,10 @@ Feature: User profile
     And I select "Supplier exchange" from "Professional domain"
     And I fill in "Professional profile" with "SAP expert"
     And I fill in "Country of origin" with "Italy"
+    And I fill in "Facebook" with "leodavinci"
+    And I fill in "Twitter" with "therealdavinci"
+    And I fill in "LinkedIn" with "leonardo.davinci"
+    And I fill in "GitHub" with "davinci"
 
     # Verify that the business title is a field limited to 255 characters.
     When I fill in "Business title" with "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sagittis justo ornare justo porta tristique vitae eu ligula. Mauris iaculis eros id nulla posuere, id luctus orci ultricies. Aenean at leo diam. Aliquam dapibus nibh et est pharetra, quis interdum"
@@ -37,6 +41,14 @@ Feature: User profile
     And I see the text "Italian Renaissance polymath" in the "Header" region
     And I should see the text "Supplier exchange"
     And I should see the link "Edit"
+    And the link "Facebook" in the "Header" region should point to "https://www.facebook.com/leodavinci"
+    And the link "Twitter" in the "Header" region should point to "https://www.twitter.com/therealdavinci"
+    And the link "LinkedIn" in the "Header" region should point to "https://www.linkedin.com/leonardo.davinci"
+    And the link "GitHub" in the "Header" region should point to "https://github.com/davinci"
+    And I should not see the link "Google+" in the "Header" region
+    And I should not see the link "SlideShare" in the "Header" region
+    And I should not see the link "Youtube" in the "Header" region
+    And I should not see the link "Vimeo" in the "Header" region
     # @todo The nationality will be rendered as flag image.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3175
     # And I should see the link "Italy"

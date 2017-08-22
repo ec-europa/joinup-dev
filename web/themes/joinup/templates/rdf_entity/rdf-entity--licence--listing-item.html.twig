@@ -18,7 +18,7 @@
       <h2 class="listing__title">{{ label }}</h2>
     </div>
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_licence_description|render|striptags }}</p>
+      <p class="listing__teaser">{{ content.field_licence_description|render|striptags('<a>')|raw }}</p>
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
     </div>
