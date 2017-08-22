@@ -7,7 +7,7 @@ description: 'Template id 13 - This will be sent in case the deletion/archival h
 text:
   1:
     value: "<p>Your @entity:bundle \"@entity:title\" has been @transition:request_action:past.</p>\r\n\r\n<p>The reason for being @transition:request_action:past is: @transition:motivation.</p>\r\n"
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false
