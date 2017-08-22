@@ -151,6 +151,7 @@ function joinup_notification_mail_alter(&$message) {
     $manager = \Drupal::service('plugin.manager.filter');
     $bag = new FilterPluginCollection($manager, []);
     $filter = $bag->get('filter_url');
+    $filter->settings['filter_url_length'] = 256;
 
     $message['body'] = array_map(function ($text) use ($filter) {
       return Markup::create(_filter_url($text, $filter));
