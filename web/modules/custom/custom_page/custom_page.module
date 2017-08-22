@@ -57,10 +57,6 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  * Implements hook_entity_insert().
  *
  * Create menu link when a custom page gets saved.
- *
- * @todo This will become obsolete when ISAICP-2369 is in.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
  */
 function custom_page_entity_insert(EntityInterface $entity) {
   if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
@@ -97,30 +93,25 @@ function custom_page_entity_insert(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_update().
- *
- * This is a temporary workaround to invalidate the OG Menu cache, until a
- * proper invalidation will be added in ISAICP-3546.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3546
- *
- * @todo Remove this workaround when ISAICP-3546 lands.
+ * Implements hook_entity_update().
  */
-function custom_page_node_update(EntityInterface $entity) {
-  if ($entity->bundle() !== 'custom_page') {
-    return;
-  }
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
-  if (empty($parent)) {
+function custom_page_entity_update(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
     return;
   }
 
-  $results = \Drupal::service('og.membership_manager')->getGroupContentIds($parent, ['ogmenu_instance']);
-  if (!empty($results)) {
-    $og_menu_instance_id = reset($results['ogmenu_instance']);
-    $og_menu_instance = \Drupal::entityTypeManager()->getStorage('ogmenu_instance')->load($og_menu_instance_id);
-    if (!empty($og_menu_instance)) {
-      Cache::invalidateTags($og_menu_instance->getCacheTags());
+  // Update all links that point to this custom page if the title has changed,
+  // or if the entity becomes (un)published.
+  /** @var \Drupal\node\NodeInterface $entity */
+  if ($entity->isPublished() !== $entity->original->isPublished() || $entity->getTitle() !== $entity->original->getTitle()) {
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
+
+    if (!empty($result)) {
+      foreach ($result as $id => $instance) {
+        $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
+      }
     }
   }
 }
