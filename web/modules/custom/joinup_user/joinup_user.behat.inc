@@ -80,11 +80,14 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
         continue;
       }
 
-      $pattern = '#https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?[\r\n\s]#';
+      $pattern = '#(https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)[\r\n\s\"<>]#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
-      if (empty($matches[0])) {
+      // $matches[0] are urls with the characters outside the matching
+      // parenthesis. $matches[1] are the matches restricted by the parenthesis
+      // tags in the regex. $matches[1] contain the clean urls.
+      if (empty($matches[1])) {
         continue;
       }
       break;
@@ -96,7 +99,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       ]);
       throw new Exception($message);
     }
-    $url = $matches[0][0];
+    $url = reset($matches[1]);
     $this->visitPath($url);
   }
 
