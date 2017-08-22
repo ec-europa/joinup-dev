@@ -83,7 +83,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       // @todo: Set a more appropriate regex when the domain name of CPHP allows
       // us to convert the urls automatically.
       // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3790
-      $pattern = '#(https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)[\r\n\s\"<>]#';
+      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);

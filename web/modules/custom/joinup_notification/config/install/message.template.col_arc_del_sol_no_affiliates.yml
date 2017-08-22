@@ -7,10 +7,10 @@ description: 'Template id 11 - To solution owners with no affiliation left.'
 text:
   -
     value: 'The @entity:bundle @entity:title was @transition:request_action:past. Your solution was affiliated only to the @entity:bundle @entity:title, and as a consequence, your solution is not currently affiliated to any other collection. Please verify and take appropriate action.'
-    format: content_editor
+    format: full_html
   -
     value: "<p>The \"@entity:title\" @entity:bundle was @transition:request_action:past recently.</p>\r\n\r\n<p>Since your solution \"@affiliate:title\" was affiliated only with this @transition:request_action:past @entity:bundle, your solution is currently no longer affiliated to any other @entity:bundle.</p>\r\n\r\n<p>Please contact a moderator through the @site:contact_url to take appropriate action, in order to possibly affiliate the solution to another @entity:bundle. In case of no action, the solution will be deleted.</p>\r\n"
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false
