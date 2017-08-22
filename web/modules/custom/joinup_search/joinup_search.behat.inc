@@ -44,10 +44,13 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function clickContentTypeFacet($type) {
     // Find the span that contains the content type text and than traverse back
     // to the link wrapping it.
-    $xpath = "//div[@class='tab__container tab__container--wide']//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
-      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab tab--content-type ')]";
+    $xpath = "//div[@class='tab__container']//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
+      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";
 
-    $link = $this->getSession()->getPage()->find('xpath', $xpath);
+    $xp = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
+    "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
+
+    $link = $this->getSession()->getPage()->find('xpath', $xp);
 
     if (!$link) {
       throw new \Exception("The tab $type was not found in the page.");
@@ -68,7 +71,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the :type content tab should be selected
    */
   public function assertContentTypeFacetSelected($type) {
-    $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ') and contains(concat(' ', normalize-space(@class), ' '), ' is-active ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')][normalize-space(string(.)) = '$type']";
+    $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ') and contains(concat(' ', normalize-space(@class), ' '), ' is-active ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')][normalize-space(string(.)) = '$type']";
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
     \PHPUnit_Framework_Assert::assertNotEmpty($element);
   }
