@@ -30,6 +30,8 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_theme().
@@ -852,5 +854,33 @@ function joinup_core_user_predelete(EntityInterface $entity) {
   foreach ($membership_manager->getMemberships($entity, []) as $membership) {
     $membership->skip_notification = TRUE;
     $membership->delete();
+  }
+}
+
+/**
+ * Implements hook_user_format_name_alter().
+ *
+ * Replaces the username with a concatenation of the user's first and last name.
+ */
+function joinup_core_user_format_name_alter(&$name, $account) {
+  // Skip if the user is anonymous.
+  if ($account->isAnonymous()) {
+    return;
+  }
+
+  // Load the full user object if needed.
+  if (!$account instanceof UserInterface) {
+    $account = User::load($account->id());
+  }
+
+  /** @var \Drupal\user\UserInterface $account */
+  $name_components = [];
+  foreach (['field_user_first_name', 'field_user_family_name'] as $field_name) {
+    if (!empty($account->get($field_name)->first())) {
+      $name_components[] = $account->get($field_name)->first()->value;
+    }
+  }
+  if (!empty($name_components)) {
+    $name = implode(' ', $name_components);
   }
 }
