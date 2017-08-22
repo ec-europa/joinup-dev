@@ -79,8 +79,8 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       if ($mail['to'] !== $user_email) {
         continue;
       }
-
-      $pattern = '#https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?[\r\n\s]#';
+      
+      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
