@@ -7,10 +7,10 @@ description: 'Template id 6'
 text:
   -
     value: "<p>Your request to edit @entity:bundle @entity:title has been approved.</p>\r\n"
-    format: content_editor
+    format: full_html
   -
-    value: "<p>Your proposal to edit the @entity:bundle \"@entity:title\" has been accepted.</p>\r\n\r\n<p>You can verify the edited version of the collection at @entity:url.</p>\r\n"
-    format: content_editor
+    value: '<p>Your proposal to edit the @entity:bundle "@entity:title" has been accepted.</p>\r\n\r\n<p>You can verify the edited version of the collection at <a href="@entity:url">@entity:url</a>.</p>\r\n'
+    format: full_html
 settings:
   'token options':
     clear: false
