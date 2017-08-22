@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a48bd0288b0c4509078357b3c7a34219",
+    "content-hash": "2b777f58b58da36b36135c0d59d7663a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.33.3",
+            "version": "3.33.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520"
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2820644f411fa261f126727c1c00de15227b9520",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-18T18:04:40+00:00"
+            "time": "2017-08-21T20:34:30+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -9580,7 +9580,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
@@ -11205,7 +11206,6 @@
         "drupal/linkit": 20,
         "drupal/message": 20,
         "drupal/og": 20,
-        "drupal/og_menu": 15,
         "drupal/password_policy": 20,
         "drupal/pathauto": 20,
         "drupal/persistent_login": 20,
