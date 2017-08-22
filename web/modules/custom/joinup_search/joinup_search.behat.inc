@@ -42,10 +42,10 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I click the :type content tab
    */
   public function clickContentTypeFacet($type) {
-    // Find the div that contains the content type text and than traverse back
+    // Find the span that contains the content type text and than traverse back
     // to the link wrapping it.
-    $xpath = "//div[@class='tabs--content-type']//div[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
-      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";
+    $xpath = "//div[@class='tab__container tab__container--wide']//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
+      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab tab--content-type ')]";
 
     $link = $this->getSession()->getPage()->find('xpath', $xpath);
 
