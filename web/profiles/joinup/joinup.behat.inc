@@ -18,10 +18,10 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -44,10 +44,10 @@ use WebDriver\Exception\StaleElementReference;
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
@@ -1222,19 +1222,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I open the plus button menu
    */
   public function openPlusButtonMenu() {
-    if ($this->browserSupportsJavascript()) {
-      $driver = $this->getSession()->getDriver();
-      $this->getSession()->getDriver()->click('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//button');
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.add-content-menu'));
+  }
 
-      // Wait for the menu opening animation to end before continuing.
-      $end = microtime(TRUE) + 5;
-      do {
-        usleep(100000);
-        // The plus button opening animation runs from the top right to the
-        // bottom left. Wait for the last element to become visible to ensure
-        // the menu is fully opened.
-      } while (microtime(TRUE) < $end && !$driver->isVisible('//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]'));
-    }
+  /**
+   * Opens a specific MDL dropdown menu on JS-enabled browsers.
+   *
+   * @When I open the header local tasks menu
+   */
+  public function iOpenTheMdlDropdown() {
+    $element = $this->getSession()->getPage()->findById('block-joinup-theme-local-tasks');
+    $this->openMaterialDesignMenu($element);
   }
 
   /**
@@ -1280,13 +1278,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Create comment entities.
    *
    * Table format:
-   * @codingStandardsIgnoreStart
-   * | subject        | message         | author   | mail          | name      | parent      |
-   * | Subject 1      | Comment body    |          | anon@test.com | Anonymous | Parent node |
-   * | Subject 2      | Comment body    | John Doe |               |           | Parent node |
-   * @codingStandardsIgnoreEnd
+   * | message      | author   | parent      | created                   |
+   * | Comment body | Jane Dow | Parent node | 2017-08-21T09:08:36+02:00 |
+   * | Comment body | John Doe | Parent node |                           |
    *
-   * If author is filled, mail and name are not required.
+   * The author and parent fields are mandatory.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The comment data.
@@ -1351,6 +1347,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ];
       $comment_values += $values;
       $comment = Comment::create($comment_values);
+
+      // Set creation date if provided.
+      if (!empty($comment_values['created'])) {
+        // Convert creation date to UNIX time if needed.
+        if (!is_int($comment_values['created'])) {
+          $comment_values['created'] = strtotime($comment_values['created']);
+        }
+        $comment->setCreatedTime($comment_values['created']);
+      }
+
       $comment->save();
     }
   }
