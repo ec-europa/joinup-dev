@@ -132,4 +132,49 @@ trait MaterialDesignTrait {
     return $input_element;
   }
 
+  /**
+   * Opens a MDL menu on JS-enabled browsers.
+   *
+   * @param null|\Behat\Mink\Element\NodeElement $wrapper
+   *   The element that contains the MDL menu.
+   *
+   * @throws \Exception
+   *   Thrown when the menu wrapper or menu button are not found in the page,
+   *   and when the menu doesn't become visible within the allowed time frame.
+   */
+  protected function openMaterialDesignMenu($wrapper) {
+    if ($this->browserSupportsJavascript()) {
+      if (!$wrapper) {
+        throw new \Exception('The MDL menu wrapper was not found in the page.');
+      }
+
+      $button = $wrapper->find('xpath', '//button');
+      if (!$button) {
+        throw new \Exception('The MDL menu button was not found in the page.');
+      }
+
+      // The button ID is used in the "for" attribute of the related menu.
+      // Create the xpath that targets the last direct child "li" element, as
+      // that will be the last one appearing with the MDL animation.
+      $button_id = $button->getAttribute('id');
+      $last_li_xpath = $wrapper->find('xpath', "//ul[@for and @for='{$button_id}']/li[last()]")->getXpath();
+      $button->click();
+
+      // Wait for the menu opening animation to end before continuing.
+      $end = microtime(TRUE) + 5;
+      $driver = $this->getSession()->getDriver();
+      do {
+        usleep(100000);
+        // The plus button opening animation runs from the top right to the
+        // bottom left. Wait for the last element to become visible to ensure
+        // the menu is fully opened.
+        $visible = $driver->isVisible($last_li_xpath);
+      } while (microtime(TRUE) < $end && !$visible);
+
+      if (!$visible) {
+        throw new \Exception('The MDL menu did not open properly within the expected timeframe.');
+      }
+    }
+  }
+
 }

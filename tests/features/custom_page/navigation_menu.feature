@@ -209,6 +209,7 @@ Feature: Navigation menu for custom pages
     # Publish an entity will result in showing it to the menu if it is meant to.
     When I am logged in as a moderator
     And I go to the "The Slaves of the Air" custom page
+    When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I press "Save and publish"
     Then I should see the heading "The Slaves of the Air"
@@ -221,3 +222,22 @@ Feature: Navigation menu for custom pages
       | Snake of Pleasure        |
       | The Slaves of the Sea    |
       | The Slaves of the Air    |
+
+  Scenario: Synchronize titles of custom pages and menu links
+    Given the following collection:
+      | title | Ravenous wood-munching alphabeavers |
+    And custom_page content:
+      | title       | body                                                                | collection                          |
+      | Tree eaters | Given time, they will most likely strip the entire region of trees. | Ravenous wood-munching alphabeavers |
+    When I am logged in as a facilitator of the "Ravenous wood-munching alphabeavers" collection
+    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    Then I should see the link "Tree eaters" in the "Navigation menu"
+
+    # Change the title and check that the link is updated.
+    When I click "Tree eaters"
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "An army of furry little killing machines"
+    And I press "Save"
+    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
+    And I should not see the link "Tree eaters" in the "Navigation menu"

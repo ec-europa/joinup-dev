@@ -284,6 +284,62 @@ QUERY;
 }
 
 /**
+ * Access control for the GITB compatibility field on distributions.
+ *
+ * The GITB field on distributions should only be shown if the solution that
+ * the distribution belongs to is either a TestComponent, TestService
+ * or TestScenario.
+ *
+ * Implements hook_form_alter().
+ */
+function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Act on distribution create and update form.
+  if (!in_array($form_id, ['rdf_entity_asset_distribution_edit_form', 'rdf_entity_asset_distribution_form'])) {
+    return;
+  }
+  $solution = NULL;
+  $form['field_ad_gitb_compliant']['#access'] = FALSE;
+  // On the create form, get context from the route.
+  $rdf = \Drupal::routeMatch()->getParameter('rdf_entity');
+  if ($rdf) {
+    if ($rdf->bundle() == 'solution') {
+      $solution = $rdf;
+    }
+    // This distribution is being added to a release.
+    elseif ($rdf->bundle() == 'asset_release') {
+      $solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf);
+    }
+    elseif ($rdf->bundle() == 'asset_distribution') {
+      $solution = AssetDistributionRelations::getDistributionSolution($rdf);
+    }
+  }
+  // During update.
+  else {
+    /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+    $form_object = $form_state->getFormObject();
+    /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+    $distribution = $form_object->getEntity();
+    $solution = AssetDistributionRelations::getDistributionSolution($distribution);
+  }
+
+  if (!$solution) {
+    return;
+  }
+
+  $solution_types = $solution->get('field_is_solution_type')->getValue();
+  $gitb_solution_types = [
+    'http://data.europa.eu/dr8/TestComponent',
+    'http://data.europa.eu/dr8/TestService',
+    'http://data.europa.eu/dr8/TestScenario',
+  ];
+  foreach ($solution_types as $solution_type) {
+    if (in_array($solution_type['target_id'], $gitb_solution_types)) {
+      $form['field_ad_gitb_compliant']['#access'] = TRUE;
+    }
+  }
+}
+
+/**
  * Returns the parent of the distribution.
  *
  * If the distribution is already created, the parent will be retrieved from the

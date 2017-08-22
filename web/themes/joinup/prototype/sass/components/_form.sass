@@ -35,8 +35,8 @@
     margin: 8px
 
 .form__actions_inner
-  display: inline-flex
-  flex-wrap: wrap
+  +inline-flex
+  +flex-wrap(wrap)
   .button
     @extend .button-inline
 
@@ -93,6 +93,16 @@
   margin-bottom: $form-margin
   &.form__actions-wrapper
     margin-bottom: 0
+
+// Asterisk is added for all required fields except collection and solution forms.
+.form__with-asterisk
+  label.form-required
+    position: relative
+    &:before
+      position: absolute
+      right: -15px
+      content: '*'
+      color: $color-error
 
 // Modifiers
 // --------------------------------------------------
