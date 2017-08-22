@@ -704,6 +704,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Prints system message from the page for debugging.
+   *
+   * @Then /^print messages$/
+   */
+  public function printMessages() {
+    $selector = $this->getDrupalSelector('message_selector');
+    /** @var \Behat\Mink\Element\NodeElement $message */
+    foreach ($this->getSession()->getPage()->findAll("css", $selector) as $message) {
+      echo $message->getText() . "\n\n";
+    }
+  }
+
+  /**
    * Fills a date or time field at a datetime widget.
    *
    * Example: When I fill in "Start date" with the date "29-08-2016".
