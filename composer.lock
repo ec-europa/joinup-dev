@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c377d4480d9815e9bdec6241b3b129c7",
+    "content-hash": "b08e300d7b80adadbba827153cd4a311",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.33.3",
+            "version": "3.33.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520"
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2820644f411fa261f126727c1c00de15227b9520",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-18T18:04:40+00:00"
+            "time": "2017-08-21T20:34:30+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1863,16 +1863,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.7",
+            "version": "8.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff"
+                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
-                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
+                "url": "https://api.github.com/repos/drupal/core/zipball/a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
+                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
                 "shasum": ""
             },
             "require": {
@@ -2060,7 +2060,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-08-16T17:10:35+00:00"
+            "time": "2017-08-02T15:27:39+00:00"
         },
         {
             "name": "drupal/ctools",
@@ -2214,7 +2214,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -2420,7 +2420,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha10",
-                    "datestamp": "1499507343"
+                    "datestamp": "1500888543",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2717,8 +2721,12 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta5+3-dev",
-                    "datestamp": "1492788242"
+                    "version": "8.x-5.0-beta5+4-dev",
+                    "datestamp": "1496093583",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 },
                 "patches_applied": {
                     "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
@@ -3142,8 +3150,12 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3+4-dev",
-                    "datestamp": "1488210483"
+                    "version": "8.x-3.0-alpha3+5-dev",
+                    "datestamp": "1495469584",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 },
                 "patches_applied": {
                     "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
@@ -3201,8 +3213,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0+1-dev",
-                    "datestamp": "1494086885"
+                    "version": "8.x-1.0+2-dev",
+                    "datestamp": "1500674343",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 },
                 "patches_applied": {
                     "Entities with long string IDs are causing errors in key-value store @see https://www.drupal.org/node/2892809": "https://www.drupal.org/files/issues/2892809-21.patch"
@@ -3621,7 +3637,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.0-beta1.zip",
-                "reference": null,
+                "reference": "8.x-1.0-beta1",
                 "shasum": "0be21502538afc193a6817089476e7f6ddae2f6d"
             },
             "require": {
@@ -4338,7 +4354,7 @@
                     "email": "marksonnabaum@gmail.com"
                 },
                 {
-                    "name": "Antoine Beaupr??",
+                    "name": "Antoine Beaupré",
                     "email": "anarcat@koumbit.org"
                 },
                 {
@@ -4346,7 +4362,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara??a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -5028,7 +5044,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch??nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -6871,7 +6887,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran??ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9428,7 +9444,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -9916,7 +9932,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -9973,7 +9989,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
