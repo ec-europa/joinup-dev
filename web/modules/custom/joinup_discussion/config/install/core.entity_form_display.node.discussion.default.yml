@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
@@ -104,6 +105,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 4
@@ -115,5 +121,7 @@ content:
     region: content
 hidden:
   field_shared_in: true
+  field_site_featured: true
   field_visit_count: true
+  langcode: true
   og_audience: true

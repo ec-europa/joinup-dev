@@ -40,6 +40,7 @@ config_devel:
   - field.field.taxonomy_term.file_type.mime_type
   - field.storage.comment.field_body
   - field.storage.node.field_shared_in
+  - field.storage.node.field_site_featured
   - field.storage.node.field_visit_count
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_download_count

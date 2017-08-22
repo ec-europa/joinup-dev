@@ -28,6 +28,7 @@ config_devel:
   - field.field.node.discussion.field_attachment
   - field.field.node.discussion.field_policy_domain
   - field.field.node.discussion.field_shared_in
+  - field.field.node.discussion.field_site_featured
   - field.field.node.discussion.field_state
   - field.field.node.discussion.field_visit_count
   - field.field.node.discussion.og_audience
