@@ -23,7 +23,6 @@ function trr_form_rdf_entity_solution_form_alter(&$form, FormStateInterface $for
   $form['#attached']['library'][] = 'trr/solution-trr';
   // Only when the solution category 'Test resource' is selected,
   // a test resource type can be selected.
-
   $form['#validate'][] = 'trr_form_rdf_entity_solution_form_alter_validate';
 }
 
@@ -31,22 +30,133 @@ function trr_form_rdf_entity_solution_form_alter(&$form, FormStateInterface $for
  * Apply the TRR validation rules.
  */
 function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInterface $form_state) {
-  // Category set to 'test resource'.
-  $test_resource = ($form_state->getValue([
-    'field_is_solution_category',
-    0,
-    'target_id',
-  ]) === 'http://joinup.eu/taxonomy/solutionCategory#2');
-  // A 'test resource type' is selected.
-  $test_resource_type = $form_state->getValue([
+  // Require 'test resource type' when the solution is a test scenario.
+  trr_form__required_test_resource__test_scenario($form, $form_state);
+  // Require 'test resource type' when solution is a test component or service.
+  trr_form__required_test_resource__component_service($form, $form_state);
+
+  // Sets some taxonomy fields as required when submitting a trr solution.
+  trr_form__required_taxonomies($form, $form_state);
+}
+
+/**
+ * Require 'test resource type' when the solution is a test scenario.
+ */
+function trr_form__required_test_resource__test_scenario(&$form, FormStateInterface $form_state) {
+  $solution_type = trr_form_get_active_solution_type($form_state);
+  $test_resource_type = trr_form_get_active_test_resource_type($form_state);
+  // Test Component or Test Service selected as Solution type.
+  if (!in_array('http://data.europa.eu/dr8/TestScenario', $solution_type)) {
+    return;
+  }
+  $required_test_resource_type = [
+    // Test Suite.
+    'http://joinup.eu/test-resource-type#5937f06162191',
+    // Test case.
+    'http://joinup.eu/test-resource-type#5937f0616252b',
+    // Test assertion.
+    'http://joinup.eu/test-resource-type#5937f061628ec',
+    // Document Assertion Set.
+    'http://joinup.eu/test-resource-type#5937f06162c71',
+  ];
+  if (!$test_resource_type) {
+    $form_state->setError($form['field_is_test_resource_type'], t('Test resource type is required when the solution type is Test Scenario.'));
+  }
+  elseif (!in_array($test_resource_type, $required_test_resource_type)) {
+    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Suite', 'Test Case', 'Test Assertion' or 'Document assertion set' for the given solution type."));
+  }
+}
+
+/**
+ * Require 'test resource type' when solution is a test component or service.
+ */
+function trr_form__required_test_resource__component_service(&$form, FormStateInterface $form_state) {
+  $solution_type = trr_form_get_active_solution_type($form_state);
+  // Test resource type.
+  $test_resource_type = trr_form_get_active_test_resource_type($form_state);
+  // Test Component or Test Service selected as Solution type.
+  if (!array_intersect($solution_type, [
+    'http://data.europa.eu/dr8/TestComponent',
+    'http://data.europa.eu/dr8/TestService',
+  ])) {
+    return;
+  }
+  $required_test_resource_type = [
+    // Test Bed.
+    'http://joinup.eu/test-resource-type#5937f0616111b',
+    // Message adapter.
+    'http://joinup.eu/test-resource-type#5937f06162ff8',
+    // Document validator.
+    'http://joinup.eu/test-resource-type#5937f0616337f',
+  ];
+  if (!$test_resource_type) {
+    $form_state->setError($form['field_is_test_resource_type'], t('Test Resource Type is required when the solution type is Test Component or Test Service.'));
+  }
+  elseif (!in_array($test_resource_type, $required_test_resource_type)) {
+    $form_state->setError($form['field_is_test_resource_type'], t("Test Tesource Type should be either 'Test Bed', 'Message adapter' or 'Document validator' for the given solution type."));
+  }
+}
+
+/**
+ * Sets some taxonomy fields as required when submitting a trr solution.
+ */
+function trr_form__required_taxonomies(&$form, FormStateInterface $form_state) {
+  $solution_type = trr_form_get_active_solution_type($form_state);
+  // Require these fields when the solution type is set to a trr value.
+  if (!array_intersect($solution_type, [
+    'http://data.europa.eu/dr8/TestComponent',
+    'http://data.europa.eu/dr8/TestService',
+    'http://data.europa.eu/dr8/TestScenario',
+  ])) {
+    return;
+  }
+  // These fields are required when submitting a trr solution.
+  $fields = [
+    'field_is_actor',
+    'field_is_business_process',
+    'field_is_product_type',
+    'field_is_standardization_level',
+  ];
+  foreach ($fields as $field) {
+    if (empty($form_state->getValue([$field, 0, 'target_id']))) {
+      $form_state->setError($form[$field], t("Field %field is required for the given Solution Type'", ['%field' => $form[$field]['widget']['#title']]));
+    }
+  }
+}
+
+/**
+ * Return the selected 'solution type' terms.
+ *
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ *
+ * @return array
+ *   Selected terms.
+ */
+function trr_form_get_active_solution_type(FormStateInterface $form_state) {
+  // Solution type.
+  $solution_type = [];
+  foreach ($form_state->getValue(['field_is_solution_type']) as $element) {
+    $solution_type[] = $element['target_id'];
+  }
+  return $solution_type;
+}
+
+/**
+ * Return the selected 'test resource type' terms.
+ *
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ *
+ * @return mixed
+ *   The selected 'test resource type'.
+ */
+function trr_form_get_active_test_resource_type(FormStateInterface $form_state) {
+  $test_resource_type_selector = [
     'field_is_test_resource_type',
     0,
     'target_id',
-  ]) !== NULL;
-  if ($test_resource && !$test_resource_type) {
-    $form_state->setError($form['field_is_test_resource_type'], t('Test resources require a test resource type.'));
-  }
-  if ($test_resource_type && !$test_resource) {
-    $form_state->setError($form['field_is_solution_category'], t('A test resource type should only be set when the solution category is set to "Test resource".'));
-  }
+  ];
+  $test_resource_type = $form_state->getValue($test_resource_type_selector);
+  return $test_resource_type;
 }

@@ -69,10 +69,14 @@
     }
 
     function array_intersect(arrays) {
-        return arrays.shift().reduce(function(res, v) {
-            if (res.indexOf(v) === -1 && arrays.every(function(a) {
+        return arrays.shift().reduce(function (res, v) {
+            if (res.indexOf(v) === -1) {
+                if (arrays.every(function (a) {
                     return a.indexOf(v) !== -1;
-                })) res.push(v);
+                })) {
+                    res.push(v);
+                }
+            }
             return res;
         }, []);
     }
