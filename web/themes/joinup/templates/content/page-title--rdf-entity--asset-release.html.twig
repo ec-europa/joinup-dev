@@ -22,7 +22,7 @@
       <div class="etiquette etiquette--red"><a href="{{ additional_content.latest_release }}">{{ 'Switch to the latest release'|t }}</a></div>
     {% endif %}
     {% if permalink %}
-      <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+      <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
     {% endif %}
       <div class="details details--solution">
         <div class="details__element">
