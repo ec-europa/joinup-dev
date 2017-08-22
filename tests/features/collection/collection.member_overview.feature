@@ -40,8 +40,8 @@ Feature: Collection membership overview
       | Jubilant Robots | Bohumil Unterbrink    | facilitator |         |
       | Jubilant Robots | Isabell Zahariev      |             | blocked |
       | Jubilant Robots | Gemma Hackett         |             | pending |
-      | Jubilant Robots | Delicia Hart          |             |         |
-      | Jubilant Robots | Sukhrab Valenta       |             |         |
+      | Jubilant Robots | Delicia Hart          | facilitator |         |
+      | Jubilant Robots | Sukhrab Valenta       | facilitator |         |
       | Jubilant Robots | Jun Schrader          |             |         |
       | Jubilant Robots | Ingibjörg De Snaaijer |             |         |
       | Jubilant Robots | Suk Karpáti           |             |         |
@@ -86,6 +86,23 @@ Feature: Collection membership overview
     When I click "››"
     Then I should see the "Bohumil Unterbrink" tile
     And I should see the "Sukhrab Valenta" tile
+
+    # Check the filter on the user roles inside the collection.
+    And the available options in the "Roles" select should be "- Any - (14), Owner (1), Facilitator (4)"
+    And the option "- Any - (14)" should be selected
+
+    When I select "Owner (1)" from "Roles"
+    And I press "Apply"
+    And I should see the following tiles in the correct order:
+      | Ruby Robert |
+
+    When I select "Facilitator (4)" from "Roles"
+    And I press "Apply"
+    And I should see the following tiles in the correct order:
+      | Delicia Hart       |
+      | Ruby Robert        |
+      | Bohumil Unterbrink |
+      | Sukhrab Valenta    |
 
     # Clicking the user name should lead to the user profile page.
     When I click "Sukhrab Valenta"

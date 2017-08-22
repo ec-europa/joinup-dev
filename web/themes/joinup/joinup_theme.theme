@@ -65,6 +65,38 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 }
 
 /**
+ * Gives information about menu_local_task item being displayed.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return string
+ *   Whether a menu_local_task is of horizontal or menu display type.
+ */
+function _joinup_menu_local_task_by_route(RouteMatchInterface $route_match) {
+  if ($route_name = $route_match->getRouteName()) {
+    if (in_array($route_name, _joinup_horizontal_tabs_routes())) {
+      return 'horizontal';
+    }
+    return 'menu';
+  }
+}
+
+/**
+ * Get a list of routes where menu_local_tasks are normal horizontal tabs.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_horizontal_tabs_routes() {
+  return [
+    'user.login',
+    'user.pass',
+    'user.register',
+  ];
+}
+
+/**
  * Get a list of routes which should have tabs.
  *
  * @return array
@@ -392,7 +424,9 @@ function joinup_theme_preprocess_menu(&$variables) {
  * Implements hook_preprocess_block().
  */
 function joinup_theme_preprocess_block(&$variables) {
-  if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
+  $block_id = $variables['elements']['#id'];
+
+  if (isset($block_id) && $block_id == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
     // Indicate if page contains listing
@@ -446,15 +480,26 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['is_listing'] = $is_listing;
   }
 
-  // Get the ID of the block and add this to the main menu theme attributes,
-  // so it is possible to retrieve block ID in suggestions function.
-  // @see joinup_theme_theme_suggestions_menu_alter().
-  if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
-    $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  $is_main_menu = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main';
+  $is_main_local_tasks = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu_local_tasks';
+
+  if ($is_main_menu || $is_main_local_tasks) {
+    $variables['content']['#theme'] = $variables['content']['#theme'] . '__' . $block_id;
   }
+
   // The front page is also shown as a listing of entities.
-  if ($variables['elements']['#id'] === 'frontpageblock') {
+  if ($block_id === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
+  }
+
+  // Set default title tag.
+  $variables['title_tag'] = 'h2';
+
+  // Set classes for block__separated.
+  if (isset($variables['content']['#extra_suggestion']) && $variables['content']['#extra_suggestion'] == 'block__separated') {
+    $variables['attributes']['class'][] = 'block--separated';
+    $variables['title_attributes']['class'][] = 'block__title';
+    $variables['title_tag'] = 'h3';
   }
 }
 
@@ -489,20 +534,6 @@ function joinup_preprocess_file_managed_file(array &$variables) {
     $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
   }
 
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  // Remove the block and replace dashes with underscores in the block ID to
-  // use for the hook name.
-  // Block ID is provided in the preprocess function.
-  // @see joinup_theme_preprocess_block().
-  if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
-    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
-  }
 }
 
 /**
@@ -656,6 +687,26 @@ function joinup_theme_preprocess_field__comment(&$variables) {
 
   $variables['login_path'] = Url::fromRoute('user.login')->toString();
   $variables['register_path'] = Url::fromRoute('user.register')->toString();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for form.html.twig.
+ */
+function joinup_theme_preprocess_form(&$variables) {
+  // Exclude collection and solution forms.
+  $form_ids = [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_collection_propose_form',
+    'rdf_entity_collection_add_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_solution_form',
+    'rdf_entity_solution_add_form',
+  ];
+
+  // Display asterisk for required fields.
+  if (!in_array($variables['element']['#form_id'], $form_ids)) {
+    $variables['attributes']['class'][] = 'form__with-asterisk';
+  }
 }
 
 /**
@@ -915,7 +966,8 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
  */
 function joinup_theme_preprocess_menu_local_action(&$variables) {
   // Add mdl classes for local action button.
-  $mdl_button_classes = ['button--blue-light',
+  $mdl_button_classes = [
+    'button--blue-light',
     'mdl-button',
     'mdl-js-button',
     'mdl-button--raised',
@@ -923,6 +975,27 @@ function joinup_theme_preprocess_menu_local_action(&$variables) {
     'mdl-button--accent',
   ];
   $variables['link']['#options']['attributes']['class'] = array_merge($variables['link']['#options']['attributes']['class'], $mdl_button_classes);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_task(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $menu_type = _joinup_menu_local_task_by_route($route_match);
+
+  if ($menu_type == 'horizontal') {
+    $variables['attributes']['class'][] = 'tab tab--horizontal mdl-tabs__tab';
+  }
+  else {
+    // Every other occasion, item should be in MDL dropdown menu.
+    $variables['attributes']['class'][] = 'mdl-menu__item';
+  }
+
+  // Active flag.
+  if (isset($variables['is_active']) && $variables['is_active'] == TRUE) {
+    $variables['attributes']['class'][] = 'is-active';
+  }
 }
 
 /**
@@ -1065,13 +1138,25 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
+
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
+
+    // Suggestion for form actions container if id has suffix.
+    if (end($suggestions) != 'container__edit_actions' && strpos($variables['element']['#id'], 'edit-actions') !== FALSE) {
+      $suggestions[] = 'container__edit_actions';
+    }
 
     // Suggestion for search form submit container.
     if (isset($variables['element']['submit']['#id']) && strpos($variables['element']['submit']['#id'], 'edit-submit-search') !== FALSE) {
       $suggestions[] = 'container__edit_actions__search_bar';
     }
+  }
+
+  // Add extra suggestion for grid elements.
+  if ($has_extra_suggestions) {
+    $suggestions[] = $variables['element']['#extra_suggestion'];
   }
 }
 
