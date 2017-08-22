@@ -80,12 +80,16 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
         continue;
       }
 
-      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
+      // @todo: Set a more appropriate regex when the domain name of CPHP allows
+      // us to convert the urls automatically.
+      // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3790
+      $pattern = '#(https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)[\r\n\s\"<>]#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
-      // $matches[0] is the whole string including href=".
-      // $matches[1] is the actual link.
+      // $matches[0] are urls with the characters outside the matching
+      // parenthesis. $matches[1] are the matches restricted by the parenthesis
+      // tags in the regex. $matches[1] contain the clean urls.
       if (empty($matches[1])) {
         continue;
       }
@@ -93,9 +97,12 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     if (empty($matches)) {
-      throw new Exception('Deletion confirmation url was not found');
+      $message = t("Deletion confirmation url was not found in the mail body: \n@body", [
+        '@body' => $body,
+      ]);
+      throw new Exception($message);
     }
-    $url = $matches[1][0];
+    $url = reset($matches[1]);
     $this->visitPath($url);
   }
 
