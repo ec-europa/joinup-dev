@@ -60,12 +60,12 @@ Feature:
     And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And I press "Cancel account"
-    Then the following system email should have been sent:
+    And the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                           |
       | subject        | Account cancellation request for alicia__1997 at Joinup            |
       | body           | by clicking this link or copying and pasting it into your browser: |
     # Click the confirmation link in the email.
-    When I click the delete confirmation link for the user "alicia__1997" from the last email
+    And I click the delete confirmation link for the user "alicia__1997" from the last email
     And I wait for the batch job to finish
     Then the following system email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                                                                    |

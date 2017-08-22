@@ -80,13 +80,11 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
         continue;
       }
 
-      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
+      $pattern = '#https?://.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?[\r\n\s]#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
-      // $matches[0] is the whole string including href=".
-      // $matches[1] is the actual link.
-      if (empty($matches[1])) {
+      if (empty($matches[0])) {
         continue;
       }
       break;
@@ -98,7 +96,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       ]);
       throw new Exception($message);
     }
-    $url = $matches[1][0];
+    $url = $matches[0][0];
     $this->visitPath($url);
   }
 
