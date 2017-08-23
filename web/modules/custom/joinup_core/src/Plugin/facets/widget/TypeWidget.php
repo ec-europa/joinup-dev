@@ -111,7 +111,7 @@ class TypeWidget extends WidgetPluginBase {
       return $this->buildResultItem($result);
     }
     else {
-      return $this->buildListItems($result);
+      return $this->buildListItems($this->facet, $result);
     }
   }
 
@@ -137,7 +137,7 @@ class TypeWidget extends WidgetPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected function buildListItems(ResultInterface $result) {
+  protected function buildListItems($facet, ResultInterface $result) {
     $classes = ['facet-item'];
     if ($children = $result->getChildren()) {
       $items = $this->prepareLink($result);
