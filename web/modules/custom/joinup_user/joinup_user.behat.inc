@@ -93,7 +93,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     if (empty($matches)) {
       throw new Exception('Deletion confirmation url was not found');
     }
-    $url = $matches[0][0];
+    $url = reset($matches[1]);
     $this->visitPath($url);
   }
 
