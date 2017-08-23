@@ -17,3 +17,4 @@ $this->assertEquals('Číselník - TYP PŘEDPISU PRO VZNIK/ZÁNIK SYSTEMIZOVANÉ
 $translation = $distribution->getTranslation('hu');
 $this->assertEquals('Palinka', $translation->field_ad_description->value);
 $this->assertEquals('Fekete Kutya', $translation->label());
+$this->assertReferences(['CIPA e-Delivery'], $document->og_audience);

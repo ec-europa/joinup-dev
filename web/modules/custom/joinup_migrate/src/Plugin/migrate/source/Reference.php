@@ -247,7 +247,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       ],
       'entity_id' => [
         'type' => 'string',
-        'length' => 2048,
+        'max_length' => 2048,
       ],
     ];
   }
