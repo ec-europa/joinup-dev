@@ -47,31 +47,3 @@ joinup_community_content.unpin_content:
     parameters:
       node:
         type: entity:node
-
-joinup_community_content.feature_content:
-  path: '/node/{node}/feature'
-  defaults:
-    _controller: '\Drupal\joinup_community_content\Controller\FeatureContentController::feature'
-    _title: 'Feature'
-  requirements:
-    _permission: 'feature community content'
-    _custom_access: '\Drupal\joinup_community_content\Controller\FeatureContentController::featureAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      node:
-        type: entity:node
-
-joinup_community_content.unfeature_content:
-  path: '/node/{node}/unfeature'
-  defaults:
-    _controller: '\Drupal\joinup_community_content\Controller\FeatureContentController::unfeature'
-    _title: 'Remove from featured'
-  requirements:
-    _permission: 'unfeature community content'
-    _custom_access: '\Drupal\joinup_community_content\Controller\FeatureContentController::unfeatureAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      node:
-        type: entity:node

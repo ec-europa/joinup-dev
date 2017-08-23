@@ -1,6 +1,0 @@
-feature community content:
-  title: 'Feature community content'
-  description: 'Promote a community content node as featured in the website.'
-unfeature community content:
-  title: 'Unfeature a community content'
-  description: 'Removes a community content node from the featured contents of the website.'
