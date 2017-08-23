@@ -96,7 +96,7 @@ textarea
     position: relative
     padding-left: 0
     margin: 0
-    +z-index(three)
+    +z-index(highlight+2)
     li::before
       display: none
 
@@ -173,3 +173,7 @@ form .description
   margin-bottom: 0
   .filter-wrapper
     display: none
+
+// Contextual
+.contextual
+  +z-index(navigation)

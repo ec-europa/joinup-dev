@@ -158,10 +158,14 @@
     -ms-flex-align: $value
 
 // Z-indexes map-get
-$z-index: (auto: auto, zero: 0, one: 1, two: 2, three: 3, navigation: 10, dropdown: 15, modal: 20, max: 999) !default
+$z-index: (auto: auto, zero: 0, highlight: 1, highlight+1: 2, highlight+2: 3, navigation: 10, dropdown: 15, modal: 20, max: 999, max+1: 1000) !default
 
 @function z-index($key)
-  @return map-get($z-index, $key)
+  @if map-has-key($z-index, $key)
+    @return map-get($z-index, $key)
+   
+  @warn "The key '#{$key}' is not in the map '$z-index'"
+  @return null
 
 =z-index($key)
   z-index: z-index($key)

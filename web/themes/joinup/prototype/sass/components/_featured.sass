@@ -24,7 +24,7 @@
   max-width: 1200px
   margin: 0 auto
   text-align: center
-  +z-index(two)
+  +z-index(highlight+1)
   a
     text-decoration: none
   +breakpoint(sm-mobile, mobile)
@@ -51,7 +51,7 @@
   height: 100%
   opacity: .6
   background-color: $color-blue-default
-  +z-index(one)
+  +z-index(highlight)
 
 .featured__link-wrapper
   color: inherit
@@ -61,10 +61,10 @@
   left: 0
   width: 100%
   height: 100%
-  +z-index(three)
+  +z-index(highlight+2)
 
 .featured__link-wrapper--outer
-  +z-index(two)
+  +z-index(highlight+1)
 
 .featured__text
   position: relative
