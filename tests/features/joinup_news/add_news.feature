@@ -35,13 +35,19 @@ Feature: Creation of news through the UI.
       | File description field is required. |
 
     When I fill in the following:
-      | Kicker           | Ytterbium metal of the year                                                                   |
+      | Kicker           | Ytterbium was declared the ultimate metal of the year                                         |
       | Headline         | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content          | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
       | File description | Comparison materials                                                                          |
 
     # Reference a solution in the news.
     When I fill in "Referenced solution" with "Dig do's and don'ts"
+    # Test that the title character limit is restricted. This cannot be reproduced in the normal UI but checks the form
+    # validation.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
+    And I press "Publish"
+    Then I should see the error message "Kicker cannot be longer than 30 characters but is currently 53 characters long."
+    When I fill in "Kicker" with "Ytterbium metal of the year"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the referenced solution is rendered as tile.
@@ -63,13 +69,13 @@ Feature: Creation of news through the UI.
 
   # @todo Move this scenario into the video Behat test when will be created.
   Scenario: As a community content editor I can embed accepted video iframes
-    into the content field. European Commission videos short URLs are resolved
-    and videos from providers that are not in the 'allowed providers' are
-    stripped out.
+  into the content field. European Commission videos short URLs are resolved
+  and videos from providers that are not in the 'allowed providers' are
+  stripped out.
 
     Given the following collections:
-      | title            | description                                 | logo     | banner     | state     |
-      | Metal fans       | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
+      | title      | description                                 | logo     | banner     | state     |
+      | Metal fans | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
 
     Given I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
