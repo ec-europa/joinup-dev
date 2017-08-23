@@ -1238,6 +1238,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     if (in_array($variables['element']['#type'], $floating_label_types)) {
       if ($hook == 'form_element') {
         $suggestions[] = 'form_element__floating';
+
+        // Floating form element with label.
+        if (in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+          $suggestions[] = 'form_element__floating__with_prefix';
+        }
       }
       elseif ($hook == 'input') {
         $suggestions[] = 'input__floating';
