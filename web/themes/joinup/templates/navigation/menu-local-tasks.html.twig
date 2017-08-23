@@ -12,10 +12,16 @@
  */
 #}
 {% if primary %}
+  <button id="local-tasks-primary" class="mdl-button mdl-js-button mdl-button--icon">
+    <span class="icon icon--dots"></span>
+  </button>
   <h2 class="visually-hidden">{{ 'Primary tabs'|t }}</h2>
-  <ul class="tabs tabs--horizontal mdl-tabs__tab-bar">{{ primary }}</ul>
+  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="local-tasks-primary">{{ primary }}</ul>
 {% endif %}
 {% if secondary %}
+  <button id="local-tasks-secondary" class="mdl-button mdl-js-button mdl-button--icon">
+    <span class="icon icon--dots"></span>
+  </button>
   <h2 class="visually-hidden">{{ 'Secondary tabs'|t }}</h2>
-  <ul class="tabs tabs--horizontal mdl-tabs__tab-bar">{{ secondary }}</ul>
+  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="local-tasks-secondary">{{ secondary }}</ul>
 {% endif %}

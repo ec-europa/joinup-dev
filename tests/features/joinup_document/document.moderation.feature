@@ -42,6 +42,7 @@ Feature: Document moderation
     # Edit the collection and set it as moderated.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check the box "Moderated"
@@ -61,6 +62,7 @@ Feature: Document moderation
     # content.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check "Closed collection"

@@ -19,7 +19,7 @@ default_value_callback: ''
 settings:
   file_directory: 'collection/banner/[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png jpg jpeg'
-  max_filesize: '3 MB'
+  max_filesize: '10 MB'
   max_resolution: ''
   min_resolution: ''
   alt_field: false
