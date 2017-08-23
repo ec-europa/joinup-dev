@@ -23,19 +23,42 @@ dependencies:
     - ds
     - image
     - joinup
-    - text
+    - social_media_links_field
     - user
 id: user.user.group_header
 targetEntityType: user
 bundle: user
 mode: group_header
 content:
+  field_social_media:
+    type: social_media_links_field_default
+    weight: 8
+    region: content
+    label: above
+    settings:
+      appearance:
+        orientation: h
+        show_name: true
+      link_attributes:
+        target: '<none>'
+        rel: '<none>'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_user_business_title:
     weight: 5
     label: hidden
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    type: text_default
+    type: string
     region: content
   field_user_family_name:
     weight: 1
@@ -80,7 +103,7 @@ content:
     type: entity_reference_label
     region: content
   field_user_organisation:
-    weight: 7
+    weight: 6
     label: hidden
     settings:
       link_to_entity: false
@@ -124,14 +147,13 @@ content:
     type: entity_reference_label
     region: content
   member_for:
-    weight: 8
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_last_password_reset: true
   field_password_expiration: true
-  field_social_media: true
   field_user_content: true
   field_user_frequency: true
   field_user_group_types: true

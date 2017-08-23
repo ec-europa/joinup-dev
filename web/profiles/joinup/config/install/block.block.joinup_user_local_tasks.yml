@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+  theme:
+    - joinup_theme
+id: joinup_user_local_tasks
+theme: joinup_theme
+region: content
+weight: -11
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'User local actions tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility:
+  request_route:
+    id: request_route
+    routes: "user.login\r\nuser.pass\r\nuser.register"
+    negate: false
+    context_mapping: {  }

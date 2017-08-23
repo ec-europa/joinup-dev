@@ -107,11 +107,6 @@
   margin-top: 30px
   margin-bottom: 30px
 
-.listing__block-title
-  display: inline-block
-  margin: 0
-  vertical-align: middle
-
 .listing__pin
   position: absolute
   z-index: 2
@@ -123,7 +118,8 @@
   +border-radius(50%)
   .icon
     color: #fff
-    +icon-size(30px)
+    +icon-size(25px)
+    +centered()
 
 .listing__action-link__wrapper
   padding: 0 20px
@@ -149,10 +145,6 @@
 
 // Modifiers
 // --------------------------------------------------
-.listing--separated
-  margin-top: 40px
-  border-top: 1px solid $color-grey-light
-
 .listing__image--default
   background-color: #f0f7f7
   .icon
@@ -188,6 +180,9 @@
 .listing__title--link a
   color: $color-orange
 
+.listing__card--title-pin
+  .listing__title
+    margin-right: 20px
 
 // Dependiencies
 // --------------------------------------------------

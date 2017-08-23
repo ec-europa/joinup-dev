@@ -15,13 +15,14 @@ Feature: Collection TCA agreement
     When I am not logged in
     And I visit "/collections"
     And I click "Create collection"
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
 
   Scenario: Authenticated users can access the TCA agreement page.
     When I am logged in as a user with the "authenticated" role
     And I visit "/collections"
     And I click "Create collection"
     Then I should see the heading "Why create a Collection?"
+    And I should see the text "In order to create the Collection you need first check the field below and then press the Yes button to proceed."
     When I press "No thanks"
     Then the url should match "/collections"
 

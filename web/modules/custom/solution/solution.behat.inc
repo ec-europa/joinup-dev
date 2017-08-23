@@ -137,18 +137,30 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * Creates a solution with data provided in a table.
    *
    * Table format:
-   * | title             | Sample solution                         |
-   * | description       | A sample solution                       |
-   * | documentation     | text.pdf                                |
-   * | moderation        | no|yes                                  |
-   * | closed            | no|yes                                  |
-   * | elibrary creation | facilitators|members|registered users   |
-   * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | no|yes                                  |
-   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
-   * | wiki              | http://example.wiki/foobar/wiki         |
+   * | title               | Sample solution                         |
+   * | description         | A sample solution                       |
+   * | banner              | banner.png                              |
+   * | logo                | logo.jpg                                |
+   * | moderation          | no|yes                                  |
+   * | closed              | no|yes                                  |
+   * | collection          | Example collection                      |
+   * | contact information | Grahame Paterson, Aulay MacFarlane      |
+   * | documentation       | text.pdf                                |
+   * | elibrary creation   | facilitators|members|registered users   |
+   * | landing page        | http://example.com/foobar/landing       |
+   * | language            | Greek, German                           |
+   * | owner               | Zapsum, Holdline Accountants            |
+   * | policy domain       | Demography, E-inclusion                 |
+   * | related solutions   | Solution 2, Solution 3                  |
+   * | solution type       | [ABB159] Service Discovery Service, ... |
+   * | spatial coverage    | Denmark, Serbia                         |
+   * | state               | validated|...                           |
+   * | status              | Under development                       |
+   * | webdav creation     | no|yes                                  |
+   * | webdav url          | http://joinup.eu/solution/foobar/webdav |
+   * | wiki                | http://example.wiki/foobar/wiki         |
    *
-   * Fields title, description and elibrary creation are required.
+   * Fields "title", "description" and "state" are required.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
@@ -269,6 +281,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution = Rdf::create($values);
     $solution->save();
     $this->solutions[$solution->id()] = $solution;
+
+    // If a collection is affiliated, update the collection. In ADMS-AP the
+    // reference between a solution and a collection is backwards.
+    if (!empty($values['field_ar_affiliates'])) {
+      foreach ($values['field_ar_affiliates'] as $collection_label) {
+        $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
+        solution_update_collection_affiliation($solution->id(), $collection->id());
+      }
+    }
 
     return $solution;
   }
@@ -477,7 +498,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+      'collection' => 'field_ar_affiliates',
     ];
   }
 
@@ -638,6 +659,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
     $solution->get('field_is_state')->first()->applyTransition($transition);
     $solution->save();
+  }
+
+  /**
+   * Checks that the given solution is affiliated with the given collection.
+   *
+   * If there are multiple custom pages or collections with the same name, then
+   * only the first one is checked.
+   *
+   * @param string $collection
+   *   The name of the collection to check.
+   * @param string $solution
+   *   The name of the solution to check.
+   *
+   * @throws \Exception
+   *   Thrown when the solution is not affiliated with the collection.
+   *
+   * @Then the :solution solution should be affiliated with the :collection collection
+   */
+  public function assertCollectionAffiliation($collection, $solution) {
+    $collection_entity = $this->getRdfEntityByLabel($collection, 'collection');
+    $solution_entity = $this->getRdfEntityByLabel($solution, 'solution');
+
+    $affiliated_solutions = $collection_entity->get('field_ar_affiliates')->referencedEntities();
+
+    foreach ($affiliated_solutions as $affiliated_solution) {
+      if ($affiliated_solution->id() === $solution_entity->id()) {
+        return;
+      }
+    }
+
+    throw new \Exception("The '$solution' solution is not affiliated with the '$collection' collection.");
   }
 
 }

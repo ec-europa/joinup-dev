@@ -39,6 +39,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I go to the "CC pre collection" collection
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create propose"
+    And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
     And I press "Propose"
     Then the following email should have been sent:
@@ -51,12 +52,13 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I go to the "CC pre collection" collection
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
+    And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                      |
       | subject   | Joinup: Content has been published                                                                                                                                            |
-      | body      | CC Facilitator has published the new document - "CC notify create publish" in the collection: "CC pre collection". You can access the new content at the following link: http |
+      | body      | CC Facilitator has published the new document - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent

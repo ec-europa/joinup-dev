@@ -24,19 +24,22 @@ default:
       blackbox: ~
       region_map:
         Comment: '.comments-section'
+        Contact information inline form: '#edit-field-ar-contact-information-wrapper'
         Content: '.section--content-middle'
         Entity actions: '.block-local-tasks-block'
         Footer: '.section--footer'
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
+        Header menu: '#block-joinup-theme-main-menu'
+        Modal content: '#drupal-modal'
+        Modal buttons: '.ui-dialog-buttonpane'
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
-        Modal content: '#drupal-modal'
-        Modal buttons: '.ui-dialog-buttonpane'
+        Unpublished content area: '.block-entity-unpublished'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
@@ -48,5 +51,8 @@ default:
       subcontexts:
         paths:
           - '${behat.subcontexts.path}'
+      text:
+        log_in: 'Sign in'
+        log_out: 'Sign out'
   formatters:
     ${behat.formatter.name}: ~

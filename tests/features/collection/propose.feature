@@ -10,18 +10,18 @@ Feature: Proposing a collection
 
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
-  # though you need to log in to do so.
-  Scenario: Anonymous user needs to log in before creating a collection
+  # though you need to sign in to do so.
+  Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
       | Username      | Password |
       | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
       | Password | claps         |
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Propose collection"
 
   @terms
@@ -47,6 +47,8 @@ Feature: Proposing a collection
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
+    # The owner field should have a help text.
+    And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
@@ -89,7 +91,6 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
-    And I attach the file "logo.png" to "Logo"
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
