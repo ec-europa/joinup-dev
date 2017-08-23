@@ -35,12 +35,6 @@ content:
         hide_help: '0'
         hide_guidelines: '1'
     region: content
-  created:
-    type: datetime_timestamp
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   current_workflow_state:
     type: current_workflow_state_widget
     weight: 10
@@ -76,26 +70,12 @@ content:
     third_party_settings: {  }
     type: state_machine_buttons
     region: content
-  path:
-    type: path
-    weight: 8
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 6
-    third_party_settings: {  }
-    region: content
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 7
-    third_party_settings: {  }
-    region: content
   title:
     type: string_textfield
     weight: 0
@@ -104,16 +84,17 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
-  uid:
-    type: entity_reference_autocomplete
-    weight: 4
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
+  transition_motivation:
+    weight: 10
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  created: true
   field_shared_in: true
   field_visit_count: true
   og_audience: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true

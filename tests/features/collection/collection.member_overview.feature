@@ -58,24 +58,24 @@ Feature: Collection membership overview
     And I go to the "Jubilant Robots" collection
     Then I should see the link "Members" in the "Left sidebar"
 
-    # The first 12 active members should be shown, ordered by last name - first name.
+    # The first 12 active members should be shown, ordered by first name - last name.
     When I click "Members"
     Then I should see the heading "Members"
     And I should see the following tiles in the correct order:
-      | Law Atteberry         |
       | Aali Dalton           |
-      | Ingibjörg De Snaaijer |
-      | Delicia Hart          |
-      | Suk Karpáti           |
       | Aniruddha Kováts      |
+      | Bohumil Unterbrink    |
+      | Delicia Hart          |
+      | Ingibjörg De Snaaijer |
       | Janna Miller          |
-      | Kendall Miller        |
-      | Lisa Miller           |
-      | Kamil Napoleonis      |
-      | Ruby Robert           |
       | Jun Schrader          |
+      | Kamil Napoleonis      |
+      | Kendall Miller        |
+      | Law Atteberry         |
+      | Lisa Miller           |
+      | Ruby Robert           |
     # The 13th and 14th member should not be visible on this page, but on the next page.
-    And I should not see the "Bohumil Unterbrink" tile
+    And I should not see the "Suk Karpáti" tile
     And I should not see the "Sukhrab Valenta" tile
     # A blocked member should not be visible.
     And I should not see the "Isabell Zahariev" tile
@@ -84,7 +84,7 @@ Feature: Collection membership overview
 
     # Navigate to the next page and check that the 13th member is now visible.
     When I click "››"
-    Then I should see the "Bohumil Unterbrink" tile
+    Then I should see the "Suk Karpáti" tile
     And I should see the "Sukhrab Valenta" tile
 
     # Check the filter on the user roles inside the collection.
@@ -99,9 +99,9 @@ Feature: Collection membership overview
     When I select "Facilitator (4)" from "Roles"
     And I press "Apply"
     And I should see the following tiles in the correct order:
+      | Bohumil Unterbrink |
       | Delicia Hart       |
       | Ruby Robert        |
-      | Bohumil Unterbrink |
       | Sukhrab Valenta    |
 
     # Clicking the user name should lead to the user profile page.
