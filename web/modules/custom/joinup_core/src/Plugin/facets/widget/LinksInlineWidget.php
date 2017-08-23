@@ -75,7 +75,7 @@ class LinksInlineWidget extends WidgetPluginBase {
     $active = [];
     $inactive = [];
     foreach ($facet->getResults() as $result) {
-      $item = empty($result->getUrl()) ? $this->buildResultItem($result) : $this->buildListItems($result);
+      $item = empty($result->getUrl()) ? $this->buildResultItem($result) : $this->buildListItems($facet, $result);
 
       if ($result->isActive()) {
         $active[] = $item;

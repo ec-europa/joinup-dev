@@ -276,7 +276,7 @@ abstract class NotificationSubscriberBase {
    *   - Actor first name
    *   - Actor family name
    *   - Actor role
-   *   - Actor full name (This will be 'the Joinup Moderation Team' if the user
+   *   - Actor full name (This will be 'The Joinup Support Team' if the user
    *   has the moderator role)
    */
   protected function generateArguments(EntityInterface $entity) {
@@ -303,7 +303,7 @@ abstract class NotificationSubscriberBase {
       /** @var \Drupal\user\RoleInterface $role */
       $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
       $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
+      $arguments['@actor:full_name'] = 'The Joinup Support Team';
     }
     elseif (!$actor->isAnonymous()) {
       $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
