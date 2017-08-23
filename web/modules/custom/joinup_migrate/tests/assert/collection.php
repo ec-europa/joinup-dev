@@ -29,7 +29,7 @@ $this->assertEquals('Description for a new collection', $collection->field_ar_de
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
-$this->assertEquals(7098, $collection->uid->entity->id());
+$this->assertEquals('user7098', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with erroneous items');
@@ -48,7 +48,7 @@ $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
 $this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing an Abstract");
 $this->assertTrue($collection->get('field_ar_description')->isEmpty());
 $this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing a Description");
-$this->assertEquals('user7143', $collection->uid->entity->label());
+$this->assertEquals('user7143', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
@@ -73,7 +73,7 @@ $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertContains('Government Metadata', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertEquals('user7160', $collection->uid->entity->label());
+$this->assertEquals('user7160', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
@@ -98,7 +98,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
-$this->assertEquals('user7287', $collection->uid->entity->label());
+$this->assertEquals('user7287', $collection->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/149141',
   'community/edp/description',
@@ -138,7 +138,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
-$this->assertEquals('user7051', $collection->uid->entity->label());
+$this->assertEquals('user7051', $collection->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/82307',
   'catalogue/repository/la-forja-de-guadalinex',
