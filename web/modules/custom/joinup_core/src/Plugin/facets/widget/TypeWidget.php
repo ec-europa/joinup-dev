@@ -166,6 +166,7 @@ class TypeWidget extends WidgetPluginBase {
     $items['#attributes']['data-drupal-facet-item-id'] = $this->facet->getUrlAlias() . '-' . $result->getRawValue();
 
     if (isset($result->asTab)) {
+      $items['#attributes']['class'][] = 'tab';
       $items['#attributes']['class'][] = 'tab--content-type';
     }
 
