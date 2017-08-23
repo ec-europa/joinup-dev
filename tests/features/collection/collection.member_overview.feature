@@ -58,7 +58,7 @@ Feature: Collection membership overview
     And I go to the "Jubilant Robots" collection
     Then I should see the link "Members" in the "Left sidebar"
 
-    # The first 12 active members should be shown, ordered by last name - first name.
+    # The first 12 active members should be shown, ordered by first name - last name.
     When I click "Members"
     Then I should see the heading "Members"
     And I should see the following tiles in the correct order:
