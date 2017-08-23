@@ -1,0 +1,36 @@
+// Icon card
+//
+// Content inside is centered vertically and horizontally.
+//
+// Markup: html/icon-card.html
+//
+// Styleguide 2.15
+
+// Component
+// --------------------------------------------------
+.icon-card
+  position: relative
+  min-height: 200px
+// Elements
+// --------------------------------------------------
+.icon-card__link
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  text-decoration: none
+  color: $color-base
+  text-transform: uppercase
+
+.icon-card__inner
+  text-align: center
+  +centered
+  width: 100%
+  .icon
+    margin-bottom: 20px
+    +icon-size(150px)
+
+// Modifiers
+// --------------------------------------------------
+
