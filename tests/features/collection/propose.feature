@@ -47,6 +47,8 @@ Feature: Proposing a collection
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
+    # The owner field should have a help text.
+    And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"

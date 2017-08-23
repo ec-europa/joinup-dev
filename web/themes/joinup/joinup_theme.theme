@@ -65,6 +65,38 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 }
 
 /**
+ * Gives information about menu_local_task item being displayed.
+ *
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ *   The route object.
+ *
+ * @return string
+ *   Whether a menu_local_task is of horizontal or menu display type.
+ */
+function _joinup_menu_local_task_by_route(RouteMatchInterface $route_match) {
+  if ($route_name = $route_match->getRouteName()) {
+    if (in_array($route_name, _joinup_horizontal_tabs_routes())) {
+      return 'horizontal';
+    }
+    return 'menu';
+  }
+}
+
+/**
+ * Get a list of routes where menu_local_tasks are normal horizontal tabs.
+ *
+ * @return array
+ *   The routes.
+ */
+function _joinup_horizontal_tabs_routes() {
+  return [
+    'user.login',
+    'user.pass',
+    'user.register',
+  ];
+}
+
+/**
  * Get a list of routes which should have tabs.
  *
  * @return array
@@ -91,6 +123,7 @@ function _joinup_blue_header_routes() {
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',
+    'entity.ogmenu_instance.edit_form',
     'entity.rdf_entity.edit_form',
     'rdf_entity.propose_form',
     'user.login',
@@ -392,7 +425,9 @@ function joinup_theme_preprocess_menu(&$variables) {
  * Implements hook_preprocess_block().
  */
 function joinup_theme_preprocess_block(&$variables) {
-  if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'joinup_theme_content') {
+  $block_id = $variables['elements']['#id'];
+
+  if (isset($block_id) && $block_id == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
     $route_name = $route_match->getRouteName();
     // Indicate if page contains listing
@@ -446,14 +481,15 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['is_listing'] = $is_listing;
   }
 
-  // Get the ID of the block and add this to the main menu theme attributes,
-  // so it is possible to retrieve block ID in suggestions function.
-  // @see joinup_theme_theme_suggestions_menu_alter().
-  if (isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main') {
-    $variables['content']['#attributes']['block'] = $variables['attributes']['id'];
+  $is_main_menu = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu__main';
+  $is_main_local_tasks = isset($variables['content']['#theme']) && $variables['content']['#theme'] == 'menu_local_tasks';
+
+  if ($is_main_menu || $is_main_local_tasks) {
+    $variables['content']['#theme'] = $variables['content']['#theme'] . '__' . $block_id;
   }
+
   // The front page is also shown as a listing of entities.
-  if ($variables['elements']['#id'] === 'frontpageblock') {
+  if ($block_id === 'frontpageblock') {
     $variables['is_listing'] = TRUE;
   }
 
@@ -497,20 +533,6 @@ function joinup_preprocess_file_managed_file(array &$variables) {
     $variables['attributes']['data-drupal-states'] = Json::encode($element['#states']);
   }
 
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-  // Remove the block and replace dashes with underscores in the block ID to
-  // use for the hook name.
-  // Block ID is provided in the preprocess function.
-  // @see joinup_theme_preprocess_block().
-  if (isset($variables['attributes']['block'])) {
-    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
-    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
-  }
 }
 
 /**
@@ -943,7 +965,8 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
  */
 function joinup_theme_preprocess_menu_local_action(&$variables) {
   // Add mdl classes for local action button.
-  $mdl_button_classes = ['button--blue-light',
+  $mdl_button_classes = [
+    'button--blue-light',
     'mdl-button',
     'mdl-js-button',
     'mdl-button--raised',
@@ -951,6 +974,27 @@ function joinup_theme_preprocess_menu_local_action(&$variables) {
     'mdl-button--accent',
   ];
   $variables['link']['#options']['attributes']['class'] = array_merge($variables['link']['#options']['attributes']['class'], $mdl_button_classes);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_task(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $menu_type = _joinup_menu_local_task_by_route($route_match);
+
+  if ($menu_type == 'horizontal') {
+    $variables['attributes']['class'][] = 'tab tab--horizontal mdl-tabs__tab';
+  }
+  else {
+    // Every other occasion, item should be in MDL dropdown menu.
+    $variables['attributes']['class'][] = 'mdl-menu__item';
+  }
+
+  // Active flag.
+  if (isset($variables['is_active']) && $variables['is_active'] == TRUE) {
+    $variables['attributes']['class'][] = 'is-active';
+  }
 }
 
 /**
@@ -1256,6 +1300,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'user_form',
     'user_pass',
     'simplenews_subscriber_account_form',
+    'ogmenu_instance_navigation_edit_form',
   ];
 
   // Exclude forms with tabs.
