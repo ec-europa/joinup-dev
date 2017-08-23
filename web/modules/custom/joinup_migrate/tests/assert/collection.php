@@ -29,7 +29,7 @@ $this->assertEquals('Description for a new collection', $collection->field_ar_de
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
-$this->assertEquals('user7098', $collection->uid->entity->label());
+$this->assertEquals(7098, $collection->uid->entity->id());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with erroneous items');
