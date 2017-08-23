@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -345,4 +346,19 @@ function joinup_preprocess_menu__main(&$variables) {
   }
 
   $variables['#cache']['contexts'][] = 'og_group_context';
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    $build['#contextual_links']['entity'] = [
+      'route_parameters' => [
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity' => $entity->id(),
+      ],
+      'metadata' => ['changed' => $entity->getChangedTime()],
+    ];
+  }
 }
