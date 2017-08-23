@@ -76,8 +76,12 @@
   ]
 %}
 <div {{ attributes.addClass(classes) }}>
-  <div class="listing__image listing__image--default">
-    <span class="icon icon--play"></span>
+  <div class="listing__image icon-card icon-card--grey">
+    <a href="{{ url }}" class="icon-card__link">
+      <span class="icon-card__inner">
+        <span class="icon-card__icon--small icon icon--play"></span>
+      </span>
+    </a>
   </div>
   <div class="listing__metadata">
     <div class="listing__field">

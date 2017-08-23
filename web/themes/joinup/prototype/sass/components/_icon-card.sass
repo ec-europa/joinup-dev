@@ -25,12 +25,22 @@
 
 .icon-card__inner
   text-align: center
+  display: block
   +centered
   width: 100%
-  .icon
-    margin-bottom: 20px
-    +icon-size(150px)
+
+.icon-card__icon
+  +icon-size(150px)
+
+.icon-card__text
+  margin-top: 20px
+  display: block
 
 // Modifiers
 // --------------------------------------------------
+.icon-card--grey
+  background-color: $color-grey-lighter
 
+.icon-card__icon--small
+  color: $color-grey-medium
+  +icon-size(50px)
