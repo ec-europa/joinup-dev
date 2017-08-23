@@ -6,14 +6,14 @@
 
 {%
   set classes = [
-    'social-media-links',
+    'inline-social-media',
   ]
 %}
 
 <ul{{ attributes.addClass(classes) }}>
   {% for platform in platforms %}
-    <li>
-      <a href="{{ platform.url }}" {{ platform.attributes.setAttribute('alt', platform.name).setAttribute('title', platform.name).setAttribute('target', '_blank') }} >
+    <li class="inline-social-media__item">
+      <a href="{{ platform.url }}" {{ platform.attributes.addClass('inline-social-media__link').setAttribute('alt', platform.name).setAttribute('title', platform.name).setAttribute('target', '_blank') }} >
         <span class="icon icon--{{ platform.id }}"></span>
         {% if appearance.show_name %}
           <span class="visually-hidden">{{ platform.name }}</span>
