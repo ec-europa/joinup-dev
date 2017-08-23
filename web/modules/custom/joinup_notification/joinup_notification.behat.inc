@@ -116,7 +116,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // In non user emails, html p tags are used for new lines and these are
       // stripped instead of replaced. Thus, a regex will be used to properly
       // identify the signature regrdless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Moderation Team/', $mail_body)) {
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
         throw new Exception('The signature of the email was not found or is not correct.');
       }
 
@@ -247,7 +247,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // In non user emails, html p tags are used for new lines and these are
       // stripped instead of replaced. Thus, a regex will be used to properly
       // identify the signature regrdless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Moderation Team/', $mail_body)) {
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
         throw new Exception('The signature of the email was not found or is not correct.');
       }
 
