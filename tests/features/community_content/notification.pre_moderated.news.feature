@@ -20,7 +20,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
     And news content:
-      | title                               | author         | body | headline                            | collection        | field_state      |
+      | title                         | author         | body | headline                      | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
       | CCN pre publish               | CC facilitator | body | CCN pre publish               | CC pre collection | draft            |
@@ -32,6 +32,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | CCN pre approve proposed      | CC member      | body | CCN pre approve proposed      | CC pre collection | proposed         |
       | CCN pre reject deletion       | CC member      | body | CCN pre reject deletion       | CC pre collection | deletion_request |
       | CCN pre delete                | CC member      | body | CCN pre delete                | CC pre collection | deletion_request |
+      | CCN validated to delete       | CC member      | body | CCN pre delete                | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -43,8 +44,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Content" with "CCN create propose"
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                |
-      | subject   | Joinup: Content has been proposed                                                                                       |
+      | recipient | CC owner                                                                                                          |
+      | subject   | Joinup: Content has been proposed                                                                                 |
       | body      | CC Member has submitted a new news - "CCN create propose" for publication in the collection: "CC pre collection". |
 
     # Regression test for proposing an item with a published version.
@@ -60,8 +61,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | Notify moderator                                                                                                                   |
-      | subject   | Joinup: Content has been proposed                                                                                                  |
+      | recipient | Notify moderator                                                                                                             |
+      | subject   | Joinup: Content has been proposed                                                                                            |
       | body      | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -73,8 +74,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I fill in "Content" with "CCN create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                  |
-      | subject   | Joinup: Content has been published                                                                                                                                        |
+      | recipient | CC owner                                                                                                                                                           |
+      | subject   | Joinup: Content has been published                                                                                                                                 |
       | body      | CC Facilitator has published the new news - "CCN create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -84,8 +85,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                             |
-      | subject   | Joinup: Content has been proposed                                                                                    |
+      | recipient | CC owner                                                                                                       |
+      | subject   | Joinup: Content has been proposed                                                                              |
       | body      | CC Member has submitted a new news - "CCN pre propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -93,8 +94,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                    |
-      | subject   | Joinup: Content has been updated                                                                                                                                            |
+      | recipient | CC owner                                                                                                                                                              |
+      | subject   | Joinup: Content has been updated                                                                                                                                      |
       | body      | CC Member has updated the content of the news - "CCN pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -105,8 +106,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     When I fill in "Motivation" with "I just want to delete it."
     And I press "Request deletion"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                          |
-      | subject   | Joinup: Content has been updated                                                                                                                                                  |
+      | recipient | CC owner                                                                                                                                                                    |
+      | subject   | Joinup: Content has been updated                                                                                                                                            |
       | body      | CC Member has requested to delete the news - "CCN pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
@@ -115,8 +116,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                    |
-      | subject   | Joinup: Content has been published                                                                          |
+      | recipient | CC owner                                                                                              |
+      | subject   | Joinup: Content has been published                                                                    |
       | body      | CC Facilitator has published the new news - "CCN pre publish" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -128,8 +129,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                 |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                          |
+      | recipient | CC member                                                                                                                                                                                           |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                    |
       | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
@@ -141,8 +142,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     When I fill in "Motivation" with "Your content is reported"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                        |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                 |
+      | recipient | CC member                                                                                                                                                                                  |
+      | subject   | Joinup: Content has been updated                                                                                                                                                           |
       | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
@@ -151,8 +152,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                    |
-      | subject   | Joinup: Content has been updated                                                                                                                                             |
+      | recipient | CC member                                                                                                                                                 |
+      | subject   | Joinup: Content has been updated                                                                                                                          |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -164,8 +165,8 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     When I fill in "Motivation" with "I still like it"
     And I press "Reject deletion"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                    |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                             |
+      | recipient | CC member                                                                                                                                                                                              |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                       |
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the news - "CCN pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
     # Test 'delete' operation.
@@ -176,6 +177,18 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                        |
-      | subject   | Joinup: Content has been deleted                                                                                 |
-      | body      | Facilitator CC Facilitator has deleted the news - "CCN pre delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                |
+      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre delete" in the collection: "CC pre collection". |
+
+    # Test 'delete' operation for a validated entity.
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CCN validated to delete" news
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                                |
+      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | body      | Facilitator CC Facilitator has deleted the news - "CCN validated to delete" in the collection: "CC pre collection". |
