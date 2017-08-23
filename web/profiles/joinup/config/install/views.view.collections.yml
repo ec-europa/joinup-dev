@@ -481,10 +481,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
+          empty: true
           tokenize: false
           content:
-            value: 'Collections are the main collaborative space were the content items are organised around a common topic or domain and where the users can share their content and engage their community.'
+            value: '<p>Collections are the main collaborative space were the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>'
             format: content_editor
           plugin_id: text
       footer: {  }
