@@ -15,6 +15,54 @@ Feature: Solutions Overview
     When I click "Solutions"
     Then I should see the heading "Solutions"
 
+  Scenario: Solution overview paging
+    Given solutions:
+      | title      | state     |
+      | Arctic fox | validated |
+      | Alpaca     | validated |
+      | Boomalope  | validated |
+      | Boomrat    | validated |
+      | Megasloth  | validated |
+      | Thrumbo    | validated |
+      | Spelopede  | validated |
+      | Muffalo    | validated |
+      | Husky      | validated |
+      | Gazelle    | validated |
+      | Cow        | validated |
+      | Panther    | validated |
+      | Tortoise   | validated |
+      | Warg       | validated |
+    And I am an anonymous user
+    And I am on the homepage
+    When I click "Solutions"
+    Then I should see the following tiles in the correct order:
+      | Arctic fox |
+      | Alpaca     |
+      | Boomalope  |
+      | Boomrat    |
+      | Megasloth  |
+      | Thrumbo    |
+      | Spelopede  |
+      | Muffalo    |
+      | Husky      |
+      | Gazelle    |
+      | Cow        |
+      | Panther    |
+    And I should see the link "2"
+    And I should see the link "Next ›"
+    And I should see the link "Last »"
+    But I should not see the link "« First"
+    And I should not see the link "‹ Previous"
+    When I click "Next ›"
+    Then I should see the following tiles in the correct order:
+      | Tortoise   |
+      | Warg       |
+    And I should see the link "1"
+    And I should see the link "« First"
+    And I should see the link "‹ Previous"
+    But I should not see the link "Next ›"
+    And I should not see the link "Last »"
+
   @terms
   Scenario: View solution overview as an anonymous user
     Given users:
