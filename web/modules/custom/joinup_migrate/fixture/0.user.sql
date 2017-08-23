@@ -20,7 +20,10 @@ CREATE OR REPLACE VIEW d8_user (
   photo_path,
   photo_timestamp,
   photo_uid,
-  roles
+  roles,
+  facebook,
+  twitter,
+  linkedin
 ) AS
 SELECT
   u.uid,
@@ -44,7 +47,10 @@ SELECT
   SUBSTRING(TRIM(f.filepath), 21),
   f.timestamp,
   IF(f.uid IS NOT NULL AND f.uid > 0, f.uid, -1),
-  (SELECT GROUP_CONCAT(DISTINCT ur.rid ORDER BY ur.rid) FROM users_roles ur WHERE ur.uid = u.uid AND ur.rid IN(3, 6))
+  (SELECT GROUP_CONCAT(DISTINCT ur.rid ORDER BY ur.rid) FROM users_roles ur WHERE ur.uid = u.uid AND ur.rid IN(3, 6)),
+  ctp.field_facebook_url,
+  ctp.field_twitter_url,
+  ctp.field_linkedin_url
 FROM users u
 INNER JOIN userpoints up ON u.uid = up.uid
 LEFT JOIN node n ON u.uid = n.uid AND n.type = 'profile'
