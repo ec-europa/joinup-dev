@@ -21,10 +21,10 @@
 
 .featured__inner-wrapper
   position: relative
-  z-index: $z-index-highlight + 1
   max-width: 1200px
   margin: 0 auto
   text-align: center
+  +z-index(two)
   a
     text-decoration: none
   +breakpoint(sm-mobile, mobile)
@@ -37,34 +37,34 @@
 
 .featured__menu-wrapper
   position: relative
-  z-index: $z-index-navigation
   max-width: 1200px
   margin: 0 auto
   text-align: center
+  +z-index(navigation)
   +hidden-print
 
 .featured__overlay
   position: absolute
-  z-index: $z-index-highlight
   top: 0
   left: 0
   width: 100%
   height: 100%
   opacity: .6
   background-color: $color-blue-default
+  +z-index(one)
 
 .featured__link-wrapper
   color: inherit
   text-decoration: none
   position: absolute
-  z-index: $z-index-highlight + 2
   top: 0
   left: 0
   width: 100%
   height: 100%
+  +z-index(three)
 
 .featured__link-wrapper--outer
-  z-index: $z-index-highlight + 1
+  +z-index(two)
 
 .featured__text
   position: relative
@@ -136,9 +136,9 @@
 
 .featured__form-button
   position: relative
-  z-index: $z-index-max
   display: inline-block
   margin: 10px
+  +z-index(max)
   +hidden-print
 
 // Modifiers

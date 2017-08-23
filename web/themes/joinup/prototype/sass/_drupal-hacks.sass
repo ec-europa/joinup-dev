@@ -93,10 +93,10 @@ textarea
 
 .comment-item
   ul.contextual-links
-    z-index: $z-index-highlight + 2
     position: relative
     padding-left: 0
     margin: 0
+    +z-index(three)
     li::before
       display: none
 
@@ -134,7 +134,7 @@ form .description
 
 // jQuery ui hacks
 .ui-dialog
-  z-index: $z-index-modal
+  +z-index(modal)
 
 .ui-dialog-buttonpane
   border: none

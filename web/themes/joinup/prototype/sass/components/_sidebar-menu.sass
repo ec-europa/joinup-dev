@@ -6,7 +6,7 @@
 // --------------------------------------------------
 .sidebar-menu
   position: relative
-  z-index: $z-index-navigation
+  +z-index(navigation)
   +breakpoint(desktop)
     width: 100%
     .mdl-menu__container,
@@ -29,7 +29,7 @@
   width: 60px
   height: 60px
   border-radius: 0
-  z-index: $z-index-navigation
+  +z-index(navigation)
 
 .sidebar-menu__item
   padding: 0
@@ -78,8 +78,8 @@
 
 .sidebar-menu__contextual
   ul
-    z-index: $z-index-highlight + 2
     position: relative
+    +z-index(three)
   button
     position: relative !important
 
@@ -98,7 +98,7 @@
         visibility: visible
         background: transparent
         position: relative
-        z-index: $z-index-navigation
+        +z-index(navigation)
         &.is-hidden
           visibility: hidden
         &:not(.is-hidden)

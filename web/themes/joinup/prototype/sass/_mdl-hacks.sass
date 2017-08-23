@@ -20,10 +20,10 @@
       white-space: normal
 
 .mdl-layout__drawer
-  z-index: $z-index-max
+  +z-index(max)
 
 .mdl-layout__obfuscator
-  z-index: $z-index-max - 1
+  +z-index(max)
 
 .mdl-layout__drawer-button
   top: 4px
@@ -41,9 +41,9 @@
 
 .mdl-spinner
   position: fixed
-  z-index: $z-index-max
   top: 48.5%
   left: 49%
+  +z-index(max)
 
 .mdl-grid--center
   justify-content: center

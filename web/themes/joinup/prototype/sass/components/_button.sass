@@ -38,7 +38,7 @@
   height: 22px
   position: relative
   .icon
-    z-index: $z-index-highlight
+    +z-index(one)
     +icon-size(10px)
     +centered($horizontal: false, $vertical: true)
 
@@ -51,8 +51,8 @@
   cursor: pointer
   vertical-align: middle
   display: inline-block
-  z-index: $z-index-highlight + 1
   position: relative
+  +z-index(two)
 
 .button__container
   margin: 10px 0
