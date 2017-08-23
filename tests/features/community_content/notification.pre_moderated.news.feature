@@ -23,38 +23,37 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | title                               | author         | body | headline                            | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
-      | CC notify pre publish               | CC facilitator | body | CC notify pre publish               | CC pre collection | draft            |
-      | CC notify pre propose               | CC member      | body | CC notify pre propose               | CC pre collection | draft            |
-      | CC notify pre request changes       | CC member      | body | CC notify pre request changes       | CC pre collection | validated        |
-      | CC notify pre report                | CC member      | body | CC notify pre report                | CC pre collection | validated        |
-      | CC notify pre request deletion      | CC member      | body | CC notify pre request deletion      | CC pre collection | validated        |
-      | CC notify pre propose from reported | CC member      | body | CC notify pre propose from reported | CC pre collection | needs_update     |
-      | CC notify pre approve proposed      | CC member      | body | CC notify pre approve proposed      | CC pre collection | proposed         |
-      | CC notify pre reject deletion       | CC member      | body | CC notify pre reject deletion       | CC pre collection | deletion_request |
-      | CC notify pre delete                | CC member      | body | CC notify pre delete                | CC pre collection | deletion_request |
-      | CC notify validated to delete       | CC member      | body | CC notify pre to delete             | CC pre collection | validated        |
+      | CCN pre publish               | CC facilitator | body | CCN pre publish               | CC pre collection | draft            |
+      | CCN pre propose               | CC member      | body | CCN pre propose               | CC pre collection | draft            |
+      | CCN pre request changes       | CC member      | body | CCN pre request changes       | CC pre collection | validated        |
+      | CCN pre report                | CC member      | body | CCN pre report                | CC pre collection | validated        |
+      | CCN pre request deletion      | CC member      | body | CCN pre request deletion      | CC pre collection | validated        |
+      | CCN pre propose from reported | CC member      | body | CCN pre propose from reported | CC pre collection | needs_update     |
+      | CCN pre approve proposed      | CC member      | body | CCN pre approve proposed      | CC pre collection | proposed         |
+      | CCN pre reject deletion       | CC member      | body | CCN pre reject deletion       | CC pre collection | deletion_request |
+      | CCN pre delete                | CC member      | body | CCN pre delete                | CC pre collection | deletion_request |
 
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
     And I go to the "CC pre collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CC notify create propose"
-    And I fill in "Headline" with "CC notify create propose"
-    And I fill in "Content" with "CC notify create propose"
+    And I fill in "Kicker" with "CCN create propose"
+    And I fill in "Headline" with "CCN create propose"
+    And I fill in "Content" with "CCN create propose"
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                |
       | subject   | Joinup: Content has been proposed                                                                                       |
-      | body      | CC Member has submitted a new news - "CC notify create propose" for publication in the collection: "CC pre collection". |
+      | body      | CC Member has submitted a new news - "CCN create propose" for publication in the collection: "CC pre collection". |
 
     # Regression test for proposing an item with a published version.
     When I am logged in as "CC facilitator"
-    And I go to the "CC notify create propose" news
+    And I go to the "CCN create propose" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     And I am logged in as "CC member"
-    And I go to the "CC notify create propose" news
+    And I go to the "CCN create propose" news
     And I click "Edit" in the "Entity actions" region
     And I press "Save new draft"
     When all e-mails have been sent
@@ -63,43 +62,43 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | Notify moderator                                                                                                                   |
       | subject   | Joinup: Content has been proposed                                                                                                  |
-      | body      | CC Member has submitted an update of the news - "CC notify create propose" for publication in the collection: "CC pre collection". |
+      | body      | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC pre collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CC notify create publish"
-    And I fill in "Headline" with "CC notify create publish"
-    And I fill in "Content" with "CC notify create publish"
+    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Headline" with "CCN create publish"
+    And I fill in "Content" with "CCN create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                 |
-      | subject   | Joinup: Content has been published                                                                                                                                       |
-      | body      | CC Facilitator has published the new news - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
+      | recipient | CC owner                                                                                                                                                                  |
+      | subject   | Joinup: Content has been published                                                                                                                                        |
+      | body      | CC Facilitator has published the new news - "CCN create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC notify pre propose" news
+    And I go to the "CCN pre propose" news
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                             |
       | subject   | Joinup: Content has been proposed                                                                                    |
-      | body      | CC Member has submitted a new news - "CC notify pre propose" for publication in the collection: "CC pre collection". |
+      | body      | CC Member has submitted a new news - "CCN pre propose" for publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
-    And I go to the "CC notify pre propose from reported" news
+    And I go to the "CCN pre propose from reported" news
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                    |
       | subject   | Joinup: Content has been updated                                                                                                                                            |
-      | body      | CC Member has updated the content of the news - "CC notify pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
+      | body      | CC Member has updated the content of the news - "CCN pre propose from reported" as advised and requests again its publication in the collection: "CC pre collection". |
 
     When all e-mails have been sent
-    And I go to the "CC notify pre request deletion" news
+    And I go to the "CCN pre request deletion" news
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -108,21 +107,21 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                          |
       | subject   | Joinup: Content has been updated                                                                                                                                                  |
-      | body      | CC Member has requested to delete the news - "CC notify pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
+      | body      | CC Member has requested to delete the news - "CCN pre request deletion" in the collection: "CC pre collection", with the following motivation: "I just want to delete it.". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre publish" news
+    And I go to the "CCN pre publish" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                    |
       | subject   | Joinup: Content has been published                                                                          |
-      | body      | CC Facilitator has published the new news - "CC notify pre publish" in the collection: "CC pre collection". |
+      | body      | CC Facilitator has published the new news - "CCN pre publish" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre request changes" news
+    And I go to the "CCN pre request changes" news
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -131,11 +130,11 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                 |
       | subject   | Joinup: Content has been updated                                                                                                                                                                          |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CC notify pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre request changes" in the collection: "CC pre collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre report" news
+    And I go to the "CCN pre report" news
     And I click "Edit" in the "Entity actions" region
     And I press "Report"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -144,21 +143,21 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                        |
       | subject   | Joinup: Content has been updated                                                                                                                                                                 |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CC notify pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN pre report" in the collection: "CC pre collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre approve proposed" news
+    And I go to the "CCN pre approve proposed" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                       |
-      | subject   | Joinup: Content has been updated                                                                                                                                |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CC notify pre approve proposed" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                                                    |
+      | subject   | Joinup: Content has been updated                                                                                                                                             |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre reject deletion" news
+    And I go to the "CCN pre reject deletion" news
     And I click "Edit" in the "Entity actions" region
     And I press "Reject deletion"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -167,28 +166,16 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                                                                    |
       | subject   | Joinup: Content has been updated                                                                                                                                                                             |
-      | body      | the Facilitator, CC Facilitator has not approved your request to delete the news - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
+      | body      | the Facilitator, CC Facilitator has not approved your request to delete the news - "CCN pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
-    # Test 'delete' operation on an entity in 'deletion_request' state.
+    # Test 'delete' operation.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify pre delete" news
+    And I go to the "CCN pre delete" news
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                      |
-      | subject   | Joinup: Content has been deleted                                                                                                               |
-      | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CC notify pre delete" in the collection: "CC pre collection". |
-
-    # Test 'delete' operation on an entity in 'validated' state.
-    When all e-mails have been sent
-    And I am logged in as "CC facilitator"
-    And I go to the "CC notify validated to delete" news
-    And I click "Edit" in the "Entity actions" region
-    And I click "Delete"
-    And I press "Delete"
-    Then the following email should have been sent:
-      | recipient | CC member                                                                                                                 |
-      | subject   | Joinup: Content has been deleted                                                                                          |
-      | body      | Facilitator CC Facilitator has deleted the news - "CC notify validated to delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                        |
+      | subject   | Joinup: Content has been deleted                                                                                 |
+      | body      | Facilitator CC Facilitator has deleted the news - "CCN pre delete" in the collection: "CC pre collection". |

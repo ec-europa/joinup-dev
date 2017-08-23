@@ -20,83 +20,83 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CC post collection | CC facilitator | facilitator |
       | CC post collection | CC member      |             |
     And news content:
-      | title                                | author    | body | headline                             | collection         | field_state  |
-      | CC notify post publish               | CC member | body | CC notify post publish               | CC post collection | draft        |
-      | CC notify post request changes       | CC member | body | CC notify post request changes       | CC post collection | validated    |
-      | CC notify post report                | CC member | body | CC notify post report                | CC post collection | validated    |
-      | CC notify post propose from reported | CC member | body | CC notify post propose from reported | CC post collection | needs_update |
-      | CC notify post approve proposed      | CC member | body | CC notify post approve proposed      | CC post collection | proposed     |
-      | CC notify post delete                | CC member | body | CC notify post delete                | CC post collection | validated    |
+      | title                          | author    | body | headline                       | collection         | field_state  |
+      | CCN post publish               | CC member | body | CCN post publish               | CC post collection | draft        |
+      | CCN post request changes       | CC member | body | CCN post request changes       | CC post collection | validated    |
+      | CCN post report                | CC member | body | CCN post report                | CC post collection | validated    |
+      | CCN post propose from reported | CC member | body | CCN post propose from reported | CC post collection | needs_update |
+      | CCN post approve proposed      | CC member | body | CCN post approve proposed      | CC post collection | proposed     |
+      | CCN post delete                | CC member | body | CCN post delete                | CC post collection | validated    |
 
     # Test 'create' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
     And I go to the "CC post collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CC notify create publish"
-    And I fill in "Headline" with "CC notify create publish"
-    And I fill in "Content" with "CC notify create publish"
+    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Headline" with "CCN create publish"
+    And I fill in "Content" with "CCN create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                              |
-      | subject   | Joinup: Content has been published                                                                                                                                    |
-      | body      | CC Member has published the new news - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
+      | recipient | CC owner                                                                                                                                                       |
+      | subject   | Joinup: Content has been published                                                                                                                             |
+      | body      | CC Member has published the new news - "CCN create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
     And I am logged in as "CC member"
-    And I go to the "CC notify post publish" news
+    And I go to the "CCN post publish" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                 |
-      | subject   | Joinup: Content has been published                                                                       |
-      | body      | CC Member has published the new news - "CC notify post publish" in the collection: "CC post collection". |
+      | recipient | CC owner                                                                                           |
+      | subject   | Joinup: Content has been published                                                                 |
+      | body      | CC Member has published the new news - "CCN post publish" in the collection: "CC post collection". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify post request changes" news
+    And I go to the "CCN post request changes" news
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Can you do some changes?"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                                   |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                            |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CC notify post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
+      | recipient | CC member                                                                                                                                                                                             |
+      | subject   | Joinup: Content has been updated                                                                                                                                                                      |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post request changes" in the collection: "CC post collection", with the following motivation: "Can you do some changes?". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify post report" news
+    And I go to the "CCN post report" news
     And I click "Edit" in the "Entity actions" region
     And I press "Report"
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Your content is reported"
     And I press "Request changes"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                                                          |
-      | subject   | Joinup: Content has been updated                                                                                                                                                                   |
-      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CC notify post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
+      | recipient | CC member                                                                                                                                                                                    |
+      | subject   | Joinup: Content has been updated                                                                                                                                                             |
+      | body      | the Facilitator, CC Facilitator has requested you to modify the news - "CCN post report" in the collection: "CC post collection", with the following motivation: "Your content is reported". |
 
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify post approve proposed" news
+    And I go to the "CCN post approve proposed" news
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                  |
-      | subject   | Joinup: Content has been updated                                                                                                                           |
-      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | recipient | CC member                                                                                                                                                   |
+      | subject   | Joinup: Content has been updated                                                                                                                            |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the news - "CCN post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
-    And I go to the "CC notify post delete" news
+    And I go to the "CCN post delete" news
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                          |
-      | subject   | Joinup: Content has been deleted                                                                                   |
-      | body      | Facilitator CC Facilitator has deleted the news - "CC notify post delete" in the collection: "CC post collection". |
+      | recipient | CC member                                                                                                    |
+      | subject   | Joinup: Content has been deleted                                                                             |
+      | body      | Facilitator CC Facilitator has deleted the news - "CCN post delete" in the collection: "CC post collection". |
