@@ -17,12 +17,12 @@ register_pending_approval_admin:
   body: "[user:display-name] has applied for an account.\r\n\r\n<a href=\"[user:edit-url]\">[user:edit-url]</a>"
   subject: 'Account details for [user:display-name] at [site:name] (pending admin approval)'
 status_activated:
-  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently unblocked by our moderators. \r\nFor more information about how to avoid your account being blocked in the future, please visit our FAQ section.\r\n\r\nKind regards,\r\n\r\nThe Joinup Moderation Team."
+  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently unblocked by our moderators. \r\nFor more information about how to avoid your account being blocked in the future, please visit our FAQ section.\r\n\r\nKind regards,\r\n\r\nThe Joinup Support Team."
   subject: 'Your account was just unblocked.'
 status_blocked:
-  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently blocked by our moderators. \r\nFor more information about blocked accounts, please visit our FAQ section.\r\n\r\nKind regards,\r\n\r\nThe Joinup Moderation Team."
+  body: "Dear [user:field_user_first_name],\r\n\r\nYour Joinup account was recently blocked by our moderators. \r\nFor more information about blocked accounts, please visit our FAQ section.\r\n\r\nKind regards,\r\n\r\nThe Joinup Support Team."
   subject: 'Your account was just blocked.'
 status_canceled:
-  body: "Dear Joinup user,\r\n\r\nYour account [user:account-name] has been deleted.@joinup_user:moderation_text If you believe that this action has been performed by mistake, please contact the Joinup Moderation team at <a href=\"[site:contact-form]\">[site:contact-form]</a>.\r\n\r\nKind regards,\r\n\r\nThe Joinup Moderation Team"
+  body: "Dear Joinup user,\r\n\r\nYour account [user:account-name] has been deleted.@joinup_user:moderation_text If you believe that this action has been performed by mistake, please contact the Joinup Moderation team at <a href=\"[site:contact-form]\">[site:contact-form]</a>.\r\n\r\nKind regards,\r\n\r\nThe Joinup Support Team"
   subject: 'Your account has been deleted.'
 langcode: en
