@@ -9,14 +9,14 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: 'http://joinup.eu/owner/uid'
+          format: 'xsd:integer'
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: t_literal
-      uid:
-        target_id:
-          predicate: 'http://joinup.eu/owner/uid'
-          format: integer
       langcode:
         value:
           predicate: 'http://joinup.eu/language'

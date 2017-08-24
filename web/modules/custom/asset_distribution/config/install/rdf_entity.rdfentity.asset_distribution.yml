@@ -9,6 +9,10 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
