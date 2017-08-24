@@ -81,9 +81,10 @@ Feature: Collection membership overview
     And I should not see the "Isabell Zahariev" tile
     # A pending member should not be visible.
     And I should not see the "Gemma Hackett" tile
+    Then show last response
 
     # Navigate to the next page and check that the 13th member is now visible.
-    When I click "››"
+    When I click "Next page"
     Then I should see the "Suk Karpáti" tile
     And I should see the "Sukhrab Valenta" tile
 
