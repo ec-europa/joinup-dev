@@ -14,9 +14,12 @@
 .listing__item
   position: relative
   background: #fff
+  display: flex
+  align-items: stretch
 
 .listing__card
-  position: static
+  display: flex
+  align-items: stretch
 
 .listing__image
   position: relative
@@ -118,51 +121,33 @@
   +border-radius(50%)
   .icon
     color: #fff
-    +icon-size(25px)
-    +centered()
+    +icon-size(15px)
+    +centered
 
 .listing__action-link__wrapper
   padding: 0 20px
 
-.listing__item--create-tile
-  .mdl-cell--middle
-    width: 100%
-
-.listing__create-tile
-  color: $color-base
-  display: block
-  text-align: center
-  text-decoration: none
-  text-transform: uppercase
-  width: 100%
-
-  &:before
-    display: block
-    font-size: 200px
-    line-height: 0.5em
-    margin-bottom: 30px
-    content: "+"
-
 // Modifiers
 // --------------------------------------------------
 .listing__image--default
-  background-color: #f0f7f7
+  background-color: $color-grey-lighter
   .icon
-    color: #5d5e5f
+    color: $color-grey-medium
     +icon-size(50px)
     +centered
 
-.listing__card--inline-containers
+.listing__card--inline-container
   +breakpoint(mobile)
-    display: table
-  .listing__metadata,
+    flex-direction: row
+  .listing__metadata
+    +breakpoint(mobile)
+      flex: 0 1 100%
+      align-self: center
   .listing__image
     +breakpoint(mobile)
-      display: table-cell
-      vertical-align: middle
-  .listing__image
-    +breakpoint(mobile)
-      width: 220px
+      flex: 0 0 220px
+      height: auto
+      min-height: 100%
 
 .listing__card--stats-container
   .listing__metadata
@@ -347,3 +332,23 @@
   .load-more__icon
     margin-bottom: 10px
     +icon-size(36px)
+
+// Listing
+//
+// Tile: video (1/2 width)
+//
+// Markup: html/listing-item--video-col-6.html
+//
+// Styleguide 2.9.12
+
+// Component
+// --------------------------------------------------
+
+// Tile: video (full width)
+//
+// Markup: html/listing-item--video-col-12.html
+//
+// Styleguide 2.9.13
+
+// Component
+// --------------------------------------------------
