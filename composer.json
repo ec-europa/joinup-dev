@@ -158,7 +158,7 @@
                 "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
             },
             "drupal/rdf_entity": {
-                "Add support for created and changed base fields @see https://www.drupal.org/node/2904457": "https://www.drupal.org/files/issues/2904457-2.patch"
+                "Add support for created and changed base fields @see https://www.drupal.org/node/2904457": "https://www.drupal.org/files/issues/2904457-3.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
