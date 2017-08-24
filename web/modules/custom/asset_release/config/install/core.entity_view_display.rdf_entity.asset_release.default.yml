@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -12,7 +11,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -26,7 +24,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - datetime
     - ds
     - state_machine
     - text
@@ -270,7 +267,6 @@ hidden:
   field_isr_included_asset: true
   field_isr_language: true
   field_isr_logo: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_release_number: true
