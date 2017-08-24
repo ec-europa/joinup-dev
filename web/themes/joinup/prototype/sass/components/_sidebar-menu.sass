@@ -5,8 +5,8 @@
 // Component
 // --------------------------------------------------
 .sidebar-menu
-  z-index: 2
   position: relative
+  +z-index(navigation)
   +breakpoint(desktop)
     width: 100%
     .mdl-menu__container,
@@ -29,7 +29,7 @@
   width: 60px
   height: 60px
   border-radius: 0
-  z-index: 999
+  +z-index(navigation)
 
 .sidebar-menu__item
   padding: 0
@@ -78,8 +78,8 @@
 
 .sidebar-menu__contextual
   ul
-    z-index: 3
     position: relative
+    +z-index(highlight+2)
   button
     position: relative !important
 
@@ -95,10 +95,10 @@
       .mdl-menu__item
         opacity: 1
       .mdl-menu__container
-        z-index: 999
         visibility: visible
         background: transparent
         position: relative
+        +z-index(navigation)
         &.is-hidden
           visibility: hidden
         &:not(.is-hidden)

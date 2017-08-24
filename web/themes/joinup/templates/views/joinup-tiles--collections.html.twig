@@ -37,12 +37,13 @@
           {{ row.content }}
         </div>
       {% endfor %}
-      <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col mdl-cell--3-col-wide listing__item--create-tile">
-        <div class="row">
-          <div class="mdl-grid">
-            {% include directory ~ '/templates/parts/rdf-entity--collection--listing-item--add-collection.html.twig' %}
-          </div>
-        </div>
+      <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col mdl-cell--3-col-wide icon-card">
+        <a href="{{ path('joinup.collection_tca_form') }}" class="icon-card__link">
+          <span class="icon-card__inner">
+            <span class="icon-card__icon icon icon--plus"></span>
+            <span class="icon-card__text">{{ 'Create collection'|t }}</span>
+          </span>
+        </a>
       </div>
     </div>
   </div>
