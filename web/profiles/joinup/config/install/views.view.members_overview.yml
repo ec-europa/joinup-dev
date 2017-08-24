@@ -242,6 +242,14 @@ display:
                 title: Facilitator
                 operator: '='
                 value: rdf_entity-collection-facilitator
+              3:
+                title: Owner
+                operator: '='
+                value: rdf_entity-solution-administrator
+              4:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-solution-facilitator
           entity_type: og_membership
           entity_field: roles
           plugin_id: string
