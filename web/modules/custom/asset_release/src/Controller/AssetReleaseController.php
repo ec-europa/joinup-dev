@@ -140,7 +140,7 @@ class AssetReleaseController extends ControllerBase {
       // @todo: This is a temporary fix. We need to implement the sort in the
       // rdf entity module in order to be able to handle paging.
       // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-      // ->sort('field_isr_creation_date', 'DESC')
+      // ->sort('created', 'DESC')
       ->execute();
 
     /** @var \Drupal\rdf_entity\Entity\Rdf[] $releases */
@@ -263,7 +263,7 @@ class AssetReleaseController extends ControllerBase {
   protected function sortEntitiesByCreationDate(array $entities) {
     usort($entities, function ($entity1, $entity2) {
       $get_creation_date = function (RdfInterface $entity) {
-        $date = $entity->bundle() === 'asset_release' ? $entity->field_isr_creation_date->value : $entity->field_ad_creation_date->value;
+        $date = $entity->bundle() === 'asset_release' ? $entity->getCreatedTime() : $entity->field_ad_creation_date->value;
         // Sort entries without a creation date on the bottom so they don't
         // stick to the top for all eternity.
         if (empty($date)) {
