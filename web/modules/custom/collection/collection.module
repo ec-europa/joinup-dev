@@ -271,7 +271,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
   }
 
   // Provide default values for date/time fields if were missed.
-  foreach (['field_ar_creation_date', 'field_ar_modification_date'] as $field_name) {
+  foreach (['created', 'changed'] as $field_name) {
     if ($entity->get($field_name)->isEmpty()) {
       if (!isset($request_time)) {
         $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());

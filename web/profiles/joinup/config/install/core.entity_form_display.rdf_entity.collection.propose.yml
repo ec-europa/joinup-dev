@@ -138,13 +138,6 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
-  field_ar_creation_date:
-    weight: 19
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    type: datetime_create_update
-    region: content
   field_ar_description:
     weight: 1
     settings:
@@ -176,13 +169,6 @@ content:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
-    region: content
-  field_ar_modification_date:
-    weight: 20
-    settings:
-      behaviour: modified
-    third_party_settings: {  }
-    type: datetime_create_update
     region: content
   field_ar_owner:
     weight: 3
