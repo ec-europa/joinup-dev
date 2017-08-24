@@ -155,7 +155,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
   field_short_title:
     weight: 0
     label: hidden
