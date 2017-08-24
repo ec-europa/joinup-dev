@@ -6,3 +6,45 @@
 // --------------------------------------------------
 .section--content
   padding: 40px 0
+
+// Elements
+// --------------------------------------------------
+.page__title,
+.page__title-wrapper
+  position: relative
+  margin-bottom: 20px
+  letter-spacing: 1px
+  +breakpoint(tablet)
+    margin: 40px 60px
+
+.page__content
+  img
+    max-width: 100%
+    height: auto
+  @media print
+    padding: 0
+    padding-bottom: 20px
+
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.page__title,
+.page__title-wrapper
+  .icon
+    left: -50px
+    +centered($horizontal: false, $vertical: true)
+    +icon-size(35px)
+  h1
+    display: inline-block
+    margin: 0
+    vertical-align: middle
+
+.page__title-wrapper
+  @media print
+    margin: 0
+
+.content-container--default
+  .page__content
+    @extend .white-box
