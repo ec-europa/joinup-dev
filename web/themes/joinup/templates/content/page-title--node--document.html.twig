@@ -15,15 +15,17 @@
 {{ title_prefix }}
 {% if title %}
   <div class="page__title-wrapper">
+    {% if additional_content.field_short_title|render %}
+      <div class="details">
+        <div class="details__element details__element-headline">
+          <h2 class="value gray">{{ additional_content.field_short_title }}</h2>
+        </div>
+      </div>
+    {% endif %}
     <h1 class="page__title">{{ title }}</h1>
     {% if permalink %}
-      <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+      <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
     {% endif %}
-    <div class="details">
-      <div class="details__element details__element-headline">
-        <div class="value gray">{{ additional_content.field_short_title }}</div>
-      </div>
-    </div>
     <div class="details">
       {{ additional_content.author }}
       <div class="details__element">

@@ -846,7 +846,6 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   $variables['additional_content']['field_document_publication_date'] = $field_document_publication_date;
 
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
   $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
