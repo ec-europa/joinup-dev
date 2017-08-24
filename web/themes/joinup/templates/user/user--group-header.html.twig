@@ -39,6 +39,11 @@
         {% endif %}
       </div>
     </a>
+    {% if content.field_social_media|render %}
+      <div class="featured__container">
+        {{ content.field_social_media }}
+      </div>
+    {% endif %}
       <div class="featured__stats">
         <div class="stats__column">
           <div class="stats__wrapper">

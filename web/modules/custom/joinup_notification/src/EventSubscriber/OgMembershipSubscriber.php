@@ -203,7 +203,14 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     $arguments = parent::generateArguments($message);
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
-    $arguments['@actor:full_name'] = (empty($actor_first_name) && empty($actor_last_name)) ? 'a Joinup user' : $actor_first_name . ' ' . $actor_last_name;
+
+    // Ensure that the full name is not empty.
+    if (empty($actor_first_name) && empty(($actor_last_name))) {
+      $arguments['@actor:full_name'] = 'A Joinup user';
+    }
+    else {
+      $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;
+    }
 
     // Calculate extra arguments per case.
     switch ($this->operation) {

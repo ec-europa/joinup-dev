@@ -87,7 +87,7 @@
     </div>
     {% if view_mode == 'view_mode_featured' %}
     <div class="listing__field">
-      <p class="listing__teaser">{{ content.body|render|striptags }}</p>
+      <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
     </div>
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">

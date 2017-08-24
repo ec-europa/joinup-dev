@@ -17,12 +17,12 @@
   <div class="page__title-wrapper">
     <div class="details">
       <div class="details__element details__element-headline">
-        <div class="value gray">{{ title }}</div>
+        <h2 class="value gray">{{ title }}</h2>
       </div>
     </div>
       <h1 class="page__title">{{ additional_content.field_news_headline }}</h1>
       {% if permalink %}
-        <a class="permalink" href="{{ permalink }}" title="Permalink"><span class="icon icon--anchor"></span></a>
+        <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
       {% endif %}
       <div class="details">
         {{ additional_content.author }}

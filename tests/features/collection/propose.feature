@@ -47,6 +47,8 @@ Feature: Proposing a collection
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
+    # The owner field should have a help text.
+    And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
@@ -89,7 +91,6 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
-    And I attach the file "logo.png" to "Logo"
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 

@@ -76,7 +76,7 @@ class ReportLinkItem extends LinkItem {
         $url = $this->getEntity()->toUrl()->toString();
         $value = [
           'uri' => 'internal:/contact?category=report&uri=' . $url,
-          'title' => t('Report'),
+          'title' => t('Report abusive content'),
         ];
         $this->setValue($value);
       }

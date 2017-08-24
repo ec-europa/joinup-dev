@@ -41,7 +41,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notification about the content you published.<br />In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to join the collection again.", [
+    return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.<br />In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to rejoin the collection.", [
       '%collection' => $this->collection->getName(),
     ]);
   }
