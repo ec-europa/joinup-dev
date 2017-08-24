@@ -5,8 +5,9 @@
 // Elements
 // --------------------------------------------------
 .form__actions
-  margin-top: $form-large-margin
+  margin-top: 25px
   margin-right: 10px
+  margin-bottom: 0 !important
 
 .form__label
   font-size: 16px
@@ -34,8 +35,8 @@
     margin: 8px
 
 .form__actions_inner
-  display: inline-flex
-  flex-wrap: wrap
+  +inline-flex
+  +flex-wrap(wrap)
   .button
     @extend .button-inline
 
@@ -107,6 +108,34 @@
 // --------------------------------------------------
 .form__description--checkbox
   margin-left: 25px
+
+// Dependencies
+// --------------------------------------------------
+.form__actions
+  .dropbutton-wrapper
+    float: none
+    width: auto
+  .dropbutton-multiple
+    @extend .button-inline
+    &.open
+      .dropbutton-arrow
+        top: 40%
+    .dropbutton-widget
+      padding-right: 0
+  .dropbutton-action
+    .button
+      margin: 0
+    &.secondary-action
+      position: absolute
+      white-space: nowrap
+      .button
+        margin-top: 5px
+  .dropbutton-widget
+    .dropbutton
+      overflow: visible
+  .dropbutton-toggle
+    .dropbutton-arrow
+      color: #fff
 
 // States
 // --------------------------------------------------

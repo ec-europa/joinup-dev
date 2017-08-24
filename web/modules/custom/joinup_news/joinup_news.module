@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -21,5 +22,20 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
     if (!empty($fields['field_news_referenced_solution'])) {
       $fields['field_news_referenced_solution']->addConstraint('UniqueFieldValue');
     }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Restrict the kicker(title) to 30 characters long.
+ */
+function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, ['node_news_form', 'node_news_edit_form'])) {
+    return;
+  }
+
+  if (isset($form['title']['widget'][0]['value'])) {
+    $form['title']['widget'][0]['value']['#maxlength'] = 30;
   }
 }
