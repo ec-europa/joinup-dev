@@ -131,6 +131,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  changed: true
+  created: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_business_process: true

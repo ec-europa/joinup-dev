@@ -74,6 +74,8 @@ content:
             classes: {  }
     region: content
 hidden:
+  changed: true
+  created: true
   field_ad_description: true
   field_ad_format: true
   field_ad_gitb_compliant: true

@@ -52,6 +52,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  changed: true
+  created: true
   field_ar_abstract: true
   field_ar_access_url: true
   field_ar_affiliates: true

@@ -84,6 +84,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  changed: true
+  created: true
   field_ar_access_url: true
   field_ar_affiliates: true
   field_ar_banner: true

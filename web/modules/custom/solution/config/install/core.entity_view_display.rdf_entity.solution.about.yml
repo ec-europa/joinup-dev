@@ -380,7 +380,9 @@ content:
       joinup:
         template_suggestion: fieldset
 hidden:
+  changed: true
   collections: true
+  created: true
   download_total: true
   field_is_affiliations_requests: true
   field_is_banner: true

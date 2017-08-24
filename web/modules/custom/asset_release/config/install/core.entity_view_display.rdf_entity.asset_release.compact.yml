@@ -212,6 +212,8 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  changed: true
+  created: true
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true

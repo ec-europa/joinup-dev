@@ -315,7 +315,9 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  changed: true
   collections: true
+  created: true
   download_total: true
   field_is_affiliations_requests: true
   field_is_banner: true
