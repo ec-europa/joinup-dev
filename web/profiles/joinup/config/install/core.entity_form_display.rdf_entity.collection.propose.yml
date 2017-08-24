@@ -10,12 +10,10 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
-    - field.field.rdf_entity.collection.field_ar_creation_date
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
-    - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -75,8 +73,6 @@ third_party_settings:
         - field_ar_closed
         - field_ar_elibrary_creation
         - field_ar_moderation
-        - field_ar_creation_date
-        - field_ar_modification_date
       parent_name: group_general
       weight: 6
       label: 'Additional fields'
