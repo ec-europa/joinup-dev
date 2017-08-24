@@ -10,7 +10,8 @@
 // --------------------------------------------------
 .icon-card
   position: relative
-  min-height: 200px
+  min-height: 230px
+
 // Elements
 // --------------------------------------------------
 .icon-card__link
@@ -40,7 +41,7 @@
 // --------------------------------------------------
 .icon-card--grey
   background-color: $color-grey-lighter
-
-.icon-card__icon--small
-  color: $color-grey-medium
-  +icon-size(50px)
+  min-height: 140px
+  .icon-card__icon
+    color: $color-grey-medium
+    +icon-size(50px)
