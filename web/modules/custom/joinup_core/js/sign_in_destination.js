@@ -24,7 +24,7 @@
 
       $(context).find('[data-drupal-link-system-path="user/login"]').once('sign-in-redirect').each(function () {
           var $this = $(this);
-          if($this.prop('href').indexOf('?destination=') === -1) {
+          if ($this.prop('href').indexOf('?destination=') === -1) {
               var query_string = (drupalSettings.path.currentQuery) ? '?' + $.param(drupalSettings.path.currentQuery) : '';
               var destination = encodeURIComponent(drupalSettings.path.currentPath + query_string)
               $this.prop('href', $this.prop('href') + '?destination=/' + destination);
