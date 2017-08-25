@@ -7,10 +7,10 @@ description: 'Sent when a comment is updated.'
 text:
   -
     value: '<p>Joinup: A comment has been updated.</p>'
-    format: content_editor
+    format: full_html
   -
     value: '<p>@actor:full_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p>'
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false
