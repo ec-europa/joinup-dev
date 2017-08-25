@@ -83,7 +83,7 @@ Feature: Collection membership overview
     And I should not see the "Gemma Hackett" tile
 
     # Navigate to the next page and check that the 13th member is now visible.
-    When I click "››"
+    When I click "Next page"
     Then I should see the "Suk Karpáti" tile
     And I should see the "Sukhrab Valenta" tile
 

@@ -34,13 +34,13 @@ content:
     type: social_media_links_field_default
     weight: 8
     region: content
-    label: above
+    label: hidden
     settings:
       appearance:
         orientation: h
         show_name: true
       link_attributes:
-        target: '<none>'
+        target: _blank
         rel: '<none>'
     third_party_settings:
       ds:

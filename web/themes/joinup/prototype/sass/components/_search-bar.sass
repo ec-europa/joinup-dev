@@ -71,12 +71,12 @@
 // --------------------------------------------------
 .search-bar--header
   position: absolute
-  z-index: 1
   top: 0
   right: 75px
   overflow: hidden
   height: 64px
   padding: 0
+  +z-index(highlight)
 
 .search-bar--section
   width: 85%
@@ -136,13 +136,13 @@
       left: -10px
   .search-bar__button
     font-size: 0
-    z-index: 10
     width: 25px
     height: 25px
     padding: 0
     cursor: pointer
     border: none
     background: none
+    +z-index(navigation)
     +centered
   label
     display: none
@@ -152,9 +152,9 @@
 .search-bar--header
   &.is-focused,
   &.is-dirty
-    z-index: 3
     width: calc(100% - 130px)
     background-color: $color-blue-default
+    +z-index(navigation)
     +breakpoint(tablet)
       width: calc(100% - 200px)
     @media (min-width: 1200px)
