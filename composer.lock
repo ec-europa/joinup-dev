@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ac0cda26d656183969c8ed6d3ee0356",
+    "content-hash": "fb948db92740899906a747e8ac7b777e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3656,6 +3656,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Do not add empty field item lists to entity @see https://www.drupal.org/node/2904769": "https://www.drupal.org/files/issues/2904769-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9202,7 +9205,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -9682,7 +9685,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -9882,7 +9886,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-08-04T21:27:56+00:00"
+            "time": "2017-08-04 21:27:56"
         },
         {
             "name": "fabpot/goutte",
