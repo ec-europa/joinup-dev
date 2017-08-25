@@ -13,29 +13,30 @@
  */
 #}
 <form{{ attributes }}>
+  {% trans %}
     <p>Joinup Collections are spaces where you can collaborate with others sharing your same interests around a certain domain, and contain all the contents of any kind related to that domain (solutions, news, newsletters and announcements of events and documents of various kinds).</p>
     <h2>How Collections work</h2>
     <p>What you can do when you create a Collection:</p>
     <ul>
-        <li>Choose who can see and join your Collection, if you create it with restricted membership conditions;</li>
-        <li>Add other people as moderators and owners of the Collection;</li>
-        <li>Remove members from your Collection;</li>
-        <li>Moderate posts and comments in your Collection;</li>
-        <li>Delete your Collection</li>
+      <li>Choose who can see and join your Collection, if you create it with restricted membership conditions;</li>
+      <li>Add other people as moderators and owners of the Collection;</li>
+      <li>Remove members from your Collection;</li>
+      <li>Moderate posts and comments in your Collection;</li>
+      <li>Delete your Collection</li>
     </ul>
     What others can do when they join your Collection:
     <ul>
-        <li>See what other people have posted to that Collection</li>
-        <li>Comment on posts in that Collection</li>
-        <li>Leave that Collection at any time</li>
+      <li>See what other people have posted to that Collection</li>
+      <li>Comment on posts in that Collection</li>
+      <li>Leave that Collection at any time</li>
     </ul>
     Please note that the creation of Collections is subject to moderation by the Joinup team, and the following criteria will be checked:
     <ul>
-        <li>If there are existing collections pertaining to the same domains as yours;</li>
-        <li>If there is/are collection(s) containing contents potentially related to the collection you want to create, and if the contents of the latter may fit that/those already existing collection(s);</li>
-        <li>If the main elements of the collection (title, description etc.) comply with the rules set forth in <a href="/page/legal-notice">the legal notice</a> and the <a href="/page/scope-statement-and-eligibility-criteria">eligibility criteria</a>, insofar they can be applicable to collections as well.</li>
+      <li>If there are existing collections pertaining to the same domains as yours;</li>
+      <li>If there is/are collection(s) containing contents potentially related to the collection you want to create, and if the contents of the latter may fit that/those already existing collection(s);</li>
+      <li>If the main elements of the collection (title, description etc.) comply with the rules set forth in <a href="/page/legal-notice">the legal notice</a> and the <a href="/page/scope-statement-and-eligibility-criteria">eligibility criteria</a>, insofar they can be applicable to collections as well.</li>
     </ul>
     <h2>Do you want to create your own Collection?</h2>
-    {{ children }}
-
+  {% endtrans %}
+  {{ children }}
 </form>
