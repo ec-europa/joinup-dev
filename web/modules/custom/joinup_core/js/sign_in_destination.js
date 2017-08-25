@@ -32,12 +32,14 @@
       // For each link that points to the user login page, append the existing
       // destination or the page depending on where the user comes from.
       $(context).find('[href^="/user/login"]').once('sign-in-redirect').each(function () {
-        // If the user is not in one of the user_urls, and there is no
-        // destination already set, set the current url as destination.
         if (is_user_url && has_destination) {
+          // If the user is not in one of the user_urls, and a destination
+          // parameter exists, set the current url as destination.
           query_string = $.param(path.currentQuery);
         }
         else if (!is_user_url && !has_destination) {
+          // If the user is not in one of the user urls, set the current page as
+          // the destination parameter.
           query_string = 'destination=/' + encodeURIComponent(path.currentPath + inline_query_string);
         }
         // The .search is the query string of the url.
