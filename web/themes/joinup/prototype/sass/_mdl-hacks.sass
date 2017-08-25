@@ -19,6 +19,12 @@
       padding: 16px
       white-space: normal
 
+.mdl-layout__drawer
+  +z-index(max+1)
+
+.mdl-layout__obfuscator
+  +z-index(max)
+
 .mdl-layout__drawer-button
   top: 4px
   +hidden-print
@@ -35,9 +41,9 @@
 
 .mdl-spinner
   position: fixed
-  z-index: 1000
   top: 48.5%
   left: 49%
+  +z-index(max)
 
 .mdl-grid--center
   justify-content: center

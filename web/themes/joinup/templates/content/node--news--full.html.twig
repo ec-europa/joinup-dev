@@ -70,28 +70,15 @@
  *   in different view modes.
  */
 #}
-{% set topics = content.field_policy_domain|render %}
-{% set spatial_coverage = content.field_news_spatial_coverage|render %}
-<article{{ attributes }}>
-  <div class="page__content page__content-image">
-    {{ content.body }}
-    {{ content.field_attachment }}
-    <div class="details__bottom">
-      {% if topics and spatial_coverage %}
-        {% trans %}This news is about {{ topics }} in {{ spatial_coverage }} area{% endtrans %}
-      {% elseif spatial_coverage %}
-        {% trans %}This news is in {{ spatial_coverage }} area{% endtrans %}
-      {% elseif topics %}
-        {% trans %}This news is about {{ topics }}{% endtrans %}
-      {% endif %}
-    </div>
-    <div class="action-link__wrapper right">
-      {{ content.share_link }}
-    </div>
+<article{{ attributes.addClass('page__content') }}>
+  {{ content.body }}
+  {{ content.group_references }}
+  {{ content.field_attachment }}
+  <div class="action-link__wrapper right">
+    {{ content.report }}
+    {{ content.share_link }}
   </div>
-
-  {{ content.report }}
-  {{ content.field_news_referenced_solution }}
-
-  {{ content.field_comments }}
 </article>
+{{ content.field_shared_in }}
+{{ content.field_news_referenced_solution }}
+{{ content.field_comments }}
