@@ -89,6 +89,29 @@ textarea
       +icon-size(15px)
       content: '\e8ab'
 
+// Change contextual button color
+// on dark backgrounds
+.section--featured, .section--header
+  .contextual
+    button.trigger
+      color: #fff
+
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card--title-pin
+  .contextual
+    left: 0
+    right: auto
+  .contextual .trigger
+    float: left
+    right: auto
+    left: 0
+  .contextual .contextual-links
+    border-radius: 0 4px 4px 4px
+    float: left
+    left: 0
+    right: auto
+
 ul.contextual-links
   z-index: 3
   position: relative
