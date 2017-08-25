@@ -7,7 +7,6 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
-use Drupal\filter\FilterPluginCollection;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 
@@ -131,30 +130,20 @@ function joinup_notification_mail_alter(&$message) {
     // Convert new lines to paragraphs and line breaks. Also transform the body
     // to markup.
     // @see swiftmailer_mail()
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     $message['body'] = array_map(function ($text) {
-      return _filter_autop($text);
+      return Markup::create(_filter_autop($text));
     }, $message['body']);
   }
 
   // Mails sent by the message_notify module are already HTML ready.
   if ($message['module'] === 'message_notify') {
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     $user = user_load_by_mail($message['to']);
     $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
     $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
-    $suffix = t('<p>Kind regards,</p><p>The Joinup Community Team</p>');
+    $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
     $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
-  }
-
-  // Convert links to html tags.
-  if (in_array($message['module'], ['user', 'joinup_user', 'message_notify'])) {
-    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
-    $manager = \Drupal::service('plugin.manager.filter');
-    $bag = new FilterPluginCollection($manager, []);
-    $filter = $bag->get('filter_url');
-
-    $message['body'] = array_map(function ($text) use ($filter) {
-      return Markup::create(_filter_url($text, $filter));
-    }, $message['body']);
   }
 }
 

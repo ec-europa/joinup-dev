@@ -7,10 +7,10 @@ description: 'Sent when a comment is created.'
 text:
   -
     value: '<p>Joinup: A new comment has been created.</p>'
-    format: content_editor
+    format: full_html
   -
     value: '<p>@actor:full_name posted a comment in collection "@group:title".</p><p>To view the comment click <a href="@entity:url">here</a>.</p>'
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false
