@@ -18,8 +18,7 @@ Feature:
     And I fill in "Username" with "Mr Redirect"
     And I fill in "Password" with "Mr Redirect"
     And I press "Sign in"
-    Then I should see the heading "Mr Redirect"
-    And the url should match "/user/\d+"
+    And I should be on the homepage
 
   Scenario: A user logging in from another page should return to that page after login.
     When I am on "/search?keys=how+to+redirect"
