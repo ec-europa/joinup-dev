@@ -68,6 +68,16 @@
             "value": "http:\/\/placeHolder\/11c81d8f-1527-4044-a694-b847d66362e1"
         }
     ],
+    "created": [
+        {
+            "value": "1503665058"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1503665885"
+        }
+    ],
     "graph": [
         {
             "value": "default"
