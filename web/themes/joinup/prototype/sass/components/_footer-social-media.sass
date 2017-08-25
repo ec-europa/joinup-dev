@@ -18,15 +18,15 @@
   margin-bottom: 0
 
 .social-media__menu
-  display: inline-flex
-  flex-direction: row
-  flex-wrap: wrap
-  justify-content: flex-start
-  align-items: center
   margin-top: 0
   margin-bottom: 0
   padding-left: 0
   list-style-type: none
+  +inline-flex
+  +flex-direction(row)
+  +flex-wrap(wrap)
+  +justify-content(flex-start)
+  +align-items(center)
 
 .social-media__item
   margin-right: 10px
@@ -35,12 +35,12 @@
     margin-right: 0
 
 .social-media__link
-  display: flex
-  flex-direction: row
-  flex-wrap: nowrap
-  justify-content: flex-start
-  align-items: center
   text-decoration: none
+  +flex
+  +flex-direction(row)
+  +flex-wrap(nowrap)
+  +justify-content(flex-start)
+  +align-items(center)
 
 // Modifiers
 // --------------------------------------------------

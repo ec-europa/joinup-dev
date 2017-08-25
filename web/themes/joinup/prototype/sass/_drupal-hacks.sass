@@ -1,18 +1,16 @@
-a.tabledrag-handle .handle
-  background: none !important
-
-a.tabledrag-handle
-  margin-left: 0 !important
-  height: 40px !important
+.draggable
+  a.tabledrag-handle
+    float: none
+    height: auto
+    margin-left: 0
+  .field-multiple-drag
+    width: 25px
+  .handle,
+  .indentation
+    display: none
 
 .tabledrag-toggle-weight-wrapper
   display: none
-
-.field-multiple-drag
-  padding: 0 !important
-
-.draggable.form-table__row .form-table__cell
-  padding-left: 0
 
 #edit-field-ar-owner-actions.container-inline
   width: 100%
@@ -39,21 +37,7 @@ textarea
   .ief-entity-operations
     margin-bottom: 0
 
-
 // Styles for multiple field table.
-.table-operations
-  table
-    margin-bottom: 20px
-  .form-table__cell
-    padding: 20px 15px 20px 0
-  .form-table__header
-    padding-left: 0
-  .form-managed-file, a.tabledrag-handle
-    display: inline-block
-    vertical-align: middle
-    float: none
-
-
 .field--widget-inline-entity-form-complex
   .form-type-select
     display: inline-block
@@ -179,42 +163,6 @@ form .description
     &:before
       +icon-size(15px)
       content: '\e617'
-
-// Prevent overlaping contextal button and local tasks button.
-.section--featured .contextual
-  top: 50px
-
-// Additional styling for dropbutton.
-.dropbutton-action
-  .button
-    margin: 0
-  &.secondary-action
-    position: absolute
-    white-space: nowrap
-    .button
-      margin-top: 5px
-
-.dropbutton-widget
-  .dropbutton
-    overflow: visible !important
-
-.dropbutton-toggle
-  .dropbutton-arrow
-    color: #fff
-
-.dropbutton-multiple
-  &.open
-    .dropbutton-arrow
-      top: 40% !important
-  .dropbutton-widget
-    padding-right: 0 !important
-
-.dropbutton-wrapper
-  width: auto !important
-
-.form__actions_inner
-  .dropbutton-multiple
-    @extend .button-inline
 
 // Hide select formats in a comment field for anonymous users
 // Remove margin for textarea

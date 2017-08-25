@@ -123,6 +123,7 @@ function _joinup_blue_header_routes() {
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',
+    'entity.ogmenu_instance.edit_form',
     'entity.rdf_entity.edit_form',
     'rdf_entity.propose_form',
     'user.login',
@@ -1237,6 +1238,11 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     if (in_array($variables['element']['#type'], $floating_label_types)) {
       if ($hook == 'form_element') {
         $suggestions[] = 'form_element__floating';
+
+        // Floating form element with label.
+        if (in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+          $suggestions[] = 'form_element__floating__with_prefix';
+        }
       }
       elseif ($hook == 'input') {
         $suggestions[] = 'input__floating';
@@ -1299,6 +1305,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'user_form',
     'user_pass',
     'simplenews_subscriber_account_form',
+    'ogmenu_instance_navigation_edit_form',
   ];
 
   // Exclude forms with tabs.
