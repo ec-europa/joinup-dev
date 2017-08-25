@@ -7,10 +7,10 @@ description: 'Template id 2'
 text:
   -
     value: "<p>Your proposal of @entity:bundle @entity:title has been approved</p>\r\n"
-    format: content_editor
+    format: full_html
   -
     value: "<p>Your proposed @entity:bundle \"@entity:title\" has been validated as per your request.</p>\r\n"
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false

@@ -127,10 +127,10 @@ function joinup_notification_dispatch_notification($operation, $event_name, Enti
  */
 function joinup_notification_mail_alter(&$message) {
   if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
-    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     // Convert new lines to paragraphs and line breaks. Also transform the body
     // to markup.
     // @see swiftmailer_mail()
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     $message['body'] = array_map(function ($text) {
       return Markup::create(_filter_autop($text));
     }, $message['body']);
@@ -142,9 +142,8 @@ function joinup_notification_mail_alter(&$message) {
     $user = user_load_by_mail($message['to']);
     $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
     $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
-    $suffix = t('<p>Kind regards,</p><p>The Joinup Community Team</p>');
-    $body = array_merge([$prefix], $message['body'], [$suffix]);
-    $message['body'] = $body;
+    $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
+    $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
   }
 }
 
