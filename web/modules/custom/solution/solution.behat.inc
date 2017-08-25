@@ -386,9 +386,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * bundle are going to be added automatically.
    *
    * Table format:
-   * | solution          | user | roles                      |
-   * | Sample solution A | John | facilitator, administrator |
-   * | Sample solution B | Jack |                            |
+   * | solution          | user | roles                      | state   |
+   * | Sample solution A | John | facilitator, administrator | active  |
+   * | Sample solution B | Jack |                            | blocked |
+   *
+   * Only the 'solution' and 'user' columns are required. Multiple comma
+   * separated roles can be passed.
+   *
+   * The state can be empty, or one of 'active', 'pending', or 'blocked'. If the
+   * state is omitted it will default to 'active'.
    *
    * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
@@ -400,30 +406,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function givenSolutionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
-      // Load group.
       $group = $this->getSolutionByName($values['solution']);
-
-      // Load member.
-      $member = user_load_by_name($values['user']);
-      if (empty($member)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
-      }
-
-      // Convert role names to role IDs.
-      $roles = [];
-      if (!empty($values['roles'])) {
-        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
-        // Every owner is also a facilitator. In Joinup the facilitator role is
-        // assigned to the owner when they create the solution. Since in this
-        // step the solutions are already created, mimick this behaviour by
-        // making sure every owner also has the 'facilitator' role.
-        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
-          $role_names[] = 'facilitator';
-        }
-        $roles = $this->getOgRoles($role_names, $group);
-      }
-
-      $this->subscribeUserToGroup($member, $group, $roles);
+      $this->givenUserMembership($group, $values);
     }
   }
 

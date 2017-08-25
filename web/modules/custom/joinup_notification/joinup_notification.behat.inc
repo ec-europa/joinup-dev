@@ -106,6 +106,20 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         $mail_body = strip_tags($mail_body);
       }
 
+      // Ensure that there are no un-replaced arguments in the mail subject and
+      // body.
+      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+        throw new Exception('There were arguments found in the subject or the body of the email that were not replaced.');
+      }
+
+      // Ensure that the signature is always placed.
+      // In non user emails, html p tags are used for new lines and these are
+      // stripped instead of replaced. Thus, a regex will be used to properly
+      // identify the signature regardless of spaces.
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new Exception('The signature of the email was not found or is not correct.');
+      }
+
       // Since the body field has url tokens, we cannot provide a full body text
       // because we don't have the url available. Because of this, we just
       // match partial text.
@@ -221,6 +235,20 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       if ($mail['body'] instanceof MarkupInterface) {
         $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
         $mail_body = strip_tags($mail_body);
+      }
+
+      // Ensure that there are no un-replaced arguments in the mail subject and
+      // body.
+      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+        throw new Exception('There were arguments found in the mail or the body that were not replaced.');
+      }
+
+      // Ensure that the signature is always placed.
+      // In non user emails, html p tags are used for new lines and these are
+      // stripped instead of replaced. Thus, a regex will be used to properly
+      // identify the signature regardless of spaces.
+      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new Exception('The signature of the email was not found or is not correct.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text

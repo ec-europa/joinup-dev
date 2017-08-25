@@ -1,16 +1,68 @@
 @api
 Feature: Solutions Overview
+  As a new visitor of the Joinup website
+  To get an idea of the various solutions that are available
+  I should see a list of all solutions
 
   Scenario: Check visibility of "Solutions" menu link.
     Given I am an anonymous user
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
+    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
+
+  Scenario: Solution overview paging
+    Given solutions:
+      | title      | state     |
+      | Arctic fox | validated |
+      | Alpaca     | validated |
+      | Boomalope  | validated |
+      | Boomrat    | validated |
+      | Megasloth  | validated |
+      | Thrumbo    | validated |
+      | Spelopede  | validated |
+      | Muffalo    | validated |
+      | Husky      | validated |
+      | Gazelle    | validated |
+      | Cow        | validated |
+      | Panther    | validated |
+      | Tortoise   | validated |
+      | Warg       | validated |
+    And I am an anonymous user
+    And I am on the homepage
+    When I click "Solutions"
+    Then I should see the following tiles in the correct order:
+      | Arctic fox |
+      | Alpaca     |
+      | Boomalope  |
+      | Boomrat    |
+      | Megasloth  |
+      | Thrumbo    |
+      | Spelopede  |
+      | Muffalo    |
+      | Husky      |
+      | Gazelle    |
+      | Cow        |
+      | Panther    |
+    And I should see the link "2"
+    And I should see the link "Next ›"
+    And I should see the link "Last »"
+    But I should not see the link "« First"
+    And I should not see the link "‹ Previous"
+    When I click "Next ›"
+    Then I should see the following tiles in the correct order:
+      | Tortoise   |
+      | Warg       |
+    And I should see the link "1"
+    And I should see the link "« First"
+    And I should see the link "‹ Previous"
+    But I should not see the link "Next ›"
+    And I should not see the link "Last »"
 
   @terms
   Scenario: View solution overview as an anonymous user
@@ -105,42 +157,3 @@ Feature: Solutions Overview
 
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
-
-  @terms
-  Scenario: Custom pages should not be visible on the overview page
-    Given the following solution:
-      | title             | Jira restarters                      |
-      | description       | Rebooting solves all issues          |
-      | documentation     | text.pdf                             |
-      | elibrary creation | registered users                     |
-      | landing page      | http://foo-example.com/landing       |
-      | webdav creation   | no                                   |
-      | webdav url        | http://joinup.eu/solution/foo/webdav |
-      | wiki              | http://example.wiki/foobar/wiki      |
-      | state             | validated                            |
-    And news content:
-      | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
-      | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
-    And custom_page content:
-      | title            | body                                       | solution |
-      | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira restarters       |
-    When I go to the homepage of the "Jira restarters" solution
-    Then I should see the "Jira will be down for maintenance" tile
-    And I should not see the "Maintenance page" tile
-
-  Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
-    Given the following solutions:
-      | title       | state     |
-      | Robotic arm | validated |
-      | ARM9        | validated |
-    And collections:
-      | title              | affiliates        | state     |
-      | Disappointed Steel | Robotic arm, ARM9 | validated |
-      | Random Arm         | ARM9              | validated |
-
-    When I go to the homepage of the "Robotic arm" solution
-    Then I should see the link "Disappointed Steel"
-
-    When I go to the homepage of the "ARM9" solution
-    Then I should see the link "Disappointed Steel"
-    But I should not see the link "Random Arm"
