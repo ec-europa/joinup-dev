@@ -109,7 +109,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception("There were arguments found in the subject or the body of the email that were not replaced.");
+        throw new Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
       // Ensure that the signature is always placed.
@@ -240,7 +240,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception("There were arguments found in the mail or the body that were not replaced.");
+        throw new Exception('There were arguments found in the mail or the body that were not replaced.');
       }
 
       // Ensure that the signature is always placed.
