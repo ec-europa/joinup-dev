@@ -21,6 +21,7 @@
 
 .fieldset__title
   margin-top: 0
+
 // Modifiers
 // --------------------------------------------------
 .fieldset--separated
@@ -51,6 +52,24 @@
     margin-bottom: $field-margin
     &:last-of-type
       margin-bottom: 0
+
+.fieldset--border-bottom
+  position: relative
+  padding-bottom: 18px
+  &:before
+    position: absolute
+    right: -20px
+    bottom: 15px
+    left: -20px
+    height: 2px
+    content: ''
+    background-color: $color-grey-light
+    +breakpoint(sm)
+      right: -30px
+      left: -30px
+    +breakpoint(md)
+      right: -60px
+      left: -60px
 
 // Dependiencies
 // --------------------------------------------------
