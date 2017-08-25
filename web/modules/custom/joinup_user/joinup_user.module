@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
