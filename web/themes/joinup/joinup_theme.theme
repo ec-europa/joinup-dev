@@ -1328,11 +1328,6 @@ function joinup_theme_preprocess_node(&$variables) {
 
   if (!$is_remote) {
     $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    $variables['file_name'] = $file->getFilename();
-
-    if ($file->getSize()) {
-      $variables['file_size'] = format_size(round($file->getSize()));
-    }
   }
   else {
     $variables['extension'] = t('External');
