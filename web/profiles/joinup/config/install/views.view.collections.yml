@@ -484,7 +484,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: '<p>Collections are the main collaborative space were the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>'
+            value: '<p>Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community.</p>'
             format: content_editor
           plugin_id: text
       footer: {  }
