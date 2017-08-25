@@ -26,7 +26,7 @@
       // By default, login will lead to the homepage.
       var query_string = 'destination=/homepage';
       // The query parameters of the page as an inline string.
-      var inline_query_string = path.currentQuery ? $.param(path.currentQuery) : '';
+      var inline_query_string = path.currentQuery ? '?' + $.param(path.currentQuery) : '';
       var has_destination = path.currentQuery && path.currentQuery['destination'];
 
       // For each link that points to the user login page, append the existing
