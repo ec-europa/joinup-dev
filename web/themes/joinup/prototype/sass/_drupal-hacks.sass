@@ -95,6 +95,9 @@ textarea
   .contextual
     button.trigger
       color: #fff
+      &:hover, &:focus
+        background-image: none
+        background: $color-grey-medium
 
 // Move contextual button to the left
 // on pinned tiles.
@@ -111,6 +114,7 @@ textarea
     float: left
     left: 0
     right: auto
+
 
 ul.contextual-links
   +z-index(highlight+2)
