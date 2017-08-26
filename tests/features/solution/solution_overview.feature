@@ -9,6 +9,7 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
+    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Solutions"
@@ -49,19 +50,21 @@ Feature: Solutions Overview
       | Cow        |
       | Panther    |
     And I should see the link "2"
-    And I should see the link "Next ›"
-    And I should see the link "Last »"
-    But I should not see the link "« First"
-    And I should not see the link "‹ Previous"
-    When I click "Next ›"
+    # Next and last page links are rendered as icons "›" and "»", but there is an
+    # help text that is meant for screen readers and also visualised on mouseover.
+    And I should see the link "Next page"
+    And I should see the link "Last page"
+    But I should not see the link "First page"
+    And I should not see the link "Go to previous page"
+    When I click "Next page"
     Then I should see the following tiles in the correct order:
       | Tortoise   |
       | Warg       |
     And I should see the link "1"
-    And I should see the link "« First"
-    And I should see the link "‹ Previous"
-    But I should not see the link "Next ›"
-    And I should not see the link "Last »"
+    And I should see the link "First page"
+    And I should see the link "Go to previous page"
+    But I should not see the link "Next page"
+    And I should not see the link "Last page"
 
   @terms
   Scenario: View solution overview as an anonymous user

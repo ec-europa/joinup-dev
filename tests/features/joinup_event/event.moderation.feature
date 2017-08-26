@@ -47,7 +47,7 @@ Feature: Event moderation
     And I click the "Additional fields" tab
     And I check the box "Moderated"
     Then I press "Publish"
-    And I should see the capitalised heading "Wet Lords"
+    And I should see the heading "Wet Lords"
 
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create events but not to publish them.
