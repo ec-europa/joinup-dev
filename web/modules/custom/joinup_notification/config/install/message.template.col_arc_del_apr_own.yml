@@ -7,10 +7,10 @@ description: 'Template id 9'
 text:
   -
     value: "<p>Your request to @transition:request_action @entity:bundle @entity:title has been approved.</p>\r\n"
-    format: content_editor
+    format: full_html
   -
     value: "<p>The @entity:bundle \"@entity:title\" has been @transition:request_action:past as per your request.<br />\r\n@transition:archive:extra:owner</p>\r\n"
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false

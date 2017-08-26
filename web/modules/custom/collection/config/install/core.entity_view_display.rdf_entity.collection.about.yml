@@ -72,7 +72,16 @@ content:
     weight: 0
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: full_border
     type: text_default
     region: content
   field_ar_access_url:

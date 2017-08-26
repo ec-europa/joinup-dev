@@ -507,6 +507,8 @@ class CollectionRdfSubscriber extends NotificationSubscriberBase implements Even
     if ($this->operation === 'delete' || $this->transition->getId() === 'request_deletion' || ($this->transition->getId() === 'validate' && $this->fromState === 'deletion_request')) {
       $arguments['@transition:request_action'] = 'delete';
       $arguments['@transition:request_action:past'] = 'deleted';
+      $arguments['@transition:archive:extra:owner'] = '';
+      $arguments['@transition:archive:extra:members'] = '';
     }
     elseif (in_array($this->transition->getId(), ['archive', 'request_archival']) || ($this->transition->getId() === 'validate' && $this->fromState === 'archival_request')) {
       $arguments['@transition:request_action'] = 'archive';
