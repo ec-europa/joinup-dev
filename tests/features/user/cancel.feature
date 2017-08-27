@@ -40,7 +40,7 @@ Feature:
     When all e-mails have been sent
     And I am logged in as a moderator
     And I click "People"
-    And I click "alicia__1997"
+    And I click "Alicia Potter"
     And I open the header local tasks menu
     And I click "Edit" in the "Header" region
     And I press "Cancel account"
