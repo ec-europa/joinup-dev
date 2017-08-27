@@ -61,6 +61,9 @@ Feature: Add comments
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should see text matching "Mr scandal was doing something weird the other day."
+    # The author's full name should be shown, not the username.
+    And I should see the link "Miss Tales"
+    But I should not see the link "Miss tell tales"
     And the following email should have been sent:
       | recipient | Comment moderator                                                                       |
       | subject   | Joinup: A new comment has been created.                                                 |
