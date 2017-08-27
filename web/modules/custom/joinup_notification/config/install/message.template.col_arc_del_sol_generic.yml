@@ -7,10 +7,10 @@ description: 'Template 12 - This will be sent instead of template 11 if there ar
 text:
   -
     value: "<p>The @entity:bundle @entity:title was @transition:request_action:past</p>\r\n"
-    format: content_editor
+    format: full_html
   -
-    value: "<p>The \"@entity:title\" @entity:bundle, to which your \"@affiliate:title\" solution was affiliated, was recently @transition:request_action:past.</p>\r\n\r\n<p>Please verify the updated details of your solution at @affiliate:url.</p>\r\n"
-    format: content_editor
+    value: "<p>The \"@entity:title\" @entity:bundle, to which your \"@affiliate:title\" solution was affiliated, was recently @transition:request_action:past.</p>\r\n\r\n<p>Please verify the updated details of your solution at <a href=\"@affiliate:url\">@affiliate:url</a>.</p>\r\n"
+    format: full_html
 settings:
   'token options':
     clear: false
