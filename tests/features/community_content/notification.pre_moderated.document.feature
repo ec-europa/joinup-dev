@@ -32,6 +32,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | CC notify pre approve proposed      | CC member      | body | Document      | CC pre collection | proposed         |
       | CC notify pre reject deletion       | CC member      | body | Document      | CC pre collection | deletion_request |
       | CC notify pre delete                | CC member      | body | Document      | CC pre collection | deletion_request |
+      | CC notify validated to delete       | CC member      | body | Document      | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -56,8 +57,8 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I select "Document" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                      |
-      | subject   | Joinup: Content has been published                                                                                                                                            |
+      | recipient | CC owner                                                                                                                                                                     |
+      | subject   | Joinup: Content has been published                                                                                                                                           |
       | body      | CC Facilitator has published the new document - "CC notify create publish" in the collection: "CC pre collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -134,8 +135,8 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                    |
-      | subject   | Joinup: Content has been updated                                                                                                                             |
+      | recipient | CC member                                                                                                                                                           |
+      | subject   | Joinup: Content has been updated                                                                                                                                    |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify pre approve proposed" in the collection: "CC pre collection". |
 
     When all e-mails have been sent
@@ -151,7 +152,7 @@ Feature: Notification test for the document transitions on a pre moderated paren
       | subject   | Joinup: Content has been updated                                                                                                                                                                                 |
       | body      | the Facilitator, CC Facilitator has not approved your request to delete the document - "CC notify pre reject deletion" in the collection: "CC pre collection", with the following motivation: "I still like it". |
 
-    # Test 'delete' operation.
+    # Test 'delete' operation on an entity in 'deletion_request' state.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
     And I go to the "CC notify pre delete" document
@@ -159,6 +160,18 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                            |
-      | subject   | Joinup: Content has been deleted                                                                                     |
-      | body      | Facilitator CC Facilitator has deleted the document - "CC notify pre delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                          |
+      | subject   | Joinup: Content has been deleted                                                                                                                   |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the document - "CC notify pre delete" in the collection: "CC pre collection". |
+
+    # Test 'delete' operation on an entity in 'validated' state.
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CC notify validated to delete" document
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                     |
+      | subject   | Joinup: Content has been deleted                                                                                              |
+      | body      | Facilitator CC Facilitator has deleted the document - "CC notify validated to delete" in the collection: "CC pre collection". |

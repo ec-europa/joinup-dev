@@ -1,6 +1,6 @@
 cancel_confirm:
   body: "[user:display-name],\r\n\r\nA request to cancel your account has been made at [site:name].\r\n\r\nYou may now cancel your account on [site:url-brief] by clicking this link or copying and pasting it into your browser:\r\n\r\n<a href=\"[user:cancel-url]\">[user:cancel-url]</a>\r\n\r\nNOTE: The cancellation of your account is not reversible.\r\n\r\nThis link expires in one day and nothing will happen if it is not used.\r\n\r\nKind regards,\r\n\r\nThe Joinup Support Team"
-  subject: 'Account cancellation request for [user:display-name] at [site:name]'
+  subject: 'Account cancellation request for [user:account-name] at [site:name]'
 password_reset:
   body: "Dear [user:field_user_first_name],\r\n\r\nA new password has been requested for the account [user:account-name].\r\n\r\nTo confirm the request, please click <a href=\"[user:one-time-login-url]\"><a href=\"[user:one-time-login-url]\">[user:one-time-login-url]</a></a>.\r\n\r\nIf you didn't ask for a new password, please disregard this message.\r\n\r\nKind regards,\r\n\r\nThe Joinup Support Team"
   subject: 'Please confirm the request of a new password.'

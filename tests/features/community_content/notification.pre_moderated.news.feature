@@ -32,6 +32,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | CCN pre approve proposed      | CC member      | body | CCN pre approve proposed      | CC pre collection | proposed         |
       | CCN pre reject deletion       | CC member      | body | CCN pre reject deletion       | CC pre collection | deletion_request |
       | CCN pre delete                | CC member      | body | CCN pre delete                | CC pre collection | deletion_request |
+      | CCN validated to delete       | CC member      | body | CCN pre delete                | CC pre collection | validated        |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -176,6 +177,18 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                  |
-      | subject   | Joinup: Content has been deleted                                                                           |
-      | body      | Facilitator CC Facilitator has deleted the news - "CCN pre delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                |
+      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre delete" in the collection: "CC pre collection". |
+
+    # Test 'delete' operation for a validated entity.
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CCN validated to delete" news
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                                |
+      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | body      | Facilitator CC Facilitator has deleted the news - "CCN validated to delete" in the collection: "CC pre collection". |
