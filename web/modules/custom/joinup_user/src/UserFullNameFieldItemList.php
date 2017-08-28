@@ -22,7 +22,7 @@ class UserFullNameFieldItemList extends FieldItemList {
       throw new \Exception('This class can be used only with the user entity.');
     }
 
-    return parent::createItem($offset, joinup_user_get_display_name($entity));
+    return parent::createItem($offset, $entity->getDisplayName());
   }
 
   /**

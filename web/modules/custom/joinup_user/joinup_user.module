@@ -537,6 +537,20 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
 }
 
 /**
+ * Implements hook_user_format_name_alter().
+ *
+ * Replaces the username with a concatenation of the user's first and last name.
+ */
+function joinup_user_user_format_name_alter(&$name, $account) {
+  // Skip if the user is anonymous.
+  if ($account->isAnonymous()) {
+    return;
+  }
+
+  $name = joinup_user_get_display_name($account);
+}
+
+/**
  * Returns a string with user's name to display in the user interface.
  *
  * This will return the first name and last name if both are known. If either
@@ -547,11 +561,17 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
  * normal usage the combination of first name and last name will always be
  * returned. Incomplete data may be present in migrated legacy accounts.
  *
+ * This is an internal function used by joinup_user_user_format_name_alter() and
+ * it should not be used directly. If you need the user's full name, given the
+ * $account user account entity, just use $account->getDisplayName().
+ *
  * @param \Drupal\Core\Session\AccountInterface $account
  *   The user object.
  *
  * @return string
  *   The display name.
+ *
+ * @see joinup_user_user_format_name_alter()
  */
 function joinup_user_get_display_name(AccountInterface $account) {
   // Load the full user object if needed.
@@ -565,8 +585,8 @@ function joinup_user_get_display_name(AccountInterface $account) {
   /** @var \Drupal\user\UserInterface $account */
   $name_components = [];
   foreach (['field_user_first_name', 'field_user_family_name'] as $field_name) {
-    if (!empty($account->get($field_name)->first())) {
-      $name_components[] = $account->get($field_name)->first()->value;
+    if (!$account->get($field_name)->isEmpty()) {
+      $name_components[] = $account->get($field_name)->value;
     }
   }
   if (!empty($name_components)) {

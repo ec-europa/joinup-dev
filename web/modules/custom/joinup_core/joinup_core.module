@@ -857,20 +857,6 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_user_format_name_alter().
- *
- * Replaces the username with a concatenation of the user's first and last name.
- */
-function joinup_core_user_format_name_alter(&$name, $account) {
-  // Skip if the user is anonymous.
-  if ($account->isAnonymous()) {
-    return;
-  }
-
-  $name = joinup_user_get_display_name($account);
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Adds result counts to the role options on the membership overview for
