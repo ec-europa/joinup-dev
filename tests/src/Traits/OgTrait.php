@@ -214,4 +214,48 @@ trait OgTrait {
     throw new \Exception("The $content_bundle '$content' is not associated with the '{$parent->label()}' {$parent_bundle}.");
   }
 
+  /**
+   * Creates a group membership using the given group and table values.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group to which the user will be subscribed.
+   * @param array $values
+   *   Associative array containing table values from a Behat scenario. The
+   *   following keys are supported:
+   *   - 'user': The user name.
+   *   - 'roles': Optional comma separated list of roles to assign to the user.
+   *     If omitted the user will have the 'member' role.
+   *   - 'state': Optional state. Can be 'active', 'pending', or 'blocked'. If
+   *     omitted it will default to 'active'.
+   *
+   * @throws \Exception
+   *   Thrown when a user with the given user name is not found.
+   */
+  protected function givenUserMembership(RdfInterface $group, array $values) {
+    // Load member.
+    $member = user_load_by_name($values['user']);
+    if (empty($member)) {
+      throw new \Exception("User " . $values['user'] . " not found.");
+    }
+
+    // Convert role names to role IDs.
+    $roles = [];
+    if (!empty($values['roles'])) {
+      $role_names = explode(',', $values['roles']);
+      $role_names = array_map('trim', $role_names);
+      // Every owner is also a facilitator. In Joinup the facilitator role is
+      // assigned to the owner when they create the collection. Since in this
+      // step the collections are already created, mimick this behaviour by
+      // making sure every owner also has the 'facilitator' role.
+      if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
+        $role_names[] = 'facilitator';
+      }
+      $roles = $this->getOgRoles($role_names, $group);
+    }
+
+    $state = !empty($values['state']) ? $values['state'] : NULL;
+
+    $this->subscribeUserToGroup($member, $group, $roles, $state);
+  }
+
 }
