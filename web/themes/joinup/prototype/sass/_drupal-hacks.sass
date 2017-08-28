@@ -59,8 +59,10 @@ textarea
     padding-top: 10px
     padding-right: 35px
 
-#block-navigation,
-.comment-item
+// Contextual region changes
+// Default icon is replaced
+.contextual
+  +z-index(navigation)
   button.trigger
     font-family: 'WAAT Icons'
     speak: none
@@ -81,28 +83,57 @@ textarea
     height: 30px !important
     width: 30px !important
     border-radius: 30px !important
+    position: relative !important
     &:hover, &:focus
       background: $color-grey-light
     &:before
       +icon-size(15px)
       content: '\e8ab'
 
-.comment-item
-  button.trigger
-    position: relative !important
+// Change contextual button color
+// on dark backgrounds
+.section--featured, .section--header
+  .contextual
+    button.trigger
+      color: #fff
+      &:hover, &:focus
+        background-image: none
+        background: $color-grey-medium
 
-.comment-item
-  ul.contextual-links
-    position: relative
-    padding-left: 0
-    margin: 0
-    +z-index(highlight+2)
-    li::before
-      display: none
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card--title-pin
+  .contextual
+    left: 0
+    right: auto
+  .contextual .trigger
+    float: left
+    right: auto
+    left: 0
+  .contextual .contextual-links
+    border-radius: 0 4px 4px 4px
+    float: left
+    left: 0
+    right: auto
+
+
+ul.contextual-links
+  +z-index(highlight+2)
+  position: relative
+  padding-left: 0
+  margin: 0
+  li::before
+    display: none
 
 .contextual-region.focus
   outline: none
   outline-offset: 0
+
+// Fixes dropdown button for main menu.
+// It is needed only for admin.
+#block-joinup-theme-main-menu
+  .contextual
+    +z-index(dropdown)
 
 // Fix password policy table
 #password-policy-status
