@@ -40,7 +40,7 @@ Feature:
     When all e-mails have been sent
     And I am logged in as a moderator
     And I click "People"
-    And I click "alicia__1997"
+    And I click "Alicia Potter"
     And I open the header local tasks menu
     And I click "Edit" in the "Header" region
     And I press "Cancel account"
@@ -68,6 +68,6 @@ Feature:
     When I click the delete confirmation link for the user "alicia__1997" from the last email
     And I wait for the batch job to finish
     Then the following system email should have been sent:
-      | recipient_mail | AliciaPotter@example.com                                                                                    |
-      | subject        | Your account has been deleted.                                                                              |
+      | recipient_mail | AliciaPotter@example.com                                                                                 |
+      | subject        | Your account has been deleted.                                                                           |
       | body           | If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
