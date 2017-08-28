@@ -219,8 +219,11 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    $tags = parent::getCacheTags();
-    return Cache::mergeTags($tags, $this->getMenuInstance()->getCacheTags());
+    // Add the cache tag of the menu tree that represents the menu instance, so
+    // that the block refreshes whenever the menu tree changes, for example when
+    // a page is added, or an existing page is hidden.
+    // @see \Drupal\Core\Menu\MenuTreeStorage::save()
+    return Cache::mergeTags(parent::getCacheTags(), ['config:system.menu.ogmenu-' . $this->getMenuInstance()->id()]);
   }
 
   /**

@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
@@ -157,9 +158,10 @@ function joinup_user_mail_alter(&$message) {
     $moderation_text = '</p><p>This action has been done in the framework of moderation activities regularly conducted on the Joinup platform.</p><p>';
   }
 
-  $body = $message['body'][0];
-  $body = str_replace('@joinup_user:moderation_text', $moderation_text, $body);
-  $message['body'][0] = $body;
+  $message['body'] = array_map(function ($text) use ($moderation_text) {
+    $text = str_replace('@joinup_user:moderation_text', $moderation_text, $text);
+    return Markup::create($text);
+  }, $message['body']);
 }
 
 /**
