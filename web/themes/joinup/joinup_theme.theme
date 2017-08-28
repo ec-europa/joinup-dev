@@ -641,6 +641,23 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field--comma-separated.html.twig.
+ */
+function joinup_theme_preprocess_field__comma_separated(&$variables) {
+  // Only in listing modes.
+  $view_modes = [
+    'view_mode_tile',
+    'view_mode_featured',
+  ];
+
+  // Limit number of displayed items.
+  $items_limit = 3;
+  if ($variables['field_name'] == 'field_keywords' && in_array($variables['element']['#view_mode'], $view_modes)) {
+    $variables['items'] = array_slice($variables['items'], 0, $items_limit);
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field--comment.html.twig.
  */
 function joinup_theme_preprocess_field__comment(&$variables) {
