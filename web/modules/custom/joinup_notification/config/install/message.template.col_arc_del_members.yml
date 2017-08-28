@@ -7,10 +7,10 @@ description: 'Template id 14 - Sent to all members when a collection is archived
 text:
   -
     value: "<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>\r\n"
-    format: content_editor
+    format: full_html
   -
     value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\r\n<p>@transition:archive:extra:members</p>"
-    format: content_editor
+    format: full_html
 settings:
   'token options':
     clear: false

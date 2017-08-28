@@ -460,33 +460,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
-      // Load group.
       $group = $this->getCollectionByName($values['collection']);
-
-      // Load member.
-      $member = user_load_by_name($values['user']);
-      if (empty($member)) {
-        throw new \Exception("User " . $values['user'] . " not found.");
-      }
-
-      // Convert role names to role IDs.
-      $roles = [];
-      if (!empty($values['roles'])) {
-        $role_names = explode(',', $values['roles']);
-        $role_names = array_map('trim', $role_names);
-        // Every owner is also a facilitator. In Joinup the facilitator role is
-        // assigned to the owner when they create the collection. Since in this
-        // step the collections are already created, mimick this behaviour by
-        // making sure every owner also has the 'facilitator' role.
-        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
-          $role_names[] = 'facilitator';
-        }
-        $roles = $this->getOgRoles($role_names, $group);
-      }
-
-      $state = !empty($values['state']) ? $values['state'] : NULL;
-
-      $this->subscribeUserToGroup($member, $group, $roles, $state);
+      $this->givenUserMembership($group, $values);
     }
   }
 
