@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
@@ -533,4 +534,64 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
   $form['user_cancel_notify']['#default_value'] = TRUE;
   $form['user_cancel_notify']['#access'] = FALSE;
   $form['description']['#markup'] = t('This action cannot be undone.');
+}
+
+/**
+ * Implements hook_user_format_name_alter().
+ *
+ * Replaces the username with a concatenation of the user's first and last name.
+ */
+function joinup_user_user_format_name_alter(&$name, $account) {
+  // Skip if the user is anonymous.
+  if ($account->isAnonymous()) {
+    return;
+  }
+
+  $name = joinup_user_get_display_name($account);
+}
+
+/**
+ * Returns a string with user's name to display in the user interface.
+ *
+ * This will return the first name and last name if both are known. If either
+ * the first name or last name is known then this will be returned. If neither
+ * are known this will fall back to the username.
+ *
+ * The first name and last name are both required during user registration so in
+ * normal usage the combination of first name and last name will always be
+ * returned. Incomplete data may be present in migrated legacy accounts.
+ *
+ * This is an internal function used by joinup_user_user_format_name_alter() and
+ * it should not be used directly. If you need the user's full name, given the
+ * $account user account entity, just use $account->getDisplayName().
+ *
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The user object.
+ *
+ * @return string
+ *   The display name.
+ *
+ * @see joinup_user_user_format_name_alter()
+ */
+function joinup_user_get_display_name(AccountInterface $account) {
+  // Load the full user object if needed.
+  if (!$account instanceof UserInterface) {
+    $account = User::load($account->id());
+  }
+
+  // Default to the account name.
+  $name = $account->getAccountName();
+
+  /** @var \Drupal\user\UserInterface $account */
+  $name_components = [];
+  foreach (['field_user_first_name', 'field_user_family_name'] as $field_name) {
+    if (!$account->get($field_name)->isEmpty()) {
+      $name_components[] = $account->get($field_name)->value;
+    }
+  }
+  if (!empty($name_components)) {
+    $name = implode(' ', $name_components);
+  }
+
+  return $name;
 }

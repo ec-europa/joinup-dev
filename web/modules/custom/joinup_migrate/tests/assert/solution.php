@@ -85,7 +85,7 @@ $this->assertReferences([
 $this->assertTrue($solution->get('field_is_contact_information')->isEmpty());
 $this->assertReferences(['Completed'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertEquals('user6364', $solution->uid->entity->label());
+$this->assertEquals('user6364', $solution->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/76726',
   'catalogue/asset_release/styles-layer-descriptor',
@@ -167,7 +167,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertEquals('user6364', $solution->uid->entity->label());
+$this->assertEquals('user6364', $solution->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/63567',
   'asset/dcat_application_profile/description',
@@ -192,7 +192,7 @@ $this->assertReferences([
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
 $this->assertEquals('validated', $solution->field_is_state->value);
-$this->assertEquals('user6364', $solution->uid->entity->label());
+$this->assertEquals('user6364', $solution->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/42438',
   'asset/adms/description',

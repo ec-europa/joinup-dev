@@ -141,7 +141,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient' with subject '$subject'.");
+    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
@@ -263,7 +263,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not found expected email to '$recipient_mail' with subject '$subject'.");
+    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.

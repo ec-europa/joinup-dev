@@ -12,6 +12,9 @@ Feature: User profile
     When I am logged in as "Leonardo Da Vinci"
     And I am on the homepage
     Then I click "My account"
+    # If no first name and last name are given, the title should default to the
+    # username.
+    Then I should see the heading "Leonardo Da Vinci"
     And I should see the avatar "user_icon.png"
     When I click "Edit"
     Then the following fields should be present "Current password, Email address, Password, Confirm password, First name"
