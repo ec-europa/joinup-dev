@@ -62,7 +62,7 @@ textarea
 // Contextual region changes
 // Default icon is replaced
 .contextual
-  +z-index(contextual)
+  +z-index(navigation)
   button.trigger
     font-family: 'WAAT Icons'
     speak: none
@@ -128,6 +128,12 @@ ul.contextual-links
 .contextual-region.focus
   outline: none
   outline-offset: 0
+
+// Fixes dropdown button for main menu.
+// It is needed only for admin.
+#block-joinup-theme-main-menu
+  .contextual
+    +z-index(dropdown)
 
 // Fix password policy table
 #password-policy-status
