@@ -834,7 +834,7 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_page_title__node__document().
+ * Implements hook_preprocess_HOOK() for page-title--node--document.html.twig.
  */
 function joinup_theme_preprocess_page_title__node__document(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
