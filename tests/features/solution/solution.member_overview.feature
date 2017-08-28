@@ -77,8 +77,9 @@ Feature: Solution membership overview
     # A pending member should not be visible.
     And I should not see the "Paulinho Jahoda" tile
 
-    # Navigate to the next page and check that the remaining members are now visible.
-    When I click "››"
+    # Next and last page links are rendered as icons "›" and "»", but there is an
+    # help text that is meant for screen readers and also visualised on mouseover.
+    When I click "Last page"
     Then I should see the "Peter Proudfoots" tile
     And I should see the "Pocahontas Mathieu" tile
 
