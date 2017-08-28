@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ac0cda26d656183969c8ed6d3ee0356",
+    "content-hash": "19ee56e645e3daae641c3fdd0b835f00",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3697,17 +3697,11 @@
         },
         {
             "name": "drupal/redirect",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/redirect",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "0be21502538afc193a6817089476e7f6ddae2f6d"
+                "reference": "27e71182610c70636b959d9f4031fe6dd0877d87"
             },
             "require": {
                 "drupal/core": "~8"
@@ -3718,16 +3712,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1501443542",
+                    "version": "8.x-1.0-beta1+3-dev",
+                    "datestamp": "1503745145",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch",
-                    "Delete redirects even the entity lacks the path field @see https://www.drupal.org/node/2888903": "https://www.drupal.org/files/issues/2888903-4.patch"
+                    "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3748,7 +3741,8 @@
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
                 "source": "http://cgit.drupalcode.org/redirect"
-            }
+            },
+            "time": "2017-08-26 11:22:53"
         },
         {
             "name": "drupal/search_api",
@@ -9202,7 +9196,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -9682,7 +9676,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -9882,7 +9877,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-08-04T21:27:56+00:00"
+            "time": "2017-08-04 21:27:56"
         },
         {
             "name": "fabpot/goutte",
@@ -11314,6 +11309,7 @@
         "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
         "drupal/rdf_entity": 20,
+        "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
