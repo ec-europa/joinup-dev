@@ -10,7 +10,7 @@ id: node.document.field_type
 field_name: field_type
 entity_type: node
 bundle: document
-label: Type
+label: 'Type of document'
 description: 'The document type.'
 required: true
 translatable: false
