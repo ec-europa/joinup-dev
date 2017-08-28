@@ -303,13 +303,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     // Mapping alias - field name.
     return [
       'access url' => 'field_ad_access_url',
-      'creation date' => 'field_ad_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ad_description',
       'downloads' => 'field_download_count',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
-      'modification date' => 'field_ad_modification_date',
+      'modification date' => 'changed',
       'representation technique' => 'field_ad_repr_technique',
       'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',

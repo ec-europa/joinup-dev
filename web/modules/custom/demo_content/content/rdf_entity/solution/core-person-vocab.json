@@ -266,7 +266,7 @@
             }
         ]
     },
-    "field_is_creation_date": [
+    "created": [
         {
             "value": "2012-05-07T10:35:24"
         },
@@ -297,7 +297,7 @@
             "value": "0"
         }
     ],
-    "field_is_modification_date": [
+    "changed": [
         {
             "value": "2014-12-05T15:02:24"
         },

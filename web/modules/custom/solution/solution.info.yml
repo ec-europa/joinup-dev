@@ -38,7 +38,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_business_process
   - field.field.rdf_entity.solution.field_is_contact_information
   - field.field.rdf_entity.solution.field_is_content
-  - field.field.rdf_entity.solution.field_is_creation_date
   - field.field.rdf_entity.solution.field_is_description
   - field.field.rdf_entity.solution.field_is_distribution
   - field.field.rdf_entity.solution.field_is_documentation
@@ -51,7 +50,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_logo
   - field.field.rdf_entity.solution.field_is_metrics_page
   - field.field.rdf_entity.solution.field_is_moderation
-  - field.field.rdf_entity.solution.field_is_modification_date
   - field.field.rdf_entity.solution.field_is_owner
   - field.field.rdf_entity.solution.field_is_product_type
   - field.field.rdf_entity.solution.field_is_related_solutions
@@ -77,7 +75,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_business_process
   - field.storage.rdf_entity.field_is_contact_information
   - field.storage.rdf_entity.field_is_content
-  - field.storage.rdf_entity.field_is_creation_date
   - field.storage.rdf_entity.field_is_description
   - field.storage.rdf_entity.field_is_distribution
   - field.storage.rdf_entity.field_is_documentation
@@ -90,7 +87,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_logo
   - field.storage.rdf_entity.field_is_metrics_page
   - field.storage.rdf_entity.field_is_moderation
-  - field.storage.rdf_entity.field_is_modification_date
   - field.storage.rdf_entity.field_is_owner
   - field.storage.rdf_entity.field_is_product_type
   - field.storage.rdf_entity.field_is_related_solutions
