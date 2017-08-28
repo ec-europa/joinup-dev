@@ -22,5 +22,5 @@ Feature: User role management
     And I should see the success message "An e-mail has been send to the user to notify him on the change to his account."
     And the following system email should have been sent:
       | recipient | Nibby Noob                                                                                                |
-      | subject   | The Joinup Moderation Team updated your account for you at Joinup                                         |
+      | subject   | The Joinup Support Team updated your account for you at Joinup                                         |
       | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |

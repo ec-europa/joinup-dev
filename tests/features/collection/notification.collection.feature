@@ -140,9 +140,9 @@ Feature: Notification test for the collection transitions.
     And I click the contextual link "Edit" in the Header region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | NC owner                                                                                                                                     |
-      | subject   | Your request to edit collection NC to propose edit proposed has been approved.                                                               |
-      | body      | Your proposal to edit the collection "NC to propose edit proposed" has been accepted. You can verify the edited version of the collection at |
+      | recipient | NC owner                                                                                                                                    |
+      | subject   | Your request to edit collection NC to propose edit proposed has been approved.                                                              |
+      | body      | Your proposal to edit the collection "NC to propose edit proposed" has been accepted.You can verify the edited version of the collection at |
 
     # Test the 'reject archival' operation.
     When all e-mails have been sent

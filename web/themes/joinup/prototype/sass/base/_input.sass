@@ -40,9 +40,29 @@
 .textfield--full-width
   width: 100%
 
+.mdl-textfield--with-prefix
+  +breakpoint(sm)
+    display: flex
+    align-items: center
+  .mdl-textfield__prefix
+    margin-bottom: 20px
+    +breakpoint(sm)
+      min-width: 230px
+      margin-bottom: 0
+  .mdl-textfield__label-container
+    +breakpoint(sm)
+      width: 100%
 
 // Dependiencies
 // --------------------------------------------------
+.form-table
+  &.field-multiple-table
+    .mdl-textfield
+      padding-top: 0
+      padding-bottom: 0
+  &.responsive-enabled
+    .mdl-textfield
+      padding-bottom: 0
 
 // States
 // --------------------------------------------------
@@ -73,5 +93,3 @@
       height: auto
       padding-top: 12px
       padding-bottom: 12px
-
-      

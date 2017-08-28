@@ -22,10 +22,48 @@ dependencies:
   module:
     - comment
     - datetime
+    - ds
+    - field_group
     - file_url
     - link
+    - options
     - text
     - user
+third_party_settings:
+  field_group:
+    group_categorisation:
+      children:
+        - field_type
+        - field_licence
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Categorisation
+    group_attachment:
+      children:
+        - field_file
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Attachment
 id: node.document.default
 targetEntityType: node
 bundle: document
@@ -39,7 +77,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 4
+    weight: 8
     label: above
     settings:
       pager_id: 0
@@ -49,37 +87,109 @@ content:
     region: content
   field_document_publication_date:
     weight: 2
-    label: above
+    label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
-    third_party_settings: {  }
+      format_type: date_only
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: datetime_default
     region: content
-  field_document_spatial_coverage:
+  field_file:
     weight: 5
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_file:
-    weight: 3
-    label: above
-    settings:
       mode: link
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: file_url_default
     region: content
-  field_short_title:
-    weight: 0
+  field_licence:
+    type: entity_reference_label
+    weight: 11
+    region: content
     label: above
     settings:
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
+  field_shared_in:
+    type: entity_reference_entity_view
+    weight: 9
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tile
+  field_short_title:
+    weight: 0
+    label: hidden
+    settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: string
     region: content
+  field_type:
+    type: list_default
+    weight: 10
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   report:
     label: hidden
     weight: 7
@@ -88,9 +198,18 @@ content:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: link
   share_link:
     weight: 6
@@ -98,13 +217,12 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_document_spatial_coverage: true
   field_keywords: true
-  field_licence: true
   field_policy_domain: true
   field_shared_in: true
   field_site_featured: true
   field_state: true
-  field_type: true
   field_visit_count: true
   langcode: true
   links: true

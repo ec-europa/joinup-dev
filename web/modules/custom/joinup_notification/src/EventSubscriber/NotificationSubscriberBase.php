@@ -276,7 +276,7 @@ abstract class NotificationSubscriberBase {
    *   - Actor first name
    *   - Actor family name
    *   - Actor role
-   *   - Actor full name (This will be 'the Joinup Moderation Team' if the user
+   *   - Actor full name (This will be 'The Joinup Support Team' if the user
    *   has the moderator role)
    */
   protected function generateArguments(EntityInterface $entity) {
@@ -292,11 +292,18 @@ abstract class NotificationSubscriberBase {
     $arguments['@actor:field_user_first_name'] = $actor_first_name;
     $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
-    if ($actor->hasRole('moderator')) {
+    if ($actor->isAnonymous()) {
+      // If an anonymous is creating content, set the first name to also be 'the
+      // Joinup Moderation Team' because some emails use only the first name
+      // instead of the full name.
+      $arguments['@actor:role'] = 'moderator';
+      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
+    }
+    elseif ($actor->hasRole('moderator')) {
       /** @var \Drupal\user\RoleInterface $role */
       $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
       $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'the Joinup Moderation Team';
+      $arguments['@actor:full_name'] = 'The Joinup Support Team';
     }
     elseif (!$actor->isAnonymous()) {
       $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?

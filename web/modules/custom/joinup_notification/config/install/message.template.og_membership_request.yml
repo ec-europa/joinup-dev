@@ -7,10 +7,10 @@ description: 'A user requests to join a closed collection.'
 text:
   -
     value: "<p>Joinup: A user has requested to join your collection</p>\r\n"
-    format: content_editor
+    format: full_html
   -
-    value: "<p>@actor:full_name has requested to join your @entity:bundle \"@entity:title\" as a member.</p>\r\n\r\n<p>To approve or reject this request, click on @group:members_page:url.</p>\r\n"
-    format: content_editor
+    value: "<p>@actor:full_name has requested to join your @entity:bundle \"@entity:title\" as a member.</p>\r\n\r\n<p>To approve or reject this request, click on <a href=\"@group:members_page:url\">@group:members_page:url</a>.</p>\r\n"
+    format: full_html
 settings:
   'token options':
     clear: false

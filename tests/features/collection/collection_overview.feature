@@ -6,6 +6,7 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
+    And I should see the text "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Collections"

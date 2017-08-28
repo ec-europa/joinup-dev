@@ -143,6 +143,9 @@ update:
           - cc_transition_propose_reported
 delete:
   'node:pre_moderated':
+    validated:
+      owner:
+        - cc_delete
     deletion_request:
       owner:
         - cc_delete
