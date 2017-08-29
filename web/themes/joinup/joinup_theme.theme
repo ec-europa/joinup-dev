@@ -1330,6 +1330,11 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
     $form['#theme'][] = 'buttons_separated_form';
   }
+
+  // Change markup in an username field.
+  if ($form_id == 'user_form' && isset($form['user_name'])) {
+    $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+  }
 }
 
 /**
