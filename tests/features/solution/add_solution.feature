@@ -49,7 +49,6 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create new content"
     And I should see the text "Only solution facilitators can create new content"
-    # The TRR fieldgroup should only be visible inside the TRR collection.
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field

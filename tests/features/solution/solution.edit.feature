@@ -72,9 +72,6 @@ Feature: Solution editing.
     And I should see the text "Logo"
     And I should see the text "Banner"
 
-    # The TRR fieldgroup should only be visible inside the TRR collection.
-    And I should not see the text "TRR"
-
     When I fill in "Title" with "Solution A revised"
     And I press "Propose"
     Then I should see the heading "Solution A revised"
