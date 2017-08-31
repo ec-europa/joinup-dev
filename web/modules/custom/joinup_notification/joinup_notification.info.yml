@@ -37,3 +37,14 @@ config_devel:
   - message.template.comment_delete
   - message.template.og_membership_decision
   - message.template.og_membership_request
+  - message.template.sol_approve_proposed
+  - message.template.sol_blacklist
+  - message.template.sol_deletion_approved
+  - message.template.sol_deletion_no_approval
+  - message.template.sol_deletion_reject
+  - message.template.sol_propose_changes
+  - message.template.sol_propose_new
+  - message.template.sol_propose_requested_changes
+  - message.template.sol_publish_backlisted
+  - message.template.sol_request_changes
+  - message.template.sol_request_deletion

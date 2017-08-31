@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_deletion_no_approval
+label: 'Solution deletion - no approval'
+description: 'Template 17: Delete a solution without prior request'
+text:
+  -
+    value: 'Joinup: Your solution has been deleted by the moderation team'
+    format: full_html
+  -
+    value: '<p>The Joinup moderation team deleted the interoperability solution @entity:title.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
