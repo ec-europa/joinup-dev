@@ -450,25 +450,7 @@ function joinup_theme_preprocess_block(&$variables) {
           }
         }
         break;
-
       case 'entity.node.canonical':
-        // Get node type.
-        $node = $route_match->getParameter('node');
-        if (!empty($node)) {
-          $node_types = [
-            'custom_page',
-            'discussion',
-            'document',
-            'event',
-            'news',
-          ];
-          $node_type = $node->getType();
-          if (in_array($node_type, $node_types)) {
-            $is_listing = TRUE;
-          }
-        }
-        break;
-
       case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
       case 'view.search.page_1':
@@ -820,6 +802,23 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
  * Implements hook_preprocess_page_title__node__discussion().
  */
 function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $variables['additional_content']['created'] = $created;
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page-title--node--video.html.twig.
+ */
+function joinup_theme_preprocess_page_title__node__video(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
