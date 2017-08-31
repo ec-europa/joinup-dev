@@ -30,6 +30,9 @@
     function solution_type_updated($solution_type_element) {
 
         var solution_type = $solution_type_element.val();
+        if (!solution_type) {
+            solution_type = [];
+        }
         // Test resource type field.
         var $field_is_test_resource_type = $('#edit-field-is-test-resource-type-wrapper');
         toggle_trr_element(solution_type, $field_is_test_resource_type);
