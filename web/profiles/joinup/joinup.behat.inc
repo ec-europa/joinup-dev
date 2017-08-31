@@ -256,19 +256,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Reset the request graphs of rdf entity before every step.
-   *
-   * The request graphs are tied to an individual request.
-   *
-   * @BeforeStep
-   */
-  public function resetRequestGraphs($event) {
-    /** @var RdfEntitySparqlStorage $storage */
-    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-    $storage->getGraphHandler()->resetRequestGraphs();
-  }
-
-  /**
    * Checks that the given select field has the given options.
    *
    * @param string $select
