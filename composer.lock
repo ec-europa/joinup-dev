@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "784405a2c5e306a71e1f543445368112",
+    "content-hash": "b4b6ef0ff000dffcbee8e7b236b6bf14",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2542,17 +2542,17 @@
         },
         {
             "name": "drupal/file_url",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/file_url",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "47b63c5ffa62a71b976b9b79146b731a04286daf"
+                "url": "https://ftp.drupal.org/files/projects/file_url-8.x-1.0-alpha6.zip",
+                "reference": "8.x-1.0-alpha6",
+                "shasum": "72cdb755cd567a975aacb6bd62a865306b08517b"
             },
             "require": {
                 "drupal/core": "*"
@@ -2563,16 +2563,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1499090343",
+                    "version": "8.x-1.0-alpha6",
+                    "datestamp": "1504220345",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Wrong entity reference handler when creating a new field or exporting an existing one @see https://www.drupal.org/node/2892687": "https://www.drupal.org/files/issues/2892687-2.patch",
-                    "Critical error thrown when creating a new revision of an entity @see https://www.drupal.org/node/2899697": "https://www.drupal.org/files/issues/2899697-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
