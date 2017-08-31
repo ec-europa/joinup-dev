@@ -1,7 +1,6 @@
 <?php
 
 namespace Drupal\joinup\Traits;
-use Drupal\Driver\Exception\Exception;
 
 /**
  * Helper methods to deal with entity references.
@@ -91,9 +90,10 @@ trait EntityReferenceTrait {
    * entity types have to be explicitly handled.
    *
    * @param string $entity_type
-   *    The entity type.
+   *   The entity type.
+   *
    * @return string
-   *    The label key or property.
+   *   The label key or property.
    *
    * @throws \Exception
    *    Thrown if there is no label key or property defined.
