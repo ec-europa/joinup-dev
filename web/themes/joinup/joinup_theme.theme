@@ -450,6 +450,7 @@ function joinup_theme_preprocess_block(&$variables) {
           }
         }
         break;
+
       case 'entity.node.canonical':
       case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
