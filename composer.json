@@ -39,7 +39,7 @@
         "drupal/piwik": "~1.0",
         "drupal/piwik_reporting_api": "~1.0@beta",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "dev-ISAICP-3817#d99200edc03dfd4f706ddef40995c2d439f6c360",
+        "drupal/rdf_entity": "dev-ISAICP-3817#6d645802023b0492d3612329f6599b66f88a750c",
         "drupal/redirect": "dev-1.x#27e71182610c70636b959d9f4031fe6dd0877d87",
         "drupal/search_api": "~1.0-rc2",
         "drupal/search_api_solr": "~1.0-rc2",
