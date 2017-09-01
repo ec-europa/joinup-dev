@@ -31,7 +31,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Transition: request_deletion
  *   Recipients: owner
  * @codingStandardsIgnoreStart
- *
  */
 class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
@@ -200,7 +199,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   }
 
   /**
-   * Sends notification when release is deleted.
+   * Sends notification when a release is deleted.
    *
    * Notifications handled: 19.
    *

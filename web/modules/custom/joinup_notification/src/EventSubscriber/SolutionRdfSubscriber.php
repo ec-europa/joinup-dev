@@ -67,7 +67,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Actor: moderator
  *   Recipients: owner
  * @codingStandardsIgnoreStart
- *
  */
 class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
