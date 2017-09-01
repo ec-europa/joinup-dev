@@ -52,3 +52,5 @@ config_devel:
   - message.template.release_delete
   - message.template.release_update
   - message.template.release_request_changes
+  - message.template.distribution_delete
+  - message.template.distribution_update
