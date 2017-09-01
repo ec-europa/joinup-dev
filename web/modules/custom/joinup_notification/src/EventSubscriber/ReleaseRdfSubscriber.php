@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
