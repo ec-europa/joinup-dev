@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -131,6 +132,15 @@ trait RdfEntityTrait {
    *   The newly created entity.
    */
   protected function createRdfEntity($bundle, array $values) {
+    // Convert timestamp fields from human-readable to timestamp.
+    // @todo Replace this with a Behat hook.
+    foreach (['changed', 'created'] as $field) {
+      if (isset($values[$field])) {
+        $date = new DrupalDateTime($values[$field]);
+        $values[$field] = $date->getTimestamp();
+      }
+    }
+
     $values['rid'] = $bundle;
     $entity = Rdf::create($values);
     $entity->save();
