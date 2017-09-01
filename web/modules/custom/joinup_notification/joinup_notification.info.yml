@@ -48,3 +48,7 @@ config_devel:
   - message.template.sol_publish_backlisted
   - message.template.sol_request_changes
   - message.template.sol_request_deletion
+  - message.template.release_approve_proposed
+  - message.template.release_delete
+  - message.template.release_update
+  - message.template.release_request_changes

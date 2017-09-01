@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: release_update
+label: 'Solution release update'
+description: 'Template 18: Solution release update'
+text:
+  -
+    value: 'Joinup: A release has been updated'
+    format: full_html
+  -
+    value: '<p>The release @entity:title, @entity:field_isr_release_number of the solution @group:title was updated.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
