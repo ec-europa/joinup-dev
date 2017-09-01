@@ -18,7 +18,6 @@ use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing collections.
@@ -294,9 +293,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    $values['rid'] = 'collection';
-    $collection = Rdf::create($values);
-    $collection->save();
+    $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship

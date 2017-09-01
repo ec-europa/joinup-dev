@@ -119,4 +119,23 @@ trait RdfEntityTrait {
     return (array) $entity;
   }
 
+  /**
+   * Creates and saves an rdf entity of a specific bundle.
+   *
+   * @param string $bundle
+   *   The rdf entity bundle.
+   * @param array $values
+   *   An array of field values.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The newly created entity.
+   */
+  protected function createRdfEntity($bundle, array $values) {
+    $values['rid'] = $bundle;
+    $entity = Rdf::create($values);
+    $entity->save();
+
+    return $entity;
+  }
+
 }

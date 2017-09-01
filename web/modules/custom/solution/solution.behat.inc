@@ -277,9 +277,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    $values['rid'] = 'solution';
-    $solution = Rdf::create($values);
-    $solution->save();
+    $solution = $this->createRdfEntity('solution', $values);
     $this->solutions[$solution->id()] = $solution;
 
     // If a collection is affiliated, update the collection. In ADMS-AP the
@@ -591,13 +589,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function theMultilingualSolution($title) {
     $values = [
-      'rid' => 'solution',
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
     ];
-    $solution = Rdf::create($values);
-    $solution->save();
+    $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
     // the remaining values from the base translation.
     $solution_values = $solution->toArray();
