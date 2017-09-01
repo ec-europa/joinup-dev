@@ -5,7 +5,12 @@ Feature: Creation of news through the UI.
   I need to be able to create news through the UI.
 
   Scenario: Share the news in other collections/solutions.
-    Given the following collections:
+    Given user:
+      | Username    | isotopedancer      |
+      | First name  | Milana             |
+      | Family name | Laninga            |
+      | E-mail      | milana@example.com |
+    And the following collections:
       | title            | description                                 | logo     | banner     | state     |
       | Metal fans       | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
       | Hardcore diggers | We dig up stuff hidden beneath the earth.   | logo.png | banner.jpg | validated |
@@ -15,12 +20,16 @@ Feature: Creation of news through the UI.
       | Density catalogue project | Catalog density on metals with ease.      | logo.png | banner.jpg | validated |
       | Dig do's and don'ts       | How to dig up stuff with style.           | logo.png | banner.jpg | validated |
       | Anvil test routines       | How to determine reliability of the tool. | logo.png | banner.jpg | validated |
+    And the following solution user membership:
+      | solution                  | user          | roles       |
+      | Density catalogue project | isotopedancer | facilitator |
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
     Then the following fields should not be present "Shared in, Motivation"
 
-    When I am logged in as a "facilitator" of the "Density catalogue project" solution
+    # Log in as a facilitator of the "Density catalogue project" solution
+    When I am logged in as isotopedancer
     And I go to the homepage of the "Density catalogue project" solution
     And I click "Add news" in the plus button menu
 
@@ -52,6 +61,9 @@ Feature: Creation of news through the UI.
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the referenced solution is rendered as tile.
     And I should see the "Dig do's and don'ts" tile
+    # Check that the full author name is shown instead of the username.
+    And I should see the link "Milana Laninga" in the "Content" region
+    But I should not see the link "isotopedancer" in the "Content" region
 
     # Edit again and try to share into the same solution.
     When I click "Edit" in the "Entity actions" region
