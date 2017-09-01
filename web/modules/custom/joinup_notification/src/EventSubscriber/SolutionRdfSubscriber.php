@@ -371,7 +371,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   }
 
   /**
-   * Sends notification if the solution is deleted.
+   * Sends notification when a solution is deleted.
    *
    * Notifications handled: 11, 17.
    *
@@ -414,7 +414,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   }
 
   /**
-   * Checks if the event applies for the update operation.
+   * Checks if the event applies for solutions.
    *
    * @return bool
    *   Whether the event applies.
