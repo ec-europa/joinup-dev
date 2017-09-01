@@ -34,3 +34,4 @@ destination:
 migration_dependencies:
   required:
     - file:user_photo
+    - og_user_role
