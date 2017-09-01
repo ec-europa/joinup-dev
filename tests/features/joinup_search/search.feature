@@ -92,8 +92,8 @@ Feature: Global search
       | title          | description                                                | keywords | owner             | contact information | state     |
       | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
     And the following releases:
-      | title         | release notes                               | keywords | is version of  | owner             | contact information | state     |
-      | Release Alpha | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
+      | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
+      | Release Alpha | 1              | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
     And the following distributions:
       | title              | description                                    | parent        | access url |
       | Distribution alpha | <p>A simple beta distribution description.</p> | Release Alpha | test.zip   |
@@ -129,7 +129,7 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha 1, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
@@ -140,7 +140,7 @@ Feature: Global search
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha 1, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
@@ -151,7 +151,7 @@ Feature: Global search
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
+    Then the page should show the tiles "Solution alpha, Release Alpha 1, News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
@@ -178,11 +178,11 @@ Feature: Global search
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
     When I enter "responsible" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha"
+    Then the page should show the tiles "Solution alpha, Release Alpha 1"
     # Visit the homepage to be sure that the test fetches the correct updated page.
     When I go to the homepage
     And I enter "contact" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha"
+    Then the page should show the tiles "Solution alpha, Release Alpha 1"
 
     # Users should be found by first name, family name and organisation.
     When I enter "Jenessa" in the header search bar and hit enter

@@ -275,7 +275,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     $actor_last_name = $arguments['@actor:field_user_family_name'];
     $motivation = isset($this->entity->motivation) ? $this->entity->motivation : '';
     $arguments['@transition:motivation'] = $motivation;
-    $arguments['@entity:field_isr_release_number'] = $entity->get('field_isr_release_number')->first()->value;
+    $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
 
     // Add arguments related to the parent collection or solution.
     $parent = $this->relationManager->getParent($entity);
