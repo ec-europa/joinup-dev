@@ -768,6 +768,9 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
       'solution_workflow' => [
         'needs_update',
       ],
+      'asset_release_workflow' => [
+        'request_changes',
+      ],
     ],
   ];
 
