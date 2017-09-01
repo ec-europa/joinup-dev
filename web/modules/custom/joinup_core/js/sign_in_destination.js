@@ -8,19 +8,16 @@
   /**
    * Alters the sign in link to have a destination parameter to the source page.
    *
-   * The home page 'Sign in' link and the 'Sign in' page 'Sign in' link are not
-   * altered.
-   *
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attaches shared content behaviors.
+   *   Attaches the sign in destination behavior to the 'Sign in' link.
    */
   Drupal.behaviors.signInDestination = {
     attach: function (context) {
       var path = drupalSettings.path;
-      // In these urls, only the query parameters will be copied if there is
-      // no destination parameter set.
+      // In these urls, if a destination is already set, we keep all query
+      // parameters.
       var user_urls = ['user/login', 'user/register', 'user/password', 'user/logout'];
       var is_user_url = $.inArray(path.currentPath, user_urls) === 0;
       // By default, login will lead to the homepage.
@@ -32,17 +29,19 @@
       // For each link that points to the user login page, append the existing
       // destination or the page depending on where the user comes from.
       $(context).find('[href^="/user/login"]').once('sign-in-redirect').each(function () {
-        if (is_user_url && has_destination) {
-          // If the user is not in one of the user_urls, and a destination
-          // parameter exists, set the current url as destination.
-          query_string = $.param(path.currentQuery);
+        if (has_destination) {
+          // If a destination is already set and the url is not one of the user
+          // urls, the destination is the only parameter maintained.
+          // If the user is in one of the user_urls, or a destination
+          // parameter exists, keep the current query parameters.
+          query_string = is_user_url ? $.param(path.currentQuery) : 'destination=/' + encodeURIComponent(path.currentQuery['destination']);
         }
-        else if (!is_user_url && !has_destination) {
+        else {
           // If the user is not in one of the user urls, set the current page as
           // the destination parameter.
           query_string = 'destination=/' + encodeURIComponent(path.currentPath + inline_query_string);
         }
-        // The .search is the query string of the url.
+        // The 'search' link property is the query string of the url.
         this.search = query_string;
       });
     }

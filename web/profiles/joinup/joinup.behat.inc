@@ -1251,7 +1251,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * should match" is that the later two strip off the query string and keep
    * only the path to compare.
    *
-   * @When the relative url( currently) should be :url
+   * @When the( current) relative url should be :url
    */
   public function relativeUrlMatches($url) {
     $current_url = $this->getSession()->getCurrentUrl();
