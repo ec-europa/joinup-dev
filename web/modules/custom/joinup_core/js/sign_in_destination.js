@@ -34,7 +34,7 @@
           // urls, the destination is the only parameter maintained.
           // If the user is in one of the user_urls, or a destination
           // parameter exists, keep the current query parameters.
-          query_string = is_user_url ? $.param(path.currentQuery) : 'destination=/' + encodeURIComponent(path.currentQuery['destination']);
+          query_string = is_user_url ? $.param(path.currentQuery) : 'destination=' + encodeURIComponent(path.currentQuery['destination']);
         }
         else {
           // If the user is not in one of the user urls, set the current page as
