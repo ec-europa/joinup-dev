@@ -170,7 +170,7 @@
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <option name="name" value="${drupal.demo.user}" />
+            <param>${drupal.demo.user}</param>
             <param>${drupal.demo.user}</param>
         </drush>
     </target>
