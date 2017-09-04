@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d49690baf1b4a78dac3ddd2d8effbf09",
+    "content-hash": "b180906ffed51d9989e72fdc3730a6c7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3559,7 +3559,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "6d645802023b0492d3612329f6599b66f88a750c"
+                "reference": "df49b3bd46f237b1410d40cd9ae89762b3acf248"
             },
             "type": "drupal-module",
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
@@ -3568,7 +3568,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-09-01T16:28:21+00:00"
+            "time": "2017-09-04T09:48:20+00:00"
         },
         {
             "name": "drupal/redirect",
