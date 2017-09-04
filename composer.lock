@@ -3559,16 +3559,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "df49b3bd46f237b1410d40cd9ae89762b3acf248"
+                "reference": "19b7bc3d19a5a159469b60b844f11254ed221296"
+            },
+            "require": {
+                "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2"
+            },
+            "require-dev": {
+                "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-09-04T09:48:20+00:00"
+            "time": "2017-09-04T14:49:11+00:00"
         },
         {
             "name": "drupal/redirect",
