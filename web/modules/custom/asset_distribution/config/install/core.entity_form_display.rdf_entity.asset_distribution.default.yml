@@ -18,7 +18,6 @@ dependencies:
   module:
     - allowed_formats
     - file_url
-    - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -32,13 +31,6 @@ content:
       add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
-    region: content
-  field_ad_creation_date:
-    type: datetime_create_update
-    weight: 6
-    settings:
-      behaviour: create
-    third_party_settings: {  }
     region: content
   field_ad_description:
     weight: 1
@@ -57,24 +49,11 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_ad_gitb_compliant:
-    type: options_select
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_ad_licence:
     weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_ad_modification_date:
-    type: datetime_create_update
-    weight: 7
-    settings:
-      behaviour: create
-    third_party_settings: {  }
     region: content
   field_ad_repr_technique:
     weight: 5
@@ -92,7 +71,10 @@ content:
     region: content
 hidden:
   current_workflow_state: true
+  field_ad_creation_date: true
   field_ad_file_size: true
+  field_ad_gitb_compliant: true
+  field_ad_modification_date: true
   field_download_count: true
   field_status: true
   langcode: true

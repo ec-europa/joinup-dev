@@ -83,6 +83,7 @@ hidden:
   field_ad_modification_date: true
   field_ad_repr_technique: true
   field_download: true
+  field_download_count: true
   field_status: true
   langcode: true
   og_audience: true
