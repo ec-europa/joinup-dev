@@ -58,6 +58,11 @@
     +icon-size(35px)
     +centered
 
+.sidebar-menu__contextual
+  +breakpoint(desktop)
+    .contextual
+      +z-index(dropdown)
+
 // Modifiers
 // --------------------------------------------------
 .sidebar-menu__button--mobile
@@ -75,13 +80,6 @@
     color: $color-base
   +breakpoint(desktop)
     display: block
-
-.sidebar-menu__contextual
-  ul
-    position: relative
-    +z-index(highlight+2)
-  button
-    position: relative !important
 
 // Dependiencies
 // --------------------------------------------------
