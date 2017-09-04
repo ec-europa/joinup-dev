@@ -118,4 +118,47 @@ trait UtilityTrait {
     return $is_visible && !$is_clipped;
   }
 
+  /**
+   * Converts property values of an object to the ones defined in a mapping.
+   *
+   * Useful to convert human-readable strings used in tests to machine-readable
+   * ones.
+   *
+   * @param object $object
+   *   The object itself.
+   * @param string $property
+   *   The source property name. It will be used also as destination if the
+   *   related parameter is not passed.
+   * @param array $mapping
+   *   An array of mapped values, where keys are the human-readable strings.
+   * @param string|null $destination
+   *   The destination property name. If left empty, the source property will
+   *   be reused. When specified, the source property gets unset from the
+   *   object.
+   */
+  protected static function convertObjectPropertyValues($object, $property, array $mapping, $destination = NULL) {
+    if (!property_exists($object, $property)) {
+      return;
+    }
+
+    // Force the use of human readable values in Behat test scenarios, throw
+    // an exception if the numeric values are used.
+    if (!array_key_exists($object->$property, $mapping)) {
+      $supported_values = implode(', ', array_keys($mapping));
+      throw new \UnexpectedValueException("Unexpected value for {$property} '{$object->$property}'. Supported values are: $supported_values.");
+    }
+
+    // If no destination property is specified, reuse the source property.
+    $destination = $destination ?: $property;
+
+    // Replace the human readable value with the expected boolean.
+    $object->$destination = $mapping[$object->$property];
+
+    // When a destination property has been specified, delete the source
+    // property.
+    if ($destination !== $property) {
+      unset($object->$property);
+    }
+  }
+
 }
