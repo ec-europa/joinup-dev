@@ -8,49 +8,11 @@
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\FieldStorageDefinition;
-
-/**
- * Implements hook_entity_bundle_field_info().
- *
- * Adds a "featured" field to all the community content bundles.
- */
-function joinup_community_content_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
-  $fields = [];
-
-  if ($entity_type->id() === 'node' && in_array($bundle, CommunityContentHelper::getBundles())) {
-    $fields['featured'] = FieldStorageDefinition::create('boolean')
-      ->setLabel(t('Featured'))
-      ->setName('featured')
-      ->setDescription(t('If the content should be featured in the website.'))
-      ->setDefaultValue(FALSE);
-  }
-
-  return $fields;
-}
-
-/**
- * Implements hook_entity_field_storage_info().
- *
- * Provides the field storage for the "featured" field.
- */
-function joinup_community_content_entity_field_storage_info(EntityTypeInterface $entity_type) {
-  $info = [];
-
-  if ($entity_type->id() === 'node') {
-    $info['featured'] = FieldStorageDefinition::create('boolean')
-      ->setName('featured')
-      ->setTargetEntityTypeId('node');
-  }
-
-  return $info;
-}
 
 /**
  * Implements hook_entity_extra_field_info().
