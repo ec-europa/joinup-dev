@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset_releases.
@@ -145,9 +144,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       }
     }
 
-    $values['rid'] = 'asset_release';
-    $asset_release = Rdf::create($values);
-    $asset_release->save();
+    $asset_release = $this->createRdfEntity('asset_release', $values);
     $this->assetReleases[$asset_release->id()] = $asset_release;
 
     return $asset_release;

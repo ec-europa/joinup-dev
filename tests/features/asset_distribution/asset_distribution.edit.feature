@@ -53,5 +53,8 @@ Feature: Asset distribution editing.
     Then I should see the heading "Edit Distribution Asset distribution example"
     And the following fields should not be present "Langcode, Translation"
     When I fill in "Title" with "Asset distribution example revised"
+    # Set a non-HTTP protocol remote URL.
+    And I press the "Remove" button
+    And I set a remote URL "ftp://example.com/file.txt" to "Access URL"
     And I press "Save"
     Then I should see the heading "Asset distribution example revised"

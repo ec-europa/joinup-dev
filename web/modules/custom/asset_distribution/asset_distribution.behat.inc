@@ -140,9 +140,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       }
     }
 
-    $values['rid'] = 'asset_distribution';
-    $asset_distribution = Rdf::create($values);
-    $asset_distribution->save();
+    $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;

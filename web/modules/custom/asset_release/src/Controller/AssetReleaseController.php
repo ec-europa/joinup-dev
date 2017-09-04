@@ -262,18 +262,12 @@ class AssetReleaseController extends ControllerBase {
    */
   protected function sortEntitiesByCreationDate(array $entities) {
     usort($entities, function ($entity1, $entity2) {
-      $get_creation_date = function (RdfInterface $entity) {
-        $date = $entity->bundle() === 'asset_release' ? $entity->getCreatedTime() : $entity->getCreatedTime();
-        // Sort entries without a creation date on the bottom so they don't
-        // stick to the top for all eternity.
-        if (empty($date)) {
-          $date = '1970-01-01';
-        }
-        return strtotime($date);
-      };
-
-      $ct1 = $get_creation_date($entity1);
-      $ct2 = $get_creation_date($entity2);
+      // Sort entries without a creation date on the bottom so they don't
+      // stick to the top for all eternity.
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity1 */
+      $ct1 = $entity1->getCreatedTime() ?: 0;
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity2 */
+      $ct2 = $entity2->getCreatedTime() ?: 0;
       if ($ct1 == $ct2) {
         return 0;
       }
