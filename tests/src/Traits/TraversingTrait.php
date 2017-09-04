@@ -291,4 +291,80 @@ trait TraversingTrait {
     return $regionObj->findAll('css', 'a.is-active, a.active-trail');
   }
 
+  /**
+   * Returns the contextual links button that is present in the given region.
+   *
+   * @param string $region
+   *   The region in which the contextual links button is expected to reside.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The contextual links button.
+   *
+   * @throws \Exception
+   *   Thrown when the region or the contextual links button was not found on
+   *   the page.
+   */
+  protected function findContextualLinkButtonInRegion($region) {
+    $session = $this->getSession();
+    /** @var \Behat\Mink\Element\NodeElement $region_object */
+    $region_object = $session->getPage()->find('region', $region);
+    if (!$region_object) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+
+    // Check if the wrapper for the contextual links is present on the page.
+    // Since the button is appended by the contextual.js script, we might need
+    // to wait a bit before the button itself is visible.
+    $button = $region_object->waitFor(5, function ($object) {
+      /** @var \Behat\Mink\Element\NodeElement $object */
+      return $object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
+    });
+
+    if (!$button) {
+      throw new \Exception(sprintf('No contextual links found in the region "%s" on the page "%s".', $region, $session->getCurrentUrl()));
+    }
+    return $button;
+  }
+
+  /**
+   * Returns the named element with the given locator, in the given region.
+   *
+   * Use this to easily locate "named elements" such as buttons, links, fields,
+   * checkboxes etc in a given region.
+   *
+   * For the full list of supported elements, check NamedSelector::$selectors.
+   *
+   * @param string $locator
+   *   The locator that identifies this particular element. This varies by
+   *   element type, but it is often a CSS ID, title, text or value that is set
+   *   on the element.
+   * @param string $element
+   *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
+   *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
+   * @param string $region
+   *   The region in which the element should be found.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element.
+   *
+   * @throws \Exception
+   *   Thrown when the element is not found in the given region.
+   *
+   * @see \Behat\Mink\Selector\NamedSelector
+   */
+  protected function findNamedElementInRegion($locator, $element, $region) {
+    $session = $this->getSession();
+    $region_object = $session->getPage()->find('region', $region);
+    if (!$region_object) {
+      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+    }
+
+    // Find the named element in the region.
+    $element = $region_object->find('named', [$element, $locator]);
+    if (!$element) {
+      throw new \Exception(sprintf('No element with locator "%s" found in the "%s" region on the page %s.', $locator, $region, $session->getCurrentUrl()));
+    }
+    return $element;
+  }
+
 }
