@@ -3,9 +3,13 @@ shared_content:
     js/shared_content.js: {}
   dependencies:
     - core/jquery
+    - core/jquery.once
+    - core/drupal
 
 pinned_content:
   js:
     js/pinned_content.js: {}
   dependencies:
     - core/jquery
+    - core/jquery.once
+    - core/drupal
