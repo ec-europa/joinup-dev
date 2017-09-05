@@ -1236,6 +1236,36 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Opens the account menu on JS-enabled browsers.
+   *
+   * @When I open the account menu
+   */
+  public function iOpenTheAccountMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.login-menu'));
+  }
+
+  /**
+   * Asserts that the current url is the same as the parameter.
+   *
+   * The difference with the steps "Then I should be on" and "Then the url
+   * should match" is that the later two strip off the query string and keep
+   * only the path to compare.
+   *
+   * @When the( current) relative url should be :url
+   */
+  public function relativeUrlMatches($url) {
+    $current_url = $this->getSession()->getCurrentUrl();
+    $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
+    if ($current_url !== $url) {
+      $message = t('Url "@current" does not match expected "@expected".', [
+        '@current' => $current_url,
+        '@expected' => $url,
+      ]);
+      throw new Exception($message);
+    }
+  }
+
+  /**
    * Asserts that the plus button menu is empty.
    *
    * @When the plus button menu should be empty
