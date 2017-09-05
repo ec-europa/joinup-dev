@@ -2006,4 +2006,55 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
   }
 
+  /**
+   * Asserts that an tag with the given text exists in the given region.
+   *
+   * This completes the assertNotRegionElementText of Markup context.
+   *
+   * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
+   *
+   * @Then I( should) see :text in the :tag element in the :region( region)
+   */
+  public function assertRegionElementText($text, $tag, $region) {
+    $regionObj = $this->getRegion($region);
+    $results = $regionObj->findAll('css', $tag);
+    if (!empty($results)) {
+      foreach ($results as $result) {
+        if ($result->getText() == $text) {
+          return;
+        }
+      }
+    }
+    throw new \Exception(sprintf('The text "%s" was not found in the "%s" element in the "%s" region on the page %s', $text, $tag, $region, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Asserts that a ckeditor list contains an element.
+   *
+   * This step requires javascript.
+   *
+   * CKeditor stores the lists available in the header of the editor pane in an
+   * iframe with a role tag. The dropdown "Format" has to be clicked prior to
+   * having the iframe available.
+   *
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format
+   */
+  public function assertNotFormatInCkeditorExists($field, $format_tags) {
+    $element = $this->getSession()->getPage()->findField($field);
+    $element_id = $element->getAttribute('id');
+    $format_tags = array_map('trim', explode(',', $format_tags));
+    $has_tags_condition = <<<JS
+      var element_id = arguments[0]['element_id'];
+      return CKEDITOR.instances[element_id].config.format_tags;
+JS;
+    $found_tags = $this->getSession()->getDriver()->getWebDriverSession()->execute([
+      'script' => $has_tags_condition,
+      'args' => [['element_id' => $element_id]],
+    ]);
+    $found_tags_array = explode(';', $found_tags);
+    if (array_intersect($format_tags, $found_tags_array)) {
+      throw new Exception("Some tags were found in the ckeditor.");
+    }
+  }
+
 }
