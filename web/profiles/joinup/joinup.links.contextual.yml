@@ -19,11 +19,11 @@ group_header_block.moderate_content:
   group: group_header_block
 
 joinup.site_feature:
-  route_name: joinup.site_feature
   title: Feature
+  route_name: joinup.site_feature
   group: entity
 
 joinup.site_unfeature:
+  title: 'Remove from featured'
   route_name: joinup.site_unfeature
-  title: Remove from featured
   group: entity
