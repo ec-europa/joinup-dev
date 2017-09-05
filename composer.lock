@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "94365808b6341471aeb216391097d65a",
+    "content-hash": "f16707bbc260367df2855e9da3bd575e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1776,7 +1776,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
+                "reference": null,
                 "shasum": "273fc694723be24107161ae778a01000eecefe3d"
             },
             "require": {
@@ -1789,11 +1789,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1498660742",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
+                    "datestamp": "1498660742"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1818,16 +1814,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console.git",
-                "reference": "362a8d3adbc04f6616d9aec7fba466513e79866b"
+                "reference": "8561b13b3026053a575bc54a4aa5bd351ed89f6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/362a8d3adbc04f6616d9aec7fba466513e79866b",
-                "reference": "362a8d3adbc04f6616d9aec7fba466513e79866b",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/8561b13b3026053a575bc54a4aa5bd351ed89f6a",
+                "reference": "8561b13b3026053a575bc54a4aa5bd351ed89f6a",
                 "shasum": ""
             },
             "require": {
@@ -1835,7 +1831,7 @@
                 "composer/installers": "~1.0",
                 "doctrine/annotations": "^1.2",
                 "doctrine/collections": "^1.3",
-                "drupal/console-core": "1.0.1",
+                "drupal/console-core": "1.0.2",
                 "drupal/console-dotenv": "~0",
                 "drupal/console-extend-plugin": "~0",
                 "gabordemooij/redbean": "~4.3",
@@ -1893,25 +1889,25 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2017-08-18T19:41:04+00:00"
+            "time": "2017-09-05T07:41:50+00:00"
         },
         {
             "name": "drupal/console-core",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-core.git",
-                "reference": "f378893d344a14f194284c4c64903b1063b23d48"
+                "reference": "cbc763fb7d85e2d05f062021e222d8816b91bfda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/f378893d344a14f194284c4c64903b1063b23d48",
-                "reference": "f378893d344a14f194284c4c64903b1063b23d48",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/cbc763fb7d85e2d05f062021e222d8816b91bfda",
+                "reference": "cbc763fb7d85e2d05f062021e222d8816b91bfda",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-configuration": "^1.0",
-                "drupal/console-en": "1.0.1",
+                "drupal/console-en": "1.0.2",
                 "php": "^5.5.9 || ^7.0",
                 "stecman/symfony-console-completion": "~0.7",
                 "symfony/config": "~2.8|~3.0",
@@ -1974,7 +1970,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2017-08-18T19:24:20+00:00"
+            "time": "2017-09-05T07:08:07+00:00"
         },
         {
             "name": "drupal/console-dotenv",
@@ -2017,16 +2013,16 @@
         },
         {
             "name": "drupal/console-en",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-en.git",
-                "reference": "9db52478c5870d535f2e507f51142c7ed1a17098"
+                "reference": "21a7c2dbfd237a97bb8593c6f7c397a2032aa1d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/9db52478c5870d535f2e507f51142c7ed1a17098",
-                "reference": "9db52478c5870d535f2e507f51142c7ed1a17098",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/21a7c2dbfd237a97bb8593c6f7c397a2032aa1d2",
+                "reference": "21a7c2dbfd237a97bb8593c6f7c397a2032aa1d2",
                 "shasum": ""
             },
             "type": "drupal-console-language",
@@ -2067,7 +2063,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2017-08-02T13:46:40+00:00"
+            "time": "2017-09-04T05:42:48+00:00"
         },
         {
             "name": "drupal/console-extend-plugin",
@@ -2276,6 +2272,7 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
+                    "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-256.patch",
                     "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                     "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
@@ -2337,11 +2334,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0",
-                    "datestamp": "1493401742",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1493401742"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2427,11 +2420,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc1",
-                    "datestamp": "1484566683",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1484566683"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2512,11 +2501,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
-                    "datestamp": "1475743794",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
+                    "datestamp": "1475743794"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2572,11 +2557,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.1",
-                    "datestamp": "1495660084",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1495660084"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2628,7 +2609,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/editor_file-8.x-1.2.zip",
-                "reference": "8.x-1.2",
+                "reference": null,
                 "shasum": "e1fdfec93f98c219a6adea133033f1d21b8c53de"
             },
             "require": {
@@ -2641,11 +2622,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1478115534",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1478115534"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2735,7 +2712,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": "8.x-1.0-rc6",
+                "reference": null,
                 "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
             },
             "require": {
@@ -2747,12 +2724,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6",
-                    "datestamp": "1480365484",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
-                    }
+                    "version": "8.x-1.0-rc6+5-dev",
+                    "datestamp": "1484436184"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2866,7 +2839,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/honeypot-8.x-1.27.zip",
-                "reference": "8.x-1.27",
+                "reference": null,
                 "shasum": "b40f86ef45a7f4325343e8aa455ecbdceab51ffe"
             },
             "require": {
@@ -2879,11 +2852,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1499867343",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1499867343"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2932,11 +2901,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1+2-dev",
-                    "datestamp": "1479155639",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1479155639"
                 },
                 "patches_applied": {
                     "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
@@ -2996,12 +2961,8 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta5+4-dev",
-                    "datestamp": "1496093583",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "version": "8.x-5.0-beta5+3-dev",
+                    "datestamp": "1492788242"
                 },
                 "patches_applied": {
                     "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
@@ -3038,7 +2999,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/mailsystem-8.x-4.1.zip",
-                "reference": "8.x-4.1",
+                "reference": null,
                 "shasum": "318b87f1fdf96e6db30b04a98108af02a0fc3dcc"
             },
             "require": {
@@ -3051,11 +3012,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.1",
-                    "datestamp": "1467993646",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1467993646"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3143,11 +3100,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1490992382",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1490992382"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3200,11 +3153,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1471331939",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1471331939"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3212,14 +3161,6 @@
                 "GPL-2.0+"
             ],
             "authors": [
-                {
-                    "name": "Eli-T",
-                    "homepage": "https://www.drupal.org/user/516878"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
@@ -3242,7 +3183,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
+                "reference": null,
                 "shasum": "eca1d7edac198ddea5fe831948b9cdfe999db435"
             },
             "require": {
@@ -3255,11 +3196,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha4",
-                    "datestamp": "1498129143",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
+                    "datestamp": "1498129143"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3727,11 +3664,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1470845524",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1470845524"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3781,11 +3714,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1500465842",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
+                    "datestamp": "1500465842"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3826,11 +3755,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1486527783",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1486245484"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3884,65 +3809,29 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-1.x",
+            "version": "dev-ISAICP-3817",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "ce003dd4d3a90d8cc8bfb16d232aa866e8bc7377"
+                "url": "https://github.com/ec-europa/rdf_entity.git",
+                "reference": "19b7bc3d19a5a159469b60b844f11254ed221296"
             },
             "require": {
-                "drupal/core": "*"
+                "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2"
+            },
+            "require-dev": {
+                "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha1+661-dev",
-                    "datestamp": "1502206145",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "dublutz",
-                    "homepage": "https://www.drupal.org/user/980246"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sandervd",
-                    "homepage": "https://www.drupal.org/user/346775"
-                },
-                {
-                    "name": "sardara",
-                    "homepage": "https://www.drupal.org/user/2353864"
-                }
-            ],
-            "description": "Provides RDF entity.",
-            "homepage": "https://www.drupal.org/project/rdf_entity",
+            "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
+            "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "source": "http://cgit.drupalcode.org/rdf_entity"
+                "issues": "https://drupal.org/project/issues/rdf_entity",
+                "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-08-11T11:29:33+00:00"
+            "time": "2017-09-04T14:49:11+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -4020,11 +3909,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1500483242",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1500483242"
                 },
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-10-D8.patch",
@@ -4093,11 +3978,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1498580642",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1498580642"
                 },
                 "patches_applied": {
                     "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
@@ -4169,11 +4050,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3",
-                    "datestamp": "1487059683",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1487059683"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4372,7 +4249,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/swiftmailer-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
+                "reference": null,
                 "shasum": "d49a50638a629c24d681181b82255fd50c1b2642"
             },
             "require": {
@@ -4388,11 +4265,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1487207830",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1487207830"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4430,7 +4303,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/token-8.x-1.0.zip",
-                "reference": "8.x-1.0",
+                "reference": null,
                 "shasum": "d24c7f1ffddbd0fc56bc92bacae1c4ff769a4442"
             },
             "require": {
@@ -4443,11 +4316,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1493466843",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1493466843"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4516,10 +4385,6 @@
                 "drupal": {
                     "version": "8.x-1.x",
                     "datestamp": "1493246342",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    },
                     "package": "Field types"
                 },
                 "patches_applied": {
@@ -4561,7 +4426,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/view_unpublished-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
+                "reference": null,
                 "shasum": "6c5928295162027cd4da8f45aba6111d11e899f0"
             },
             "require": {
@@ -4574,11 +4439,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
-                    "datestamp": "1483493344",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1483493344"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5450,16 +5311,16 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.2.2",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "7866e93dcf0245de22378414e0c2c7350abc45af"
+                "reference": "2c37c6c520b995b761674de3be8455a381679067"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/7866e93dcf0245de22378414e0c2c7350abc45af",
-                "reference": "7866e93dcf0245de22378414e0c2c7350abc45af",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/2c37c6c520b995b761674de3be8455a381679067",
+                "reference": "2c37c6c520b995b761674de3be8455a381679067",
                 "shasum": ""
             },
             "require": {
@@ -5511,7 +5372,7 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2016-09-22T11:01:11+00:00"
+            "time": "2017-09-04T12:26:28+00:00"
         },
         {
             "name": "minimaxir/big-list-of-naughty-strings",
@@ -5522,7 +5383,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
+            "time": "2017-01-20T06:45:09+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -9577,11 +9438,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.19",
-                    "datestamp": "1491487683",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1491487683"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9665,7 +9522,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.0.zip",
-                "reference": "8.x-1.0",
+                "reference": null,
                 "shasum": "148d408827c570e725b08d7e4c1c46d321dc1efa"
             },
             "require": {
@@ -9678,11 +9535,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1487232784",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1487232784"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9701,10 +9554,6 @@
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
-                },
-                {
-                    "name": "joachim",
-                    "homepage": "https://www.drupal.org/user/107701"
                 },
                 {
                     "name": "nedjo",
@@ -9736,7 +9585,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
+                "reference": null,
                 "shasum": "3ba3a31ea02323203ceae7ef7f80c091ced2e2f3"
             },
             "require": {
@@ -9749,11 +9598,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1448357340",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1448357340"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9795,7 +9640,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.3.zip",
-                "reference": "8.x-1.3",
+                "reference": null,
                 "shasum": "4fc57add91c090ea3c9ed4848579b450253b1eed"
             },
             "require": {
@@ -9808,11 +9653,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1484770683",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1484770683"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10509,16 +10350,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "15ea9ac619e37009edcda64089e3fa4cc88aa659"
+                "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/15ea9ac619e37009edcda64089e3fa4cc88aa659",
-                "reference": "15ea9ac619e37009edcda64089e3fa4cc88aa659",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
+                "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
                 "shasum": ""
             },
             "require": {
@@ -10568,7 +10409,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-09-03T09:38:53+00:00"
+            "time": "2017-09-04T11:05:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

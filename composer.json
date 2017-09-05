@@ -39,7 +39,7 @@
         "drupal/piwik": "~1.0",
         "drupal/piwik_reporting_api": "~1.0@beta",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "dev-1.x",
+        "drupal/rdf_entity": "dev-ISAICP-3817",
         "drupal/redirect": "dev-1.x#27e71182610c70636b959d9f4031fe6dd0877d87",
         "drupal/search_api": "~1.0-rc2",
         "drupal/search_api_solr": "~1.0-rc2",
@@ -130,6 +130,7 @@
         },
         "patches": {
             "drupal/core": {
+                "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
                 "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-256.patch",
                 "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                 "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
@@ -193,6 +194,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/pfrenssen/phingdrushtask.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/ec-europa/rdf_entity.git"
         },
         {
             "type": "composer",
