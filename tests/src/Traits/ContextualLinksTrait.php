@@ -55,10 +55,22 @@ trait ContextualLinksTrait {
     /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
     $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
 
+    $client = $this->getSession()->getDriver()->getClient();
+
+    $cloned = clone $client;
+
     $links = [];
     /** @var \Behat\Mink\Element\NodeElement $item */
     foreach ($element->findAll('xpath', '//*[@data-contextual-id]') as $item) {
       $contextual_id = $item->getAttribute('data-contextual-id');
+      $ret = $cloned->request('POST', '/contextual/render', ['ids' => [$contextual_id]]);
+
+
+
+      $response = $this->getSession()->getPage()->getContent();
+
+
+
       foreach (_contextual_id_to_links($contextual_id) as $group_name => $link) {
         $route_parameters = $link['route_parameters'];
         foreach ($contextual_links_manager->getContextualLinkPluginsByGroup($group_name) as $plugin_id => $plugin_definition) {
