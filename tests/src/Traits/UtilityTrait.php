@@ -161,4 +161,25 @@ trait UtilityTrait {
     }
   }
 
+  /**
+   * Executes a callback until it succeeds or until timeout is hit.
+   *
+   * @param callable $callback
+   *   The callback to execute until it returns a truthy value or timeout.
+   * @param int $timeout
+   *   The maximum wait time. Defaults to 5 seconds.
+   *
+   * @return mixed
+   *   The result of the last invocation of the callback.
+   */
+  protected function waitUntil(callable $callback, $timeout = 5) {
+    $end = microtime(TRUE) + $timeout;
+    do {
+      usleep(100000);
+      $result = $callback();
+    } while (microtime(TRUE) < $end && !$result);
+
+    return $result;
+  }
+
 }
