@@ -211,7 +211,8 @@ Feature: Navigation menu for custom pages
     And I go to the "The Slaves of the Air" custom page
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I press "Save and publish"
+    And I check "Published"
+    And I press "Save"
     Then I should see the heading "The Slaves of the Air"
 
     When I am not logged in
