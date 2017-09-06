@@ -538,16 +538,18 @@ function solution_invalidate_collection(EntityInterface $entity) {
   // alongside group content in collection overviews.
   // For this reason, we clear the collection group cache tags whenever a
   // solution is saved.
-  $ids = \Drupal::entityQuery('rdf_entity')
-    ->condition('rid', 'collection')
-    ->condition('field_ar_affiliates', $entity->id())
-    ->execute();
-  $tags = [];
-  if ($ids) {
-    foreach ($ids as $id) {
-      $tags[] = "rdf_entity:$id";
+  if (\Drupal::moduleHandler()->moduleExists('collection')) {
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $entity->id())
+      ->execute();
+    $tags = [];
+    if ($ids) {
+      foreach ($ids as $id) {
+        $tags[] = "rdf_entity:$id";
+      }
+      Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
     }
-    Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
   }
 }
 
@@ -568,10 +570,12 @@ function solution_invalidate_collection(EntityInterface $entity) {
  * @see solution_rdf_entity_load()
  */
 function solution_get_collection_ids(RdfInterface $solution) {
-  $result = \Drupal::entityQuery('rdf_entity')
-    ->condition('rid', 'collection')
-    ->condition('field_ar_affiliates', $solution->id())
-    ->execute();
+  if (\Drupal::moduleHandler()->moduleExists('collection')) {
+    $result = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $solution->id())
+      ->execute();
+  }
 
   return !empty($result) ? array_keys($result) : [];
 }

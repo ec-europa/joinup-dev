@@ -25,9 +25,11 @@ $this->assertRedirects([
   'node/86062',
   'software/cipaedelivery/asset_release/cipaedelivery-100',
 ], $release);
+$this->assertContains('CIPA e-Delivery aims at creating a document exchange network', $release->get('field_isr_description')->value);
+$this->assertEquals('English description', $release->get('field_isr_release_notes')->value);
 $translation = $release->getTranslation('de');
 $this->assertEquals('Wunderbar', $translation->label());
-$this->assertContains('Verwendungszwecke (VZW), die einem privaten', $translation->field_isr_description->value);
+$this->assertEquals('German description<p>&nbsp;</p>German version notes', $translation->get('field_isr_release_notes')->value);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'cipaedelivery 1.1.0', 'asset_release');
 $this->assertEquals('cipaedelivery 1.1.0', $release->label());
@@ -164,6 +166,8 @@ $this->assertRedirects([
   'node/55776',
   'asset/core_location/asset_release/core-location-vocabulary-02',
 ], $release);
+$this->assertContains('Core Vocabularies Working Group', $release->get('field_isr_description')->value);
+$this->assertEquals('release node description<p>&nbsp;</p>English version notes', $release->get('field_isr_release_notes')->value);
 
 $release = $this->loadEntityByLabel('rdf_entity', 'Core Location Vocabulary 0.3', 'asset_release');
 $this->assertEquals('Core Location Vocabulary 0.3', $release->label());
