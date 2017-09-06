@@ -1,4 +1,4 @@
-@api @email
+@api @email @javascript
 Feature: Featuring content site-wide
   As a moderator of Joinup
   I want to feature content in the website
@@ -76,9 +76,9 @@ Feature: Featuring content site-wide
     Examples:
       | content type | label      |
       | event        | Event      |
-      #| document     | Document   |
-      #| discussion   | Discussion |
-      #| news         | News       |
+      | document     | Document   |
+      | discussion   | Discussion |
+      | news         | News       |
 
   Scenario Outline: Moderators can feature and unfeature collections and solutions site-wide.
     When I am an anonymous user
@@ -110,7 +110,6 @@ Feature: Featuring content site-wide
     When I click the contextual link "Feature" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been set as featured content."
 
-    When I click "<header link>"
     And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the feature contents."
 
