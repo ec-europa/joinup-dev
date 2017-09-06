@@ -58,17 +58,6 @@ class AssetReleaseController extends ControllerBase {
     );
   }
 
-  protected $fieldsToCopy = [
-    'field_is_description' => 'field_isr_description',
-    'field_is_solution_type' => 'field_isr_solution_type',
-    'field_is_contact_information' => 'field_isr_contact_information',
-    'field_is_owner' => 'field_isr_owner',
-    'field_is_related_solutions' => 'field_isr_related_solutions',
-    'field_is_included_asset' => 'field_isr_included_asset',
-    'field_is_translation' => 'field_isr_translation',
-    'field_policy_domain' => 'field_policy_domain',
-  ];
-
   /**
    * Controller for the base form.
    *
@@ -83,25 +72,7 @@ class AssetReleaseController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    // Setup the values for the release.
-    $values = [
-      'rid' => 'asset_release',
-      'field_isr_is_version_of' => $rdf_entity->id(),
-    ];
-
-    foreach ($this->fieldsToCopy as $solution_field => $release_field) {
-      if (!empty($rdf_entity->get($solution_field)->getValue())) {
-        $values[$release_field] = $rdf_entity->get($solution_field)->getValue();
-      }
-    }
-
-    $asset_release = $this->entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->create($values);
-
-    $form = $this->entityFormBuilder()->getForm($asset_release);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($this->createNewAssetRelease($rdf_entity));
   }
 
   /**
