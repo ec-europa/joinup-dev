@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "77d28817aebb6a2730ec1fc75012feba",
+    "content-hash": "78ad7572d842f9eb5e8942ccc6ca9508",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3885,29 +3885,75 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-ISAICP-3817",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "3ae1c0e082d3a4fd1c67dc0df2086f453812bef1"
+                "url": "https://git.drupal.org/project/rdf_entity",
+                "reference": "8.x-1.0-alpha3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha3.zip",
+                "reference": "8.x-1.0-alpha3",
+                "shasum": "8d39089aad9d5526795abf39a83fe4f940c17c68"
             },
             "require": {
-                "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2"
+                "drupal/core": "*",
+                "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2"
             },
             "require-dev": {
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1504697043",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "dublutz",
+                    "homepage": "https://www.drupal.org/user/980246"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                },
+                {
+                    "name": "sandervd",
+                    "homepage": "https://www.drupal.org/user/346775"
+                },
+                {
+                    "name": "sardara",
+                    "homepage": "https://www.drupal.org/user/2353864"
+                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "issues": "https://drupal.org/project/issues/rdf_entity",
-                "source": "https://cgit.drupalcode.org/rdf_entity"
-            },
-            "time": "2017-09-05T15:06:40+00:00"
+                "source": "https://cgit.drupalcode.org/rdf_entity",
+                "issues": "https://drupal.org/project/issues/rdf_entity"
+            }
         },
         {
             "name": "drupal/redirect",
@@ -11418,7 +11464,6 @@
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
-        "drupal/rdf_entity": 20,
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,

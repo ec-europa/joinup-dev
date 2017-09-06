@@ -20,16 +20,26 @@ source:
     A:
       type: string
 process:
-  label: A
-  field_licence_description/value: B
+  label:
+    plugin: callback
+    callable: trim
+    source: A
+  field_licence_description/value:
+    plugin: callback
+    callable: trim
+    source: B
   field_licence_description/format:
     plugin: default_value
     default_value: content_editor
+  licence_type:
+    plugin: callback
+    callable: trim
+    source: C
   field_licence_type:
     plugin: concat
     source:
       - constants/base_url
-      - C
+      - '@licence_type'
 destination:
   plugin: entity:rdf_entity
   default_bundle: licence
