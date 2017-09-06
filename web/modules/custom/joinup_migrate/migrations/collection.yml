@@ -38,8 +38,8 @@ process:
   field_ar_contact_information:
     plugin: merge
     source:
-      - @contact_from_node
-      - @contact_from_email
+      - "@contact_from_node"
+      - "@contact_from_email"
     unique: true
   created: created_time
   field_ar_description/value:
@@ -76,8 +76,8 @@ process:
   field_ar_owner:
     plugin: merge
     source:
-      - @owner_from_publisher
-      - @owner_from_text
+      - "@owner_from_publisher"
+      - "@owner_from_text"
   field_policy_domain:
     plugin: policy_domain
     source: policy2
