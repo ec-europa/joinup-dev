@@ -47,6 +47,12 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_ad_gitb_compliant:
+    type: options_select
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_ad_licence:
     weight: 3
     settings: {  }
@@ -71,7 +77,6 @@ hidden:
   current_workflow_state: true
   field_ad_creation_date: true
   field_ad_file_size: true
-  field_ad_gitb_compliant: true
   field_ad_modification_date: true
   field_download_count: true
   field_status: true
