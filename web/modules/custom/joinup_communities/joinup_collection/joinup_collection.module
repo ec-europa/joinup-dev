@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Main file of Joinup module.
+ */
+
+use Drupal\Core\Site\Settings;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\user\UserInterface;
+
+define('JOINUP_COLLECTION_ID', Settings::get('joinup_collection.collection_id', 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20'));
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_collection_user_insert(UserInterface $account) {
+  if ($joinup_collection = Rdf::load(JOINUP_COLLECTION_ID)) {
+    // Add the membership only it doesn't exist yet.
+    if (!Og::getMembership($joinup_collection, $account, [])) {
+      OgMembership::create()
+        ->setGroup($joinup_collection)
+        ->setUser($account)
+        ->setState(OgMembershipInterface::STATE_ACTIVE)
+        ->setRoles()
+        ->save();
+    }
+  }
+}

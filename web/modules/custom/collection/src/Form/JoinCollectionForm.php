@@ -3,6 +3,7 @@
 namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -36,16 +37,26 @@ class JoinCollectionForm extends FormBase {
   protected $membershipManager;
 
   /**
+   * The access manager service.
+   *
+   * @var \Drupal\Core\Access\AccessManagerInterface
+   */
+  protected $accessManager;
+
+  /**
    * Constructs a JoinCollectionForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The membership manager service.
+   * @param \Drupal\Core\Access\AccessManagerInterface $access_manager
+   *   The access manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, AccessManagerInterface $access_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
+    $this->accessManager = $access_manager;
   }
 
   /**
@@ -54,7 +65,8 @@ class JoinCollectionForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('og.membership_manager')
+      $container->get('og.membership_manager'),
+      $container->get('access_manager')
     );
   }
 
@@ -73,13 +85,11 @@ class JoinCollectionForm extends FormBase {
 
     $user = $this->entityTypeManager->getStorage('user')->load($user->id());
     $form['collection_id'] = [
-      '#type' => 'hidden',
-      '#title' => $this->t('Collection ID'),
+      '#type' => 'value',
       '#value' => $collection->id(),
     ];
     $form['user_id'] = [
-      '#type' => 'hidden',
-      '#title' => $this->t('User ID'),
+      '#type' => 'value',
       '#value' => $user->id(),
     ];
 
@@ -110,12 +120,12 @@ class JoinCollectionForm extends FormBase {
     }
     // If the user has an active membership, he can cancel it as well.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
+      $parameters = ['rdf_entity' => $collection->id()];
       $form['leave'] = [
         '#type' => 'link',
         '#title' => $this->t('Leave this collection'),
-        '#url' => Url::fromRoute('collection.leave_confirm_form', [
-          'rdf_entity' => $collection->id(),
-        ]),
+        '#url' => Url::fromRoute('collection.leave_confirm_form', $parameters),
+        '#access' => $this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters),
         '#attributes' => [
           'class' => [
             'use-ajax',
