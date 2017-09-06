@@ -573,8 +573,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // Replace the human readable publication statuses with the boolean values
     // that are expected by the Node module.
     self::convertObjectPropertyValues($node, 'status', [
-      'yes' => 1,
-      'no' => 0,
+      'unpublished' => 0,
+      'published' => 1,
     ]);
 
     // Replace human readable workflow states with machine names.
