@@ -148,13 +148,6 @@ function joinup_community_content_preprocess_node(&$variables) {
     return;
   }
 
-  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-  if ($parent) {
-    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
-    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
-  }
-
   // If the node is shared somewhere, attach the related library.
   if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
     $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
@@ -163,32 +156,6 @@ function joinup_community_content_preprocess_node(&$variables) {
   if ($node->isSticky()) {
     $variables['attributes']['class'][] = 'is-sticky';
     $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
-  }
-
-  if ($node->hasField('featured') && $node->get('featured')->value) {
-    $variables['attributes']['class'][] = 'is-featured';
-  }
-}
-
-/**
- * Implements hook_preprocess_page().
- *
- * Adds the current og group context as attribute on the page wrapper.
- */
-function joinup_community_content_preprocess_page(&$variables) {
-  /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
-  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
-
-  if (!empty($context['og'])) {
-    $group = $context['og']->getContextValue();
-
-    if (
-      $group &&
-      $group->getEntityTypeId() === 'rdf_entity' &&
-      $group->bundle() === 'collection'
-    ) {
-      $variables['attributes']['data-drupal-collection-context'] = $group->id();
-    }
   }
 }
 
