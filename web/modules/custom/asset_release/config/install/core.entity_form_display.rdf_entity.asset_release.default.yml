@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -12,7 +11,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -29,7 +27,6 @@ dependencies:
     - allowed_formats
     - file_url
     - joinup_core
-    - rdf_entity
     - text
 id: rdf_entity.asset_release.default
 targetEntityType: rdf_entity
@@ -45,13 +42,6 @@ content:
       title_display: before
       show_for_new_entities: false
     third_party_settings: {  }
-  field_isr_creation_date:
-    type: datetime_create_update
-    weight: 4
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    region: content
   field_isr_documentation:
     weight: 3
     settings:
@@ -66,13 +56,6 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-    region: content
-  field_isr_modification_date:
-    type: datetime_create_update
-    weight: 5
-    settings:
-      behaviour: create
     third_party_settings: {  }
     region: content
   field_isr_release_notes:
