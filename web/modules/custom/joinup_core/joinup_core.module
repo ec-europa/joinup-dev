@@ -923,9 +923,13 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
 /**
  * Implements hook_preprocess_page().
  *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
  * Adds the current og group context as attribute on the page wrapper.
  */
 function joinup_core_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_core/sign_in_destination';
+
   /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
   $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
 
