@@ -60,7 +60,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Ernst Brice                                                   |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -106,7 +106,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ajit Tamboli                                                           |
       | E-mail address   | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
