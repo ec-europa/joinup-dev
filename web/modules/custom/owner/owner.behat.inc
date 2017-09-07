@@ -12,7 +12,6 @@ use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
 
@@ -72,7 +71,6 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       }
 
       $values = [
-        'rid' => 'owner',
         'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ];
@@ -81,8 +79,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
         $values['uid'] = $this->getUserByName($row['author'])->id();
       }
 
-      $owner = Rdf::create($values);
-      $owner->save();
+      $owner = $this->createRdfEntity('owner', $values);
 
       $this->owners[$owner->id()] = $owner;
     }
