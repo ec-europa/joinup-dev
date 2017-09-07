@@ -103,15 +103,19 @@ Feature: Featuring content site-wide
     When I am logged in as a moderator
     And I click "<header link>"
     Then I should see the contextual link "Feature" in the "<unfeatured>" tile
+    And the "<unfeatured>" tile should not be marked as featured
     And I should see the contextual link "Remove from featured" in the "<featured>" tile
+    And the "<featured>" tile should be marked as featured
     But I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
     And I should not see the contextual link "Feature" in the "<featured>" tile
 
     When I click the contextual link "Feature" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been set as featured content."
+    And the "<featured>" tile should be marked as featured
 
     And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the feature contents."
+    And the "<unfeatured>" tile should not be marked as featured
 
     Examples:
       | header link | featured                      | unfeatured                  | label      |

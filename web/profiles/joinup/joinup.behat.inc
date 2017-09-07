@@ -1995,4 +1995,42 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
   }
 
+  /**
+   * Asserts that a tile is marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as featured.
+   *
+   * @Then the :tile tile should be marked as featured
+   */
+  public function assertTileMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is not marked as featured, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as featured.
+   *
+   * @Then the :tile tile should not be marked as featured
+   */
+  public function assertTileNotMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
+    }
+  }
+
 }
