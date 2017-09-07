@@ -5,6 +5,7 @@
  * Install functions of the Joinup user module.
  */
 
+use Drupal\file\Entity\File;
 use Drupal\user\UserInterface;
 
 /**
@@ -18,6 +19,7 @@ function joinup_user_install() {
     'access dashboard',
     'access tour',
     'access user profiles',
+    'cancel account',
     'create contact_information rdf entity',
     'create owner rdf entity',
     'create document content',
@@ -34,6 +36,7 @@ function joinup_user_install() {
     'update own document content',
     'use text format basic_html',
     'use text format content_editor',
+    'use text format simple_html',
     'view own unpublished content',
     'view published og menu instance entities',
     'view rdf entity',
@@ -45,11 +48,39 @@ function joinup_user_install() {
     'access content',
     'access tour',
     'access user profiles',
-    'use text format restricted_html',
+    'use text format basic_html',
+    'use text format simple_text',
     'view rdf entity',
     'export rdf metadata',
     'post comments',
     'access comments',
   ];
   user_role_grant_permissions(UserInterface::ANONYMOUS_ROLE, $anonymous_permissions);
+
+  joinup_user_setup_default_avatar();
+}
+
+/**
+ * Set a default image for the users avatar.
+ */
+function joinup_user_setup_default_avatar() {
+  $directory = \Drupal::service('file_system')
+    ->realpath(drupal_get_path('module', 'joinup_user') . '/includes');
+  $file_name = 'user_icon.png';
+  $file_path = $directory . '/' . $file_name;
+  $internal_path = "public://default_images";
+  if (is_file($file_path) && file_prepare_directory($internal_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    $file_path = file_unmanaged_copy($file_path, $internal_path, FILE_EXISTS_REPLACE);
+  }
+  $file = File::create(['uri' => $file_path]);
+  $file->save();
+  $config_factory = \Drupal::configFactory();
+  $field_user_photo = $config_factory->getEditable('field.field.user.user.field_user_photo');
+  $default_image = $field_user_photo->get('settings.default_image');
+
+  $default_image['uuid'] = $file->uuid();
+  $default_image['height'] = 615;
+  $default_image['width'] = 640;
+
+  $field_user_photo->set('settings.default_image', $default_image)->save(TRUE);
 }

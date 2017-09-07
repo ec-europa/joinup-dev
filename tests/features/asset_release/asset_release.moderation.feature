@@ -48,6 +48,7 @@ Feature: Asset release moderation
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Validated"
+    And the following fields should be present "Motivation"
     And the following fields should not be present "Langcode, Translation"
     When I fill in "Name" with "Release"
     And I press "Request changes"

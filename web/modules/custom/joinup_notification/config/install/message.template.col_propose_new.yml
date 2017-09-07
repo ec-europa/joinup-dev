@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: col_propose_new
+label: 'Collection propose new'
+description: 'Template id 1'
+text:
+  -
+    value: "<p>User @actor:field_user_first_name proposed @entity:bundle @entity:title</p>\r\n"
+    format: full_html
+  -
+    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has proposed @entity:bundle \"@entity:title\".</p>\r\n\r\n<p>To approve or reject this proposal, please go to <a href=\"@entity:url\">@entity:url</a>. You'll be able to provide feedback.</p>\r\n\r\n<p>The requestor will be notified of your decision and feedback.</p>\r\n"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

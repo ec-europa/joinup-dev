@@ -10,18 +10,18 @@ Feature: Proposing a collection
 
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
-  # though you need to log in to do so.
-  Scenario: Anonymous user needs to log in before creating a collection
+  # though you need to sign in to do so.
+  Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
       | Username      | Password |
       | Cecil Clapman | claps    |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must log in to view this page."
+    Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
       | Username | Cecil Clapman |
       | Password | claps         |
-    And I press "Log in"
+    And I press "Sign in"
     Then I should see the heading "Propose collection"
 
   @terms
@@ -32,12 +32,13 @@ Feature: Proposing a collection
     And I am logged in as an "authenticated user"
     When I go to the propose collection form
     Then I should see the heading "Propose collection"
-    And the following fields should not be present "Current workflow state, Langcode, Translation"
+    And the following fields should not be present "Current workflow state, Langcode, Translation, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     # Ensure that the description for the "Access url" is shown.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
+    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
@@ -46,6 +47,8 @@ Feature: Proposing a collection
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
     And I check "Moderated"
+    # The owner field should have a help text.
+    And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
@@ -61,7 +64,7 @@ Feature: Proposing a collection
     And I should see a banner on the header
 
     # The user that proposed the collection should be auto-subscribed.
-    And the "Ancient and Classical Mythology" collection should have 1 member
+    And the "Ancient and Classical Mythology" collection should have 1 active member
     # The overview and about links should be added automatically in the menu.
     And I should see the following collection menu items in the specified order:
       | text     |
@@ -88,7 +91,6 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
-    And I attach the file "logo.png" to "Logo"
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
@@ -100,7 +102,7 @@ Feature: Proposing a collection
   Scenario: E-library options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
     Then I should see the link "banner.jpg"
@@ -111,7 +113,7 @@ Feature: Proposing a collection
   Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
 
     # Initially the collection is open, check if the eLibrary options are OK.
     Then the option "Only members can create new content." should be selected
@@ -153,13 +155,15 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
-    When I click "Description" tab
+    When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Affiliates, Spatial coverage"
+    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 
   @javascript @terms
@@ -171,14 +175,14 @@ Feature: Proposing a collection
   Scenario: Browser validation errors should focus the correct field group.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # This form has two elements only that have browser-side validation.
     When I fill in "Title" with "Constraint validation API"
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I press "Propose"
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
-    Then the "Main" tab should be active
+    Then the "Main fields" tab should be active
     # Fill the required field.
     When I select "HR" from "Policy domain"
     And I press "Propose"

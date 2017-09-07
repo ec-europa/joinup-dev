@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.user.inline
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
     - field.field.user.user.field_user_family_name
@@ -15,6 +16,7 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
+    - field.field.user.user.field_user_professional_profile
     - field.field.user.user.field_user_subscription_events
     - image.style.profile_icon
   module:
@@ -82,6 +84,7 @@ content:
 hidden:
   field_last_password_reset: true
   field_password_expiration: true
+  field_social_media: true
   field_user_business_title: true
   field_user_content: true
   field_user_frequency: true
@@ -89,6 +92,7 @@ hidden:
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
+  field_user_professional_profile: true
   field_user_subscription_events: true
   langcode: true
   member_for: true

@@ -9,7 +9,7 @@
     'listing__card',
     'mdl-card',
     'listing__card--stats-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
 <div class="{{ classes|join(' ') }}">
@@ -18,14 +18,15 @@
     <div class="listing__field">
       <h2 class="listing__title">{{ label }}</h2>
     </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_ar_description }}</p>
-    </div>
+    {% if view_mode == 'view_mode_featured' %}
+      <div class="listing__field">
+        <p class="listing__teaser">{{ content.field_ar_abstract|render|striptags('<a>')|raw }}</p>
+      </div>
+    {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">
-      {#todo: Stats are only placeholder #}
-      <div class="listing__stat is-only-placeholder">
-        <span class="listing__text">22</span>
-        <span class="listing__icon icon icon--like"></span>
+      <div class="listing__stat">
+        <span class="listing__text">{{ member_count }}</span>
+        <span class="listing__icon icon icon--user"></span>
       </div>
     </div>
   </div>

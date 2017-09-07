@@ -74,6 +74,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
+      'uid' => $this->t('Author ID'),
       'i18n' => $this->t('Field translations'),
     ];
   }
@@ -85,6 +86,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
     return $this->select('d8_solution', 's')->fields('s', [
       'nid',
       'vid',
+      'uid',
       'type',
       'title',
       'uri',

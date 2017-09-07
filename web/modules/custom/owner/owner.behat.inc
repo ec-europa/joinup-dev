@@ -9,11 +9,9 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\MaterialDesignTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
 
@@ -23,7 +21,6 @@ use Drupal\taxonomy\TermInterface;
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use MaterialDesignTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UserTrait;
   use UtilityTrait;
@@ -74,8 +71,6 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
       }
 
       $values = [
-        'rid' => 'owner',
-        'id' => !empty($row['id']) ? $row['id'] : $this->getRandomUri(),
         'field_owner_type' => $tids,
         'field_owner_name' => !empty($row['name']) ? $row['name'] : $this->getRandom()->name(8, TRUE),
       ];
@@ -84,8 +79,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
         $values['uid'] = $this->getUserByName($row['author'])->id();
       }
 
-      $owner = Rdf::create($values);
-      $owner->save();
+      $owner = $this->createRdfEntity('owner', $values);
 
       $this->owners[$owner->id()] = $owner;
     }
@@ -126,6 +120,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   public function cleanOwners() {
     // Remove any owners that were created.
     foreach ($this->owners as $owner) {
+      $owner->skip_notification = TRUE;
       $owner->delete();
     }
   }

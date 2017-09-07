@@ -42,11 +42,12 @@ Feature: Event moderation
     # Edit the collection and set it as moderated.
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check the box "Moderated"
     Then I press "Publish"
-    And I should see the capitalised heading "Wet Lords"
+    And I should see the heading "Wet Lords"
 
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create events but not to publish them.
@@ -61,8 +62,9 @@ Feature: Event moderation
     # content.
     When I am logged in as a moderator
     And I go to the homepage of the "Wet Lords" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check "Closed collection"
     And I wait for AJAX to finish
     And I select "Only members can create new content." from "eLibrary creation"
@@ -94,8 +96,10 @@ Feature: Event moderation
     And I should see the text "30 August to 01 September 2018"
 
     # Publish the content.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    And the following fields should be present "Motivation"
     When I fill in "Title" with "The Fire of the Nothing"
     And I press "Publish"
     Then I should see the heading "The Fire of the Nothing"
@@ -104,15 +108,18 @@ Feature: Event moderation
     When I am logged in as "Patricia Lynch"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Request changes"
     And the current workflow state should be "Published"
-    Then I press "Request changes"
 
-    # Implement changes as owner of the event.
+    # Implement changes as owner of the document.
+    Given I fill in "Motivation" with "Request some regression changes"
+    And I press "Request changes"
     When I am logged in as "Rosa Vaughn"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
     When I fill in "Title" with "The event is amazing"
@@ -123,6 +130,7 @@ Feature: Event moderation
     When I am logged in as "Patricia Lynch"
     And I go to the homepage of the "Wet Lords" collection
     And I click "The Fire of the Nothing"
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     Then I should see the button "Publish"
     And the current workflow state should be "Proposed"

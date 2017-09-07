@@ -1,0 +1,39 @@
+// Footer EC menu
+// 
+// Markup: html/footer-ec-menu.html
+// 
+// European Commission menu placed in the footer second
+// 
+// Styleguide 2.14.2
+
+// Component
+// --------------------------------------------------
+.ec-menu
+  margin-top: 0
+  margin-bottom: 0
+  padding-left: 0
+  list-style-type: none
+  +flex
+  +flex-direction(row)
+  +flex-wrap(wrap)
+  +justify-content(flex-start)
+  +align-items(center)
+
+// Elements
+// --------------------------------------------------
+.ec-menu__item
+  margin-right: 20px
+  margin-bottom: 5px
+
+.ec-menu__link
+  text-decoration: underline
+  color: #c0d0e3
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+.ec-menu__link
+  &:hover
+    text-decoration: none

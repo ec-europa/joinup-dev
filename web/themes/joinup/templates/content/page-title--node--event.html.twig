@@ -14,6 +14,9 @@
 {% if title %}
   <div class="page__title-wrapper">
       <h1 class="page__title">{{ title }}</h1>
+      {% if permalink %}
+        <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
+      {% endif %}
       <div class="details">
         <div class="details__element details__element--block">
           <div class="value gray">

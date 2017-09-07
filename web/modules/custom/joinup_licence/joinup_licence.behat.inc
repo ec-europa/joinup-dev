@@ -9,9 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing licences.
@@ -19,7 +17,6 @@ use Drupal\rdf_entity\Entity\Rdf;
 class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -133,10 +130,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    *   A new licence entity.
    */
   protected function createLicence(array $values) {
-    $values['rid'] = 'licence';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-    $licence = Rdf::create($values);
-    $licence->save();
+    $licence = $this->createRdfEntity('licence', $values);
     $this->licences[$licence->id()] = $licence;
 
     return $licence;
@@ -152,7 +146,12 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   public function deleteLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
-    $this->getLicenceByName($licence)->delete();
+    $licence = $this->getLicenceByName($licence);
+    // Do not send email for entities created by the API.
+    // @todo: Convert the dynamic property to a proper temporary storage.
+    // @see: https://www.drupal.org/node/2896474
+    $licence->skip_notification = TRUE;
+    $licence->delete();
   }
 
   /**
@@ -190,8 +189,9 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    */
   public function cleanLicences() {
     // Remove any asset distributions that were created.
-    foreach ($this->licences as $licences) {
-      $licences->delete();
+    foreach ($this->licences as $licence) {
+      $licence->skip_notification = TRUE;
+      $licence->delete();
     }
   }
 

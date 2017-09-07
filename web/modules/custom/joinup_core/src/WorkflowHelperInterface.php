@@ -137,6 +137,32 @@ interface WorkflowHelperInterface {
   public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow);
 
   /**
+   * Returns the workflow related to an entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity object.
+   * @param string $state_field_name
+   *   The state field name. If not passed, it will be searched.
+   *
+   * @return \Drupal\workflows\WorkflowInterface|null
+   *   The workflow object or null if it was not found.
+   */
+  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL);
+
+  /**
+   * Finds the transition given an entity that is being updated.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity object.
+   * @param string $state_field_name
+   *   The state field name. If not passed, it will be searched.
+   *
+   * @return \Drupal\workflows\TransitionInterface|null
+   *   The transition object or null if it was not found.
+   */
+  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL);
+
+  /**
    * Checks whether the user has at least one of the provided roles.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity

@@ -159,13 +159,13 @@ Feature: Navigation menu for custom pages
       | banner | banner.jpg  |
       | state  | validated   |
     And custom_page content:
-      | title                       | body      | collection  |
-      | The Burning Angel           | Test body | Hidden Ship |
-      | Snake of Pleasure           | Test body | Hidden Ship |
-      | The Slaves of the Shores    | Test body | Hidden Ship |
-      | The Slaves of the Sea       | Test body | Hidden Ship |
-      | The Slaves of the Mountains | Test body | Hidden Ship |
-      | The Slaves of the Air       | Test body | Hidden Ship |
+      | title                       | body      | collection  | status      |
+      | The Burning Angel           | Test body | Hidden Ship | published   |
+      | Snake of Pleasure           | Test body | Hidden Ship | published   |
+      | The Slaves of the Shores    | Test body | Hidden Ship | published   |
+      | The Slaves of the Sea       | Test body | Hidden Ship | published   |
+      | The Slaves of the Mountains | Test body | Hidden Ship | published   |
+      | The Slaves of the Air       | Test body | Hidden Ship | unpublished |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
       | title                       | parent            | weight |
@@ -184,17 +184,60 @@ Feature: Navigation menu for custom pages
       | Snake of Pleasure           |
       | The Slaves of the Mountains |
       | The Slaves of the Sea       |
-      | The Slaves of the Air       |
 
     # Disabled links should not be shown in the sub pages menu.
     When I am logged in as a facilitator of the "Hidden Ship" collection
     And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
-    And I disable "The Slaves of the Air" in the navigation menu of the "Hidden Ship" collection
     And I go to the homepage of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
       | Snake of Pleasure        |
       | The Slaves of the Sea    |
+      # The Slaves of the Air is unpublished and the facilitator can see it.
+      | The Slaves of the Air    |
     But I should not see the "The Slaves of the Mountains" tile
-    And I should not see the "The Slaves of the Air" tile
+
+    When I am not logged in
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores    |
+      | Snake of Pleasure           |
+      | The Slaves of the Sea       |
+
+    # Publish an entity will result in showing it to the menu if it is meant to.
+    When I am logged in as a moderator
+    And I go to the "The Slaves of the Air" custom page
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    And I press "Save and publish"
+    Then I should see the heading "The Slaves of the Air"
+
+    When I am not logged in
+    And I go to the homepage of the "Hidden Ship" collection
+    And I click "The Burning Angel" in the "Navigation menu block" region
+    Then I should see the following tiles in the "Subpages menu" region:
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
+      | The Slaves of the Sea    |
+      | The Slaves of the Air    |
+
+  Scenario: Synchronize titles of custom pages and menu links
+    Given the following collection:
+      | title | Ravenous wood-munching alphabeavers |
+    And custom_page content:
+      | title       | body                                                                | collection                          |
+      | Tree eaters | Given time, they will most likely strip the entire region of trees. | Ravenous wood-munching alphabeavers |
+    When I am logged in as a facilitator of the "Ravenous wood-munching alphabeavers" collection
+    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    Then I should see the link "Tree eaters" in the "Navigation menu"
+
+    # Change the title and check that the link is updated.
+    When I click "Tree eaters"
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "An army of furry little killing machines"
+    And I press "Save"
+    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
+    And I should not see the link "Tree eaters" in the "Navigation menu"

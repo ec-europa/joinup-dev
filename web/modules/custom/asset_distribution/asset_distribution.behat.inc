@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -23,7 +22,6 @@ use Drupal\file_url\FileUrlHandler;
 class AssetDistributionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use EntityReferenceTrait;
 
@@ -142,10 +140,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       }
     }
 
-    $values['rid'] = 'asset_distribution';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-    $asset_distribution = Rdf::create($values);
-    $asset_distribution->save();
+    $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
@@ -215,7 +210,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function deleteAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $this->getAssetDistributionByName($asset_distribution)->delete();
+    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+    $asset_distribution->skip_notification = TRUE;
+    $asset_distribution->delete();
   }
 
   /**
@@ -289,6 +286,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function cleanAssetDistributions() {
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
+      $asset_distribution->skip_notification = TRUE;
       $asset_distribution->delete();
     }
   }
@@ -302,18 +300,19 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   protected static function assetDistributionFieldAliases() {
     // Mapping alias - field name.
     return [
-      'uri' => 'id',
-      'title' => 'label',
       'access url' => 'field_ad_access_url',
-      'creation date' => 'field_ad_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ad_description',
+      'downloads' => 'field_download_count',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
-      'modification date' => 'field_ad_modification_date',
+      'modification date' => 'changed',
       'representation technique' => 'field_ad_repr_technique',
       'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',
+      'title' => 'label',
+      'uri' => 'id',
     ];
   }
 

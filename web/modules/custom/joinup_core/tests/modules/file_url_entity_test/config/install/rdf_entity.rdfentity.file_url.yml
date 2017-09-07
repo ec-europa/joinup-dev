@@ -28,6 +28,7 @@ third_party_settings:
     graph:
       default: 'http://example.com/file_url/published'
       draft: 'http://example.com/file_url/draft'
+    entity_id_plugin: joinup_po_namespace
 name: File URL
 rid: file_url
 description: ''

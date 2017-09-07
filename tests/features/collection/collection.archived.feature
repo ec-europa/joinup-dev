@@ -44,6 +44,7 @@ Feature: Creating content and commenting on archived collection
     And I am logged in as a moderator
     And I go to the "The Willing Consort" collection
     And I click "Edit"
+    When I fill in "Motivation" with "As you wish."
     And I press "Archive"
     And I go to the "The Weeping's Stars" discussion
     Then the following fields should not be present "Create comment"
@@ -67,13 +68,10 @@ Feature: Creating content and commenting on archived collection
     And I am logged in as a moderator
     And I go to the "The Willing Consort" collection
     And I click "Edit"
+    When I fill in "Motivation" with "As you wish."
     And I press "Archive"
 
     # We only need to check that privileged users do not have access anymore.
     And I am logged in as a facilitator of the "The Willing Consort" collection
     And I go to the "The Willing Consort" collection
-    Then I should not see the contextual link "Add event" in the "Plus button menu" region
-    And I should not see the contextual link "Add news" in the "Plus button menu" region
-    And I should not see the contextual link "Add document" in the "Plus button menu" region
-    And I should not see the contextual link "Add discussion" in the "Plus button menu" region
-    And I should not see the contextual link "Add custom page" in the "Navigation menu block" region
+    Then I should not see the plus button menu

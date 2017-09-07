@@ -134,3 +134,172 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
   $moderation = $relation_manager->getParentModeration($entity);
   return $moderation == 1 ? 'node:pre_moderated' : 'node:post_moderated';
 }
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * For shared nodes, adds an attribute with the id of the parent entity where
+ * they have been shared from.
+ */
+function joinup_community_content_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  // Apply the visual cue only on the tile view mode.
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if ($parent) {
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+
+  // If the node is shared somewhere, attach the related library.
+  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+    $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
+  }
+
+  if ($node->isSticky()) {
+    $variables['attributes']['class'][] = 'is-sticky';
+    $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the current og group context as attribute on the page wrapper.
+ */
+function joinup_community_content_preprocess_page(&$variables) {
+  /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+
+    if (
+      $group &&
+      $group->getEntityTypeId() === 'rdf_entity' &&
+      $group->bundle() === 'collection'
+    ) {
+      $variables['attributes']['data-drupal-collection-context'] = $group->id();
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_community_content_theme($existing, $type, $theme, $path) {
+  return [
+    'social_share' => [
+      'variables' => ['entity' => NULL],
+    ],
+    'advanced_search_pseudo_facet' => [
+      'variables' => ['entity' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Preprocess function for the "social_share" theme hook.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: the entity being shared.
+ */
+function template_preprocess_social_share(array &$variables) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
+  $variables['url'] = $entity->toUrl('canonical', [
+    'language' => $entity->language(),
+  ])->setAbsolute()->setOption('alias', TRUE);
+
+  $variables['encoded_url'] = urlencode($variables['url']->toString());
+}
+
+/**
+ * Preprocess function for the "advanced_search_pseudo_facet" theme hook.
+ *
+ * This is a link to the search page that is shown on the collection and
+ * solution homepages. It takes the current facet settings from the query
+ * arguments and forwards them to the search page so that similar search results
+ * are being shown there.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: The collection or solution that is being forwarded to the search
+ *     page.
+ */
+function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
+  // Retrieve the facet arguments from the request query.
+  $request = \Drupal::request();
+  $facet_arguments = $request->query->get('f', []);
+
+  // Reset the facet arguments to an empty array if the URL has been tampered
+  // with.
+  if (!is_array($facet_arguments)) {
+    $facet_arguments = [];
+  }
+
+  // Add a filter for the current collection or solution.
+  $facet_arguments[] = 'group:' . $variables['entity']->id();
+  $options = ['query' => ['f' => joinup_community_content_translate_facet_arguments($facet_arguments)]];
+  $variables['link'] = [
+    '#type' => 'link',
+    '#title' => t('Advanced search'),
+    '#url' => Url::fromRoute('view.search.page_1', [], $options),
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_community_content_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  // Add a theme suggestion to the container of the inline facets region of
+  // collections and solutions so that a fake "Advanced search" facet can be
+  // appended to the inline facets.
+  if ($variables['theme_hook_original'] === 'container__facet_region__inline_facets') {
+    if (in_array($variables['element']['#entity']->bundle(), ['collection', 'solution'])) {
+      $suggestions[] = $variables['theme_hook_original'] . '__with_advanced_search';
+    }
+  }
+}
+
+/**
+ * Translates facet IDs in a facet arguments array for use on the search page.
+ *
+ * The collection and solution homepages are a different 'facet source' than the
+ * actual search page, meaning that they are using facets with different IDs. If
+ * we want to forward a filtered search from a collection or solution homepage
+ * then the facet IDs need to be translated to match the ones from the search
+ * page.
+ *
+ * @param array $arguments
+ *   The query arguments in which to translate the facet IDs.
+ *
+ * @return array
+ *   The translated array.
+ */
+function joinup_community_content_translate_facet_arguments(array $arguments) {
+  $mapping = [
+    'collection_policy_domain' => 'policy_domain',
+    'collection_type' => 'type',
+    'solution_content_bundle' => 'type',
+    'solution_policy_domain' => 'policy_domain',
+    'solution_spatial_coverage' => 'spatial_coverage',
+  ];
+
+  foreach ($arguments as $key => &$argument) {
+    list($facet_id, $value) = explode(':', $argument, 2);
+    if (array_key_exists($facet_id, $mapping)) {
+      $argument = implode(':', [$mapping[$facet_id], $value]);
+    }
+  }
+
+  return $arguments;
+}

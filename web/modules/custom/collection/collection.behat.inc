@@ -13,13 +13,11 @@ use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing collections.
@@ -32,7 +30,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use WorkflowTrait;
 
@@ -193,12 +190,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
-      'creation date' => 'field_ar_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ar_description',
       'elibrary creation' => 'field_ar_elibrary_creation',
       'logo' => 'field_ar_logo',
       'moderation' => 'field_ar_moderation',
-      'modification date' => 'field_ar_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
@@ -296,9 +293,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    $values['rid'] = 'collection';
-    $collection = Rdf::create($values);
-    $collection->save();
+    $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship
@@ -377,7 +372,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function deleteCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $this->getCollectionByName($collection)->delete();
+    $collection = $this->getCollectionByName($collection);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
   }
 
   /**
@@ -402,24 +399,35 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The name of the collection to check.
    * @param int $number
    *   The expected number of members in the collection.
+   * @param int $membership_state
+   *   The state of the membership. Can be either active, pending or blocked.
    *
    * @throws \Exception
    *   Thrown when the number of members does not not match the expectation.
    *
-   * @Then the :collection collection should have :number member(s)
+   * @Then the :collection collection should have :number :membership_state member(s)
    */
-  public function assertMemberCount($collection, $number) {
-    $collection = $this->getCollectionByName($collection);
+  public function assertMemberCount($collection, $number, $membership_state) {
+    $states = [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_BLOCKED,
+    ];
 
+    if (!in_array($membership_state, $states)) {
+      throw new \Exception("Invalid membership state '{$membership_state}' found.");
+    }
+
+    $collection = $this->getCollectionByName($collection);
     $actual = \Drupal::entityQuery('og_membership')
       ->condition('entity_type', 'rdf_entity')
       ->condition('entity_id', $collection->id())
-      ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+      ->condition('state', $membership_state)
       ->count()
       ->execute();
 
     if ($actual != $number) {
-      throw new \Exception("Wrong number of members. Expected number: $number, actual number: $actual.");
+      throw new \Exception("Wrong number of {$membership_state} members. Expected number: $number, actual number: $actual.");
     }
   }
 
@@ -449,33 +457,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function givenCollectionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
-      // Load group.
       $group = $this->getCollectionByName($values['collection']);
-
-      // Load member.
-      $member = user_load_by_name($values['user']);
-      if (empty($member)) {
-        throw new \Exception("User " . $values['user'] . " not found.");
-      }
-
-      // Convert role names to role IDs.
-      $roles = [];
-      if (!empty($values['roles'])) {
-        $role_names = explode(',', $values['roles']);
-        $role_names = array_map('trim', $role_names);
-        // Every owner is also a facilitator. In Joinup the facilitator role is
-        // assigned to the owner when they create the collection. Since in this
-        // step the collections are already created, mimick this behaviour by
-        // making sure every owner also has the 'facilitator' role.
-        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
-          $role_names[] = 'facilitator';
-        }
-        $roles = $this->getOgRoles($role_names, $group);
-      }
-
-      $state = !empty($values['state']) ? $values['state'] : NULL;
-
-      $this->subscribeUserToGroup($member, $group, $roles, $state);
+      $this->givenUserMembership($group, $values);
     }
   }
 
@@ -613,6 +596,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function cleanCollections() {
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
+      $collection->skip_notification = TRUE;
       $collection->delete();
     }
   }
@@ -687,6 +671,19 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $transition = $collection->get('field_ar_state')->first()->getWorkflow()->getTransition($transition_id);
     $collection->get('field_ar_state')->first()->applyTransition($transition);
     $collection->save();
+  }
+
+  /**
+   * Asserts that the string "x days ago" is present on the page.
+   *
+   * @Then I see the days passed since :date
+   */
+  public function assertDaysPassedSince($date) {
+    $timestamp = strtotime($date);
+    $seconds_since = time() - $timestamp;
+    $days_since = floor($seconds_since / 86400);
+    $text = sprintf("%s days ago", $days_since);
+    $this->assertSession()->pageTextContains($text);
   }
 
 }

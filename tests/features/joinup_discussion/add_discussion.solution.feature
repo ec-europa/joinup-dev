@@ -51,10 +51,7 @@ Feature: "Add discussion" visibility options.
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
-
-    # The sections about managing revisions and groups should not be visible.
-    And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
+    And the following fields should not be present "Motivation"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"

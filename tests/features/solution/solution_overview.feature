@@ -1,19 +1,71 @@
 @api
 Feature: Solutions Overview
+  As a new visitor of the Joinup website
+  To get an idea of the various solutions that are available
+  I should see a list of all solutions
 
   Scenario: Check visibility of "Solutions" menu link.
     Given I am an anonymous user
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
+    And I should see the text "A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
 
-  # @todo: The small header, which contains solutions link, should be removed for anonymous users on the homepage
-  # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
+  Scenario: Solution overview paging
+    Given solutions:
+      | title      | state     |
+      | Arctic fox | validated |
+      | Alpaca     | validated |
+      | Boomalope  | validated |
+      | Boomrat    | validated |
+      | Megasloth  | validated |
+      | Thrumbo    | validated |
+      | Spelopede  | validated |
+      | Muffalo    | validated |
+      | Husky      | validated |
+      | Gazelle    | validated |
+      | Cow        | validated |
+      | Panther    | validated |
+      | Tortoise   | validated |
+      | Warg       | validated |
+    And I am an anonymous user
+    And I am on the homepage
+    When I click "Solutions"
+    Then I should see the following tiles in the correct order:
+      | Arctic fox |
+      | Alpaca     |
+      | Boomalope  |
+      | Boomrat    |
+      | Megasloth  |
+      | Thrumbo    |
+      | Spelopede  |
+      | Muffalo    |
+      | Husky      |
+      | Gazelle    |
+      | Cow        |
+      | Panther    |
+    And I should see the link "2"
+    # Next and last page links are rendered as icons "›" and "»", but there is an
+    # help text that is meant for screen readers and also visualised on mouseover.
+    And I should see the link "Next page"
+    And I should see the link "Last page"
+    But I should not see the link "First page"
+    And I should not see the link "Go to previous page"
+    When I click "Next page"
+    Then I should see the following tiles in the correct order:
+      | Tortoise   |
+      | Warg       |
+    And I should see the link "1"
+    And I should see the link "First page"
+    And I should see the link "Go to previous page"
+    But I should not see the link "Next page"
+    And I should not see the link "Last page"
+
   @terms
   Scenario: View solution overview as an anonymous user
     Given users:
@@ -24,6 +76,7 @@ Feature: Solutions Overview
       | logo  | logo.png              |
       | state | validated             |
     And solutions:
+    # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title                 | description                    | state     |
       | Non electronic health | Supports health-related fields | validated |
       | Closed data           | Facilitate access to data sets | validated |
@@ -61,11 +114,11 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the link "Non electronic health"
-    And I should see the text "Supports health-related fields"
+    And I should not see the text "Supports health-related fields"
     And I should see the link "Closed data"
-    And I should see the text "Facilitate access to data sets"
+    And I should not see the text "Facilitate access to data sets"
     And I should see the link "Isolating Europe"
-    And I should see the text "Reusable tools and services"
+    And I should not see the text "Reusable tools and services"
     When I click "Non electronic health"
     Then I should see the heading "Non electronic health"
 
@@ -80,7 +133,7 @@ Feature: Solutions Overview
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ambrosio Morison                                                       |
       | E-mail address   | ambrosio.morison@example.com                                           |
-    Then I select "http://data.europa.eu/eira/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"

@@ -73,7 +73,7 @@
     'mdl-cell--4-col-phone',
   ]
 %}
-<div class="js-comment comment-item comment-item--default mdl-cell mdl-cell--12-col contextual-region">
+<div class="js-comment comment-item comment-item--default contextual-region">
   <div class="mdl-grid">
     <div class="comment-item__details details mdl-cell mdl-cell--12-col">
       {{ title_prefix }}{{ title_suffix }}
@@ -91,13 +91,7 @@
     {% endif %}
     <div class="{{ content_classes|join(' ') }}">
       <div class="comment-item__field">
-        <p class="comment-item__teaser">{{ content.field_body|render|striptags|raw }}</p>
-      </div>
-      <div class="comment-item__field comment-item__stats">
-        <div class="comment-item__stat">
-          <span class="comment-item__text is-only-placeholder">22</span>
-          <span class="comment-item__icon icon icon--like is-only-placeholder"></span>
-        </div>
+        <p class="comment-item__teaser">{{ content }}</p>
       </div>
     </div>
   </div>

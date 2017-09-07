@@ -1,0 +1,114 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_social_media
+  module:
+    - social_media_links_field
+    - user
+id: user.user.field_social_media
+field_name: field_social_media
+entity_type: user
+bundle: user
+label: 'Social media accounts'
+description: 'Enter your social media accounts, but only the relative part for each. The website will automatically prepend the full URL. For example if your Facebook page is <em>https://www.facebook.com/myname</em>, then add only <em>myname</em>.'
+required: false
+translatable: false
+default_value:
+  -
+    platform: null
+    value: null
+    platform_values:
+      facebook:
+        value: ''
+      github:
+        value: ''
+      googleplus:
+        value: ''
+      linkedin:
+        value: ''
+      slideshare:
+        value: ''
+      twitter:
+        value: ''
+      vimeo:
+        value: ''
+      youtube:
+        value: ''
+default_value_callback: ''
+settings:
+  iconset: 'joinup:default'
+  platforms:
+    behance:
+      description: ''
+      weight: -10
+      enabled: false
+    bitbucket:
+      description: ''
+      weight: -9
+      enabled: false
+    contact:
+      description: ''
+      weight: -8
+      enabled: false
+    drupal:
+      description: ''
+      weight: -7
+      enabled: false
+    email:
+      description: ''
+      weight: -6
+      enabled: false
+    facebook:
+      enabled: true
+      description: ''
+      weight: -5
+    github:
+      enabled: true
+      description: ''
+      weight: -4
+    googleplus:
+      enabled: true
+      description: ''
+      weight: -3
+    instagram:
+      description: ''
+      weight: -2
+      enabled: false
+    linkedin:
+      enabled: true
+      description: ''
+      weight: -1
+    pinterest:
+      description: ''
+      weight: 0
+      enabled: false
+    rss:
+      description: ''
+      weight: 1
+      enabled: false
+    slideshare:
+      enabled: true
+      description: ''
+      weight: 2
+    tumblr:
+      description: ''
+      weight: 3
+      enabled: false
+    twitter:
+      enabled: true
+      description: ''
+      weight: 4
+    vimeo:
+      enabled: true
+      description: ''
+      weight: 5
+    youtube:
+      enabled: true
+      description: ''
+      weight: 6
+    youtube_channel:
+      description: ''
+      weight: 7
+      enabled: false
+field_type: social_media_links_field

@@ -51,17 +51,16 @@ Feature: "Add document" visibility options.
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
-
-    # The sections about managing revisions and groups should not be visible.
-    And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Shared in, Motivation"
 
     When I fill in the following:
       | Title       | The Sparks of the Butterfly              |
       | Short title | Amazing document                         |
-    And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
+    And I press "Save as draft"
+    Then I should see the error message "Description field is required."
+    When I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I press "Save as draft"
     Then I should see the heading "The Sparks of the Butterfly"
     And I should see the success message "Document The Sparks of the Butterfly has been created."

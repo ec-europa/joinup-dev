@@ -12,15 +12,13 @@
  *   such as 'user_picture' are available as 'content.user_picture'.
  * - attributes: HTML attributes for the container element.
  * - user: A Drupal User entity.
+ * - full_name: The full name of the user, consisting of the first name + the
+ *   family name.
  *
  * @see template_preprocess_user()
  */
 #}
 <div class="details__element">
   {{ content.field_user_photo }}
-  {% if content.field_user_family_name|render and content.field_user_first_name|render %}
-    <a class="value gray"href="{{ path('entity.user.canonical', {'user': user.id}) }}" class="value gray">{{ content.field_user_family_name }} {{ content.field_user_first_name }}</a>
-  {% else %}
-    <a href="{{ path('entity.user.canonical', {'user': user.id}) }}" class="value gray">{{ user.label }}</a>
-  {% endif %}
+  <a href="{{ path('entity.user.canonical', {'user': user.id}) }}" class="value gray">{{ full_name }}</a>
 </div>

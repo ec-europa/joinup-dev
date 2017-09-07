@@ -13,17 +13,18 @@
  */
 #}
 {{ title_prefix }}
-{% if title %}
-  <div class="page__title-wrapper">
+{% if title|render %}
+  <div class="page__title-wrapper{{ visually_hidden_class }}">
       {% if is_create_page %}
         <h1 class="page__title">
           <span class="icon icon--plus"></span>
           {{ title }}
         </h1>
       {% else %}
-        <h1 class="page__title">
-          {{ title }}
-        </h1>
+        <h1 class="page__title">{{ title }}</h1>
+        {% if permalink %}
+          <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
+        {% endif %}
       {% endif %}
   </div>
 {% endif %}

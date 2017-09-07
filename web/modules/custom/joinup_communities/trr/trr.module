@@ -27,7 +27,7 @@ function trr_field_group_pre_render_alter(&$element, $group, $rendering_object) 
     $id = $rdf_entity->id();
   }
   // Editing a solution.
-  if ($bundle == 'solution') {
+  if ($bundle == 'solution' && !empty($rdf_entity->get('collection')->getValue()[0]['target_id'])) {
     $id = $rdf_entity->get('collection')->getValue()[0]['target_id'];
   }
   // @see solution_field_group_pre_render_alter()

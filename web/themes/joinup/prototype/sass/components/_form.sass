@@ -5,8 +5,9 @@
 // Elements
 // --------------------------------------------------
 .form__actions
-  margin-top: 50px
+  margin-top: 25px
   margin-right: 10px
+  margin-bottom: 0 !important
 
 .form__label
   font-size: 16px
@@ -25,12 +26,8 @@
   .form__label
     margin-bottom: 0
 
-
 .form__field-container
   margin-bottom: 25px
-
-.form__description
-  margin-top: 10px
 
 .form__cell
   margin: 0
@@ -38,11 +35,10 @@
     margin: 8px
 
 .form__actions_inner
-  display: inline-flex
-  flex-wrap: wrap
+  +inline-flex
+  +flex-wrap(wrap)
   .button
-    justify-content: space-between
-    margin: 15px 15px 0 0
+    @extend .button-inline
 
 .form-item-persistent-login
   margin-bottom: 20px
@@ -62,13 +58,6 @@
     option
       padding: 2px 5px
 
-.form-textarea
-  border: 1px #a0a1a2 solid
-  font-size: 16px
-  line-height: 1.4em
-  padding: 5px
-  resize: none
-
 .form-type-date
   display: inline-block
 
@@ -82,10 +71,71 @@
   .form__label
     margin-bottom: 0
 
+.form__content
+  @extend .white-box
+
+.form__description
+  font-size: $font-size-xsmall
+  font-weight: $font-weight-thin
+  display: block
+  margin-top: 6px
+  color: lighten($color-grey-medium, 10%)
+  ul
+    margin-top: 0
+    margin-bottom: 0
+    padding-left: 30px
+  li
+    font-size: $font-size-xsmall
+    font-weight: $font-weight-thin
+    color: lighten($color-grey-medium, 10%)
+
+.form-wrapper
+  margin-bottom: $form-margin
+  &.form__actions-wrapper
+    margin-bottom: 0
+
+// Asterisk is added for all required fields except collection and solution forms.
+.form__with-asterisk
+  label.form-required
+    position: relative
+    &:before
+      position: absolute
+      right: -15px
+      content: '*'
+      color: $color-error
+
 // Modifiers
 // --------------------------------------------------
 .form__description--checkbox
   margin-left: 25px
+
+// Dependencies
+// --------------------------------------------------
+.form__actions
+  .dropbutton-wrapper
+    float: none
+    width: auto
+  .dropbutton-multiple
+    @extend .button-inline
+    &.open
+      .dropbutton-arrow
+        top: 40%
+    .dropbutton-widget
+      padding-right: 0
+  .dropbutton-action
+    .button
+      margin: 0
+    &.secondary-action
+      position: absolute
+      white-space: nowrap
+      .button
+        margin-top: 5px
+  .dropbutton-widget
+    .dropbutton
+      overflow: visible
+  .dropbutton-toggle
+    .dropbutton-arrow
+      color: #fff
 
 // States
 // --------------------------------------------------

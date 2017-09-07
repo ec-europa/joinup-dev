@@ -1,18 +1,16 @@
-a.tabledrag-handle .handle
-  background: none !important
-
-a.tabledrag-handle
-  margin-left: 0 !important
-  height: 40px !important
+.draggable
+  a.tabledrag-handle
+    float: none
+    height: auto
+    margin-left: 0
+  .field-multiple-drag
+    width: 25px
+  .handle,
+  .indentation
+    display: none
 
 .tabledrag-toggle-weight-wrapper
   display: none
-
-.field-multiple-drag
-  padding: 0 !important
-
-.draggable.form-table__row .form-table__cell
-  padding-left: 0
 
 #edit-field-ar-owner-actions.container-inline
   width: 100%
@@ -23,7 +21,10 @@ a.tabledrag-handle
 textarea
   max-width: 100%
 
-/* Fix wrapper width in forms with vertical tabs.
+.messages
+  background-image: none
+
+// Fix wrapper width in forms with vertical tabs.
 .field-group-tabs-wrapper
   width: 100%
 
@@ -37,19 +38,6 @@ textarea
     margin-bottom: 0
 
 // Styles for multiple field table.
-.table-operations
-  table
-    margin-bottom: 20px
-  .form-table__cell
-    padding: 20px 15px 20px 0
-  .form-table__header
-    padding-left: 0
-  .form-managed-file, a.tabledrag-handle
-    display: inline-block
-    vertical-align: middle
-    float: none
-
-
 .field--widget-inline-entity-form-complex
   .form-type-select
     display: inline-block
@@ -71,7 +59,10 @@ textarea
     padding-top: 10px
     padding-right: 35px
 
-#block-navigation, .comment-item
+// Contextual region changes
+// Default icon is replaced
+.contextual
+  +z-index(navigation)
   button.trigger
     font-family: 'WAAT Icons'
     speak: none
@@ -92,29 +83,57 @@ textarea
     height: 30px !important
     width: 30px !important
     border-radius: 30px !important
+    position: relative !important
     &:hover, &:focus
       background: $color-grey-light
     &:before
       +icon-size(15px)
       content: '\e8ab'
 
-.comment-item
-  button.trigger
-    position: relative !important
+// Change contextual button color
+// on dark backgrounds
+.section--featured, .section--header
+  .contextual
+    button.trigger
+      color: #fff
+      &:hover, &:focus
+        background-image: none
+        background: $color-grey-medium
 
-.comment-item
-  ul.contextual-links
-    z-index: 3
-    position: relative
-    padding-left: 0
-    margin: 0
-    li::before
-      display: none
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card--title-pin
+  .contextual
+    left: 0
+    right: auto
+  .contextual .trigger
+    float: left
+    right: auto
+    left: 0
+  .contextual .contextual-links
+    border-radius: 0 4px 4px 4px
+    float: left
+    left: 0
+    right: auto
+
+
+ul.contextual-links
+  +z-index(highlight+2)
+  position: relative
+  padding-left: 0
+  margin: 0
+  li::before
+    display: none
 
 .contextual-region.focus
   outline: none
   outline-offset: 0
 
+// Fixes dropdown button for main menu.
+// It is needed only for admin.
+#block-joinup-theme-main-menu
+  .contextual
+    +z-index(dropdown)
 
 // Fix password policy table
 #password-policy-status
@@ -131,8 +150,57 @@ textarea
 .is-only-placeholder
   background: repeating-linear-gradient(-45deg, red, red 25px, rgba(255,255,255,1) 25px, rgba(255,255,255,1) 50px)
 
-.ui-dialog
-  z-index: 400
-
 .block-local-tasks-block
   +hidden-print
+
+.block-facet--links-inline
+  display: inline-block
+
+form .description
+  @extend .form__description
+
+// Fix facets in search header
+.block-facets
+  position: relative
+
+// jQuery ui hacks
+.ui-dialog
+  +z-index(modal)
+
+.ui-dialog-buttonpane
+  border: none
+  padding-right: .4em !important
+  .button
+    @extend .button--blue-light
+    font-weight: 600
+
+.ui-widget-content
+  color: $color-base
+
+.ui-dialog-content
+  .form-actions
+    margin-bottom: 0
+
+.ui-dialog-titlebar-close
+  height: 15px !important
+  width: 15px !important
+  background: none !important
+  border: none !important
+  .ui-icon
+    @extend .icon
+    color: $color-blue-dark
+    background: none
+    border: none !important
+    text-indent: 0
+    font-size: 0
+    padding: 0
+    &:before
+      +icon-size(15px)
+      content: '\e617'
+
+// Hide select formats in a comment field for anonymous users
+// Remove margin for textarea
+.comment-form-anonymous
+  margin-bottom: 0
+  .filter-wrapper
+    display: none

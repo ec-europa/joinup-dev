@@ -9,6 +9,7 @@ source:
 process:
   id: uri
   label: collection
+  uid: uid
   field_ar_abstract: abstract
   field_ar_access_url: access_url
   field_ar_affiliates:
@@ -40,7 +41,7 @@ process:
       - @contact_from_node
       - @contact_from_email
     unique: true
-  field_ar_creation_date: created_time
+  created: created_time
   field_ar_description/value:
     plugin: file_inline
     source: body
@@ -56,7 +57,7 @@ process:
   field_ar_moderation:
     plugin: default_value
     default_value: true
-  field_ar_modification_date: changed_time
+  changed: changed_time
   owner_from_publisher:
     - plugin: explode
       source: owner

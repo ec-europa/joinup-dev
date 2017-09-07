@@ -7,11 +7,13 @@ package: Joinup
 dependencies:
   - joinup_community_content
   - og
-  - video_embed_field
+  - video_embed_wysiwyg
 
 config_devel:
   - core.entity_form_display.node.video.default
   - core.entity_view_display.node.video.default
+  - core.entity_view_display.node.video.view_mode_featured
+  - core.entity_view_display.node.video.view_mode_tile
   - field.field.node.video.body
   - field.field.node.video.field_comments
   - field.field.node.video.field_keywords

@@ -45,7 +45,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
@@ -79,6 +79,7 @@ display:
               document: view_mode_tile
               event: view_mode_tile
               news: view_mode_tile
+              video: view_mode_tile
             'entity:rdf_entity':
               asset_distribution: default
               asset_release: default

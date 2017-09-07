@@ -10,9 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset_releases.
@@ -21,7 +19,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityReferenceTrait;
   use FileTrait;
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
 
   /**
@@ -147,10 +144,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       }
     }
 
-    $values['rid'] = 'asset_release';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-    $asset_release = Rdf::create($values);
-    $asset_release->save();
+    $asset_release = $this->createRdfEntity('asset_release', $values);
     $this->assetReleases[$asset_release->id()] = $asset_release;
 
     return $asset_release;
@@ -166,7 +160,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function deleteAssetRelease($asset_release) {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
-    $this->getAssetReleaseByName($asset_release)->delete();
+    $asset_release = $this->getAssetReleaseByName($asset_release);
+    $asset_release->skip_notification = TRUE;
+    $asset_release->delete();
   }
 
   /**
@@ -219,6 +215,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   public function cleanAssetReleases() {
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
+      $asset_release->skip_notification = TRUE;
       $asset_release->delete();
     }
   }
@@ -235,7 +232,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'uri' => 'id',
       'title' => 'label',
       'contact information' => 'field_isr_contact_information',
-      'creation date' => 'field_isr_creation_date',
+      'creation date' => 'created',
       'description' => 'field_isr_description',
       'distribution' => 'field_isr_distribution',
       'documentation' => 'field_isr_documentation',
@@ -243,7 +240,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'is version of' => 'field_isr_is_version_of',
       'keywords' => 'field_keywords',
       'language' => 'field_isr_language',
-      'modification date' => 'field_isr_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_isr_owner',
       'release number' => 'field_isr_release_number',
       'release notes' => 'field_isr_release_notes',
@@ -329,16 +326,22 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then the :release release should be marked as the latest release
    */
-  public function assertLinkDistribution($release) {
+  public function assertReleaseIsLatest($release) {
     $release = $this->getAssetReleaseByName($release);
 
-    $latest_release = $this->getSession()->getPage()->find('css', '.is-latest');
-    if (empty($latest_release)) {
-      throw new \Exception("No release marked as latest was found in the page.");
+    $latest_releases = $this->getSession()->getPage()->findAll('css', '.is-latest');
+    if (empty($latest_releases)) {
+      throw new \Exception('No release marked as latest was found in the page.');
     }
-    $release_version = $release->field_isr_release_number->value;
+
+    if (count($latest_releases) > 1) {
+      throw new \Exception('Multiple releases marked as latest were found in the page.');
+    }
+
+    $release_version = $release->get('field_isr_release_number')->value;
     $name_with_version = $release->label() . " " . $release_version;
 
+    $latest_release = reset($latest_releases);
     if ($latest_release->find('css', '.timeline__release-title')->getText() !== $name_with_version) {
       throw new \Exception("{$release->label()} is not marked as the latest release.");
     }

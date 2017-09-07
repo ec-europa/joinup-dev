@@ -6,6 +6,7 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
+    And I should see the text "Collections are the main collaborative space where the content items are organised around a common topic or domain and where the users can share their content and engage their community."
     # Check that all logged in users can see and access the link as well.
     Given I am logged in as a user with the "authenticated user" role
     Then I should see the link "Collections"
@@ -19,6 +20,7 @@ Feature: Collections Overview
       | Username      | E-mail                       |
       | Madam Shirley | i.see.the.future@example.com |
     Given collections:
+    # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title             | description                    | state     |
       | E-health          | Supports health-related fields | validated |
       | Open Data         | Facilitate access to data sets | validated |
@@ -45,11 +47,11 @@ Feature: Collections Overview
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the link "E-health"
-    And I should see the text "Supports health-related fields"
+    And I should not see the text "Supports health-related fields"
     And I should see the link "Open Data"
-    And I should see the text "Facilitate access to data sets"
+    And I should not see the text "Facilitate access to data sets"
     And I should see the link "Connecting Europe"
-    And I should see the text "Reusable tools and services"
+    And I should not see the text "Reusable tools and services"
     When I click "E-health"
     Then I should see the heading "E-health"
 
@@ -118,5 +120,25 @@ Feature: Collections Overview
     And I should see the text "This collection is intended to show ways of being fit while working."
     And I should see the text "Tamsin Irwin"
     And I should see the text "Irwin BVBA made-up company"
-    And I should see the text "E-health"
-    And I should see the text "Belgium"
+    # The following 2 fields should not be visible after change request in ISAICP-3664.
+    And I should not see the text "E-health"
+    And I should not see the text "Belgium"
+
+  @terms
+  Scenario: Custom pages should not be visible on the overview page
+    Given the following collection:
+      | title            | Jira       |
+      | logo             | logo.png   |
+      | moderation       | no         |
+      | policy domain    | Demography |
+      | spatial coverage | Belgium    |
+      | state            | validated  |
+    And news content:
+      | title                             | body                             | collection | policy domain           | spatial coverage | state     |
+      | Jira will be down for maintenance | As always, during business hours | Jira       | Statistics and Analysis | Luxembourg       | validated |
+    And custom_page content:
+      | title            | body                                       | collection |
+      | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira       |
+    When I go to the homepage of the "Jira" collection
+    Then I should see the "Jira will be down for maintenance" tile
+    And I should not see the "Maintenance page" tile

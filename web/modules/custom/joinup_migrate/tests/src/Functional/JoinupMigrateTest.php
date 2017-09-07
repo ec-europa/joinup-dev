@@ -8,9 +8,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
-use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\search_api\Entity\Index;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
@@ -98,8 +98,8 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     $new_collection = $this->loadEntityByLabel('rdf_entity', 'New collection');
 
     // Assertions for each migrations are defined under assert/ directory.
-    foreach (file_scan_directory(__DIR__ . '/assert', '|\.php$|') as $file) {
-      require __DIR__ . '/assert/' . $file->filename;
+    foreach (file_scan_directory(__DIR__ . '/../../assert', '|\.php$|') as $file) {
+      require __DIR__ . '/../../assert/' . $file->filename;
     }
   }
 
@@ -186,6 +186,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
         'value' => $legacy_site_files,
         'required' => TRUE,
       ],
+      'joinup_joinup_collection' => (object) [
+        'value' => 'New collection',
+        'required' => TRUE,
+      ],
     ];
 
     $settings_file = \Drupal::service('site.path') . '/settings.php';
@@ -197,6 +201,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     chmod($settings_file, 0444);
 
     $this->manager = $this->container->get('plugin.manager.migration');
+
+    foreach (['published', 'unpublished'] as $index) {
+      Index::load($index)->setOption('index_directly', 0)->save();
+    }
   }
 
   /**
@@ -240,55 +248,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
       ->execute()
       ->fetchAll();
     $this->assertTrue($found);
-  }
-
-  /**
-   * Asserts total number of items migrated.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   */
-  protected function assertTotalCount($migration_id, $count) {
-    $this->countHelper($migration_id, $count);
-  }
-
-  /**
-   * Asserts that number of items successfully migrated.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   */
-  protected function assertSuccessCount($migration_id, $count) {
-    $this->countHelper($migration_id, $count, MigrateIdMapInterface::STATUS_IMPORTED);
-  }
-
-  /**
-   * Asserts number of migrated items with a given status.
-   *
-   * @param string $migration_id
-   *   The migration.
-   * @param int $count
-   *   The count.
-   * @param int $status
-   *   (optional) The migration status. If missed all the items are counted.
-   */
-  protected function countHelper($migration_id, $count, $status = NULL) {
-    $table = "migrate_map_{$migration_id}";
-    $query = $this->db->select($table)->fields($table);
-    if ($status !== NULL) {
-      $query->condition('source_row_status', $status);
-    }
-
-    $actual_count = $query
-      ->countQuery()
-      ->execute()
-      ->fetchField();
-
-    $this->assertEquals($count, $actual_count);
   }
 
   /**
@@ -399,7 +358,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
     'Former Yugoslav Republic of Macedonia',
     'Germany',
     'Gibraltar',
-    'Gilbert and Ellice Islands',
     'Greece',
     'Guernsey',
     'Hungary',

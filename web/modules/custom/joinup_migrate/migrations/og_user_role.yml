@@ -7,11 +7,8 @@ source:
   plugin: og_user_role
   track_changes: true
 process:
-  uid:
-    plugin: migration
-    source: uid
-    migration: user
-    no_stub: true
+  id: id
+  uid: uid
   entity_type:
     plugin: default_value
     default_value: rdf_entity

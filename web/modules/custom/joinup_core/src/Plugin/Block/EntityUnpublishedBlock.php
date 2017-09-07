@@ -127,11 +127,10 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       // The 'listing' child key is needed to avoid copying the #attributes to
       // the parent block.
       // @see \Drupal\block\BlockViewBuilder::preRender()
+      '#extra_suggestion' => 'block__separated',
       'listing' => [
         '#type' => 'container',
-        '#attributes' => [
-          'class' => ['listing', 'listing--grid', 'mdl-grid'],
-        ],
+        '#extra_suggestion' => 'container__grid',
       ],
     ];
 
@@ -163,15 +162,8 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $rows[$weight] = [
         '#type' => 'container',
+        '#extra_suggestion' => 'container__grid_item',
         '#weight' => $weight,
-        '#attributes' => [
-          'class' => [
-            'listing__item',
-            'listing__item--tile',
-            'mdl-cell',
-            'mdl-cell--4-col',
-          ],
-        ],
         $weight => $view,
       ];
     }
@@ -224,7 +216,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * The page should be dependent on the user's groups.
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
+    return Cache::mergeContexts(parent::getCacheContexts(), ['user', 'og_role']);
   }
 
   /**

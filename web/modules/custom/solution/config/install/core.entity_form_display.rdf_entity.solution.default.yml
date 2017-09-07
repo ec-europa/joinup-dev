@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
-    - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -22,7 +21,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
-    - field.field.rdf_entity.solution.field_is_modification_date
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
@@ -44,6 +42,7 @@ dependencies:
     - image.style.thumbnail
     - rdf_entity.rdfentity.solution
   module:
+    - allowed_formats
     - field_group
     - file_url
     - image
@@ -89,12 +88,13 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
+        label: 'Main fields'
+        formatter: open
+        description: 'Contains all the fields to be mandatorily filled to create a solution'
+        required_fields: true
         id: ''
         classes: ''
-        formatter: open
-        description: ''
-        required_fields: true
-      label: Main
+      label: 'Main fields'
     group_management:
       children:
         - field_is_landing_page
@@ -184,7 +184,10 @@ content:
     settings:
       rows: 5
       placeholder: ''
-    third_party_settings: {  }
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
     type: text_textarea
     region: content
   field_is_documentation:
@@ -341,12 +344,10 @@ content:
 hidden:
   field_is_affiliations_requests: true
   field_is_content: true
-  field_is_creation_date: true
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
-  field_is_modification_date: true
   field_is_source_code_repository: true
   field_is_translation: true
   field_is_version: true

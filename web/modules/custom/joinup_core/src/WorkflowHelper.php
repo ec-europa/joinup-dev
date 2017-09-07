@@ -119,7 +119,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
-    if ($field_definitions = static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
+    if ($field_definitions = $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
       return reset($field_definitions);
     }
 
@@ -148,7 +148,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function hasEntityStateField($entity_type_id, $bundle_id) {
-    return (bool) static::getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
+    return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**
@@ -171,6 +171,50 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
+  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL) {
+    if (empty($state_field_name)) {
+      $state_field_item = $this->getEntityStateField($entity);
+      if (empty($state_field_item)) {
+        return;
+      }
+      $state_field_name = $state_field_item->getName();
+    }
+
+    return $entity->get($state_field_name)->first()->getWorkflow();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL) {
+    if (empty($state_field_name)) {
+      $state_field_item = $this->getEntityStateField($entity);
+      if (empty($state_field_item)) {
+        return NULL;
+      }
+      $state_field_name = $state_field_item->getName();
+    }
+
+    // If there is no original version, then it is not an update.
+    if (empty($entity->original)) {
+      return NULL;
+    }
+
+    /** @var \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow */
+    $workflow = $entity->get($state_field_name)->first()->getWorkflow();
+    $original_state = $entity->original->get($state_field_name)->first()->value;
+    $target_state = $entity->get($state_field_name)->first()->value;
+    if ($original_state !== $target_state) {
+      return NULL;
+    }
+
+    $transition = $workflow->findTransition($original_state, $target_state);
+    return $transition;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
     $own = $entity->getOwnerId() === $account->id();
     if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
@@ -188,6 +232,10 @@ class WorkflowHelper implements WorkflowHelperInterface {
    */
   public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
     $parent = $this->getEntityParent($entity);
+    if (empty($parent)) {
+      return FALSE;
+    }
+
     $membership = $this->membershipManager->getMembership($parent, $account);
 
     // First check the 'any' permissions.

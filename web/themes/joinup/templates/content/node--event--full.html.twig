@@ -10,6 +10,7 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
+    {{ content.field_event_spatial_coverage }}
     {{ content.field_event_agenda }}
     {{ content.field_attachment }}
     <div class="action-link__wrapper right">
@@ -22,6 +23,7 @@
     <div class="page__content">
       <h3 class="fieldset__header">{{ content.field_location }}</h3>
         {{ content.field_event_adtl_address_info }}
+        {{ content.field_scope }}
         {{ content.field_event_web_url }}
         {{ content.field_event_contact_email }}
     </div>

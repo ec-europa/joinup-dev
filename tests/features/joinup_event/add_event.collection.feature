@@ -44,11 +44,8 @@ Feature: "Add event" visibility options.
     Then I should see the heading "Add event"
     And the following fields should be present "Title, Short title, Description, Agenda, Logo, Additional address info, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
     # The entity is new, so the current workflow state should not be shown.
-    And the following fields should not be present "Current workflow state"
-
-    # The sections about managing revisions and groups should not be visible.
-    And I should not see the text "Revision information"
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Current workflow state, Motivation"
+    And the following fields should not be present "Shared in"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"
@@ -66,15 +63,22 @@ Feature: "Add event" visibility options.
       | Description      | This is going to be an amazing event. |
       | Location         | Rue Belliard, 28                      |
       | File description | Taxi discount voucher.                |
+      | Spatial coverage | France                                |
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
     And I fill the end date of the Date widget with "2018-08-30"
     And I fill the end time of the Date widget with "12:57:00"
+    # And I fill in "Scope" with values "pan_european, national"
+    Then I select "National" from "Scope"
+    And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
+    Then I see the text "National"
+    Then I see the text "Regional"
     And I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
     And the "Stream of Dreams" collection has a event titled "An amazing event"
+    And I should see the text "France"
     # Check that the link to the event is visible on the collection page.
     When I go to the homepage of the "Stream of Dreams" collection
     Then I should see the link "An amazing event"

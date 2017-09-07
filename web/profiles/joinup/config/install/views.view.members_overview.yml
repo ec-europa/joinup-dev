@@ -199,11 +199,65 @@ display:
           entity_type: user
           entity_field: status
           plugin_id: boolean
+        roles_target_id:
+          id: roles_target_id
+          table: og_membership__roles
+          field: roles_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: roles_target_id_op
+            label: Roles
+            description: null
+            use_operator: false
+            operator: roles_target_id_op
+            identifier: roles_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: Roles
+            description: ''
+            identifier: roles_target_id
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Owner
+                operator: '='
+                value: rdf_entity-collection-administrator
+              2:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-collection-facilitator
+              3:
+                title: Owner
+                operator: '='
+                value: rdf_entity-solution-administrator
+              4:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-solution-facilitator
+          entity_type: og_membership
+          entity_field: roles
+          plugin_id: string
       sorts:
-        field_user_family_name_value:
-          id: field_user_family_name_value
-          table: user__field_user_family_name
-          field: field_user_family_name_value
+        field_user_first_name_value:
+          id: field_user_first_name_value
+          table: user__field_user_first_name
+          field: field_user_first_name_value
           relationship: uid
           group_type: group
           admin_label: ''
@@ -212,10 +266,10 @@ display:
           expose:
             label: ''
           plugin_id: standard
-        field_user_first_name_value:
-          id: field_user_first_name_value
-          table: user__field_user_first_name
-          field: field_user_first_name_value
+        field_user_family_name_value:
+          id: field_user_family_name_value
+          table: user__field_user_family_name
+          field: field_user_family_name_value
           relationship: uid
           group_type: group
           admin_label: ''

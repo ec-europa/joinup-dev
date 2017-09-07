@@ -26,12 +26,14 @@ dependencies:
   - field_group
   - file
   - help
+  - honeypot
   - image
   - inline_entity_form
   - joinup_core
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_invite
   - joinup_licence
   - joinup_news
   - joinup_newsletter
@@ -41,6 +43,7 @@ dependencies:
   - joinup_user
   - joinup_video
   - language
+  - link
   - linkit
   - menu_ui
   - moderation
@@ -55,6 +58,7 @@ dependencies:
   - password_policy_characters
   - password_policy_length
   - path
+  - pathauto
   - persistent_login
   - piwik
   - r4032login
@@ -64,6 +68,7 @@ dependencies:
   - rdf_taxonomy
   - search_api
   - search_api_db
+  - social_media_links_field
   - solution
   - state_machine
   - state_machine_revisions
@@ -84,11 +89,8 @@ config_devel:
   - block.block.entity_bundle_facet
   - block.block.exposed_form_search_page
   - block.block.footer_menu
-  - block.block.rdf_entities_in_proposed_state
-  - block.block.recommended_content
+  - block.block.group_facet
   - block.block.groupheader
-  - block.block.menusubpages
-  - block.block.userheader
   - block.block.joinup_add_content
   - block.block.joinup_theme_account_menu
   - block.block.joinup_theme_content
@@ -96,10 +98,14 @@ config_devel:
   - block.block.joinup_theme_local_tasks
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
+  - block.block.joinup_user_local_tasks
+  - block.block.menusubpages
   - block.block.navigation
   - block.block.pagetitle
   - block.block.policy_domain_facet
   - block.block.primaryadminactions
+  - block.block.rdf_entities_in_proposed_state
+  - block.block.recommended_content
   - block.block.seven_breadcrumbs
   - block.block.seven_content
   - block.block.seven_help
@@ -113,6 +119,7 @@ config_devel:
   - block.block.statistics
   - block.block.unpublished_content_of_group
   - block.block.unpublished_content_of_user
+  - block.block.userheader
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -147,13 +154,17 @@ config_devel:
   - editor.editor.basic_html
   - editor.editor.content_editor
   - editor.editor.restricted_html
+  - editor.editor.simple_html
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
+  - file_url.settings
   - filter.format.basic_html
   - filter.format.content_editor
   - filter.format.full_html
   - filter.format.restricted_html
+  - filter.format.simple_html
+  - filter.format.simple_text
   - image.style.profile_icon
   - image.style.profile_icon_big
   - language.content_settings.rdf_entity.asset_distribution
@@ -163,13 +174,19 @@ config_devel:
   - language.content_settings.rdf_entity.solution
   - linkit.linkit_profile.default
   - mailsystem.settings
-  - og_menu.ogmenu.navigation
   - og.settings
+  - og_menu.ogmenu.navigation
   - password_policy.password_policy.generic_policy
+  - pathauto.pattern.community_content
+  - pathauto.pattern.custom_page
+  - pathauto.pattern.rdf_entities_generic
+  - pathauto.pattern.rdf_entities_releases
   - piwik.settings
-  - system.theme
-  - swiftmailer.transport
+  - r4032login.settings
   - swiftmailer.message
+  - swiftmailer.transport
+  - system.date
+  - system.theme
   - user.flood
   - user.mail
   - user.settings

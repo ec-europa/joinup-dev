@@ -1,4 +1,4 @@
-@api @email
+@api @email @wip
 Feature: Content notification system
   As a user of the website
   In order to be up to date with the changes on my content
@@ -34,7 +34,7 @@ Feature: Content notification system
 
   Scenario: Send emails on content update.
     When I am logged in as "Jerrard Verity"
-    And I go to the "Infrared long-range communications" news page
+    And I go to the "Infrared long-range communications" news
     And I click "Edit"
     And I enter "Prototype built by a young Italian student." in the Content wysiwyg editor
     And I press "Save new draft"
@@ -59,7 +59,7 @@ Feature: Content notification system
 
   Scenario: Send emails on content delete:
     Given I am logged in as "Jerrard Verity"
-    When I go to the "Infrared long-range communications" news page
+    When I go to the "Infrared long-range communications" news
     And I click "Delete"
     And I press "Delete"
     Then 1 e-mail should have been sent
@@ -67,7 +67,7 @@ Feature: Content notification system
       | template  | Message to collection facilitators when a community content is deleted by a moderator                                                    |
       | recipient | Devyn Queshire                                                                                                                           |
       | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                       |
-      | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Moderation Team. |
+      | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Support Team. |
 
     When I am logged in as "Jerrard Verity"
     And all the e-mails have been sent
@@ -79,4 +79,4 @@ Feature: Content notification system
       | template  | Message to solution facilitators when a community content is deleted by a moderator                                                   |
       | recipient | Reed Mondy                                                                                                                            |
       | subject   | Joinup: your event "Smoke signals pre-conference party" was deleted                                                                   |
-      | body      | Dear Reed Mondy, your event "Smoke signals pre-conference party" was successfully deleted. Kinds regards, The Joinup Moderation Team. |
+      | body      | Dear Reed Mondy, your event "Smoke signals pre-conference party" was successfully deleted. Kinds regards, The Joinup Support Team. |

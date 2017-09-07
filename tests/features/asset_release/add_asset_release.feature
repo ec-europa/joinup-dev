@@ -32,49 +32,55 @@ Feature: "Add release" visibility options.
     And the following solutions:
       | title          | description        | documentation | owner                | state     |
       | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
-      | Release Test 2 | test description 2 | text.pdf      | Organisation example | validated |
-    # Check that the release cannot take the title of another solution.
+    And the following release:
+      | title             | Chasing shadows |
+      | is version of     | Release Test 1  |
+      | release number    | 1.0             |
+      | state             | validated       |
+    # Check that the release should have a unique combination of title and
+    # version number.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
     When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Spatial coverage, Keyword, Status, Language"
     # The entity is new, so the current workflow state should not be shown.
-    And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode"
-    When I fill in "Name" with "Release Test 2"
-    And I fill in "Release number" with "1.1"
+    And the following fields should not be present "Description, Logo, Banner, Solution type, Contact information, Included asset, Translation, Distribution, Current workflow state, Langcode, Motivation"
+    When I fill in "Name" with "Chasing shadows"
+    And I fill in "Release number" with "1.0"
     And I fill in "Release notes" with "Changed release."
     # Ensure that the Status field is a dropdown.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Publish"
-    Then I should see the error message "Content with name Release Test 2 already exists."
+    Then I should see the error message "A release with title Chasing shadows and version 1.0 already exists in this solution. Please choose a different title or version."
 
-    # Check that the same title as the parent is valid.
-    When I fill in "Name" with "Release Test 1 v2"
+    # It should be possible to choose a different version number.
+    And I fill in "Release number" with "1.1"
     And I press "Publish"
-    Then I should have 1 release
+    Then I should have 2 releases
 
-    # Verify that the "Release Test 1 v2" is registered as a release to "Release Test 1" solution.
+    # Verify that the "Chasing shadows 1.1." release is registered as a release
+    # of the "Release Test 1" solution.
     When I go to the homepage of the "Release Test 1" solution
     Then I should see the text "Download releases"
     When I click "Download releases"
-    Then I should see the text "Release Test 1 v2"
+    Then I should see the text "Chasing shadows"
+    And I should see the text "1.1"
 
-    # Check that the release cannot take the title of another release in another solution.
-    When I am logged in as a "facilitator" of the "Release Test 2" solution
-    When I go to the homepage of the "Release Test 2" solution
+    # It should be possible to create a release with the same version number but
+    # a different title.
+    When I go to the homepage of the "Release Test 1" solution
     And I click "Add release"
-    Then I should see the heading "Add Release"
-    And the following fields should be present "Name, Release number, Release notes"
-    When I fill in "Name" with "Release Test 1 v2"
-    And I fill in "Release number" with "1.1"
-    And I fill in "Release notes" with "Changed release."
+    When I fill in "Name" with "Chasing flares"
+    And I fill in "Release number" with "1.0"
     And I press "Publish"
-    Then I should see the error message "Content with name Release Test 1 v2 already exists."
+    Then I should have 3 releases
 
-    # Cleanup created release.
-    Then I delete the "Release Test 1 v2" release
+    # Clean up entities created through the UI.
+    Then I delete the "Chasing shadows" release
+    And I delete the "Chasing shadows" release
+    And I delete the "Chasing flares" release
 
   Scenario: Do not allow access to the page if the parent is not a solution.
     Given the following collection:

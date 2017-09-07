@@ -3,20 +3,19 @@ status: true
 dependencies:
   config:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
-    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
-    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
+    - allowed_formats
     - file_url
-    - rdf_entity
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -31,19 +30,15 @@ content:
     third_party_settings: {  }
     type: file_url_generic
     region: content
-  field_ad_creation_date:
-    type: datetime_create_update
-    weight: 6
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    region: content
   field_ad_description:
     weight: 1
     settings:
       rows: 9
       placeholder: ''
-    third_party_settings: {  }
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
     type: text_textarea
     region: content
   field_ad_format:
@@ -64,13 +59,6 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_ad_modification_date:
-    type: datetime_create_update
-    weight: 7
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    region: content
   field_ad_repr_technique:
     weight: 5
     settings: {  }
@@ -88,6 +76,7 @@ content:
 hidden:
   current_workflow_state: true
   field_ad_file_size: true
+  field_download_count: true
   field_status: true
   langcode: true
   og_audience: true

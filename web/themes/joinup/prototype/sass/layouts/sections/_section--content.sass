@@ -4,7 +4,8 @@
 
 // Component
 // --------------------------------------------------
-// .section--content
+.section--content
+  padding: 40px 0
 
 // Elements
 // --------------------------------------------------
@@ -17,21 +18,12 @@
     margin: 40px 60px
 
 .page__content
-  min-height: min-content
-  padding: 20px
-  background-color: #fff
-  +breakpoint(tablet)
-    padding: 40px 30px
-  +breakpoint(desktop)
-    padding: 40px 60px
-  @media print
-    padding: 0
-    padding-bottom: 20px
-
-.page__content-image
   img
     max-width: 100%
     height: auto
+  @media print
+    padding: 0
+    padding-bottom: 20px
 
 // Modifiers
 // --------------------------------------------------
@@ -45,10 +37,14 @@
     +centered($horizontal: false, $vertical: true)
     +icon-size(35px)
   h1
-    margin: 0
     display: inline-block
+    margin: 0
     vertical-align: middle
 
 .page__title-wrapper
   @media print
     margin: 0
+
+.content-container--default
+  .page__content
+    @extend .white-box

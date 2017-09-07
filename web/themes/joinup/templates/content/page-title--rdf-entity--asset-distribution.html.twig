@@ -16,13 +16,12 @@
 {% if title %}
   <div class="page__title-wrapper">
       <h1 class="page__title">{{ title }}</h1>
+      {% if permalink %}
+        <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
+      {% endif %}
       <div class="details details--solution">
         <div class="details__element">
           <div class="value gray">{{ additional_content.field_ad_file_size }}</div>
-        </div>
-        <div class="details__element is-only-placeholder">
-          {# @todo: It is only placeholder #}
-          <div class="value underline bold">Linux</div>
         </div>
         {% if additional_content.field_ad_licence|render %}
           <div class="details__element">

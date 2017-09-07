@@ -1,10 +1,21 @@
 services:
-  joinup_notification.workflow_notification:
-    class: Drupal\joinup_notification\EventSubscriber\WorkflowTransitionEventSubscriber
-    arguments: ['@entity_field.manager', '@joinup_notification.notification_sender', '@config.factory', '@joinup_core.workflow.helper']
+  joinup_notification.community_content.subscriber:
+    class: Drupal\joinup_notification\EventSubscriber\CommunityContentSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
     tags:
       - { name: event_subscriber }
-
-  joinup_notification.notification_sender:
-    class: Drupal\joinup_notification\NotificationSenderService
-    arguments: ['@entity_type.manager', '@message_notify.sender', '@joinup_core.relations_manager', '@og.group_type_manager']
+  joinup_notification.collection.rdf.subscriber:
+    class: Drupal\joinup_notification\EventSubscriber\CollectionRdfSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
+    tags:
+      - { name: event_subscriber }
+  joinup_notification.comment.subscriber:
+    class: Drupal\joinup_notification\EventSubscriber\CommentSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
+    tags:
+      - { name: event_subscriber }
+  joinup_notification.group_membership.subscriber:
+    class: Drupal\joinup_notification\EventSubscriber\OgMembershipSubscriber
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
+    tags:
+      - { name: event_subscriber }

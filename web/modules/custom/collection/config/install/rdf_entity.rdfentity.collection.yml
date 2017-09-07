@@ -12,11 +12,19 @@ third_party_settings:
       uid:
         target_id:
           predicate: 'http://joinup.eu/owner/uid'
-          format: integer
+          format: 'xsd:integer'
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: t_literal
+      created:
+        value:
+          predicate: 'http://purl.org/dc/terms/issued'
+          format: 'xsd:dateTime'
+      changed:
+        value:
+          predicate: 'http://purl.org/dc/terms/modified'
+          format: 'xsd:dateTime'
       uuid:
         value:
           predicate: ''
@@ -60,7 +68,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/collection/published'
       draft: 'http://joinup.eu/collection/draft'
-    entity_id_plugin: default
+    entity_id_plugin: joinup_po_namespace
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'

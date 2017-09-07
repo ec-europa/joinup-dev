@@ -89,16 +89,20 @@ trait FileUrlFieldTrait {
    *   to JoinupSqlBase::FILE_URL_MODE_SINGLE.
    */
   protected function setFileUrlTargetId(Row &$row, $file_url_field_property, array $file_source_id_values, $file_migration_id, array $urls, $mode = JoinupSqlBase::FILE_URL_MODE_SINGLE) {
+    global $base_url;
+    $settings = \Drupal::configFactory()->get('file_url.settings');
+    $host = rtrim($settings->get('dereference_host'));
+    $host = $host ?: $base_url;
+
     $items = [];
     if ($file_source_id_values) {
-      global $base_url;
       $file_migration = $this->getFileMigration($file_migration_id);
       foreach ($file_source_id_values as $id) {
         // Lookup in the file migration, using the provided source IDs value,
         // and get the migrated file ID.
         $lookup = $file_migration->getIdMap()->lookupDestinationIds($id);
         if (!empty($lookup[0][0])) {
-          $items[] = $base_url . '/file-dereference/' . $lookup[0][0];
+          $items[] = $host . '/file-dereference/' . $lookup[0][0];
         }
         // Break here if the cardinality is 1 and we already have one item.
         if (($mode === JoinupSqlBase::FILE_URL_MODE_SINGLE) && (count($items) === 1)) {

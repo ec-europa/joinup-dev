@@ -9,10 +9,26 @@ third_party_settings:
         target_id:
           predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
           format: resource
+      uid:
+        target_id:
+          predicate: ''
+          format: ''
       label:
         value:
           predicate: 'http://purl.org/dc/terms/title'
           format: t_literal
+      created:
+        value:
+          predicate: 'http://purl.org/dc/terms/issued'
+          format: 'xsd:dateTime'
+      changed:
+        value:
+          predicate: 'http://purl.org/dc/terms/modified'
+          format: 'xsd:dateTime'
+      uuid:
+        value:
+          predicate: ''
+          format: ''
       langcode:
         value:
           predicate: 'http://joinup.eu/language'
@@ -48,6 +64,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/asset_release/published'
       draft: 'http://joinup.eu/asset_release/draft'
+    entity_id_plugin: joinup_po_namespace
 name: Release
 rid: asset_release
 description: ''

@@ -7,6 +7,9 @@
 .underline
   text-decoration: underline
 
+.uppercase
+  text-transform: uppercase
+
 .gray
   color: $color-grey-medium
 
@@ -47,11 +50,21 @@
     display: none !important
 
 .row
-  margin-left: -8px
-  margin-right: -24px
-  +breakpoint(tablet)
-    margin-left: -16px
-    margin-right: -16px
+  margin-left: -16px
+  margin-right: -16px
 
 hr
   margin: 0
+
+// Abstract classes
+.white-box
+  padding: 20px
+  background-color: #fff
+  +breakpoint(tablet)
+    padding: 40px 30px
+  +breakpoint(desktop)
+    padding: 40px 60px
+
+.button-inline
+  justify-content: space-between
+  margin: 15px 15px 0 0

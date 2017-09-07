@@ -58,17 +58,6 @@ class AssetReleaseController extends ControllerBase {
     );
   }
 
-  protected $fieldsToCopy = [
-    'field_is_description' => 'field_isr_description',
-    'field_is_solution_type' => 'field_isr_solution_type',
-    'field_is_contact_information' => 'field_isr_contact_information',
-    'field_is_owner' => 'field_isr_owner',
-    'field_is_related_solutions' => 'field_isr_related_solutions',
-    'field_is_included_asset' => 'field_isr_included_asset',
-    'field_is_translation' => 'field_isr_translation',
-    'field_policy_domain' => 'field_policy_domain',
-  ];
-
   /**
    * Controller for the base form.
    *
@@ -83,25 +72,7 @@ class AssetReleaseController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    // Setup the values for the release.
-    $values = [
-      'rid' => 'asset_release',
-      'field_isr_is_version_of' => $rdf_entity->id(),
-    ];
-
-    foreach ($this->fieldsToCopy as $solution_field => $release_field) {
-      if (!empty($rdf_entity->get($solution_field)->getValue())) {
-        $values[$release_field] = $rdf_entity->get($solution_field)->getValue();
-      }
-    }
-
-    $asset_release = $this->entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->create($values);
-
-    $form = $this->entityFormBuilder()->getForm($asset_release);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($this->createNewAssetRelease($rdf_entity));
   }
 
   /**
@@ -133,8 +104,6 @@ class AssetReleaseController extends ControllerBase {
    *   The build array for the page.
    */
   public function overview(RdfInterface $rdf_entity) {
-    $view_builder = $this->entityTypeManager()->getViewBuilder('rdf_entity');
-
     // Retrieve all releases for this solution.
     $ids = $this->queryFactory->get('rdf_entity')
       ->condition('rid', 'asset_release')
@@ -142,7 +111,7 @@ class AssetReleaseController extends ControllerBase {
       // @todo: This is a temporary fix. We need to implement the sort in the
       // rdf entity module in order to be able to handle paging.
       // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-      // ->sort('field_isr_creation_date', 'DESC')
+      // ->sort('created', 'DESC')
       ->execute();
 
     /** @var \Drupal\rdf_entity\Entity\Rdf[] $releases */
@@ -183,40 +152,20 @@ class AssetReleaseController extends ControllerBase {
       $standalone_distribution->standalone = TRUE;
     }
 
-    $releases = array_merge($releases, $standalone_distributions);
-    usort($releases, function ($release1, $release2) {
-      $get_creation_date = function (RdfInterface $entity) {
-        $date = $entity->bundle() === 'asset_release' ? $entity->field_isr_creation_date->value : $entity->field_ad_creation_date->value;
-        // Sort entries without a creation date on the bottom so they don't
-        // stick to the top for all eternity.
-        if (empty($date)) {
-          $date = '1970-01-01';
-        }
-        return strtotime($date);
-      };
+    $entities = $this->sortEntitiesByCreationDate(array_merge($releases, $standalone_distributions));
 
-      $ct1 = $get_creation_date($release1);
-      $ct2 = $get_creation_date($release2);
-      if ($ct1 == $ct2) {
-        return 0;
+    // Mark the first release as the latest.
+    // @see asset_release_preprocess_rdf_entity()
+    foreach ($entities as $entity) {
+      if ($entity->bundle() === 'asset_release') {
+        $entity->is_latest_release = TRUE;
+        break;
       }
-      return ($ct1 < $ct2) ? 1 : -1;
-    });
-
-    // Flag the first release so it can be themed accordingly.
-    if ($first_release = reset($releases)) {
-      $first_release->top_of_timeline = TRUE;
-    }
-
-    $build_array = [];
-    /** @var \Drupal\rdf_entity\RdfInterface $release */
-    foreach ($releases as $release) {
-      $build_array[] = $view_builder->view($release, 'compact');
     }
 
     return [
       '#theme' => 'asset_release_releases_download',
-      '#releases' => $build_array,
+      '#releases' => $entities,
     ];
   }
 
@@ -271,6 +220,32 @@ class AssetReleaseController extends ControllerBase {
       'rid' => 'asset_release',
       'field_isr_is_version_of' => $rdf_entity->id(),
     ]);
+  }
+
+  /**
+   * Sorts a list of releases and distributions by date.
+   *
+   * @param \Drupal\rdf_entity\Entity\Rdf[] $entities
+   *   The RDF entities to sort.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf[]
+   *   The sorted RDF entities.
+   */
+  protected function sortEntitiesByCreationDate(array $entities) {
+    usort($entities, function ($entity1, $entity2) {
+      // Sort entries without a creation date on the bottom so they don't
+      // stick to the top for all eternity.
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity1 */
+      $ct1 = $entity1->getCreatedTime() ?: 0;
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity2 */
+      $ct2 = $entity2->getCreatedTime() ?: 0;
+      if ($ct1 == $ct2) {
+        return 0;
+      }
+      return ($ct1 < $ct2) ? 1 : -1;
+    });
+
+    return $entities;
   }
 
 }

@@ -28,6 +28,9 @@ use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Utility\Utility;
+use Drupal\views\Views;
 
 /**
  * Implements hook_theme().
@@ -257,6 +260,7 @@ function joinup_core_entity_type_alter(array &$entity_types) {
   $link_templates = [
     'about-page' => '/rdf_entity/{rdf_entity}/about',
     'member-overview' => '/rdf_entity/{rdf_entity}/members',
+    'add-facilitator' => '/rdf_entity/{rdf_entity}/members/invite',
   ];
   foreach ($link_templates as $key => $path) {
     $entity_types['rdf_entity']->setLinkTemplate($key, $path);
@@ -490,11 +494,25 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
 /**
  * Implements hook_ENTITY_TYPE_presave().
  *
- * Provide default images for collections and solutions in case they are empty.
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ *
+ * Also, provide default images for collections and solutions in case they are
+ * empty.
  */
 function joinup_core_rdf_entity_presave(EntityInterface $entity) {
   if (!in_array($entity->bundle(), ['solution', 'collection'])) {
     return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
   }
 
   $field_data = [
@@ -568,6 +586,7 @@ function joinup_core_tokens($type, $tokens, array $data, array $options, Bubblea
         }
       }
       break;
+
   }
 
   return $replacements;
@@ -599,4 +618,314 @@ function joinup_core_file_delete(EntityInterface $entity) {
 
   // Delete all redirects targeting this path.
   redirect_delete_by_path($path);
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_core_entity_extra_field_info() {
+  $motivation_bundles = [
+    'node' => ['discussion', 'document', 'event', 'news'],
+    'rdf_entity' => ['collection', 'solution', 'asset_release'],
+  ];
+  $fields = [];
+  foreach ($motivation_bundles as $entity_type_id => $bundles) {
+    foreach ($bundles as $bundle) {
+      $fields[$entity_type_id][$bundle]['form']['transition_motivation'] = [
+        'label' => t('Motivation'),
+        'description' => t('The motivation for the action.'),
+        'weight' => 10,
+        'display' => TRUE,
+      ];
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Returns an array of form ids that should have a motivation field.
+ *
+ * @return array
+ *   An array of form ids.
+ */
+function joinup_core_get_motivation_form_ids() {
+  return [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_asset_release_edit_form',
+    'node_discussion_edit_form',
+    'node_document_edit_form',
+    'node_event_edit_form',
+    'node_news_edit_form',
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, joinup_core_get_motivation_form_ids())) {
+    return;
+  }
+
+  $form['transition_motivation'] = [
+    '#type' => 'textarea',
+    '#title' => t('Motivation'),
+    '#description' => t('Description of the reason of this operation.'),
+  ];
+  $form['#validate'][] = 'joinup_core_motivation_form_validate';
+}
+
+/**
+ * Validation function for the forms with a motivation field.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\node\NodeForm $test */
+  $entity = $form_state->getFormObject()->getEntity();
+  $to_state = $form_state->getTriggeringElement()['#state_id'];
+  // If $to_state is empty, it means that another button was clicked, like
+  // "Add new" in the contact information field.
+  if (empty($to_state)) {
+    return;
+  }
+
+  /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
+  /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
+  $workflow = $workflow_helper->getWorkflow($entity, $state_field);
+  $from_state = $entity->get($state_field)->first()->value;
+
+  $transition = $workflow->findTransition($from_state, $to_state);
+  $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
+  // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
+  //   rdf_entities are separate transitions.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
+  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
+    $required = FALSE;
+  }
+
+  if ($required && empty($form_state->getValue('transition_motivation'))) {
+    $form_state->setErrorByName('transition_motivation', t('This action requires you to fill in the motivation field.'));
+  }
+  $entity->motivation = $form_state->getValue('transition_motivation');
+}
+
+/**
+ * Returns whether the transition requires a motivation.
+ *
+ * @param string $entity_type_id
+ *   The entity type id.
+ * @param string $workflow_id
+ *   The workflow id.
+ * @param string $transition_id
+ *   The transition id.
+ *
+ * @return bool
+ *   Whether the transition requires a motivation.
+ */
+function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $transition_id) {
+  $required_transitions = [
+    'node' => [
+      'node:pre_moderated' => [
+        'report',
+        'request_changes',
+        'report',
+        'reject_deletion',
+        'request_deletion',
+      ],
+      'node:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+      'node:discussion:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+    ],
+    'rdf_entity' => [
+      'collection_workflow' => [
+        'validate',
+        'archive',
+      ],
+    ],
+  ];
+
+  return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
+}
+
+/**
+ * Only index English content.
+ *
+ * Implements hook_search_api_index_items_alter().
+ */
+function joinup_core_search_api_index_items_alter(IndexInterface $index, array &$items) {
+  foreach ($items as $item_id => $item) {
+    list($datasource_id, $raw_id) = Utility::splitCombinedId($item_id);
+    list($id, $langcode) = Utility::splitPropertyPath($raw_id);
+    // Unset non-english content from the index.
+    if ($langcode != 'en') {
+      unset($items[$item_id]);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Re-index all group content when a group is saved with a changed status.
+ *
+ * The hasPublished flag ensures that this will occur only when an entity is
+ * published for the first time.
+ *
+ * @see \joinup_core_rdf_entity_presave()
+ */
+function joinup_core_rdf_entity_update(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
+    return;
+  }
+
+  if ($entity->isPublished() && isset($entity->hasPublished) && $entity->hasPublished === FALSE) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
+    $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
+    foreach ($entities as $entity_item) {
+      $entity_item->original = $entity_item;
+      search_api_entity_update($entity_item);
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Sign in');
+  $form['#title'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_core\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['user.login'])) {
+    $local_tasks['user.login']['title'] = t('Sign in');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * Mimic the og_entity_predelete function to delete the memberships of the user
+ * before the user is deleted. The goal is to skip all notification attempts
+ * related to the membership deletion.
+ *
+ * This workaround will prevent extra side loading and saving of entities.
+ */
+function joinup_core_user_predelete(EntityInterface $entity) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
+    $membership->skip_notification = TRUE;
+    $membership->delete();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds result counts to the role options on the membership overview for
+ * collections and solutions.
+ */
+function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  if ($view->id() !== 'members_overview') {
+    return;
+  }
+
+  // Bail out if we are executing the views queries that get the result counts.
+  if (!empty($view->do_not_recurse)) {
+    return;
+  }
+
+  // Retrieve the collection or solution for which the membership overview is
+  // being built.
+  $group = \Drupal::entityTypeManager()->getStorage($view->args[0])->load($view->args[1]);
+
+  // Define a function that gets the result count for a given exposed filter
+  // option.
+  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = Views::getView('members_overview');
+    // Make sure we do not get into an endless loop when building the view,
+    // since it will try to build the exposed form again.
+    $view->do_not_recurse = TRUE;
+    // When the exposed input is not set then Views will take the values from
+    // the request arguments. If we want to override them with "there is no
+    // exposed input" then we need to pass a value that is not considered empty,
+    // hence we use "[TRUE]" instead of "[]".
+    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $view->setExposedInput($exposed_input);
+    $view->executeDisplay($display_id, $arguments);
+    // Apparently it is not guaranteed that the `total_rows` will be populated.
+    // @see \Drupal\views\Plugin\views\area\Result::render()
+    return isset($view->total_rows) ? $view->total_rows : count($view->result);
+  };
+
+  /** @var \Drupal\views\Plugin\views\filter\StringFilter $filter */
+  $filter = $view->filter['roles_target_id'];
+  $group_items = $filter->options['group_info']['group_items'];
+
+  // Check all options, as well as the "- Any -" option.
+  $exposed_options = array_merge([NULL], array_keys($group_items));
+
+  foreach ($exposed_options as $exposed_option) {
+    // We have different roles for collections and solutions, only keep the
+    // relevant ones.
+    if (!empty($exposed_option) && strpos($group_items[$exposed_option]['value'], $group->bundle()) === FALSE) {
+      unset($form['roles_target_id']['#options'][$exposed_option]);
+    }
+    else {
+      $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+      $key = $exposed_option ?: 'All';
+      $option_text = (string) $form['roles_target_id']['#options'][$key];
+      $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
+ */
+function joinup_core_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_core/sign_in_destination';
 }

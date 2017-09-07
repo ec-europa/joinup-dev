@@ -4,14 +4,13 @@ dependencies:
   config:
     - core.entity_view_mode.rdf_entity.view_mode_featured
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
-    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
-    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
     - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
@@ -75,12 +74,14 @@ content:
             classes: {  }
     region: content
 hidden:
-  field_ad_creation_date: true
+  changed: true
+  created: true
   field_ad_description: true
   field_ad_format: true
   field_ad_gitb_compliant: true
-  field_ad_modification_date: true
   field_ad_repr_technique: true
+  field_download: true
+  field_download_count: true
   field_status: true
   langcode: true
   og_audience: true

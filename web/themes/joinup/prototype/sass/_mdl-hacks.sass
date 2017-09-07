@@ -1,27 +1,14 @@
 .mdl-card
   width: 100% !important
 
-.mdl-layout__header-row
-  height: 64px !important
-
 .mdl-cell--12-col-tablet
   +breakpoint(mobile, tablet)
     width: 100%
 
-.form-wrapper
-  margin-bottom: $form-margin
-  &.form__actions-wrapper
-    margin-bottom: 0
-
-.section--sidebar-left #edit-join
-  margin-left: -100px
-
-form .description
-  font-size: 12px
-  color: #a0a1a2
-
-.messages
-  background-image: none
+.mdl-layout__header-row
+  height: 64px !important
+  +breakpoint(tablet)
+    padding: 0 20px
 
 .mdl-menu
   .mdl-menu__item
@@ -32,28 +19,77 @@ form .description
       padding: 16px
       white-space: normal
 
+.mdl-layout__drawer
+  +z-index(max+1)
+
+.mdl-layout__obfuscator
+  +z-index(max)
+
 .mdl-layout__drawer-button
-  +hidden-print
   top: 4px
-  .material-icons
-    font-size: 40px
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    color: #fff
+  +hidden-print
   +breakpoint(tablet)
     display: none
+  .material-icons
+    font-size: 40px
+    color: #fff
+    +centered
 
 .mdl-textfield--floating-label
   .field-prefix
     display: none
 
-.mdl-layout
-  overflow: initial !important
-
 .mdl-spinner
   position: fixed
   top: 48.5%
   left: 49%
-  z-index: 1000
+  +z-index(max)
+
+.mdl-grid--center
+  justify-content: center
+
+.join-collection-form,
+#block-joinup-theme-local-tasks
+  .mdl-menu__item a
+    white-space: nowrap
+    color: $color-blue-default
+  .mdl-menu__container
+    margin-top: $field-margin
+
+// Fix for iOS overflow issue caused by not respecting % height value
+.mdl-layout__container
+  height: auto
+
+.mdl-layout
+  min-height: 100vh
+
+// Fix for Internet Explorer unstretched content section (once empty) and footer overflow issues caused by not respecting the min-height value
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active)
+  .mdl-layout__container
+    height: 100vh
+    .section--header,
+    .section--footer
+      flex-shrink: 0
+    .section--featured,
+    .section--content
+      flex-grow: 1
+      flex-shrink: 0
+
+// Prevent overlapping contextal button and local tasks button.
+.section--featured .contextual
+  top: 50px
+
+#block-joinup-theme-local-tasks
+  position: absolute
+  top: 10px
+  right: 10px
+  z-index: 4
+  a
+    text-decoration: none
+  .icon
+    +icon-size(15px)
+    color: #fff
+  &:first-child
+    .icon
+      color: $color-base
+

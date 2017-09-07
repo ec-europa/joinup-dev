@@ -5,7 +5,15 @@ dependencies:
     - field.storage.rdf_entity.field_isr_release_notes
     - rdf_entity.rdfentity.asset_release
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
 id: rdf_entity.asset_release.field_isr_release_notes
 field_name: field_isr_release_notes
 entity_type: rdf_entity
@@ -13,7 +21,7 @@ bundle: asset_release
 label: 'Release notes'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }
