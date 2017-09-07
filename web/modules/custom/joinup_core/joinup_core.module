@@ -951,7 +951,7 @@ function joinup_core_preprocess_page(&$variables) {
  *
  * Adds the group id and label as data attributes in tiles.
  */
-function joinup_core_preprocess_node__view_mode_tile(&$variables) {
+function joinup_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] !== 'view_mode_tile') {
     return;
   }
