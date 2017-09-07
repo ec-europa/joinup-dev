@@ -9,6 +9,8 @@ Feature: Tests membership to Joinup collection.
       | title                   | state     |
       | An arbitrary collection | validated |
     Given I am logged in as a user with the member role of the "An arbitrary collection" collection
+    Then I am member of "Joinup" collection
+
     And I go to the homepage of the "An arbitrary collection" collection
     Then I should see the link "Leave this collection"
 
@@ -16,9 +18,8 @@ Feature: Tests membership to Joinup collection.
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of An arbitrary collection."
 
-    Given I am member of "Joinup" collection
-    And I go to the homepage of the "Joinup" collection
+    When I go to the homepage of the "Joinup" collection
     Then I should not see the link "Leave this collection"
 
-    And I am about to leave the "Joinup" collection
+    When I am about to leave the "Joinup" collection
     Then I should get an access denied error
