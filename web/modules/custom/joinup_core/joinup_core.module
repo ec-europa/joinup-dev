@@ -940,7 +940,7 @@ function joinup_core_preprocess_page(&$variables) {
 function joinup_core_search_api_query_alter(QueryInterface &$query) {
   $search_ids = [
     'rdf_entity.field_collection_content',
-    'rdf_entity.field_solution_content',
+    'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
   ];
 
