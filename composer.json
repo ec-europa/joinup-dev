@@ -14,7 +14,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/console": "^1.0.1",
-        "drupal/core": "8.4.x-dev#072e73341971d6d8395d0a245bea1fe320f93ee2",
+        "drupal/core": "~8.4",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "~1.0-alpha1",
         "drupal/ds": "^3.0",
