@@ -65,13 +65,12 @@ function asset_release_rdf_entity_update(EntityInterface $entity) {
     return;
   }
 
+  $release_relations = \Drupal::service('asset_release.relations');
   /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
   $has_version = $entity->get('field_is_has_version');
   foreach ($has_version->referencedEntities() as $release) {
-    if ($release->get('field_isr_owner')->getValue() !== $entity->get('field_is_owner')->getValue()) {
-      // Release owners are in sync with solution owners.
-      $release
-        ->set('field_isr_owner', $entity->get('field_is_owner')->getValue());
+    // Synchronize common fields of child release from parent solution.
+    if ($release_relations->syncFieldsFromParentSolution($release)) {
       // Do not send emails for this change.
       $release->skip_notification = TRUE;
       $release->save();
@@ -193,8 +192,18 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
  * Default graph is published. Draft graph is draft.
  */
 function asset_release_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() !== 'asset_release') {
+    // Act only on releases.
+    return;
+  }
+
+  if (!$entity->get('field_isr_is_version_of')->isEmpty()) {
+    // Synchronize common fields from parent solution.
+    \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution($entity);
+  }
+
   $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'asset_release' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
     return;
   }
 
