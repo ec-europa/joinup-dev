@@ -28,22 +28,24 @@ trait LicenceTrait {
    */
   protected function setLicence(Row $row, $type) {
     $columns = [
-      'distribution' => 'D',
-      'document' => 'E',
+      'distribution' => 'B',
+      'document' => 'C',
     ];
 
-    $licence = $row->getSourceProperty('licence');
+    $licence = trim($row->getSourceProperty('licence'));
+    $mapped_licence = NULL;
     if ($licence) {
       // Fill the licence mapping from the Excel table.
       $this->fillLicenceArray();
       // Scan for this value.
       foreach (static::$licenceMapping as $map) {
-        if ($map[$columns[$type]] === $licence) {
-          $row->setSourceProperty('licence', $map['A']);
+        if (trim($map[$columns[$type]]) === $licence) {
+          $mapped_licence = $map['A'];
           break;
         }
       }
     }
+    $row->setSourceProperty('licence', $mapped_licence);
   }
 
   /**
@@ -62,7 +64,7 @@ trait LicenceTrait {
         // Advise the Reader that we only want to load cell data.
         $reader->setReadDataOnly(TRUE);
         // Advise the Reader of which worksheet we want to load.
-        $reader->setLoadSheetsOnly('4. Licence Mapping');
+        $reader->setLoadSheetsOnly('6. Licence Mapping (2)');
         /** @var \PhpOffice\PhpSpreadsheet\Spreadsheet $workbook */
         $workbook = $reader->load($file);
 

@@ -129,9 +129,14 @@
             "value": "0"
         }
     ],
-    "field_ar_creation_date": [
+    "created": [
         {
-            "value": "2016-06-08T17:03:26"
+            "value": "1503675058"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1503675885"
         }
     ],
     "field_ar_description": [

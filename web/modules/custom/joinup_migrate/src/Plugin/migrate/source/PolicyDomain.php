@@ -64,6 +64,9 @@ class PolicyDomain extends Spreadsheet {
    *   (optional) The parent term. In case of top level terms can be omitted.
    */
   protected static function addTerm(array &$terms, $name, $parent = '') {
+    $name = trim($name);
+    $parent = trim($parent);
+
     $key = "$parent:$name";
     if (!isset($terms[$key]) && !empty($name)) {
       $terms[$key] = [
