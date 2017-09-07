@@ -7,7 +7,7 @@
 
 use Drupal\Core\Render\Markup;
 
-const SEMIC_COLLECTION_ID = 'https://joinup.eu/semic';
+const SEMIC_COLLECTION_ID = 'http://data.europa.eu/w21/bf8ff383-be51-4d25-ba57-f4fbb194be08';
 
 /**
  * Render the semic map.
