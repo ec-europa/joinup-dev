@@ -28,8 +28,10 @@ process:
     migration: file:user_photo
     source: photo_id
     no_stub: true
+  field_social_media/platform_values: social_media
 destination:
   plugin: entity:user
 migration_dependencies:
   required:
     - file:user_photo
+    - og_user_role

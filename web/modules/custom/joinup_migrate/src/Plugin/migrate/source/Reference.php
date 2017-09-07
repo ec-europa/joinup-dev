@@ -247,7 +247,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       ],
       'entity_id' => [
         'type' => 'string',
-        'length' => 2048,
+        'max_length' => 2048,
       ],
     ];
   }
@@ -319,7 +319,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   If $markup has been changed.
    */
   protected function process(&$markup) {
-    // Perform a bird-eye check and exit here, if there are no internal links,
+    // Perform a bird-eye check and exit here if there are no internal links,
     // for performance reasons.
     if (!static::needsProcessing($markup)) {
       return FALSE;
@@ -334,35 +334,38 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
         $incoming_path = $element->getAttribute($attribute);
         if ($incoming_path && $parts = $this->getRelativePath($incoming_path)) {
           // If not cached, try to extract a valid target and cache it.
-          if (!array_key_exists($incoming_path, $this->result)) {
+          if (!isset($this->result[$incoming_path])) {
             $this->result[$incoming_path] = $this->processPath($parts['path']);
           }
-          if ($this->result[$incoming_path]) {
-            $link = $this->result[$incoming_path]['link'];
-            if (!empty($parts['fragment'])) {
-              $link .= "#{$parts['fragment']}";
-            }
-            $element->setAttribute($attribute, $link);
-            $element->setAttribute('data-entity-type', $this->result[$incoming_path]['type']);
-            $element->setAttribute('data-entity-uuid', $this->result[$incoming_path]['uuid']);
 
-            // Change also the text on elements like:
-            // @code
-            // <a href="http://joinup.ec.europa.eu/some/path">http://joinup.ec.europa.eu/some/path</a>
-            // @endcode
-            if (preg_match('@^(http[s]?://)@', $element->textContent, $found)) {
-              $qualified_incoming_path = $incoming_path;
-              if (!preg_match('@^http[s]?://@', $incoming_path)) {
-                $qualified_incoming_path = ltrim($qualified_incoming_path, '/');
-                $qualified_incoming_path = "{$found[1]}joinup.ec.europa.eu/$qualified_incoming_path";
-              }
-              if ($element->textContent === $qualified_incoming_path) {
-                $element->nodeValue = "{$found[1]}joinup.ec.europa.eu$link";
-              }
-            }
-
-            $changed = TRUE;
+          $link = $this->result[$incoming_path]['link'];
+          if (!empty($parts['fragment'])) {
+            $link .= "#{$parts['fragment']}";
           }
+          $element->setAttribute($attribute, $link);
+          if (!empty($this->result[$incoming_path]['type'])) {
+            $element->setAttribute('data-entity-type', $this->result[$incoming_path]['type']);
+          }
+          if (!empty($this->result[$incoming_path]['uuid'])) {
+            $element->setAttribute('data-entity-uuid', $this->result[$incoming_path]['uuid']);
+          }
+
+          // Change also the text on elements like:
+          // @code
+          // <a href="http://joinup.ec.europa.eu/some/path">http://joinup.ec.europa.eu/some/path</a>
+          // @endcode
+          if (preg_match('@^(http[s]?://)@', $element->textContent, $found)) {
+            $qualified_incoming_path = $incoming_path;
+            if (!preg_match('@^http[s]?://@', $incoming_path)) {
+              $qualified_incoming_path = ltrim($qualified_incoming_path, '/');
+              $qualified_incoming_path = "{$found[1]}joinup.ec.europa.eu/$qualified_incoming_path";
+            }
+            if ($element->textContent === $qualified_incoming_path) {
+              $element->nodeValue = "{$found[1]}joinup.ec.europa.eu$link";
+            }
+          }
+
+          $changed = TRUE;
         }
       }
     }
@@ -387,25 +390,22 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   If the URI of destination object is malformed.
    */
   protected function processPath($path) {
+    $entity = NULL;
+
     // As we've already created redirects for all migrated entities, we already
     // have a consistent mapping database between the old and the new URLs, in
     // the {redirect} table, so we simply perform a lookup there to see if we
-    // can rewrite this path. We do not rewrite the canonical paths for the
-    // entities that are preserving their IDs, so a community content, referred
-    // as '/node/123', will not be rewritten but will continue to work because
-    // the ID was preserved during the migration process.
+    // can rewrite this path.
     if (!$uri = $this->db->query(static::SQL, [':path' => $path])->fetchField()) {
       // This path may refer a static file that was not migrated as child of a
       // content entity. We try to migrate first that resource, if possible.
-      if (!$this->importUnmigratedFile($path)) {
-        return NULL;
-      }
-      // The file migration was successful. Normally a redirect has been
-      // created. Let's try again.
-      if (!$uri = $this->db->query(static::SQL, [':path' => $path])->fetchField()) {
-        return NULL;
+      if ($this->importUnmigratedFile($path)) {
+        // The file migration was successful. Normally, a redirect has been
+        // created. Let's try again.
+        $uri = $this->db->query(static::SQL, [':path' => $path])->fetchField();
       }
     }
+    $uri = $uri ?: "internal:/$path";
 
     // Get the source entity and remove the scheme from link.
     list($scheme, $link) = explode(':', $uri, 2);
@@ -416,20 +416,25 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
       $target_path = substr($link, 21);
       $values = ['uri' => "public://{$target_path}"];
       $files = $this->getStorage('file')->loadByProperties($values);
-      if (!$files) {
-        return NULL;
+      if ($files) {
+        $entity = reset($files);
       }
-      $entity = reset($files);
     }
     // An alias to an entity canonical path.
     elseif ($scheme === 'internal') {
-      list($entity_type_id, $entity_id) = explode('/', substr($link, 1), 2);
-      // RDF entity IDs are encoded.
-      if ($entity_type_id === 'rdf_entity') {
-        $entity_id = UriEncoder::decodeUrl($entity_id);
-      }
-      if (!$entity = $this->getStorage($entity_type_id)->load($entity_id)) {
-        return NULL;
+      $parts = explode('/', substr($link, 1));
+      // Try to extract an entity only when incoming $link link follows the
+      // pattern: "/{$entity_type_id}/{$entity_id}".
+      if (count($parts) === 2) {
+        $entity_type_id = $parts[0];
+        $entity_id = $parts[1];
+        // RDF entity IDs are encoded.
+        if ($entity_type_id === 'rdf_entity') {
+          $entity_id = UriEncoder::decodeUrl($entity_id);
+        }
+        if ($this->getStorage($entity_type_id)) {
+          $entity = $this->getStorage($entity_type_id)->load($entity_id);
+        }
       }
     }
     else {
@@ -440,8 +445,8 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     return [
       // Try to alias the link.
       'link' => $this->aliasManager->getAliasByPath($link),
-      'type' => $entity->getEntityTypeId(),
-      'uuid' => $entity->uuid(),
+      'type' => $entity ? $entity->getEntityTypeId() : NULL,
+      'uuid' => $entity ? $entity->uuid() : NULL,
     ];
   }
 
@@ -723,7 +728,7 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    */
   protected function getStorage($entity_type_id) {
     if (!isset($this->storage[$entity_type_id])) {
-      $this->storage[$entity_type_id] = $this->entityTypeManager->getStorage($entity_type_id);
+      $this->storage[$entity_type_id] = $this->entityTypeManager->hasDefinition($entity_type_id) ? $this->entityTypeManager->getStorage($entity_type_id) : NULL;
     }
     return $this->storage[$entity_type_id];
   }
