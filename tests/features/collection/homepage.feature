@@ -18,6 +18,7 @@ Feature: Collection homepage
       | title             | Bilbo's book          |
       | description       | Bilbo's autobiography |
       | elibrary creation | members               |
+      | creation date     | 2014-10-17 8:32am     |
       | state             | validated             |
     And the following collection:
       | title             | Middle earth daily               |
@@ -36,11 +37,11 @@ Feature: Collection homepage
       | Middle earth daily | Legoloas |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
-      | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:00am | 2017-7-5 |
-      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated | 2014-10-17 8:00am | 2017-7-5 |
+      | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
+      | Breaking: Gandalf supposedly plans his retirement | A new white wizard? | Supplier exchange | Middle earth daily | validated | 2014-10-17 8:31am | 2017-7-5 |
     And event content:
-      | title                                    | short title      | body                                      | collection         | start date          | end date            | state     | policy domain     | created           | changed  |
-      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2014-10-17 8:00am | 2017-7-5 |
+      | title                                    | short title      | body                                      | collection         | created           | start date          | end date            | state     | policy domain     | changed  |
+      | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2014-10-17 8:33am | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2017-7-5 |
 
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
@@ -79,10 +80,12 @@ Feature: Collection homepage
     And I should not see the text "Open collection"
     And I should not see the text "Bilbo Baggins"
     And I should not see the text "Employment and Support Allowance"
-    # The collection content is shown here.
-    And I should see the "Rohirrim make extraordinary deal" tile
-    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
-    And I should see the "Big hobbit feast - fireworks at midnight" tile
+    # The collection content is shown here in the correct order.
+    Then I should see the following tiles in the correct order:
+      | Rohirrim make extraordinary deal                  |
+      | Big hobbit feast - fireworks at midnight          |
+      | Bilbo's book                                      |
+      | Breaking: Gandalf supposedly plans his retirement |
 
     # Test that unrelated content does not show up in the tiles.
     And I should not see the "Bilbo Baggins" tile
@@ -108,8 +111,9 @@ Feature: Collection homepage
     When I click "Supplier exchange" in the "collection policy domain" inline facet
     Then "Supplier exchange (2)" should be selected in the "collection policy domain" inline facet
     And the "collection policy domain" inline facet should allow selecting the following values "Finance in EU (1), all policy domains"
-    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
-    And I should see the "Big hobbit feast - fireworks at midnight" tile
+    Then I should see the following tiles in the correct order:
+      | Big hobbit feast - fireworks at midnight          |
+      | Breaking: Gandalf supposedly plans his retirement |
     But I should not see the "Rohirrim make extraordinary deal" tile
 
     # Verify that the inline widget reset link doesn't break other active facets.
@@ -136,9 +140,10 @@ Feature: Collection homepage
     Then the News content tab should be selected
     And "Middle earth daily (1)" should be selected in the "from" inline facet
     And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
-    And I should see the "Breaking: Gandalf supposedly plans his retirement" tile
-    But I should not see the "Rohirrim make extraordinary deal" tile
-    And I should not see the "Big hobbit feast - fireworks at midnight" tile
+    Then I should see the following tiles in the correct order:
+      | Rohirrim make extraordinary deal                  |
+      | Big hobbit feast - fireworks at midnight          |
+      | Breaking: Gandalf supposedly plans his retirement |
 
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
