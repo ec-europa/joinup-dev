@@ -65,9 +65,15 @@ Feature: Featuring content site-wide
 
     When I click the contextual link "Feature" in the "Ionizing radiation types" tile
     Then I should see the success message "<label> Ionizing radiation types has been set as featured content."
+    # Content should be marked as featured only in "global" pages.
+    But the "Ionizing radiation types" tile should not be marked as featured
+
+    When I click "Content" in the "Header menu" region
+    Then the "Ionizing radiation types" tile should be marked as featured
 
     When I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile
     Then I should see the success message "<label> Ionizing radiation types has been removed from the feature contents."
+    And the "Ionizing radiation types" tile should not be marked as featured
 
     Examples:
       | content type | label      |
