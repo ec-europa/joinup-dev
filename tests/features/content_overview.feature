@@ -41,7 +41,7 @@ Feature: Content Overview
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
-    And I click "Content"
+    And I click "Events, discussions, news ..."
     Then I should see the "Seventh Windows" tile
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
@@ -57,7 +57,7 @@ Feature: Content Overview
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
     And I am on the homepage
-    And I click "Content"
+    And I click "Events, discussions, news ..."
     Then I should see the "Seventh Windows" tile
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
