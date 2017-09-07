@@ -57,6 +57,11 @@ Feature: Featuring content site-wide
     And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
 
     When I am logged in as a moderator
+    # Wait for contextual links to be generated. There is a session race condition that happens when a contextual link
+    # has a CSRF token. The session will store the seed if not yet present, but if a new request is made before the
+    # session is persisted, the seed won't be found and regenerated. For this reason, the already generated contextual
+    # links with CSRF tokens won't be valid anymore.
+    And I wait for AJAX to finish
     And I go to the homepage of the "Tidy Neutron" collection
     Then I should see the contextual link "Feature" in the "Ionizing radiation types" tile
     And I should see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
