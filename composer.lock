@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.1",
+            "version": "3.36.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "104d1895fa8c661d0ac5f99567b6831b1436ec90"
+                "reference": "98bff6b24863bb0da970449d18f6745b9270add9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/104d1895fa8c661d0ac5f99567b6831b1436ec90",
-                "reference": "104d1895fa8c661d0ac5f99567b6831b1436ec90",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/98bff6b24863bb0da970449d18f6745b9270add9",
+                "reference": "98bff6b24863bb0da970449d18f6745b9270add9",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-05T19:05:30+00:00"
+            "time": "2017-09-06T16:44:34+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -9689,8 +9689,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-05-01T21:54:12+00:00"
+            }
         },
         {
             "name": "drupal/devel",
