@@ -10,6 +10,7 @@ dependencies:
   - joinup_community_content
   - joinup_core
   - joinup_user
+  - language
 
 config_devel:
   - comment.type.reply
