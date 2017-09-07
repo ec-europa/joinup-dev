@@ -24,9 +24,6 @@ Feature: Featuring content site-wide
       | solution                      | user         | roles       |
       | Opensource neutron generators | Niles Turner | facilitator |
       | Gamma-sensible spectroscopy   | Niles Turner | facilitator |
-    And discussion content:
-      | title               | collection   | state     |
-      | Protons vs neutrons | Tidy Neutron | validated |
 
   Scenario Outline: Moderators can feature and unfeature content site-wide.
     Given <content type> content:
@@ -37,7 +34,6 @@ Feature: Featuring content site-wide
     When I am an anonymous user
     And I go to the homepage of the "Tidy Neutron" collection
     Then I should see the following tiles in the correct order:
-      | Protons vs neutrons                 |
       | Ionizing radiation types            |
       | Elementary particles standard model |
     And I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
