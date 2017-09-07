@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.document.field_policy_domain
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
+    - field.field.node.document.field_site_featured
     - field.field.node.document.field_state
     - field.field.node.document.field_type
     - field.field.node.document.field_visit_count
@@ -84,6 +85,7 @@ hidden:
   field_keywords: true
   field_policy_domain: true
   field_shared_in: true
+  field_site_featured: true
   field_state: true
   field_type: true
   field_visit_count: true
