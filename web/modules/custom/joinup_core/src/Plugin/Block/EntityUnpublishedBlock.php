@@ -153,7 +153,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
     $query = $index->query();
     $query->addCondition('entity_bundle', self::COMMUNITY_BUNDLES, 'IN');
     $query->addCondition('entity_groups', $group->id());
-    $query->sort('created', 'DESC');
+    $query->sort('entity_created', 'DESC');
     $results = $query->execute();
     $entities = $this->getResultEntities($results);
     $rows = [];

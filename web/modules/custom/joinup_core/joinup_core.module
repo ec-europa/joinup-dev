@@ -29,6 +29,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Utility\Utility;
 use Drupal\views\Views;
 
@@ -928,4 +929,24 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
  */
 function joinup_core_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'joinup_core/sign_in_destination';
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Sets a default search ordering for the content displayed in the collections'
+ * and solutions' overview page as well as the custom pages.
+ */
+function joinup_core_search_api_query_alter(QueryInterface &$query) {
+  $search_ids = [
+    'rdf_entity.field_collection_content',
+    'rdf_entity.field_solution_content',
+    'node.field_cp_content_listing',
+  ];
+
+  if (!in_array($query->getSearchId(), $search_ids)) {
+    return;
+  }
+
+  $query->sort('entity_created', 'DESC');
 }
