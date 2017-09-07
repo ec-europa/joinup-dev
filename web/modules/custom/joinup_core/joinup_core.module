@@ -950,3 +950,20 @@ function joinup_core_search_api_query_alter(QueryInterface &$query) {
 
   $query->sort('entity_created', 'DESC');
 }
+
+/**
+ * Implements hook_search_api_solr_documents_alter().
+ *
+ * By default, solr server configuration has a property named sortMissingLast
+ * set to true for all fields defined. This means that two different entity
+ * types, one with a property set to false and one without the property, will
+ * result in having the one without the property placed last.
+ *
+ * For all entities apart from nodes, set the property 'sticky' equals to false.
+ */
+function joinup_core_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
+  /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
+  if (empty($documents[0]->getFields()['bs_sticky'])) {
+    $documents[0]->setField('bs_sticky', FALSE);
+  }
+}
