@@ -23,3 +23,7 @@ services:
     class: Drupal\joinup_migrate\EventSubscriber\MailSwapSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_migrate.user_joinup_membership:
+    class: Drupal\joinup_migrate\EventSubscriber\UserJoinupMembershipSubscriber
+    tags:
+      - { name: event_subscriber }

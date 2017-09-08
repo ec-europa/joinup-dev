@@ -69,3 +69,12 @@ $assert_og_roles($collection->id(), 'user6363', OgMembershipInterface::STATE_ACT
   'rdf_entity-collection-member',
   'rdf_entity-collection-facilitator',
 ]);
+
+// All users must be members of the 'Joinup' collection (masqueraded as
+// 'New collection' for test reasons).
+$collection = $this->loadEntityByLabel('rdf_entity', 'New collection', 'collection');
+foreach (['user6363', 'user7355', 'user9351', 'user15741', 'user16077'] as $name) {
+  $assert_og_roles($collection->id(), $name, OgMembershipInterface::STATE_ACTIVE, [
+    'rdf_entity-collection-member',
+  ]);
+}

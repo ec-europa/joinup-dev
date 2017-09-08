@@ -148,7 +148,7 @@ trait MaterialDesignTrait {
         throw new \Exception('The MDL menu wrapper was not found in the page.');
       }
 
-      $button = $wrapper->find('xpath', '//button');
+      $button = $wrapper->find('css', '.mdl-button');
       if (!$button) {
         throw new \Exception('The MDL menu button was not found in the page.');
       }

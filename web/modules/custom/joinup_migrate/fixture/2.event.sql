@@ -60,3 +60,5 @@ LEFT JOIN files f ON cte.field_event_logo_fid = f.fid
 LEFT JOIN workflow_node w ON n.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type = 'event'
+AND cte.field_event_dates_value IS NOT NULL
+AND SUBSTR(cte.field_event_dates_value, 1, 10) <> '1970-01-01'

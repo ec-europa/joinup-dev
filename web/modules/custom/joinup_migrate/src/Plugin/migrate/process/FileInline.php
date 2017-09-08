@@ -37,9 +37,9 @@ class FileInline extends ProcessPluginBase {
       foreach ($document->getElementsByTagName($tag) as $element) {
         if ($element->hasAttribute($attribute)) {
           $url = $element->getAttribute($attribute);
-          if (preg_match('|^(http[s]?://joinup\.ec\.europa\.eu)?(/sites/default/files/ckeditor_files/(.*))$|', $url, $found)) {
+          if (preg_match('|^(?:(?:https?://joinup\.ec\.europa\.eu)?/sites/default/files/ckeditor_files/(.*))$|', $url, $found)) {
             // Search for a migrated file.
-            $uri = "public://inline-{$found[3]}";
+            $uri = "public://inline-{$found[1]}";
             $files = $file_storage->loadByProperties(['uri' => $uri]);
             if (empty($files)) {
               // This file was not migrated probably because the file doesn't
@@ -50,7 +50,7 @@ class FileInline extends ProcessPluginBase {
             }
 
             $file = reset($files);
-            $element->setAttribute($attribute, "{$found[1]}$base_path$public_dir/inline-{$found[3]}");
+            $element->setAttribute($attribute, "/sites/default/files/inline-{$found[1]}");
             $element->setAttribute('data-entity-type', 'file');
             $element->setAttribute('data-entity-uuid', $file->uuid());
             $changed = TRUE;
