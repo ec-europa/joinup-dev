@@ -2013,14 +2013,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
    *
-   * @Then I( should) see :text in the :tag element in the :region( region)
+   * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
    */
-  public function assertRegionElementText($text, $tag, $region) {
+  public function assertRegionElementText($tag, $text, $region) {
     $regionObj = $this->getRegion($region);
     $results = $regionObj->findAll('css', $tag);
     if (!empty($results)) {
       foreach ($results as $result) {
-        if ($result->getText() == $text) {
+        if ($result->getText() === $text) {
           return;
         }
       }
@@ -2031,8 +2031,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Asserts that a ckeditor list contains an element.
    *
-   * This step requires javascript.
-   *
    * CKeditor stores the lists available in the header of the editor pane in an
    * iframe with a role tag. The dropdown "Format" has to be clicked prior to
    * having the iframe available.
@@ -2040,20 +2038,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the paragraph formats in the :field field should not contain the :format_tags format
    */
   public function assertNotFormatInCkeditorExists($field, $format_tags) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires javascript to run.');
+    }
     $element = $this->getSession()->getPage()->findField($field);
     $element_id = $element->getAttribute('id');
-    $format_tags = array_map('trim', explode(',', $format_tags));
+    $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
     $has_tags_condition = <<<JS
-      var element_id = arguments[0]['element_id'];
-      return CKEDITOR.instances[element_id].config.format_tags;
+      return CKEDITOR.instances["$element_id"].config.format_tags;
 JS;
-    $found_tags = $this->getSession()->getDriver()->getWebDriverSession()->execute([
-      'script' => $has_tags_condition,
-      'args' => [['element_id' => $element_id]],
-    ]);
+    $found_tags = $this->getSession()->getDriver()->evaluateScript($has_tags_condition);
     $found_tags_array = explode(';', $found_tags);
-    if (array_intersect($format_tags, $found_tags_array)) {
-      throw new Exception("Some tags were found in the ckeditor.");
+    $invalid_tags = array_intersect($format_tags, $found_tags_array);
+    if (!empty($invalid_tags)) {
+      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+        '@found' => implode(', ', $invalid_tags),
+      ]));
     }
   }
 

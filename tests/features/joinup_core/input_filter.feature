@@ -26,12 +26,12 @@ Feature: Input filter
   Scenario: Tags h1, h5, h6 can exist in a formatted text but the user does not have these options on the editor.
     When I am logged in as a moderator
     And I go to the "Ragged Crying" news
-    Then I should see "test h1" in the "h1" element in the "Content" region
-    And I should see "test h2" in the "h2" element in the "Content" region
-    And I should see "test h3" in the "h3" element in the "Content" region
-    And I should see "test h4" in the "h4" element in the "Content" region
-    And I should see "test h5" in the "h5" element in the "Content" region
-    And I should see "test h6" in the "h6" element in the "Content" region
+    Then I should see an "h1" element with the text "test h1" in the "Content" region
+    Then I should see an "h2" element with the text "test h2" in the "Content" region
+    Then I should see an "h3" element with the text "test h3" in the "Content" region
+    Then I should see an "h4" element with the text "test h4" in the "Content" region
+    Then I should see an "h5" element with the text "test h5" in the "Content" region
+    Then I should see an "h6" element with the text "test h6" in the "Content" region
 
     # Ensure that the user does not have access to disallowed paragraph formats.
     And I open the header local tasks menu
