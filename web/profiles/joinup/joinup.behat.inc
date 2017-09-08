@@ -2035,7 +2035,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * iframe with a role tag. The dropdown "Format" has to be clicked prior to
    * having the iframe available.
    *
-   * @Then the paragraph formats in the :field field should not contain the :format_tags format
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
   public function assertNotFormatInCkeditorExists($field, $format_tags) {
     if (!$this->browserSupportsJavascript()) {

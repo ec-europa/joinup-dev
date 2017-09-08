@@ -36,4 +36,4 @@ Feature: Input filter
     # Ensure that the user does not have access to disallowed paragraph formats.
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    Then the paragraph formats in the "Content" field should not contain the "h1, h5, h6" format
+    Then the paragraph formats in the "Content" field should not contain the "h1, h5, h6" formats
