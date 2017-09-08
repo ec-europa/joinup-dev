@@ -190,7 +190,7 @@ Feature: Sharing content between collections
     And the "Venus content" tile should not be marked as shared
 
     When I go to the homepage
-    And I click "Content"
+    And I click "Events, discussions, news ..."
     And the "Earth content" tile should not be marked as shared
     And the "Mars content" tile should not be marked as shared
     And the "Venus content" tile should not be marked as shared
