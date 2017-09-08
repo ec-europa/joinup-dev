@@ -48,10 +48,8 @@ function semic_preprocess_field(&$variables) {
  */
 function semic_map_markup() {
   global $base_url;
-  $semic_js = $base_url . drupal_get_path('module', 'semic') . '/js/semic_community.js';
-  $map = $base_url . drupal_get_path('module', 'semic') . '/adopters.xml';
-  // @todo Remove the next line after go live. Useful for QA/testing now.
-  // $map = 'https://joinup.ec.europa.eu/sites/default/files/adopters_of_data_standards_developed_by_semic_in_europe_v0.02.xml';
+  $semic_js = $base_url . '/' . drupal_get_path('module', 'semic') . '/js/semic_community.js';
+  $map = $base_url . '/' . drupal_get_path('module', 'semic') . '/adopters.xml';
   $markup = <<<EOD
 <script async src="//europa.eu/webtools/load.js" type="text/javascript"></script>
 <div id="semic-map-kml" style="display: none">$map</div>
