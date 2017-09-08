@@ -9,12 +9,10 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
-    - field.field.rdf_entity.collection.field_ar_creation_date
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
-    - field.field.rdf_entity.collection.field_ar_modification_date
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -29,7 +27,6 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
-    - rdf_entity
     - search_api_field
     - text
 third_party_settings:
@@ -75,8 +72,6 @@ third_party_settings:
         - field_ar_closed
         - field_ar_elibrary_creation
         - field_ar_moderation
-        - field_ar_creation_date
-        - field_ar_modification_date
       parent_name: group_general
       weight: 7
       format_type: tab
@@ -151,13 +146,6 @@ content:
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
-  field_ar_creation_date:
-    weight: 20
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    type: datetime_create_update
-    region: content
   field_ar_description:
     weight: 2
     settings:
@@ -189,13 +177,6 @@ content:
       display_label: false
     third_party_settings: {  }
     type: boolean_checkbox
-    region: content
-  field_ar_modification_date:
-    weight: 21
-    settings:
-      behaviour: modified
-    third_party_settings: {  }
-    type: datetime_create_update
     region: content
   field_ar_owner:
     weight: 4

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "97df6d3565b3d496f7188cb289c00e4e",
+    "content-hash": "19664b13d8652d922410c6731c730d36",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15,7 +15,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-03-23 16:26:10"
+            "time": "2017-03-23T16:26:10+00:00"
         },
         {
             "name": "alchemy/zippy",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.0",
+           "version": "3.36.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "69321675769dd3e3d00a94bfdc747bd3a5b75b3b"
+                "reference": "98bff6b24863bb0da970449d18f6745b9270add9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69321675769dd3e3d00a94bfdc747bd3a5b75b3b",
-                "reference": "69321675769dd3e3d00a94bfdc747bd3a5b75b3b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/98bff6b24863bb0da970449d18f6745b9270add9",
+                "reference": "98bff6b24863bb0da970449d18f6745b9270add9",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-01T22:52:38+00:00"
+            "time": "2017-09-06T16:44:34+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2728,7 +2728,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
             },
-            "time": "2016-11-14 20:32:26"
+            "time": "2016-11-14T20:32:26+00:00"
         },
         {
             "name": "drupal/linkit",
@@ -2779,7 +2779,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29 21:27:56"
+            "time": "2017-05-29T21:27:56+00:00"
         },
         {
             "name": "drupal/mailsystem",
@@ -2870,7 +2870,7 @@
                 "source": "https://github.com/Gizra/message/tree/8.x-1.x",
                 "issues": "https://github.com/Gizra/message/issues"
             },
-            "time": "2017-04-03 16:46:18"
+            "time": "2017-04-03T16:46:18+00:00"
         },
         {
             "name": "drupal/message_notify",
@@ -3122,7 +3122,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-08-14 13:20:41"
+            "time": "2017-08-14T13:20:41+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -3249,7 +3249,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27 15:47:09"
+            "time": "2017-02-27T15:47:09+00:00"
         },
         {
             "name": "drupal/pathauto",
@@ -3305,7 +3305,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
             },
-            "time": "2017-08-23 20:51:31"
+            "time": "2017-08-23T20:51:31+00:00"
         },
         {
             "name": "drupal/persistent_login",
@@ -3359,18 +3359,24 @@
                 "source": "http://cgit.drupalcode.org/persistent_login",
                 "issues": "http://drupal.org/project/issues/persistent_login"
             },
-            "time": "2017-03-03 10:53:37"
+            "time": "2017-03-03T10:53:37+00:00"
         },
         {
             "name": "drupal/phingdrushtask",
             "version": "dev-7.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/phingdrushtask.git",
+                "url": "https://github.com/pfrenssen/phingdrushtask.git",
                 "reference": "6737f3d6c28c6c830f58d5fa09327b65acbda0a9"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pfrenssen/phingdrushtask/zipball/6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
+                "reference": "6737f3d6c28c6c830f58d5fa09327b65acbda0a9",
+                "shasum": ""
+            },
             "require": {
-                "drush/drush": "6 - 8",
+                "drush/drush": "6 - 9",
                 "phing/phing": "~2.9"
             },
             "require-dev": {
@@ -3445,7 +3451,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2016-12-02 20:39:55"
+            "time": "2016-12-02T20:39:55+00:00"
         },
         {
             "name": "drupal/piwik",
@@ -3628,19 +3634,25 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
             },
-            "time": "2017-02-08 04:20:19"
+            "time": "2017-02-08T04:20:19+00:00"
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "2b6e4453008060421aeec4d9b21414d525c56f91"
+                "reference": "8.x-1.0-alpha3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha3.zip",
+                "reference": "8.x-1.0-alpha3",
+                "shasum": "8d39089aad9d5526795abf39a83fe4f940c17c68"
             },
             "require": {
                 "drupal/core": "*",
-                "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2"
+                "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2"
             },
             "require-dev": {
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
@@ -3651,15 +3663,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+1-dev",
-                    "datestamp": "1502451243",
+                    "version": "8.x-1.0-alpha3",
+                    "datestamp": "1504697043",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Do not add empty field item lists to entity @see https://www.drupal.org/node/2904769": "https://www.drupal.org/files/issues/2904769-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3697,8 +3706,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
-            },
-            "time": "2017-09-04 14:34:22"
+            }
         },
         {
             "name": "drupal/redirect",
@@ -3747,7 +3755,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/redirect"
             },
-            "time": "2017-08-26 11:22:53"
+            "time": "2017-08-26T11:22:53+00:00"
         },
         {
             "name": "drupal/search_api",
@@ -4573,7 +4581,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-31 12:05:17"
+            "time": "2017-07-31T12:05:17+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4984,7 +4992,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12 23:38:25"
+            "time": "2017-07-12T23:38:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -5214,7 +5222,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26 17:09:44"
+            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -5716,7 +5724,7 @@
                 }
             ],
             "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2017-08-23 19:37:51"
+            "time": "2017-08-23T19:37:51+00:00"
         },
         {
             "name": "pfrenssen/piwik-reporting-api",
@@ -5752,7 +5760,7 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "time": "2017-07-17 09:33:42"
+            "time": "2017-07-17T09:33:42+00:00"
         },
         {
             "name": "phing/phing",
@@ -5974,7 +5982,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-08-17 13:17:23"
+            "time": "2017-08-17T13:17:23+00:00"
         },
         {
             "name": "psr/cache",
@@ -9201,7 +9209,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10 06:23:49"
+            "time": "2017-07-10T06:23:49+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -9681,8 +9689,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-05-01 21:54:12"
+            }
         },
         {
             "name": "drupal/devel",
@@ -9821,7 +9828,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-09 08:39:37"
+            "time": "2017-04-09T08:39:37+00:00"
         },
         {
             "name": "drupal/drupal-extension",
@@ -9882,7 +9889,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-08-04 21:27:56"
+            "time": "2017-08-04T21:27:56+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -11316,7 +11323,6 @@
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
-        "drupal/rdf_entity": 20,
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,

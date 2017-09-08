@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
-    - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -22,7 +21,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
-    - field.field.rdf_entity.solution.field_is_modification_date
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
@@ -104,14 +102,15 @@ content:
             classes: {  }
     region: content
 hidden:
+  changed: true
   collections: true
+  created: true
   field_is_actor: true
   field_is_affiliations_requests: true
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
   field_is_content: true
-  field_is_creation_date: true
   field_is_distribution: true
   field_is_documentation: true
   field_is_elibrary_creation: true
@@ -122,7 +121,6 @@ hidden:
   field_is_language: true
   field_is_metrics_page: true
   field_is_moderation: true
-  field_is_modification_date: true
   field_is_owner: true
   field_is_product_type: true
   field_is_related_solutions: true
