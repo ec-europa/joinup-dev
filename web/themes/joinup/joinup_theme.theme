@@ -769,9 +769,9 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the creation date field.
-  $creation_date = $entity->field_isr_creation_date;
+  $creation_date = $entity->get('created');
   $creation_date = $viewBuilder->viewField($creation_date, 'default');
-  $variables['additional_content']['field_isr_creation_date'] = $creation_date;
+  $variables['additional_content']['created'] = $creation_date;
 }
 
 /**
@@ -899,6 +899,10 @@ function joinup_theme_preprocess_image(&$variables) {
  */
 function joinup_theme_preprocess_user(&$variables) {
   $variables['full_name'] = $variables['user']->get('full_name')->value;
+
+  // Truncate business title.
+  $business_title = $variables['user']->get('field_user_business_title')->value;
+  $variables['short_business_title'] = substr($business_title, 0, 30);
 }
 
 /**

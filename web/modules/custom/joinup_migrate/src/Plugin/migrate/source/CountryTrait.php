@@ -22,6 +22,7 @@ trait CountryTrait {
   protected $countryCorrection = [
     'Faroe Islands' => 'Faroes',
     'Fyrom' => 'Former Yugoslav Republic of Macedonia',
+    'South Korea/The Republic of Korea' => 'South Korea',
   ];
 
   /**

@@ -1,0 +1,19 @@
+id: distribution_audience
+label: 'Distribution audience'
+migration_tags:
+  - og
+  - distribution
+source:
+  plugin: distribution_audience
+  track_changes: true
+process:
+  id: id
+  og_audience: solution
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: asset_distribution
+  update_existing: true
+migration_dependencies:
+  required:
+    - collection
+    - release
