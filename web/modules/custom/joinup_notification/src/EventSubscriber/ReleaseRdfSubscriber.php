@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Operation: update
  *   Transition: request_deletion
  *   Recipients: owner
- * @codingStandardsIgnoreStart
+ * @codingStandardsIgnoreEnd
  */
 class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 

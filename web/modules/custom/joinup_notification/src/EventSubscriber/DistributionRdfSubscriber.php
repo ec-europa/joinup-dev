@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Operation: delete
  *   Source state: published, needs_update
  *   Recipients: owner
- * @codingStandardsIgnoreStart
+ * @codingStandardsIgnoreEnd
  */
 class DistributionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 
