@@ -41,7 +41,7 @@ $this->assertEquals('Euritas', $event->field_organisation->value);
 $this->assertEquals('public', $event->field_organisation_type->value);
 $this->assertEquals('http://www.euritas.eu/euritas-summit-2015', $event->field_event_web_url->uri);
 $this->assertEquals('proposed', $event->field_state->value);
-$this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
+$this->assertTrue($event->get('field_event_spatial_coverage')->isEmpty());
 $this->assertRedirects(['community/egovernment/event/euritas-summit-2015-“innovate-cooperate-take-challenge”-0'], $event);
 
 $event = Node::load(150255);
@@ -66,7 +66,7 @@ $this->assertEquals('Virtual Meeting', $event->field_location->value);
 $this->assertEquals('ISA Programme', $event->field_organisation->value);
 $this->assertTrue($event->get('field_event_web_url')->isEmpty());
 $this->assertEquals('proposed', $event->field_state->value);
-$this->assertReferences(static::$europeCountries, $event->field_event_spatial_coverage);
+$this->assertTrue($event->get('field_event_spatial_coverage')->isEmpty());
 $this->assertRedirects(['asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0'], $event);
 
 $event = Node::load(42464);
