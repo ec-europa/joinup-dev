@@ -1,8 +1,13 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - image.style.large
+    - image.style.medium
+    - image.style.thumbnail
   module:
     - editor
+    - image
     - joinup_video
 name: 'Content Editor'
 format: content_editor
@@ -20,7 +25,7 @@ filters:
     status: true
     weight: -50
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src frameborder width height allowfullscreen mozallowfullscreen webkitallowfullscreen>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src frameborder width height allowfullscreen mozallowfullscreen webkitallowfullscreen>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -67,3 +72,13 @@ filters:
     status: true
     weight: 0
     settings: {  }
+  filter_image_style:
+    id: filter_image_style
+    provider: image
+    status: true
+    weight: 0
+    settings:
+      allowed_styles:
+        large: large
+        medium: medium
+        thumbnail: thumbnail
