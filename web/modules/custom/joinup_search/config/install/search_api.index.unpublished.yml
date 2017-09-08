@@ -190,11 +190,6 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: sticky
     type: boolean
-  featured:
-    label: Featured
-    datasource_id: 'entity:node'
-    property_path: featured
-    type: boolean
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
