@@ -99,7 +99,6 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       // delete the user at this point.
       unset($form['description']);
       $form += $build;
-      return $form;
     }
 
     return $form;
