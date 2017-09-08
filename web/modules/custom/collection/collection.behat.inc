@@ -709,7 +709,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Asserts that a given or current user is member of collection list.
    *
    * @Then I am member of :labels collection(s)
-   * @Then User :user_name is member of :labels collection(s)
+   * @Then user :user_name is member of :labels collection(s)
    */
   public function assertUserIsMemberOfCollection($labels, $user_name = NULL) {
     /** @var \Drupal\user\UserInterface $account */

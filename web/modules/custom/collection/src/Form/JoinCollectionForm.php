@@ -121,19 +121,23 @@ class JoinCollectionForm extends FormBase {
     // If the user has an active membership, he can cancel it as well.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $parameters = ['rdf_entity' => $collection->id()];
-      $form['leave'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Leave this collection'),
-        '#url' => Url::fromRoute('collection.leave_confirm_form', $parameters),
-        '#access' => $this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters),
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
+      if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
+        $form['leave'] = [
+          '#type' => 'link',
+          '#title' => $this->t('Leave this collection'),
+          '#url' => Url::fromRoute('collection.leave_confirm_form', $parameters),
+          '#attributes' => [
+            'class' => ['use-ajax'],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => Json::encode(['width' => 'auto']),
           ],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => Json::encode(['width' => 'auto']),
-        ],
-      ];
+        ];
+      }
+      else {
+        $form['leave'] = [
+          '#markup' => $this->t("You cannot leave the %collection collection", ['%collection' => $collection->label()]),
+        ];
+      }
       $form['#attached']['library'][] = 'core/drupal.ajax';
     }
     // If the user has a pending membership, do not allow to request a new one.
