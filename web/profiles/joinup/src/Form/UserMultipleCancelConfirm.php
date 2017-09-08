@@ -95,8 +95,11 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
         // @see \Drupal\Core\Form\ConfirmFormBase::buildForm()
         'cancel' => ConfirmFormHelper::buildCancelLink($this, $this->getRequest()),
       ];
-
-      return $build;
+      // Remove the 'This action cannot be undone as the user is unable to
+      // delete the user at this point.
+      unset($form['description']);
+      $form += $build;
+      return $form;
     }
 
     return $form;
