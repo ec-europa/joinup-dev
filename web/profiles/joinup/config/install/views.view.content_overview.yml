@@ -590,7 +590,7 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts: {  }
-      title: 'Keep up-to-date'
+      title: 'Keep up to date'
       header: {  }
       footer: {  }
       empty: {  }
