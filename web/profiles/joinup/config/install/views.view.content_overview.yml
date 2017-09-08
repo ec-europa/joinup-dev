@@ -602,7 +602,7 @@ display:
           expose:
             label: ''
           plugin_id: search_api
-      title: 'Keep up-to-date'
+      title: 'Keep up to date'
       header: {  }
       footer: {  }
       empty: {  }

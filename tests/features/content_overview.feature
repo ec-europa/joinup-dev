@@ -43,7 +43,7 @@ Feature: Content Overview
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
-    And I click "Keep up-to-date"
+    And I click "Keep up to date"
     Then I should see the following tiles in the correct order:
       | The Playful Tale  |
       | Seventh Windows   |
