@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup search arbitrary facet.
+ */
+
+use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
+use Drupal\search_api\Query\ResultSetInterface;
+use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
+use Solarium\QueryType\Select\Result\Result;
+
+/**
+ * Implements hook_facets_search_api_query_type_mapping_alter().
+ */
+function joinup_search_arbitrary_facet_facets_search_api_query_type_mapping_alter($backend_plugin_id, array &$query_types) {
+  $query_types['facet_query'] = 'facet_query';
+}
+
+/**
+ * Implements hook_search_api_solr_query_alter().
+ */
+function joinup_search_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
+  $current_user = \Drupal::currentUser();
+
+  foreach ($query->getOption('joinup_search_arbitrary_facet', []) as $facet_name => $options) {
+    /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+    $facet_set = $solarium_query->getFacetSet();
+    $facet = $facet_set->createFacetMultiQuery($facet_name);
+    $facet->createQuery('mine', 'itm_entity_author:' . $current_user->id());
+    $facet->createQuery('featured', 'bm_site_featured:true');
+    $facet->createQuery('collections', 'sm_entity_bundle:collection');
+  }
+}
+
+/**
+ * Implements hook_search_api_solr_search_results_alter().
+ */
+function joinup_search_arbitrary_facet_search_api_solr_search_results_alter(ResultSetInterface $result_set, SearchApiQueryInterface $query, Result $result) {
+  /** @var \Solarium\QueryType\Select\Query\Query $result */
+  if ($result->getFacetSet() && $result->getFacetSet()->getFacets()) {
+    /** @var \Solarium\QueryType\Select\Result\Facet\Field[] $response_facets */
+    $response_facets = $result->getFacetSet()->getFacets();
+    $extracted_facets = [];
+
+    // Our facets don't match the ones added by the facets module, that works
+    // only on fields. Here we need to mimic the behaviour by working on our
+    // custom facets.
+    // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::extractFacets()
+    foreach ($query->getOption('joinup_search_arbitrary_facet', []) as $facet_name => $options) {
+      if (!empty($response_facets[$facet_name])) {
+        $min_count = $options['min_count'];
+        foreach ($response_facets[$facet_name]->getValues() as $term => $count) {
+          if ($count >= $min_count) {
+            $extracted_facets[$facet_name][] = [
+              'filter' => $term,
+              'count' => $count,
+            ];
+          }
+        }
+      }
+    }
+
+    if (!empty($extracted_facets)) {
+      // Add the results of our arbitrary query facets back together with the
+      // other results, so the facets will be built properly.
+      $result_set->setExtraData('search_api_facets', array_merge($result_set->getExtraData('search_api_facets', []), $extracted_facets));
+    }
+  }
+}

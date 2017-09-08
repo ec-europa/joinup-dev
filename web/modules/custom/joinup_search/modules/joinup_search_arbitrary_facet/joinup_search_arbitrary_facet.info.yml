@@ -1,0 +1,10 @@
+name: Joinup search arbitrary facet
+type: module
+description: Allows adding facets based on arbitrary queries.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - facets
+  - search_api_solr
+
