@@ -6,7 +6,7 @@ Feature: Tests membership to Joinup collection.
       | title                   | state     |
       | An arbitrary collection | validated |
 
-  Scenario: As newly registered user I'm automatically member of the 'Joinup'
+  Scenario: As a newly registered user I'm automatically member of the 'Joinup'
     collection and I cannot leave.
 
     Given I am logged in as a user with the member role of the "An arbitrary collection" collection
