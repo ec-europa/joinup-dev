@@ -109,11 +109,11 @@
       <div class="value bold color-base">{{ licence }}</div>
     </div>
     {% endif %}
-    <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
-      <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      {% if content.field_file.0|render|striptags|trim %}
-        <a href="{{ content.field_file.0|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
-      {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ node.type.entity.label|lower }}</span>
+        <span class="listing__icon icon icon--{{ node.bundle }}"></span>
+      </div>
     </div>
   </div>
 </div>
