@@ -20,7 +20,6 @@ use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\user\Entity\User;
 
@@ -196,12 +195,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
-      'creation date' => 'field_ar_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ar_description',
       'elibrary creation' => 'field_ar_elibrary_creation',
       'logo' => 'field_ar_logo',
       'moderation' => 'field_ar_moderation',
-      'modification date' => 'field_ar_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
@@ -299,9 +298,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    $values['rid'] = 'collection';
-    $collection = Rdf::create($values);
-    $collection->save();
+    $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship

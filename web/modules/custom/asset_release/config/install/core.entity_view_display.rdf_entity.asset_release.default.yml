@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -12,7 +11,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -26,7 +24,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - datetime
     - ds
     - state_machine
     - text
@@ -36,6 +33,25 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  created:
+    weight: 1
+    label: hidden
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 1
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: timestamp_ago
+    region: content
   field_isr_affiliations_requests:
     weight: 22
     label: above
@@ -59,25 +75,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_isr_creation_date:
-    weight: 1
-    label: hidden
-    settings:
-      future_format: '@interval hence'
-      past_format: '@interval ago'
-      granularity: 1
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: no_wrappers
-    type: datetime_time_ago
     region: content
   field_isr_distribution:
     weight: 3
@@ -263,6 +260,7 @@ content:
         template_suggestion: no_wrappers
     region: content
 hidden:
+  changed: true
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true
@@ -270,7 +268,6 @@ hidden:
   field_isr_included_asset: true
   field_isr_language: true
   field_isr_logo: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_release_number: true

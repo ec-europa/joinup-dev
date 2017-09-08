@@ -10,7 +10,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing licences.
@@ -131,9 +130,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    *   A new licence entity.
    */
   protected function createLicence(array $values) {
-    $values['rid'] = 'licence';
-    $licence = Rdf::create($values);
-    $licence->save();
+    $licence = $this->createRdfEntity('licence', $values);
     $this->licences[$licence->id()] = $licence;
 
     return $licence;
