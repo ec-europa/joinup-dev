@@ -96,6 +96,15 @@ field_settings:
       fields:
         - 'entity:node/field_keywords'
         - 'entity:rdf_entity/field_keywords'
+  site_featured:
+    label: Featured
+    property_path: aggregated_field
+    type: boolean
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_site_featured'
+        - 'entity:rdf_entity/field_site_featured'
   title:
     label: Title
     datasource_id: 'entity:node'
