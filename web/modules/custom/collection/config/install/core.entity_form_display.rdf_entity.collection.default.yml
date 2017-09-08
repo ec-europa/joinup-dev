@@ -243,8 +243,6 @@ content:
     third_party_settings: {  }
 hidden:
   field_ar_affiliates: true
-  field_ar_creation_date: true
-  field_ar_modification_date: true
   langcode: true
   translation: true
   uid: true

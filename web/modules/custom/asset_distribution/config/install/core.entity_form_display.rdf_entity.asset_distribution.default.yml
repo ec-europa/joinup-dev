@@ -75,9 +75,7 @@ content:
     region: content
 hidden:
   current_workflow_state: true
-  field_ad_creation_date: true
   field_ad_file_size: true
-  field_ad_modification_date: true
   field_download_count: true
   field_status: true
   langcode: true
