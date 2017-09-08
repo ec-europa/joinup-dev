@@ -6,14 +6,14 @@ use Drupal\video_embed_field\ProviderPluginBase;
 use GuzzleHttp\TransferStats;
 
 /**
- * A Prezi video provider plugin.
+ * A prezi.com presentation provider plugin.
  *
  * @VideoEmbedProvider(
- *   id = "prezi_video",
- *   title = @Translation("Prezi video")
+ *   id = "prezi",
+ *   title = @Translation("Prezi presentation")
  * )
  */
-class PreziVideo extends ProviderPluginBase {
+class Prezi extends ProviderPluginBase {
 
   /**
    * Static cache for resolved short URLs.
@@ -28,7 +28,7 @@ class PreziVideo extends ProviderPluginBase {
   public function renderEmbedCode($width, $height, $autoplay) {
     $iframe = [
       '#type' => 'video_embed_iframe',
-      '#provider' => 'prezi_video',
+      '#provider' => 'prezi',
       '#url' => sprintf('https://prezi.com/embed/%s', $this->getVideoId()),
       '#query' => [
         'ref' => $this->getVideoId(),
