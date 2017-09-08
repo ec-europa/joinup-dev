@@ -141,8 +141,6 @@ Feature: Collection homepage
     And "Middle earth daily (1)" should be selected in the "from" inline facet
     And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
     Then I should see the following tiles in the correct order:
-      | Rohirrim make extraordinary deal                  |
-      | Big hobbit feast - fireworks at midnight          |
       | Breaking: Gandalf supposedly plans his retirement |
 
   # Regression test to ensure that related community content does not appear in the draft view.
