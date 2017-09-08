@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.node.email_plain
     - field.field.node.newsletter.body
     - field.field.node.newsletter.simplenews_issue
+    - field.field.node.newsletter.og_audience
     - node.type.newsletter
   module:
     - link
@@ -24,5 +25,6 @@ content:
     region: content
 hidden:
   links: true
+  og_audience: true
   simplenews_issue: true
   report: true
