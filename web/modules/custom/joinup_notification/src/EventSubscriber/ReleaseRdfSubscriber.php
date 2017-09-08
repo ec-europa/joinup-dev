@@ -307,7 +307,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * Calculates the user data to send the messages with.
    *
    * @param array $user_data
-   *    The user data array.
+   *   The user data array.
    *
    * @see: ::getUsersMessages() for more information on the array.
    */
@@ -320,7 +320,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
    * Returns the state of the release related to the event.
    *
    * @return string
-   *    The current state.
+   *   The current state.
    */
   protected function getReleaseState() {
     return $this->entity->get('field_is_state')->first()->value;

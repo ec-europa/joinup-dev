@@ -315,7 +315,8 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
         break;
 
       // The only case left is when the entity is proposed from the owner when
-      // the entity is in draft. In this case, send the notification for new entities.
+      // the entity is in draft. In this case, send the notification for new
+      // entities.
       default:
         $user_data = ['roles' => ['moderator' => [self::TEMPLATE_PROPOSE_NEW]]];
         break;
@@ -470,7 +471,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
     if (!empty($this->transition) && $this->transition->getId() === 'request_deletion') {
       $collection_ids = solution_get_collection_ids($this->entity);
       $collections = $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($collection_ids);
-      $arguments['@solution:parents:title'] = implode(', ', array_map(function(RdfInterface $collection) {
+      $arguments['@solution:parents:title'] = implode(', ', array_map(function (RdfInterface $collection) {
         return $collection->label();
       }, $collections));
     }
@@ -501,7 +502,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * Calculates the user data to send the messages with.
    *
    * @param array $user_data
-   *    The user data array.
+   *   The user data array.
    *
    * @see: ::getUsersMessages() for more information on the array.
    */
@@ -514,7 +515,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * Returns the state of the solution related to the event.
    *
    * @return string
-   *    The current state.
+   *   The current state.
    */
   protected function getSolutionState() {
     return $this->entity->get('field_is_state')->first()->value;
@@ -526,7 +527,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * Applies only for archival and deletion request.
    *
    * @return bool
-   *    Whether the action is requested. Returns true if the current state is
+   *   Whether the action is requested. Returns true if the current state is
    *    deletion_request and the operation is delete or if the current state is
    *    archival_request and the transition is archive. False otherwise.
    */
