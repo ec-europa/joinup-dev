@@ -1,20 +1,20 @@
 @api @email
 Feature: Content Overview
 
-  Scenario: Ensure access to content overview landing page, called "Keep up-to-date".
+  Scenario: Ensure access to content overview landing page, called "Keep up to date".
     Given I am an anonymous user
     # Anonymous users land on the homepage.
     Then I should see the link "Events, discussions, news ..."
     When I click "Events, discussions, news ..."
     # Visually hidden heading.
-    Then I should see the heading "Keep up-to-date"
+    Then I should see the heading "Keep up to date"
     # Check that all logged in users can see and access the overview page as well.
     # However, authenticated users land on their profile, so they need to use the menu.
     Given I am logged in as a user with the "authenticated user" role
-    Then I should see the link "Keep up-to-date"
-    When I click "Keep up-to-date"
+    Then I should see the link "Keep up to date"
+    When I click "Keep up to date"
     # Visually hidden heading.
-    Then I should see the heading "Keep up-to-date"
+    Then I should see the heading "Keep up to date"
 
   @terms
   Scenario: View content overview as an anonymous user
@@ -43,7 +43,7 @@ Feature: Content Overview
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
-    And I click "Keep up-to-date"
+    And I click "Keep up to date"
     Then I should see the "Seventh Windows" tile
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
@@ -59,7 +59,7 @@ Feature: Content Overview
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
     And I am on the homepage
-    And I click "Keep up-to-date"
+    And I click "Keep up to date"
     Then I should see the "Seventh Windows" tile
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
