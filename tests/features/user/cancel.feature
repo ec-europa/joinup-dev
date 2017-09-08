@@ -32,6 +32,7 @@ Feature:
     And I press the "Apply to selected items" button
     Then I should see the text "User Hazel Olson cannot be deleted as it is currently the sole owner of these collections:"
     And I should see the text "User Amelia Barker cannot be deleted as it is currently the sole owner of these collections:"
+    And I should not see the text "This action cannot be undone."
     And I should see the link "Lugia was just released"
     And I should see the link "Articuno is hunted"
 
