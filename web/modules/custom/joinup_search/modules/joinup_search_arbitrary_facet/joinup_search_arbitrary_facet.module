@@ -30,6 +30,11 @@ function joinup_search_arbitrary_facet_search_api_solr_query_alter(SolariumQuery
     $facet->createQuery('mine', 'itm_entity_author:' . $current_user->id());
     $facet->createQuery('featured', 'bm_site_featured:true');
     $facet->createQuery('collections', 'sm_entity_bundle:collection');
+
+    // For "OR" facets, add the expected tag for exclusion.
+    if (isset($options['operator']) && strtolower($options['operator']) === 'or') {
+      $facet->setExcludes(['arbitrary:' . $facet_name]);
+    }
   }
 }
 

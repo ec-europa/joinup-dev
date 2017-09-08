@@ -41,7 +41,7 @@ class FacetQuery extends SearchApiString {
       $active_items = $this->facet->getActiveItems();
 
       if (count($active_items)) {
-        $filter = $query->createConditionGroup($operator, ['facet:' . $field_identifier]);
+        $filter = $query->createConditionGroup($operator, ['arbitrary:' . $field_identifier]);
         foreach ($active_items as $value) {
           switch ($value) {
             case 'mine':
