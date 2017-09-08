@@ -143,6 +143,16 @@ Feature: Collection homepage
     Then I should see the following tiles in the correct order:
       | Breaking: Gandalf supposedly plans his retirement |
 
+  Scenario: Forward search facets to the search page are ordered properly
+    Given I go to the homepage of the "Middle earth daily" collection
+    When I click the News content tab
+    And I click "Advanced search"
+    Then I should be on the search page
+    Then the News content tab should be selected
+    Then I should see the following tiles in the correct order:
+      | Rohirrim make extraordinary deal                  |
+      | Breaking: Gandalf supposedly plans his retirement |
+
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
