@@ -2011,6 +2011,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * This completes the assertNotRegionElementText of Markup context.
    *
+   * @param string $tag
+   *   The HTML tag that is being checked.
+   * @param string $text
+   *   The text that should be present in the HTML tag.
+   * @param string $region
+   *   The region to which to confine the search for the HTML tag.
+   *
+   * @throws \Exception
+   *   Thrown when the given tag with the given text was not found in the given
+   *   region.
+   *
    * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
    *
    * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
@@ -2034,6 +2045,14 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * CKeditor stores the lists available in the header of the editor pane in an
    * iframe with a role tag. The dropdown "Format" has to be clicked prior to
    * having the iframe available.
+   *
+   * @param string $field
+   *   The name of the field that contains the Wysiwyg editor to check.
+   * @param string $format_tags
+   *   Comma-separated list of paragraph formats to check.
+   *
+   * @throws \Exception
+   *   Thrown when the formats were found in the format list.
    *
    * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
