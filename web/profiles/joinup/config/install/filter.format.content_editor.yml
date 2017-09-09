@@ -49,9 +49,12 @@ filters:
     weight: -49
     settings:
       allowed_providers:
+        google_docs: google_docs
+        slideshare: slideshare
         joinup_ec_video: joinup_ec_video
+        prezi: prezi
+        vimeo: vimeo
         youtube: youtube
-        vimeo: 0
         youtube_playlist: 0
       autoplay: false
       responsive: true
