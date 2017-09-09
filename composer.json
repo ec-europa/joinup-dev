@@ -143,7 +143,7 @@
                 "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                 "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                "Static cache of languages in ContentEntityBase is not updated when a language is added. @see https://www.drupal.org/node/2907507": "https://www.drupal.org/files/issues/2907507-2.patch"
+                "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-15.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
