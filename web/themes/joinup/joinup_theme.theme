@@ -899,6 +899,10 @@ function joinup_theme_preprocess_image(&$variables) {
  */
 function joinup_theme_preprocess_user(&$variables) {
   $variables['full_name'] = $variables['user']->get('full_name')->value;
+
+  // Truncate business title.
+  $business_title = $variables['user']->get('field_user_business_title')->value;
+  $variables['short_business_title'] = substr($business_title, 0, 30);
 }
 
 /**
@@ -1329,6 +1333,11 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
     $form['#theme'][] = 'buttons_separated_form';
+  }
+
+  // Change markup in an username field.
+  if ($form_id == 'user_form' && isset($form['user_name'])) {
+    $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
   }
 }
 
