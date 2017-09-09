@@ -26,8 +26,7 @@ Feature: Input filter
     When I go to the "Slideshare presentation" news
     Then I see the "iframe" element with the "src" attribute set to "//www.slideshare.net/slideshow/embed_code/key/hJ3x3pTrtGaatQ" in the "Content" region
     When I go to the "Google docs" news
-    # Google changes the code in the embedded url. We only need to ensure the existence of 'a' url in the iframe.
-    Then I see the "iframe" element with the "src" attribute set to "https://docs.google.com/forms/d/e" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" in the "Content" region
 #    When I go to the "Joinup iframe" news
 #    Then I see the "iframe" element with the "src" attribute set to "https://joinup.ec.europa.eu/homepage" in the "Content" region
     When I go to the "Luke cage" news
