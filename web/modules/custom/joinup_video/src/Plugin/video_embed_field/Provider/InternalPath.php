@@ -5,7 +5,6 @@ namespace Drupal\joinup_video\Plugin\video_embed_field\Provider;
 use Drupal\Core\Url;
 use Drupal\video_embed_field\ProviderPluginBase;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\TransferStats;
 
 /**
  * An European Commission video provider plugin.
