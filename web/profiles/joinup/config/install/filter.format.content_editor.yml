@@ -51,6 +51,7 @@ filters:
       allowed_providers:
         google_docs: google_docs
         slideshare: slideshare
+        internal_path: internal_path
         joinup_ec_video: joinup_ec_video
         prezi: prezi
         vimeo: vimeo
