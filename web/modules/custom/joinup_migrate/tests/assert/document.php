@@ -19,7 +19,21 @@ $this->assertEquals('2010-10-20T00:00:00', $document->field_document_publication
 $this->assertEquals('http://www.baa.com/', $document->field_file->target_id);
 $this->assertContains('More information can be found on the ', $document->body->value);
 $this->assertTrue($document->get('field_keywords')->isEmpty());
-$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
+$this->assertReferences([
+  'Antarctica',
+  'Austria',
+  'Côte d’Ivoire',
+  'European Union',
+  'Faroes',
+  'Former Yugoslav Republic of Macedonia',
+  'Kiribati',
+  'Romania',
+  'South Korea',
+  'São Tomé and Príncipe',
+  'The Gambia',
+  'Tuvalu',
+  'United States Minor Outlying Islands',
+], $document->get('field_document_spatial_coverage'));
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/baa'], $document);

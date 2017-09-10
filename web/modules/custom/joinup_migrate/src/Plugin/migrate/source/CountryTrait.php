@@ -10,6 +10,9 @@ trait CountryTrait {
   /**
    * Country correction mapping.
    *
+   * A country can be split into multiple countries by setting an array. Setting
+   * NULL means "this country is not migrated".
+   *
    * @var array
    */
   protected static $countryCorrection = [
@@ -27,10 +30,11 @@ trait CountryTrait {
     'International Organizations' => NULL,
     'Midway Islands' => 'United States Minor Outlying Islands',
     'North America' => NULL,
+    'Oceania' => NULL,
     'Other' => NULL,
     'Pan European' => NULL,
     'Queen Maud Land' => 'Antarctica',
-    'Sao Tome and Principe' => 'São Tomé and Príncipe',
+    'Sao Tome and Pri­ncipe' => 'São Tomé and Príncipe',
     'South Korea/The Republic of Korea' => 'South Korea',
     'US Miscellaneous Pacific Islands' => 'United States Minor Outlying Islands',
     'Wake Islands' => 'United States Minor Outlying Islands',
@@ -74,7 +78,7 @@ trait CountryTrait {
       }
     }
 
-    return $countries;
+    return array_unique($countries);
   }
 
 }
