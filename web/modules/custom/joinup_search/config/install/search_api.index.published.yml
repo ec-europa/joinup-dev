@@ -369,7 +369,8 @@ processor_settings:
   joinup_entity_published_revision: {  }
   joinup_entity_status:
     inverse: false
-  rendered_item: {  }
+  add_url: {  }
+  aggregated_field: {  }
   html_filter:
     all_fields: false
     fields:
@@ -393,10 +394,9 @@ processor_settings:
     weights:
       preprocess_index: -46
       preprocess_query: -46
-  tokenizer:
+  ignorecase:
     all_fields: false
     fields:
-      - keywords
       - title
       - body
       - field_short_title
@@ -405,7 +405,6 @@ processor_settings:
       - field_location
       - field_event_adtl_address_info
       - field_organisation
-      - field_scope
       - label
       - field_isr_release_notes
       - isr_field_ci_name
@@ -416,41 +415,13 @@ processor_settings:
       - field_isr_description
       - field_ar_abstract
       - field_is_description
-      - is_field_ci_name
-      - is_field_owner_name
       - field_user_first_name
       - field_user_family_name
       - field_user_organisation
-    spaces: ''
-    overlap_cjk: 1
-    minimum_word_size: '3'
     weights:
-      preprocess_index: -49
-      preprocess_query: -49
-  type_boost:
-    boosts:
-      'entity:node':
-        datasource_boost: !!float 1
-        bundle_boosts:
-          custom_page: !!float 5
-          discussion: !!float 2
-          document: !!float 0
-          event: !!float 3
-          news: !!float 4
-          newsletter: !!float 0
-          video: !!float 0
-      'entity:rdf_entity':
-        datasource_boost: !!float 1
-        bundle_boosts:
-          asset_distribution: !!float 0
-          asset_release: !!float 0
-          collection: !!float 7
-          licence: !!float 0
-          solution: !!float 6
-      'entity:user':
-        datasource_boost: !!float 1
-    weights:
-      preprocess_index: 0
+      preprocess_index: -50
+      preprocess_query: -50
+  rendered_item: {  }
   stopwords:
     all_fields: false
     fields:
@@ -510,6 +481,40 @@ processor_settings:
     weights:
       preprocess_index: -47
       preprocess_query: -47
+  tokenizer:
+    all_fields: false
+    fields:
+      - keywords
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_event_adtl_address_info
+      - field_organisation
+      - field_scope
+      - label
+      - field_isr_release_notes
+      - isr_field_ci_name
+      - isr_field_owner_name
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+      - is_field_ci_name
+      - is_field_owner_name
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
+    spaces: ''
+    overlap_cjk: 1
+    minimum_word_size: '3'
+    weights:
+      preprocess_index: -49
+      preprocess_query: -49
   transliteration:
     all_fields: false
     fields:
@@ -539,35 +544,27 @@ processor_settings:
     weights:
       preprocess_index: -48
       preprocess_query: -48
-  add_url: {  }
-  aggregated_field: {  }
-  ignorecase:
-    all_fields: false
-    fields:
-      - title
-      - body
-      - field_short_title
-      - field_news_headline
-      - field_event_agenda
-      - field_location
-      - field_event_adtl_address_info
-      - field_organisation
-      - label
-      - field_isr_release_notes
-      - isr_field_ci_name
-      - isr_field_owner_name
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-      - field_user_first_name
-      - field_user_family_name
-      - field_user_organisation
+  type_boost:
+    boosts:
+      'entity:node':
+        datasource_boost: !!float 0
+        bundle_boosts:
+          custom_page: !!float 8
+          discussion: !!float 2
+          document: !!float 0
+          event: !!float 3
+          news: !!float 5
+          newsletter: !!float 0
+          video: !!float 0
+      'entity:rdf_entity':
+        datasource_boost: !!float 0
+        bundle_boosts:
+          collection: !!float 21
+          solution: !!float 13
+      'entity:user':
+        datasource_boost: !!float 0
     weights:
-      preprocess_index: -50
-      preprocess_query: -50
+      preprocess_index: 0
 tracker_settings:
   default: {  }
 options:
