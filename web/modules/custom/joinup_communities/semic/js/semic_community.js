@@ -16,7 +16,7 @@ L.custom = {
     var tileLayer = L.wt.tileLayer().addTo(map);
 
     // MARKERS.
-    var kml = document.getElementById('semic-map-kml').innerHTML.trim();
+    var kml = drupalSettings.semic.map.adoptersListUrl;
 
     var kml_options = {
       onEachFeature: function (feature, layer) {
