@@ -2006,4 +2006,74 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
   }
 
+  /**
+   * Asserts that an tag with the given text exists in the given region.
+   *
+   * This completes the assertNotRegionElementText of Markup context.
+   *
+   * @param string $tag
+   *   The HTML tag that is being checked.
+   * @param string $text
+   *   The text that should be present in the HTML tag.
+   * @param string $region
+   *   The region to which to confine the search for the HTML tag.
+   *
+   * @throws \Exception
+   *   Thrown when the given tag with the given text was not found in the given
+   *   region.
+   *
+   * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
+   *
+   * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
+   */
+  public function assertRegionElementText($tag, $text, $region) {
+    $regionObj = $this->getRegion($region);
+    $results = $regionObj->findAll('css', $tag);
+    if (!empty($results)) {
+      foreach ($results as $result) {
+        if ($result->getText() === $text) {
+          return;
+        }
+      }
+    }
+    throw new \Exception(sprintf('The text "%s" was not found in the "%s" element in the "%s" region on the page %s', $text, $tag, $region, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Asserts that a ckeditor list contains an element.
+   *
+   * CKeditor stores the lists available in the header of the editor pane in an
+   * iframe with a role tag. The dropdown "Format" has to be clicked prior to
+   * having the iframe available.
+   *
+   * @param string $field
+   *   The name of the field that contains the Wysiwyg editor to check.
+   * @param string $format_tags
+   *   Comma-separated list of paragraph formats to check.
+   *
+   * @throws \Exception
+   *   Thrown when the formats were found in the format list.
+   *
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
+   */
+  public function assertNotFormatInCkeditorExists($field, $format_tags) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires javascript to run.');
+    }
+    $element = $this->getSession()->getPage()->findField($field);
+    $element_id = $element->getAttribute('id');
+    $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
+    $has_tags_condition = <<<JS
+      return CKEDITOR.instances["$element_id"].config.format_tags;
+JS;
+    $found_tags = $this->getSession()->getDriver()->evaluateScript($has_tags_condition);
+    $found_tags_array = explode(';', $found_tags);
+    $invalid_tags = array_intersect($format_tags, $found_tags_array);
+    if (!empty($invalid_tags)) {
+      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+        '@found' => implode(', ', $invalid_tags),
+      ]));
+    }
+  }
+
 }
