@@ -57,7 +57,9 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
  */
 function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
   /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
-  if (empty($documents[0]->getFields()['bs_sticky'])) {
-    $documents[0]->setField('bs_sticky', FALSE);
+  foreach ($documents as $document) {
+    if (empty($document->getFields()['bs_sticky'])) {
+      $document->setField('bs_sticky', FALSE);
+    }
   }
 }
