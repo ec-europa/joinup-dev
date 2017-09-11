@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.large
-    - image.style.medium
-    - image.style.thumbnail
+    - image.style.wysiwyg_full_width
+    - image.style.wysiwyg_half_width
+    - image.style.wysiwyg_one_third_width
   module:
     - editor
     - image
@@ -79,6 +79,6 @@ filters:
     weight: 0
     settings:
       allowed_styles:
-        large: large
-        medium: medium
-        thumbnail: thumbnail
+        wysiwyg_full_width: wysiwyg_full_width
+        wysiwyg_half_width: wysiwyg_half_width
+        wysiwyg_one_third_width: wysiwyg_one_third_width
