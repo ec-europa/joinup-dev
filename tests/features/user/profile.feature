@@ -21,7 +21,9 @@ Feature: User profile
     And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain, Business title"
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
     And the following fields should not be present "Time zone"
-    And I should see the text "Username: Leonardo Da Vinci"
+    # Username label and user name are on separate lines to be more MDL-like after ISAICP-3770
+    And I should see the text "Username"
+    And I should see the text "Leonardo Da Vinci"
     And I fill in "First name" with "Leoke"
     And I fill in "Family name" with "di ser Piero da Vinci"
     And I select "Supplier exchange" from "Professional domain"

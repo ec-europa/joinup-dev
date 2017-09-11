@@ -5,7 +5,6 @@ dependencies:
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -13,7 +12,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -217,9 +215,10 @@ content:
         template_suggestion: ''
     region: content
 hidden:
+  changed: true
+  created: true
   field_isr_banner: true
   field_isr_contact_information: true
-  field_isr_creation_date: true
   field_isr_description: true
   field_isr_distribution: true
   field_isr_documentation: true
@@ -228,7 +227,6 @@ hidden:
   field_isr_is_version_of: true
   field_isr_language: true
   field_isr_logo: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_solution_type: true

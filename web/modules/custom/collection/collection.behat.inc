@@ -14,11 +14,15 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\UriEncoder;
+use Drupal\user\Entity\User;
 
 /**
  * Behat step definitions for testing collections.
@@ -32,6 +36,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UserTrait;
+  use UtilityTrait;
   use WorkflowTrait;
 
   /**
@@ -191,12 +197,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
-      'creation date' => 'field_ar_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ar_description',
       'elibrary creation' => 'field_ar_elibrary_creation',
       'logo' => 'field_ar_logo',
       'moderation' => 'field_ar_moderation',
-      'modification date' => 'field_ar_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
@@ -294,9 +300,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    $values['rid'] = 'collection';
-    $collection = Rdf::create($values);
-    $collection->save();
+    $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship
@@ -687,6 +691,64 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $days_since = floor($seconds_since / 86400);
     $text = sprintf("%s days ago", $days_since);
     $this->assertSession()->pageTextContains($text);
+  }
+
+  /**
+   * Navigates to the collection leave confirmation form.
+   *
+   * @Given I am about to leave( the) :label( collection)
+   */
+  public function visitCollectionLeaveConfirmationPage($label) {
+    $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+    $encoded_id = UriEncoder::encodeUrl($collection->id());
+    $this->visitPath("/rdf_entity/$encoded_id/leave");
+  }
+
+  /**
+   * Asserts that a given or current user is member of collection list.
+   *
+   * @Then I am member of :labels collection(s)
+   * @Then user :user_name is member of :labels collection(s)
+   */
+  public function assertUserIsMemberOfCollection($labels, $user_name = NULL) {
+    /** @var \Drupal\user\UserInterface $account */
+    if (!$user_name) {
+      $user = $this->getUserManager()->getCurrentUser();
+      $account = User::load($user->uid);
+      if ($account->isAnonymous()) {
+        throw new \Exception("No current logged in user.");
+      }
+    }
+    else {
+      $account = $this->getUserByName($user_name);
+    }
+
+    $failures = [];
+    foreach ($this->explodeCommaSeparatedStepArgument($labels) as $label) {
+      $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+      if (!Og::getMembership($collection, $account, [])) {
+        $failures[] = $label;
+      }
+    }
+
+    if ($failures) {
+      throw new \Exception("User $user_name is not member of the next collections: '" . implode("', '", $failures) . "'");
+    }
+  }
+
+  /**
+   * Creates the standard 'Joinup' collection.
+   *
+   * @beforeScenario @joinup_collection
+   *
+   * @see joinup_collection.module
+   */
+  public function createJoinupCollection() {
+    $this->createCollection([
+      'id' => JOINUP_COLLECTION_ID,
+      'label' => 'Joinup',
+      'field_ar_state' => 'validated',
+    ]);
   }
 
 }
