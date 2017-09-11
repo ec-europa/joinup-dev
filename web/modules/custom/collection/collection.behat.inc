@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
@@ -35,6 +36,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
 
@@ -717,8 +719,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         throw new \Exception("No current logged in user.");
       }
     }
-    elseif (!$account = user_load_by_name(trim($user_name))) {
-      throw new \Exception("User '$user_name' doesn't exist.");
+    else {
+      $account = $this->getUserByName($user_name);
     }
 
     $failures = [];
