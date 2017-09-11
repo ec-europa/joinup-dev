@@ -533,7 +533,6 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
   $form['user_cancel_confirm']['#access'] = FALSE;
   $form['user_cancel_notify']['#default_value'] = TRUE;
   $form['user_cancel_notify']['#access'] = FALSE;
-  $form['description']['#markup'] = t('This action cannot be undone.');
 }
 
 /**
