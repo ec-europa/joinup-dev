@@ -69,6 +69,7 @@ dependencies:
   - rdf_taxonomy
   - search_api
   - search_api_db
+  - semic
   - social_media_links_field
   - solution
   - state_machine
