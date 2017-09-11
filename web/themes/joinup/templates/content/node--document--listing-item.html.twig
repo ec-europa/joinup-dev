@@ -71,8 +71,8 @@
   set classes = [
     'listing__card',
     'mdl-card',
-    view_mode == 'view_mode_tile' ? 'listing__card--detail-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
 <div {{ attributes.addClass(classes) }}>
@@ -86,34 +86,17 @@
       {{ title_prefix }}
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {{ title_suffix }}
-      {% if file_name %}
-        <div class="value gray small truncated">{{ file_name }}</div>
+      {% if content.field_type|render %}
+        <div class="value gray small truncated">{{ content.field_type }}</div>
       {% endif %}
     </div>
-    {%  if extension %}
     <div class="listing__field">
-      <div class="label gray">{{ 'Type'|t }}:</div>
-      <div class="value bold">{{ extension|upper }}</div>
+      <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
     </div>
-    {%  endif %}
-    {% if file_size %}
-    <div class="listing__field">
-      <div class="label gray">{{ 'Size'|t }}:</div>
-      <div class="value bold">{{ file_size }}</div>
-    </div>
+    {% if content.field_keywords|render %}
+      <div class="listing__field listing__tags">{{ content.field_keywords }}</div>
     {% endif %}
-    {% set licence = content.field_licence|render %}
-    {% if licence %}
-    <div class="listing__field">
-      <div class="label gray">{{ 'Licence'|t }}:</div>
-      <div class="value bold color-base">{{ licence }}</div>
-    </div>
-    {% endif %}
-    <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
-      <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
-      {% if content.field_file.0|render|striptags|trim %}
-        <a href="{{ content.field_file.0|render|striptags|trim }}" class="listing__action-link action-link">{{ 'Download'|t }}</a>
-      {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
     </div>
   </div>
 </div>

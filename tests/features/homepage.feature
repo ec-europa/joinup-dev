@@ -160,8 +160,8 @@ Feature: Homepage
     # Check if the "Content" link leads to the pre-filtered search results.
     # This shows community content in the states 'validated' and 'archived'.
     When I go to the homepage
-    And I click "Content" in the "Header" region
-    Then I should see the heading "Content"
+    And I click "Events, discussions, news ..." in the "Header" region
+    Then I should see the heading "Keep up to date"
     And I should see the following lines of text:
       | Economic systems              |
       | Socialist schools before Marx |
