@@ -182,11 +182,11 @@ content:
         template_suggestion: no_wrappers
     region: content
 hidden:
+  changed: true
+  created: true
   field_ad_creation_date: true
   field_ad_gitb_compliant: true
   field_ad_modification_date: true
-  changed: true
-  created: true
   field_download_count: true
   langcode: true
   og_audience: true
