@@ -393,7 +393,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     $collection = $entity->get('collection')->first()->entity;
     $build['collections'] = [
       '#theme_wrappers' => ['container__stats_no_label'],
-      'prefix' => ['#markup' => '<span class="icon icon--collections"></span>'],
+      'prefix' => ['#markup' => '<span class="stats__icon icon icon--collections"></span>'],
       'link' => $collection->toLink($collection->label())->toRenderable(),
     ];
   }

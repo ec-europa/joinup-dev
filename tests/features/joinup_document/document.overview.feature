@@ -4,7 +4,8 @@ Feature: "Document" overview.
   As a user of the website
   I need to be able to interact with them.
 
-  Scenario: File type and size should be visible in the document tiles.
+  # A document tile redesign in ISAICP-3767 should show only title and description
+  Scenario: Document tiles should show only title and description.
     Given the following licence:
       | title       | Beer licence                                     |
       | description | Offer a beer to the developer when you meet him. |
@@ -20,14 +21,14 @@ Feature: "Document" overview.
     When I go to the homepage of the "Traveller tools" collection
     Then I should see the "VAT refund sample document" tile
     And I should see the "Local maps archive" tile
-    # A document that contains an uploaded file should show the file name,
-    # type and the weight of it.
-    And I should see the text "text.pdf" in the "VAT refund sample document" tile
-    And I should see the text "Type: PDF" in the "VAT refund sample document" tile
-    And I should see the text "Size: 1.08 KB" in the "VAT refund sample document" tile
-    And the download link is shown in the "VAT refund sample document" document tile
-    # A document that contains a remote file URI should mark the type as external.
-    And I should see the text "Type: EXTERNAL" in the "Local maps archive" tile
-    But I should not see the text "Size" in the "Local maps archive" tile
+    # The description should be visible
+    And I should see the text "Valid for people living outside the EU."
+    And I should see the text "Contains maps with the top locations in the EU."
+    # Ensure previously displayed information is not visible any more
+    But I should not see the text "text.pdf" in the "VAT refund sample document" tile
+    And I should not see the text "Type: PDF" in the "VAT refund sample document" tile
+    And I should not see the text "Size: 1.08 KB" in the "VAT refund sample document" tile
+    # Same criteria should be valid for the external type of document as well
+    And I should not see the text "Type: EXTERNAL" in the "Local maps archive" tile
+    And I should not see the text "Size" in the "Local maps archive" tile
     And I should not see the text "develop.zip" in the "Local maps archive" tile
-    And the download link is shown in the "Local maps archive" document tile

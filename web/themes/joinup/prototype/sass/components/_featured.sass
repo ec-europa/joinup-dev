@@ -90,6 +90,7 @@
 .featured__text-small
   font-size: $font-size-xsmall
   text-transform: none
+  word-wrap: break-word
 
 .featured__text--double
   margin: 0 0 30px 0
@@ -110,6 +111,11 @@
   background-color: #fff
   padding: 0 15px
   +border-radius(3px)
+  color: $color-base
+  a
+    color: $color-base
+    display: inline-block
+    vertical-align: middle
   +breakpoint(mobile)
     margin: 0 10px
   .stats__column
@@ -128,6 +134,13 @@
   .stats__icon
     margin-right: 4px
     +icon-size(20px)
+  .stats__row
+    .stats__column
+      padding-top: 0
+    &:first-child
+      .stats__column
+        padding-top: 15px
+
 
 .featured__action
   display: inline-block

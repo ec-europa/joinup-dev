@@ -39,20 +39,20 @@ config_devel:
   - field.field.taxonomy_term.file_type.extension
   - field.field.taxonomy_term.file_type.mime_type
   - field.storage.comment.field_body
-  - field.storage.node.field_download_count
   - field.storage.node.field_shared_in
+  - field.storage.node.field_site_featured
   - field.storage.node.field_visit_count
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
+  - field.storage.rdf_entity.field_site_featured
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
   - field.storage.rdf_entity.og_audience
   - field.storage.taxonomy_term.extension
   - field.storage.taxonomy_term.mime_type
-  - honeypot.settings
   - image.style.banner
   - joinup_core.piwik_settings
   - rdf_draft.settings

@@ -538,25 +538,19 @@ processor_settings:
   type_boost:
     boosts:
       'entity:node':
-        datasource_boost: !!float 1
+        datasource_boost: !!float 0
         bundle_boosts:
-          custom_page: !!float 0
-          discussion: !!float 0
-          document: !!float 0
-          event: !!float 0
-          news: !!float 0
-          newsletter: !!float 0
-          video: !!float 0
+          custom_page: !!float 8
+          discussion: !!float 2
+          event: !!float 3
+          news: !!float 5
       'entity:rdf_entity':
-        datasource_boost: !!float 1
+        datasource_boost: !!float 0
         bundle_boosts:
-          asset_distribution: !!float 0
-          asset_release: !!float 0
-          collection: !!float 3
-          licence: !!float 0
-          solution: !!float 2
+          collection: !!float 21
+          solution: !!float 13
       'entity:user':
-        datasource_boost: !!float 1
+        datasource_boost: !!float 0
     weights:
       preprocess_index: 0
 tracker_settings:
