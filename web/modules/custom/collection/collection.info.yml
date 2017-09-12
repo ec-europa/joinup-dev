@@ -49,6 +49,7 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_state
   - field.field.rdf_entity.collection.field_collection_content
   - field.field.rdf_entity.collection.field_policy_domain
+  - field.field.rdf_entity.collection.field_site_featured
   - field.field.rdf_entity.collection.field_spatial_coverage
   - field.storage.rdf_entity.field_ar_abstract
   - field.storage.rdf_entity.field_ar_access_url

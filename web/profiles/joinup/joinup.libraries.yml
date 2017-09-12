@@ -1,0 +1,7 @@
+site_wide_featured:
+  js:
+    js/site_wide_featured.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
