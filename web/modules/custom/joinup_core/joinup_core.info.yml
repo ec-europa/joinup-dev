@@ -54,6 +54,9 @@ config_devel:
   - field.storage.taxonomy_term.extension
   - field.storage.taxonomy_term.mime_type
   - image.style.banner
+  - image.style.wysiwyg_full_width
+  - image.style.wysiwyg_half_width
+  - image.style.wysiwyg_one_third_width
   - joinup_core.piwik_settings
   - rdf_draft.settings
   - taxonomy.vocabulary.business_process

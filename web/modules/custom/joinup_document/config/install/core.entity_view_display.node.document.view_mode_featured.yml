@@ -96,8 +96,8 @@ hidden:
   field_licence: true
   field_policy_domain: true
   field_shared_in: true
-  field_site_featured: true
   field_short_title: true
+  field_site_featured: true
   field_state: true
   field_visit_count: true
   langcode: true
