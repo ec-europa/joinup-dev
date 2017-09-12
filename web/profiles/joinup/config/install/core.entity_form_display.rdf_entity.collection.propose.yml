@@ -51,6 +51,7 @@ third_party_settings:
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
+        - transition_motivation
       parent_name: group_general
       weight: 5
       label: 'Main fields'
@@ -222,7 +223,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   transition_motivation:
-    weight: 2
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
