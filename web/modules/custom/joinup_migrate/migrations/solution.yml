@@ -32,10 +32,10 @@ process:
   field_is_contact_information:
     plugin: merge
     source:
-      - @contact_from_node
-      - @contact_from_email
+      - "@contact_from_node"
+      - "@contact_from_email"
     unique: true
-  field_is_creation_date: created_time
+  created: created_time
   field_is_description/value:
     plugin: file_inline
     source: body
@@ -56,7 +56,7 @@ process:
     migration: file:solution_logo
     no_stub: true
   field_is_metrics_page: metrics_page
-  field_is_modification_date: changed_time
+  changed: changed_time
   owner_from_publisher:
     plugin: migration
     source: owner
@@ -72,8 +72,8 @@ process:
   field_is_owner:
     plugin: merge
     source:
-      - @owner_from_publisher
-      - @owner_from_text
+      - "@owner_from_publisher"
+      - "@owner_from_text"
     unique: true
   field_policy_domain:
     plugin: policy_domain

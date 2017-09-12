@@ -16,7 +16,6 @@ dependencies:
   - view_unpublished
 
 config_devel:
-  - field.field.node.news.field_comments
   - core.base_field_override.node.news.status
   - core.base_field_override.node.news.title
   - core.entity_form_display.node.news.default
@@ -25,6 +24,7 @@ config_devel:
   - core.entity_view_display.node.news.view_mode_featured
   - core.entity_view_display.node.news.view_mode_tile
   - field.field.node.news.body
+  - field.field.node.news.field_comments
   - field.field.node.news.field_attachment
   - field.field.node.news.field_keywords
   - field.field.node.news.field_news_headline
@@ -33,6 +33,7 @@ config_devel:
   - field.field.node.news.field_news_spatial_coverage
   - field.field.node.news.field_policy_domain
   - field.field.node.news.field_shared_in
+  - field.field.node.news.field_site_featured
   - field.field.node.news.field_state
   - field.field.node.news.field_visit_count
   - field.field.node.news.og_audience

@@ -9,7 +9,7 @@ use Drupal\node\Entity\Node;
 
 // Imported content check.
 $news = Node::load(155894);
-$this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->label());
+$this->assertEquals('Mobile Age project: Co-create…', $news->label());
 $this->assertEquals('Mobile Age project: Co-created personalised mobile access to public services for senior citizens – 2nd Newsletter Issue now available!', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1475759242, $news->created->value);
@@ -23,7 +23,7 @@ $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['news/mobile-age-project-co-created-personalised-mobile-access-public-services-senior-citizens-–-2nd-'], $news);
 
 $news = Node::load(27607);
-$this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->label());
+$this->assertEquals('BE, NL: governments will not…', $news->label());
 $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1207612800, $news->created->value);
@@ -41,7 +41,7 @@ $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['osor/news/be-nl-governments-will-not-use-iso-ooxml'], $news);
 
 $news = Node::load(65803);
-$this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->label());
+$this->assertEquals('Public workshop to discuss wa…', $news->label());
 $this->assertEquals('Public workshop to discuss ways to sustain governmental open standards', $news->field_news_headline->value);
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1366966462, $news->created->value);
