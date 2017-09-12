@@ -7,12 +7,14 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
@@ -345,4 +347,55 @@ function joinup_preprocess_menu__main(&$variables) {
   }
 
   $variables['#cache']['contexts'][] = 'og_group_context';
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    $build['#contextual_links']['entity'] = [
+      'route_parameters' => [
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity' => $entity->id(),
+      ],
+      'metadata' => ['changed' => $entity->getChangedTime()],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ */
+function joinup_preprocess_rdf_entity(&$variables) {
+  _joinup_preprocess_entity_tiles($variables);
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function joinup_preprocess_node(&$variables) {
+  _joinup_preprocess_entity_tiles($variables);
+}
+
+/**
+ * Adds common functionality to the tile view mode of nodes and rdf entities.
+ *
+ * @param array $variables
+ *   The variables array.
+ */
+function _joinup_preprocess_entity_tiles(array &$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\ContentEntityBase $entity */
+  $entity = $variables[$variables['elements']['#entity_type']];
+
+  // If the entity has the site-wide featured field, enable the related js
+  // library.
+  if ($entity->hasField(SiteFeatureController::FEATURED_FIELD) && $entity->get(SiteFeatureController::FEATURED_FIELD)->value) {
+    $variables['attributes']['data-drupal-featured'][] = TRUE;
+    $variables['#attached']['library'][] = 'joinup/site_wide_featured';
+  }
 }

@@ -547,6 +547,25 @@ processor_settings:
       h3: 2
       strong: 2
       b: 2
+  type_boost:
+    boosts:
+      'entity:node':
+        datasource_boost: !!float 0
+        bundle_boosts:
+          custom_page: !!float 8
+          discussion: !!float 2
+          document: !!float 0
+          event: !!float 3
+          news: !!float 5
+          newsletter: !!float 0
+          video: !!float 0
+      'entity:rdf_entity':
+        datasource_boost: !!float 0
+        bundle_boosts:
+          collection: !!float 21
+          solution: !!float 13
+      'entity:user':
+        datasource_boost: !!float 0
     weights:
       preprocess_index: -46
       preprocess_query: -46
