@@ -30,7 +30,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 3
+    weight: 4
     label: above
     settings:
       view_mode: default
@@ -55,12 +55,12 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: fieldset
     type: video_embed_field_video
     region: content
   field_video_spatial_coverage:
     weight: 2
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -68,7 +68,7 @@ content:
     region: content
   report:
     label: hidden
-    weight: 4
+    weight: 3
     settings:
       trim_length: 80
       url_only: false

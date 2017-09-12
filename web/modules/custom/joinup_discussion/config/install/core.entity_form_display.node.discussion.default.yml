@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
@@ -16,7 +17,6 @@ dependencies:
     - comment
     - file
     - joinup_core
-    - path
     - text
 id: node.discussion.default
 targetEntityType: node
@@ -37,7 +37,7 @@ content:
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 10
+    weight: 6
     region: content
     settings:
       title: 'Current workflow state'
@@ -45,26 +45,26 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_attachment:
-    weight: 3
+    weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_policy_domain:
-    weight: 2
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_replies:
-    weight: 9
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: comment_default
     region: content
   field_state:
-    weight: 11
+    weight: 7
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -85,13 +85,14 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 10
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
   field_shared_in: true
+  field_site_featured: true
   field_visit_count: true
   og_audience: true
   path: true

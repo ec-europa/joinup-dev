@@ -1,0 +1,5 @@
+name: Joinup
+type: module
+description: 'Specificities for the Joinup community.'
+core: 8.x
+package: Joinup communities
