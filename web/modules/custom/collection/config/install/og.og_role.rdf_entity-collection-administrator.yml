@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
 id: rdf_entity-collection-administrator
 label: 'Collection owner'
 weight: 2

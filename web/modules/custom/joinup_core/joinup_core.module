@@ -919,3 +919,66 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
+ * Adds the current og group context as attribute on the page wrapper.
+ */
+function joinup_core_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_core/sign_in_destination';
+
+  /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+
+    if (
+      $group &&
+      $group->getEntityTypeId() === 'rdf_entity' &&
+      $group->bundle() === 'collection'
+    ) {
+      $variables['attributes']['data-drupal-collection-context'] = $group->id();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds the group id and label as data attributes in tiles.
+ */
+function joinup_core_preprocess_node(&$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if ($parent) {
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ *
+ * Strip off the h1, h5, h6 tag format options from the 'Format' dropdown.
+ * This does not remove the ability of the user to enter or render these tags.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3682
+ */
+function joinup_core_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['content_editor']) && $settings['editor']['formats']['content_editor']['format'] === 'content_editor') {
+    $options = explode(';', $settings['editor']['formats']['content_editor']['editorSettings']['format_tags']);
+    $options = array_diff($options, ['h1', 'h5', 'h6']);
+    $settings['editor']['formats']['content_editor']['editorSettings']['format_tags'] = implode(';', $options);
+  }
+}

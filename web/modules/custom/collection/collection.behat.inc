@@ -8,17 +8,22 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\UriEncoder;
+use Drupal\user\Entity\User;
 
 /**
  * Behat step definitions for testing collections.
@@ -32,6 +37,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UserTrait;
+  use UtilityTrait;
   use WorkflowTrait;
 
   /**
@@ -134,9 +141,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | logo | moderation | modification date | owner | state                                                               |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users |      | yes        |                   |       |                                                                     |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | featured | logo | moderation | modification date | owner | state                                                               |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -191,16 +198,17 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
-      'creation date' => 'field_ar_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ar_description',
       'elibrary creation' => 'field_ar_elibrary_creation',
       'logo' => 'field_ar_logo',
       'moderation' => 'field_ar_moderation',
-      'modification date' => 'field_ar_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_ar_owner',
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
       'state' => 'field_ar_state',
+      'featured' => SiteFeatureController::FEATURED_FIELD,
     ];
   }
 
@@ -242,8 +250,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_ar_elibrary_creation' => [
+        'facilitators' => 0,
+        'members' => 1,
+        'registered users' => 2,
+      ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
         'draft' => 'draft',
@@ -253,6 +264,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         'deletion request' => 'deletion_request',
         'archived' => 'archived',
       ],
+      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -294,9 +306,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
     }
 
-    $values['rid'] = 'collection';
-    $collection = Rdf::create($values);
-    $collection->save();
+    $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
     // We have to force reindex of affiliated solutions so the relationship
@@ -325,6 +335,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | title           | Open Data Initiative                                                |
    * | author          | Mightily Oats                                                       |
    * | logo            | logo.png                                                            |
+   * | featured        | yes|no                                                              |
    * | moderation      | yes|no                                                              |
    * | closed          | yes|no                                                              |
    * | create elibrary | facilitators|members|registered users                               |
@@ -687,6 +698,64 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $days_since = floor($seconds_since / 86400);
     $text = sprintf("%s days ago", $days_since);
     $this->assertSession()->pageTextContains($text);
+  }
+
+  /**
+   * Navigates to the collection leave confirmation form.
+   *
+   * @Given I am about to leave( the) :label( collection)
+   */
+  public function visitCollectionLeaveConfirmationPage($label) {
+    $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+    $encoded_id = UriEncoder::encodeUrl($collection->id());
+    $this->visitPath("/rdf_entity/$encoded_id/leave");
+  }
+
+  /**
+   * Asserts that a given or current user is member of collection list.
+   *
+   * @Then I am member of :labels collection(s)
+   * @Then user :user_name is member of :labels collection(s)
+   */
+  public function assertUserIsMemberOfCollection($labels, $user_name = NULL) {
+    /** @var \Drupal\user\UserInterface $account */
+    if (!$user_name) {
+      $user = $this->getUserManager()->getCurrentUser();
+      $account = User::load($user->uid);
+      if ($account->isAnonymous()) {
+        throw new \Exception("No current logged in user.");
+      }
+    }
+    else {
+      $account = $this->getUserByName($user_name);
+    }
+
+    $failures = [];
+    foreach ($this->explodeCommaSeparatedStepArgument($labels) as $label) {
+      $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
+      if (!Og::getMembership($collection, $account, [])) {
+        $failures[] = $label;
+      }
+    }
+
+    if ($failures) {
+      throw new \Exception("User $user_name is not member of the next collections: '" . implode("', '", $failures) . "'");
+    }
+  }
+
+  /**
+   * Creates the standard 'Joinup' collection.
+   *
+   * @beforeScenario @joinup_collection
+   *
+   * @see joinup_collection.module
+   */
+  public function createJoinupCollection() {
+    $this->createCollection([
+      'id' => JOINUP_COLLECTION_ID,
+      'label' => 'Joinup',
+      'field_ar_state' => 'validated',
+    ]);
   }
 
 }

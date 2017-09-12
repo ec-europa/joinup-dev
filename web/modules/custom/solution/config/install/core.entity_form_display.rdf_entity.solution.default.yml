@@ -9,7 +9,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
-    - field.field.rdf_entity.solution.field_is_creation_date
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -22,7 +21,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
-    - field.field.rdf_entity.solution.field_is_modification_date
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
@@ -39,6 +37,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - image.style.thumbnail
@@ -352,12 +351,10 @@ content:
 hidden:
   field_is_affiliations_requests: true
   field_is_content: true
-  field_is_creation_date: true
   field_is_distribution: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
-  field_is_modification_date: true
   field_is_source_code_repository: true
   field_is_translation: true
   field_is_version: true
@@ -365,6 +362,7 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

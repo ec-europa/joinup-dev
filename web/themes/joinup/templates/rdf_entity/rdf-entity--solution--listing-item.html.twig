@@ -12,11 +12,11 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.addClass(classes) }}>
   <div class="listing__image">{{ content.field_is_logo }}</div>
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title">{{ label }}</h2>
+      {{ title_prefix }}<h2 class="listing__title">{{ label }}</h2>{{ title_suffix }}
     </div>
     {% if view_mode == 'view_mode_featured' %}
       <div class="listing__field">
@@ -27,6 +27,10 @@
       <div class="listing__stat">
         <span class="listing__text">{{ content.downloads.0 }}</span>
         <span class="listing__icon icon icon--download"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">{{ rdf_entity.bundle }}</span>
+        <span class="listing__icon icon icon--{{ rdf_entity.bundle }}"></span>
       </div>
     </div>
   </div>

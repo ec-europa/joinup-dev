@@ -23,7 +23,7 @@ default_value:
           region: top
       enabled: 1
       query_presets: ''
-      limit: 6
+      limit: 12
 default_value_callback: ''
 settings: {  }
 field_type: search_api_field

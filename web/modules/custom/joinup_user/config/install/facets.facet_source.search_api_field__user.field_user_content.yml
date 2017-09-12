@@ -5,3 +5,4 @@ id: search_api_field__user.field_user_content
 name: 'search_api_field:user.field_user_content'
 filter_key: ''
 url_processor: query_string
+breadcrumb: {  }
