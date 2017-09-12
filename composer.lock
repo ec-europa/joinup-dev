@@ -3543,14 +3543,14 @@
                 "source": "http://cgit.drupalcode.org/persistent_login",
                 "issues": "http://drupal.org/project/issues/persistent_login"
             },
-            "time": "2017-03-03 10:53:37"
+            "time": "2017-03-03T10:53:37+00:00"
         },
         {
             "name": "drupal/phingdrushtask",
             "version": "dev-7.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/phingdrushtask.git",
+                "url": "https://github.com/pfrenssen/phingdrushtask.git",
                 "reference": "f4b020f09da3c174fce40f2bd9a9617689f57124"
             },
             "dist": {
@@ -3560,7 +3560,7 @@
                 "shasum": ""
             },
             "require": {
-                "drush/drush": "6 - 8",
+                "drush/drush": "6 - 9",
                 "phing/phing": "~2.9"
             },
             "require-dev": {
