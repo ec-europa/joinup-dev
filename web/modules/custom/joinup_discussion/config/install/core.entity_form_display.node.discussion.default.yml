@@ -74,7 +74,8 @@ content:
     type: language_select
     weight: 2
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -97,5 +98,6 @@ hidden:
   og_audience: true
   path: true
   promote: true
+  status: true
   sticky: true
   uid: true

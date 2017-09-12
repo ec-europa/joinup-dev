@@ -208,5 +208,6 @@ hidden:
   og_audience: true
   path: true
   promote: true
+  status: true
   sticky: true
   uid: true

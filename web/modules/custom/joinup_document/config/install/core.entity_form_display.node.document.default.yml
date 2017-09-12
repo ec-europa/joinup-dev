@@ -76,6 +76,7 @@ content:
     weight: 5
     settings:
       progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
     region: content
@@ -145,5 +146,6 @@ hidden:
   og_audience: true
   path: true
   promote: true
+  status: true
   sticky: true
   uid: true
