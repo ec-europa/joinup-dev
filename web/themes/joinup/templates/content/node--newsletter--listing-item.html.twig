@@ -84,6 +84,10 @@
       <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ node.type.entity.label|lower }}</span>
+        <span class="listing__icon icon icon--{{ node.bundle }}"></span>
+      </div>
     </div>
   </div>
 </div>

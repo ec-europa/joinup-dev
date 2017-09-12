@@ -186,6 +186,10 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
         'value' => $legacy_site_files,
         'required' => TRUE,
       ],
+      'joinup_joinup_collection' => (object) [
+        'value' => 'New collection',
+        'required' => TRUE,
+      ],
     ];
 
     $settings_file = \Drupal::service('site.path') . '/settings.php';

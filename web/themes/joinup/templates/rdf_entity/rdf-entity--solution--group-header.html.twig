@@ -13,9 +13,13 @@
       <h1 class="featured__text">{{ label }}</h1>
     </a>
       <div class="featured__stats">
-        {{ content.collections }}
-        {{ content.licence }}
-        {{ content.downloads }}
+        <div class="stats__row">
+          {{ content.collections }}
+        </div>
+        <div class="stats__row">
+          {{ content.licence }}
+          {{ content.downloads }}
+        </div>
       </div>
       {{ content.releases_overview }}
   </div>

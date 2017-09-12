@@ -11,6 +11,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -97,9 +98,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
-   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
+   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description, state and elibrary creation are mandatory.
@@ -147,6 +148,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | contact information | Grahame Paterson, Aulay MacFarlane      |
    * | documentation       | text.pdf                                |
    * | elibrary creation   | facilitators|members|registered users   |
+   * | featured            | yes|no                                  |
    * | landing page        | http://example.com/foobar/landing       |
    * | language            | Greek, German                           |
    * | owner               | Zapsum, Holdline Accountants            |
@@ -277,9 +279,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    $values['rid'] = 'solution';
-    $solution = Rdf::create($values);
-    $solution->save();
+    $solution = $this->createRdfEntity('solution', $values);
     $this->solutions[$solution->id()] = $solution;
 
     // If a collection is affiliated, update the collection. In ADMS-AP the
@@ -457,7 +457,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
-      'creation date' => 'field_is_creation_date',
+      'creation date' => 'created',
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
@@ -468,7 +468,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
-      'modification date' => 'field_is_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_is_owner',
       'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
@@ -483,6 +483,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
       'collection' => 'field_ar_affiliates',
+      'featured' => SiteFeatureController::FEATURED_FIELD,
     ];
   }
 
@@ -501,8 +502,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
-      'field_is_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_is_elibrary_creation' => [
+        'facilitators' => 0,
+        'members' => 1,
+        'registered users' => 2,
+      ],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
       'field_is_state' => [
         'draft' => 'draft',
@@ -512,6 +516,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
+      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -591,13 +596,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function theMultilingualSolution($title) {
     $values = [
-      'rid' => 'solution',
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
     ];
-    $solution = Rdf::create($values);
-    $solution->save();
+    $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
     // the remaining values from the base translation.
     $solution_values = $solution->toArray();

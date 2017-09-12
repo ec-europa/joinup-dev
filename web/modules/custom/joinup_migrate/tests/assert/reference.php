@@ -57,31 +57,32 @@ $this->assertNotContains('/node/149141', $text_after_migration);
 $this->assertContains($collection_alias, $text_after_migration);
 $this->assertNotContains('/community/edp/description', $text_after_migration);
 
-// A community content canonical link is preserved.
+// A community content canonical link is transformed into the alias of the D8
+// aliased path.
 // Before:
 $this->assertContains('/node/150255', $text_before_migration);
 // After:
-$this->assertContains('/node/150255', $text_after_migration);
+$this->assertNotContains('/node/150255', $text_after_migration);
+$this->assertContains('/event/cpsv-ap-revision-wg-virtual-meeting-3', $text_after_migration);
 
-// The aliased path of community content is transformed into the alias of the
-// D8 aliased path.
+// The aliased path of community content is transformed into the alias of the D8
+// aliased path.
 // Before:
 $this->assertContains('/asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0', $text_before_migration);
 // After:
 $this->assertNotContains('/asset/cpsv-ap/event/cpsv-ap-revision-wg-virtual-meeting-0', $text_after_migration);
 $this->assertContains($event_alias, $text_after_migration);
 
-// A user canonical path is preserved.
+// A user canonical path is transformed into the alias of the D8 aliased path.
 // Before:
 $this->assertContains('/user/6481', $text_before_migration);
 // After:
-$this->assertContains('/user/6481', $text_after_migration);
+$this->assertContains($account_alias, $text_after_migration);
 
 // A user aliased path is transformed into the user D8 aliased path.
 // Before:
 $this->assertContains('/people/6481', $text_before_migration);
 // After:
-$this->assertContains($account_alias, $text_after_migration);
 $this->assertNotContains('/people/6481', $text_after_migration);
 $this->assertContains($account->uuid(), $text_after_migration);
 

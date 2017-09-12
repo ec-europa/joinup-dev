@@ -11,7 +11,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing asset_releases.
@@ -145,9 +144,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       }
     }
 
-    $values['rid'] = 'asset_release';
-    $asset_release = Rdf::create($values);
-    $asset_release->save();
+    $asset_release = $this->createRdfEntity('asset_release', $values);
     $this->assetReleases[$asset_release->id()] = $asset_release;
 
     return $asset_release;
@@ -235,7 +232,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'uri' => 'id',
       'title' => 'label',
       'contact information' => 'field_isr_contact_information',
-      'creation date' => 'field_isr_creation_date',
+      'creation date' => 'created',
       'description' => 'field_isr_description',
       'distribution' => 'field_isr_distribution',
       'documentation' => 'field_isr_documentation',
@@ -243,7 +240,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'is version of' => 'field_isr_is_version_of',
       'keywords' => 'field_keywords',
       'language' => 'field_isr_language',
-      'modification date' => 'field_isr_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_isr_owner',
       'release number' => 'field_isr_release_number',
       'release notes' => 'field_isr_release_notes',
