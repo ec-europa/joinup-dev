@@ -21,10 +21,10 @@ Feature: Collections Overview
       | Madam Shirley | i.see.the.future@example.com |
     Given collections:
     # As of ISAICP-3618 descriptions should not be visible in regular tiles.
-      | title             | description                    | state     |
-      | E-health          | Supports health-related fields | validated |
-      | Open Data         | Facilitate access to data sets | validated |
-      | Connecting Europe | Reusable tools and services    | validated |
+      | title             | description                    | creation date     | state     |
+      | E-health          | Supports health-related fields | 2018-10-04 8:31am | validated |
+      | Open Data         | Facilitate access to data sets | 2018-10-04 8:33am | validated |
+      | Connecting Europe | Reusable tools and services    | 2018-10-04 8:32am | validated |
     Given the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
@@ -38,9 +38,13 @@ Feature: Collections Overview
     When I am logged in as "Madam Shirley"
     And I am on the homepage
     And I click "Collections"
-    Then I should see the text "E-health"
-    And I should see the text "Open Data"
-    And I should see the text "Connecting Europe"
+    Then I should see the following tiles in the correct order:
+      # Created in 8:33am.
+      | Open Data         |
+      # Created in 8:32am.
+      | Connecting Europe |
+      # Created in 8:31am.
+      | E-health          |
 
     When I am an anonymous user
     And I am on the homepage
