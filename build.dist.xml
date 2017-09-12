@@ -240,6 +240,14 @@
         </composer>
     </target>
 
+    <!-- Install Composer dependencies for a production environment. -->
+    <target name="install-composer-dependencies-dist">
+        <composer command="install" composer="${composer.bin}">
+            <arg value="--working-dir=${project.basedir}" />
+            <arg value="--no-dev" />
+        </composer>
+    </target>
+
     <target name="redirect-outgoing-email">
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -319,5 +327,10 @@
         name="install-dev"
         description="Install the website and set up the development environment."
         depends="install, setup-dev, create-demo-users" />
+
+    <target
+        name="build-dist"
+        description="Build a production environment."
+        depends="install-composer-dependencies-dist" />
 
 </project>
