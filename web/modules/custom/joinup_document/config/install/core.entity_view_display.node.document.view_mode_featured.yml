@@ -22,6 +22,7 @@ dependencies:
   module:
     - ds
     - file_url
+    - options
     - text
     - user
 id: node.document.view_mode_featured
@@ -32,7 +33,7 @@ content:
   body:
     label: hidden
     type: text_trimmed
-    weight: 1
+    weight: 0
     settings:
       trim_length: 200
     third_party_settings:
@@ -43,6 +44,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     region: content
   field_file:
     type: file_url_default
@@ -50,7 +53,32 @@ content:
     region: content
     label: hidden
     settings:
-      mode: plain
+      mode: link
+    third_party_settings: {  }
+  field_keywords:
+    type: string
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+  field_type:
+    type: list_default
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
     third_party_settings:
       ds:
         ft:
@@ -60,33 +88,17 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
-  field_short_title:
-    weight: 0
-    label: hidden
-    settings:
-      link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    type: string
-    region: content
+        template_suggestion: no_wrappers
 hidden:
   field_comments: true
   field_document_publication_date: true
   field_document_spatial_coverage: true
-  field_keywords: true
   field_licence: true
   field_policy_domain: true
   field_shared_in: true
   field_site_featured: true
+  field_short_title: true
   field_state: true
-  field_type: true
   field_visit_count: true
   langcode: true
   links: true

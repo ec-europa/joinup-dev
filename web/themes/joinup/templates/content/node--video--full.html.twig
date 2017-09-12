@@ -65,42 +65,16 @@
  *
  * @see template_preprocess_node()
  *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
  */
 #}
-{%
-  set classes = [
-    'listing__card',
-    'mdl-card',
-    'listing__card--stats-container',
-    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
-  ]
-%}
-<div {{ attributes.addClass(classes) }}>
-  {% if view_mode == 'view_mode_featured' %}
-    <div class="listing__image listing__image--default">
-      <span class="icon icon--mime-{{ extension }}"></span>
-    </div>
-  {% endif %}
-  <div class="listing__metadata">
-    <div class="listing__field">
-      {{ title_prefix }}
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
-      {{ title_suffix }}
-      {% if content.field_type|render %}
-        <div class="value gray small truncated">{{ content.field_type }}</div>
-      {% endif %}
-    </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
-    </div>
-    {% if content.field_keywords|render %}
-      <div class="listing__field listing__tags">{{ content.field_keywords }}</div>
-    {% endif %}
-    <div class="listing__field listing__stats mdl-card__actions">
-      <div class="listing__stat">
-        <span class="listing__text">{{ node.type.entity.label|lower }}</span>
-        <span class="listing__icon icon icon--{{ node.bundle }}"></span>
-      </div>
-    </div>
+<article{{ attributes.addClass('page__content') }}>
+  {{ content.field_video }}
+  {{ content.body }}
+  <div class="action-link__wrapper right">
+    {{ content.report }}
   </div>
-</div>
+</article>
+{{ content.field_comments }}

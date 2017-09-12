@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * The SEMIC module.
+ */
+
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Site\Settings;
+
+define('SEMIC_COLLECTION_ID', Settings::get('semic.collection_id', 'http://data.europa.eu/w21/bf8ff383-be51-4d25-ba57-f4fbb194be08'));
+
+/**
+ * Render the semic map.
+ *
+ * The map get rendered on top of the description field on the about page of
+ * the semic collection.
+ *
+ * Implements hook_preprocess_HOOK().
+ */
+function semic_preprocess_field(&$variables) {
+  if ($variables['entity_type'] !== 'rdf_entity') {
+    return;
+  }
+  if ($variables['field_name'] !== 'field_ar_description') {
+    return;
+  }
+  if (empty($variables['items'][0])) {
+    return;
+  }
+  if (empty($variables['element']['#object'])) {
+    return;
+  }
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['element']['#object'];
+  // On the semic collection?
+  if ($entity->id() !== SEMIC_COLLECTION_ID) {
+    return;
+  }
+  $content = &$variables['items'][0]['content'];
+  $module_url = $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'semic');
+
+  $content['#attached']['library'][] = 'semic/eu.webtools.load';
+  $content['#attached']['drupalSettings']['semic']['map']['adoptersListUrl'] = "$module_url/adopters.xml";
+  $content['#prefix'] = semic_map_markup($module_url);
+}
+
+/**
+ * Builds the markup to render the semic 'adopters' map.
+ *
+ * @param string $module_url
+ *   The absolute URl of the module root.
+ *
+ * @return \Drupal\Component\Render\MarkupInterface|string
+ *   The markup object, with the map.
+ */
+function semic_map_markup($module_url) {
+  $markup = <<<EOD
+<script type="application/json">{
+  "service": "map",
+  "custom": "$module_url/js/semic_community.js"
+}</script>
+EOD;
+  return Markup::create($markup);
+}
