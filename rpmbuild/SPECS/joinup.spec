@@ -69,7 +69,7 @@ ls -td1 Join* | tail -n +4 | xargs sudo rm -rf
 
 IS_USER=`cat /etc/passwd |grep '%{_prefix}' | tr ":" "\n" | head -n 1`
 
-if [ $IS_USER ];
+if [ $IS_USER ]; then
   echo "Changing access rights of deployed app !"
   chown $IS_USER:apache %{name}-%{version} -R
 fi
