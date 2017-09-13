@@ -30,7 +30,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "~1.0-alpha4",
         "drupal/migrate_spreadsheet": "~1.0-beta4",
-        "drupal/og": "dev-ISAICP-2709 as dev-1.x",
+        "drupal/og": "dev-1.x",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/password_policy": "3.x-dev#8ee51e4e58b1b9493867c43ddfecbdac20e04b0c",
         "drupal/pathauto": "1.x-dev#59a7bef00f6829a27c6a5dc41a6f8bb188bf5805",
@@ -186,7 +186,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/ec-europa/og.git"
+            "url": "https://github.com/Gizra/og.git"
         },
         {
             "type": "vcs",
