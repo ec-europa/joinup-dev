@@ -63,3 +63,12 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
     }
   }
 }
+
+/**
+ * Implements hook_search_api_solr_field_mapping_alter().
+ */
+function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields) {
+  if (isset($fields['entity_created'])) {
+    $fields['entity_created'] = 'ds_entity_created';
+  }
+}
