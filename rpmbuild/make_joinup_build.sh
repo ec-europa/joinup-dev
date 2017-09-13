@@ -17,6 +17,7 @@ rm -rf rpmbuild
 /usr/local/bin/composer install
 
 rm -rf web/sites/default/settings.php
+rm -rf web/sites/default/files
 
 cd web
 cp -R ../../template/* ./
