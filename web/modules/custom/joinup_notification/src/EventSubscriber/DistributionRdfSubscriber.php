@@ -188,9 +188,12 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
     $parent = asset_distribution_get_distribution_parent($entity);
     $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
     if (!empty($parent) && $parent->bundle() === 'asset_release') {
+      // Some legacy releases exist without a version. Thus, a check for
+      // existence is needed.
+      $version = empty($parent->get('field_isr_release_number')->first()->value) ? '' : $parent->get('field_isr_release_number')->first()->value;
       $arguments['@release:info:with_version'] = t('of the release @release, @version', [
         '@release' => $parent->label(),
-        '@version' => $parent->get('field_isr_release_number')->first()->value,
+        '@version' => $version,
       ]);
     }
     if (!empty($solution)) {
