@@ -14,7 +14,9 @@ cd web
 cp -R ../../template/* ./
 cd ..
 
-mv * Joinup-$BUILD_VERSION
+shopt -s extglob
+
+mv !(Joinup-$BUILD_VERSION) Joinup-$BUILD_VERSION
 tar -cvvzf ../Joinup-$BUILD_VERSION.tar.gz Joinup-$BUILD_VERSION/
 rm -rf Joinup-$BUILD_VERSION
 
