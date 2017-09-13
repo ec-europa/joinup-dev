@@ -114,3 +114,7 @@ joinup_core.piwik_settings.*.*:
     type:
       type: string
       label: 'The type of metric to use.'
+
+entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
+  type: entity_reference_selection.default
+  label: 'RDF taxonomy term selection handler settings'

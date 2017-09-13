@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Adopters of data standards developed by SEMIC in Europe V0.4</name>
+		<description><![CDATA[]]></description>
+		<Folder>
+			<name>Adopters of data standards developed by SEMIC in Europe</name>
+			<Placemark>
+				<name>BRIS</name>
+				<description><![CDATA[The EU Business Registers Interconnection System (BRIS) facilitates the distribution of information from each of the Member States’ business registers to the registers of other Member States in a standard message format and in the relevant language version. The BRIS XML schema makes basic company information searchable and exchangeable, and is based on the XML syntax of the Core Business Vocabularies.<br><br>BRIS uses the XML schema representation format to describe the information exchange model and the domain model. BRIS is aligned with the Core Business Vocabulary at the conceptual level, and BRIS XML messages are based on Core Business Vocabulary XML syntax. Class properties and associations that were not needed from the Core Business Registry were removed, and new classes, properties or associations needed by BRIS were added. You can read more about it <a href="https://joinup.ec.europa.eu/sites/default/files/eu_core_vocabularies_in_action_using_core_business_vocabulary_in_the_eu_.pdf" target="_blank">here</a>.<br><br>Owners: <a href="http://ec.europa.eu/dgs/informatics/index_en.htm" target="_blank">DG DIGIT</a>, <a href="http://ec.europa.eu/justice/index_en.htm" target="_blank">DG JUST</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/core_vocabularies/description" target="_blank">Core Business Vocabulary</a><br><br>You can visit the <a href="https://joinup.ec.europa.eu/community/semic/news/core-business-vocabulary-action-case-eu-business-registers-interconnection-syst" target="_blank">BRIS homepage on Joinup</a> for more information.]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.3712711,50.8422893,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Joinup</name>
+				<description><![CDATA[Joinup is a collaborative platform, and a federated repository of more than 40 repositories across Europe for interoperability solutions created by the European Commission and funded by the European Union via the Interoperability Solutions for European Public Administrations (ISA) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. It also supports them to find, choose, re-use, develop and implement interoperability solutions.<br><br>ADMS-AP for Joinup aims to extend the use of ADMS for the description of other types of interoperability solutions, meaning solutions covering the political, legal, organisational and technical interoperability layers defined by the <a href="http://ec.europa.eu/isa/documents/isa_annex_ii_eif_en.pdf" target="_blank">European Interoperability Framework</a>. You can read more about it <a href="https://joinup.ec.europa.eu/asset/adms/asset_release/adms-application-profile-joinup" target="_blank">here</a>.<br><br>Owner: <a href="http://ec.europa.eu/isa/" target="_blank">ISA Programme</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/adms/asset_release/adms-application-profile-joinup" target="_blank">ADMS-AP</a><br><br><a href="https://joinup.ec.europa.eu" target="_blank">joinup.ec.europa.eu</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.3710887,50.8420996,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Exporters implemented on the MDR of the OP</name>
+				<description><![CDATA[The Metadata Registry (MDR) registers and maintains data definition (metadata elements, named authority lists, schemas, etc.) used by the different European Institutions involved in the legal decision making process gathered in the Interinstitutional Metadata Maintenance Committee (IMMC) and by the Publications Office of the EU in its production and dissemination process.<br><br>MDR provides ADMS-compliant RDF export for its Named Authority Lists.<br><br>Owner: <a href="http://publications.europa.eu/en/web/about-us/who-we-are" target="_blank">Publications Office of the European Union</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/adms/description" target="_blank">ADMS</a><br><br><a href="http://publications.europa.eu/mdr/index.html" target="_blank">http://publications.europa.eu/mdr/index.html</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>6.1313978,49.5988656,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The European Union Open Data Portal</name>
+				<description><![CDATA[The European Union Open Data Portal is the single point of access to a growing range of data from the institutions and other bodies of the European Union (EU). Data are free to use and reuse for commercial or non-commercial purposes. By providing easy and free access to data, the portal aims to promote their innovative use and unleash their economic potential. It also aims to help foster the transparency and the accountability of the institutions and other bodies of the EU. The core feature of the European Data Portal is a metadata repository harvesting metadata references to data published by public administrations in those countries and present those metadata references in the DCAT-AP format.<br><br>The European Union Open Data Portal implements the DCAT-AP as the common vocabulary for harmonising descriptions of over 258,000 datasets harvested from 67 data portals of 34 countries. The vocabulary is provided as a <a href="https://open-data.europa.eu/files/MetadataVocabulary.ods" target="_blank">worksheet specification</a> and as an <a href="https://open-data.europa.eu/files/ec-odp.owl" target="_blank">ontology</a>. It has been aligned in general terms to be compatible with the <a href="https://joinup.ec.europa.eu/asset/adms/description" target="_blank">ADMS</a>. You can read more about it <a href="https://open-data.europa.eu/en/linked-data" target="_blank">here</a>.<br><br>Owner: <a href="http://publications.europa.eu/en/web/about-us/who-we-are" target="_blank">Publications Office of the European Union</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://open-data.europa.eu" target="_blank">https://open-data.europa.eu</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>6.1313099,49.5987394,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Open Data Support DCAT-AP Validator</name>
+				<description><![CDATA[The DCAT-AP validator is a web application that checks metadata description of datasets for integrity and consistency against the DCAT-AP specification.<br><br>The DCAT-AP validator runs on a Jena Fuseki server. It can take as input an uploaded DCAT-AP file, a URL pointing to a DCAT-AP file, or text. The DCAT-AP file can be expressed in Turtle, RDF/XML, N-triples, and JSON-LD format. The output of the validation can be XML (transformed as HTML), JSON, Text, CSV, or TSV.<br><br>Owner: <a href="http://europa.eu/whoiswho/public/index.cfm?fuseaction=idea.hierarchy&nodeID=386377&lang=en" target="_blank">DG CONNECT</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://joinup.ec.europa.eu/node/145618" target="_blank">https://joinup.ec.europa.eu/node/145618</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.4126272,50.8142396,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Swedish Open Data Portal</name>
+				<description><![CDATA[The Swedish innovation agency VINNOVA, which runs the Swedish Open Data Portal, in collaboration with Open Knowledge UK and MetaSolutions have undertaken many activities to support the implementation of DCAT-AP in the Swedish Open Data Portal, including: preliminary support for DCAT-AP in CKAN, and the development of a DCAT-AP validator and editors.<br><br>The Swedish Open Data Portal uses a <a href="https://docs.google.com/document/d/1A7OUPTqWIvKGdaArOORIJKlowFynA0UWBO1M4BnE4Ak/edit" target="_blank">DCAT application profile</a> specifically created for Sweden by <a href="https://metasolutions.se/" target="_blank">Metasolutions</a> to describe datasets in more details. For example, datasets classifications according to <a href="http://eurovoc.europa.eu/drupal/?q=navigation&cl=en" target="_blank">Eurovoc classification system</a>. The Swedish Open Data Portal uses CKAN to automatically harvest datasets from a range of DCAT sources and to expose DCAT metadata in different formats. You can read more about it <a href="http://ckan.org/tag/oppnadata-se/" target="_blank">here</a>.<br><br>Owner: <a href="http://www.vinnova.se/sv/" target="_blank">Swedish innovation agency Vinnova</a><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="http://oppnadata.se" target="_blank">http://oppnadata.se</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>18.0609781,59.3326049,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DCAT-AP manager</name>
+				<description><![CDATA[DCAT-AP manager is a tool to create and manage descriptions of catalogues and datasets according to the “DCAT application profile for data portals in Europe”.<br><br>The DCAT-AP manager provides an editor for DCAT expressions, including organizations, datasets, distributions, people and organizations. You can read more about it <a href="https://bitbucket.org/metasolutions/dcat-manager/" target="_blank">here</a>.<br><br>Owner: <a href="http://www.vinnova.se/sv/" target="_blank">Swedish innovation agency Vinnova</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://dcat-editor.com" target="_blank">https://dcat-editor.com</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>18.0608154,59.3325874,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Convertor of ISO 19139 records into GeoDCAT-AP (GeoDCAT-API)</name>
+				<description><![CDATA[This API can be used to convert ISO 19139 records into GeoDCAT-AP, either by submitting a call to a <a href="http://www.opengeospatial.org/standards/cat" target="_blank">CSW (Catalog Service for the Web)</a>, or by loading a static file containing ISO records. GeoDCAT-API can be found in <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/iso-19139-to-dcat-ap/browse/api" target="_blank">Stash</a>.<br><br>GeoDCAT-API is a PHP5 web-based application running on Apache 2. It used <a href="http://www.easyrdf.org/" target="_blank">EasyRDF</a> and the <a href="https://github.com/lanthaler/JsonLD" target="_blank">ML/JSON-LD</a> PHP libraries to generate the GeoDCAT-AP RDF serialisation, and <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/dcat-ap-rdf2html/" target="_blank">DCAT-AP in HTML+RDFa</a> XSLT to generate the HTML+RDFa serialisation. The XSLT requires as input DCAT/DCAT-AP compliant metadata records in RDF/XML format. You can read more about it <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/dcat-ap-rdf2html/browse" target="_blank">here</a>.<br><br>Owner: <a href="http://ec.europa.eu/isa/" target="blank">ISA Programme</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://joinup.ec.europa.eu/node/144843" target="_blank">https://joinup.ec.europa.eu/node/144843</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.3715608,50.8427699,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>OSLO - Open Standards for Linked Administrations in Flanders</name>
+				<description><![CDATA[The OSLO Vocabulary is a simplified, reusable and extensible data model that captures the fundamental characteristics of information exchanged by public administration in the domains: contact information, localisation and public services.<br><br>The standards of the Flemish OSLO project are local extensions of the core Person, Business, Location, and Public Service vocabularies. You can read more about it <a href="https://joinup.ec.europa.eu/node/89835" target="_blank">here</a>.<br><br>Owner: <a href="https://www.agiv.be/" target="_blank">AGIV</a><br><br>ISA specifications used: <a href="https://joinup.ec.europa.eu/asset/core_vocabularies/description" target="_blank">Core Location Vocabulary, Core Person Vocabulary, Core Business Vocabulary, Core Public Service Vocabulary</a><br><br><a href="https://v-ict-or.be/kenniscentrum/projectfiches/OSLO" target="_blank">https://v-ict-or.be/kenniscentrum/projectfiches/OSLO</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>3.7088389,51.037008,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The German XRepository</name>
+				<description><![CDATA[The XRepository provides a central location for storing and managing subject-specific and interdisciplinary interoperability solutions for public administrations. These interoperability solutions support data exchange between public authorities or between a public authority and citizens. XRepository provides a serialisation of its metadata in ADMS-AP format which is federated in Joinup.<br><br>Owner: <a href="http://www.bmi.bund.de/EN/Home/home_node.html" target="_blank">German Federal Ministry of the Interior</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/adms/asset_release/adms-application-profile-joinup" target="_blank">ADMS-AP</a><br><br><a href="https://www.xrepository.de" target="_blank">https://www.xrepository.de</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>8.8125172,53.0791566,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Register App Engine Graph</name>
+				<description><![CDATA[Graph API is a RESTful service providing access to continuously maintained, linked open government and commercial data for business applications. More specifically, the data originates from a mix of public and private sources and includes tax debts and other debts, unsubmitted tax declarations and submitted annual reports, contact details, VAT registrations and board members of all companies in Estonia. The Graph API provides data in a number of formats like serialisation of RDF in JSON, Turtle and RDF/XML.<br><br>Data has been linked and encoded by using ontologies such as DCMI Metadata Terms, Schema.org, and W3C Registered Organization Vocabulary. The W3C Registered Organization Vocabulary builds on the Core Business Vocabulary in a broader, global context. You can read more about it <a href="https://www.w3.org/TR/vocab-regorg/" target="_blank">here</a>.<br><br>Owner: <a href="https://www.inforegister.ee/" target="_blank">inforegister.ee</a><br><br>ISA specifications used: <a href="https://joinup.ec.europa.eu/asset/core_vocabularies/description" target="_blank">Core Business Vocabulary</a><br><br><a href="http://www.semantics.cc/projects/register-app-engine-graph-api" target="_blank">http://www.semantics.cc/projects/register-app-engine-graph-api</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>24.7504807,59.43512530000001,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Poolparty Semantic Suite</name>
+				<description><![CDATA[PoolParty is a semantic technology suite that offers solutions for knowledge management. As a semantic middleware, PoolParty can enrich business information with valuable metadata and links content assets automatically. Metadata for PoolParty projects can be published according to the ADMS. You can read more about it <a href="https://www.poolparty.biz/news-events/poolparty-thesaurus-manager-ppt-3-1-0-released/" target="_blank">here</a>.<br><br>Owner: <a href="https://www.semantic-web.at/" target="_blank">Semantic Web Company</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/adms/description" target="_blank">ADMS</a><br><br><a href="http://www.poolparty.biz" target="_blank">http://www.poolparty.biz</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>16.3499151,48.1984531,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dutch Open Data Portal</name>
+				<description><![CDATA[The Dutch data portal provides an overview of all available datasets provided by government organisations in the Netherlands. There are over 150 Dutch government organisations that provide over 7100 datasets. The Dutch data portal implements DCAT-AP standard as a NL application profile. The Dutch data portal provides export of their metadata in DCAT-AP-NL format. You can read more about it <a href="https://data.overheid.nl/IPM-Datamodel" target="_blank">here</a>.<br><br>Owner: <a href="https://www.rijksoverheid.nl/ministeries/ministerie-van-binnenlandse-zaken-en-koninkrijksrelaties" target="_blank">Dutch Ministry of Interior and Kingdom Relations</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://data.overheid.nl" target="_blank">https://data.overheid.nl</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.3222113,52.0791028,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Swiss Open Data Portal</name>
+				<description><![CDATA[The Confederation, cantons and communes as well as other organisations with a mandate from the state publish their open data on opendata.swiss. The portal brings together a wide range of datasets such as Swiss communal boundaries, population statistics, current weather data, historical documents and health insurance premiums. DCAT-AP Switzerland metadata standard helps publishers get their data on the Swiss open data portal. You can read more about it <a href="http://dcat-ap-switzerland.readthedocs.org/en/latest/" target="_blank">here</a>.<br><br>Owner: <a href="https://www.bar.admin.ch/bar/en/home.html" target="_blank">Swiss federal archives</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="http://www.opendata.admin.ch/en" target="_blank">http://www.opendata.admin.ch/en</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>7.446588500000001,46.9403856,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Irish Open Data Portal</name>
+				<description><![CDATA[The Irish Open Data Portal promotes innovation and transparency through the publication of Irish Public Sector data in open, free and reusable formats. The Open Data listed in data.gov.ie is published by over 80 Government Departments and Public Bodies. Many datasets are individually published and updated by public organisations. Other datasets are harvested daily from existing, domain-specific data catalogues. Datasets on https://data.gov.ie are accompanied by metadata compliant to DCAT-AP (with the Geo extension, if appropriate to the dataset). You can read more about it <a href="https://data.gov.ie/developers" target="_blank">here</a>.<br><br>Owner: <a href="http://www.per.gov.ie/en/" target="_blank">The Department of Public Expenditure & Reform</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://data.gov.ie" target="_blank">https://data.gov.ie</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>-6.2529284,53.3386354,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DCAT-BE</name>
+				<description><![CDATA[DCAT-BE is an extension of DCAT-AP, including a theme taxonomy for Belgium. There are already a couple of government instances using DCAT in Belgium. The objective is that all governments who publish open data use DCAT-BE to annotate their repository.<br><br>Owner: <a href="http://www.openknowledge.be/" target="_blank">Open Knowledge Belgium</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="http://dcat.be" target="_blank">http://dcat.be</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>3.7291233,51.0657985,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Geocat CKAN Harvester</name>
+				<description><![CDATA[Geocat CKAN Harvester is an extension of CKAN for data harvesting from the Swiss CSW service geocat.ch to the Swiss open data portal opendata.swiss. The source format is ISO-19139_che (Swiss version of ISO-19139), the target format is DCAT-AP Switzerland.<br><br>Owner: <a href="https://opendata.swiss/en/" target="_blank">Open Data Portal Switzerland</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://github.com/opendata-swiss/ckanext-geocat" target="_blank">https://github.com/opendata-swiss/ckanext-geocat</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>7.446687500000001,46.9404132,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DCAT Harvester for CKAN</name>
+				<description><![CDATA[This extension provides plugins that allow CKAN to expose and consume metadata from other catalogs using RDF documents serialized using DCAT. It provides tools and guidance to allow publishers to publish and share DCAT based metadata easily.<br><br>Owner: <a href="http://ckan.org/" target="_blank">CKAN</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://github.com/ckan/ckanext-dcat" target="_blank">https://github.com/ckan/ckanext-dcat</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>0.154033,52.235435,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DCAT-AP Validator for öppnadata.se</name>
+				<description><![CDATA[The DCAT-AP validator has been developed to validate DCAT-AP-based dataset descriptions. The validator ensures that these descriptions comply with the requirements of öppnadata.se.<br><br>Owner: <a href="http://metasolutions.se" target="_blank">MetaSolutions</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="https://validator.dcat-editor.com/" target="_blank">https://validator.dcat-editor.com/</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>18.0676693,59.3505935,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>EntryScape Catalog</name>
+				<description><![CDATA[EntryScape is an open source information management platform built on the Linked Data technology stack. It supports the complete lifecycle of data management, from import to access. EntryScape Catalog is a collaborative editor for dataset descriptions in RDF according to DCAT-AP. There is also support for import, basic validation, export and an associated data portal that can be used for previewing datasets.<br><br>Owner: <a href="http://metasolutions.se" target="_blank">MetaSolutions</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="http://entryscape.com" target="_blank">http://entryscape.com</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>18.0676693,59.3505935,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>INSPIRE GeoDCAT-AP Sandbox</name>
+				<description><![CDATA[The INSPIRE GeoDCAT-AP Sandbox provides access to the metadata records harvested by the <a href="http://inspire-geoportal.ec.europa.eu/" target="_blank">INSPIRE Geoportal</a>, represented following GeoDCAT-AP.<br><br>The sandbox is of course not meant to replace the INSPIRE Geoportal, but to make available an alternative representation of INSPIRE metadata, and test its potential uses. Moreover, the sandbox can also be used as a testbed to assess the current GeoDCAT-AP specification and its <br>implementation.<br><br>Currently, the INSPIRE GeoDCAT-AP Sandbox stores 140K+ metadata records, corresponding to the snapshot of the INSPIRE Geoportal on 3 May 2016. Such records have been generated by transforming the original ISO 19139 <br>metadata with the <a href="https://webgate.ec.europa.eu/CITnet/stash/projects/ODCKAN/repos/iso-19139-to-dcat-ap/" target="_blank">GeoDCAT-AP XSLT</a>.<br><br>Owner: <a href="https://ec.europa.eu/jrc/" target="_blank">Joint Research Centre</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/asset_release/geodcat-ap-v10" target="_blank">GeoDCAT-AP</a><br><br>The available metadata are exposed via two main services:<br>1. <a href="http://inspire-sandbox.jrc.ec.europa.eu/geodcat-ap/fct" target="_blank">A faceted browser</a><br>2. <a href="http://inspire-sandbox.jrc.ec.europa.eu/geodcat-ap/sparql" target="_blank">A SPARQL endpoint</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>8.62733,45.80494,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Belgian Open Data Portal</name>
+				<description><![CDATA[The Federal Public Service for Information and Communication Technology (Fedict) defines and implements the federal e-government strategy. Fedict works to develop and follow up on e-Government solutions and applications on behalf of the Federal Government. To this end, Fedict assists the Federal public services in enhancing the delivery of their services to citizens, businesses and civil servants with the aid of innovative information and communication technologies (ICT). In doing so, Fedict actively contributes to the exchange of data between various public services and to the development and modernisation of software giving access to online government applications.<br>You can read more about it here:<a href="http://www.fedict.belgium.be/en/"target="_blank">Fedict</a><br><br>Fedict uses a command-line DCAT-AP validator and other tools for harvesting local open data portals, and for updating the data.gov.be portal. A dump of all the metadata is available on github.<br><br>The command line DCAT-AP validator is an open source tool for DCAT-AP 1.1 developed initially for improving the data.gov.be metadata as an offline alternative to online validators. Following the validation action, the output is an HTML report with a list of subjects violating the rule.<br><br>The validation rules check: (1) mandatory classes and properties, (2) recommended properties, (3) the use of the EU Publication Office's MDR Authority lists (controlled vocabularies), and (4) best practices (e.g. language tags on literals).<br><br>Owner: <br><a href=http://www.fedict.belgium.be/en"target="_blank">Fedict</a><br><br>ISA specification used: <br><a href=https://joinup.ec.europa.eu/node/145618"target="_blank">DCAT-AP validator</a> <br><br>Project: <br><a href=http://data.gov.be"target="_blank">DCAT-AP validator</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>4.3476001,50.8490728,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Open Data Portal of Ghent</name>
+				<description><![CDATA[The City of Ghent publishes most of the content which is availble on its public website <a href="http://stad.gent"target="_blank">Stad Gent</a> as Linked Open Data (RDF). This includes all the public services it offers to citizens. These services are described using the Core Public Service Vocabulary and are extended in some cases with more specfic information. An example of such a service is <br><a href="https://stad.gent/id/products/208"target="_blank">example</a> . At the bottom of the page a link to the RDF representation, and this representation can also be acquired through content negotiation.<br>This allows semantic web agents and other applications to retreive structured, semantic information on the City's services.<br><br>The City of Ghent is long-standing publisher of open data. The metadata of every dataset it publishes on its data portal, <a href=http://data.stad.gent"target="_blank">Ghent Data Portal</a>, is available through a DCAT feed. This feed also allows other data portals (specifically that of the Flemish government, the Belgian federal government and the European data portal) to harvest and aggregate its data.<br><br>Owner: <br><a href=https://stad.gent/"target="_blank">Stad Gent</a><br><br>ISA specifications used: <br><a href=https://joinup.ec.europa.eu/node/52597"target="_blank">Core Public Service Vocabulary</a>, and DCAT-AP <a href=https://joinup.ec.europa.eu/node/63567"target="_blank">DCAT-AP</a><br><br><a href=https://stad.gent/data/products/"target="_blank">Gent Public Services</a>,]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>3.7253208,51.0545313,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The European Data Portal - EDP</name>
+				<description><![CDATA[The European Data Portal <a href="http://www.europeandataportal.eu" target="_blank">European Data Portal</a> harvests the metadata of Public Sector Information available on public data portals across European countries. Information regarding the provision of data and the benefits of re-using data is also included.<br><br>Mapping into the GeoDCAT-AP profile – a transdisciplinary metadata exchange format for EU data portals – the exchange and reuse of EU member states' spatial data and that of other European countries can be simplified and their quality improved. Moreover, all metadata is automatically translated during harvesting. For example, French metadata is automatically translated to German and vice versa, to simplify the Europe-wide search for data.<br>Another feature available from the portal is the search for place names, for the purpose of simplifying the discovery of datasets by means of spatial search criteria. To this end, con terra employs the smart.finder, a solution that allows rapid discovery and structured access to extensive, heterogeneous datasets. The basic data is drawn from such sources as the geographical names according to INSPIRE Annex I and open data from geonames.org, which are harmonised and combined with the aid of the FME spatial data hub. The INSPIRE-compliant OGC Web Feature Service that has recently been made available by the Federal Agency for Cartography and Geodesy (BKG) is also used for geographical names in the construction of this so-called gazetteer.<br><br>Project participants: <a href="http://www.conterra.de" target="_blank">con terra GmbH</a>,  <a href="https://www.fokus.fraunhofer.de/en" target="_blank">fraunhofer</a><br><br>ISA specification used: <a href="https://joinup.ec.europa.eu/node/139283" target="_blank">GeoDCAT-AP</a><br><br>Project:<br><a href="http://www.europeandataportal.eu/en"  target="_blank">European Data Portal</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>6.125537,49.5995608,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GeoNetwork</name>
+				<description><![CDATA[GeoNetwork  <a href="http://geonetwork-opensource.org/" target="_blank">GeoNetwork</a> provides an easy to use web interface to search geospatial data across multiple catalogs. The search provides full-text search as well as faceted search on keywords, resource types, organizations, scale, etc.  Users can easily refine the search and quickly gets to the records of interests.<br>GeoSpatial layers, but also services, maps or even non geographic datasets can be described in the catalog. Easily navigate accross records and find sources or services publishing a dataset.<br><br>Geonetwork is a catalogue software that enables discoverability of spatial resources, such as datasets, maps, services, sensors etc Dcat-ap and GeoDCAT-AP are introduced as export format for some of the available metadata schema's.<br><br>Owner: <a href="https://www.geocat.net" target="_blank">GeoNetwork</a><br><br>ISA specifications used: <br><a href="https://joinup.ec.europa.eu/node/139283" target="_blank">GeoDCAT-AP</a>, and<br><a href="https://joinup.ec.europa.eu/node/63567" target="_blank">DCAT-AP</a><br><br>Project:<br> <a href="http://geonetwork-opensource.org/" target="_blank">GeoNetwork</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>5.6737204,51.999303,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Estonian service catalogue</name>
+				<description><![CDATA[The Estonian service catalogue helps to create harmonized, machine-readable and semantically interoperable descriptions of Estonia’s public services.<br><br>The service catalogue sets the basis for mapping cross-sector and cross-border services and initiate cooperation, enabling efficient and effective interaction between various public administrations (within nation and across borders) borders through the seamless exchange of data.<br><br>The service catalogue enables to evaluate and measure centrally the quality of the services across the public sector. It puts in place minimum requirements on national level for describing public services. Today, we do not have these standards in place.<br><br>The service catalogue enables a uniform presentation of the descriptions of public services on one platform, and it enables the Government to get an overview about the services it offers. This sets the basis for enhancing the coordination of the public services development. Moreover, the service catalogue is a prerequisite for implementing the once-only principle, which ensures that citizens and businesses supply certain standard information only once, because public administration offices take action to internally share this data, so that no additional burden falls on citizens and businesses in due respect of data protection rules. The service catalogue enables the mapping of cross-sector public services that are gathered around one activity and that could co-operate without burdening the citizens or businesses. <br>Additionally to the above, the service catalogue sets the basis for mapping cross-border services and helping to make cross-border transaction procedures quicker, simpler and cheaper for all parties. <br><br>The Estonian service catalogues is based on CPSV-AP, and it provides a description of its services in JSON format.<br><br>The development of the service catalogue, required the implementation of the concept of the service owners which reuses ISA specification Core Person Vocabulary.<br><br>Owner: <a href="https://www.mkm.ee/en" target="_blank">Ministry of Economic Affairs and Communications</a><br><br>ISA specification used: <br><a href="https://joinup.ec.europa.eu/node/52597" target="_blank">Core Public Service Vocabulary</a>, <a href="https://joinup.ec.europa.eu/asset/core_person/description" target="_blank">Core Person Vocabulary</a><br><br>Project:<br> <a href="https://www.mkm.ee/en/teenuste-otsing" target="_blank">Estonian Service Catalogue</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>24.7439663,59.4350949,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>GeoPortal
+</name>
+				<description><![CDATA[The GeoPortal is a FOSS based software stack, which is used by three German Federal States (<a href="http://www.geoportal.rlp.de/" target="_blank">Rhineland-Palatinate</a>, Hesse <a href="http://www.geoportal.hessen.de/" target="_blank">Hesse</a> and Saarland <a href="http://geoportal.saarland.de/portal/de/" target="_blank">Saarland</a>). It works as a OGC webservice-registry and manages metadata for spatial datasets and services. <br><br>The metadata is mainly generated 'on the fly' out of the central information model. Until the GeoDCAT-AP was published, metadata was only available in form of html, iso19139 XML records and CKAN json objects. With the help of the XSLT, which was published by the GeoDCAT-AP working group, metadata is now also available in form of RDF (content negotiation is used). Beside the internal metadata generator, there is also a CSW interface, which allows a live search in the Central German Spatial Data Catalogue (GDK-DE). An integrated webservice allows the transformation (iso191392rdf) of this distributed metadata. That way each spatial metadata, which is published in Germany, is available in form of a GeoDCAT RDF file (example: <a href="http://www.geoportal.rlp.de/mapbender/geoportal/mod_readCSWResultsDetail.php?cat_id=2&uuid=6152FAC2-D39D-4F65-AD73-4C404CE22634&mdtype=html&outputFormat=rdf" target="_blank">here</a>).<br><br>Owner: <a href="https://www.mapbender2.org/Geoportal_Rhineland_Palatinate_SDI" target="_blank">Geoportal Rhineland Palatinate SDI</a><br><br>ISA specification used: <br><a href="https://joinup.ec.europa.eu/node/139283" target="_blank">GeoDCAT-AP</a><br><br>Project:<br><a href="http://www.geoportal.rlp.de/" target="_blank">Rhineland-Palatinate</a>, <br><a href="http://www.geoportal.hessen.de/" target="_blank">Hesse</a>, and  <br><a href="http://geoportal.saarland.de/portal/de/" target="_blank">Saarland</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>7.58471,50.37503,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>SPCData</name>
+				<description><![CDATA[The Linked Open Data of the Italian Interoperablity Framework SPC (Sistema Pubblico di Connettività) includes four important datasets: the dataset about the National Catalogue of the Italian Public Administrations, the dataset on SPC contracts established on the basis of past public tenders, and two official classifications published in LOD in collaboration with the Italian Institute of Statistics; i.e.; COFOG and Ateco (Ateco is the Italian version of NACE). You can read more about it here: <a href="http://spcdata.digitpa.gov.it/data.html" target="_blank">http://spcdata.digitpa.gov.it/data.html</a><br><br>SPCData extensively reused the Org vocabulary in order to model public administrations (Org is connected to the RegOrg vocabulary derived from the Core Business Vocabulary). You can read more about it here: <a href="http://spcdata.digitpa.gov.it/dataLotto1.html" target="_blank">http://spcdata.digitpa.gov.it/dataLotto1.html</a><br><br>Owner: <a href="http://www.agid.gov.it/" target="_blank">Agenzia per l'Italia Digitale (AgID)</a><br><br>ISA specification: <a href="https://joinup.ec.europa.eu/asset/core_location/description" target="_blank">Core Location Vocabulary</a>, <a href="https://joinup.ec.europa.eu/asset/core_business/home" target="_blank">Core Business Vocabulary</a>, <a href="https://joinup.ec.europa.eu/asset/adms/home" target="_blank"">ADMS</a><br><br>Project homepage: <a href="http://spcdata.digitpa.gov.it" target="_blank">http://spcdata.digitpa.gov.it</a><br><br>Additional resources:<br><a href="http://spcdata.digitpa.gov.it/data/ateco2007.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/ateco2007.rdf</a><br><a href="http://spcdata.digitpa.gov.it/data/cofog2009.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/cofog2009.rdf</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank" >http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/cpsvapit" target="_blank">http://www.dati.gov.it/onto/cpsvapit</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank" >http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/dcatapit" target="_blank">http://www.dati.gov.it/onto/dcatapit</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>12.4800532,41.8725389,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>CPSV-AP_IT</name>
+				<description><![CDATA[The Italian Application Profile of the Core Public Service Vocabulary is used in the implementation of the Italian national catalogue of public services that will be soon available at servizi.gov.it<br><br><br>Owner: <a href="http://www.agid.gov.it/" target="_blank">Agenzia per l'Italia Digitale (AgID)</a><br><br>ISA specification: <a href="https://joinup.ec.europa.eu/asset/cpsv-ap/description" target="_blank">CPSV-AP</a>, <a href="https://joinup.ec.europa.eu/asset/adms/home" target="_blank">ADMS</a>, <a href="https://joinup.ec.europa.eu/asset/core_location/description" target="_blank">Core Location Vocabulary</a><br><br>Project homepage: <a href="http://www.dati.gov.it/consultazione/CPSV-AP_IT" target="_blank">http://www.dati.gov.it/consultazione/CPSV-AP_IT</a><br><br>Additional information:<br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/cpsvapit" target="_blank">http://www.dati.gov.it/onto/cpsvapit</a> (the English version of the associated OWL ontology)<br><br><a href="http://spcdata.digitpa.gov.it/data/ateco2007.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/ateco2007.rdf</a><br><a href="http://spcdata.digitpa.gov.it/data/cofog2009.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/cofog2009.rdf</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/cpsvapit" target="_blank">http://www.dati.gov.it/onto/cpsvapit</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/dcatapit" target="_blank">http://www.dati.gov.it/onto/dcatapit</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>12.4837303,41.8739069,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>DCAT-AP_IT</name>
+				<description><![CDATA[The Italian Application Profile of the Data Catalog Vocabulary. Currently, the application proflie is used in the implementation of the Italian national catalog of data of public administrations available at <a href="http://dati.gov.it" target="_blank">dati.gov.it</a><br><br>Owner: <a href="http://www.agid.gov.it/" target="_blank">Agenzia per l'Italia Digitale (AgID)</a><br><br>ISA specifications: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a>, <a href="https://joinup.ec.europa.eu/asset/adms/home" target="_blank">ADMS</a>, <a href="https://joinup.ec.europa.eu/asset/core_location/description" target="_blank">Core Location Vocabulary</a><br><br>Project homepage: <a href="http://www.dati.gov.it/content/dcat-ap_it_v10" target="_blank">http://www.dati.gov.it/content/dcat-ap_it_v10</a><br><br>Additional information:<br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/dcatapit" target="_blank">http://www.dati.gov.it/onto/dcatapit</a> (the English version of the associated OWL ontology)<br><a href="http://spcdata.digitpa.gov.it/data/ateco2007.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/ateco2007.rdf</a><br><a href="http://spcdata.digitpa.gov.it/data/cofog2009.rdf" target="_blank">http://spcdata.digitpa.gov.it/data/cofog2009.rdf</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/cpsvapit" target="_blank">http://www.dati.gov.it/onto/cpsvapit</a><br><a href="http://www.essepuntato.it/lode/owlapi/lang=en/" target="_blank">http://www.essepuntato.it/lode/owlapi/lang=en/</a><br><a href="http://www.dati.gov.it/onto/dcatapit" target="_blank">http://www.dati.gov.it/onto/dcatapit</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>12.4854469,41.8705835,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Point of Single Contact - Service Directive PSC</name>
+				<description><![CDATA[The Spanish Point of Single Contact allows that a business person applies for specific procedures to exercise their specialised professional activity when a physical establishment is needed or without it (free exercise of the activity). The Spanish PSC information System collects and organizes the administrative procedures required for defined business events. The Spanish PSC project has been a very active contributor for defining the CPSV model and to promote the use of the model for the eBusiness Life Cycle Pilot in eSENS Project.<br><br>Owner: <a href="http://www.minhap.gob.es/en-GB/El%20Ministerio/Paginas/El%20Ministerio.aspx" target="_blank">Directorate for Information Technologies & Communications, Ministry of Finance & Public Administration</a><br><br>ISA specification used: <br><a href="https://joinup.ec.europa.eu/node/52597" target="_blank">Core Public Service Vocabulary</a><br><br><a href="http://www.eugo.es" target="_blank">www.eugo.es</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>-3.7037902,40.4167754,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The Technology Transfer Centre (CTT)</name>
+				<description><![CDATA[The Technology Transfer Centre publishes a general directory of information technology solutions interesting in the area of e-government. Its objective is to increase the interoperability by promoting the reuse of solutions by all public administrations. In this way, the CTT boost the provision and use of interoperable e-government services. This repository provides information about applications, common services, semantic assets, policies, agreements, methodologies, experiences, etc. in the area of e-government.<br><br>The CTT is federated with the european portal <a href="https://joinup.ec.europa.eu/catalogue/repository/spain-center-technology-transfer" target="_blank">JOINUP using ADMS-AP</a>.<br><br>For that, the CTT publishes all its reusable solutions in the ADMS-AP format available online, <a href="http://administracionelectronica.gob.es/pae_Home/pae_Informacion/pae_RSS.html" target="_blank">here</a>.<br><br>Owner: <a href="http://www.minhap.gob.es/en-GB/El%20Ministerio/Paginas/El%20Ministerio.aspx" target="_blank">Directorate for Information Technologies & Communications, Ministry of Finance & Public Administration</a><br><br>ISA specification: <a href="https://joinup.ec.europa.eu/asset/adms/home" target="_blank">ADMS</a><br><br><a href="http://administracionelectronica.gob.es/ctt" target="_blank">http://administracionelectronica.gob.es/ctt</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>-3.6998177,40.41611,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Technical Interoperability Standard for Data Models</name>
+				<description><![CDATA[The National Technical Interoperability Standard to reuse public information (NTIS) establishes a minimum of common specification to describe data sets within the Spanish Public. The NTIS is an application profile of DCAT.<br><br>The NTIS is federated with European Data Portal (EDP).<br><br>Owner: <a href="http://www.minhap.gob.es/en-GB/El%20Ministerio/Paginas/El%20Ministerio.aspx" target="_blank">Directorate for Information Technologies & Communications, Ministry of Finance & Public Administration</a><br><br>ISA specification: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a><br><br><a href="www.datos.gob.es" target="_blank">www.datos.gob.es</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>-3.6960411,40.4209456,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>The DataTank</name>
+				<description><![CDATA[The DataTank (TDT) is an open source tool that facilitates open data for public entities. The platform provides a way to add standardised meta-data (DCAT and GeoDCAT-AP) to datasets and publishes those datasets in the best way possible. Meaning data doesn't just hang around for a download to happen, but is translated on the fly to json, xml, visualisations or semantic web formats if applicable.<br><br>Owner: <a href="http://weconnectdata.com" target="_blank">We Connect Data</a><br><br>ISA specifications: <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/description" target="_blank">DCAT-AP</a>, <a href="https://joinup.ec.europa.eu/asset/dcat_application_profile/asset_release/geodcat-ap-v10" target="_blank">GeoDCAT-AP</a><br><br><a href="https://github.com/tdt/core" target="_blank">https://github.com/tdt/core</a>]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<Point>
+					<coordinates>3.7314034,51.0587679,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Style id='icon-503-DB4436-normal'>
+			<IconStyle>
+				<color>ff3644DB</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+				<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>
+				</hotSpot>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+		</Style>
+		<Style id='icon-503-DB4436-highlight'>
+			<IconStyle>
+				<color>ff3644DB</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+				<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>
+				</hotSpot>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.1</scale>
+			</LabelStyle>
+		</Style>
+		<StyleMap id='icon-503-DB4436'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-503-DB4436-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-503-DB4436-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+	</Document>
+</kml>

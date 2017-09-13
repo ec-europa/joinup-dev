@@ -37,6 +37,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - image.style.thumbnail
@@ -84,6 +85,7 @@ third_party_settings:
         - field_is_language
         - current_workflow_state
         - field_is_state
+        - transition_motivation
       parent_name: group_general
       weight: 20
       format_type: tab
@@ -134,7 +136,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 18
+    weight: 16
     region: content
     settings:
       title: 'Current workflow state'
@@ -214,7 +216,7 @@ content:
     region: content
   field_is_language:
     type: options_select
-    weight: 17
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -294,7 +296,7 @@ content:
     third_party_settings: {  }
   field_is_state:
     type: state_machine_buttons
-    weight: 19
+    weight: 17
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -341,6 +343,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_is_affiliations_requests: true
   field_is_content: true
@@ -355,6 +362,7 @@ hidden:
   field_is_webdav_url: true
   field_is_wiki: true
   field_keywords: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

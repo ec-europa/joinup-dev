@@ -29,6 +29,7 @@ dependencies:
   - honeypot
   - image
   - inline_entity_form
+  - joinup_collection
   - joinup_core
   - joinup_discussion
   - joinup_document
@@ -68,6 +69,7 @@ dependencies:
   - rdf_taxonomy
   - search_api
   - search_api_db
+  - semic
   - social_media_links_field
   - solution
   - state_machine
@@ -165,6 +167,7 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - honeypot.settings
   - image.style.profile_icon
   - image.style.profile_icon_big
   - language.content_settings.rdf_entity.asset_distribution

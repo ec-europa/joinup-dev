@@ -16,31 +16,41 @@ Feature: Solution homepage
       | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
       | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
     And the following releases:
-      | title             | release number | release notes                               | is version of                | state     | spatial coverage |
-      | IS protocol paper | 1              | First stable version.                       | Information sharing protocol | validated | Belgium          |
-      | Fireproof         | 0.1            | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
+      | title             | release number | creation date     | release notes                               | is version of                | state     | spatial coverage |
+      | IS protocol paper | 1              | 2018-10-04 8:01am | First stable version.                       | Information sharing protocol | validated | Belgium          |
+      | Fireproof         | 0.1            | 2018-10-04 8:06am | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
-      | title           | description                                        | access url       | solution                     | parent                       | downloads |
-      | PDF version     | Pdf version of the paper.                          | text.pdf         | Information sharing protocol | IS protocol paper            | 589       |
-      | ZIP version     | Zip version of the paper.                          | test.zip         | Information sharing protocol | IS protocol paper            | 514       |
+      | title           | description                                        | creation date     | access url       | solution                     | parent                       | downloads |
+      | PDF version     | Pdf version of the paper.                          | 2018-10-04 8:07am | text.pdf         | Information sharing protocol | IS protocol paper            | 589       |
+      | ZIP version     | Zip version of the paper.                          | 2018-10-04 8:04am | test.zip         | Information sharing protocol | IS protocol paper            | 514       |
       # One distribution directly attached to the "Information sharing protocol" solution.
-      | Protocol draft  | Initial draft of the protocol.                     | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       |
-      | Source code     | Source code for the Fireproof tool.                | test.zip         | Security audit tools         | Fireproof                    | 432       |
+      | Protocol draft  | Initial draft of the protocol.                     | 2018-10-04 7:59am | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       |
+      | Source code     | Source code for the Fireproof tool.                | 2018-10-04 8:03am | test.zip         | Security audit tools         | Fireproof                    | 432       |
       # One distribution directly attached to the "Security audit tools" solution.
-      | Code of conduct | Code of conduct for contributing to this software. | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       |
+      | Code of conduct | Code of conduct for contributing to this software. | 2018-10-04 8:14am | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       |
     And news content:
-      | title               | body                                | policy domain           | spatial coverage | solution                     | state     |
-      | IS protocol meet-up | Discussion about the next standard. | Statistics and Analysis | European Union   | Information sharing protocol | validated |
+      | title               | body                                | created           | policy domain           | spatial coverage | solution                     | state     |
+      | IS protocol meet-up | Discussion about the next standard. | 2018-10-04 8:02am | Statistics and Analysis | European Union   | Information sharing protocol | validated |
     And document content:
-      | title               | document type | short title | body                    | spatial coverage | policy domain | solution                     | state     |
-      | IS protocol draft 2 | Document      | IS draft 2  | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
+      | title               | document type | short title | created           | body                    | spatial coverage | policy domain | solution                     | state     |
+      | IS protocol draft 2 | Document      | IS draft 2  | 2018-10-04 8:08am | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
 
   Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution
     # I should see only the related release.
-    Then I should see the "IS protocol paper 1" tile
     # And the distribution directly associated.
-    And I should see the "Protocol draft" tile
+    Then I should see the following tiles in the correct order:
+      # Created in 8:08am.
+      | IS protocol draft 2  |
+      # Created in 8:02am.
+      | IS protocol meet-up  |
+      # Created in 8:01am.
+      | IS protocol paper 1  |
+      # Created in 7:59am.
+      | Protocol draft       |
+      # The related solutions is shown in a block later in the page.
+      | Security audit tools |
+
     # Distribution associated to a release should not be shown.
     But I should not see the "PDF version" tile
     And I should not see the "ZIP version" tile

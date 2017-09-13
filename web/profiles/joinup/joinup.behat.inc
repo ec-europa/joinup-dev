@@ -18,6 +18,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -536,6 +537,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *   An object containing the entity properties and fields that are to be used
    *   for creating the node as properties on the object.
    *
+   * @throws \Exception
+   *   Thrown when the term "sticky" is used instead of "pinned" in test data.
+   * @throws \UnexpectedValueException
+   *   Thrown when the values for the status and sticky fields are not correct.
+   *
    * @BeforeNodeCreate
    */
   public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
@@ -566,20 +572,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // Replace the human readable publication statuses with the boolean values
     // that are expected by the Node module.
-    if (!empty($node->status)) {
-      $mapping = [
-        'unpublished' => 0,
-        'published' => 1,
-      ];
-      // Force the use of human readable values in Behat test scenarios, throw
-      // an exception if the numeric values are used.
-      if (!array_key_exists($node->status, $mapping)) {
-        $supported_statii = implode(', ', array_keys($mapping));
-        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
-      }
-      // Replace the human readable value with the expected boolean.
-      $node->status = $mapping[$node->status];
-    }
+    self::convertObjectPropertyValues($node, 'status', [
+      'unpublished' => 0,
+      'published' => 1,
+    ]);
 
     // Replace human readable workflow states with machine names.
     if (!empty($node->field_state)) {
@@ -590,23 +586,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
-    if (isset($node->pinned)) {
-      $mapping = [
-        'yes' => 1,
-        'no' => 0,
-      ];
-
-      // Force the use of human readable values in Behat test scenarios, throw
-      // an exception if the numeric values are used.
-      if (!array_key_exists($node->pinned, $mapping)) {
-        $supported_values = implode(', ', array_keys($mapping));
-        throw new \UnexpectedValueException("Unexpected value for pinned '{$node->pinned}'. Supported values are: $supported_values.");
-      }
-
-      // Replace the human readable value with the expected boolean.
-      $node->sticky = $mapping[$node->pinned];
-      unset($node->pinned);
-    }
+    // Replace the human-readable values for multiple fields.
+    self::convertObjectPropertyValues($node, 'pinned', [
+      'yes' => 1,
+      'no' => 0,
+    ], 'sticky');
+    self::convertObjectPropertyValues($node, SiteFeatureController::FEATURED_FIELD, [
+      'yes' => 1,
+      'no' => 0,
+    ]);
   }
 
   /**
@@ -660,6 +648,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
         'visits' => 'field_visit_count',
+        'featured' => SiteFeatureController::FEATURED_FIELD,
       ],
     ];
 
@@ -2004,6 +1993,114 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     $link = reset($links);
     \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
+  }
+
+  /**
+   * Asserts that a tile is marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as featured.
+   *
+   * @Then the :tile tile should be marked as featured
+   */
+  public function assertTileMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is not marked as featured, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as featured.
+   *
+   * @Then the :tile tile should not be marked as featured
+   */
+  public function assertTileNotMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
+    }
+  }
+
+  /**
+   * Asserts that an tag with the given text exists in the given region.
+   *
+   * This completes the assertNotRegionElementText of Markup context.
+   *
+   * @param string $tag
+   *   The HTML tag that is being checked.
+   * @param string $text
+   *   The text that should be present in the HTML tag.
+   * @param string $region
+   *   The region to which to confine the search for the HTML tag.
+   *
+   * @throws \Exception
+   *   Thrown when the given tag with the given text was not found in the given
+   *   region.
+   *
+   * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
+   *
+   * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
+   */
+  public function assertRegionElementText($tag, $text, $region) {
+    $regionObj = $this->getRegion($region);
+    $results = $regionObj->findAll('css', $tag);
+    if (!empty($results)) {
+      foreach ($results as $result) {
+        if ($result->getText() === $text) {
+          return;
+        }
+      }
+    }
+    throw new \Exception(sprintf('The text "%s" was not found in the "%s" element in the "%s" region on the page %s', $text, $tag, $region, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Asserts that a ckeditor list contains an element.
+   *
+   * CKeditor stores the lists available in the header of the editor pane in an
+   * iframe with a role tag. The dropdown "Format" has to be clicked prior to
+   * having the iframe available.
+   *
+   * @param string $field
+   *   The name of the field that contains the Wysiwyg editor to check.
+   * @param string $format_tags
+   *   Comma-separated list of paragraph formats to check.
+   *
+   * @throws \Exception
+   *   Thrown when the formats were found in the format list.
+   *
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
+   */
+  public function assertNotFormatInCkeditorExists($field, $format_tags) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires javascript to run.');
+    }
+    $element = $this->getSession()->getPage()->findField($field);
+    $element_id = $element->getAttribute('id');
+    $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
+    $has_tags_condition = <<<JS
+      return CKEDITOR.instances["$element_id"].config.format_tags;
+JS;
+    $found_tags = $this->getSession()->getDriver()->evaluateScript($has_tags_condition);
+    $found_tags_array = explode(';', $found_tags);
+    $invalid_tags = array_intersect($format_tags, $found_tags_array);
+    if (!empty($invalid_tags)) {
+      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+        '@found' => implode(', ', $invalid_tags),
+      ]));
+    }
   }
 
 }

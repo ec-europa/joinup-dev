@@ -204,6 +204,15 @@ Feature: Global search
       | description | Ornithology is a branch of zoology. |
       | state       | validated                           |
       | affiliates  | Bird outposts in the wild           |
+    And custom_page content:
+      | title           | body                                  | collection                      |
+      | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
+    And news content:
+      | title                    | body                   | collection                      | state     |
+      | Chickens are small birds | Domesticated in India. | Ornithology: the study of birds | validated |
+    And event content:
+      | title         | body                   | collection                      | state     |
+      | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |
     And discussion content:
       | title                             | body                    | collection                      | state     |
       | Best place to find an exotic bird | Somewhere exotic maybe? | Ornithology: the study of birds | validated |
@@ -217,5 +226,8 @@ Feature: Global search
     Then I should see the following tiles in the correct order:
       | Ornithology: the study of birds   |
       | Bird outposts in the wild         |
+      | Disturbed birds                   |
+      | Chickens are small birds          |
+      | Bird spotting                     |
       | Best place to find an exotic bird |
       | Bird Birdman                      |
