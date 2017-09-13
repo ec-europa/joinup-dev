@@ -1,0 +1,16 @@
+diff --git a/src/UnsavedIndexConfiguration.php b/src/UnsavedIndexConfiguration.php
+index 9faa31d8..e3015090 100644
+--- a/src/UnsavedIndexConfiguration.php
++++ b/src/UnsavedIndexConfiguration.php
+@@ -1086,4 +1086,11 @@ class UnsavedIndexConfiguration implements IndexInterface, UnsavedConfigurationI
+     return $this->entity->getThirdPartyProviders();
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getLanguageCode() {
++    return $this->entity->getLanguageCode();
++  }
++
+ }

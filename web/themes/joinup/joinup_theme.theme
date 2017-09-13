@@ -452,23 +452,6 @@ function joinup_theme_preprocess_block(&$variables) {
         break;
 
       case 'entity.node.canonical':
-        // Get node type.
-        $node = $route_match->getParameter('node');
-        if (!empty($node)) {
-          $node_types = [
-            'custom_page',
-            'discussion',
-            'document',
-            'event',
-            'news',
-          ];
-          $node_type = $node->getType();
-          if (in_array($node_type, $node_types)) {
-            $is_listing = TRUE;
-          }
-        }
-        break;
-
       case 'asset_release.solution_asset_release.overview':
       case 'view.collections.page_1':
       case 'view.search.page_1':
@@ -640,6 +623,23 @@ function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
         break;
       }
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for field--comma-separated.html.twig.
+ */
+function joinup_theme_preprocess_field__comma_separated(&$variables) {
+  // Only in listing modes.
+  $view_modes = [
+    'view_mode_tile',
+    'view_mode_featured',
+  ];
+
+  // Limit number of displayed items.
+  $items_limit = 3;
+  if ($variables['field_name'] == 'field_keywords' && in_array($variables['element']['#view_mode'], $view_modes)) {
+    $variables['items'] = array_slice($variables['items'], 0, $items_limit);
   }
 }
 
@@ -836,6 +836,23 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for page-title--node--video.html.twig.
+ */
+function joinup_theme_preprocess_page_title__node__video(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['entity'];
+
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $variables['additional_content']['created'] = $created;
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+  $variables['additional_content']['author'] = $author_inline;
+}
+
+/**
  * Implements hook_preprocess_HOOK() for page-title--node--document.html.twig.
  */
 function joinup_theme_preprocess_page_title__node__document(&$variables) {
@@ -901,6 +918,10 @@ function joinup_theme_preprocess_image(&$variables) {
  */
 function joinup_theme_preprocess_user(&$variables) {
   $variables['full_name'] = $variables['user']->get('full_name')->value;
+
+  // Truncate business title.
+  $business_title = $variables['user']->get('field_user_business_title')->value;
+  $variables['short_business_title'] = substr($business_title, 0, 30);
 }
 
 /**
@@ -1332,6 +1353,11 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
     $form['#theme'][] = 'buttons_separated_form';
   }
+
+  // Change markup in an username field.
+  if ($form_id == 'user_form' && isset($form['user_name'])) {
+    $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
+  }
 }
 
 /**
@@ -1354,11 +1380,6 @@ function joinup_theme_preprocess_node(&$variables) {
 
   if (!$is_remote) {
     $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-    $variables['file_name'] = $file->getFilename();
-
-    if ($file->getSize()) {
-      $variables['file_size'] = format_size(round($file->getSize()));
-    }
   }
   else {
     $variables['extension'] = t('External');
