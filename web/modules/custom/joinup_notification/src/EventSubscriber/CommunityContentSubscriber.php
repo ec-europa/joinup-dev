@@ -241,7 +241,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     }
 
     $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$this->entity->get($this->stateField)->first()->value]);
+    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
     $arguments = ['@transition:request_action:past' => $transition_action];
     $this->sendUserDataMessages($user_data, $arguments);
   }
