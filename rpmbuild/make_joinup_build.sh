@@ -18,7 +18,7 @@ rm -rf .gitignore
 rm -rf .git
 rm -rf rpmbuild
 
-composer install
+/usr/local/bin/composer install
 
 shopt -s extglob
 
