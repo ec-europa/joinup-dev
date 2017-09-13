@@ -4,21 +4,38 @@
  * Themeing for rdf entities.
  */
 #}
-<div class="listing__card listing__card--detail-container mdl-card">
+{%
+set classes = [
+  'listing__card',
+  'mdl-card',
+  'listing__card--stats-container',
+  view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
+]
+%}
+<div class="{{ classes|join(' ') }}">
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title">{{ label }}</h2>
+      {% if file_name %}
+        <h2 class="listing__title"><a href="{{ url }}">{{ file_name }}</a></h2>
+      {% else %}
+        <h2 class="listing__title">{{ label }}</h2>
+      {% endif %}
     </div>
     <div class="listing__field">
-      <div class="label gray">{{ 'Weight'|t }}:</div>
-      <div class="value bold">{{ content.field_ad_file_size }}</div>
-    </div>
-    {% if (content.field_ad_licence|render) %}
-      <div class="listing__field">
-        <div class="label gray">{{ 'Licence'|t }}:</div>
+      <div class="listing__single">
+        {% if content.field_ad_file_size|render %}
+          <div class="label gray">{{ 'Weight'|t }}:</div>
+        {% endif %}
+        <div class="value bold">{{ content.field_ad_file_size }}</div>
+      </div>
+      <div class="listing__single">
+        {% if content.field_ad_licence|render %}
+          <div class="label gray">{{ 'Licence'|t }}:</div>
+        {% endif %}
         <div class="value bold underline listing__field--normal">{{ content.field_ad_licence }}</div>
       </div>
-    {% endif %}
+
+    </div>
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
       {{ content.field_ad_access_url }}
