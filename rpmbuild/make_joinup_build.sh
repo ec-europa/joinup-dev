@@ -10,15 +10,17 @@ cd Joinup-$BUILD_VERSION
 git checkout tags/$RELEASE_TAG
 echo X-build-id: $BUILD_VERSION > ./buildinfo.ini
 
-cd web
-cp -R ../../template/* ./
-cd ..
-
 rm -rf .gitignore
 rm -rf .git
 rm -rf rpmbuild
 
 /usr/local/bin/composer install
+
+rm -rf web/sites/default/settings.php
+
+cd web
+cp -R ../../template/* ./
+cd ..
 
 shopt -s extglob
 
