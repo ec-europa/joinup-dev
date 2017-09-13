@@ -29,6 +29,7 @@ joinup_community_content.pin_content:
     _title: 'Pin'
   requirements:
     _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::pinAccess'
+    _csrf_token: 'TRUE'
   options:
     parameters:
       node:
@@ -41,6 +42,7 @@ joinup_community_content.unpin_content:
     _title: 'Unpin'
   requirements:
     _custom_access: '\Drupal\joinup_community_content\Controller\PinContentController::unpinAccess'
+    _csrf_token: 'TRUE'
   options:
     parameters:
       node:

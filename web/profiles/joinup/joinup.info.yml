@@ -167,6 +167,7 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - honeypot.settings
   - image.style.profile_icon
   - image.style.profile_icon_big
   - language.content_settings.rdf_entity.asset_distribution

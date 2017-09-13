@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
@@ -50,6 +51,8 @@ third_party_settings:
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
+        - current_workflow_state
+        - transition_motivation
       parent_name: group_general
       weight: 6
       format_type: tab
@@ -90,7 +93,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 2
+    weight: 5
     region: content
     settings:
       title: 'Current workflow state'
@@ -237,12 +240,13 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 3
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_ar_affiliates: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -140,9 +141,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | logo | moderation | modification date | owner | state                                                               |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users |      | yes        |                   |       |                                                                     |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | featured | logo | moderation | modification date | owner | state                                                               |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -207,6 +208,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'policy domain' => 'field_policy_domain',
       'spatial coverage' => 'field_spatial_coverage',
       'state' => 'field_ar_state',
+      'featured' => SiteFeatureController::FEATURED_FIELD,
     ];
   }
 
@@ -248,8 +250,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_ar_elibrary_creation' => [
+        'facilitators' => 0,
+        'members' => 1,
+        'registered users' => 2,
+      ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
         'draft' => 'draft',
@@ -259,6 +264,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         'deletion request' => 'deletion_request',
         'archived' => 'archived',
       ],
+      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -329,6 +335,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | title           | Open Data Initiative                                                |
    * | author          | Mightily Oats                                                       |
    * | logo            | logo.png                                                            |
+   * | featured        | yes|no                                                              |
    * | moderation      | yes|no                                                              |
    * | closed          | yes|no                                                              |
    * | create elibrary | facilitators|members|registered users                               |

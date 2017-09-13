@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.event.field_scope
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
+    - field.field.node.event.field_site_featured
     - field.field.node.event.field_state
     - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
@@ -110,6 +111,7 @@ hidden:
   field_policy_domain: true
   field_scope: true
   field_shared_in: true
+  field_site_featured: true
   field_state: true
   field_visit_count: true
   langcode: true
