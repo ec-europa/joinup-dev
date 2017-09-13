@@ -1,0 +1,4 @@
+solution-trr:
+  version: 1.x
+  js:
+    js/trr.js: {}

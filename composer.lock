@@ -135,7 +135,7 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.6",
+           "version": "3.36.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
@@ -3230,7 +3230,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta5.zip",
-                "reference": "8.x-1.0-beta5",
+                "reference": null,
                 "shasum": "775df5161078979ed211fe33fdee7d9ad33d6093"
             },
             "require": {
