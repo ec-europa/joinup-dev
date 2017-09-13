@@ -171,9 +171,9 @@ Feature: Notification test for the document transitions on a pre moderated paren
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                          |
-      | subject   | Joinup: Content has been deleted                                                                                                                   |
-      | body      | Facilitator CC Facilitator has approved your request of deletion for the document - "CC notify pre delete" in the collection: "CC pre collection". |
+      | recipient | CC member                                                                                                                                                    |
+      | subject   | Joinup: Content has been deleted                                                                                                                             |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the document - "CC notify pre request deletion" in the collection: "CC pre collection". |
 
     # Test 'delete' operation on an entity in 'validated' state.
     When all e-mails have been sent
