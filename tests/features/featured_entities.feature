@@ -73,7 +73,7 @@ Feature: Featuring content site-wide
     # Content should be marked as featured only in "global" pages.
     But the "Ionizing radiation types" tile should not be marked as featured
 
-    When I click "Content" in the "Header menu" region
+    When I click "Keep up to date" in the "Header menu" region
     Then the "Ionizing radiation types" tile should be marked as featured
 
     When I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile

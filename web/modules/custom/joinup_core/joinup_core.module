@@ -966,3 +966,19 @@ function joinup_core_preprocess_node(&$variables) {
     $variables['attributes']['data-drupal-parent-label'] = $parent->label();
   }
 }
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ *
+ * Strip off the h1, h5, h6 tag format options from the 'Format' dropdown.
+ * This does not remove the ability of the user to enter or render these tags.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3682
+ */
+function joinup_core_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['content_editor']) && $settings['editor']['formats']['content_editor']['format'] === 'content_editor') {
+    $options = explode(';', $settings['editor']['formats']['content_editor']['editorSettings']['format_tags']);
+    $options = array_diff($options, ['h1', 'h5', 'h6']);
+    $settings['editor']['formats']['content_editor']['editorSettings']['format_tags'] = implode(';', $options);
+  }
+}

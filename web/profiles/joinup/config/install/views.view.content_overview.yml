@@ -589,8 +589,20 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-      sorts: {  }
-      title: 'Keep up-to-date'
+      sorts:
+        entity_created:
+          id: entity_created
+          table: search_api_index_published
+          field: entity_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
+      title: 'Keep up to date'
       header: {  }
       footer: {  }
       empty: {  }
@@ -608,6 +620,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }
   page_1:
     display_plugin: page
@@ -623,4 +636,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }

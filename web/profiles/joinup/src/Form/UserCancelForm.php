@@ -103,6 +103,9 @@ class UserCancelForm extends CoreUserCancelForm {
         ];
       }
 
+      // Remove the 'This action cannot be undone as the user is unable to
+      // delete the user at this point.
+      unset($form['description']);
       return $form;
     }
 

@@ -210,10 +210,12 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
  *   This prevents access to the revision log and the revision checkbox too.
  * - Disable access to the comment settings. These are managed on collection
  *   level.
+ * - Disable access to the meta information.
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
+  $form['meta']['#access'] = FALSE;
 
   foreach (['field_comments', 'field_replies'] as $field) {
     if (!empty($form[$field])) {
