@@ -16,6 +16,7 @@ cd ..
 
 shopt -s extglob
 
+mkdir Joinup-$BUILD_VERSION
 mv !(Joinup-$BUILD_VERSION) Joinup-$BUILD_VERSION
 tar -cvvzf ../Joinup-$BUILD_VERSION.tar.gz Joinup-$BUILD_VERSION/
 rm -rf Joinup-$BUILD_VERSION
