@@ -12,11 +12,11 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.addClass(classes) }}>
   <div class="listing__image">{{ content.field_ar_logo }}</div>
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title">{{ label }}</h2>
+      {{ title_prefix }}<h2 class="listing__title">{{ label }}</h2>{{ title_suffix }}
     </div>
     {% if view_mode == 'view_mode_featured' %}
       <div class="listing__field">

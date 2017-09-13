@@ -19,6 +19,7 @@ homepage.content:
     _controller: '\Drupal\joinup\Controller\JoinupController::homepageContent'
   requirements:
     _permission: 'access content'
+
 joinup.collection_tca_form:
   path: '/joinup/tca/collection'
   defaults:
@@ -26,6 +27,7 @@ joinup.collection_tca_form:
     _title: 'Why create a Collection?'
   requirements:
     _permission: 'propose collection rdf entity'
+
 joinup.legal_notice:
   path: '/joinup/legal-notice'
   defaults:
@@ -33,3 +35,31 @@ joinup.legal_notice:
     _title: 'Legal notice'
   requirements:
     _access: 'TRUE'
+
+joinup.site_feature:
+  path: '/feature/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\SiteFeatureController::feature'
+    _title: 'Feature'
+  requirements:
+    _permission: 'feature entity'
+    _custom_access: '\Drupal\joinup\Controller\SiteFeatureController::featureAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unfeature:
+  path: '/feature/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\SiteFeatureController::unfeature'
+    _title: 'Remove from featured'
+  requirements:
+    _permission: 'unfeature entity'
+    _custom_access: '\Drupal\joinup\Controller\SiteFeatureController::unfeatureAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}

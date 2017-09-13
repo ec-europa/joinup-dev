@@ -25,12 +25,14 @@ Feature: Unpublished content of the website
       | Invisible Boyfriend | Preston Fields | authenticated |
       | Invisible Boyfriend | Phillip Shaw   | facilitator   |
     And "event" content:
-      | title                           | author    | collection          | state     |
-      | The Ragged Streams              | Ed Abbott | Invisible Boyfriend | proposed  |
-      | Storms of Touch                 | Ed Abbott | Invisible Boyfriend | validated |
-      | The Male of the Gift            | Ed Abbott | Invisible Boyfriend | validated |
-      | Mists in the Thought            | Ed Abbott | Invisible Boyfriend | draft     |
-      | Mists that are published maybe? | Ed Abbott | Grey Swords         | validated |
+      | title                                 | created           | author    | collection          | state     |
+      | The Ragged Streams                    | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | proposed  |
+      | Storms of Touch                       | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
+      | The Male of the Gift                  | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | validated |
+      | Mists in the Thought                  | 2018-10-04 8:31am | Ed Abbott | Invisible Boyfriend | draft     |
+      | Mists outside the planes of thinking  | 2018-10-04 8:30am | Ed Abbott | Grey Swords         | draft     |
+      | Mists outside the planes of construct | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | draft     |
+      | Mists that are published maybe?       | 2018-10-04 8:31am | Ed Abbott | Grey Swords         | validated |
 
     # The owner should be able to see all content.
     When I am logged in as "Ed Abbott"
@@ -111,3 +113,14 @@ Feature: Unpublished content of the website
     And I should not see the following tiles in the "Unpublished content area" region:
       | Mists that are published maybe? |
     But I should see the "Mists that are published maybe?" tile
+
+    # Test that unpublished content are ordered by create date.
+    When I am logged in as "Ed Abbott"
+    And I go to the homepage of the "Grey Swords" collection
+    And I should see the following tiles in the correct order:
+      # Published content appears first in the content listing.
+      | Mists that are published maybe?       |
+      # Created at 8:31am.
+      | Mists outside the planes of construct |
+      # Created at 8:30am.
+      | Mists outside the planes of thinking  |
