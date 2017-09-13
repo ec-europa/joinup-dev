@@ -709,18 +709,6 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
 }
 
 /**
- * Implements hook_field_group_pre_render_alter().
- */
-function solution_field_group_pre_render_alter(&$element, $group, $rendering_object) {
-  // Disable the trr tab on solution pages by default.
-  // Re-enable it in trr.module.
-  // @see trr_field_group_pre_render_alter().
-  if ($group->group_name == 'group_trr') {
-    $element['#access'] = FALSE;
-  }
-}
-
-/**
  * Checks whether the given solution has a unique title.
  *
  * A solution may be affiliated with several collections, but to avoid confusion

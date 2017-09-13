@@ -57,8 +57,6 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create new content"
     And I should see the text "Only solution facilitators can create new content"
-    # The TRR fieldgroup should only be visible inside the TRR collection.
-    And I should not see the text "TRR"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
@@ -70,7 +68,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Ernst Brice                                                   |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -126,7 +124,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ajit Tamboli                                                           |
       | E-mail address   | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
