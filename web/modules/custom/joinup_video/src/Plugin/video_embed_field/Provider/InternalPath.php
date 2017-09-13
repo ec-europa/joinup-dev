@@ -7,7 +7,7 @@ use Drupal\video_embed_field\ProviderPluginBase;
 use GuzzleHttp\ClientInterface;
 
 /**
- * An European Commission video provider plugin.
+ * An iframe pointing to site itself.
  *
  * @VideoEmbedProvider(
  *   id = "internal_path",
