@@ -1,0 +1,1 @@
+../../../../comon/settings.php
