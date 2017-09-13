@@ -4,21 +4,35 @@
  * Themeing for rdf entities.
  */
 #}
-<div class="listing__card listing__card--detail-container mdl-card">
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--detail-container',
+  ]
+%}
+{# @todo Implement changes - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3883 #}
+<div {{ attributes.addClass(classes) }}>
   <div class="listing__metadata">
     <div class="listing__field">
       <h2 class="listing__title">{{ label }}</h2>
     </div>
     <div class="listing__field">
-      <div class="label gray">{{ 'Weight'|t }}:</div>
-      <div class="value bold">{{ content.field_ad_file_size }}</div>
-    </div>
-    {% if (content.field_ad_licence|render) %}
-      <div class="listing__field">
-        <div class="label gray">{{ 'Licence'|t }}:</div>
-        <div class="value bold underline listing__field--normal">{{ content.field_ad_licence }}</div>
+      <div class="listing__weight listing__single">
+        {% if content.field_ad_file_size|render %}
+          <div class="label gray">{{ 'Weight'|t }}:</div>
+          <div class="value bold">{{ content.field_ad_file_size }}</div>
+        {% endif %}
       </div>
-    {% endif %}
+      <div class="listing__os listing__single"></div>
+      <div class="listing__licence listing__single">
+        {% if content.field_ad_licence|render %}
+          <div class="label gray">{{ 'Licence'|t }}:</div>
+          <div title="{{ content.field_ad_licence|render|striptags|trim }}" class="value bold underline listing__field--normal">{{ content.field_ad_licence }}</div>
+        {% endif %}
+      </div>
+    </div>
+
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">
       <a href="{{ url }}" class="listing__action-link action-link">{{ 'Details'|t }}</a>
       {{ content.field_ad_access_url }}

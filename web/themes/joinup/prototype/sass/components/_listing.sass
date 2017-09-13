@@ -5,6 +5,10 @@
 //
 // Styleguide 2.9
 
+// Variables
+// --------------------------------------------------
+$row-height: 23px
+
 // Component
 // --------------------------------------------------
 // .listing
@@ -64,7 +68,7 @@
   word-wrap: break-word
 
 .listing__author
-  margin: 5px 0 0 0
+  margin: 0
 
 .listing__teaser
   font-size: 14px
@@ -170,6 +174,52 @@
   .listing__title
     margin-right: 20px
 
+// Set fixed height for fields.
+.listing__card--collection,
+.listing__card--solution
+  .listing__title
+    +number-rows(4, $row-height)
+
+.listing__card--event,
+.listing__card--asset-distribution,
+.listing__card--asset-release
+  .listing__title
+    +number-rows(2, $row-height)
+
+.listing__card--news,
+.listing__card--discussion,
+.listing__card--document,
+.listing__card--user,
+.listing__card--custom-page,
+.listing__card--video
+  .listing__title
+    +number-rows(1, $row-height)
+
+.listing__author,
+.listing__subtitle,
+.listing__tags,
+.listing__date,
+.listing__status,
+.listing__single
+  +number-rows(1, $row-height)
+
+.listing__card--news
+  .listing__teaser
+    +number-rows(4, $row-height)
+
+.listing__card--discussion,
+.listing__card--document
+  .listing__teaser
+    +number-rows(2, $row-height)
+
+.listing__card--custom-page
+  .listing__teaser
+    +number-rows(7, $row-height)
+
+.listing__card--user
+  .listing__teaser
+    +number-rows(1, $row-height)
+
 // Dependiencies
 // --------------------------------------------------
 .listing__title
@@ -195,7 +245,7 @@
     display: inline-block
     vertical-align: middle
   .label
-    width: 60px
+    width: 50px
     margin-right: 10px
     text-align: right
 

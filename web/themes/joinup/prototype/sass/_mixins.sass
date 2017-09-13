@@ -169,3 +169,11 @@ $z-index: (auto: auto, zero: 0, highlight: 1, highlight+1: 2, highlight+2: 3, na
 
 =z-index($key)
   z-index: z-index($key)
+
+// Maximum number of rows
+// Defines maximum number of rows allowed in a field
+=number-rows($number, $row-height)
+  line-height: $row-height
+  height: $number * $row-height
+  overflow: hidden
+

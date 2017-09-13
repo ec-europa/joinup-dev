@@ -1368,6 +1368,12 @@ function joinup_theme_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
 
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
+  }
+
   if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
     return;
   }
@@ -1392,6 +1398,12 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_rdf_entity(&$variables) {
   if ($variables['view_mode'] == 'about') {
     $variables['is_label_hidden'] = TRUE;
+  }
+
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $variables['rdf_entity']->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
   }
 }
 

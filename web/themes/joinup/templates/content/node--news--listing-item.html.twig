@@ -82,13 +82,13 @@
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {{ title_suffix }}
       <h5 class="listing__author">{{ author_name|striptags }}</h5>
+      {# @todo Implement date - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3881 #}
+      <div class="listing__date"></div>
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
     </div>
-    {% if content.field_policy_domain|render %}
-      <div class="listing__field listing__tags">{{ content.field_policy_domain }}</div>
-    {% endif %}
+    <div class="listing__field listing__tags">{{ content.field_policy_domain }}</div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
         <span class="listing__text">{{ node.type.entity.label|lower }}</span>
