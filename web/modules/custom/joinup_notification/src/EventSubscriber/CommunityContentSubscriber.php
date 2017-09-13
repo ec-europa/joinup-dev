@@ -2,10 +2,19 @@
 
 namespace Drupal\joinup_notification\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Session\AccountProxy;
+use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\message_notify\MessageNotifier;
+use Drupal\og\GroupTypeManager;
+use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
+use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -47,6 +56,40 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @var bool
    */
   protected $hasPublished;
+
+  /**
+   * The revision manager service.
+   *
+   * @var \Drupal\state_machine_revisions\RevisionManagerInterface
+   */
+  protected $revisionManager;
+
+  /**
+   * Constructs a new CommunityContentSubscriber object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Config\ConfigFactory $config_factory
+   *   The config factory service.
+   * @param \Drupal\Core\Session\AccountProxy $current_user
+   *   The current user service.
+   * @param \Drupal\og\GroupTypeManager $og_group_type_manager
+   *   The og group type manager service.
+   * @param \Drupal\og\MembershipManager $og_membership_manager
+   *   The og membership manager service.
+   * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
+   *   The workflow helper service.
+   * @param \Drupal\joinup_core\JoinupRelationManager $joinup_core_relations_manager
+   *   The relation manager service.
+   * @param \Drupal\message_notify\MessageNotifier $message_notifier
+   *   The message notifier service.
+   * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
+   *   The revision manager service.
+   */
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_notifier);
+    $this->revisionManager = $revision_manager;
+  }
 
   /**
    * {@inheritdoc}
@@ -188,7 +231,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
       return;
     }
 
-    $state = $this->entity->get($this->stateField)->first()->value;
+    // The storage class passes the loaded entity to the hooks when a delete
+    // operation occurs. This returns the wrong state of the entity so the
+    // latest revision is forced here.
+    $latest_revision = $this->revisionManager->loadLatestRevision($this->entity);
+    $state = $latest_revision->get($this->stateField)->first()->value;
     if (empty($this->config[$this->workflow->getId()][$state])) {
       return;
     }
