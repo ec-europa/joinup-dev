@@ -65,7 +65,14 @@ echo "--------------------------------------------------------"
 rm -rf %{_prefix}/current
 ln -s %{_prefix}/%{name}-%{version}/ %{_prefix}/current
 cd %{_prefix}
-ls -td1 join* | tail -n +4 | xargs sudo rm -rf
+ls -td1 Join* | tail -n +4 | xargs sudo rm -rf
+
+IS_USER=`cat /etc/passwd |grep '%{_prefix}' | tr ":" "\n" | head -n 1`
+
+if [ $IS_USER ];
+  echo "Changing access rights of deployed app !"
+  chown $IS_USER:apache %{name}-%{version} -R
+fi
 
 %files
 %{_prefix}/%{name}-%{version}/*
