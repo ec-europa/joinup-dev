@@ -36,7 +36,7 @@ Requires:  filesystem, bash, grep
 Provides:  %{name}
 URL:       %{url}
 Buildroot: %{buildroot}
-Requires:  php
+AutoReqProv: no
 
 %description
 Deploying website to different environments
