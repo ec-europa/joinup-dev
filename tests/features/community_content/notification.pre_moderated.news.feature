@@ -181,6 +181,17 @@ Feature: Notification test for the news transitions on a pre moderated parent.
       | subject   | Joinup: Content has been deleted                                                                                                         |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre delete" in the collection: "CC pre collection". |
 
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CCN pre request deletion" news
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                                          |
+      | subject   | Joinup: Content has been deleted                                                                                                                   |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the news - "CCN pre request deletion" in the collection: "CC pre collection". |
+
     # Test 'delete' operation for a validated entity.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"
@@ -189,6 +200,6 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                |
-      | subject   | Joinup: Content has been deleted                                                                                                         |
+      | recipient | CC member                                                                                                           |
+      | subject   | Joinup: Content has been deleted                                                                                    |
       | body      | Facilitator CC Facilitator has deleted the news - "CCN validated to delete" in the collection: "CC pre collection". |
