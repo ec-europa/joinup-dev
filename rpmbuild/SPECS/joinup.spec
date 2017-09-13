@@ -52,11 +52,6 @@ Deploying website to different environments
 %install
 rm -rf ${RPM_BUILD_ROOT}
 install -d ${RPM_BUILD_ROOT}/%{_prefix}
-rm -rf .gitignore
-rm -rf .git
-rm -rf .htaccess
-rm -rf rpmbuild
-composer install
 cd ..
 mkdir -p ${RPM_BUILD_ROOT}/%{_prefix}/%{name}-%{version}
 cp -r %{name}-%{version}/%{name}-%{version} ${RPM_BUILD_ROOT}/%{_prefix}/

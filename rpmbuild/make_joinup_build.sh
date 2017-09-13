@@ -14,6 +14,12 @@ cd web
 cp -R ../../template/* ./
 cd ..
 
+rm -rf .gitignore
+rm -rf .git
+rm -rf rpmbuild
+
+composer install
+
 shopt -s extglob
 
 mkdir Joinup-$BUILD_VERSION
