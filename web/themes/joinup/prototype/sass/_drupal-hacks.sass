@@ -12,6 +12,12 @@
 .tabledrag-toggle-weight-wrapper
   display: none
 
+// @todo Remove this hack as part of ISAICP-3021.
+// @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+.joinup-nodrag
+  a.tabledrag-handle
+    display: none !important
+
 #edit-field-ar-owner-actions.container-inline
   width: 100%
   display: block
