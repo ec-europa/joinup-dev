@@ -62,6 +62,7 @@ Feature: Asset distribution editing.
     And I click "Edit"
     Then I should see the heading "Edit Distribution Asset distribution example"
     And the following fields should not be present "Langcode, Translation"
+    But the following fields should be present "Description, Access URL, License, Format, Status, Representation technique"
     When I fill in "Title" with "Asset distribution example revised"
     # Set a non-HTTP protocol remote URL.
     And I press the "Remove" button

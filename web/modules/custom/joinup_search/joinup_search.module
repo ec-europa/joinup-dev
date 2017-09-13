@@ -9,6 +9,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_entity_field_access().
@@ -21,4 +23,43 @@ function joinup_search_entity_field_access($operation, FieldDefinitionInterface 
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Sets a default search ordering for the content displayed in the collections'
+ * and solutions' overview page as well as the custom pages.
+ */
+function joinup_search_search_api_query_alter(QueryInterface &$query) {
+  $search_ids = [
+    'rdf_entity.field_collection_content',
+    'rdf_entity.field_is_content',
+    'node.field_cp_content_listing',
+  ];
+
+  if (!in_array($query->getSearchId(), $search_ids)) {
+    return;
+  }
+
+  $query->sort('entity_created', 'DESC');
+}
+
+/**
+ * Implements hook_search_api_solr_documents_alter().
+ *
+ * By default, solr server configuration has a property named sortMissingLast
+ * set to true for all fields defined. This means that two different entity
+ * types, one with a property set to false and one without the property, will
+ * result in having the one without the property placed last.
+ *
+ * For all entities apart from nodes, set the property 'sticky' equals to false.
+ */
+function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
+  /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
+  foreach ($documents as $document) {
+    if (empty($document->getFields()['bs_sticky'])) {
+      $document->setField('bs_sticky', FALSE);
+    }
+  }
 }
