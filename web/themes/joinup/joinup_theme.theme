@@ -1393,6 +1393,11 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
   if ($variables['view_mode'] == 'about') {
     $variables['is_label_hidden'] = TRUE;
   }
+
+  // Get file name for distribution.
+  if (isset($variables['content']['field_ad_access_url'][0]['#attributes']['download'])) {
+    $variables['file_name'] = $variables['content']['field_ad_access_url'][0]['#attributes']['download'];
+  }
 }
 
 /**
