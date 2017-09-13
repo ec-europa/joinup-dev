@@ -69,6 +69,7 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
  */
 function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields) {
   if (isset($fields['entity_created'])) {
+    // The aggregated field 'entity_created' must be used as a single value.
     $fields['entity_created'] = 'ds_entity_created';
   }
 }
