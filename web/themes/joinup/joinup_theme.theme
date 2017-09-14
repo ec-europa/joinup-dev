@@ -644,6 +644,31 @@ function joinup_theme_preprocess_field__comma_separated(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field.html.twig.
+ */
+function joinup_theme_preprocess_field(&$variables) {
+  // View modes displayed as full page.
+  $full_pages_modes = [
+    'about',
+    'full',
+  ];
+
+  if (in_array($variables['element']['#view_mode'], $full_pages_modes)) {
+    // Field types for textarea.
+    $textarea_types = [
+      'text_long',
+      'text_with_summary',
+    ];
+
+    // Add fieldset modifier for textarea.
+    if (in_array($variables['field_type'], $textarea_types)) {
+      $variables['attributes']['class'][] = 'fieldset';
+      $variables['attributes']['class'][] = 'fieldset--textarea';
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field--comment.html.twig.
  */
 function joinup_theme_preprocess_field__comment(&$variables) {

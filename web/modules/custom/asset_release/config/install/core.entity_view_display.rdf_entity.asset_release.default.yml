@@ -187,7 +187,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: no_wrappers
+        template_suggestion: ''
     region: content
   field_isr_source_code_repository:
     weight: 21

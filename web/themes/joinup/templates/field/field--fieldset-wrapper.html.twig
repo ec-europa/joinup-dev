@@ -36,11 +36,12 @@
  * @see template_preprocess_field()
  */
 #}
+
 {% if label_hidden %}
   {% if multiple %}
     <div{{ attributes.addClass('fieldset') }}>
       {% for item in items %}
-        {{ item.content }}
+        <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
@@ -50,9 +51,15 @@
   {% endif %}
 {% else %}
   <div{{ attributes.addClass('fieldset') }}>
-    <div{{ title_attributes.addClass('form__label') }}>{{ label }}</div>
+    <div{{ title_attributes }}>{{ label }}</div>
+    {% if multiple %}
+      <div>
+    {% endif %}
     {% for item in items %}
-      {{ item.content }}
+      <div{{ item.attributes }}>{{ item.content }}</div>
     {% endfor %}
+    {% if multiple %}
+      </div>
+    {% endif %}
   </div>
 {% endif %}

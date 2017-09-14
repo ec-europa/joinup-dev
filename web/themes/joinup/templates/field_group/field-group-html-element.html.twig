@@ -22,9 +22,7 @@
     collapsible ? 'field-group-toggler',
   ]
 %}
-
-
-<{{ wrapper_element }} {{ attributes.addClass('fieldset--box') }}>
+<{{ wrapper_element }} {{ attributes.addClass('fieldset fieldset--box') }}>
   {% if title %}
   <{{ title_element }} class="{{ title_classes|join(' ')  }}">{{ title }}</{{ title_element }}>
   {% endif %}
