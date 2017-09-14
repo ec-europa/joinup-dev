@@ -6,6 +6,16 @@
 (function ($, Drupal) {
 
   /**
+   * Theme function that renders a visual cue for featured content.
+   *
+   * @returns {string}
+   *   The HTML for the featured content visual cue.
+   */
+  Drupal.theme.featuredContentCue = function () {
+    return '<div class="listing__corner listing__corner--featured"><span class="icon icon--star"></span></div>';
+  };
+
+  /**
    * Adds a class to featured tiles when not in scope of a collection.
    *
    * @type {Drupal~behavior}
@@ -24,7 +34,16 @@
         return;
       }
 
-      $(context).find('[data-drupal-featured]').once('featured').addClass('is-featured');
+      $(context).find('[data-drupal-featured]').once('featured').each(function () {
+        var $this = $(this);
+        $this.addClass('is-featured');
+        $this.addClass('listing__card--corner');
+
+        if (!$this.find('.listing__image').length) {
+          $this.addClass('listing__card--corner-title');
+        }
+        $this.prepend(Drupal.theme('featuredContentCue'));
+      });
     }
   };
 
