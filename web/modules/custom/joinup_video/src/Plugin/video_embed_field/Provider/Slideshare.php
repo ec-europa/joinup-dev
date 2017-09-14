@@ -44,7 +44,7 @@ class Slideshare extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public static function getIdFromInput($input) {
-    preg_match('#^(?:(?:https?:)?//)?(www\.)slideshare\.net/slideshow/embed_code/key/(?<id>[^&\?/]+)#i', $input, $matches);
+    preg_match('#^(?:(?:https?:)?//)?(www\.)?slideshare\.net/slideshow/embed_code/key/(?<id>[^&\?/\#]+)#i', $input, $matches);
     return isset($matches['id']) ? $matches['id'] : FALSE;
   }
 

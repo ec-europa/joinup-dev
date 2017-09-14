@@ -88,7 +88,7 @@ class InternalPath extends ProviderPluginBase {
    *   are id and base_url.
    */
   public static function getDataFromInput($input) {
-    preg_match('#^(?:(?:https?:)?//)(?<base_url>[^/]+)/(index\.php\?q=)?(?<id>[^&\?]+)#i', $input, $matches);
+    preg_match('#^(?:(?:https?:)?//)?(?<base_url>[^/]+)/(index\.php\?q=)?(?<id>[^&\?\#]+)(.*?)#i', $input, $matches);
     return $matches;
   }
 
