@@ -28,7 +28,13 @@ class Slideshare extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'slideshare',
-      '#url' => sprintf('https://www.slideshare.net/slideshow/embed_code/key/%s', $this->getVideoId()),
+      '#url' => $this->getInput(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;

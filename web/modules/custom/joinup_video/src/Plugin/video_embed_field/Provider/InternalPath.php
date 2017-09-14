@@ -55,6 +55,12 @@ class InternalPath extends ProviderPluginBase {
       '#type' => 'video_embed_iframe',
       '#provider' => 'internal_path',
       '#url' => Url::fromUserInput('/' . ltrim($this->getVideoId(), '/'))->setAbsolute(TRUE)->toString(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;

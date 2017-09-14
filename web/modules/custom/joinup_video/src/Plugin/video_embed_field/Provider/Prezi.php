@@ -28,7 +28,13 @@ class Prezi extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'prezi',
-      '#url' => sprintf('https://prezi.com/embed/%s', $this->getVideoId()),
+      '#url' => $this->getInput(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;

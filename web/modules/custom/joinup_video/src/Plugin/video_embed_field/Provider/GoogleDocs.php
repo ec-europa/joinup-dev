@@ -46,7 +46,13 @@ class GoogleDocs extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'google_docs',
-      '#url' => sprintf('https://docs.google.com/%s/d/%s/viewform?embedded=true', $this->getDocType(), $this->getVideoId()),
+      '#url' => $this->getInput(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;
