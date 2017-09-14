@@ -20,6 +20,7 @@
   set classes = [
     'listing__card',
     'mdl-card',
+    'listing__card--stats-container',
     elements['#view_mode'] == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
@@ -36,5 +37,11 @@
         <p class="listing__teaser">{{ short_business_title }}</p>
       </div>
     {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ 'user'|t }}</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+    </div>
   </div>
 </div>
