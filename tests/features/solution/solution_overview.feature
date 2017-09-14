@@ -18,37 +18,37 @@ Feature: Solutions Overview
 
   Scenario: Solution overview paging
     Given solutions:
-      | title      | state     |
-      | Arctic fox | validated |
-      | Alpaca     | validated |
-      | Boomalope  | validated |
-      | Boomrat    | validated |
-      | Megasloth  | validated |
-      | Thrumbo    | validated |
-      | Spelopede  | validated |
-      | Muffalo    | validated |
-      | Husky      | validated |
-      | Gazelle    | validated |
-      | Cow        | validated |
-      | Panther    | validated |
-      | Tortoise   | validated |
-      | Warg       | validated |
+      | title      | creation date     | state     |
+      | Arctic fox | 2018-10-04 8:21am | validated |
+      | Alpaca     | 2018-10-04 8:31am | validated |
+      | Boomalope  | 2018-10-04 8:28am | validated |
+      | Boomrat    | 2018-10-04 8:35am | validated |
+      | Megasloth  | 2018-10-04 8:01am | validated |
+      | Thrumbo    | 2018-10-04 8:07am | validated |
+      | Spelopede  | 2018-10-04 8:18am | validated |
+      | Muffalo    | 2018-10-04 8:59am | validated |
+      | Husky      | 2018-10-04 8:00am | validated |
+      | Gazelle    | 2018-10-04 8:43am | validated |
+      | Cow        | 2018-10-04 8:27am | validated |
+      | Panther    | 2018-10-04 8:22am | validated |
+      | Tortoise   | 2018-10-04 8:34am | validated |
+      | Warg       | 2018-10-04 8:39am | validated |
     And I am an anonymous user
     And I am on the homepage
     When I click "Solutions"
     Then I should see the following tiles in the correct order:
-      | Arctic fox |
+      | Muffalo    |
+      | Gazelle    |
+      | Warg       |
+      | Boomrat    |
+      | Tortoise   |
       | Alpaca     |
       | Boomalope  |
-      | Boomrat    |
-      | Megasloth  |
-      | Thrumbo    |
-      | Spelopede  |
-      | Muffalo    |
-      | Husky      |
-      | Gazelle    |
       | Cow        |
       | Panther    |
+      | Arctic fox |
+      | Spelopede  |
+      | Thrumbo    |
     And I should see the link "2"
     # Next and last page links are rendered as icons "›" and "»", but there is an
     # help text that is meant for screen readers and also visualised on mouseover.
@@ -58,8 +58,8 @@ Feature: Solutions Overview
     And I should not see the link "Go to previous page"
     When I click "Next page"
     Then I should see the following tiles in the correct order:
-      | Tortoise   |
-      | Warg       |
+      | Megasloth |
+      | Husky     |
     And I should see the link "1"
     And I should see the link "First page"
     And I should see the link "Go to previous page"
@@ -133,7 +133,7 @@ Feature: Solutions Overview
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ambrosio Morison                                                       |
       | E-mail address   | ambrosio.morison@example.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"

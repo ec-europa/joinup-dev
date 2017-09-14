@@ -176,7 +176,7 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
         'autoPlay',
         'autostart',
       ]);
-      $url = Url::fromUri($options['path'], $options)->toString();
+      $url = $this->getAbsoluteUrl($options);
       $matches[$document->saveHTML($iframe)] = [
         'video_url' => $url,
         'settings' => [
@@ -209,6 +209,32 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
 
     // If no provider was selected, all are available.
     return !$allowed_providers || in_array($provider->getPluginId(), $allowed_providers) ? $provider : NULL;
+  }
+
+  /**
+   * Attempts to create the absolute url.
+   *
+   * @param array $options
+   *   An array of options including the path.
+   *
+   * @return string|null
+   *   The string representation of the url or null if no url is found.
+   */
+  protected function getAbsoluteUrl(array $options) {
+    try {
+      $url = Url::fromUri($options['path'], $options)->toString();
+    }
+    catch (\Exception $e) {
+      try {
+        $url = ltrim($options['path'], '/');
+        $url = Url::fromUri('internal:/' . $url, $options)->setAbsolute(TRUE)->toString();
+      }
+      catch (\Exception $e) {
+        return NULL;
+      }
+    }
+
+    return $url;
   }
 
 }

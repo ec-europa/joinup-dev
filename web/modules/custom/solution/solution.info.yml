@@ -53,7 +53,6 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_owner
   - field.field.rdf_entity.solution.field_is_product_type
   - field.field.rdf_entity.solution.field_is_related_solutions
-  - field.field.rdf_entity.solution.field_is_solution_category
   - field.field.rdf_entity.solution.field_is_solution_type
   - field.field.rdf_entity.solution.field_is_source_code_repository
   - field.field.rdf_entity.solution.field_is_standardization_level
@@ -67,6 +66,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_keywords
   - field.field.rdf_entity.solution.field_policy_domain
   - field.field.rdf_entity.solution.field_spatial_coverage
+  - field.field.rdf_entity.solution.field_site_featured
   - field.field.rdf_entity.solution.field_status
   - field.storage.rdf_entity.field_is_actor
   - field.storage.rdf_entity.field_is_affiliations_requests
@@ -89,7 +89,6 @@ config_devel:
   - field.storage.rdf_entity.field_is_owner
   - field.storage.rdf_entity.field_is_product_type
   - field.storage.rdf_entity.field_is_related_solutions
-  - field.storage.rdf_entity.field_is_solution_category
   - field.storage.rdf_entity.field_is_solution_type
   - field.storage.rdf_entity.field_is_source_code_repository
   - field.storage.rdf_entity.field_is_standardization_level

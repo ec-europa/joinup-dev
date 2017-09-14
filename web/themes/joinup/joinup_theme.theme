@@ -495,9 +495,11 @@ function joinup_theme_preprocess_fieldset(&$variables) {
   // Make sure the "for" attribute is added to the label so it is clear to which
   // of the wrapped elements this label belongs. This is important for
   // accessibility.
-  $variables['legend']['attributes'] = new Attribute([
-    'for' => $variables['element']['#id'],
-  ]);
+  if (isset($variables['element']['#id'])) {
+    $variables['legend']['attributes'] = new Attribute([
+      'for' => $variables['element']['#id'],
+    ]);
+  }
 }
 
 /**

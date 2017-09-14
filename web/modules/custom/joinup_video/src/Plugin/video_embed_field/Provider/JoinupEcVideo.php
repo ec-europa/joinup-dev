@@ -56,6 +56,7 @@ class JoinupEcVideo extends ProviderPluginBase {
     // The URL may be an European Union short URL. Resolve it.
     if (preg_match('#^(?:(?:https?:)?//)?europa\.eu/\![0-9a-z]+$#i', $input)) {
       if (!isset(static::$resolvedUrl[$input])) {
+        // @todo To be refactored in ISAICP-3885.
         /** @var \Psr\Http\Message\UriInterface $uri */
         \Drupal::httpClient()->get($input, [
           'on_stats' => function (TransferStats $stats) use (&$uri) {
