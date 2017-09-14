@@ -10,15 +10,19 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
-    {{ content.field_event_spatial_coverage }}
+    {% if content.field_event_spatial_coverage|render %}
+      <div class="fieldset">
+        {{ content.field_event_spatial_coverage }}
+      </div>
+    {% endif %}
     {{ content.field_event_agenda }}
     {{ content.field_attachment }}
-    <div class="action-link__wrapper right">
+    <div class="fieldset action-link__wrapper right">
       {{ content.report }}
       {{ content.share_link }}
     </div>
   </div>
-  <div id="event-location--{{ node.id }}" class="fieldset--separated">
+  <div id="event-location--{{ node.id }}" class="fieldset fieldset--separated">
     <img src="/themes/joinup/images/location-image.jpg">
     <div class="page__content">
       <h3 class="fieldset__header">{{ content.field_location }}</h3>
