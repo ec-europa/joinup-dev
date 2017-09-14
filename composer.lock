@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5596da1c824c34533703a10ae4a79607",
+    "content-hash": "6cc201e884adc75265ff4b23c5e26023",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,7 +135,7 @@
         },
         {
             "name": "aws/aws-sdk-php",
-           "version": "3.36.6",
+            "version": "3.36.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
@@ -4488,10 +4488,15 @@
                 "drupal": {
                     "version": "8.x-1.x",
                     "datestamp": "1493246342",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    },
                     "package": "Field types"
                 },
                 "patches_applied": {
-                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                    "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/support_multiple_vimeo_formats-2908828-2-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5486,7 +5491,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-01-20T06:45:09+00:00"
+            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -9859,7 +9864,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",

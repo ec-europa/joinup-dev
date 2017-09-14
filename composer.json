@@ -180,7 +180,8 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/support_multiple_vimeo_formats-2908828-2-D8.patch"
             }
         }
     },
