@@ -17,7 +17,6 @@ dependencies:
     - allowed_formats
     - comment
     - file
-    - joinup_core
     - text
 id: node.discussion.default
 targetEntityType: node
