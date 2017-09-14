@@ -1370,6 +1370,11 @@ function joinup_theme_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
 
+  // Getting the node creation from the node object.
+  if ($node->bundle() == 'news') {
+    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  }
+
   if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
     return;
   }
