@@ -84,7 +84,7 @@ function trr_form__required_test_resource__component_service(&$form, FormStateIn
   $required_test_resource_type = [
     // Test Bed.
     'http://joinup.eu/test-resource-type#5937f0616111b',
-    // Message adapter.
+    // Messaging adapter.
     'http://joinup.eu/test-resource-type#5937f06162ff8',
     // Document validator.
     'http://joinup.eu/test-resource-type#5937f0616337f',
@@ -93,7 +93,7 @@ function trr_form__required_test_resource__component_service(&$form, FormStateIn
     $form_state->setError($form['field_is_test_resource_type'], t('Test Resource Type is required when the solution type is Test Component or Test Service.'));
   }
   elseif (!in_array($test_resource_type, $required_test_resource_type)) {
-    $form_state->setError($form['field_is_test_resource_type'], t("Test Tesource Type should be either 'Test Bed', 'Message adapter' or 'Document validator' for the given solution type."));
+    $form_state->setError($form['field_is_test_resource_type'], t("Test Tesource Type should be either 'Test Bed', 'Messaging adapter' or 'Document validator' for the given solution type."));
   }
 }
 
