@@ -8,6 +8,7 @@ dependencies:
   - message
   - message_notify
   - solution
+  - state_machine_revisions
 
 config_devel:
   - joinup_notification.notifications.community_content
