@@ -98,6 +98,35 @@ function template_preprocess_facet_widget_links_inline(array &$variables) {
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * @todo Remove this hack as part of ISAICP-3021.
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+ *
+ * Hide the table drag handlers on multivalue fields for RDF entities. These are
+ * useless since weights are currently not stored and the ordering of the values
+ * is not retained after submitting the form.
+ */
+function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
+  $rdf = $form_object->getEntity();
+
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
+  // Keep only fields that are on the form.
+  $field_definitions = array_intersect_key($field_definitions, $form);
+  foreach ($field_definitions as $field_name => $field_definition) {
+    if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+      // We are questioning only multi-value fields.
+      $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
+    }
+  }
+
+}
+
+/**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  *
  * The state_machine forces the current value to be available in the options.

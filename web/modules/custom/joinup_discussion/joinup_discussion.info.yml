@@ -27,6 +27,7 @@ config_devel:
   - field.field.node.discussion.field_replies
   - field.field.node.discussion.body
   - field.field.node.discussion.field_attachment
+  - field.field.node.discussion.field_keywords
   - field.field.node.discussion.field_policy_domain
   - field.field.node.discussion.field_shared_in
   - field.field.node.discussion.field_site_featured
