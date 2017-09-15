@@ -3,6 +3,7 @@ Feature: Creating a test (solution) in the TRR collection.
   In order to create tests
   As a collection facilitator
   I need to be able to add 'test'-enabled solutions.
+
   @terms
   Scenario: Create a TRR solution
     Given users:
@@ -30,6 +31,10 @@ Feature: Creating a test (solution) in the TRR collection.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Lucky Luke                                                    |
       | E-mail address   | ernsy1999@gmail.com                                           |
+    # A "TRR" solution is unlocked by choosing one of the following solution types:
+    # - [ABB128] Test Service
+    # - [ABB129] Test Component
+    # = [ABB130] Test Scenario
     Then I select "http://data.europa.eu/dr8/TestService" from "Solution type"
     And I select "Supplier exchange" from "Policy domain"
     # Attach a PDF to the documentation.
