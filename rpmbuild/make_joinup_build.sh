@@ -15,6 +15,7 @@ rm -rf .git
 rm -rf rpmbuild
 
 /usr/local/bin/composer install
+vendor/bin/phing build-dist
 
 rm -rf web/sites/default/settings.php
 rm -rf web/sites/default/files
