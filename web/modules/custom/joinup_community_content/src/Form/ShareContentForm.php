@@ -115,7 +115,7 @@ class ShareContentForm extends ShareContentFormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => empty($collections) ? $this->t('Close') : $this->t('Save'),
+      '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
     ];
 
     if ($this->isModal() || $this->isAjaxForm()) {
