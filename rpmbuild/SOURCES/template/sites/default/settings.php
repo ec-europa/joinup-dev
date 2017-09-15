@@ -1,1 +1,1 @@
-../../../../comon/settings.php
+../../../../common/settings.php
