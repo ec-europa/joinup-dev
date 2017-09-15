@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_blacklist
+label: 'Solution blacklist'
+description: 'Template 13: Blacklist a solution'
+text:
+  -
+    value: 'Joinup: Your interoperability solution is blacklisted'
+    format: full_html
+  -
+    value: "<p>the moderator has blacklisted your interoperability solution - @entity:title, you can contact the moderation team to resolve the issue.</p>\r\n<p>We suggest you to read our guidelines at&nbsp; <a href=\"@site:legal_notice_url\">@site:legal_notice_url</a>.</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

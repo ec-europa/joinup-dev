@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: distribution_update
+label: 'Solution distribution update'
+description: 'Template 21: Distribution update'
+text:
+  -
+    value: 'Joinup: A distribution has been updated'
+    format: full_html
+  -
+    value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully updated.'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

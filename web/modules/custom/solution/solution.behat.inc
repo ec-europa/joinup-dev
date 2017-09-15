@@ -456,6 +456,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Mapping alias - field name.
     return [
       'uri' => 'id',
+      'author' => 'uid',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
@@ -534,7 +535,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // Convert any entity reference field label value with the entity ID.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
-
     return $fields;
   }
 
