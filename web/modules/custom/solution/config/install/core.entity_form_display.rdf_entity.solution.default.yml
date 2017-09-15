@@ -111,7 +111,7 @@ third_party_settings:
       format_settings:
         label: 'Additional fields'
         formatter: closed
-        description: 'Contains all optional fields providing additional information on the collection'
+        description: 'Contains all optional fields providing additional information on the solution'
         required_fields: true
         id: ''
         classes: ''
