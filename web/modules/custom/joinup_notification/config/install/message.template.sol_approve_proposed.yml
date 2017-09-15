@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_approve_proposed
+label: 'Solution approved proposed'
+description: 'Template 2: Moderator accept proposed solution'
+text:
+  -
+    value: 'Joinup: Your solution has been accepted'
+    format: full_html
+  -
+    value: "<p>Your proposed interoperability solution: \"@entity:title\" has been validated as per your request.</p>\r\n"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
