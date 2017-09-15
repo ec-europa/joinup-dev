@@ -1,7 +1,7 @@
 .hex-list {
   float: left;
   width: 100%;
-  margin-bottom: 45px;
+  padding-bottom: 45px;
 }
 .hex-list .hex-row {
   clear: left;
