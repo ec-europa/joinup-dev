@@ -188,6 +188,9 @@ $row-height-small: 17px
   +breakpoint(tablet)
     min-height: 285px
 
+.listing__title
+  +number-rows(1, $row-height)
+
 .listing__card--collection,
 .listing__card--solution
   .listing__title
@@ -199,17 +202,7 @@ $row-height-small: 17px
   .listing__title
     +number-rows(2, $row-height)
 
-.listing__card--news,
-.listing__card--discussion,
-.listing__card--document,
-.listing__card--user,
-.listing__card--custom-page,
-.listing__card--video
-  .listing__title
-    +number-rows(1, $row-height)
-
 .listing__author,
-.listing__subtitle,
 .listing__tags,
 .listing__date,
 .listing__status,
@@ -219,9 +212,8 @@ $row-height-small: 17px
 .listing__subtitle
   +number-rows(1, $row-height-small)
 
-.listing__card--news
-  .listing__teaser
-    +number-rows(4, $row-height)
+.listing__teaser
+  +number-rows(4, $row-height)
 
 .listing__card--discussion,
 .listing__card--document

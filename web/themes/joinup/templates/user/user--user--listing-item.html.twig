@@ -30,8 +30,10 @@
     <div class="listing__field">
       <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{- full_name -}}</a></h2>
     </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ short_business_title }}</p>
-    </div>
+    {% if short_business_title %}
+      <div class="listing__field">
+        <p class="listing__teaser">{{ short_business_title }}</p>
+      </div>
+    {% endif %}
   </div>
 </div>

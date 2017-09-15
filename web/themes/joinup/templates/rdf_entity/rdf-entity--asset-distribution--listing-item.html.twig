@@ -18,18 +18,18 @@
       <h2 class="listing__title">{{ label }}</h2>
     </div>
     <div class="listing__field">
-      <div class="listing__weight listing__single">
-        {% if content.field_ad_file_size|render %}
-          <div class="label gray">{{ 'Weight'|t }}:</div>
-          <div class="value bold">{{ content.field_ad_file_size }}</div>
-        {% endif %}
-      </div>
-      <div class="listing__licence listing__single">
-        {% if content.field_ad_licence|render %}
+      {% if content.field_ad_file_size|render %}
+        <div class="listing__weight listing__single">
+            <div class="label gray">{{ 'Weight'|t }}:</div>
+            <div class="value bold">{{ content.field_ad_file_size }}</div>
+        </div>
+      {% endif %}
+      {% if content.field_ad_licence|render %}
+        <div class="listing__licence listing__single">
           <div class="label gray">{{ 'Licence'|t }}:</div>
-          <div title="{{ content.field_ad_licence|render|striptags|trim }}" class="value bold underline listing__field--normal">{{ content.field_ad_licence }}</div>
-        {% endif %}
-      </div>
+          <div title="{{ content.field_ad_licence|render|striptags|trim }}" class="value bold underline">{{ content.field_ad_licence }}</div>
+        </div>
+      {% endif %}
     </div>
 
     <div class="listing__field listing__stats mdl-card__actions listing__action-link__wrapper action-link__wrapper">

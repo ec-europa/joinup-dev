@@ -86,7 +86,9 @@
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
     </div>
-    <div class="listing__field listing__tags">{{ content.field_keywords }}</div>
+    {% if content.field_keywords|render %}
+      <div class="listing__field listing__tags">{{ content.field_keywords }}</div>
+    {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
         <span class="listing__text">{{ node.type.entity.label|lower }}</span>
