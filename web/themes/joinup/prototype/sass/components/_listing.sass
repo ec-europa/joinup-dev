@@ -8,6 +8,7 @@
 // Variables
 // --------------------------------------------------
 $row-height: 23px
+$row-height-small: 17px
 
 // Component
 // --------------------------------------------------
@@ -179,11 +180,18 @@ $row-height: 23px
   .listing__title
     margin-right: 20px
 
+.listing__subtitle:first-of-type
+  margin-top: 5px
+
 // Set fixed height for fields.
+.listing__card
+  +breakpoint(tablet)
+    min-height: 285px
+
 .listing__card--collection,
 .listing__card--solution
   .listing__title
-    +number-rows(4, $row-height)
+    +number-rows(3, $row-height)
 
 .listing__card--event,
 .listing__card--asset-distribution,
@@ -207,6 +215,9 @@ $row-height: 23px
 .listing__status,
 .listing__single
   +number-rows(1, $row-height)
+
+.listing__subtitle
+  +number-rows(1, $row-height-small)
 
 .listing__card--news
   .listing__teaser
@@ -247,12 +258,16 @@ $row-height: 23px
   .label,
   .value
     font-size: $font-size-xsmall
-    display: inline-block
     vertical-align: middle
+    a
+      color: $color-base
+  .value
+    display: inline
   .label
     width: 50px
     margin-right: 10px
     text-align: right
+    display: inline-block
 
 // Listing
 //

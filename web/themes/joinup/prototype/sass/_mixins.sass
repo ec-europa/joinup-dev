@@ -173,7 +173,10 @@ $z-index: (auto: auto, zero: 0, highlight: 1, highlight+1: 2, highlight+2: 3, na
 // Maximum number of rows
 // Defines maximum number of rows allowed in a field
 =number-rows($number, $row-height)
+  max-height: $number * $row-height
   line-height: $row-height
-  height: $number * $row-height
   overflow: hidden
+  +breakpoint(tablet)
+    height: $number * $row-height
+
 

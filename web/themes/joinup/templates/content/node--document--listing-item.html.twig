@@ -86,11 +86,7 @@
       {{ title_prefix }}
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {{ title_suffix }}
-      <div class="listing__subtitle">
-        {% if content.field_type|render %}
-          <div class="value gray small truncated">{{ content.field_type }}</div>
-        {% endif %}
-      </div>
+      <h5 class="listing__subtitle listing__type">{{ content.field_type }}</h5>
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
