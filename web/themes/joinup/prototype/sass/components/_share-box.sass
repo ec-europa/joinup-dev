@@ -9,21 +9,22 @@
   display: none
 
 .share-box__row
-  padding: 10px 50px 10px 10px
+  padding: 0
   margin-bottom: 0 !important
   position: relative
   min-height: 70px
-  &:hover
-    cursor: pointer
-  &.already-shared
-    padding-right: 0
-    background: $color-grey-lighter
-    .share-box__item-icon
-      display: table-cell
-      vertical-align: middle
   .form-type-checkbox
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    margin: auto
     .form__label
       display: none
+  &:first-child
+    padding-top: 0
+  &:last-child
+    padding-bottom: 0
 
 .share-box__item-image
   padding-right: 10px
@@ -51,6 +52,16 @@
     margin-bottom: 0
   +breakpoint(tablet)
     min-width: $screen-sm
+  .form-wrapper
+    margin-bottom: 0
+
+.share-box__title
+  color: $color-base
+  margin-top: 0
+
+.share-box__collections
+  .share-box__row
+    padding-left: 30px
 
 .share-content-form
   .form__legend
