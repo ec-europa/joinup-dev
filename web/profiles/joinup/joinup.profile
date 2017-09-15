@@ -319,11 +319,13 @@ function joinup_install_tasks_alter(&$tasks, $install_state) {
  * Implements hook_theme().
  */
 function joinup_theme($existing, $type, $theme, $path) {
+  $page_template = [
+    'variables' => [],
+    'path' => drupal_get_path('profile', 'joinup') . '/templates',
+  ];
   return [
-    'joinup_legal_notice' => [
-      'variables' => [],
-      'path' => drupal_get_path('profile', 'joinup') . '/templates',
-    ],
+    'joinup_legal_notice' => $page_template,
+    'joinup_eligibility_criteria' => $page_template,
   ];
 }
 
