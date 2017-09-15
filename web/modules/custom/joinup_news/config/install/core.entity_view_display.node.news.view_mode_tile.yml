@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.news.field_news_spatial_coverage
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
@@ -41,13 +42,13 @@ content:
             lb-col: false
             classes: {  }
     region: content
-  field_policy_domain:
-    type: entity_reference_label
+  field_keywords:
+    type: string
     weight: 1
     region: content
     label: hidden
     settings:
-      link: false
+      link_to_entity: false
     third_party_settings:
       ds:
         ds_limit: ''
@@ -62,12 +63,13 @@ content:
 hidden:
   field_attachment: true
   field_comments: true
-  field_keywords: true
   field_news_headline: true
   field_news_referenced_solution: true
   field_news_source_url: true
   field_news_spatial_coverage: true
+  field_policy_domain: true
   field_shared_in: true
+  field_site_featured: true
   field_state: true
   field_visit_count: true
   langcode: true

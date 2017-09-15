@@ -24,7 +24,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
-    - field.field.rdf_entity.solution.field_is_solution_category
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -94,14 +93,6 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
-    region: content
-  field_is_solution_category:
-    weight: 3
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
     region: content
   label:
     label: hidden

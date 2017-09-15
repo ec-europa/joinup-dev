@@ -18,6 +18,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -536,6 +537,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *   An object containing the entity properties and fields that are to be used
    *   for creating the node as properties on the object.
    *
+   * @throws \Exception
+   *   Thrown when the term "sticky" is used instead of "pinned" in test data.
+   * @throws \UnexpectedValueException
+   *   Thrown when the values for the status and sticky fields are not correct.
+   *
    * @BeforeNodeCreate
    */
   public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
@@ -566,20 +572,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // Replace the human readable publication statuses with the boolean values
     // that are expected by the Node module.
-    if (!empty($node->status)) {
-      $mapping = [
-        'unpublished' => 0,
-        'published' => 1,
-      ];
-      // Force the use of human readable values in Behat test scenarios, throw
-      // an exception if the numeric values are used.
-      if (!array_key_exists($node->status, $mapping)) {
-        $supported_statii = implode(', ', array_keys($mapping));
-        throw new \UnexpectedValueException("Unexpected status '{$node->status}'. Supported statuses are: $supported_statii.");
-      }
-      // Replace the human readable value with the expected boolean.
-      $node->status = $mapping[$node->status];
-    }
+    self::convertObjectPropertyValues($node, 'status', [
+      'unpublished' => 0,
+      'published' => 1,
+    ]);
 
     // Replace human readable workflow states with machine names.
     if (!empty($node->field_state)) {
@@ -590,23 +586,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
-    if (isset($node->pinned)) {
-      $mapping = [
-        'yes' => 1,
-        'no' => 0,
-      ];
-
-      // Force the use of human readable values in Behat test scenarios, throw
-      // an exception if the numeric values are used.
-      if (!array_key_exists($node->pinned, $mapping)) {
-        $supported_values = implode(', ', array_keys($mapping));
-        throw new \UnexpectedValueException("Unexpected value for pinned '{$node->pinned}'. Supported values are: $supported_values.");
-      }
-
-      // Replace the human readable value with the expected boolean.
-      $node->sticky = $mapping[$node->pinned];
-      unset($node->pinned);
-    }
+    // Replace the human-readable values for multiple fields.
+    self::convertObjectPropertyValues($node, 'pinned', [
+      'yes' => 1,
+      'no' => 0,
+    ], 'sticky');
+    self::convertObjectPropertyValues($node, SiteFeatureController::FEATURED_FIELD, [
+      'yes' => 1,
+      'no' => 0,
+    ]);
   }
 
   /**
@@ -660,6 +648,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
         'visits' => 'field_visit_count',
+        'featured' => SiteFeatureController::FEATURED_FIELD,
       ],
     ];
 
@@ -701,6 +690,19 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $element->pressButton($button);
+  }
+
+  /**
+   * Prints system message from the page for debugging.
+   *
+   * @Then /^print messages$/
+   */
+  public function printMessages() {
+    $selector = $this->getDrupalSelector('message_selector');
+    /** @var \Behat\Mink\Element\NodeElement $message */
+    foreach ($this->getSession()->getPage()->findAll("css", $selector) as $message) {
+      echo $message->getText() . "\n\n";
+    }
   }
 
   /**
@@ -1949,6 +1951,42 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Assert that fields are present in the given region in the given order.
+   *
+   * @param string $fields
+   *   Fields.
+   * @param string $region
+   *   Region.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present.
+   *
+   * @Then the fields :fields should be correctly ordered in the region :region
+   */
+  public function assertFieldsPresentInOrder($fields, $region) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    /** @var \Behat\Mink\Element\Element $regionObj */
+    $regionObj = $this->getRegion($region);
+    $labels = $regionObj->findAll('xpath', "/.//*[contains(@class, 'form-wrapper')]//label");
+    $labels_on_page = [];
+    /** @var \Behat\Mink\Element\NodeElement $label */
+    foreach ($labels as $label) {
+      $labels_on_page[] = $label->getText();
+    }
+    $previous = -1;
+    foreach ($fields as $field) {
+      $key = array_search($field, $labels_on_page);
+      if ($key === FALSE) {
+        throw new \Exception("Could not find expected field $field in the page");
+      }
+      if (!($key > $previous)) {
+        throw new \Exception("Field out of order: $field");
+      }
+      $previous = $key;
+    }
+  }
+
+  /**
    * Asserts that no links marked as active are found in a certain region.
    *
    * @param string $region
@@ -2004,6 +2042,44 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     $link = reset($links);
     \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
+  }
+
+  /**
+   * Asserts that a tile is marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as featured.
+   *
+   * @Then the :tile tile should be marked as featured
+   */
+  public function assertTileMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is not marked as featured, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as featured.
+   *
+   * @Then the :tile tile should not be marked as featured
+   */
+  public function assertTileNotMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
+    }
   }
 
   /**

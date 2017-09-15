@@ -6,6 +6,7 @@ package: Joinup
 dependencies:
   - datetime
   - digital_size_formatter
+  - field_group
   - file_url
   - joinup_core
   - joinup_user

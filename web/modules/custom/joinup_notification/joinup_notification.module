@@ -48,9 +48,14 @@ function joinup_notification_node_update(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_delete().
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * For nodes, the predelete is used instead of the delete hook because the
+ * state of the latest revision has to be examined and the revisions are deleted
+ * already before the active revision. In the end, the active revision is passed
+ * into the delete hooks which can lead into false data e.g. wrong state.
  */
-function joinup_notification_node_delete(EntityInterface $entity) {
+function joinup_notification_node_predelete(EntityInterface $entity) {
   joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
 }
 

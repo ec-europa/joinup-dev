@@ -20,12 +20,14 @@
         <a class="permalink" href="{{ permalink }}" alt="{{ 'Permalink'|t }}" title="{{ 'Permalink'|t }}"><span class="icon icon--anchor"></span><span class="visually-hidden">{{ 'Permalink'|t }}</span></a>
       {% endif %}
       <div class="details details--solution">
-        <div class="details__element">
-          <div class="value gray">{{ additional_content.field_ad_file_size }}</div>
-        </div>
+        {% if additional_content.field_ad_file_size|render %}
+          <div class="details__element">
+            <div class="value gray">{{ additional_content.field_ad_file_size }}</div>
+          </div>
+        {% endif %}
         {% if additional_content.field_ad_licence|render %}
           <div class="details__element">
-            <div class="label gray">licence:</div>
+            <div class="label gray">{{ 'licence'|t }}:</div>
             <div class="value underline bold details__element-item">{{ additional_content.field_ad_licence }}</div>
           </div>
         {% endif %}
