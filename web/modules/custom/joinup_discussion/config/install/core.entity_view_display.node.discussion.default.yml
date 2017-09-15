@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_display.comment.reply.default
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
@@ -143,6 +144,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_keywords: true
   field_site_featured: true
   field_visit_count: true
   langcode: true
