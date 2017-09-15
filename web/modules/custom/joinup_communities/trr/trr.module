@@ -60,10 +60,10 @@ function trr_form__required_test_resource__test_scenario(&$form, FormStateInterf
     'http://joinup.eu/test-resource-type#5937f06162c71',
   ];
   if (!$test_resource_type) {
-    $form_state->setError($form['field_is_test_resource_type'], t('Test resource type is required when the solution type is Test Scenario.'));
+    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type is required when the solution type is 'Test Scenario'."));
   }
   elseif (!in_array($test_resource_type, $required_test_resource_type)) {
-    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Suite', 'Test Case', 'Test Assertion' or 'Document assertion set' for the given solution type."));
+    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Suite', 'Test Case', 'Test Assertion' or 'Document Assertion Set' for the given solution type."));
   }
 }
 
@@ -90,10 +90,10 @@ function trr_form__required_test_resource__component_service(&$form, FormStateIn
     'http://joinup.eu/test-resource-type#5937f0616337f',
   ];
   if (!$test_resource_type) {
-    $form_state->setError($form['field_is_test_resource_type'], t('Test Resource Type is required when the solution type is Test Component or Test Service.'));
+    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type is required when the solution type is 'Test Component' or 'Test Service'."));
   }
   elseif (!in_array($test_resource_type, $required_test_resource_type)) {
-    $form_state->setError($form['field_is_test_resource_type'], t("Test Resource Type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."));
+    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."));
   }
 }
 
@@ -119,7 +119,7 @@ function trr_form__required_taxonomies(&$form, FormStateInterface $form_state) {
   ];
   foreach ($fields as $field) {
     if (empty($form_state->getValue([$field, 0, 'target_id']))) {
-      $form_state->setError($form[$field], t("Field %field is required for the given Solution Type'", ['%field' => $form[$field]['widget']['#title']]));
+      $form_state->setError($form[$field], t('Field %field is required for the given solution type.', ['%field' => $form[$field]['widget']['#title']]));
     }
   }
 }

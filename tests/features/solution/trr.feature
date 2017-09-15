@@ -52,7 +52,7 @@ Feature: Creating a test (solution) in the TRR collection.
     And I fill in "Product type" with "Soya beans"
     And I select "Level 1" from "Standardization level"
     And I press "Propose"
-    Then I should see the error message "Test Resource Type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."
+    Then I should see the error message "Test resource type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."
     When I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
     And I press "Propose"
     Then I should see the heading "Linked Open Data"
