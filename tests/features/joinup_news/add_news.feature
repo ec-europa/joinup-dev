@@ -117,5 +117,5 @@ Feature: Creation of news through the UI.
     And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
     And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
 
-    But the response should not contain "https://player.vimeo.com/video/225133231"
+    And the response should contain "https://player.vimeo.com/video/225133231"
     And the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
