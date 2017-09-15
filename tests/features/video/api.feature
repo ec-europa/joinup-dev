@@ -6,11 +6,11 @@ Feature: Video API
 
   # This is a temporary test until we have proper support for videos.
   # The machine names are used but should be replaced with proper names once the video functionality is implemented.
-  Scenario: Programmatically create a Video entity
+  Scenario Outline: Programmatically create a Video entity
     Given the following owner:
       | name         |
       | Video editor |
-    And the following collection:
+    And the following <group type>:
       | title             | Video library |
       | owner             | Video editor  |
       | logo              | logo.png      |
@@ -26,3 +26,7 @@ Feature: Video API
     # @todo: This should move to the appropriate test once the video functionality is implemented.
     When I go to the homepage of the "Video library" collection
     Then I should see the "Dummy Video" tile
+  Examples:
+    | group type |
+    | collection |
+    | solution   |
