@@ -12,19 +12,18 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
-<div class="{{ classes|join(' ') }}">
+<div {{ attributes.addClass(classes) }}>
   <div class="listing__metadata">
     <div class="listing__field">
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }} {{ content.field_isr_release_number }}</a></h2>
+      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      <h5 class="listing__subtitle listing__number">{{ content.field_isr_release_number }}</h5>
+      <h5 class="listing__subtitle listing__status">{{ content.field_status }}</h5>
     </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.field_isr_release_notes|render|striptags('<a>')|raw }}</p>
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ 'release'|t }}</span>
+        <span class="listing__icon icon icon--{{ rdf_entity.bundle }}"></span>
       </div>
-      <div class="listing__field listing__stats mdl-card__actions">
-        <div class="listing__stat">
-          <span class="listing__text">{{ 'release'|t }}</span>
-          <span class="listing__icon icon icon--{{ rdf_entity.bundle }}"></span>
-        </div>
-      </div>
+    </div>
     </div>
   </div>
