@@ -30,7 +30,7 @@ Feature: Creating a test (solution) in the TRR collection.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Lucky Luke                                                    |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/TestService" from "Solution type"
     And I select "Supplier exchange" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -46,7 +46,10 @@ Feature: Creating a test (solution) in the TRR collection.
     And I fill in "Business process" with "Notification Of Failure"
     And I fill in "Product type" with "Soya beans"
     And I select "Level 1" from "Standardization level"
-    Then I press "Propose"
+    And I press "Propose"
+    Then I should see the error message "Test Resource Type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."
+    When I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    And I press "Propose"
     Then I should see the heading "Linked Open Data"
 
   Scenario: TRR distribution
