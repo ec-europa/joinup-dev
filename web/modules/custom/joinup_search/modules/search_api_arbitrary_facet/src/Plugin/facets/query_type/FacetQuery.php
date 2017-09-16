@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_search_arbitrary_facet\Plugin\facets\query_type;
+namespace Drupal\search_api_arbitrary_facet\Plugin\facets\query_type;
 
 use Drupal\facets\Plugin\facets\query_type\SearchApiString;
 use Drupal\facets\Result\Result;
@@ -32,7 +32,7 @@ class FacetQuery extends SearchApiString {
     $operator = $this->facet->getQueryOperator();
     $field_identifier = $this->facet->getFieldIdentifier();
     $exclude = $this->facet->getExclude();
-    $options['joinup_search_arbitrary_facet'][$field_identifier] = [
+    $options['search_api_arbitrary_facet'][$field_identifier] = [
       'limit' => $this->facet->getHardLimit(),
       'operator' => $operator,
       'min_count' => $this->facet->getMinCount(),
@@ -65,7 +65,7 @@ class FacetQuery extends SearchApiString {
    *   The facet definition.
    */
   protected function getArbitraryFacetDefinition() {
-    /** @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
+    /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
     $arbitrary_facet_manager = \Drupal::getContainer()
       ->get('plugin.manager.arbitrary_facet');
     $plugin = $arbitrary_facet_manager->createInstance($this->getArbitraryFacetPluginId());

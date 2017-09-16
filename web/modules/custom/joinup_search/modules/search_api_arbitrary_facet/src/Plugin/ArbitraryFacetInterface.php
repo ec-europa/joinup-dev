@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_search_arbitrary_facet\Plugin;
+namespace Drupal\search_api_arbitrary_facet\Plugin;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
@@ -14,7 +14,7 @@ interface ArbitraryFacetInterface extends PluginInspectionInterface {
    *
    * The format of the definition is described in the default plugin.
    *
-   * @see \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacet\DefaultArbitraryFacet
+   * @see \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacet\DefaultArbitraryFacet
    *
    * @return array
    *   The facet definition.

@@ -14,17 +14,17 @@ use Solarium\QueryType\Select\Result\Result;
 /**
  * Implements hook_search_api_solr_query_alter().
  */
-function joinup_search_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
-  /** @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
+function search_api_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
+  /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
   $arbitrary_facet_manager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
 
   /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
   $facet_set = $solarium_query->getFacetSet();
 
-  foreach ($query->getOption('joinup_search_arbitrary_facet', []) as $facet_name => $options) {
+  foreach ($query->getOption('search_api_arbitrary_facet', []) as $facet_name => $options) {
     $facet = $facet_set->createFacetMultiQuery($facet_name);
 
-    /** @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetInterface $plugin_id */
+    /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetInterface $plugin_id */
     $plugin = $arbitrary_facet_manager->createInstance($options['arbitrary_facet_plugin']);
     $definition = $plugin->getFacetDefinition();
     $solr_field_names = joinup_search_fieldnames_from_index($query->getIndex());
@@ -64,7 +64,7 @@ function joinup_search_fieldnames_from_index(IndexInterface $index) {
 /**
  * Implements hook_search_api_solr_search_results_alter().
  */
-function joinup_search_arbitrary_facet_search_api_solr_search_results_alter(ResultSetInterface $result_set, SearchApiQueryInterface $query, Result $result) {
+function search_api_arbitrary_facet_search_api_solr_search_results_alter(ResultSetInterface $result_set, SearchApiQueryInterface $query, Result $result) {
   /** @var \Solarium\QueryType\Select\Query\Query $result */
   if ($result->getFacetSet() && $result->getFacetSet()->getFacets()) {
     /** @var \Solarium\QueryType\Select\Result\Facet\Field[] $response_facets */
@@ -75,7 +75,7 @@ function joinup_search_arbitrary_facet_search_api_solr_search_results_alter(Resu
     // only on fields. Here we need to mimic the behaviour by working on our
     // custom facets.
     // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::extractFacets()
-    foreach ($query->getOption('joinup_search_arbitrary_facet', []) as $facet_name => $options) {
+    foreach ($query->getOption('search_api_arbitrary_facet', []) as $facet_name => $options) {
       if (!empty($response_facets[$facet_name])) {
         $min_count = $options['min_count'];
         foreach ($response_facets[$facet_name]->getValues() as $term => $count) {
@@ -100,10 +100,10 @@ function joinup_search_arbitrary_facet_search_api_solr_search_results_alter(Resu
 /**
  * Implements hook_field_widget_info_alter().
  */
-function joinup_search_arbitrary_facet_widget_plugin_info_alter(array &$info) {
+function search_api_arbitrary_facet_widget_plugin_info_alter(array &$info) {
   foreach ($info as $widget_name => &$widget_info) {
     // Decorate all widgets with the arbitrary facet decorator.
     $widget_info['decorated_class'] = $widget_info['class'];
-    $widget_info['class'] = '\Drupal\joinup_search_arbitrary_facet\ArbitraryFacetWidgetDecorator';
+    $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
   }
 }

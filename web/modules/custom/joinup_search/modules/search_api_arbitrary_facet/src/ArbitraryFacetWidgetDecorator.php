@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_search_arbitrary_facet;
+namespace Drupal\search_api_arbitrary_facet;
 
 use Drupal\facets\Widget\WidgetPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -10,7 +10,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 /**
  * Class ArbitraryFacetWidgetDecorator.
  *
- * @package Drupal\joinup_search_arbitrary_facet
+ * @package Drupal\search_api_arbitrary_facet
  */
 class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
   use StringTranslationTrait;
@@ -25,7 +25,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
   /**
    * The arbitratry facet plugin manager.
    *
-   * @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager
+   * @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager
    */
   protected $arbitraryFacetManager;
 

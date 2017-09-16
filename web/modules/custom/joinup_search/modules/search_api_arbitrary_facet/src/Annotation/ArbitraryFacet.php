@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\joinup_search_arbitrary_facet\Annotation;
+namespace Drupal\search_api_arbitrary_facet\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
 
 /**
  * Defines a Arbitrary facet item annotation object.
  *
- * @see \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager
+ * @see \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager
  * @see plugin_api
  *
  * @Annotation

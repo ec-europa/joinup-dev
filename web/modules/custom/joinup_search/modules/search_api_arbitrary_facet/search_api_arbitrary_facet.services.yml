@@ -1,4 +1,4 @@
 services:
   plugin.manager.arbitrary_facet:
-    class: Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager
+    class: Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager
     parent: default_plugin_manager

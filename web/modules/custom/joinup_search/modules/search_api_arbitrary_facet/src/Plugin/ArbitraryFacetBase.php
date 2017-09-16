@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_search_arbitrary_facet\Plugin;
+namespace Drupal\search_api_arbitrary_facet\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;

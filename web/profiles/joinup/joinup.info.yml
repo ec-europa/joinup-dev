@@ -68,6 +68,7 @@ dependencies:
   - rdf_export
   - rdf_taxonomy
   - search_api
+  - search_api_arbitrary_facet
   - search_api_db
   - semic
   - social_media_links_field
