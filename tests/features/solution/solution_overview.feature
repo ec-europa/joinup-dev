@@ -159,3 +159,24 @@ Feature: Solutions Overview
 
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
+
+  Scenario: My content facet
+    Given user:
+      | Username | Veronique végétal |
+    And user:
+      | Username | Mario meat |
+    And the following collections:
+      | title                  | state     | featured |
+      | Friends of the falafel | validated | yes      |
+    And the following solutions:
+      | title               | collection             | state     | featured | author            |
+      | Hungry herbalists   | Friends of the falafel | validated | no       | Veronique végétal |
+      | Pretty phytologists | Friends of the falafel | validated | yes      | Mario meat        |
+    When I am logged in as "Veronique végétal"
+    When I click "Solutions"
+    When I click "My solutions" in the "My solutions content" inline facet
+    Then I should see the "Hungry herbalists" tile
+    But I should not see the "Pretty phytologists" tile
+    Then I click "Featured solutions" in the "My solutions content" inline facet
+    And I should see the "Pretty phytologists" tile
+    But I should not see the "Hungry herbalists" tile

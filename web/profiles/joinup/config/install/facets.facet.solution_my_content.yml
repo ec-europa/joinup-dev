@@ -11,7 +11,7 @@ name: 'My content (Solution)'
 url_alias: solution_my_content
 weight: 0
 min_count: 1
-show_only_one_result: false
+show_only_one_result: true
 field_identifier: id
 facet_source_id: 'search_api:views_page__solutions__page_1'
 widget:
