@@ -7,4 +7,3 @@ package: Joinup
 dependencies:
   - facets
   - search_api_solr
-

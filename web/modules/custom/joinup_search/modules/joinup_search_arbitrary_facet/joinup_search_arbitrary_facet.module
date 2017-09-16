@@ -5,37 +5,60 @@
  * Provides functionality for the Joinup search arbitrary facet.
  */
 
+use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Result\Result;
 
 /**
- * Implements hook_facets_search_api_query_type_mapping_alter().
- */
-function joinup_search_arbitrary_facet_facets_search_api_query_type_mapping_alter($backend_plugin_id, array &$query_types) {
-  $query_types['facet_query'] = 'facet_query';
-}
-
-/**
  * Implements hook_search_api_solr_query_alter().
  */
 function joinup_search_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
-  $current_user = \Drupal::currentUser();
+  /** @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
+  $arbitrary_facet_manager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
+
+  /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+  $facet_set = $solarium_query->getFacetSet();
 
   foreach ($query->getOption('joinup_search_arbitrary_facet', []) as $facet_name => $options) {
-    /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
-    $facet_set = $solarium_query->getFacetSet();
     $facet = $facet_set->createFacetMultiQuery($facet_name);
-    $facet->createQuery('mine', 'itm_entity_author:' . $current_user->id());
-    $facet->createQuery('featured', 'bm_site_featured:true');
-    $facet->createQuery('collections', 'sm_entity_bundle:collection');
+
+    /** @var \Drupal\joinup_search_arbitrary_facet\Plugin\ArbitraryFacetInterface $plugin_id */
+    $plugin = $arbitrary_facet_manager->createInstance($options['arbitrary_facet_plugin']);
+    $definition = $plugin->getFacetDefinition();
+    $solr_field_names = joinup_search_fieldnames_from_index($query->getIndex());
+
+    foreach ($definition as $facet_identifier => $facet_attribute) {
+      $field_name = $facet_attribute['field_name'];
+      $condition = $facet_attribute['field_condition'];
+      // Translate the field name to the index field name.
+      $solr_field_name = $solr_field_names[$field_name];
+      $filter = $solr_field_name . ':' . $condition;
+      $facet->createQuery($facet_identifier, $filter);
+    }
 
     // For "OR" facets, add the expected tag for exclusion.
     if (isset($options['operator']) && strtolower($options['operator']) === 'or') {
       $facet->setExcludes(['arbitrary:' . $facet_name]);
     }
   }
+}
+
+/**
+ * Helper to translate field names to their Solr counterpart.
+ *
+ * @param \Drupal\search_api\IndexInterface $index
+ *   The search api index entity.
+ *
+ * @return array
+ *   Mapping of field names to Solr field names.
+ */
+function joinup_search_fieldnames_from_index(IndexInterface $index) {
+  $server = $index->getServerInstance();
+  /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+  $backend = $server->getBackend();
+  return $backend->getSolrFieldNames($index);
 }
 
 /**
@@ -71,5 +94,16 @@ function joinup_search_arbitrary_facet_search_api_solr_search_results_alter(Resu
       // other results, so the facets will be built properly.
       $result_set->setExtraData('search_api_facets', array_merge($result_set->getExtraData('search_api_facets', []), $extracted_facets));
     }
+  }
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function joinup_search_arbitrary_facet_widget_plugin_info_alter(array &$info) {
+  foreach ($info as $widget_name => &$widget_info) {
+    // Decorate all widgets with the arbitrary facet decorator.
+    $widget_info['decorated_class'] = $widget_info['class'];
+    $widget_info['class'] = '\Drupal\joinup_search_arbitrary_facet\ArbitraryFacetWidgetDecorator';
   }
 }
