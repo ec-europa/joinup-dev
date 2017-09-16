@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.content_bundle
+  module:
+    - facets
+    - joinup_core
+id: contentbundle
+theme: joinup_theme
+region: content_top
+weight: 0
+provider: null
+plugin: 'facet_block:content_bundle'
+settings:
+  id: 'facet_block:content_bundle'
+  label: 'Content bundle'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }
