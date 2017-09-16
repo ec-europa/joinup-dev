@@ -5,8 +5,9 @@ Feature: Dashboard
   I should have access to a dashboard
 
   Scenario: Access the dashboard
-    Given I am logged in as an "authenticated user"
+    Given I am logged in as a "moderator"
     When I am on the homepage
     Then I should see the link "Dashboard"
     When I click "Dashboard"
     Then I should see the heading "Dashboard"
+    And I should not see the link "My subscriptions"

@@ -68,7 +68,6 @@ Feature: User authentication
       | path                |
       | propose/collection  |
       | collections         |
-      | dashboard           |
       | user                |
       | joinup/legal-notice |
 
@@ -87,6 +86,7 @@ Feature: User authentication
       | admin/people                       |
       | admin/structure                    |
       | admin/structure/views              |
+      | dashboard                          |
       | propose/solution                   |
       | licence                            |
       | licence/add                        |
