@@ -44,7 +44,11 @@ Feature: Content Overview
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
     And I click "Keep up to date"
-    Then I should see the following tiles in the correct order:
+    # Only three content tabs are shown. The fourth is hidden.
+    Then I should see the following facet items "Discussion, Document, Event"
+    And I should see the link "News"
+    And I should not see the following facet items "Collection"
+    And I should see the following tiles in the correct order:
       | The Playful Tale  |
       | Seventh Windows   |
       | History of Flight |
@@ -60,6 +64,10 @@ Feature: Content Overview
     # the author instead of the username.
     And I should see the text "Simba Hobson" in the "The Playful Tale" tile
     And I should see the text "Korinna Morin" in the "The Men's Female" tile
+
+    When I click the "Document" content tab
+    And I should see the following tiles in the correct order:
+      | History of Flight  |
 
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
