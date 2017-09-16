@@ -230,3 +230,11 @@ Feature: User profile
     # Verify the page can be cached correctly.
     When I reload the page
     Then the page should be cached
+
+  Scenario: An authenticated user should not have access to restricted pages of his profile.
+    When I am logged in as an "authenticated user"
+    And I am on the homepage
+    And I click "My account"
+    Then I should not see the link "Subscription Settings"
+    And I should not see the link "Persistent Logins"
+    And I should not see the link "Newsletters"
