@@ -47,3 +47,10 @@ joinup_core.file_field_info:
     _title: 'File fields'
   requirements:
       _permission: 'administer content types'
+
+joinup_core.id_redirect:
+  path: '/data/{uuid}'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
+  requirements:
+    _access: 'TRUE'

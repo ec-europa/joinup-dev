@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_publish_backlisted
+label: 'Solution published from blacklisted state'
+description: 'Template 14: Publish a blacklisted solution'
+text:
+  -
+    value: 'Joinup: Your interoperability solution is published again'
+    format: full_html
+  -
+    value: '<p>the moderator has published back your interoperability solution - @entity:title that was blacklisted.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

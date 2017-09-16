@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_propose_changes
+label: 'Solution propose changes'
+description: 'Template 7: A moderator proposed changes to a solution'
+text:
+  -
+    value: 'Joinup: Changes have been proposed for your solution'
+    format: full_html
+  -
+    value: "<p>@actor:full_name has requested you to modify the interoperability solution \"@entity:title\", with the following motivation: @transition:motivation.</p>\r\n<p>Your content has been moved back in proposed state and you can update it and request a new publication.</p>\r\n<p>You can access your content at the following link: <a href=\"@entity:url\">@entity:url</a></p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

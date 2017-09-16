@@ -137,30 +137,33 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a solution with data provided in a table.
    *
+   * @codingStandardsIgnoreStart
    * Table format:
-   * | title               | Sample solution                         |
-   * | description         | A sample solution                       |
-   * | banner              | banner.png                              |
-   * | logo                | logo.jpg                                |
-   * | moderation          | no|yes                                  |
-   * | closed              | no|yes                                  |
-   * | collection          | Example collection                      |
-   * | contact information | Grahame Paterson, Aulay MacFarlane      |
-   * | documentation       | text.pdf                                |
-   * | elibrary creation   | facilitators|members|registered users   |
-   * | featured            | yes|no                                  |
-   * | landing page        | http://example.com/foobar/landing       |
-   * | language            | Greek, German                           |
-   * | owner               | Zapsum, Holdline Accountants            |
-   * | policy domain       | Demography, E-inclusion                 |
-   * | related solutions   | Solution 2, Solution 3                  |
-   * | solution type       | [ABB159] Service Discovery Service, ... |
-   * | spatial coverage    | Denmark, Serbia                         |
-   * | state               | validated|...                           |
-   * | status              | Under development                       |
-   * | webdav creation     | no|yes                                  |
-   * | webdav url          | http://joinup.eu/solution/foobar/webdav |
-   * | wiki                | http://example.wiki/foobar/wiki         |
+   * | title               | Sample solution                                                |
+   * | description         | A sample solution                                              |
+   * | banner              | banner.png                                                     |
+   * | logo                | logo.jpg                                                       |
+   * | moderation          | no|yes                                                         |
+   * | closed              | no|yes                                                         |
+   * | collection          | Example collection                                             |
+   * | contact information | Grahame Paterson, Aulay MacFarlane                             |
+   * | documentation       | text.pdf                                                       |
+   * | elibrary creation   | facilitators|members|registered users                          |
+   * | featured            | yes|no                                                         |
+   * | landing page        | http://example.com/foobar/landing                              |
+   * | language            | Greek, German                                                  |
+   * | owner               | Zapsum, Holdline Accountants                                   |
+   * | policy domain       | Demography, E-inclusion                                        |
+   * | related solutions   | Solution 2, Solution 3                                         |
+   * | solution type       | [ABB159] Service Discovery Service, ...                        |
+   * | spatial coverage    | Denmark, Serbia                                                |
+   * | state               | validated|...                                                  |
+   * | status              | Under development                                              |
+   * | webdav creation     | no|yes                                                         |
+   * | webdav url          | http://joinup.eu/solution/foobar/webdav                        |
+   * | wiki                | http://example.wiki/foobar/wiki                                |
+   * | uri                 | http://data.europa.eu/w21/fc2dee5a-88fb-4aff-b3bf-9b1d66903296 |
+   * @codingStandardsIgnoreEnd
    *
    * Fields "title", "description" and "state" are required.
    *
@@ -453,6 +456,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Mapping alias - field name.
     return [
       'uri' => 'id',
+      'author' => 'uid',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
@@ -531,7 +535,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // Convert any entity reference field label value with the entity ID.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
-
     return $fields;
   }
 

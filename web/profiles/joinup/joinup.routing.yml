@@ -36,6 +36,14 @@ joinup.legal_notice:
   requirements:
     _access: 'TRUE'
 
+joinup.eligibility_criteria:
+  path: '/joinup/eligibility-criteria'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::eligibilityCriteria'
+    _title: 'Eligibility criteria'
+  requirements:
+    _access: 'TRUE'
+
 joinup.site_feature:
   path: '/feature/{entity_type}/{entity}/add'
   defaults:
