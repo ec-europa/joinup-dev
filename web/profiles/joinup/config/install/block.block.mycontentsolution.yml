@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.solution_my_content
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: mycontentsolution
+theme: joinup_theme
+region: filters
+weight: 0
+provider: null
+plugin: 'facet_block:solution_my_content'
+settings:
+  id: 'facet_block:solution_my_content'
+  label: 'Solutions - My content'
+  provider: facets
+  label_display: '0'
+visibility: {  }

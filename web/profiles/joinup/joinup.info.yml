@@ -103,6 +103,7 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
+  - block.block.mycontentsolution
   - block.block.navigation
   - block.block.pagetitle
   - block.block.policy_domain_facet

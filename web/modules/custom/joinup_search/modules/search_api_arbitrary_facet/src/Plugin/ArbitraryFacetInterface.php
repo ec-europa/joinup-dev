@@ -14,7 +14,7 @@ interface ArbitraryFacetInterface extends PluginInspectionInterface {
    *
    * The format of the definition is described in the default plugin.
    *
-   * @see \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacet\DefaultArbitraryFacet
+   * @see \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacet\MySolutionsArbitraryFacet
    *
    * @return array
    *   The facet definition.
