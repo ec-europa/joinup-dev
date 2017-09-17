@@ -6,6 +6,7 @@ label: Administrator
 weight: 4
 is_admin: false
 permissions:
+  - 'access dashboard'
   - 'administer account settings'
   - 'administer group'
   - 'administer nodes'
