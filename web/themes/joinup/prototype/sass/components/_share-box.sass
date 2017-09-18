@@ -1,18 +1,25 @@
 // Share box
 //
 
+// Component
+// --------------------------------------------------
+
 // Elements
-//
+// --------------------------------------------------
+.share-box__item
+  display: block
+  margin-left: 5px
+  text-decoration: none
+
 .share-box__item-icon
-  +icon-size(50px)
-  color: $color-blue-dark
   display: none
+  color: $color-blue-dark
+  +icon-size(50px)
 
 .share-box__row
-  padding: 0
-  margin-bottom: 0 !important
   position: relative
-  min-height: 70px
+  min-height: 50px
+  margin-bottom: 20px
   .form-type-checkbox
     position: absolute
     top: 0
@@ -21,10 +28,6 @@
     margin: auto
     .form__label
       display: none
-  &:first-child
-    padding-top: 0
-  &:last-child
-    padding-bottom: 0
 
 .share-box__item-image
   padding-right: 10px
@@ -52,8 +55,6 @@
     margin-bottom: 0
   +breakpoint(tablet)
     min-width: $screen-sm
-  .form-wrapper
-    margin-bottom: 0
 
 .share-box__title
   color: $color-base
@@ -63,9 +64,15 @@
   .share-box__row
     padding-left: 30px
 
+// Modifiers
+// --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
 .share-content-form
   .form__legend
     margin: 0
 
-.ajax-progress-throbber .message
-  display: none
+.ajax-progress-throbber
+  .message
+    display: none
