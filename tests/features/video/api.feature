@@ -27,7 +27,7 @@ Feature: Video API
     When I go to the homepage of the "Video library collection" collection
     Then I should see the "Dummy Video in collection" tile
 
-  Scenario: Programmatically create a Video entity in a collection
+  Scenario: Programmatically create a Video entity in a solution
     Given the following owner:
       | name         |
       | Video editor |
