@@ -1,4 +1,4 @@
-@api @email @wip
+@api @email
 Feature: Asset distribution deleting.
   In order to manage asset distributions
   As a solution owner or solution facilitator
@@ -18,7 +18,7 @@ Feature: Asset distribution deleting.
       | title       | Francesco's cats      |
       | description | Sample description    |
       | access url  | test.zip              |
-      | solution    | Rough valentine's day |
+      | parent      | Rough valentine's day |
 
     When I am logged in as a facilitator of the "Rough valentine's day" solution
     And I go to the homepage of the "Francesco's cats" asset distribution
@@ -27,7 +27,6 @@ Feature: Asset distribution deleting.
     When I click "Delete"
     And I press "Delete"
     Then the following email should have been sent:
-      | template  | Message to the owner when a distribution is deleted                     |
-      | recipient | Papa Roach                                                              |
-      | subject   | Joinup - Distribution has been deleted                                  |
-      | body      | The asset distribution "Francesco's cats" has been deleted from Joinup. |
+      | recipient | Papa Roach                                                                                        |
+      | subject   | Joinup: A distribution has been deleted                                                           |
+      | body      | The distribution Francesco's cats of the solution Rough valentine's day was successfully deleted. |
