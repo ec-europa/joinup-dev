@@ -34,3 +34,14 @@ Feature: Collection TCA agreement
     And I press "Yes"
     Then I should see the heading "Propose collection"
 
+  Scenario Outline: TCA page contains links with additional information
+    When I am logged in as a user with the "authenticated" role
+    And I visit "/collections"
+    And I click "Create collection"
+    And I click "<link>"
+    Then I should see the heading "<title>"
+
+    Examples:
+      | link                 | title                |
+      | legal notice         | Legal notice         |
+      | eligibility criteria | Eligibility criteria |

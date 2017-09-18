@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_propose_new
+label: 'Solution propose new'
+description: 'Template 1: Propose new solution'
+text:
+  -
+    value: 'Joinup: A new solution has been proposed'
+    format: full_html
+  -
+    value: "<p>@actor:full_name has proposed a new Interoperability solution: \"@entity:title\" on Joinup.</p>\r\n\r\n<p>The publication of this content requires your validation.</p>\r\n\r\n<p>You can access the new content at the following link: <a href=\"@entity:url\">@entity:url</a> where you can validate or reject the new content.</p>\r\n"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
