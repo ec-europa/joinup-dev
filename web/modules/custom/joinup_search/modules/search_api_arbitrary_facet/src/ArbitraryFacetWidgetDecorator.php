@@ -58,7 +58,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
    */
   public function getQueryType(array $query_types) {
     $config = $this->original->getConfiguration();
-    if (isset($config['arbitrary_facet_enabled']) && $config['arbitrary_facet_enabled']) {
+    if (isset($config['arbitrary_facet_plugin']) && $config['arbitrary_facet_plugin'] != '_none') {
       return 'facet_query';
     }
     return $this->original->getQueryType($query_types);
@@ -80,16 +80,12 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
     $config = $this->getConfiguration();
     $default_config = $this->defaultConfiguration();
     $options = [];
+    $options['_none'] = $this->t('-Disabled-');
     foreach ($definitions as $definition) {
       /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $label */
       $label = $definition['label'];
       $options[$definition['id']] = $label->render();
     }
-    $form['arbitrary_facet_enabled'] = [
-      '#title' => $this->t("Enable arbitrary facet"),
-      '#type' => 'checkbox',
-      '#default_value' => isset($config['arbitrary_facet_enabled']) ? $config['arbitrary_facet_enabled'] : $default_config['arbitrary_facet_enabled'],
-    ];
     $form['arbitrary_facet_plugin'] = [
       '#title' => $this->t("Arbitrary facet plugin"),
       '#type' => 'select',
@@ -120,8 +116,7 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
    */
   public function defaultConfiguration() {
     $default_config = $this->original->defaultConfiguration();
-    $default_config['arbitrary_facet_plugin'] = 'default';
-    $default_config['arbitrary_facet_enabled'] = 0;
+    $default_config['arbitrary_facet_plugin'] = '_none';
     return $default_config;
   }
 

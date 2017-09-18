@@ -21,7 +21,6 @@ widget:
     all_text: 'All solutions'
     prefix_text: ''
     suffix_text: ''
-    arbitrary_facet_enabled: 1
     arbitrary_facet_plugin: my_solutions
 query_operator: or
 use_hierarchy: false
