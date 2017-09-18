@@ -4,6 +4,9 @@
 // Component
 // --------------------------------------------------
 .fieldset
+  margin-bottom: 25px
+  &:last-of-type
+    margin-bottom: 0
 
 // Elements
 // --------------------------------------------------
@@ -26,9 +29,6 @@
 // --------------------------------------------------
 .fieldset--separated
   margin-top: 40px
-  img
-    width: 100%
-    height: auto
 
 .fieldset--box
   background: $color-grey-lighter
@@ -55,11 +55,12 @@
 
 .fieldset--border-bottom
   position: relative
-  padding-bottom: 18px
+  padding-bottom: 27px
+  margin-bottom: 25px
   &:before
     position: absolute
     right: -20px
-    bottom: 15px
+    bottom: 0
     left: -20px
     height: 2px
     content: ''
@@ -70,6 +71,20 @@
     +breakpoint(md)
       right: -60px
       left: -60px
+  p:last-child
+    margin-bottom: 0
+
+.fieldset--textarea
+  p
+    overflow: hidden
+  img
+    margin-bottom: 16px
+  img.align-left
+    +breakpoint(md)
+      margin-right: 20px
+  img.align-right
+    +breakpoint(md)
+      margin-left: 20px
 
 // Dependiencies
 // --------------------------------------------------
