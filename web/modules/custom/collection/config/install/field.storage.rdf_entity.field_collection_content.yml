@@ -26,7 +26,8 @@ settings:
       document: view_mode_tile
       event: view_mode_tile
       news: view_mode_tile
-      newsletter: default
+      newsletter: view_mode_tile
+      video: view_mode_tile
     'entity:rdf_entity':
       asset_distribution: view_mode_tile
       asset_release: default
