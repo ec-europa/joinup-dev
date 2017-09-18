@@ -15,7 +15,7 @@ widget:
   type: type
   config:
     show_numbers: true
-    tabs: 3
+    tabs: 4
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -29,7 +29,7 @@ processor_configs:
     weights:
       sort: -10
     settings:
-      sort: DESC
+      sort: ASC
   aggregated_entity_reference_label:
     processor_id: aggregated_entity_reference_label
     weights:
@@ -45,13 +45,13 @@ processor_configs:
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -10
+      sort: -9
     settings:
-      sort: DESC
+      sort: ASC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: -8
     settings:
       sort: ASC
   url_processor_handler:
