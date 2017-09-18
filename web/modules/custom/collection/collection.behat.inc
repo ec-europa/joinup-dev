@@ -190,6 +190,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected static function collectionFieldAliases() {
     // Mapping alias - field name.
     return [
+      'author' => 'uid',
       'uri' => 'id',
       'title' => 'label',
       'abstract' => 'field_ar_abstract',
