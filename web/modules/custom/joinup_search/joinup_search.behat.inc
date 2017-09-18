@@ -85,7 +85,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when an wanted facet item is not shown in the page.
    *
-   * @When I should see the following facet items :labels
+   * @When I should see the following facet items :labels in this order
    */
   public function assertContentTypeFacetItemsPresent($labels) {
     $labels = $this->explodeCommaSeparatedStepArgument($labels);
@@ -99,11 +99,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $present = array_map('trim', $present);
-    $missing = array_diff($labels, $present);
-
-    if ($missing) {
-      throw new \Exception('Facet item(s) not found, but should: ' . implode(', ', $missing));
-    }
+    PHPUnit_Framework_Assert::assertEquals($present, $labels);
   }
 
   /**

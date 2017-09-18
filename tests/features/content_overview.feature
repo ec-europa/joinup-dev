@@ -45,8 +45,7 @@ Feature: Content Overview
     And I am on the homepage
     And I click "Keep up to date"
     # Only three content tabs are shown. The fourth is hidden.
-    Then I should see the following facet items "Discussion, Document, Event"
-    And I should see the link "News"
+    Then I should see the following facet items "Discussion, Document, Event, News" in this order
     And I should not see the following facet items "Collection"
     And I should see the following tiles in the correct order:
       | The Playful Tale  |
@@ -66,6 +65,7 @@ Feature: Content Overview
     And I should see the text "Korinna Morin" in the "The Men's Female" tile
 
     When I click the "Document" content tab
+    Then I should see the following facet items "Document, Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
       | History of Flight  |
 
