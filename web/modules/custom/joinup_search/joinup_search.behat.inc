@@ -83,7 +83,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *   A comma-separated list of facet item labels.
    *
    * @throws \Exception
-   *   Thrown when an wanted facet item is not shown in the page.
+   *   Thrown when a wanted facet item is not shown in the page.
    *
    * @When I should see the following facet items :labels in this order
    */
