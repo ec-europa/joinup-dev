@@ -44,7 +44,6 @@ Feature: Content Overview
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
     And I click "Keep up to date"
-    # Only three content tabs are shown. The fourth is hidden.
     Then I should see the following facet items "Discussion, Document, Event, News" in this order
     And I should not see the following facet items "Collection"
     And I should see the following tiles in the correct order:
