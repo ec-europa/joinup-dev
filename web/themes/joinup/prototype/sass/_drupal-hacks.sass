@@ -172,7 +172,7 @@ form .description
 // jQuery ui hacks
 .ui-dialog
   +z-index(modal)
-  padding: $field-margin
+  padding: 20px
   .ui-dialog-buttonpane
     border: none
     padding: 0 !important
@@ -192,6 +192,7 @@ form .description
     font-weight: $font-weight-thin
     color: $color-grey-medium
     font-size: $font-size-small
+    overflow-x: hidden
     .form-actions, .button
       margin: 0
     .form__actions_inner
@@ -217,6 +218,8 @@ form .description
   .ui-widget-header
     font-size: $font-size-h3
     margin-bottom: $field-margin
+    //margin-left: 16px
+    //margin-right: 16px
     padding: 0
     background: none
     color: $color-blue-dark
