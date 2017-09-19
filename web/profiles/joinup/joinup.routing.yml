@@ -71,3 +71,31 @@ joinup.site_unfeature:
     parameters:
       entity:
         type: entity:{entity_type}
+
+joinup.site_pin:
+  path: '/pin/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\SitePinController::pin'
+    _title: 'Pin'
+  requirements:
+    _permission: 'pin entity'
+    _custom_access: '\Drupal\joinup\Controller\SitePinController::pinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unpin:
+  path: '/pin/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\SitePinController::unpin'
+    _title: 'Remove from pinned'
+  requirements:
+    _permission: 'unpin entity'
+    _custom_access: '\Drupal\joinup\Controller\SitePinController::unpinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
