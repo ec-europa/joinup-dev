@@ -73,4 +73,14 @@ class JoinupController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * Provides a page outlining eligibility criteria for solutions.
+   *
+   * @return array
+   *   The page as a render array.
+   */
+  public function eligibilityCriteria() {
+    return ['#theme' => 'joinup_eligibility_criteria'];
+  }
+
 }
