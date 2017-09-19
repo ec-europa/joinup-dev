@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_propose_requested_changes
+label: 'Solution propose cahnges - Owner'
+description: 'Template 16: Propose changes from ''request changes'' state'
+text:
+  -
+    value: 'Joinup: An update of a solution has been proposed'
+    format: full_html
+  -
+    value: "<p>@actor:full_name has proposed an update of the Interoperability solution: \"@entity:title\" on Joinup.</p>\r\n<p>The publication of this content requires your validation.</p>\r\n<p>You can access the new content at the following link: <a href=\"@entity:url\">@entity:url</a> where you can validate or reject the new content.</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
