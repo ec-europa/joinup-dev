@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW d8_document (
   vid,
   type,
   document_type,
+  case_type,
   title,
   created,
   changed,
@@ -34,10 +35,16 @@ SELECT
   n.vid,
   n.type,
   CASE n.type
-    WHEN 'case_epractice' THEN 'case'
+    WHEN 'case_epractice' THEN
+      CASE t.tid
+        WHEN 10198 THEN 'case_general'
+        WHEN 10200 THEN 'case_guideline'
+        WHEN 10199 THEN 'case_open_source'
+      END
     WHEN 'legaldocument' THEN 'legal'
     ELSE n.type
   END,
+  t.name,
   TRIM(CONCAT(n.title, IF(ctce.field_acronym_value IS NOT NULL AND TRIM(ctce.field_acronym_value) <> '', CONCAT(' (', TRIM(ctce.field_acronym_value), ')'), ''))),
   n.created,
   n.changed,
@@ -73,6 +80,7 @@ FROM d8_node n
 LEFT JOIN content_field_publication_date cfpd ON n.vid = cfpd.vid
 LEFT JOIN content_type_document ctd ON n.vid = ctd.vid
 LEFT JOIN content_type_case_epractice ctce ON n.vid = ctce.vid
+LEFT JOIN d8_term t ON n.vid = t.node_vid AND t.vocabulary = 67
 LEFT JOIN workflow_node w ON n.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type IN('case_epractice', 'document', 'factsheet', 'legaldocument', 'presentation')
