@@ -12,7 +12,7 @@
    *   The HTML for the pinned content visual cue.
    */
   Drupal.theme.pinnedContentCue = function () {
-    return '<div class="listing__corner listing__corner--pin"><span class="icon icon--pin"></span></div>';
+    return '<div class="listing__corner"><span class="icon icon--pin"></span></div>';
   };
 
   /**

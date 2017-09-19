@@ -12,7 +12,7 @@
    *   The HTML for the featured content visual cue.
    */
   Drupal.theme.featuredContentCue = function () {
-    return '<div class="listing__corner listing__corner--featured"><span class="icon icon--star"></span></div>';
+    return '<div class="listing__corner"><span class="icon icon--star"></span></div>';
   };
 
   /**
@@ -36,8 +36,7 @@
 
       $(context).find('[data-drupal-featured]').once('featured').each(function () {
         var $this = $(this);
-        $this.addClass('is-featured');
-        $this.addClass('listing__card--corner');
+        $this.addClass('is-featured listing__card--corner');
 
         if (!$this.find('.listing__image').length) {
           $this.addClass('listing__card--corner-title');
