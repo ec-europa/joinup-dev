@@ -19,7 +19,21 @@ $this->assertEquals('2010-10-20T00:00:00', $document->field_document_publication
 $this->assertEquals('http://www.baa.com/', $document->field_file->target_id);
 $this->assertContains('More information can be found on the ', $document->body->value);
 $this->assertTrue($document->get('field_keywords')->isEmpty());
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertReferences([
+  'Antarctica',
+  'Austria',
+  'Côte d’Ivoire',
+  'European Union',
+  'Faroes',
+  'Former Yugoslav Republic of Macedonia',
+  'Kiribati',
+  'Romania',
+  'South Korea',
+  'São Tomé and Príncipe',
+  'The Gambia',
+  'Tuvalu',
+  'United States Minor Outlying Islands',
+], $document->get('field_document_spatial_coverage'));
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/baa'], $document);
@@ -53,7 +67,7 @@ $file = FileUrlHandler::urlToFile($document->field_file->target_id);
 $this->assertEquals('public://document/2015-03/CAMSS method (v1.0) scenario 2 - SMEF.xlsm', $file->getFileUri());
 $this->assertContains('v1.0 by the CAMSS team.', $document->body->value);
 $this->assertKeywords(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-smef'], $document);
@@ -62,7 +76,7 @@ $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-sm
 $document = Node::load(133560);
 $this->assertEquals('The Irish ePassport', $document->label());
 $this->assertEquals('document', $document->bundle());
-$this->assertEquals('case', $document->field_type->value);
+$this->assertEquals('case_general', $document->field_type->value);
 $this->assertEquals(1170370800, $document->created->value);
 $this->assertEquals(1, $document->uid->target_id);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1170370800), $document->field_document_publication_date->value);
@@ -128,7 +142,7 @@ $this->assertKeywords([
   'Government Interoperability Frameworks',
   'nifo',
 ], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/factsheet/national-interoperability-framework-observatory-nifo-factsheets'], $document);
@@ -160,7 +174,7 @@ $file = FileUrlHandler::urlToFile($document->field_file->target_id);
 $this->assertEquals('public://document/2016-09/e-government_action_plan_2016-2020_-_opinion_of_the_european_committee_of_the_regions_-_martin_andreasson.pdf', $file->getFileUri());
 $this->assertContains('took place on 20 September 2016 in Brussels.', $document->body->value);
 $this->assertKeywords(['Other'], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['elibrary/presentation/e-government-action-plan-2016-2020-opinion-european-committee-regions-martin-a'], $document);
