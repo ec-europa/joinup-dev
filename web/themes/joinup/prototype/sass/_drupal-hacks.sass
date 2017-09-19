@@ -171,8 +171,9 @@ form .description
 
 // jQuery ui hacks
 .ui-dialog
-  +z-index(modal)
+  width: auto !important
   padding: 20px
+  +z-index(modal)
   .ui-dialog-buttonpane
     border: none
     padding: 0 !important
@@ -220,8 +221,21 @@ form .description
         content: '\e617'
 
   .ui-dialog-buttonset
-    float: none
-    display: flex
+    float: none !important
+    +breakpoint(sm)
+      display: flex
+      justify-content: flex-end
+    .button
+      width: 100%
+      margin-bottom: 10px
+      +breakpoint(sm)
+        width: auto
+        margin-right: 15px
+        margin-bottom: 0
+      &:last-of-type
+        margin-bottom: 0
+        +breakpoint(sm)
+          margin-right: 0
 
   .ui-widget-header
     font-size: $font-size-h3
