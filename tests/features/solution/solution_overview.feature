@@ -177,6 +177,7 @@ Feature: Solutions Overview
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the "Hungry herbalists" tile
     But I should not see the "Pretty phytologists" tile
-    Then I click "Featured solutions" in the "My solutions content" inline facet
+    When I click "Featured solutions" in the "My solutions content" inline facet
+    Then "Solutions" should be the active item in the "Header menu" menu
     And I should see the "Pretty phytologists" tile
     But I should not see the "Hungry herbalists" tile
