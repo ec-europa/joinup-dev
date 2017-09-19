@@ -76,7 +76,7 @@ $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-sm
 $document = Node::load(133560);
 $this->assertEquals('The Irish ePassport', $document->label());
 $this->assertEquals('document', $document->bundle());
-$this->assertEquals('case', $document->field_type->value);
+$this->assertEquals('case_general', $document->field_type->value);
 $this->assertEquals(1170370800, $document->created->value);
 $this->assertEquals(1, $document->uid->target_id);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1170370800), $document->field_document_publication_date->value);
