@@ -192,7 +192,7 @@ display:
           decimal: .
           separator: ','
           format_plural: false
-          format_plural_string: !!binary MQNAY291bnQ=
+          format_plural_string: "1\x03@count"
           prefix: ''
           suffix: ''
           plugin_id: numeric
