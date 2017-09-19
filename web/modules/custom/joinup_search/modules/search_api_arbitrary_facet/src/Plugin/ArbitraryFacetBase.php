@@ -12,7 +12,7 @@ abstract class ArbitraryFacetBase extends PluginBase implements ArbitraryFacetIn
   use StringTranslationTrait;
 
   /**
-   * The definition of the arbitrary facet.
+   * {@inheritdoc}
    */
   public function getFacetDefinition() {}
 
