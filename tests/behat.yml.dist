@@ -31,6 +31,8 @@ default:
         Header: '.section--featured'
         Left sidebar: '.section--sidebar-left'
         Header menu: '#block-joinup-theme-main-menu'
+        Main solution vertical tab: '#edit-group-main'
+        Management solution vertical tab: '#edit-group-management'
         Modal content: '#drupal-modal'
         Modal buttons: '.ui-dialog-buttonpane'
         Navigation menu block: '#block-navigation'

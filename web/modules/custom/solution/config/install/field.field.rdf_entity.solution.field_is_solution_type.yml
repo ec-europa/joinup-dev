@@ -16,7 +16,7 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: grouped_rdf_taxonomy_term_selection
+  handler: 'grouped_rdf_taxonomy_term_selection:default'
   handler_settings:
     target_bundles:
       eira: eira

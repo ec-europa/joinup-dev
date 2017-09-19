@@ -164,6 +164,17 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | subject   | Joinup: Content has been deleted                                                                                                                |
       | body      | Facilitator CC Facilitator has approved your request of deletion for the event - "CC notify pre delete" in the collection: "CC pre collection". |
 
+    When all e-mails have been sent
+    And I am logged in as "CC facilitator"
+    And I go to the "CC notify pre request deletion" event
+    And I click "Edit" in the "Entity actions" region
+    And I click "Delete"
+    And I press "Delete"
+    Then the following email should have been sent:
+      | recipient | CC member                                                                                                                                                 |
+      | subject   | Joinup: Content has been deleted                                                                                                                          |
+      | body      | Facilitator CC Facilitator has approved your request of deletion for the event - "CC notify pre request deletion" in the collection: "CC pre collection". |
+
     # Test 'delete' operation on an entity in 'validated' state.
     When all e-mails have been sent
     And I am logged in as "CC facilitator"

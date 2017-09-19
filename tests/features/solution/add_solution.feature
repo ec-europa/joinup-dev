@@ -29,7 +29,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  @terms
+  @terms @email
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
@@ -38,9 +38,17 @@ Feature: "Add solution" visibility options.
     And the following owner:
       | name                 | type                         |
       | Organisation example | Company, Industry consortium |
-    And I am logged in as a facilitator of the "Belgian barista's" collection
+    Given users:
+      | Username      | Roles     | E-mail                 | First name | Family name |
+      | Ruth Lee      | moderator | Ruth.Lee@test.com      | Ruth       | Lee         |
+      | Wendell Silva |           | Wendell.Silva@test.com | Wendell    | Silva       |
+    And collection user memberships:
+      | collection        | user          | roles              |
+      | Belgian barista's | Wendell Silva | owner, facilitator |
 
-    When I go to the homepage of the "Belgian barista's" collection
+    When all e-mails have been sent
+    And I am logged in as "Wendell Silva"
+    And I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
@@ -49,8 +57,6 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3567
     And I should not see the text "Only members can create new content"
     And I should see the text "Only solution facilitators can create new content"
-    # The TRR fieldgroup should only be visible inside the TRR collection.
-    And I should not see the text "TRR"
     # Regression test to endure that the language terms "Multilingual Code" are not present.
     And the available options in the "Language" select should not include the "Multilingual Code"
     And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
@@ -62,7 +68,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Ernst Brice                                                   |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -76,17 +82,23 @@ Feature: "Add solution" visibility options.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Completed" from "Status"
     And I press "Propose"
+    Then the following email should have been sent:
+      | recipient | Ruth Lee                                                                                          |
+      | subject   | Joinup: A new solution has been proposed                                                          |
+      | body      | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on Joinup. |
+
     # Regression test for non required fields 'Banner' and 'Logo'.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
-    Then I should not see the following error messages:
+    And I should not see the following error messages:
       | error messages            |
       | Banner field is required. |
       | Logo field is required.   |
     But I should see a logo on the header
     And I should see a banner on the header
     And I should see the heading "Espresso is the solution"
-    When I am logged in as a moderator
-    When I go to the "Espresso is the solution" solution edit form
+    When all e-mails have been sent
+    And I am logged in as "Ruth Lee"
+    And I go to the "Espresso is the solution" solution edit form
     And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
@@ -96,6 +108,10 @@ Feature: "Add solution" visibility options.
     And I should not see the link "Demography"
     And I should not see the link "Belgium"
     And I should not see the link "Flemish"
+    And the following email should have been sent:
+      | recipient | Wendell Silva                                                                                               |
+      | subject   | Joinup: Your solution has been accepted                                                                     |
+      | body      | Your proposed interoperability solution: "Espresso is the solution" has been validated as per your request. |
 
     When I am logged in as a facilitator of the "Belgian barista's" collection
     # Make sure that when another solution is added, both are affiliated.
@@ -108,7 +124,7 @@ Feature: "Add solution" visibility options.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
       | Name             | Ajit Tamboli                                                           |
       | E-mail address   | tambotamboli@gocloud.in                                                |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
@@ -178,10 +194,10 @@ Feature: "Add solution" visibility options.
       | Ocean studies      | validated |
       | Glacier monitoring | validated |
     And the following solution:
-      | title             | Climate change tracker                            |
-      | description       | Atlantic salmon arrived after the Little Ice Age. |
-      | collection        | Ocean studies                                     |
-      | state             | validated                                         |
+      | title       | Climate change tracker                            |
+      | description | Atlantic salmon arrived after the Little Ice Age. |
+      | collection  | Ocean studies                                     |
+      | state       | validated                                         |
     And the following owner:
       | name                | type                             |
       | University of Basel | Academia/Scientific organisation |

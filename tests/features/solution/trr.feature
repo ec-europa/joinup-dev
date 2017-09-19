@@ -4,19 +4,22 @@ Feature: Creating a test (solution) in the TRR collection.
   As a collection facilitator
   I need to be able to add 'test'-enabled solutions.
 
-  @wip
-  # At the moment this test uses the data from the joinup_demo module, and can therefore not be ran on the CI.
-  # This test will be enabled in ISAICP-3493.
+  @terms
   Scenario: Create a TRR solution
+    Given users:
+      | Username | Roles |
+      | Wobbe    |       |
+    Given the following collection:
+      | title | Friends of the test repository |
+      | state | validated                      |
+    And the following collection user memberships:
+      | collection                     | user  | roles |
+      | Friends of the test repository | Wobbe | owner |
     And the following owner:
       | name | type                         |
       | W3C  | Company, Industry consortium |
-    When I go to the homepage
-    And I click "Sign in"
-    And I fill in "Username" with "collection_facilitator"
-    And I fill in "Password" with "collection_facilitator"
-    And I press "Sign in"
-    Given I am on "rdf_entity/http_e_f_fplaceHolder_f4e56d06c_bc8c3_b40fd_bb2a0_b773301ebe9b8"
+    When I am logged in as "Wobbe"
+    Given I go to the homepage of the "Friends of the test repository" collection
     And I click "Add solution"
     And I should see the text "TRR"
 
@@ -28,8 +31,12 @@ Feature: Creating a test (solution) in the TRR collection.
       | Language         | http://publications.europa.eu/resource/authority/language/VLS |
       | Name             | Lucky Luke                                                    |
       | E-mail address   | ernsy1999@gmail.com                                           |
-    Then I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
-    And I select "Whales protection" from "Policy domain"
+    # A "TRR" solution is unlocked by choosing one of the following solution types:
+    # - [ABB128] Test Service
+    # - [ABB129] Test Component
+    # = [ABB130] Test Scenario
+    Then I select "http://data.europa.eu/dr8/TestService" from "Solution type"
+    And I select "Supplier exchange" from "Policy domain"
     # Attach a PDF to the documentation.
     And I upload the file "text.pdf" to "Upload a new file or enter a URL"
     # Click the button to select an existing owner.
@@ -39,13 +46,15 @@ Feature: Creating a test (solution) in the TRR collection.
     And I select "Completed" from "Status"
 
     # Fill in TRR specific data.
-    Then I select the radio button "Test resource"
-    And I select "Test Bed" from "Test resource type"
+    And I select "Test Suite" from "Test resource type"
     And I select "Agent" from "Actor"
     And I fill in "Business process" with "Notification Of Failure"
     And I fill in "Product type" with "Soya beans"
-
-    Then I press "Propose"
+    And I select "Level 1" from "Standardization level"
+    And I press "Propose"
+    Then I should see the error message "Test resource type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."
+    When I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    And I press "Propose"
     Then I should see the heading "Linked Open Data"
 
   Scenario: TRR distribution
