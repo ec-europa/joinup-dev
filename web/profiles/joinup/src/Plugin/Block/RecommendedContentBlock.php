@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
