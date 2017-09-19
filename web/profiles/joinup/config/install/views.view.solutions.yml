@@ -192,7 +192,7 @@ display:
           decimal: .
           separator: ','
           format_plural: false
-          format_plural_string: "1\x03@count"
+          format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
           plugin_id: numeric
@@ -485,20 +485,7 @@ display:
             label: ''
           plugin_id: search_api
       title: Solutions
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: '<p>A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.</p>'
-            format: content_editor
-          plugin_id: text
+      header: {  }
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -511,7 +498,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
       tags: {  }
   page_1:
     display_plugin: page
@@ -527,5 +513,4 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
       tags: {  }
