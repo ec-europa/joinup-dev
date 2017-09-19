@@ -1,4 +1,4 @@
-@api
+@api @wip
 Feature: User subscription settings
   As a user I must be able to set and view my subscription settings.
 

@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: release_request_changes
+label: 'Solution release request changes'
+description: 'Template 23: Solution release request changes'
+text:
+  -
+    value: 'Joinup: Modification of a release of your solution has been requested'
+    format: full_html
+  -
+    value: "<p>the Joinup moderation team requires editing the release @entity:title, @entity:field_isr_release_number of the solution @group:title due to @transition:motivation.</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

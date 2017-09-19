@@ -222,6 +222,7 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
   foreach (['default', 'draft'] as $graph) {
     $storage->setRequestGraphs($collection_id, [$graph]);
     $collection = $storage->load($collection_id);
+    $storage->getGraphHandler()->resetRequestGraphs([$collection_id]);
     if (empty($collection)) {
       continue;
     }

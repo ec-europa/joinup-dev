@@ -23,7 +23,7 @@ Feature: User interface for the File URL field
     But the following fields should not be visible "Choose a file,Remote URL"
     And I should not see the text "Allowed types: txt doc docx pdf."
     And I should not see the description "This must be an external URL such as http://example.com." for "Upload a new file or enter a URL"
-    And I click "Management"
+    And I click "Additional fields"
     # Try to upload a file.
     Given I select the radio button "Upload file"
     Then the following field should be visible "Choose a file"
