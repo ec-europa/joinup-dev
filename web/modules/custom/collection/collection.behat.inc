@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Controller\SiteFeatureController;
+use Drupal\joinup\Controller\SitePinController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -209,6 +210,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'spatial coverage' => 'field_spatial_coverage',
       'state' => 'field_ar_state',
       'featured' => SiteFeatureController::FEATURED_FIELD,
+      'pinned site-wide' => SitePinController::PINNED_FIELD,
     ];
   }
 
@@ -265,6 +267,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         'archived' => 'archived',
       ],
       SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
+      SitePinController::PINNED_FIELD => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
