@@ -6,69 +6,69 @@
 
 // Elements
 // --------------------------------------------------
-.share-box__item
-  display: block
-  margin-left: 5px
-  text-decoration: none
-
-.share-box__item-icon
-  display: none
-  color: $color-blue-dark
-  +icon-size(50px)
-
 .share-box__row
   position: relative
   min-height: 50px
   margin-bottom: 20px
-  .form-type-checkbox
-    position: absolute
-    top: 0
-    bottom: 0
-    left: 0
-    margin: auto
-    .form__label
-      display: none
+  &:last-child
+    border-bottom: none
+    min-height: auto
+    margin-bottom: 0
 
-.share-box__item-image
-  padding-right: 10px
-  img
-    max-width: 50px
-    max-height: 50px
+.share-box__item
+  text-decoration: none
 
-.share-box__item-image,
-.share-box__item-label,
-.share-box__item-social-icon
-  display: table-cell
-  vertical-align: middle
+.share-box__label
+  margin-left: 14px
+  color: $color-base
+  font-size: $font-size-base
+  font-weight: $font-weight
 
-.share-box__item-label
-  width: 100%
+.share-box__image img
+  max-width: 50px
+  max-height: 50px
 
-.share-box__item-social-icon
-  padding-right: 10px
-  +icon-size(50px)
+.share-box__social-icon
   color: $color-blue-dark
-
+  +icon-size(50px)
+  
 .share-box__container
   max-width: $screen-sm
-  fieldset
-    margin-bottom: 0
   +breakpoint(tablet)
     min-width: $screen-sm
 
 .share-box__title
-  color: $color-base
   margin-top: 0
+  color: $color-base
+
+.share-box__social
+  .share-box__item
+    display: flex
+    align-items: center
+    margin-left: 5px
 
 .share-box__collections
   .share-box__row
     padding-left: 30px
+  .share-box__item
+    display: flex
+    align-items: flex-start
 
 // Modifiers
 // --------------------------------------------------
 
 // Dependiencies
 // --------------------------------------------------
+.share-box__container
+  fieldset
+    margin-bottom: 0
+  .form-type-checkbox
+    position: absolute
+    top: 0
+    left: 0
+    .form__label
+      display: none
+
 .share-content-form
   .form__legend
     margin: 0
@@ -76,3 +76,5 @@
 .ajax-progress-throbber
   .message
     display: none
+
+
