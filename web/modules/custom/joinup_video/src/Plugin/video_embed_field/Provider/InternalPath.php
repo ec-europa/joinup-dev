@@ -4,7 +4,6 @@ namespace Drupal\joinup_video\Plugin\video_embed_field\Provider;
 
 use Drupal\Core\Url;
 use Drupal\video_embed_field\ProviderPluginBase;
-use GuzzleHttp\ClientInterface;
 
 /**
  * An iframe pointing to site itself.
@@ -15,37 +14,6 @@ use GuzzleHttp\ClientInterface;
  * )
  */
 class InternalPath extends ProviderPluginBase {
-
-  /**
-   * The base url of the input.
-   *
-   * @var string
-   */
-  protected $baseUrl;
-
-  /**
-   * Static cache for resolved short URLs.
-   *
-   * @var string[]
-   */
-  protected static $resolvedUrl = [];
-
-  /**
-   * Create a plugin with the given input.
-   *
-   * @param string $configuration
-   *   The configuration of the plugin.
-   * @param string $plugin_id
-   *   The plugin id.
-   * @param array $plugin_definition
-   *   The plugin definition.
-   * @param \GuzzleHttp\ClientInterface $http_client
-   *   An HTTP client.
-   */
-  public function __construct($configuration, $plugin_id, array $plugin_definition, ClientInterface $http_client) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $http_client);
-    $this->baseUrl = $this->getUrlFromInput($configuration['input']);
-  }
 
   /**
    * {@inheritdoc}
@@ -69,7 +37,8 @@ class InternalPath extends ProviderPluginBase {
   /**
    * {@inheritdoc}
    *
-   * The internal provider needs the url to match the base url to be applicable.
+   * The internal provider needs the URL to match the base URL in order to be
+   * applicable.
    */
   public static function isApplicable($input) {
     $applicable = parent::isApplicable($input);
@@ -87,7 +56,7 @@ class InternalPath extends ProviderPluginBase {
    *   An array of matches related to the url. The two specific values returned
    *   are id and base_url.
    */
-  public static function getDataFromInput($input) {
+  protected static function getDataFromInput($input) {
     preg_match('#^(?:(?:https?:)?//)?(?<base_url>[^/]+)/(index\.php\?q=)?(?<id>[^&\?\#]+)(.*?)#i', $input, $matches);
     return $matches;
   }
@@ -109,19 +78,9 @@ class InternalPath extends ProviderPluginBase {
    * @return mixed
    *   The base url.
    */
-  public static function getUrlFromInput($input) {
+  protected static function getUrlFromInput($input) {
     $matches = static::getDataFromInput($input);
     return isset($matches['base_url']) ? $matches['base_url'] : FALSE;
-  }
-
-  /**
-   * Returns the base url.
-   *
-   * @return string
-   *   The base url.
-   */
-  public function getBaseUrl() {
-    return $this->baseUrl;
   }
 
   /**
