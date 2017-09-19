@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_request_changes
+label: 'Solution request changes'
+description: 'Template 15: Moderator requests changes'
+text:
+  -
+    value: 'Joinup: You are requested to update your solution'
+    format: full_html
+  -
+    value: "<p>the moderator has requested you to modify the interoperability solution - @entity:title following the following advises: @transition:motivation.</p>\r\n<p>Your content has been moved back in needs updates state and you can update it and request a new publication.</p>\r\n<p>You can access your content at the following link: <a href=\"@entity:url\">@entity:url</a></p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
