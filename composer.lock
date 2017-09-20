@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "82f9f2fff3d2704953df3dc3d2921ecd",
+    "content-hash": "e35cbf047f53a35f31143bdacf1b2039",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15,7 +15,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-03-23T16:26:10+00:00"
+            "time": "2017-03-23 16:26:10"
         },
         {
             "name": "alchemy/zippy",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.7",
+            "version": "3.36.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76"
+                "reference": "f133e6583f67c2ffe490527dc741ec9ad32c4325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/421088947540b1c7956cd693b032124e2c74eb76",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f133e6583f67c2ffe490527dc741ec9ad32c4325",
+                "reference": "f133e6583f67c2ffe490527dc741ec9ad32c4325",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-13T18:56:17+00:00"
+            "time": "2017-09-18T22:37:10+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,16 +686,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "2.4.13",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "abb685e42c83d0b698b4e22059e5d505588f7d3c"
+                "reference": "7a634471471b913e63888b64b626b544799db282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/abb685e42c83d0b698b4e22059e5d505588f7d3c",
-                "reference": "abb685e42c83d0b698b4e22059e5d505588f7d3c",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/7a634471471b913e63888b64b626b544799db282",
+                "reference": "7a634471471b913e63888b64b626b544799db282",
                 "shasum": ""
             },
             "require": {
@@ -734,20 +734,20 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-08-28T20:16:37+00:00"
+            "time": "2017-09-18T21:45:28+00:00"
         },
         {
             "name": "consolidation/config",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
-                "reference": "e3c7311f8926488fe2fbce0ec6af56be417da504"
+                "reference": "bcff5f4057c6ece20794d58dfc9e56919e2b33b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/config/zipball/e3c7311f8926488fe2fbce0ec6af56be417da504",
-                "reference": "e3c7311f8926488fe2fbce0ec6af56be417da504",
+                "url": "https://api.github.com/repos/consolidation/config/zipball/bcff5f4057c6ece20794d58dfc9e56919e2b33b7",
+                "reference": "bcff5f4057c6ece20794d58dfc9e56919e2b33b7",
                 "shasum": ""
             },
             "require": {
@@ -783,7 +783,7 @@
                 }
             ],
             "description": "Provide configuration services for a commandline tool.",
-            "time": "2017-07-28T18:05:53+00:00"
+            "time": "2017-09-16T23:24:55+00:00"
         },
         {
             "name": "consolidation/log",
@@ -1742,7 +1742,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2471,7 +2475,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -2972,7 +2976,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
             },
-            "time": "2016-11-14T20:32:26+00:00"
+            "time": "2016-11-14 20:32:26"
         },
         {
             "name": "drupal/linkit",
@@ -3023,7 +3027,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29T21:27:56+00:00"
+            "time": "2017-05-29 21:27:56"
         },
         {
             "name": "drupal/mailsystem",
@@ -3114,7 +3118,7 @@
                 "source": "https://github.com/Gizra/message/tree/8.x-1.x",
                 "issues": "https://github.com/Gizra/message/issues"
             },
-            "time": "2017-04-03T16:46:18+00:00"
+            "time": "2017-04-03 16:46:18"
         },
         {
             "name": "drupal/message_notify",
@@ -3304,7 +3308,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta5",
-                    "datestamp": "1501412343"
+                    "datestamp": "1501412343",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3413,7 +3421,7 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2017-08-14T13:20:41+00:00"
+            "time": "2017-09-06 15:58:25"
         },
         {
             "name": "drupal/og_menu",
@@ -3540,7 +3548,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27T15:47:09+00:00"
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/pathauto",
@@ -3596,7 +3604,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
             },
-            "time": "2017-08-23T20:51:31+00:00"
+            "time": "2017-08-23 20:51:31"
         },
         {
             "name": "drupal/persistent_login",
@@ -3616,7 +3624,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684"
+                    "datestamp": "1488538684",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3635,10 +3647,6 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -3650,7 +3658,7 @@
                 "source": "http://cgit.drupalcode.org/persistent_login",
                 "issues": "http://drupal.org/project/issues/persistent_login"
             },
-            "time": "2017-03-03T10:53:37+00:00"
+            "time": "2017-03-03 10:53:37"
         },
         {
             "name": "drupal/phingdrushtask",
@@ -3742,7 +3750,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2017-09-01T16:27:45+00:00"
+            "time": "2017-09-01 16:27:45"
         },
         {
             "name": "drupal/piwik",
@@ -3925,7 +3933,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
             },
-            "time": "2017-02-08T04:20:19+00:00"
+            "time": "2017-02-08 04:20:19"
         },
         {
             "name": "drupal/rdf_entity",
@@ -4046,7 +4054,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/redirect"
             },
-            "time": "2017-08-26T11:22:53+00:00"
+            "time": "2017-08-26 11:22:53"
         },
         {
             "name": "drupal/search_api",
@@ -4115,21 +4123,21 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "2559a2d54867632b2b0fac12e634da3eb820993d"
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "ff124407b883c9e56030e8c10dcd8827c922cceb"
             },
             "require": {
                 "drupal/core": "~8.0",
-                "drupal/search_api": "~1.2",
+                "drupal/search_api": "~1.3",
                 "solarium/solarium": "3.8.*"
             },
             "require-dev": {
@@ -4148,15 +4156,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1498580642",
+                    "version": "8.x-1.1",
+                    "datestamp": "1505488144",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4544,17 +4549,11 @@
         },
         {
             "name": "drupal/video_embed_field",
-            "version": "1.5.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/video_embed_field",
-                "reference": "8.x-1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
+                "reference": "037b6d4529a501ce4f2cb9f4312929524956fc3d"
             },
             "require": {
                 "drupal/core": "*"
@@ -4571,15 +4570,16 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1498636443",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     },
                     "package": "Field types"
                 },
                 "patches_applied": {
-                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                    "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                    "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/2908828-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4604,7 +4604,8 @@
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
                 "source": "http://cgit.drupalcode.org/video_embed_field"
-            }
+            },
+            "time": "2017-06-28 07:50:52"
         },
         {
             "name": "drupal/view_unpublished",
@@ -4740,7 +4741,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara??a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -4867,7 +4868,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-31T12:05:17+00:00"
+            "time": "2017-07-31 12:05:17"
         },
         {
             "name": "egulias/email-validator",
@@ -5283,7 +5284,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2017-07-12 23:38:25"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -5427,7 +5428,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch??nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5578,7 +5579,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6080,7 +6081,7 @@
                 }
             ],
             "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2017-08-23T19:37:51+00:00"
+            "time": "2017-08-23 19:37:51"
         },
         {
             "name": "pfrenssen/piwik-reporting-api",
@@ -6105,6 +6106,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -6115,11 +6117,7 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
-            "time": "2017-07-17T09:33:42+00:00"
+            "time": "2017-07-17 09:33:42"
         },
         {
             "name": "phing/phing",
@@ -6341,7 +6339,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-09-07T17:52:27+00:00"
+            "time": "2017-09-11 16:06:48"
         },
         {
             "name": "psr/cache",
@@ -7429,7 +7427,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran??ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -9512,7 +9510,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -9636,7 +9634,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1505199844"
+                    "datestamp": "1505199844",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9733,7 +9735,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1505141044"
+                    "datestamp": "1505141044",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9752,6 +9758,10 @@
                 {
                     "name": "chx",
                     "homepage": "https://www.drupal.org/user/9446"
+                },
+                {
+                    "name": "joachim",
+                    "homepage": "https://www.drupal.org/user/107701"
                 },
                 {
                     "name": "nedjo",
@@ -9809,7 +9819,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -9833,17 +9843,17 @@
         },
         {
             "name": "drupal/config_update",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_update",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "4fc57add91c090ea3c9ed4848579b450253b1eed"
+                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "0de82ba4aa7caf054711ab16ad038765215a489d"
             },
             "require": {
                 "drupal/core": "*"
@@ -9854,8 +9864,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1484770683",
+                    "version": "8.x-1.4",
+                    "datestamp": "1505755744",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9900,7 +9910,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha6+0-dev",
-                    "datestamp": "1493675943"
+                    "datestamp": "1493675943",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9946,7 +9960,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-05-01T21:54:12+00:00"
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -9975,7 +9989,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1502732044",
+                    "datestamp": "1502736865",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10085,7 +10099,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-09T08:39:37+00:00"
+            "time": "2017-04-09 08:39:37"
         },
         {
             "name": "drupal/drupal-extension",
@@ -10146,7 +10160,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-09-13T19:53:22+00:00"
+            "time": "2017-09-13 19:53:22"
         },
         {
             "name": "fabpot/goutte",
@@ -10297,7 +10311,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -10354,7 +10368,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -11492,6 +11506,7 @@
         "drupal/r4032login": 20,
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
+        "drupal/video_embed_field": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
         "jacklmoore/autosize": 20,
