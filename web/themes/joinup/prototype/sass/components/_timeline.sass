@@ -63,12 +63,14 @@
 .timeline__release-content
   position: relative
   margin: 0
-  padding: 20px 10px
+  padding: 20px
   background-color: #fff
   +breakpoint(sm-mobile, mobile)
     width: 100%
   +breakpoint(tablet)
     margin: 20px 0 0 20px
+    padding-right: 10px
+    padding-left: 10px
   &:before
     position: absolute
     top: 20px
@@ -84,29 +86,37 @@
       display: block
 
 .timeline__meta
-  margin-right: 30px
-  margin-left: 30px
+  +breakpoint(tablet)
+    margin-right: 30px
+    margin-left: 30px
 
 .timeline__release-title
-  margin: 0 0 10px 0
-  > a
-    text-decoration: none
-    color: #000
+  margin-top: 0
+  margin-bottom: 20px
 
 .timeline__release-abstract
   color: $color-grey-medium
+  margin-bottom: 20px
+  p:last-child
+    margin-bottom: 0
 
 .timeline__listing-block-title
-  margin: 0 30px 30px 30px
+  margin-top: 0
+  +breakpoint(tablet)
+    margin-left: 30px
+    margin-right: 30px
+    margin-bottom: 20px
 
 .timeline__listing
   overflow: hidden
 
 .timeline__listing-item
   overflow: hidden
-  margin: 0 30px 10px 30px
+  margin-top: 0
+  margin-bottom: 10px
+  &:last-child
+    margin-bottom: 0
   +breakpoint(tablet)
-    margin: 0 0 10px 0
     padding: 20px 30px
     background-color: #f0f7f7
 
@@ -125,6 +135,10 @@
   .value
     +breakpoint(sm-mobile, mobile)
       font-size: $font-size-small
+
+.timeline__read-more
+  margin-top: 20px
+  text-align: right
 
 // Modifiers
 // --------------------------------------------------
