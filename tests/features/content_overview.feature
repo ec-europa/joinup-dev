@@ -24,21 +24,21 @@ Feature: Content Overview
       | welshbuzzard | Titus      | Nicotera    | nicotito@example.org |
       | hatchingegg  | Korinna    | Morin       | korimor@example.com  |
     And the following collections:
-      | title             | description        | state     | moderation |
-      | Rumble collection | Sample description | validated | yes        |
+      | title             | description        | state     | moderation | featured |
+      | Rumble collection | Sample description | validated | yes        | yes      |
     And "event" content:
       | title           | collection        | state     | created           |
       | Seventh Windows | Rumble collection | validated | 2018-10-03 4:21am |
     And "news" content:
-      | title            | collection        | state     | author       | created           |
-      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am |
-      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am |
+      | title            | collection        | state     | author       | created           | featured |
+      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am | yes      |
+      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am | no       |
     And "document" content:
       | title             | collection        | state     | created           |
       | History of Flight | Rumble collection | validated | 2018-10-03 4:19am |
     And "discussion" content:
-      | title            | collection        | state     | author      | created           |
-      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am |
+      | title            | collection        | state     | author      | created           | featured |
+      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am | yes      |
 
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
