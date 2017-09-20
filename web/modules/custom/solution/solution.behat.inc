@@ -455,6 +455,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
+      'author' => 'uid',
       'uri' => 'id',
       'author' => 'uid',
       'title' => 'label',
