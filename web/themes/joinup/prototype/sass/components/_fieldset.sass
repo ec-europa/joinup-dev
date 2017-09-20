@@ -19,11 +19,18 @@
     margin-bottom: 0
 
 .fieldset__field-label
-  margin-top: 0
   font-weight: $font-weight-medium
+  margin-top: 0
 
 .fieldset__title
   margin-top: 0
+
+.fieldset
+  p:last-child
+    margin-bottom: 0
+  img
+    max-width: 100%
+    height: auto
 
 // Modifiers
 // --------------------------------------------------
@@ -31,16 +38,16 @@
   margin-top: 40px
 
 .fieldset--box
-  background: $color-grey-lighter
-  padding: 20px
   margin: $form-margin -20px
+  padding: 20px
+  background: $color-grey-lighter
   +breakpoint(tablet)
-    margin-left: -30px
     margin-right: -30px
+    margin-left: -30px
     padding: 40px 30px
   +breakpoint(desktop)
-    margin-left: -60px
     margin-right: -60px
+    margin-left: -60px
     padding: 40px 60px
   &:last-child
     margin-bottom: -20px
@@ -55,8 +62,8 @@
 
 .fieldset--border-bottom
   position: relative
-  padding-bottom: 27px
   margin-bottom: 25px
+  padding-bottom: 27px
   &:before
     position: absolute
     right: -20px
@@ -71,8 +78,6 @@
     +breakpoint(md)
       right: -60px
       left: -60px
-  p:last-child
-    margin-bottom: 0
 
 .fieldset--textarea
   p
