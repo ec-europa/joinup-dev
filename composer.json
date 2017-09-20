@@ -42,13 +42,13 @@
         "drupal/rdf_entity": "^1.0-alpha3",
         "drupal/redirect": "dev-1.x#27e71182610c70636b959d9f4031fe6dd0877d87",
         "drupal/search_api": "~1.0-rc2",
-        "drupal/search_api_solr": "~1.0-rc2",
+        "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "~1.0-alpha3",
         "drupal/social_media_links": "^2.5",
         "drupal/state_machine": "~1.0-beta3",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
-        "drupal/video_embed_field": "~1.5",
+        "drupal/video_embed_field": "dev-1.x#037b6d4529a501ce4f2cb9f4312929524956fc3d",
         "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "^9.0.0-beta4",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
@@ -64,6 +64,7 @@
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
+        "behat/behat": "3.3.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#739b7570f0536bad9b07b511a62c885ee1ec029a",
@@ -160,9 +161,6 @@
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch"
             },
-            "drupal/search_api_solr": {
-                "Document level boost value not inherited from Search API item @see https://www.drupal.org/node/2850160": "https://www.drupal.org/files/issues/document-level-boost--2850160-6.patch"
-            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
@@ -180,7 +178,8 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/2908828-7.patch"
             }
         }
     },
