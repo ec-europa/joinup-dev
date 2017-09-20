@@ -19,33 +19,75 @@ Feature: Input filter
       | Google docs             | Sample docs.google.com iframe      | value: <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" width="100%">Loading...</iframe> - format: content_editor                                                                                                                                                                                                                               | Netflix group | validated |
       | Joinup iframe           | Sample joinup.ec.europa.eu iframe  | value: <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="/homepage" width="100%"></iframe> - format: content_editor                                                                                                                                                                                                                                                                                                                                   | Netflix group | validated |
 
-  Scenario: Ensure all required formats are supported in the content editor.
-    When I go to the "Jessica Jones returns" news
-    Then I should see the "iframe" element in the Content region
-    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube.com/embed/nWHUjuJ8zxE" in the "Content" region
-    When I go to the "Prezi presentation" news
-    Then I see the "iframe" element with the "src" attribute set to "https://prezi.com/embed/lspajpgcpx1k" in the "Content" region
-    When I go to the "Slideshare presentation" news
-    Then I see the "iframe" element with the "src" attribute set to "//www.slideshare.net/slideshow/embed_code/key/hJ3x3pTrtGaatQ" in the "Content" region
-    When I go to the "Google docs" news
-    Then I see the "iframe" element with the "src" attribute set to "https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" in the "Content" region
-    When I go to the "Joinup iframe" news
-    Then I see the "iframe" element with the "src" attribute set to "/homepage" in the "Content" region
-    When I go to the "Luke cage" news
-    Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region
+#  Scenario: Ensure all required formats are supported in the content editor.
+#    When I go to the "Jessica Jones returns" news
+#    Then I should see the "iframe" element in the Content region
+#    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube.com/embed/nWHUjuJ8zxE" in the "Content" region
+#    When I go to the "Prezi presentation" news
+#    Then I see the "iframe" element with the "src" attribute set to "https://prezi.com/embed/lspajpgcpx1k" in the "Content" region
+#    When I go to the "Slideshare presentation" news
+#    Then I see the "iframe" element with the "src" attribute set to "//www.slideshare.net/slideshow/embed_code/key/hJ3x3pTrtGaatQ" in the "Content" region
+#    When I go to the "Google docs" news
+#    Then I see the "iframe" element with the "src" attribute set to "https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" in the "Content" region
+#    When I go to the "Joinup iframe" news
+#    Then I see the "iframe" element with the "src" attribute set to "/homepage" in the "Content" region
+#    When I go to the "Luke cage" news
+#    Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region
+#
+#  @javascript
+#  Scenario: Tags h1, h5, h6 can exist in a formatted text but the user does not have these options on the editor.
+#    When I am logged in as a moderator
+#    And I go to the "Ragged Crying" news
+#    Then I should see an "h1" element with the text "test h1" in the "Content" region
+#    Then I should see an "h2" element with the text "test h2" in the "Content" region
+#    Then I should see an "h3" element with the text "test h3" in the "Content" region
+#    Then I should see an "h4" element with the text "test h4" in the "Content" region
+#    Then I should see an "h5" element with the text "test h5" in the "Content" region
+#    Then I should see an "h6" element with the text "test h6" in the "Content" region
+#
+#    # Ensure that the user does not have access to disallowed paragraph formats.
+#    And I open the header local tasks menu
+#    And I click "Edit" in the "Entity actions" region
+#    Then the paragraph formats in the "Content" field should not contain the "h1, h5, h6" formats
 
-  @javascript
-  Scenario: Tags h1, h5, h6 can exist in a formatted text but the user does not have these options on the editor.
-    When I am logged in as a moderator
-    And I go to the "Ragged Crying" news
-    Then I should see an "h1" element with the text "test h1" in the "Content" region
-    Then I should see an "h2" element with the text "test h2" in the "Content" region
-    Then I should see an "h3" element with the text "test h3" in the "Content" region
-    Then I should see an "h4" element with the text "test h4" in the "Content" region
-    Then I should see an "h5" element with the text "test h5" in the "Content" region
-    Then I should see an "h6" element with the text "test h6" in the "Content" region
+  Scenario: As a community content editor I can embed accepted video iframes
+  into the content field. European Commission videos short URLs are resolved
+  and videos from providers that are not in the 'allowed providers' are
+  stripped out.
+    Given the following collections:
+      | title      | description                                 | logo     | banner     | state     |
+      | Metal fans | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
 
-    # Ensure that the user does not have access to disallowed paragraph formats.
-    And I open the header local tasks menu
-    And I click "Edit" in the "Entity actions" region
-    Then the paragraph formats in the "Content" field should not contain the "h1, h5, h6" formats
+    Given I am logged in as a "facilitator" of the "Metal fans" collection
+    And I go to the homepage of the "Metal fans" collection
+    And I click "Add news" in the plus button menu
+
+    Then I fill in the following:
+      | Headline | United Kingdom Brexit Notification |
+      | Kicker   | Brexit                             |
+    And I fill in "Content" with:
+      """
+      <h2>All bellow videos have 'autoplay' set to TRUE</h2>
+      European Commission videos are allowed.
+      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&videolang=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      European Commission videos (with short URL that will be resolved) are allowed.
+      <iframe src="http://europa.eu/!dV74uw" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      YouTube videos are allowed.
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/xlnYVHRp128?autoplay=1" frameborder="0" allowfullscreen></iframe>
+      Vimeo videos are allowed.
+      <iframe src="https://player.vimeo.com/video/225133231?autoplay=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      Google Docs documents are allowed.
+      <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRib_oIfzdD2c67F-LvjKYCNx4h8Te4j5qxxZh8hZ54ltLQ-VwElT4iV-7hCu2fJYuH_HKCeuXXoDIx/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+      DailyMotion videos are NOT allowed (yet).
+      <iframe frameborder="0" width="480" height="270" src="//www.dailymotion.com/embed/video/x5vl5l0?autoPlay=1" allowfullscreen></iframe>
+      """
+
+    Given I press "Publish"
+    # All allowed videos have now the autoplay set to FALSE.
+    Then the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
+    And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
+    And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
+    And the response should contain "https://player.vimeo.com/video/225133231?autoplay=0"
+    And the response should contain "https://docs.google.com/spreadsheets/d/e/2PACX-1vRib_oIfzdD2c67F-LvjKYCNx4h8Te4j5qxxZh8hZ54ltLQ-VwElT4iV-7hCu2fJYuH_HKCeuXXoDIx/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"
+
+    But the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
