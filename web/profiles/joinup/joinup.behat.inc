@@ -18,8 +18,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\Controller\SiteFeatureController;
-use Drupal\joinup\Controller\SitePinController;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -579,11 +577,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'yes' => 1,
       'no' => 0,
     ], 'sticky');
-    self::convertObjectPropertyValues($node, SiteFeatureController::FEATURED_FIELD, [
+    self::convertObjectPropertyValues($node, 'field_site_featured', [
       'yes' => 1,
       'no' => 0,
     ]);
-    self::convertObjectPropertyValues($node, SitePinController::PINNED_FIELD, [
+    self::convertObjectPropertyValues($node, 'field_site_pinned', [
       'yes' => 1,
       'no' => 0,
     ]);
@@ -640,8 +638,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
         'visits' => 'field_visit_count',
-        'featured' => SiteFeatureController::FEATURED_FIELD,
-        'pinned site-wide' => SitePinController::PINNED_FIELD,
+        'featured' => 'field_site_featured',
+        'pinned site-wide' => 'field_site_pinned',
       ],
     ];
 
