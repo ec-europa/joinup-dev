@@ -1,0 +1,6 @@
+/*
+ Disable the image resizer in the wysiwyg.
+ */
+.cke_image_resizer {
+  display: none  !important;
+}
