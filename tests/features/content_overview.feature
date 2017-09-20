@@ -66,7 +66,7 @@ Feature: Content Overview
     When I click the "Document" content tab
     Then I should see the following facet items "Document, Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
-      | History of Flight  |
+      | History of Flight |
 
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
@@ -90,3 +90,23 @@ Feature: Content Overview
     And I should see the "The Men's Female" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
+
+    When I am logged in as "batbull"
+    And I am on the homepage
+    And I click "Keep up to date"
+    And I click "My content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | The Playful Tale |
+    But I should not see the "Seventh Windows" tile
+    But I should not see the "History of Flight" tile
+    But I should not see the "The Men's Female" tile
+    When I click "All content" in the "My content" inline facet
+    And I click "Featured content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | The Playful Tale  |
+      | The Men's Female  |
+    But I should not see the "History of Flight" tile
+    And I should see the following facet items "Discussion, News" in this order
+    And I should not see the following facet items "Collection"
+    And I should not see the following facet items "Document"
+    And I should not see the following facet items "Event"
