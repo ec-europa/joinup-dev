@@ -3,6 +3,7 @@
 namespace Drupal\joinup_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
@@ -67,6 +68,14 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
 
     }
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    $cache_contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($cache_contexts, ['route']);
   }
 
 }
