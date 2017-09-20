@@ -17,11 +17,10 @@ facet_source_id: 'search_api:views_page__collections__page_1'
 widget:
   type: links_inline
   config:
-    show_numbers: false
+    show_numbers: true
     all_text: 'All collections'
     prefix_text: ''
     suffix_text: ''
-    arbitrary_facet_enabled: 1
     arbitrary_facet_plugin: my_collections
 query_operator: or
 use_hierarchy: false
@@ -34,7 +33,7 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -8
+      sort: -10
     settings:
       sort: DESC
   count_widget_order:
@@ -46,7 +45,7 @@ processor_configs:
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: -10
+      sort: -8
     settings:
       sort: ASC
   url_processor_handler:
