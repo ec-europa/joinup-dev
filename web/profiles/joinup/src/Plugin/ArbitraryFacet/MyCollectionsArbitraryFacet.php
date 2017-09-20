@@ -23,12 +23,12 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase {
       'mine' => [
         'field_name' => 'entity_author',
         'field_condition' => $current_user->id(),
-        'label' => $this->t("My Collections"),
+        'label' => $this->t('My collections'),
       ],
       'featured' => [
         'field_name' => 'site_featured',
         'field_condition' => 'true',
-        'label' => $this->t("Featured collections"),
+        'label' => $this->t('Featured collections'),
       ],
     ];
   }
