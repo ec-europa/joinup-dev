@@ -38,10 +38,6 @@ process:
     source: licence
     migration: licence
     no_stub: true
-
-  # Followup @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3186
-  # field_policy_domain
-
   og_audience:
     plugin: migration
     source: collection
