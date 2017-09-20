@@ -16,7 +16,8 @@ use Solarium\QueryType\Select\Result\Result;
  */
 function search_api_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
   /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
-  $arbitrary_facet_manager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
+  $arbitrary_facet_manager = \Drupal::getContainer()
+    ->get('plugin.manager.arbitrary_facet');
 
   /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
   $facet_set = $solarium_query->getFacetSet();
@@ -106,4 +107,16 @@ function search_api_arbitrary_facet_widget_plugin_info_alter(array &$info) {
     $widget_info['decorated_class'] = $widget_info['class'];
     $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
   }
+}
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function search_api_arbitrary_facet_config_schema_info_alter(array &$definitions) {
+  // As the decoration adds keys to the configuration,
+  // we have to add these keys to the schema.
+  $definitions['facet.widget.default_config']['mapping']['arbitrary_facet_plugin'] = [
+    'label' => 'The arbitrary facet plugin',
+    'type' => 'string',
+  ];
 }
