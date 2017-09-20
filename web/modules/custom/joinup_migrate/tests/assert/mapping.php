@@ -224,6 +224,24 @@ $expected_values = [
     'policy2' => 'Open government',
     'row_index' => '41',
   ],
+  144018 => [
+    'type' => 'case_epractice',
+    'collection' => 'Membership testing',
+    'policy2' => 'Open government',
+    'row_index' => '42',
+  ],
+  135110 => [
+    'type' => 'case_epractice',
+    'collection' => 'Membership testing',
+    'policy2' => 'Open government',
+    'row_index' => '43',
+  ],
+  135160 => [
+    'type' => 'case_epractice',
+    'collection' => 'Membership testing',
+    'policy2' => 'Open government',
+    'row_index' => '44',
+  ],
 ];
 
 // Expected logged messages.
