@@ -25,7 +25,7 @@ class GoogleDocs extends ProviderPluginBase {
   /**
    * Create a plugin with the given input.
    *
-   * @param string $configuration
+   * @param array $configuration
    *   The configuration of the plugin.
    * @param string $plugin_id
    *   The plugin id.
@@ -34,7 +34,7 @@ class GoogleDocs extends ProviderPluginBase {
    * @param \GuzzleHttp\ClientInterface $http_client
    *   An HTTP client.
    */
-  public function __construct($configuration, $plugin_id, array $plugin_definition, ClientInterface $http_client) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ClientInterface $http_client) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $http_client);
     $this->docType = $this->getTypeFromInput($configuration['input']);
   }
@@ -46,7 +46,13 @@ class GoogleDocs extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'google_docs',
-      '#url' => sprintf('https://docs.google.com/%s/d/%s/viewform?embedded=true', $this->getDocType(), $this->getVideoId()),
+      '#url' => $this->getInput(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;
@@ -62,7 +68,7 @@ class GoogleDocs extends ProviderPluginBase {
    *   An array of matches related to the url. The two specific values returned
    *   are id and type.
    */
-  public static function getDataFromInput($input) {
+  protected static function getDataFromInput($input) {
     preg_match('#^(?:(?:https?:)?//)?docs\.google\.com/(?<type>[^/]+)/d/(e/)?(?<id>[^/]+).*?#i', $input, $matches);
     return $matches;
   }
@@ -76,7 +82,7 @@ class GoogleDocs extends ProviderPluginBase {
   }
 
   /**
-   * Return the google document type.
+   * Returns the google document type.
    *
    * @param string $input
    *   The input url.
@@ -85,7 +91,7 @@ class GoogleDocs extends ProviderPluginBase {
    *   The type of the document, e.g. forms or presentation. False if there is
    *   no match found.
    */
-  public static function getTypeFromInput($input) {
+  protected static function getTypeFromInput($input) {
     $matches = static::getDataFromInput($input);
     return isset($matches['type']) ? $matches['type'] : FALSE;
   }
@@ -103,7 +109,7 @@ class GoogleDocs extends ProviderPluginBase {
    * @return string
    *   The document type.
    */
-  public function getDocType() {
+  protected function getDocType() {
     return $this->docType;
   }
 
