@@ -147,7 +147,6 @@ Feature: Collections Overview
     Then I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
 
-  @javascript
   Scenario: My content facet
     Given user:
       | Username | Carolina Mercedes |
