@@ -1,40 +1,69 @@
-#!/bin/sh
+#!/bin/bash
 
-#export BUILD_VERSION=v1.0
-buildroot=`pwd`
+# This script will build an RPM package intended for deploying on production.
 
-cd ${buildroot}/SOURCES
+# Define paths.
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/../..)
+BUILD_ROOT=${PROJECT_ROOT}/tmp/rpmbuild
 
-git clone git@github.com:ec-europa/joinup-dev.git Joinup-$BUILD_VERSION
-cd Joinup-$BUILD_VERSION
-git checkout tags/$RELEASE_TAG
-echo X-build-id: $BUILD_VERSION > ./buildinfo.ini
+# Determine a version string that identifies the current version. First check if
+# a tag is available for the checked out revision. If that fails, construct a
+# version string consisting of the branch name and the ref.
+cd ${PROJECT_ROOT}
+BUILD_VERSION=$(git describe --exact-match --tags HEAD 2>/dev/null)
 
-rm -rf .gitignore
-rm -rf .git
-rm -rf rpmbuild
+if [ $? -ne 0 ]; then
+  BUILD_VERSION=$(git symbolic-ref --short HEAD)-$(git rev-parse HEAD)
+fi
 
-/usr/local/bin/composer install
-vendor/bin/phing build-dist
+# Download composer dependencies.
+/usr/bin/composer install --no-dev
 
-rm -rf web/sites/default/settings.php
-rm -rf web/sites/default/files
+# Build the site.
+./vendor/bin/phing build-dist
 
-cd web
-cp -R ../../template/* ./
-cd ..
+# Clean up existing builds.
+rm -rf ${BUILD_ROOT}
 
-shopt -s extglob
+# Create a fresh build root containing the scaffolding files.
+cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT}
 
-mkdir Joinup-$BUILD_VERSION
-mv !(Joinup-$BUILD_VERSION) Joinup-$BUILD_VERSION
-tar -cvvzf ../Joinup-$BUILD_VERSION.tar.gz Joinup-$BUILD_VERSION/
-rm -rf Joinup-$BUILD_VERSION
+# Collect the source files for the package.
+SOURCES_DIR=${BUILD_ROOT}/SOURCES
+JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
+mkdir ${JOINUP_DIR}
 
-cd ${buildroot}/SPECS
-rpmbuild -ba joinup.spec --define "_topdir ${buildroot}"
+cp -r config/ src/ vendor/ web/ ${JOINUP_DIR}
 
-cd ${buildroot}/RPMS
+# Replace environment specific files and folders with production symlinks.
+rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
+rm -rf ${JOINUP_DIR}/web/sites/default/files
+cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web
+rm -r ${SOURCES_DIR}/template
+
+# Remove unneeded files.
+# Todo: verify with Francesco if this is OK.
+rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
+
+# Todo: ask Rudi what this file is for. Isn't the version info captured in RPM?
+echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
+
+# Tar up the source files.
+tar -czf ${SOURCES_DIR}/Joinup-${BUILD_VERSION}.tar.gz -C ${SOURCES_DIR} Joinup-${BUILD_VERSION}/
+rm -rf ${JOINUP_DIR}
+
+# Todo: The following is for Rudi :)
+exit 0
+
+# Copy files to the production build storage of the EC.
+# Todo: This should be a separate step so this script can also be used outside
+# of the European Commission.
+
+cd ${BUILD_ROOT}/SPECS
+rpmbuild -ba joinup.spec --define "_topdir ${BUILD_ROOT}"
+
+cd ${BUILD_ROOT}/RPMS
 cp -R noarch /mnt/shared/distribution/
 rm -rf noarch
 cd /mnt/shared/distribution/
