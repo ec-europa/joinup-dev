@@ -1,5 +1,5 @@
 @api
-Feature: "Add discussion" visibility options.
+Feature: Discussions added to collections
   In order to manage discussions
   As a collection member
   I need to be able to add "Discussion" content through UI.
@@ -81,3 +81,27 @@ Feature: "Add discussion" visibility options.
     When I go to the homepage of the "The World of the Waves" collection
     Then I should see the link "An amazing discussion"
     And I should see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
+    # Initially there are 0 comments on the discussion.
+    And I should see the text "0" in the "An amazing discussion" tile
+
+    # Make sure that the page is cached, so that we can ascertain that adding a
+    # comment will invalidate the cache.
+    # @todo: uncomment when ISAICP-3899 is fixed.
+    # When I reload the page
+    # Then the page should be cached
+
+    # Create two new comments and check that the counter is incremented.
+    Given comments:
+      | message                | author    | parent                |
+      | Product up and running | kesha1988 | An amazing discussion |
+      | Smart contract         | kesha1988 | An amazing discussion |
+    When I reload the page
+    Then I should see the text "2" in the "An amazing discussion" tile
+    And I should not see the text "0" in the "An amazing discussion" tile
+
+    # Check that the page cache has been correctly invalidated, and a reload
+    # will serve again from cache.
+    # @todo: uncomment when ISAICP-3899 is fixed.
+    # And the page should not be cached
+    # When I reload the page
+    # Then the page should be cached

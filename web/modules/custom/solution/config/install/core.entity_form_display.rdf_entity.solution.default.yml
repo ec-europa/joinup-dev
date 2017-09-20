@@ -36,6 +36,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_wiki
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
+    - field.field.rdf_entity.solution.field_site_featured
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - image.style.thumbnail
@@ -108,12 +109,13 @@ third_party_settings:
       weight: 21
       format_type: tab
       format_settings:
+        label: 'Additional fields'
+        formatter: closed
+        description: 'Contains all optional fields providing additional information on the solution'
+        required_fields: true
         id: ''
         classes: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-      label: Management
+      label: 'Additional fields'
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
@@ -348,6 +350,7 @@ hidden:
   field_is_webdav_creation: true
   field_is_webdav_url: true
   field_is_wiki: true
+  field_site_featured: true
   langcode: true
   translation: true
   uid: true

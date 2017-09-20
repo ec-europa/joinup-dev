@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: distribution_delete
+label: 'Solution distribution delete'
+description: 'Template 22: Distribution delete'
+text:
+  -
+    value: 'Joinup: A distribution has been deleted'
+    format: full_html
+  -
+    value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully deleted.'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
