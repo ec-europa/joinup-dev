@@ -11,7 +11,7 @@
 # No debuginfo:
 %define debug_package %{nil}
 
-%define name      Joinup
+%define name      joinup
 %define summary   Joinup Main website
 %define version   %(echo $BUILD_VERSION)
 %define release   Base
