@@ -191,6 +191,20 @@
         </reflexive>
     </target>
 
+    <!-- Export complete site configuration. -->
+    <target name="export-config">
+        <!-- Make sure the config directory exists. -->
+        <mkdir dir="${config.dir}" />
+        <drush
+            command="config-export"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <option name="destination" value="${config.dir}" />
+        </drush>
+    </target>
+
     <target
         name="enable-config-read-only"
         depends="writable-settings-folder, writable-settings-php"
@@ -204,7 +218,7 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="compile-sass" />
+        depends="install-composer-dependencies-dist, compile-sass, setup-virtuoso-permissions, purge-rdf-backend, install, export-config" />
 
     <target
         name="build-dev"
