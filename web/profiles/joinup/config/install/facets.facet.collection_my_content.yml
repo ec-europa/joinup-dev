@@ -7,7 +7,7 @@ dependencies:
   module:
     - search_api
 id: collection_my_content
-name: 'My collections'
+name: 'My content (Collection)'
 url_alias: collection_my_content
 weight: 0
 min_count: 1
