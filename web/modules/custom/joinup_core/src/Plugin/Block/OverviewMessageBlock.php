@@ -80,8 +80,8 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    $cache_contenxts = parent::getCacheContexts();
-    return Cache::mergeContexts($cache_contenxts, ['route']);
+    $cache_contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($cache_contexts, ['route']);
   }
 
 }
