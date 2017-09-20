@@ -110,16 +110,12 @@ textarea
         background-image: none
         background: $color-grey-medium
 
-// Contextual behaviour
-// in tiles
+// Contextual links behaviour in tiles.
 .listing__card
   .contextual
-    display: none
-  &:hover,
-  &:focus,
-  &:active
-    .contextual
-      display: block
+    button.trigger
+      // Restore the default absolute positioning applied by .visually-hidden class.
+      position: absolute !important
 
 // Move contextual button to the left
 // on pinned tiles.
