@@ -9,6 +9,7 @@ use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\file\FileInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -65,6 +66,13 @@ class AnonymousDownloadForm extends FormBase {
     $this->file = $file;
 
     $form['#id'] = Html::getId($this->getFormId());
+
+    $form['notice'] = [
+      '#markup' => $this->t('If you do not have a Joinup account, please take some time to create one, at <a href=":register">this page</a>. It will allow you to fully exploit the functionalities of Joinup to create new content, contribute to existing one and collaborate with other users.<br />If you do not want to create a Joinup account, please select any of the following options and provide your email address if you want to be kept updated on the status of the solution. Your personal data will be treated in compliance with the <a href=":legal">legal notice</a>', [
+        ':register' => Url::fromRoute('user.register')->toString(),
+        ':legal' => Url::fromRoute('joinup.legal_notice')->toString(),
+      ]),
+    ];
 
     $form['email'] = [
       '#type' => 'email',
