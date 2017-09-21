@@ -457,7 +457,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     return [
       'author' => 'uid',
       'uri' => 'id',
-      'author' => 'uid',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
