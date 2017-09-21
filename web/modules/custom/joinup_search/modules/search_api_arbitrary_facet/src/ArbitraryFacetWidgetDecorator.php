@@ -2,6 +2,7 @@
 
 namespace Drupal\search_api_arbitrary_facet;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\facets\Widget\WidgetPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\FacetInterface;
@@ -14,6 +15,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  */
 class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
   use StringTranslationTrait;
+  use DependencySerializationTrait;
 
   /**
    * The decorated widget.

@@ -146,3 +146,24 @@ Feature: Collections Overview
     When I go to the homepage of the "Jira" collection
     Then I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
+
+  Scenario: My content facet
+    Given user:
+      | Username | Carolina Mercedes |
+    And user:
+      | Username | Luigi Plant |
+    And the following collections:
+      | title                | state     | featured | author      |
+      | Enemies of the state | validated | yes      | Luigi Plant |
+    And the following collections:
+      | title             | state     | featured | author            |
+      | Fed up meatlovers | validated | no       | Carolina Mercedes |
+      | Ugly farmers      | validated | yes      | Luigi Plant       |
+    When I am logged in as "Carolina Mercedes"
+    When I click "Collections"
+    When I click "My collections" in the "My collections content" inline facet
+    Then I should see the "Fed up meatlovers" tile
+    But I should not see the "Ugly farmers" tile
+    Then I click "Featured collections" in the "My collections content" inline facet
+    And I should see the "Ugly farmers" tile
+    But I should not see the "Fed up meatlovers" tile
