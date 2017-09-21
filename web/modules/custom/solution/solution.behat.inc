@@ -11,7 +11,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -488,7 +487,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
       'collection' => 'field_ar_affiliates',
-      'featured' => SiteFeatureController::FEATURED_FIELD,
+      'featured' => 'field_site_featured',
+      'pinned site-wide' => 'field_site_pinned',
     ];
   }
 
@@ -521,7 +521,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
-      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
+      'field_site_featured' => ['no' => 0, 'yes' => 1],
+      'field_site_pinned' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {

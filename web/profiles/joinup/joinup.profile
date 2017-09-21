@@ -14,7 +14,6 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
@@ -407,7 +406,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
-  if ($entity->hasField(SiteFeatureController::FEATURED_FIELD) && $entity->get(SiteFeatureController::FEATURED_FIELD)->value) {
+  if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }

@@ -41,12 +41,14 @@ config_devel:
   - field.storage.comment.field_body
   - field.storage.node.field_shared_in
   - field.storage.node.field_site_featured
+  - field.storage.node.field_site_pinned
   - field.storage.node.field_visit_count
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_site_featured
+  - field.storage.rdf_entity.field_site_pinned
   - field.storage.rdf_entity.field_spatial_coverage
   - field.storage.rdf_entity.field_status
   - field.storage.rdf_entity.field_topic
