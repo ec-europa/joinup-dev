@@ -39,7 +39,7 @@
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
     <!-- Install the website. -->
-    <target name="install" depends="writable-settings-folder, writable-settings-php">
+    <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
             command="site-install"
             assume="yes"
@@ -216,6 +216,30 @@
             <property name="module" value="config_readonly" />
         </phingcall>
         <append destFile="${website.settings.php}" text="$settings['config_readonly'] = TRUE;${line.separator}" />
+    </target>
+
+    <target
+        name="disable-config-read-only"
+        depends="writable-settings-folder, writable-settings-php"
+        description="Make config writable.">
+        <if>
+            <available file="${website.settings.php}" type="file" property="settings.php.available" />
+            <then>
+                <reflexive>
+                    <fileset dir="${website.settings.dir}">
+                        <include pattern="settings.php" />
+                    </fileset>
+                    <filterchain>
+                        <replaceregexp>
+                            <regexp
+                                pattern="^\$settings\['config_readonly'\].*$\n"
+                                replace=""
+                                modifiers="m" />
+                        </replaceregexp>
+                    </filterchain>
+                </reflexive>
+            </then>
+        </if>
     </target>
 
     <target
