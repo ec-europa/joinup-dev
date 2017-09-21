@@ -185,7 +185,7 @@ $row-height-small: 17px
 
 // Set fixed height for fields.
 .listing__card
-  +breakpoint(tablet)
+  +breakpoint(xs)
     min-height: 285px
 
 .listing__title
@@ -200,7 +200,7 @@ $row-height-small: 17px
 .listing__card--asset-distribution,
 .listing__card--asset-release
   .listing__title
-    +number-rows(2, $row-height)
+    +number-rows(3, $row-height)
 
 .listing__author,
 .listing__tags,
@@ -218,7 +218,7 @@ $row-height-small: 17px
 .listing__card--discussion,
 .listing__card--document
   .listing__teaser
-    +number-rows(2, $row-height)
+    +number-rows(4, $row-height)
 
 .listing__card--custom-page
   .listing__teaser
