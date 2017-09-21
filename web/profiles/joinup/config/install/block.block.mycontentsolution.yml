@@ -10,7 +10,7 @@ dependencies:
 id: mycontentsolution
 theme: joinup_theme
 region: filters
-weight: -10
+weight: -9
 provider: null
 plugin: 'facet_block:solution_my_content'
 settings:

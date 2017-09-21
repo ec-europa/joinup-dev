@@ -2,21 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.content_bundle
+    - facets.facet.content_my_content
   module:
     - facets
-    - joinup_core
   theme:
     - joinup_theme
-id: contentbundle
+id: mycontent
 theme: joinup_theme
 region: filters
-weight: -10
+weight: -8
 provider: null
-plugin: 'facet_block:content_bundle'
+plugin: 'facet_block:content_my_content'
 settings:
-  id: 'facet_block:content_bundle'
-  label: 'Content bundle'
+  id: 'facet_block:content_my_content'
+  label: 'My content (Content)'
   provider: facets
   label_display: '0'
 visibility:
