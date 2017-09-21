@@ -57,7 +57,8 @@ echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
 tar -czf ${SOURCES_DIR}/Joinup-${BUILD_VERSION}.tar.gz -C ${SOURCES_DIR} Joinup-${BUILD_VERSION}/ || exit 1
 rm -rf ${JOINUP_DIR} || exit 1
 
-# Todo: The following is for Rudi :)
+# Todo: Exiting here, the remainder is for Rudi :)
+echo "Build is available in ${BUILD_ROOT}."
 exit 0
 
 # Copy files to the production build storage of the EC.
