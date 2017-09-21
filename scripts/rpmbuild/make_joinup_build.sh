@@ -29,7 +29,6 @@ JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 
 mkdir -p ${JOINUP_DIR} || exit 1
 
-cp build* ${JOINUP_DIR}
 cp composer* ${JOINUP_DIR}
 
 # Download composer dependencies.
@@ -39,7 +38,7 @@ cp composer* ${JOINUP_DIR}
 ./vendor/bin/phing build-dist || exit 1
 
 # Collect the source files for the package.
-cp -r config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+cp -r build* config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace environment specific files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php || exit 1
