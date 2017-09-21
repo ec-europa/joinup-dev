@@ -24,21 +24,21 @@ Feature: Content Overview
       | welshbuzzard | Titus      | Nicotera    | nicotito@example.org |
       | hatchingegg  | Korinna    | Morin       | korimor@example.com  |
     And the following collections:
-      | title             | description        | state     | moderation |
-      | Rumble collection | Sample description | validated | yes        |
+      | title             | description        | state     | moderation | featured |
+      | Rumble collection | Sample description | validated | yes        | yes      |
     And "event" content:
       | title           | collection        | state     | created           |
       | Seventh Windows | Rumble collection | validated | 2018-10-03 4:21am |
     And "news" content:
-      | title            | collection        | state     | author       | created           |
-      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am |
-      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am |
+      | title            | collection        | state     | author       | created           | featured |
+      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am | yes      |
+      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am | no       |
     And "document" content:
       | title             | collection        | state     | created           |
       | History of Flight | Rumble collection | validated | 2018-10-03 4:19am |
     And "discussion" content:
-      | title            | collection        | state     | author      | created           |
-      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am |
+      | title            | collection        | state     | author      | created           | featured |
+      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am | yes      |
 
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
@@ -66,7 +66,7 @@ Feature: Content Overview
     When I click the "Document" content tab
     Then I should see the following facet items "Document, Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
-      | History of Flight  |
+      | History of Flight |
 
     # Check page for authenticated users.
     When I am logged in as a user with the "authenticated" role
@@ -90,3 +90,23 @@ Feature: Content Overview
     And I should see the "The Men's Female" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
+
+    When I am logged in as "batbull"
+    And I am on the homepage
+    And I click "Keep up to date"
+    And I click "My content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | The Playful Tale |
+    But I should not see the "Seventh Windows" tile
+    But I should not see the "History of Flight" tile
+    But I should not see the "The Men's Female" tile
+    When I click "All content" in the "My content" inline facet
+    And I click "Featured content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | The Playful Tale  |
+      | The Men's Female  |
+    But I should not see the "History of Flight" tile
+    And I should see the following facet items "Discussion, News" in this order
+    And I should not see the following facet items "Collection"
+    And I should not see the following facet items "Document"
+    And I should not see the following facet items "Event"
