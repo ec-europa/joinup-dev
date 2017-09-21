@@ -1,0 +1,50 @@
+<?php
+
+use Drupal\Core\Site\Settings;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_requirements().
+ *
+ * Adds some additional security related warnings to the status report:
+ * - UID1 should be blocked.
+ * - Config Read Only should be enabled.
+ */
+function joinup_core_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'runtime') {
+    // Check if UID 1 is blocked. Not allowing to log in as the root user
+    // greatly decreases the chances of a privilege escalation bug to do real
+    // damage on production.
+    /** @var \Drupal\user\UserInterface $uid1 */
+    $uid1 = User::load(1);
+    if (!$uid1->isBlocked()) {
+      $requirements['joinup_core_root_user_blocked'] = [
+        'title' => t('Root user access'),
+        'description' => t('Allowing to log in as the root user on production is a security risk.'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('Root user is not blocked'),
+      ];
+    }
+
+    // Check that the Config Read Only module is enabled and activated. This
+    // module ensures that the site configuration is immutable. This greatly
+    // enhances the security of the production environment, and ensures that no
+    // changes are made on production which can be overwritten on a subsequent
+    // update.
+    /** @var \Drupal\Core\Extension\ModuleHandlerInterface $module_handler */
+    $module_handler = \Drupal::service('module_handler');
+    if (!$module_handler->moduleExists('config_readonly') || !Settings::get('config_readonly')) {
+      $requirements['joinup_core_config_readonly'] = [
+        'title' => t('Config Read Only'),
+        'description' => t('On production environments the site configuration should be read-only.'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('Config is writable'),
+      ];
+
+    }
+  }
+
+  return $requirements;
+}
