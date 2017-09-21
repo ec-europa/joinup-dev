@@ -45,7 +45,7 @@ Feature: Solution homepage
       # Created in 8:02am.
       | IS protocol meet-up  |
       # Created in 8:01am.
-      | IS protocol paper 1  |
+      | IS protocol paper    |
       # Created in 7:59am.
       | Protocol draft       |
       # The related solutions is shown in a block later in the page.
