@@ -629,7 +629,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: content
+      path: keep-up-to-date
     cache_metadata:
       max-age: -1
       contexts:

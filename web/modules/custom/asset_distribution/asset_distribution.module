@@ -131,7 +131,11 @@ function asset_distribution_rdf_entity_view(array &$build, EntityInterface $enti
     $licence_field = $distribution->get('field_ad_licence');
     if (!$licence_field->isEmpty()) {
       $licence = $licence_field->first()->get('entity')->getValue();
-      $licences[$licence->id()] = $licence->label();
+      // Check that the license still exists, since this field might be orphaned
+      // and can still be referencing a license entity that was deleted.
+      if (!empty($licence)) {
+        $licences[$licence->id()] = $licence->label();
+      }
     }
   }
 

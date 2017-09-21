@@ -77,6 +77,32 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that certain content type facet items are shown on the page.
+   *
+   * @param string $labels
+   *   A comma-separated list of facet item labels.
+   *
+   * @throws \Exception
+   *   Thrown when a wanted facet item is not shown in the page.
+   *
+   * @When I should see the following facet items :labels in this order
+   */
+  public function assertContentTypeFacetItemsPresent($labels) {
+    $labels = $this->explodeCommaSeparatedStepArgument($labels);
+    $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    $present = [];
+
+    /** @var \Behat\Mink\Element\NodeElement $element */
+    foreach ($elements as $element) {
+      $present[] = $element->getText();
+    }
+
+    $present = array_map('trim', $present);
+    PHPUnit_Framework_Assert::assertEquals($present, $labels);
+  }
+
+  /**
    * Asserts that certain content type facet items are not shown on the page.
    *
    * @param string $labels
@@ -85,25 +111,16 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when an unwanted facet item is shown in the page.
    *
-   * @When I should not see the following facet items :items
+   * @When I should not see the following facet items :labels
    */
   public function assertContentTypeFacetItemsNotPresent($labels) {
     $labels = $this->explodeCommaSeparatedStepArgument($labels);
 
-    $facet = $this->getSession()->getPage()->find('xpath', "//div[@data-drupal-facet-id='field_cp_content_listing_content_type']");
+    $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')]";
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     $present = [];
 
-    // Find all the items shown as tab.
-    $elements = $facet->findAll('xpath', "//div[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')]");
     /** @var \Behat\Mink\Element\NodeElement $element */
-    foreach ($elements as $element) {
-      $present[] = $element->getText();
-    }
-
-    // Find all items shown in the list. The final "text()" is needed to skip
-    // the item count.
-    $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' facet-item ')]/a/text()";
-    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     foreach ($elements as $element) {
       $present[] = $element->getText();
     }
@@ -112,7 +129,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $found = array_intersect($labels, $present);
 
     if ($found) {
-      throw new \Exception('Facet item(s) found, but should not be present: ' . implode(', ', $found));
+      throw new \Exception('Facet item(s) found, but should not: ' . implode(', ', $found));
     }
   }
 
