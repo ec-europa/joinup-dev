@@ -35,7 +35,7 @@ SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 mkdir -p ${JOINUP_DIR}
 
-cp -r config/ src/ vendor/ web/ resources/ ${JOINUP_DIR}
+cp -r config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR}
 cp build* ${JOINUP_DIR}
 cp composer* ${JOINUP_DIR}
 
