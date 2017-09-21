@@ -111,8 +111,6 @@ trait ContextualLinksTrait {
       return [];
     }
 
-    // Focus the element, so that the related contextual markup will be shown.
-    $element->focus();
     // Wait until the contextual module javascript is executed. Markup will be
     // appended upon completion.
     $contextual_button = $this->waitUntil(function () use ($element) {
