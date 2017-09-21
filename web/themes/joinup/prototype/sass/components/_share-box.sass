@@ -31,7 +31,7 @@
 .share-box__social-icon
   color: $color-blue-dark
   +icon-size(50px)
-  
+
 .share-box__container
   max-width: $screen-sm
   +breakpoint(tablet)
@@ -42,12 +42,24 @@
   color: $color-base
 
 .share-box__social
+  margin-bottom: 20px
+  +breakpoint(sm)
+    display: inline-block
+    width: 35%
+    margin-right: 5%
+    vertical-align: top
   .share-box__item
     display: flex
     align-items: center
+    margin-right: 5px
     margin-left: 5px
 
 .share-box__collections
+  +breakpoint(sm)
+    display: inline-block
+    width: 60%
+    margin-left: -4px
+    vertical-align: top
   .share-box__row
     padding-left: 30px
   .share-box__item
@@ -76,5 +88,3 @@
 .ajax-progress-throbber
   .message
     display: none
-
-
