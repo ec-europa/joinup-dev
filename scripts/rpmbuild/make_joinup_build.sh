@@ -38,7 +38,7 @@ mkdir -p ${JOINUP_DIR} || exit 1
 # Collect the source files for the package.
 cp -r build* composer.* config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
-# Replace environment specific files and folders with production symlinks.
+# Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
 rm -rf ${JOINUP_DIR}/web/sites/default/files
 cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web || exit 1
@@ -62,7 +62,7 @@ exit 0
 
 # Copy files to the production build storage of the EC.
 # Todo: This should be a separate step so this script can also be used outside
-# of the European Commission.
+# of the European Commission infrastructure.
 
 cd ${BUILD_ROOT}/SPECS
 rpmbuild -ba joinup.spec --define "_topdir ${BUILD_ROOT}"
