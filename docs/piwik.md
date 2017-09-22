@@ -21,7 +21,7 @@ This will download Piwik in ./vendor/piwik/piwik and start a running instance
 at http://localhost:8000.
 
 Now, visit the web UI at `http://localhost:8000`, or the host and port that were
-configured previously in `./build.properties.local`, and follow the installation
+configured previously in `./build.properties.local` and follow the installation
 wizard. Use the values provided in console by the output of the previous
 `./vendor/bin/phing setup-piwik` command. Check the 'Piwik' section in
 `build.properties` for possible configuration options.
