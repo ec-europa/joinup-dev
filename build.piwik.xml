@@ -7,7 +7,7 @@
         <echo message="Piwik installation requires git and docker-compose to be installed." />
         <echo message="Checking if git is installed. Ref. https://git-scm.com/downloads" />
         <exec
-            command='git --version'
+            command="${git.bin} --version"
             dir="${project.basedir}"
             passthru="true"
             checkreturn="true" />
