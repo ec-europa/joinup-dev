@@ -40,9 +40,6 @@ Feature: Solution homepage
 
   Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution
-    # Regression test for removing the licence field from the solution.
-    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3812
-    Then I should not see the text "Licence: LGPL" in the "Header" region
     # I should see only the related release.
     # And the distribution directly associated.
     And I should see the following tiles in the correct order:
