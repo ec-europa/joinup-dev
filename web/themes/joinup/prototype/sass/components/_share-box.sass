@@ -31,10 +31,14 @@
 .share-box__social-icon
   color: $color-blue-dark
   +icon-size(50px)
-  
+
 .share-box__container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   max-width: $screen-sm
-  +breakpoint(tablet)
+  +breakpoint(sm)
+    flex-direction: row
     min-width: $screen-sm
 
 .share-box__title
@@ -42,14 +46,21 @@
   color: $color-base
 
 .share-box__social
+  margin-bottom: 20px
+  +breakpoint(sm)
+    margin-right: 40px
   .share-box__item
     display: flex
     align-items: center
+    margin-right: 5px
     margin-left: 5px
 
 .share-box__collections
   .share-box__row
+    margin-left: 10px
     padding-left: 30px
+    +breakpoint(sm)
+      margin-left: 0
   .share-box__item
     display: flex
     align-items: flex-start
@@ -76,5 +87,3 @@
 .ajax-progress-throbber
   .message
     display: none
-
-

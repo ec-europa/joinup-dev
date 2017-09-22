@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\search_api\Entity\Index;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,6 +31,13 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * @var \Drupal\Core\Session\AccountProxy
    */
   protected $currentUser;
+
+  /**
+   * A list of entities to render in the block.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityInterface[]
+   */
+  protected $entities = [];
 
   /**
    * The OG membership manager service.
@@ -96,30 +103,27 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   public function build() {
     $count = $this->configuration['count'];
 
-    // @todo Show featured content that is pinned by moderators.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3147
     // @todo Provide tailored content for authenticated users that are not a
     //   member of any group, according to their past browsing behaviour.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3427
-    $entities = [];
+    $this->entities = $this->getPinnedEntities($count);
 
     // If the user is a member of one or more collections or solutions, show
     // the latest content from those.
     $groups = $this->ogMembershipManager->getUserGroups($this->currentUser->getAccount());
     if (!empty($groups['rdf_entity'])) {
-      $entities = $this->getContentFromMemberships($groups, $count - count($entities));
+      $this->entities += $this->getContentFromMemberships($groups, $count - count($this->entities));
     }
-
     // Show popular content to anonymous users and users without memberships.
     else {
-      $entities += $this->getPopularContent($count - count($entities));
+      $this->entities += $this->getPopularContent($count - count($this->entities));
     }
 
     $build = [
       '#attributes' => ['class' => ['listing', 'listing--grid', 'mdl-grid']],
     ];
 
-    foreach ($entities as $entity) {
+    foreach ($this->entities as $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $build[] = [
         '#theme' => 'search_api_field_result',
@@ -129,6 +133,25 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     }
 
     return $build;
+  }
+
+  /**
+   * Retrieves the entities that are pinned site-wide.
+   *
+   * @param int $limit
+   *   The number of results to fetch.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface[]
+   *   An array of pinned entities to render.
+   */
+  protected function getPinnedEntities($limit) {
+    $query = $this->getPublishedIndex()->query();
+    $query->addCondition('site_pinned', TRUE);
+    $query->sort('created', 'DESC');
+    $query->range(0, $limit);
+    $results = $query->execute();
+
+    return $this->getResultEntities($results);
   }
 
   /**
@@ -156,13 +179,13 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       return $rdf_entity->id();
     }, $rdf_entities);
 
-    $index = Index::load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
-    $query = $index->query();
+    $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
     $query->sort('created', 'DESC');
     $query->range(0, $limit);
+    $this->excludeEntitiesFromQuery($query);
     $results = $query->execute();
 
     return $this->getResultEntities($results);
@@ -178,12 +201,12 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   The most popular community content entities.
    */
   protected function getPopularContent($limit) {
-    $index = Index::load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
-    $query = $index->query();
+    $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->sort('field_visit_count', 'DESC');
     $query->range(0, $limit);
+    $this->excludeEntitiesFromQuery($query);
     $results = $query->execute();
 
     return $this->getResultEntities($results);
@@ -214,9 +237,50 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       if (empty($entity) || !$entity->access('view')) {
         continue;
       }
-      $results[] = $entity;
+      $results[$entity->getEntityTypeId() . '/' . $entity->id()] = $entity;
     }
     return $results;
+  }
+
+  /**
+   * Retrieves the published Solr index.
+   *
+   * @return \Drupal\search_api\Entity\Index
+   *   The loaded search index.
+   */
+  protected function getPublishedIndex() {
+    /** @var \Drupal\search_api\Entity\Index $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load('published');
+
+    return $index;
+  }
+
+  /**
+   * Excludes the entities already fetched from the query.
+   *
+   * @param \Drupal\search_api\Query\QueryInterface $query
+   *   The query being run.
+   */
+  protected function excludeEntitiesFromQuery(QueryInterface $query) {
+    if (empty($this->entities)) {
+      return;
+    }
+
+    // The entities can be either rdf entities or nodes. The ID key used in Solr
+    // differs based on their type, so we group them and add the conditions
+    // separately.
+    $exclude = [];
+    foreach ($this->entities as $entity) {
+      $exclude[$entity->getEntityTypeId()][] = $entity->id();
+    }
+
+    if (!empty($exclude['node'])) {
+      $query->addCondition('nid', $exclude['node'], 'NOT IN');
+    }
+
+    if (!empty($exclude['rdf_entity'])) {
+      $query->addCondition('id', $exclude['rdf_entity'], 'NOT IN');
+    }
   }
 
   /**
@@ -253,7 +317,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    */
   public function getCacheTags() {
     // The block should be invalidated whenever any node changes.
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list']);
+    return Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
   }
 
 }

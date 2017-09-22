@@ -14,7 +14,6 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
@@ -349,8 +348,17 @@ function joinup_preprocess_menu__main(&$variables) {
         break;
     }
   }
+  else {
+    $route_name = \Drupal::service('current_route_match')->getRouteName();
+    switch ($route_name) {
+      case 'view.solutions.page_1':
+        $variables['items']['solution.solution_overview']['in_active_trail'] = TRUE;
+        break;
+    }
+  }
 
   $variables['#cache']['contexts'][] = 'og_group_context';
+  $variables['#cache']['contexts'][] = 'url.path';
 }
 
 /**
@@ -398,7 +406,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
-  if ($entity->hasField(SiteFeatureController::FEATURED_FIELD) && $entity->get(SiteFeatureController::FEATURED_FIELD)->value) {
+  if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }

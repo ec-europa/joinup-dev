@@ -17,6 +17,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
+    - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.vertical_medium_image
     - rdf_entity.rdfentity.collection
@@ -98,6 +100,8 @@ hidden:
   field_ar_state: true
   field_collection_content: true
   field_policy_domain: true
+  field_site_featured: true
+  field_site_pinned: true
   field_spatial_coverage: true
   join_collection: true
   langcode: true
