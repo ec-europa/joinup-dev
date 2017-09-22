@@ -317,7 +317,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    */
   public function getCacheTags() {
     // The block should be invalidated whenever any node changes.
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list']);
+    return Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
   }
 
 }
