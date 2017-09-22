@@ -39,15 +39,15 @@ mkdir -p ${JOINUP_DIR} || exit 1
 cp -r build* composer.* config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace environment specific files and folders with production symlinks.
-rm -rf ${JOINUP_DIR}/web/sites/default/settings.php || exit 1
-rm -rf ${JOINUP_DIR}/web/sites/default/files || exit 1
+rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
+rm -rf ${JOINUP_DIR}/web/sites/default/files
 cp -r ${SOURCES_DIR}/template/* ${JOINUP_DIR}/web || exit 1
 rm -r ${SOURCES_DIR}/template || exit 1
 
 # Remove unneeded files.
 rm -rf ${JOINUP_DIR}/build.*local*
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.local.php
-rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype || exit 1
+rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
 
 # Output the version number in a file that will be appended to the HTTP headers.
 echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
