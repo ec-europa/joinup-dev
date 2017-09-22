@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Install, uninstall, schema and requirements hook for Joinup.
+ */
+
 use Drupal\Core\Site\Settings;
 use Drupal\user\Entity\User;
 
