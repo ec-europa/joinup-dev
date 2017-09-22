@@ -15,7 +15,7 @@
 %define summary   Joinup Main website
 %define version   %(echo $BUILD_VERSION)
 %define release   Base
-%define license   GPL
+%define license   EUPL
 %define group     Website
 %define source0   %{name}-%{version}.tar.gz
 %define url       http://www.joinup.ey
