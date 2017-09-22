@@ -48,7 +48,7 @@
         "drupal/state_machine": "~1.0-beta3",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
-        "drupal/video_embed_field": "~1.5",
+        "drupal/video_embed_field": "dev-1.x#037b6d4529a501ce4f2cb9f4312929524956fc3d",
         "drupal/view_unpublished": "~1.0@alpha",
         "drush/drush": "^9.0.0-beta4",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
@@ -146,6 +146,9 @@
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
                 "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch"
             },
+            "drupal/facets": {
+                "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch"
+            },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
@@ -178,7 +181,8 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/2908828-7.patch"
             }
         }
     },

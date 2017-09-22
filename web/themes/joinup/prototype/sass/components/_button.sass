@@ -12,32 +12,31 @@
 // Component
 // --------------------------------------------------
 .button
-  +hidden-print
   font-weight: $font-weight-medium
   line-height: initial
   height: auto
   padding: 15px 30px
+  white-space: nowrap
+  text-decoration: none
   letter-spacing: 2px
+  text-transform: uppercase
   color: #fff
-  border-width: 3px
+  border-width: 3px !important
   border-style: solid
   border-color: $color-blue-lighter
   background-color: $color-blue-lighter !important
   background-image: none !important
+  +hidden-print
   +border-radius(4px)
-  text-decoration: none
-  text-transform: uppercase
-  font-weight: $font-weight-bold
-  white-space: nowrap
 
 // Elements
 // --------------------------------------------------
 .button__no-bg-wrapper
+  position: relative
   display: inline-block
+  height: 22px
   cursor: pointer
   vertical-align: middle
-  height: 22px
-  position: relative
   .icon
     +z-index(highlight)
     +icon-size(10px)
@@ -45,14 +44,14 @@
 
 .button__no-bg
   font-weight: $font-weight-bold
-  letter-spacing: 2px
-  background-color: transparent !important
-  border: none
-  text-transform: uppercase
+  position: relative
+  display: inline-block
   cursor: pointer
   vertical-align: middle
-  display: inline-block
-  position: relative
+  letter-spacing: 2px
+  text-transform: uppercase
+  border: none
+  background-color: transparent !important
   +z-index(highlight+1)
 
 .button__container
@@ -84,9 +83,9 @@
     border: 2px solid $color-blue-medium
     border-radius: 50%
   .button__no-bg
-    color: $color-blue-medium
-    padding: 0 0 0 30px
     line-height: 20px
+    padding: 0 0 0 30px
+    color: $color-blue-medium
   &:hover
     .icon
       color: $color-blue-lighter
@@ -106,3 +105,4 @@
 .adms-validator-form
   .button
     margin-top: $form-margin
+

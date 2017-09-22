@@ -94,7 +94,7 @@ Feature: Asset distribution editing.
     And I go to the "OpenBSD" solution
     # The only download link is the one in the "OpenBSD images" tile.
     Then I click "Download"
-    And I click "Winter of 95 6.1"
+    And I click "Winter of 95"
     # The only download link is the one in the "Changelog" tile.
     And I click "Download"
 
