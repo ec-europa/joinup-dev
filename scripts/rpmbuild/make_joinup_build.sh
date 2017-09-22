@@ -46,7 +46,7 @@ rm -r ${SOURCES_DIR}/template
 # Todo: verify with Francesco if this is OK.
 rm -rf ${JOINUP_DIR}/web/themes/joinup/prototype
 
-# Todo: ask Rudi what this file is for. Isn't the version info captured in RPM?
+# Output the version number in a file that will be appended to the HTTP headers.
 echo X-build-id: $BUILD_VERSION > ${SOURCES_DIR}/buildinfo.ini
 
 # Tar up the source files.
