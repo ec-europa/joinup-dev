@@ -4,6 +4,9 @@
 // Component
 // --------------------------------------------------
 .fieldset
+  margin-bottom: 25px
+  &:last-of-type
+    margin-bottom: 0
 
 // Elements
 // --------------------------------------------------
@@ -16,31 +19,35 @@
     margin-bottom: 0
 
 .fieldset__field-label
-  margin-top: 0
   font-weight: $font-weight-medium
+  margin-top: 0
 
 .fieldset__title
   margin-top: 0
+
+.fieldset
+  p:last-child
+    margin-bottom: 0
+  img
+    max-width: 100%
+    height: auto
 
 // Modifiers
 // --------------------------------------------------
 .fieldset--separated
   margin-top: 40px
-  img
-    width: 100%
-    height: auto
 
 .fieldset--box
-  background: $color-grey-lighter
-  padding: 20px
   margin: $form-margin -20px
+  padding: 20px
+  background: $color-grey-lighter
   +breakpoint(tablet)
-    margin-left: -30px
     margin-right: -30px
+    margin-left: -30px
     padding: 40px 30px
   +breakpoint(desktop)
-    margin-left: -60px
     margin-right: -60px
+    margin-left: -60px
     padding: 40px 60px
   &:last-child
     margin-bottom: -20px
@@ -55,11 +62,12 @@
 
 .fieldset--border-bottom
   position: relative
-  padding-bottom: 18px
+  margin-bottom: 25px
+  padding-bottom: 27px
   &:before
     position: absolute
     right: -20px
-    bottom: 15px
+    bottom: 0
     left: -20px
     height: 2px
     content: ''
@@ -70,6 +78,18 @@
     +breakpoint(md)
       right: -60px
       left: -60px
+
+.fieldset--textarea
+  p
+    overflow: hidden
+  img
+    margin-bottom: 16px
+  img.align-left
+    +breakpoint(md)
+      margin-right: 20px
+  img.align-right
+    +breakpoint(md)
+      margin-left: 20px
 
 // Dependiencies
 // --------------------------------------------------
