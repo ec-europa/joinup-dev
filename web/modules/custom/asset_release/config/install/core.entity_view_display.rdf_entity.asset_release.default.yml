@@ -25,6 +25,7 @@ dependencies:
     - rdf_entity.rdfentity.asset_release
   module:
     - ds
+    - file_url
     - state_machine
     - text
     - user
@@ -95,6 +96,24 @@ content:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
     region: content
+  field_isr_documentation:
+    type: file_url_default
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      mode: link
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_isr_elibrary_creation:
     weight: 13
     label: above
@@ -264,7 +283,6 @@ hidden:
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true
-  field_isr_documentation: true
   field_isr_included_asset: true
   field_isr_language: true
   field_isr_logo: true
