@@ -3,8 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
-use Drupal\Core\Url;
-use Drupal\user\Entity\User;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Helper methods to deal with contextual links.
@@ -30,6 +29,23 @@ trait ContextualLinksTrait {
   /**
    * Find all the contextual links in an element.
    *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The name of the element to check.
+   *
+   * @return array
+   *   An array of links found keyed by title.
+   */
+  protected function findContextualLinksInElement(NodeElement $element) {
+    if (!$this->browserSupportsJavascript()) {
+      return $this->generateContextualLinks($element);
+    }
+
+    return $this->findContextualLinksInJsBrowsers($element);
+  }
+
+  /**
+   * Generate contextual links for a specific element in non-JS browsers.
+   *
    * Contextual links are retrieved on the browser side through the use
    * of javascript, but that is not applicable for non-javascript browsers.
    *
@@ -39,41 +55,93 @@ trait ContextualLinksTrait {
    * @return array
    *   An array of links found keyed by title.
    */
-  protected function findContextualLinksInElement(NodeElement $element) {
-    // Since we are calling API functions that depend on the current user, we
-    // need to make sure the current user service is up to date. It might still
-    // contain the user from a previous API call.
-    /** @var \Drupal\DrupalExtension\Context\RawDrupalContext $this */
-    $current_user = $this->getUserManager()->getCurrentUser();
-    $account = User::load($current_user ? $current_user->uid : 0);
-    \Drupal::currentUser()->setAccount($account);
+  protected function generateContextualLinks(NodeElement $element) {
+    // We want to make an extra request to the website, using all the cookies
+    // from the current logged in user, but doing so will change the last page
+    // output, possibly breaking other steps. This can be prevented by cloning
+    // the client.
+    /** @var \Symfony\Component\BrowserKit\Client $client */
+    $client = clone $this->getSession()->getDriver()->getClient();
 
-    // Clear the statically cached entities, to ensure that the route parameters
-    // will be up to date.
-    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    $contextual_ids = array_map(function ($element) {
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      return $element->getAttribute('data-contextual-id');
+    }, $element->findAll('xpath', '//*[@data-contextual-id]'));
 
-    /** @var \Drupal\Core\Menu\ContextualLinkManager $contextual_links_manager */
-    $contextual_links_manager = \Drupal::service('plugin.manager.menu.contextual_link');
+    // @see Drupal.behaviors.contextual.attach(), contextual.js
+    $client->request('POST', '/contextual/render', [
+      'ids' => $contextual_ids,
+    ]);
 
     $links = [];
-    /** @var \Behat\Mink\Element\NodeElement $item */
-    foreach ($element->findAll('xpath', '//*[@data-contextual-id]') as $item) {
-      $contextual_id = $item->getAttribute('data-contextual-id');
-      foreach (_contextual_id_to_links($contextual_id) as $group_name => $link) {
-        $route_parameters = $link['route_parameters'];
-        foreach ($contextual_links_manager->getContextualLinkPluginsByGroup($group_name) as $plugin_id => $plugin_definition) {
-          /** @var \Drupal\Core\Menu\ContextualLinkInterface $plugin */
-          $plugin = $contextual_links_manager->createInstance($plugin_id);
-          $route_name = $plugin->getRouteName();
-          // Check access.
-          if (!\Drupal::accessManager()->checkNamedRoute($route_name, $route_parameters, $account)) {
-            continue;
+    $response = json_decode($client->getResponse()->getContent(), TRUE);
+    if ($response) {
+      foreach ($contextual_ids as $id) {
+        if (isset($response[$id])) {
+          $crawler = new Crawler();
+          $crawler->addHtmlContent($response[$id]);
+
+          foreach ($crawler->filterXPath('//a') as $node) {
+            /** @var \DOMElement $node */
+            $links[$node->nodeValue] = $node->getAttribute('href');
           }
-          /** @var \Drupal\Core\Url $url */
-          $url = Url::fromRoute($route_name, $route_parameters, $plugin->getOptions())->toRenderArray();
-          $links[$plugin->getTitle()] = $url['#url']->toString();
         }
       }
+    }
+
+    return $links;
+  }
+
+  /**
+   * Find all the contextual links in an element on JS-enabled browsers.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The name of the element to check.
+   *
+   * @return array
+   *   An array of links found keyed by title.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual links are not shown within the timeframe.
+   */
+  protected function findContextualLinksInJsBrowsers(NodeElement $element) {
+    // If the contextual link placeholder element is not there already, it
+    // means that no links are available.
+    if (!$element->find('css', '[data-contextual-id]')) {
+      return [];
+    }
+
+    // Focus the element, so that the related contextual markup will be shown.
+    $element->focus();
+    // Wait until the contextual module javascript is executed. Markup will be
+    // appended upon completion.
+    $contextual_button = $this->waitUntil(function () use ($element) {
+      return $element->find('css', '.contextual > button.trigger');
+    });
+
+    // If the contextual wrapper is not found, it means that no contextual
+    // links are available for this element.
+    if (!$contextual_button) {
+      return [];
+    }
+
+    // Open the contextual links dropdown.
+    /** @var \Behat\Mink\Element\NodeElement $contextual_button */
+    $contextual_button->click();
+
+    $link_list = $element->find('css', '.contextual ul.contextual-links');
+    $visible = $this->waitUntil(function () use ($link_list) {
+      return $link_list->isVisible();
+    });
+
+    if (!$visible) {
+      throw new \Exception('The contextual links did not open properly within the expected time frame.');
+    }
+
+    $links = [];
+    foreach ($link_list->findAll('xpath', '//a') as $link) {
+      /** @var \Behat\Mink\Element\NodeElement $link */
+      $links[$link->getText()] = $link->getAttribute('href');
     }
 
     return $links;

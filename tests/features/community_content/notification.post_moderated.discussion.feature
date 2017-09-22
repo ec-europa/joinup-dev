@@ -39,7 +39,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                    |
       | subject   | Joinup: Content has been published                                                                                                                                          |
-      | body      | CC Member has published the new discussion - "CC notify create publish" in the collection: "CC post collection". You can access the new content at the following link: http |
+      | body      | CC Member has published the new discussion - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -86,7 +86,7 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                        |
       | subject   | Joinup: Content has been updated                                                                                                                                 |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent

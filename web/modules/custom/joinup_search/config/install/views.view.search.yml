@@ -80,7 +80,7 @@ display:
               event: view_mode_tile
               news: view_mode_tile
               newsletter: view_mode_tile
-              video: default
+              video: view_mode_tile
             'entity:rdf_entity':
               asset_distribution: view_mode_tile
               asset_release: view_mode_tile
@@ -202,7 +202,31 @@ display:
           min_length: 3
           fields: {  }
           plugin_id: search_api_fulltext
-      sorts: {  }
+      sorts:
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_published
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
+        entity_created:
+          id: entity_created
+          table: search_api_index_published
+          field: entity_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       title: ''
       header: {  }
       footer: {  }

@@ -8,7 +8,7 @@ source:
 process:
   id: uri
   label: title
-  field_isr_creation_date: created_time
+  created: created_time
   field_isr_distribution:
     plugin: migration
     source: distribution
@@ -22,14 +22,10 @@ process:
     no_stub: true
   field_keywords: keywords
   field_isr_language: language
-  field_isr_modification_date: changed_time
-  field_isr_description/value:
+  changed: changed_time
+  field_isr_release_notes/value:
     plugin: file_inline
-    source: body
-  field_isr_description/format:
-    plugin: default_value
-    default_value: content_editor
-  field_isr_release_notes/value: version_notes
+    source: version_notes
   field_isr_release_notes/format:
     plugin: default_value
     default_value: content_editor

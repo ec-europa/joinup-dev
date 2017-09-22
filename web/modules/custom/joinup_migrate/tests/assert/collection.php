@@ -7,10 +7,6 @@
 
 use Drupal\file\Entity\File;
 
-// Migration counts.
-$this->assertTotalCount('collection', 8);
-$this->assertSuccessCount('collection', 8);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $collection */
 $collection = $new_collection;
@@ -33,6 +29,7 @@ $this->assertEquals('Description for a new collection', $collection->field_ar_de
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertEquals('Abstract for a new collection', $collection->field_ar_abstract->value);
 $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
+$this->assertEquals('user7098', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with erroneous items');
@@ -51,12 +48,13 @@ $this->assertTrue($collection->get('field_ar_abstract')->isEmpty());
 $this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing an Abstract");
 $this->assertTrue($collection->get('field_ar_description')->isEmpty());
 $this->assertMessage('collection', "Collection 'Collection with erroneous items' is missing a Description");
+$this->assertEquals('user7143', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Project');
 $this->assertEquals('Collection from Project', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323340905), $collection->field_ar_creation_date->value);
+$this->assertEquals(1323340905, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Asset Description Metadata Schema (ADMS)',
@@ -75,13 +73,14 @@ $this->assertEquals('content_editor', $collection->field_ar_abstract->format);
 $this->assertContains('Government Metadata', $collection->field_ar_description->value);
 $this->assertEquals('content_editor', $collection->field_ar_description->format);
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertEquals('user7160', $collection->uid->entity->getAccountName());
 $this->assertRedirects([], $collection);
 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection from Community');
 $this->assertEquals('Collection from Community', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals('http://example.com/this_collection', $collection->id());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1454595297), $collection->field_ar_creation_date->value);
+$this->assertEquals(1454595297, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->field_spatial_coverage);
@@ -99,6 +98,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/epdp_final_logo1-01.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/epdp_final_logo1-01.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertEquals('user7287', $collection->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/149141',
   'community/edp/description',
@@ -107,7 +107,7 @@ $this->assertRedirects([
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection');
 $this->assertEquals('Archived collection', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1323263112), $collection->field_ar_creation_date->value);
+$this->assertEquals(1323263112, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Styles Layer Descriptor',
@@ -138,6 +138,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/guadalinex.JPG', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/guadalinex.JPG');
 $this->assertEquals('http://forja.guadalinex.org/', $collection->get('field_ar_access_url')->uri);
+$this->assertEquals('user7051', $collection->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/82307',
   'catalogue/repository/la-forja-de-guadalinex',
@@ -150,7 +151,7 @@ $this->assertContains('Hola', $translation->field_ar_description->value);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 2 entities having custom section');
 $this->assertEquals('Collection with 2 entities having custom section', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1481725653), $collection->field_ar_creation_date->value);
+$this->assertEquals(1481725653, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Digital Signature Service',
@@ -169,6 +170,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/eic.jpg', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/eic.jpg');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertEquals('Anonymous', $collection->uid->entity->label());
 $this->assertRedirects([
   'node/157710',
   'community/eic/description',
@@ -177,7 +179,7 @@ $this->assertRedirects([
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section');
 $this->assertEquals('Collection with 1 entity having custom section', $collection->label());
 $this->assertEquals('collection', $collection->bundle());
-$this->assertEquals(gmdate('Y-m-d\TH:i:s', 1370001810), $collection->field_ar_creation_date->value);
+$this->assertEquals(1370001810, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
 $this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
@@ -194,6 +196,7 @@ $logo = File::load($collection->field_ar_logo->target_id);
 $this->assertEquals('public://collection/logo/CAMSS_70_3_1.png', $logo->getFileUri());
 $this->assertFileExists('public://collection/logo/CAMSS_70_3_1.png');
 $this->assertTrue($collection->get('field_ar_access_url')->isEmpty());
+$this->assertEquals('Anonymous', $collection->uid->entity->label());
 $this->assertRedirects([
   'node/66790',
   'community/camss/description',

@@ -7,12 +7,6 @@
 
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('custom_page_parent', 2);
-$this->assertSuccessCount('custom_page_parent', 2);
-$this->assertTotalCount('custom_page', 8);
-$this->assertSuccessCount('custom_page', 8);
-
 // Parent custom pages.
 /* @var \Drupal\node\NodeInterface $custom_page */
 $custom_page = $this->loadEntityByLabel('node', 'Digital Signature Service', 'custom_page');
@@ -27,6 +21,7 @@ $parent_link1 = $this->loadEntityByLabel('menu_link_content', 'Digital Signature
 $this->assertTrue($parent_link1->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link1->link->uri);
 $this->assertRedirects([], $custom_page);
+$this->assertTrue($custom_page->isPublished());
 
 $custom_page = $this->loadEntityByLabel('node', 'European Interoperability Catalogue (EIC)', 'custom_page');
 $this->assertEquals('European Interoperability Catalogue (EIC)', $custom_page->label());
@@ -38,6 +33,7 @@ $parent_link2 = $this->loadEntityByLabel('menu_link_content', 'European Interope
 $this->assertTrue($parent_link2->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $parent_link2->link->uri);
 $this->assertRedirects([], $custom_page);
+$this->assertTrue($custom_page->isPublished());
 
 // Children custom pages.
 $custom_page = Node::load(74530);
@@ -52,6 +48,7 @@ $this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link1->uuid(), $link->getParentId());
 $this->assertRedirects(['asset/sd-dss/og_page/roadmap-2016'], $custom_page);
+$this->assertTrue($custom_page->isPublished());
 
 $custom_page = Node::load(157896);
 $this->assertEquals('Solutions per domain', $custom_page->label());
@@ -64,6 +61,7 @@ $this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
 $this->assertRedirects(['community/eic/og_page/solutions-domain'], $custom_page);
+$this->assertTrue($custom_page->isPublished());
 
 $custom_page = Node::load(157897);
 $this->assertEquals('Eligibility criteria', $custom_page->label());
@@ -76,6 +74,7 @@ $this->assertFalse($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEquals('menu_link_content:' . $parent_link2->uuid(), $link->getParentId());
 $this->assertRedirects(['community/eic/og_page/eligibility-criteria'], $custom_page);
+$this->assertTrue($custom_page->isPublished());
 
 // Orphan custom pages. We test only 1 of 5.
 $custom_page = Node::load(74988);
@@ -86,8 +85,8 @@ $this->assertContains('An assessment of a technical specification or a standard 
 $collection = $this->loadEntityByLabel('rdf_entity', 'Collection with 1 entity having custom section', 'collection');
 $this->assertEquals($collection->id(), $custom_page->og_audience->target_id);
 $link = $this->loadEntityByLabel('menu_link_content', 'CAMSS Tools');
-// Disabled because the source node is unpublished.
-$this->assertFalse($link->isEnabled());
+$this->assertTrue($link->isEnabled());
 $this->assertEquals('internal:/' . $custom_page->toUrl()->getInternalPath(), $link->link->uri);
 $this->assertEmpty($link->getParentId());
 $this->assertRedirects(['community/camss/og_page/camss-tools'], $custom_page);
+$this->assertFalse($custom_page->isPublished());

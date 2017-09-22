@@ -50,12 +50,14 @@
     {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes.addClass('fieldset--box') }}>
-    <div class="mdl-grid">
-      <div{{ title_attributes.addClass('form__label mdl-cell mdl-cell--12-col') }}>{{ label }}</div>
-      {% for item in items %}
-        <div{{ item.attributes.addClass('mdl-cell mdl-cell--6-col mdl-cell--12-col-phone') }}>{{ item.content }}</div>
-      {% endfor %}
+  <div{{ attributes }}>
+    <div class="row">
+      <div class="mdl-grid">
+        <div{{ title_attributes.addClass('fieldset__field-label mdl-cell mdl-cell--12-col') }}>{{ label }}</div>
+        {% for item in items %}
+          <div{{ item.attributes.addClass('mdl-cell mdl-cell--6-col mdl-cell--12-col-phone') }}>{{ item.content }}</div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endif %}

@@ -19,5 +19,4 @@ $this->assertContains('/files/inline-images/GoogleRefineLogo200-6f445ab5582dc224
 $file = $this->loadEntityByLabel('file', 'CAMSS Change Log v0_4-v1_0.xlsx');
 $this->assertNotEmpty($file);
 $custom_page = $this->loadEntityByLabel('node', 'CAMSS Tools', 'custom_page');
-// The URL is properly encoded (e.g. ' ' > '%20').
-$this->assertContains('/files/inline-files/CAMSS%20Change%20Log%20v0_4-v1_0.xlsx', $custom_page->get('body')->value);
+$this->assertContains('/files/inline-files/CAMSS Change Log v0_4-v1_0.xlsx', $custom_page->get('body')->value);

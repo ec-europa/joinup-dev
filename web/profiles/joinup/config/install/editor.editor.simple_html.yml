@@ -22,10 +22,22 @@ settings:
             - DrupalLink
             - DrupalUnlink
         -
+          name: list
+          items:
+            - BulletedList
+            - NumberedList
+        -
+          name: quote
+          items:
+            - Blockquote
+        -
           name: Tools
           items:
             - Source
   plugins:
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
     language:
       language_list: un
     stylescombo:

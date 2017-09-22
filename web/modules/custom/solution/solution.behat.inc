@@ -7,9 +7,11 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -17,6 +19,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -95,9 +98,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
-   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
+   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
    * Fields title, description, state and elibrary creation are mandatory.
@@ -134,19 +137,35 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a solution with data provided in a table.
    *
+   * @codingStandardsIgnoreStart
    * Table format:
-   * | title             | Sample solution                         |
-   * | description       | A sample solution                       |
-   * | documentation     | text.pdf                                |
-   * | moderation        | no|yes                                  |
-   * | closed            | no|yes                                  |
-   * | elibrary creation | facilitators|members|registered users   |
-   * | landing page      | http://example.com/foobar/landing       |
-   * | webdav creation   | no|yes                                  |
-   * | webdav url        | http://joinup.eu/solution/foobar/webdav |
-   * | wiki              | http://example.wiki/foobar/wiki         |
+   * | title               | Sample solution                                                |
+   * | description         | A sample solution                                              |
+   * | banner              | banner.png                                                     |
+   * | logo                | logo.jpg                                                       |
+   * | moderation          | no|yes                                                         |
+   * | closed              | no|yes                                                         |
+   * | collection          | Example collection                                             |
+   * | contact information | Grahame Paterson, Aulay MacFarlane                             |
+   * | documentation       | text.pdf                                                       |
+   * | elibrary creation   | facilitators|members|registered users                          |
+   * | featured            | yes|no                                                         |
+   * | landing page        | http://example.com/foobar/landing                              |
+   * | language            | Greek, German                                                  |
+   * | owner               | Zapsum, Holdline Accountants                                   |
+   * | policy domain       | Demography, E-inclusion                                        |
+   * | related solutions   | Solution 2, Solution 3                                         |
+   * | solution type       | [ABB159] Service Discovery Service, ...                        |
+   * | spatial coverage    | Denmark, Serbia                                                |
+   * | state               | validated|...                                                  |
+   * | status              | Under development                                              |
+   * | webdav creation     | no|yes                                                         |
+   * | webdav url          | http://joinup.eu/solution/foobar/webdav                        |
+   * | wiki                | http://example.wiki/foobar/wiki                                |
+   * | uri                 | http://data.europa.eu/w21/fc2dee5a-88fb-4aff-b3bf-9b1d66903296 |
+   * @codingStandardsIgnoreEnd
    *
-   * Fields title, description and elibrary creation are required.
+   * Fields "title", "description" and "state" are required.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
@@ -263,10 +282,17 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
-    $values['rid'] = 'solution';
-    $solution = Rdf::create($values);
-    $solution->save();
+    $solution = $this->createRdfEntity('solution', $values);
     $this->solutions[$solution->id()] = $solution;
+
+    // If a collection is affiliated, update the collection. In ADMS-AP the
+    // reference between a solution and a collection is backwards.
+    if (!empty($values['field_ar_affiliates'])) {
+      foreach ($values['field_ar_affiliates'] as $collection_label) {
+        $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
+        solution_update_collection_affiliation($solution->id(), $collection->id());
+      }
+    }
 
     return $solution;
   }
@@ -281,7 +307,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $this->getSolutionByName($solution)->delete();
+    $solution = $this->getSolutionByName($solution);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
   }
 
   /**
@@ -361,9 +389,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * bundle are going to be added automatically.
    *
    * Table format:
-   * | solution          | user | roles                      |
-   * | Sample solution A | John | facilitator, administrator |
-   * | Sample solution B | Jack |                            |
+   * | solution          | user | roles                      | state   |
+   * | Sample solution A | John | facilitator, administrator | active  |
+   * | Sample solution B | Jack |                            | blocked |
+   *
+   * Only the 'solution' and 'user' columns are required. Multiple comma
+   * separated roles can be passed.
+   *
+   * The state can be empty, or one of 'active', 'pending', or 'blocked'. If the
+   * state is omitted it will default to 'active'.
    *
    * @param \Behat\Gherkin\Node\TableNode $membership_table
    *   The membership table.
@@ -375,30 +409,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    */
   public function givenSolutionUserMemberships(TableNode $membership_table) {
     foreach ($membership_table->getColumnsHash() as $values) {
-      // Load group.
       $group = $this->getSolutionByName($values['solution']);
-
-      // Load member.
-      $member = user_load_by_name($values['user']);
-      if (empty($member)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
-      }
-
-      // Convert role names to role IDs.
-      $roles = [];
-      if (!empty($values['roles'])) {
-        $role_names = $this->explodeCommaSeparatedStepArgument($values['roles']);
-        // Every owner is also a facilitator. In Joinup the facilitator role is
-        // assigned to the owner when they create the solution. Since in this
-        // step the solutions are already created, mimick this behaviour by
-        // making sure every owner also has the 'facilitator' role.
-        if (in_array('owner', $role_names) && !in_array('facilitator', $role_names)) {
-          $role_names[] = 'facilitator';
-        }
-        $roles = $this->getOgRoles($role_names, $group);
-      }
-
-      $this->subscribeUserToGroup($member, $group, $roles);
+      $this->givenUserMembership($group, $values);
     }
   }
 
@@ -424,6 +436,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     foreach ($this->solutions as $solution) {
       $name = $solution->getName();
       try {
+        $solution->skip_notification = TRUE;
         $solution->delete();
       }
       catch (Throwable $e) {
@@ -443,11 +456,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Mapping alias - field name.
     return [
       'uri' => 'id',
+      'author' => 'uid',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
-      'creation date' => 'field_is_creation_date',
+      'creation date' => 'created',
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
       'elibrary creation' => 'field_is_elibrary_creation',
@@ -458,7 +472,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'logo' => 'field_is_logo',
       'metrics page' => 'field_is_metrics_page',
       'moderation' => 'field_is_moderation',
-      'modification date' => 'field_is_modification_date',
+      'modification date' => 'changed',
       'owner' => 'field_is_owner',
       'policy domain' => 'field_policy_domain',
       'related solutions' => 'field_is_related_solutions',
@@ -472,7 +486,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+      'collection' => 'field_ar_affiliates',
+      'featured' => SiteFeatureController::FEATURED_FIELD,
     ];
   }
 
@@ -491,8 +506,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
-      'field_is_elibrary_creation' =>
-        ['facilitators' => 0, 'members' => 1, 'registered users' => 2],
+      'field_is_elibrary_creation' => [
+        'facilitators' => 0,
+        'members' => 1,
+        'registered users' => 2,
+      ],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
       'field_is_state' => [
         'draft' => 'draft',
@@ -502,6 +520,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
+      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -516,7 +535,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // Convert any entity reference field label value with the entity ID.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
-
     return $fields;
   }
 
@@ -562,6 +580,47 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Enable a given language.
+   *
+   * @Given the language :langcode is enabled
+   */
+  public function languageEnabled($langcode) {
+    // Create the needed language.
+    $language_manager = \Drupal::languageManager();
+    if (!$language_manager->getLanguage($langcode)) {
+      ConfigurableLanguage::createFromLangcode($langcode)->save();
+    }
+  }
+
+  /**
+   * Creates a simple multilingual solution.
+   *
+   * @Given the multilingual :title solution
+   */
+  public function theMultilingualSolution($title) {
+    $values = [
+      'label' => $title,
+      'field_is_state' => 'validated',
+      'field_is_description' => "English description",
+    ];
+    $solution = $this->createRdfEntity('solution', $values);
+    // Fill with the specific content translation fields and fall-back to
+    // the remaining values from the base translation.
+    $solution_values = $solution->toArray();
+    $solution_values += [
+      'content_translation_source' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      'content_translation_status' => TRUE,
+      'content_translation_uid' => 1,
+      'content_translation_outdated' => FALSE,
+    ];
+    $solution_values['field_is_description'] = "Catalan description";
+    // Create the translation.
+    $solution->addTranslation('ca', $solution_values)->save();
+    $this->solutions[$solution->id()] = $solution;
+
+  }
+
+  /**
    * Applies a transition to a solution.
    *
    * @param string $username
@@ -590,6 +649,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
     $solution->get('field_is_state')->first()->applyTransition($transition);
     $solution->save();
+  }
+
+  /**
+   * Checks that the given solution is affiliated with the given collection.
+   *
+   * If there are multiple custom pages or collections with the same name, then
+   * only the first one is checked.
+   *
+   * @param string $collection
+   *   The name of the collection to check.
+   * @param string $solution
+   *   The name of the solution to check.
+   *
+   * @throws \Exception
+   *   Thrown when the solution is not affiliated with the collection.
+   *
+   * @Then the :solution solution should be affiliated with the :collection collection
+   */
+  public function assertCollectionAffiliation($collection, $solution) {
+    $collection_entity = $this->getRdfEntityByLabel($collection, 'collection');
+    $solution_entity = $this->getRdfEntityByLabel($solution, 'solution');
+
+    $affiliated_solutions = $collection_entity->get('field_ar_affiliates')->referencedEntities();
+
+    foreach ($affiliated_solutions as $affiliated_solution) {
+      if ($affiliated_solution->id() === $solution_entity->id()) {
+        return;
+      }
+    }
+
+    throw new \Exception("The '$solution' solution is not affiliated with the '$collection' collection.");
   }
 
 }

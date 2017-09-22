@@ -5,8 +5,8 @@
 // Component
 // --------------------------------------------------
 .section--header
-  +hidden-print
   background-color: $color-blue-default
+  +hidden-print
 
 // Elements
 // --------------------------------------------------
@@ -14,6 +14,6 @@
 // Dependiencies
 // --------------------------------------------------
 .section--header
-  .mdl-layout__header-row
-    +breakpoint(tablet)
-      padding: 0 20px
+  nav
+    position: relative
+    +z-index(navigation)

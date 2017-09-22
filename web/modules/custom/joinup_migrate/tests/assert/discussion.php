@@ -7,10 +7,6 @@
 
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('discussion', 455);
-$this->assertSuccessCount('discussion', 455);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $solution */
 $solution = $this->loadEntityByLabel('rdf_entity', 'CIPA e-Delivery', 'solution');

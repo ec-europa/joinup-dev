@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Main file of Joinup module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
+use Drupal\og\Entity\OgMembership;
+use Drupal\og\Og;
+use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\user\UserInterface;
+
+define('JOINUP_COLLECTION_ID', Settings::get('joinup_collection.collection_id', 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20'));
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * Add the 'Joinup' collection membership to every new user.
+ */
+function joinup_collection_user_insert(UserInterface $account) {
+  if ($joinup_collection = Rdf::load(JOINUP_COLLECTION_ID)) {
+    // Add the membership only it doesn't exist yet.
+    if (!$membership = Og::getMembership($joinup_collection, $account, [])) {
+      OgMembership::create()
+        ->setGroup($joinup_collection)
+        ->setUser($account)
+        ->setState(OgMembershipInterface::STATE_ACTIVE)
+        ->save();
+    }
+    // If the membership exists but is not active, activate it.
+    elseif ($membership->getState() !== OgMembershipInterface::STATE_ACTIVE) {
+      $membership->setState(OgMembershipInterface::STATE_ACTIVE)->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Remove the action 'joinup_collection_og_membership_delete_action'.
+ */
+function joinup_collection_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->getBuildInfo()['args'][0];
+  // The first view argument is the entity type.
+  if (isset($view->args[0]) && $view->args[0] === 'rdf_entity') {
+    // The second view argument is the group entity ID.
+    if (!empty($view->args[1]) && $view->args[1] === JOINUP_COLLECTION_ID) {
+      unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_collection_og_membership_delete_action']);
+    }
+  }
+}

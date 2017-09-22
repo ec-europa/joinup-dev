@@ -119,79 +119,67 @@ trait UtilityTrait {
   }
 
   /**
-   * Returns the contextual links button that is present in the given region.
+   * Converts property values of an object to the ones defined in a mapping.
    *
-   * @param string $region
-   *   The region in which the contextual links button is expected to reside.
+   * Useful to convert human-readable strings used in tests to machine-readable
+   * ones.
    *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The contextual links button.
-   *
-   * @throws \Exception
-   *   Thrown when the region or the contextual links button was not found on
-   *   the page.
+   * @param object $object
+   *   The object itself.
+   * @param string $property
+   *   The source property name. It will be used also as destination if the
+   *   related parameter is not passed.
+   * @param array $mapping
+   *   An array of mapped values, where keys are the human-readable strings.
+   * @param string|null $destination
+   *   The destination property name. If left empty, the source property will
+   *   be reused. When specified, the source property gets unset from the
+   *   object.
    */
-  protected function findContextualLinkButtonInRegion($region) {
-    $session = $this->getSession();
-    /** @var \Behat\Mink\Element\NodeElement $region_object */
-    $region_object = $session->getPage()->find('region', $region);
-    if (!$region_object) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+  protected static function convertObjectPropertyValues($object, $property, array $mapping, $destination = NULL) {
+    if (!property_exists($object, $property)) {
+      return;
     }
 
-    // Check if the wrapper for the contextual links is present on the page.
-    // Since the button is appended by the contextual.js script, we might need
-    // to wait a bit before the button itself is visible.
-    $button = $region_object->waitFor(5, function ($object) {
-      /** @var \Behat\Mink\Element\NodeElement $object */
-      return $object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
-    });
-
-    if (!$button) {
-      throw new \Exception(sprintf('No contextual links found in the region "%s" on the page "%s".', $region, $session->getCurrentUrl()));
+    // Force the use of human readable values in Behat test scenarios, throw
+    // an exception if the numeric values are used.
+    if (!array_key_exists($object->$property, $mapping)) {
+      $supported_values = implode(', ', array_keys($mapping));
+      throw new \UnexpectedValueException("Unexpected value for {$property} '{$object->$property}'. Supported values are: $supported_values.");
     }
-    return $button;
+
+    // If no destination property is specified, reuse the source property.
+    $destination = $destination ?: $property;
+
+    // Replace the human readable value with the expected boolean.
+    $object->$destination = $mapping[$object->$property];
+
+    // When a destination property has been specified, delete the source
+    // property.
+    if ($destination !== $property) {
+      unset($object->$property);
+    }
   }
 
   /**
-   * Returns the named element with the given locator, in the given region.
+   * Executes a callback until it succeeds or until timeout is hit.
    *
-   * Use this to easily locate "named elements" such as buttons, links, fields,
-   * checkboxes etc in a given region.
+   * @param callable $callback
+   *   The callback to execute until it returns a truthy value or timeout.
+   * @param int $timeout
+   *   The maximum wait time. Defaults to 5 seconds.
    *
-   * For the full list of supported elements, check NamedSelector::$selectors.
-   *
-   * @param string $locator
-   *   The locator that identifies this particular element. This varies by
-   *   element type, but it is often a CSS ID, title, text or value that is set
-   *   on the element.
-   * @param string $element
-   *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
-   *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
-   * @param string $region
-   *   The region in which the element should be found.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The element.
-   *
-   * @throws \Exception
-   *   Thrown when the element is not found in the given region.
-   *
-   * @see \Behat\Mink\Selector\NamedSelector
+   * @return mixed
+   *   The result of the last invocation of the callback.
    */
-  protected function findNamedElementInRegion($locator, $element, $region) {
-    $session = $this->getSession();
-    $region_object = $session->getPage()->find('region', $region);
-    if (!$region_object) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
-    }
+  protected function waitUntil(callable $callback, $timeout = 5) {
+    $end = microtime(TRUE) + $timeout;
+    do {
+      usleep(100000);
+      $result = $callback();
+    } while (microtime(TRUE) < $end && !$result);
 
-    // Find the named element in the region.
-    $element = $region_object->find('named', [$element, $locator]);
-    if (!$element) {
-      throw new \Exception(sprintf('No element with locator "%s" found in the "%s" region on the page %s.', $locator, $region, $session->getCurrentUrl()));
-    }
-    return $element;
+    return $result;
   }
 
 }

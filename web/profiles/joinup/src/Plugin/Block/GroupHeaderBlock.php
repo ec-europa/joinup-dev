@@ -77,12 +77,14 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
         'route_parameters' => [
           'rdf_entity' => $group->id(),
         ],
+        'metadata' => ['changed' => $group->getChangedTime()],
       ],
       // Custom link to moderate content.
       'group_header_block' => [
         'route_parameters' => [
           'rdf_entity' => $group->id(),
         ],
+        'metadata' => ['changed' => $group->getChangedTime()],
       ],
     ];
 

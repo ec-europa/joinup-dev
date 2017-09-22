@@ -25,6 +25,8 @@ class UserProfile extends UserBase {
       'company_name' => $this->t('Company'),
       'country' => $this->t('Nationality'),
       'photo_id' => $this->t('User photo ID'),
+      'professional_profile' => $this->t('Professional profile'),
+      'social_media' => $this->t('Social media accounts'),
     ];
   }
 
@@ -37,6 +39,10 @@ class UserProfile extends UserBase {
       'first_name',
       'company_name',
       'photo_id',
+      'professional_profile',
+      'facebook',
+      'twitter',
+      'linkedin',
     ]);
   }
 
@@ -50,7 +56,29 @@ class UserProfile extends UserBase {
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2960
     $countries = count($countries) === 1 ? $countries : [];
     $row->setSourceProperty('country', $countries);
+
+    // Social media accounts.
+    $social_media = [];
+    foreach (static::SOCIAL_MEDIA as $service => $pattern) {
+      if (($value = trim($row->getSourceProperty($service))) && preg_match($pattern, $value, $found)) {
+        $social_media[$service]['value'] = $found[1];
+      }
+    }
+    $row->setSourceProperty('social_media', $social_media ?: NULL);
+
     return parent::prepareRow($row);
   }
+
+  /**
+   * Social media validation regular expressions.
+   */
+  const SOCIAL_MEDIA = [
+    // We are not doing any check of the validity or integrity of the account
+    // IDs, because it would not be in the scope of migration. We are only
+    // removing the host prefix and migrate the rest.
+    'facebook' => '/(?:(?:https?:\/\/)?(?:www\.)?(?:facebook|fb|m\.facebook)\.(?:com|me)\/)?(.+)$/i',
+    'twitter' => '/(?:@|(?:https?:\/\/)?(?:www\.)?(?:twitter\.com\/)?(?:#!\/)?)?(.+)$/i',
+    'linkedin' => '/(?:(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com\/)?)?(.+)$/i',
+  ];
 
 }

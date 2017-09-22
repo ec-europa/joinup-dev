@@ -42,6 +42,9 @@ settings:
           items:
             - Source
   plugins:
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
     language:
       language_list: un
     stylescombo:

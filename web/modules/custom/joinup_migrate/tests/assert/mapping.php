@@ -226,11 +226,6 @@ $expected_values = [
   ],
 ];
 
-// Migration counts.
-$expected_values_count = count($expected_values);
-$this->assertTotalCount('mapping', $expected_values_count);
-$this->assertSuccessCount('mapping', $expected_values_count);
-
 // Expected logged messages.
 $this->assertMessage('mapping', "Row: 2, Nid: 60735: Collection doesn't exist");
 $this->assertMessage('mapping', "Row: 3, Nid: 99999999: This node doesn't exist in the source database");

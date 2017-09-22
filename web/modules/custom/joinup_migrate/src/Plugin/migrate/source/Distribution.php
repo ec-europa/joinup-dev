@@ -105,7 +105,14 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface, Fie
     $this->setStatus($vid, $row);
 
     // Licence.
+    $licence = $row->getSourceProperty('licence');
     $this->setLicence($row, 'distribution');
+    if (!$row->getSourceProperty('licence')) {
+      $title = $row->getSourceProperty('title');
+      $message = "Distribution '$title' (nid $nid) not migrated because licence is invalid or empty: '$licence'";
+      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), $message);
+      return FALSE;
+    }
 
     // Translations.
     $this->setFieldTranslations($row);

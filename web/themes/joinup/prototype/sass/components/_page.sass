@@ -1,0 +1,59 @@
+// Page
+//
+
+// Component
+// --------------------------------------------------
+// .page
+
+// Elements
+// --------------------------------------------------
+.page__title,
+.page__title-wrapper
+  position: relative
+  margin-bottom: 20px
+  letter-spacing: 1px
+  +breakpoint(tablet)
+    margin: 40px 60px
+
+.page__content
+  img
+    max-width: 100%
+    height: auto
+  @media print
+    padding: 0
+    padding-bottom: 20px
+
+.page__title,
+.page__title-wrapper
+  .icon--plus
+    left: -50px
+    +centered($horizontal: false, $vertical: true)
+    +icon-size(35px)
+  h1
+    margin: 0
+    display: inline
+    vertical-align: middle
+  .permalink
+    display: none
+    color: $color-base
+    font-size: $font-size-medium
+    vertical-align: middle
+  &:hover
+    .permalink
+      display: inline
+
+.page__title-wrapper
+  @media print
+    margin: 0
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+
+// Dependencies
+// --------------------------------------------------
+.content-container--default
+  .page__content
+    @extend .white-box

@@ -9,7 +9,7 @@ id: rdf_entity.asset_release.field_isr_distribution
 field_name: field_isr_distribution
 entity_type: rdf_entity
 bundle: asset_release
-label: Distribution
+label: Distributions
 description: ''
 required: false
 translatable: false
@@ -22,4 +22,6 @@ settings:
       asset_distribution: asset_distribution
     sort:
       field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

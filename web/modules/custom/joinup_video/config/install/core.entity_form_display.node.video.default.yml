@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.video.og_audience
     - node.type.video
   module:
+    - allowed_formats
     - comment
     - text
     - video_embed_field
@@ -23,9 +24,12 @@ content:
     weight: 2
     settings:
       rows: 9
-      summary_rows: 3
       placeholder: ''
-    third_party_settings: {  }
+      summary_rows: 3
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
     region: content
   field_comments:
     weight: 5

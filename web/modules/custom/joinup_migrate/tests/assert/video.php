@@ -7,10 +7,6 @@
 
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('video', 1);
-$this->assertSuccessCount('video', 1);
-
 // Imported content check.
 $video = Node::load(125838);
 $this->assertEquals('Poznan event: ePractice TV interview: Wojciech Cellary, Poznan University of Economics ', $video->label());

@@ -9,7 +9,7 @@ id: rdf_entity.solution.field_is_language
 field_name: field_is_language
 entity_type: rdf_entity
 bundle: solution
-label: Language
+label: Languages
 description: ''
 required: false
 translatable: false

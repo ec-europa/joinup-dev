@@ -8,7 +8,7 @@ dependencies:
 id: pagetitle
 theme: joinup_theme
 region: content
-weight: -9
+weight: -12
 provider: null
 plugin: page_title_block
 settings:
@@ -19,6 +19,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: entity.user.canonical
+    routes: "entity.user.canonical\r\nentity.user.edit_form"
     negate: true
     context_mapping: {  }

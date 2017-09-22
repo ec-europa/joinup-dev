@@ -18,7 +18,9 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
   use CountryTrait;
   use DefaultRdfRedirectTrait;
   use DocumentationTrait;
-  use FieldTranslationTrait;
+  use FieldTranslationTrait {
+    setFieldTranslations as setFieldTranslationsBase;
+  }
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
@@ -49,7 +51,6 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
       'nid' => $this->t('ID'),
       'uri' => $this->t('URI'),
       'title' => $this->t('Title'),
-      'body' => $this->t('Description'),
       'created_time' => $this->t('Creation date'),
       'distribution' => $this->t('Distribution'),
       'solution' => $this->t('Solution ID'),
@@ -108,14 +109,6 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
     // Language.
     $row->setSourceProperty('language', $this->convertLanguage($row->getSourceProperty('language')));
 
-    // Release notes.
-    $version_notes = NULL;
-    $notes = unserialize($row->getSourceProperty('version_notes'));
-    if ($notes && isset($notes['field_language_textarea_name'][0]['value'])) {
-      $version_notes = $notes['field_language_textarea_name'][0]['value'];
-    }
-    $row->setSourceProperty('version_notes', $version_notes);
-
     // Release number.
     $version_number = NULL;
     $notes = unserialize($row->getSourceProperty('version_number'));
@@ -151,6 +144,53 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
   /**
    * {@inheritdoc}
    */
+  public function setFieldTranslations(Row &$row) {
+    $this->setFieldTranslationsBase($row);
+
+    $version_notes = NULL;
+    $i18n = [];
+    $data = $row->getSourceProperty('i18n') ?: [];
+    $description = $description = $row->getSourceProperty('body');
+    $not_empty = trim(strip_tags($description));
+    if ($not_empty) {
+      $not_empty = isset($data['en']['field_isr_description']) ? trim(strip_tags($description)) : '';
+      $data['en']['field_isr_description'] = $not_empty ? trim($data['en']['field_isr_description']) : '';
+      $data['en']['field_isr_description'] .= $description;
+    }
+
+    foreach ($data as $langcode => $values) {
+      // Set the label, if exists.
+      if (isset($values['label'])) {
+        $i18n[$langcode]['label'] = $values['label'];
+      }
+
+      // Build the release notes by concatenating the description and version
+      // notes and storing them into release notes.
+      $translation = [];
+      foreach (['field_isr_description', 'field_isr_release_notes'] as $field) {
+        $not_empty = isset($values[$field]) ? trim(strip_tags($values[$field])) : '';
+        if ($not_empty) {
+          $translation[] = $values[$field];
+        }
+      }
+      if ($translation) {
+        $i18n[$langcode]['field_isr_release_notes'] = implode('<p>&nbsp;</p>', $translation);
+      }
+    }
+
+    // English translation goes directly into 'version_notes'.
+    if (isset($i18n['en']['field_isr_release_notes'])) {
+      $version_notes = $i18n['en']['field_isr_release_notes'];
+      unset($i18n['en']);
+    }
+
+    $row->setSourceProperty('version_notes', $version_notes);
+    $row->setSourceProperty('i18n', $i18n ?: NULL);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTranslatableFields() {
     return [
       'label' => [
@@ -161,6 +201,11 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
       'field_isr_description' => [
         'table' => 'content_field_asset_description',
         'field' => 'field_asset_description_value',
+        'sub_field' => 'field_language_textarea_name',
+      ],
+      'field_isr_release_notes' => [
+        'table' => 'content_type_asset_release',
+        'field' => 'field_asset_version_note_value',
         'sub_field' => 'field_language_textarea_name',
       ],
     ];

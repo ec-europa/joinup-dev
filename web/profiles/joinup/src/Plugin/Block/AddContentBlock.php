@@ -212,12 +212,15 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
   /**
    * {@inheritdoc}
-   *
-   * @todo: Temporary workaround for wrong caching.
-   * @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3133
    */
-  public function getCacheMaxAge() {
-    return 0;
+  public function getCacheTags() {
+    // We need to invalidate the cache whenever the parent group changes since
+    // the available options in the add content block depend on certain settings
+    // of the parent collection, such as the workflow status and the eLibrary
+    // creation option.
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->getContext('og')->getContextValue();
+    return Cache::mergeTags(parent::getCacheTags(), $group->getCacheTagsToInvalidate());
   }
 
   /**

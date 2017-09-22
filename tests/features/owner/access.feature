@@ -10,4 +10,4 @@ Feature: Owner access
       | Daisy Johnson | Private Individual(s) |
     When I am an anonymous user
     When I go to the "Daisy Johnson" owner
-    Then I should see the text "Access denied. You must log in to view this page. "
+    Then I should see the text "Access denied. You must sign in to view this page. "

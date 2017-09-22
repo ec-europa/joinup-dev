@@ -8,10 +8,6 @@
 use Drupal\file_url\FileUrlHandler;
 use Drupal\node\Entity\Node;
 
-// Migration counts.
-$this->assertTotalCount('document', 8);
-$this->assertSuccessCount('document', 8);
-
 // Imported content check.
 $document = Node::load(139528);
 $this->assertEquals('BAA', $document->label());

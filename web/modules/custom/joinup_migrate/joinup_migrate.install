@@ -237,9 +237,11 @@ function joinup_migrate_source_db_schema($table) {
           'length' => 32,
           'not null' => FALSE,
         ],
-        'roles' => [
-          'description' => 'Roles',
-          'type' => 'text',
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
         ],
         'url' => [
           'description' => 'Collection ID as URL',

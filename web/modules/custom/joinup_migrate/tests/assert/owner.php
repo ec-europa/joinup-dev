@@ -5,12 +5,6 @@
  * Assertions for 'owner' migration.
  */
 
-// Migration counts.
-$this->assertTotalCount('owner', 6);
-$this->assertSuccessCount('owner', 6);
-$this->assertTotalCount('owner_text', 2);
-$this->assertSuccessCount('owner_text', 2);
-
 // Imported content check.
 /* @var \Drupal\rdf_entity\RdfInterface $owner */
 $owner = $this->loadEntityByLabel('rdf_entity', 'Ordnance Survey', 'owner');

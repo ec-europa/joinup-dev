@@ -34,12 +34,13 @@ Feature: Notification test for the document transitions on a post moderated pare
     And I go to the "CC post collection" collection
     And I click "Add document" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
+    And I fill in "Description" with "Sample body."
     And I select "Document" from "Type"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                  |
       | subject   | Joinup: Content has been published                                                                                                                                        |
-      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection". You can access the new content at the following link: http |
+      | body      | CC Member has published the new document - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
     When all e-mails have been sent
@@ -86,7 +87,7 @@ Feature: Notification test for the document transitions on a post moderated pare
     Then the following email should have been sent:
       | recipient | CC member                                                                                                                                                      |
       | subject   | Joinup: Content has been updated                                                                                                                               |
-      | body      | the Facilitator, CC Facilitator has approved your request to publish the document - "CC notify post approve proposed" in the collection: "CC post collection". |
+      | body      | the Facilitator, CC Facilitator has approved your request of publication of the document - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
     When all e-mails have been sent

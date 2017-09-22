@@ -1,0 +1,5 @@
+services:
+  joinup_collection.route_subscriber:
+    class: Drupal\joinup_collection\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -2,8 +2,10 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
 use Drupal\joinup_migrate\FileUtility;
+use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Row;
 
@@ -14,7 +16,9 @@ use Drupal\migrate\Row;
  *   id = "file_inline"
  * )
  */
-class FileInline extends SourcePluginBase {
+class FileInline extends SourcePluginBase implements RedirectImportInterface {
+
+  use DefaultFileRedirectTrait;
 
   /**
    * {@inheritdoc}
@@ -42,13 +46,15 @@ class FileInline extends SourcePluginBase {
   public function initializeIterator() {
     $rows = [];
     $timestamp = \Drupal::time()->getRequestTime();
+    $legacy_site_files = FileUtility::getLegacySiteFiles();
 
     foreach ($this->getInlineFiles() as $file) {
       list($type, $basename) = explode('/', $file, 2);
       $path = "ckeditor_files/$file";
-      $rows[$path] = [
-        'fid' => $path,
-        'path' => $path,
+      $fid = "sites/default/files/$path";
+      $rows[$fid] = [
+        'fid' => $fid,
+        'path' => "$legacy_site_files/$path",
         'timestamp' => $timestamp,
         'uid' => 1,
         'destination_uri' => "public://inline-$type/$basename",
@@ -74,21 +80,28 @@ class FileInline extends SourcePluginBase {
       $items = $db->select($table)->fields($table, $fields)->execute()->fetchAll();
       foreach ($items as $item) {
         foreach ($fields as $field) {
-          if (!$item->$field) {
+          if (!$item->{$field}) {
             continue;
           }
-          // Ensure we have well-formed markup.
-          $markup =& $item->$field;
-          $dom = new \DOMDocument();
-          @$dom->loadHTML($markup);
-          $dom->normalizeDocument();
+
+          $document = Html::load($item->{$field});
           foreach ($search as $tag => $attribute) {
             /** @var \DOMElement $element */
-            foreach ($dom->getElementsByTagName($tag) as $element) {
+            foreach ($document->getElementsByTagName($tag) as $element) {
               if ($element->hasAttribute($attribute)) {
                 $url = $element->getAttribute($attribute);
                 if (preg_match('|^(http[s]?://joinup\.ec\.europa\.eu)?/sites/default/files/ckeditor_files/(.*)$|', $url, $found)) {
                   $files[] = $found[2];
+                  // If the link is encoded, we don't know how exactly is stored
+                  // on the file-system. Some of them have the name already
+                  // encoded. We create a decoded copy so we make sure we've
+                  // covered all the cases. This will produce false positives
+                  // as, in such cases, one of the two versions will not be
+                  // found but, at least, we'll not miss real files.
+                  $file_decoded = rawurldecode($found[2]);
+                  if ($file_decoded !== $found[2]) {
+                    $files[] = $file_decoded;
+                  }
                 }
               }
             }
@@ -103,11 +116,8 @@ class FileInline extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
-    // Assure a full-qualified path for managed files.
-    $source_path = FileUtility::getLegacySiteFiles() . '/' . $row->getSourceProperty('path');
-    $row->setSourceProperty('path', $source_path);
-    return parent::prepareRow($row);
+  public function getRedirectSources(Row $row) {
+    return [$row->getSourceProperty('fid')];
   }
 
   /**
@@ -117,9 +127,7 @@ class FileInline extends SourcePluginBase {
    */
   protected static $bodyFields = [
     'd8_collection' => ['body'],
-    // @todo Disable till ISAICP-3514 gets clarified.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3514
-    // 'd8_comment' => ['comment'],
+    'd8_comment' => ['comment'],
     'd8_custom_page' => ['body'],
     'd8_discussion' => ['body'],
     'd8_distribution' => ['body'],
@@ -127,8 +135,9 @@ class FileInline extends SourcePluginBase {
     'd8_event' => ['body', 'agenda'],
     'd8_news' => ['body'],
     'd8_newsletter' => ['body'],
-    'd8_release' => ['body'],
+    'd8_release' => ['body', 'version_notes'],
     'd8_solution' => ['body'],
+    'd8_user' => ['professional_profile'],
     'd8_video' => ['body'],
   ];
 

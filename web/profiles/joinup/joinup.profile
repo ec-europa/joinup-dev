@@ -7,12 +7,14 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\views\ViewExecutable;
 
@@ -83,6 +85,10 @@ function joinup_entity_type_alter(array &$entity_types) {
   if (!drupal_installation_attempted()) {
     /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
     $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
+
+    // Swap the default user cancel form implementation with a custom one that
+    // prevents deleting users when they are the sole owner of a collection.
+    $entity_types['user']->setFormClass('cancel', 'Drupal\joinup\Form\UserCancelForm');
   }
 }
 
@@ -204,10 +210,12 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
  *   This prevents access to the revision log and the revision checkbox too.
  * - Disable access to the comment settings. These are managed on collection
  *   level.
+ * - Disable access to the meta information.
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
+  $form['meta']['#access'] = FALSE;
 
   foreach (['field_comments', 'field_replies'] as $field) {
     if (!empty($form[$field])) {
@@ -305,4 +313,93 @@ function joinup_install_tasks_alter(&$tasks, $install_state) {
   $tasks['joinup_remove_simplenews_defaults'] = [
     'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
   ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_theme($existing, $type, $theme, $path) {
+  $page_template = [
+    'variables' => [],
+    'path' => drupal_get_path('profile', 'joinup') . '/templates',
+  ];
+  return [
+    'joinup_legal_notice' => $page_template,
+    'joinup_eligibility_criteria' => $page_template,
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for main menu.
+ *
+ * Sets the active trail for the main menu items based on the current group
+ * context.
+ */
+function joinup_preprocess_menu__main(&$variables) {
+  $group = \Drupal::service('og.context')->getGroup();
+  if ($group) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
+    switch ($group->bundle()) {
+      case 'collection':
+        $variables['items']['collection.collection_overview']['in_active_trail'] = TRUE;
+        break;
+
+      case 'solution':
+        $variables['items']['solution.solution_overview']['in_active_trail'] = TRUE;
+        break;
+    }
+  }
+
+  $variables['#cache']['contexts'][] = 'og_group_context';
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    $build['#contextual_links']['entity'] = [
+      'route_parameters' => [
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity' => $entity->id(),
+      ],
+      'metadata' => ['changed' => $entity->getChangedTime()],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ */
+function joinup_preprocess_rdf_entity(&$variables) {
+  _joinup_preprocess_entity_tiles($variables);
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function joinup_preprocess_node(&$variables) {
+  _joinup_preprocess_entity_tiles($variables);
+}
+
+/**
+ * Adds common functionality to the tile view mode of nodes and rdf entities.
+ *
+ * @param array $variables
+ *   The variables array.
+ */
+function _joinup_preprocess_entity_tiles(array &$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\ContentEntityBase $entity */
+  $entity = $variables[$variables['elements']['#entity_type']];
+
+  // If the entity has the site-wide featured field, enable the related js
+  // library.
+  if ($entity->hasField(SiteFeatureController::FEATURED_FIELD) && $entity->get(SiteFeatureController::FEATURED_FIELD)->value) {
+    $variables['attributes']['data-drupal-featured'][] = TRUE;
+    $variables['#attached']['library'][] = 'joinup/site_wide_featured';
+  }
 }

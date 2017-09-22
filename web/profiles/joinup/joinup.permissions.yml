@@ -1,5 +1,12 @@
 'moderate entity parents':
   title: Alter parent groups of group content
 
+'feature entity':
+  title: 'Feature entity'
+  description: 'Promote an entity as featured in the website.'
+'unfeature entity':
+  title: 'Unfeature entity'
+  description: 'Removes an entity node from the featured ones in the website.'
+
 permission_callbacks:
   - \Drupal\joinup\JoinupPermissions::rdfTypePermissions

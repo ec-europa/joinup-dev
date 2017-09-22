@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.group
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: group_facet
+theme: joinup_theme
+region: filters
+weight: -12
+provider: null
+plugin: 'facet_block:group'
+settings:
+  id: 'facet_block:group'
+  label: 'Group facet'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: view.search.page_1
+    negate: false
+    context_mapping: {  }

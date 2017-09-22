@@ -71,7 +71,7 @@
  */
 #}
 {% if content.body|render %}
-{% set listing_class = 'listing--separated' %}
+  {% set block_class = 'block--separated' %}
 {% endif %}
 <article{{ attributes }}>
   {% if content.body|render %}
@@ -80,8 +80,8 @@
       {{ content.report }}
     </div>
   {% endif %}
-  <div class="listing--facets {{ listing_class }}">
-    {{ content.node_field_cp_content_listing_top }}
-    {{ content.field_cp_content_listing }}
-  </div>
 </article>
+<div class="block--facets {{ block_class }}">
+  {{ content.node_field_cp_content_listing_top }}
+</div>
+{{ content.field_cp_content_listing }}

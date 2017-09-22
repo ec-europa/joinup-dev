@@ -33,7 +33,7 @@ class SolutionController extends ControllerBase {
 
     // Pass the collection to the form state so that the parent connection is
     // established.
-    // @see: solution_add_form_parent_submit
+    // @see solution_add_form_parent_submit()
     $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
     return $form;
   }
@@ -69,17 +69,18 @@ class SolutionController extends ControllerBase {
   }
 
   /**
-   * Creates a new solution entity.
+   * Creates a new solution entity that is affiliated with the given collection.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the solution will be associated.
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The collection to affiliate with the new solution.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The unsaved solution entity.
    */
-  protected function createNewSolution(RdfInterface $rdf_entity) {
+  protected function createNewSolution(RdfInterface $collection) {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
+      'collection' => [$collection->id()],
     ]);
   }
 

@@ -19,6 +19,7 @@ dependencies:
   - views
 
 config_devel:
+ - facets.facet.group
  - facets.facet.policy_domain
  - facets.facet.spatial_coverage
  - facets.facet.type

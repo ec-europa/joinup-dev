@@ -8,7 +8,7 @@ process:
   id: uri
   label: title
   field_ad_access_url: access_url
-  field_ad_creation_date: created_time
+  created: created_time
   field_ad_description/value:
     plugin: file_inline
     source: body
@@ -20,7 +20,7 @@ process:
     source: licence
     migration: licence
     no_stub: true
-  field_ad_modification_date: changed_time
+  changed: changed_time
   field_ad_repr_technique:
     - plugin: static_map
       source: technique

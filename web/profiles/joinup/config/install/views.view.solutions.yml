@@ -45,7 +45,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
@@ -471,9 +471,34 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-      sorts: {  }
+      sorts:
+        entity_created:
+          id: entity_created
+          table: search_api_index_published
+          field: entity_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       title: Solutions
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: '<p>A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.</p>'
+            format: content_editor
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -486,6 +511,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }
   page_1:
     display_plugin: page
@@ -501,4 +527,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }

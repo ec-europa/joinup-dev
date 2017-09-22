@@ -11,7 +11,7 @@ field_name: field_ad_access_url
 entity_type: rdf_entity
 bundle: asset_distribution
 label: 'Access URL'
-description: 'If the file(s) exist in an external server, you can provide the URL here directly. You can alternatively host your distribution in Joinup by using the Distribution file field below.'
+description: 'If the file(s) exist in an external server, you can provide the URL here directly. You can alternatively host your distribution in Joinup by using the Distribution file field above.'
 required: false
 translatable: false
 default_value: {  }

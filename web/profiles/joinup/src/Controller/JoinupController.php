@@ -62,4 +62,25 @@ class JoinupController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * Provides a legal notice page.
+   *
+   * @return array
+   *   A render array for the legal notice page.
+   */
+  public function legalNotice() {
+    $build = ['#theme' => 'joinup_legal_notice'];
+    return $build;
+  }
+
+  /**
+   * Provides a page outlining eligibility criteria for solutions.
+   *
+   * @return array
+   *   The page as a render array.
+   */
+  public function eligibilityCriteria() {
+    return ['#theme' => 'joinup_eligibility_criteria'];
+  }
+
 }

@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_featured
+    - field.field.node.video.body
+    - field.field.node.video.field_comments
+    - field.field.node.video.field_keywords
+    - field.field.node.video.field_video
+    - field.field.node.video.field_video_spatial_coverage
+    - field.field.node.video.og_audience
+    - node.type.video
+  module:
+    - ds
+    - text
+    - user
+id: node.video.view_mode_featured
+targetEntityType: node
+bundle: video
+mode: view_mode_featured
+content:
+  body:
+    label: hidden
+    type: text_trimmed
+    weight: 0
+    settings:
+      trim_length: 200
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  field_comments: true
+  field_keywords: true
+  field_video: true
+  field_video_spatial_coverage: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true

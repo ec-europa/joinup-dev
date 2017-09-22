@@ -4,7 +4,7 @@ Feature: Solution membership administration
   As a solution facilitator
   I need to be able to manage solution members
 
-  Scenario: Only privileged members should be able to add facilitators
+  Background:
     Given the following owner:
       | name                 |
       | James Wilson the 2nd |
@@ -24,6 +24,7 @@ Feature: Solution membership administration
       | The Missing Sons | Guadalupe Norman | facilitator |
       | The Missing Sons | Marcia Garcia    |             |
 
+  Scenario: Only privileged members should be able to add facilitators
     When I am not logged in
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
@@ -61,3 +62,28 @@ Feature: Solution membership administration
     Then I should see the link "Add facilitators"
     When I click "Add facilitators"
     Then I should see the heading "Add facilitators"
+
+  @email
+  Scenario: Assign and remove new role to a member
+    When I am logged in as "Guadalupe Norman"
+    And I go to the "The Missing Sons" solution
+    And I click "Members" in the "Left sidebar"
+    Then I should see the link "Add facilitators"
+    Then I check the box "Update the member Marcia Garcia"
+    Then I select "Add the facilitator role to the selected members" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | Add the facilitator role to the selected members was applied to 1 item. |
+    And the following system email should have been sent:
+      | recipient | Marcia Garcia                                                                             |
+      | subject   | Your role has been change to The Missing Sons                                             |
+      | body      | A solution moderator has changed your role in this group to Member, Solution facilitator. |
+    Then I check the box "Update the member Marcia Garcia"
+    Then I select "Remove the facilitator role from the selected members" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | Remove the facilitator role from the selected members was applied to 1 item. |
+    And the following system email should have been sent:
+      | recipient | Marcia Garcia                                                       |
+      | subject   | Your role has been change to The Missing Sons                       |
+      | body      | A solution moderator has changed your role in this group to Member. |
