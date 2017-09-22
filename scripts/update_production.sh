@@ -21,10 +21,12 @@ if [ ${STATUS} -ne 0 ]; then
 fi
 
 # Check if there are any errors or warnings reported.
-ERROR_COUNT=$(./vendor/bin/drush status-report --severity=1 --field=severity | wc -l)
+# Ignore the warning about the update notifications module not being enabled,
+# the updates are monitored by the development team.
+ERROR_COUNT=$(./vendor/bin/drush status-report --severity=1 --field=title | grep -v "Update notifications" | wc -l)
 if [ ${ERROR_COUNT} -ne 0 ]; then
   echo "Errors or warnings are reported after the update:"
-  ./vendor/bin/drush status-report --severity=1
+  ./vendor/bin/drush status-report --severity=1 | grep -v "Update notifications"
   exit 1
 fi
 
