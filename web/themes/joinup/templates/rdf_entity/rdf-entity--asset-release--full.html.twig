@@ -7,11 +7,12 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.field_isr_release_notes }}
-    <div class="fieldset--box">
-      <h3 class="fieldset__title ">{{ 'Documentation'|t }}</h3>
-      {{ content.field_isr_documentation }}
-    </div>
+    {% if content.field_isr_documentation|render %}
+      <div class="fieldset--box">
+        <h3 class="fieldset__title ">{{ 'Documentation'|t }}</h3>
+        {{ content.field_isr_documentation }}
+      </div>
+    {% endif %}
   </div>
 </article>
-
 {{ content.field_isr_distribution }}
