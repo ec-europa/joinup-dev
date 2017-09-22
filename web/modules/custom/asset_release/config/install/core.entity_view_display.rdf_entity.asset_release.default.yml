@@ -26,7 +26,6 @@ dependencies:
   module:
     - ds
     - file_url
-    - joinup
     - state_machine
     - text
     - user
