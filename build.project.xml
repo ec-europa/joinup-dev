@@ -194,14 +194,14 @@
     <!-- Export complete site configuration. -->
     <target name="export-config">
         <!-- Make sure the config directory exists. -->
-        <mkdir dir="${config.dir}" />
+        <mkdir dir="${drupal.config.dir}" />
         <drush
             command="config-export"
             assume="yes"
             root="${website.drupal.dir}"
             bin="${drush.bin}"
             verbose="${drush.verbose}">
-            <option name="destination" value="${config.dir}" />
+            <option name="destination" value="${drupal.config.dir}" />
         </drush>
     </target>
 
