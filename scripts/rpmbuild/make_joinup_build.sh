@@ -3,6 +3,9 @@
 # This script will build an RPM package intended for deploying on production.
 
 # Define paths.
+if [ -z ${COMPOSER_PATH} ]; then
+  COMPOSER_PATH=/usr/local/bin/composer
+fi
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/../..)
 BUILD_ROOT=${PROJECT_ROOT}/tmp/rpmbuild
@@ -30,7 +33,7 @@ JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 mkdir -p ${JOINUP_DIR} || exit 1
 
 # Download composer dependencies.
-/usr/bin/composer install --no-dev || exit 1
+${COMPOSER_PATH} install --no-dev || exit 1
 
 # Build the site.
 ./vendor/bin/phing build-dist || exit 1
