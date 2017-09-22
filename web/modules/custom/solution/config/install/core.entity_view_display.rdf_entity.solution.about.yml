@@ -37,6 +37,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_site_featured
+    - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
@@ -44,6 +45,7 @@ dependencies:
     - ds
     - field_group
     - file_url
+    - joinup
     - link
     - options
     - text
@@ -121,9 +123,9 @@ third_party_settings:
     group_trr_information:
       children:
         - field_is_test_resource_type
-        - field_is_product_type
         - field_is_actor
         - field_is_business_process
+        - field_is_product_type
         - field_is_standardization_level
       parent_name: ''
       weight: 5
@@ -354,7 +356,7 @@ content:
     region: content
   field_is_product_type:
     type: entity_reference_label
-    weight: 0
+    weight: 3
     region: content
     label: above
     settings:
@@ -463,6 +465,7 @@ hidden:
   field_keywords: true
   field_policy_domain: true
   field_site_featured: true
+  field_site_pinned: true
   field_spatial_coverage: true
   label: true
   langcode: true
