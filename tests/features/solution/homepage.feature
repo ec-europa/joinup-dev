@@ -11,9 +11,6 @@ Feature: Solution homepage
     And the following contact:
       | name  | Placebo             |
       | email | Placebo@example.com |
-    And the following licence:
-      | title       | LGPL                                |
-      | description | The LGPL more permisssive than GPL. |
     And the following solutions:
       | title                        | description                           | logo     | banner     | state     | owner         | contact information | solution type     | policy domain |
       | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
@@ -23,14 +20,14 @@ Feature: Solution homepage
       | IS protocol paper | 1              | 2018-10-04 8:01am | First stable version.                       | Information sharing protocol | validated | Belgium          |
       | Fireproof         | 0.1            | 2018-10-04 8:06am | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
-      | title           | description                                        | creation date     | access url       | solution                     | parent                       | downloads | licence |
-      | PDF version     | Pdf version of the paper.                          | 2018-10-04 8:07am | text.pdf         | Information sharing protocol | IS protocol paper            | 589       | LGPL    |
-      | ZIP version     | Zip version of the paper.                          | 2018-10-04 8:04am | test.zip         | Information sharing protocol | IS protocol paper            | 514       | LGPL    |
+      | title           | description                                        | creation date     | access url       | solution                     | parent                       | downloads |
+      | PDF version     | Pdf version of the paper.                          | 2018-10-04 8:07am | text.pdf         | Information sharing protocol | IS protocol paper            | 589       |
+      | ZIP version     | Zip version of the paper.                          | 2018-10-04 8:04am | test.zip         | Information sharing protocol | IS protocol paper            | 514       |
       # One distribution directly attached to the "Information sharing protocol" solution.
-      | Protocol draft  | Initial draft of the protocol.                     | 2018-10-04 7:59am | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       | LGPL    |
-      | Source code     | Source code for the Fireproof tool.                | 2018-10-04 8:03am | test.zip         | Security audit tools         | Fireproof                    | 432       | LGPL    |
+      | Protocol draft  | Initial draft of the protocol.                     | 2018-10-04 7:59am | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       |
+      | Source code     | Source code for the Fireproof tool.                | 2018-10-04 8:03am | test.zip         | Security audit tools         | Fireproof                    | 432       |
       # One distribution directly attached to the "Security audit tools" solution.
-      | Code of conduct | Code of conduct for contributing to this software. | 2018-10-04 8:14am | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       | LGPL    |
+      | Code of conduct | Code of conduct for contributing to this software. | 2018-10-04 8:14am | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       |
     And news content:
       | title               | body                                | created           | policy domain           | spatial coverage | solution                     | state     |
       | IS protocol meet-up | Discussion about the next standard. | 2018-10-04 8:02am | Statistics and Analysis | European Union   | Information sharing protocol | validated |
@@ -42,7 +39,7 @@ Feature: Solution homepage
     When I go to the homepage of the "Information sharing protocol" solution
     # I should see only the related release.
     # And the distribution directly associated.
-    And I should see the following tiles in the correct order:
+    Then I should see the following tiles in the correct order:
       # Created in 8:08am.
       | IS protocol draft 2  |
       # Created in 8:02am.
