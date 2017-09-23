@@ -19,7 +19,7 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface, Fie
   use FieldTranslationTrait;
   use FileUrlFieldTrait;
   use LicenceTrait;
-  use StatusTrait;
+  use StatusFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -52,7 +52,7 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface, Fie
       'licence' => $this->t('Licence'),
       'changed_time' => $this->t('Changed time'),
       'technique' => $this->t('Representation technique'),
-      'status' => $this->t('Status'),
+      'status_field' => $this->t('Status field'),
       'i18n' => $this->t('Field translations'),
     ];
   }
@@ -101,8 +101,8 @@ class Distribution extends JoinupSqlBase implements RedirectImportInterface, Fie
     $urls = $row->getSourceProperty('access_url') ? [$row->getSourceProperty('access_url')] : [];
     $this->setFileUrlTargetId($row, 'access_url', $file_source_id_values, 'file:distribution', $urls);
 
-    // Status.
-    $this->setStatus($vid, $row);
+    // Status field.
+    $this->setStatusField($vid, $row);
 
     // Licence.
     $this->setLicence($row, 'distribution');

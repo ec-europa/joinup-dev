@@ -19,7 +19,8 @@ $this->assertContains('City/Location: Athens', $news->body->value);
 $this->assertKeywords([], $news);
 $this->assertTrue($news->get('field_news_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
-$this->assertEquals('validated', $news->field_state->value);
+$this->assertEquals('draft', $news->field_state->value);
+$this->assertFalse($news->isPublished());
 $this->assertRedirects(['news/mobile-age-project-co-created-personalised-mobile-access-public-services-senior-citizens-–-2nd-'], $news);
 
 $news = Node::load(27607);
@@ -37,6 +38,7 @@ $this->assertKeywords([
 ], $news);
 $this->assertReferences(['Belgium', 'Netherlands'], $news->field_news_spatial_coverage);
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
+$this->assertTrue($news->isPublished());
 $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['osor/news/be-nl-governments-will-not-use-iso-ooxml'], $news);
 
@@ -52,5 +54,6 @@ $this->assertTrue($news->get('field_keywords')->isEmpty());
 $this->assertReferences(['Netherlands', 'European Union'], $news->field_news_spatial_coverage);
 $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'collection');
 $this->assertEquals($collection->id(), $news->og_audience->target_id);
+$this->assertTrue($news->isPublished());
 $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['community/osor/news/public-workshop-discuss-ways-sustain-governmental-open-standards'], $news);
