@@ -13,6 +13,7 @@ dependencies:
   - block
   - ckeditor
   - collection
+  - config_readonly
   - contact_form
   - content_translation
   - contextual

@@ -1028,3 +1028,10 @@ function joinup_core_editor_js_settings_alter(array &$settings) {
     $settings['editor']['formats']['content_editor']['editorSettings']['format_tags'] = implode(';', $options);
   }
 }
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function joinup_core_ckeditor_css_alter(array &$css) {
+  $css[] = drupal_get_path('module', 'joinup_core') . '/css/wysiwyg.css';
+}

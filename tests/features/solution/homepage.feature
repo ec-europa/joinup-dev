@@ -45,7 +45,7 @@ Feature: Solution homepage
       # Created in 8:02am.
       | IS protocol meet-up  |
       # Created in 8:01am.
-      | IS protocol paper 1  |
+      | IS protocol paper    |
       # Created in 7:59am.
       | Protocol draft       |
       # The related solutions is shown in a block later in the page.
@@ -77,7 +77,7 @@ Feature: Solution homepage
 
     # Verify that the other solution is showing its related content.
     When I go to the homepage of the "Security audit tools" solution
-    Then I should see the "Fireproof 0.1" tile
+    Then I should see the "Fireproof" tile
     #Then I should see the text "Fireproof 0.1"
     And I should see the "Code of conduct" tile
     But I should not see the "IS protocol paper 1" tile
