@@ -150,7 +150,7 @@ class JoinupRelationManager implements ContainerInjectionInterface {
 
     $users = [];
     foreach ($this->getGroupMemberships($entity, $state) as $membership) {
-      $user = $membership->getUser();
+      $user = $membership->getOwner();
       if (!empty($user) && $membership->hasRole($role_id)) {
         $users[$user->id()] = $user;
       }
@@ -172,7 +172,7 @@ class JoinupRelationManager implements ContainerInjectionInterface {
    */
   public function getGroupUsers(EntityInterface $entity, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
     return array_reduce($this->getGroupMemberships($entity, $state), function ($users, OgMembershipInterface $membership) {
-      $user = $membership->getUser();
+      $user = $membership->getOwner();
       if (!empty($user)) {
         $users[] = $user;
       }

@@ -988,7 +988,7 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
   foreach ($variables['rows'] as &$row) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = $row['content']['#og_membership'];
-    $row['content'] = $view_builder->view($membership->getUser(), 'view_mode_tile');
+    $row['content'] = $view_builder->view($membership->getOwner(), 'view_mode_tile');
   }
 }
 
