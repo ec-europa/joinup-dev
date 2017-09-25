@@ -19,18 +19,24 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase {
    */
   public function getFacetDefinition() {
     $current_user = \Drupal::currentUser();
-    return [
-      'mine' => [
-        'field_name' => 'entity_author',
-        'field_condition' => $current_user->id(),
-        'label' => $this->t('My collections'),
-      ],
+
+    $definition = [
       'featured' => [
         'field_name' => 'site_featured',
         'field_condition' => 'true',
         'label' => $this->t('Featured collections'),
       ],
     ];
+
+    if (!$current_user->isAnonymous()) {
+      $definition['mine'] = [
+        'field_name' => 'entity_author',
+        'field_condition' => $current_user->id(),
+        'label' => $this->t('My collections'),
+      ];
+    }
+
+    return $definition;
   }
 
 }

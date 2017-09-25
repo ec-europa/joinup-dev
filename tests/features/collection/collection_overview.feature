@@ -148,19 +148,29 @@ Feature: Collections Overview
     And I should not see the "Maintenance page" tile
 
   Scenario: My content facet
-    Given user:
-      | Username | Carolina Mercedes |
-    And user:
-      | Username | Luigi Plant |
+    Given users:
+      | Username          |
+      | Carolina Mercedes |
+      | Luigi Plant       |
     And the following collections:
-      | title                | state     | featured | author      |
-      | Enemies of the state | validated | yes      | Luigi Plant |
-    And the following collections:
-      | title             | state     | featured | author            |
-      | Fed up meatlovers | validated | no       | Carolina Mercedes |
-      | Ugly farmers      | validated | yes      | Luigi Plant       |
+      | title                | state     | featured | author            |
+      | Enemies of the state | validated | yes      | Luigi Plant       |
+      | Fed up meatlovers    | validated | no       | Carolina Mercedes |
+      | Ugly farmers         | validated | yes      | Luigi Plant       |
+    # Technical: use a separate step to create a collection associated to the anonymous user.
+    And the following collection:
+      | title    | Biologic meatballs |
+      | state    | validated          |
+      | featured | no                 |
+
+    # The "My collections" facet item should not be shown to anonymous users.
+    When I am an anonymous user
+    And I click "Collections"
+    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
+
     When I am logged in as "Carolina Mercedes"
     When I click "Collections"
+    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2), My collections (1)"
     When I click "My collections" in the "My collections content" inline facet
     Then I should see the "Fed up meatlovers" tile
     But I should not see the "Ugly farmers" tile
