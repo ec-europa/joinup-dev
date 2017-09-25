@@ -90,11 +90,13 @@ Feature: Content Overview
     And I should see the "The Men's Female" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
+    And the "My content" inline facet should allow selecting the following values "Featured content (2)"
 
     When I am logged in as "batbull"
     And I am on the homepage
     And I click "Keep up to date"
-    And I click "My content" in the "My content" inline facet
+    Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
+    When I click "My content" in the "My content" inline facet
     Then I should see the following tiles in the correct order:
       | The Playful Tale |
     But I should not see the "Seventh Windows" tile
