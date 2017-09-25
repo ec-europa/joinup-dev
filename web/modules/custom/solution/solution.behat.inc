@@ -12,6 +12,7 @@ use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Controller\SiteFeatureController;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
@@ -29,13 +30,14 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use ConfigReadOnlyTrait;
   use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
-  use WorkflowTrait;
   use UtilityTrait;
+  use WorkflowTrait;
 
   /**
    * Test solutions.
@@ -589,7 +591,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Create the needed language.
     $language_manager = \Drupal::languageManager();
     if (!$language_manager->getLanguage($langcode)) {
+      // Temporarily bypass the read only config functionality so that we can
+      // enable the language for testing.
+      $this->bypassReadOnlyConfig();
       ConfigurableLanguage::createFromLangcode($langcode)->save();
+      $this->restoreReadOnlyConfig();
     }
   }
 
