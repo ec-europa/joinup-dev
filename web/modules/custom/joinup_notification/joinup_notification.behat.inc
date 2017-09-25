@@ -9,12 +9,15 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\message\Entity\MessageTemplate;
 
 /**
  * Behat step definitions for testing notifications.
  */
 class JoinupNotificationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use ConfigReadOnlyTrait;
 
   /**
    * The mail system storage settings.
@@ -323,12 +326,18 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @BeforeScenario @email
    */
   public function beforeEmailScenario() {
+    // Temporarily bypass read only config so that we can set up the testing
+    // mail system.
+    $this->bypassReadOnlyConfig();
+
     $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
     $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
     $this->mailConfig
       ->set('defaults.sender', 'test_mail_collector')
       ->save();
     \Drupal::state()->set('system.test_mail_collector', []);
+
+    $this->restoreReadOnlyConfig();
   }
 
   /**
@@ -337,7 +346,13 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @AfterScenario @email
    */
   public function afterEmailScenario() {
+    // Temporarily bypass read only config so that we can restore the original
+    // mail handler.
+    $this->bypassReadOnlyConfig();
+
     $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+
+    $this->restoreReadOnlyConfig();
   }
 
 }

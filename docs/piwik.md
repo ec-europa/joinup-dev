@@ -20,8 +20,30 @@ $ ./vendor/bin/phing setup-piwik
 This will download Piwik in ./vendor/piwik/piwik and start a running instance
 at http://localhost:8000.
 
-Check the 'Piwik' section in `build.properties` for possible configuration
-options.
+Now, visit the web UI at `http://localhost:8000`, or the host and port that were
+configured previously in `./build.properties.local` and follow the installation
+wizard. Use the values provided in console by the output of the previous
+`./vendor/bin/phing setup-piwik` command. Check the 'Piwik' section in
+`build.properties` for possible configuration options.
+
+## Configuration
+
+After Piwik has been installed, update your local Phing properties in
+`build.properties.local` with the site ID and authentication token. These are
+environment specific and can be found in the Piwik web interface:
+
+```
+# Website ID. This can be seen in the Piwik UI, at Administration > Websites >
+# Manage.
+piwik.website_id = 1
+
+# Authentication token. This can be retrieved from the Piwik web interface at
+# Administration > Platform > API > User authentication.
+piwik.token = 0123456789abcdef0123456789abcdef
+```
+
+During the installation of the project these parameters will be written in the
+`settings.local.php` file and used by Drupal to connect to the Piwik instance.
 
 ## Troubleshooting
 

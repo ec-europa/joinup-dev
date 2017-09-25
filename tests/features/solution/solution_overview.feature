@@ -172,8 +172,21 @@ Feature: Solutions Overview
       | title               | collection             | state     | featured | author            |
       | Hungry herbalists   | Friends of the falafel | validated | no       | Veronique végétal |
       | Pretty phytologists | Friends of the falafel | validated | yes      | Mario meat        |
+    # Technical: use a separate step to create a solution associated to the anonymous user.
+    And the following solution:
+      | title      | Mad vegetarians        |
+      | collection | Friends of the falafel |
+      | state      | validated              |
+      | featured   | no                     |
+
+    # The "My solutions" facet item should not be shown to anonymous users.
+    When I am an anonymous user
+    And I click "Solutions"
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (1)"
+
     When I am logged in as "Veronique végétal"
     When I click "Solutions"
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (1), My solutions (1)"
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the "Hungry herbalists" tile
     But I should not see the "Pretty phytologists" tile
