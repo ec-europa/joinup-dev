@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "39b32dfab9becf838b428fa8a089c40c",
+    "content-hash": "0feb7aec1258bcba11e9b6c592a82337",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3065,8 +3065,8 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta5+4-dev",
-                    "datestamp": "1496093583",
+                    "version": "8.x-5.0-beta5+8-dev",
+                    "datestamp": "1505340845",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4091,8 +4091,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+3-dev",
-                    "datestamp": "1503745145",
+                    "version": "8.x-1.0-beta1+4-dev",
+                    "datestamp": "1503745744",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -10030,7 +10030,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
@@ -11572,7 +11573,6 @@
         "drupal/pathauto": 20,
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/piwik_reporting_api": 10,
         "drupal/r4032login": 20,
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
