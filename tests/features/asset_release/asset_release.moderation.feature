@@ -16,6 +16,7 @@ Feature: Asset release moderation
       | Bonnie Holloway | bonnie.holloway@example.com | Bonnie     | Holloway    |           |
       | Felix Russell   | Felix.Russell@example.com   | Felix      | Russell     |           |
       | Wilson Mendoza  | Wilson.Mendoza@example.com  | Wilson     | Mendoza     | moderator |
+      | Patric Sereira  | Patric.Sereira@example.com  | Patric     | Sereira     | moderator |
     And the following solution:
       | title               | Dark Ship   |
       | description         | Dark ship   |
@@ -121,5 +122,13 @@ Feature: Asset release moderation
     And I press "Delete"
     And the following email should have been sent:
       | recipient | Bonnie Holloway                                            |
+      | subject   | Joinup: A release has been deleted                         |
+      | body      | release Release fix, v1 of Dark Ship solution was deleted. |
+    And the following email should have been sent:
+      | recipient | Felix Russell                                              |
+      | subject   | Joinup: A release has been deleted                         |
+      | body      | release Release fix, v1 of Dark Ship solution was deleted. |
+    And the following email should have been sent:
+      | recipient | Patric Sereira                                             |
       | subject   | Joinup: A release has been deleted                         |
       | body      | release Release fix, v1 of Dark Ship solution was deleted. |
