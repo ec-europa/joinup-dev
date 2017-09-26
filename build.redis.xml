@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Redis" default="help">
+    <target
+            name="clean-redis-settings"
+            description="Remove redis settings from the settings file. Ideal to facilitate re-installs.">
+        <replaceregexp file="${website.settings.local.php}" pattern="(.*)// REDIS SETTING${line.separator}" replace="" />
+    </target>
+
+    <target
+            name="setup-redis"
+            depends="clean-redis-settings"
+            description="Sets up redis when available.">
+        <if>
+            <isset property="redis.host" />
+            <then>
+                <phingcall target="enable-module">
+                    <property name="module" value="redis" />
+                </phingcall>
+                <append destFile="${website.settings.local.php}" text="$settings['redis.connection']['interface'] = 'PhpRedis'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.local.php}" text="$settings['redis.connection']['host']      = '${redis.host}'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.local.php}" text="$settings['cache']['default'] = 'cache.backend.redis'; // REDIS SETTING${line.separator}" />
+            </then>
+        </if>
+    </target>
+</project>

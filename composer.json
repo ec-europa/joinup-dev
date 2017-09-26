@@ -42,6 +42,7 @@
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/rdf_entity": "^1.0-alpha3",
         "drupal/redirect": "dev-1.x#27e71182610c70636b959d9f4031fe6dd0877d87",
+        "drupal/redis": "^1.0@RC",
         "drupal/search_api": "~1.0-rc2",
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "~1.0-alpha3",
