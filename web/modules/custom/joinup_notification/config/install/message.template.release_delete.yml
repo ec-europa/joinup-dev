@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: release_delete
+label: 'Solution release delete'
+description: 'Template 19: Deletion of release'
+text:
+  -
+    value: 'Joinup: A release has been deleted'
+    format: full_html
+  -
+    value: '<p>release @entity:title, @entity:field_isr_release_number of @group:title solution was deleted.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

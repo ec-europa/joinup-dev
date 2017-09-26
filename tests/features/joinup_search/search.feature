@@ -92,8 +92,8 @@ Feature: Global search
       | title          | description                                                | keywords | owner             | contact information | state     |
       | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
     And the following releases:
-      | title         | release notes                               | keywords | is version of  | owner             | contact information | state     |
-      | Release Alpha | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
+      | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
+      | Release Alpha | 1              | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
     And the following distributions:
       | title              | description                                    | parent        | access url |
       | Distribution alpha | <p>A simple beta distribution description.</p> | Release Alpha | test.zip   |

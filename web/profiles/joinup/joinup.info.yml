@@ -13,6 +13,7 @@ dependencies:
   - block
   - ckeditor
   - collection
+  - config_readonly
   - contact_form
   - content_translation
   - contextual
@@ -90,6 +91,7 @@ themes:
 config_devel:
   - block.block.entity_bundle_facet
   - block.block.exposed_form_search_page
+  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader

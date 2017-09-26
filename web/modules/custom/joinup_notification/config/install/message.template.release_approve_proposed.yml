@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: release_approve_proposed
+label: 'Solution release approve proposed'
+description: 'Template 20: The solution release'
+text:
+  -
+    value: 'Joinup: Your release was accepted'
+    format: full_html
+  -
+    value: '<p>Your proposed @entity:title, @entity:field_isr_release_number for the solution "@group:title" has been validated as per your request.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

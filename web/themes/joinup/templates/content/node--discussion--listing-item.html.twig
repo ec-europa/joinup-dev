@@ -91,6 +91,10 @@
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
+        <span class="listing__text">{{ comment_count }}</span>
+        <span class="listing__icon icon icon--discussion"></span>
+      </div>
+      <div class="listing__stat">
         <span class="listing__text">{{ node.type.entity.label|lower }}</span>
         <span class="listing__icon icon icon--{{ node.bundle }}"></span>
       </div>
