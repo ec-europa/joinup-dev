@@ -466,7 +466,6 @@ hidden:
   field_spatial_coverage: true
   label: true
   langcode: true
-  licence: true
   og_group: true
   rdf_entity_field_is_content_inline_facets: true
   rdf_entity_field_is_content_top: true

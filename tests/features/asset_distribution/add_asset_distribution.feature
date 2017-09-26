@@ -124,9 +124,7 @@ Feature: Add distribution through the UI
     And I should see the link "WTFPL"
     And I should see the text "The full source code."
 
-    # The licence label should be shown also in the solution UI.
     And I go to the homepage of the "Solution random x name" solution
-    Then I should see the text "WTFPL"
     # Clean up the asset distribution that was created through the UI.
     Then I delete the "Source tarball" asset distribution
 
@@ -190,7 +188,7 @@ Feature: Add distribution through the UI
     And I press "Save"
     Then I should see the error message "A distribution with title Windows - source already exists in this solution. Please choose a different title."
 
-  Scenario: Licences shown in the solution header should be comma separated.
+  Scenario: Licences are not shown in the solution header.
     Given the following licence:
       | title       | Boost Software License                                                         |
       | description | It is a permissive license in the style of the BSD license and the MIT license |
@@ -200,4 +198,5 @@ Feature: Add distribution through the UI
       | Quality Yard | Boost Software License | Solution random x name |
 
     When I go to the homepage of the "Solution random x name" solution
-    Then I should see the text "WTFPL, Boost Software License"
+    Then I should not see the text "WTFPL"
+    And I should not see the text "Boost Software License"
