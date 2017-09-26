@@ -95,10 +95,9 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    */
   public function build() {
     $build = [
-      '#attributes' => ['class' => ['listing', 'listing--grid', 'mdl-grid']],
       'header' => [
         '#type' => 'inline_template',
-        '#template' => '<p>Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.</p>',
+        '#template' => '<p class="mdl-cell mdl-cell--12-col mdl-cell--12-col-wide">{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
       ],
     ];
 
