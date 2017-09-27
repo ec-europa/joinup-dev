@@ -11,13 +11,15 @@
  * @ingroup themeable
  */
 #}
-<div class="share-box__container">
+<div class="share-box__container{{ not form.collections|render ? ' share-box__container--small' }}">
   <div class="share-box__social">
     <h3 class="share-box__title">{{ 'Social networks'|t }}</h3>
     {{ form.share }}
   </div>
-  <div class="share-box__collections">
-    <h3 class="share-box__title">{{ 'Other collections in Joinup'|t }}</h3>
-    {{ form|without('share')|render }}
-  </div>
+  {% if form.collections|render %}
+    <div class="share-box__collections">
+      <h3 class="share-box__title">{{ 'Other collections in Joinup'|t }}</h3>
+      {{ form|without('share')|render }}
+    </div>
+  {% endif %}
 </div>
