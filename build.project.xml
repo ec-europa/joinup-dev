@@ -191,10 +191,34 @@
         </reflexive>
     </target>
 
+    <!-- Export complete site configuration. -->
+    <target name="export-config">
+        <!-- Make sure the config directory exists. -->
+        <mkdir dir="${drupal.config.dir}" />
+        <drush
+            command="config-export"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}"
+            verbose="${drush.verbose}">
+            <option name="destination" value="${drupal.config.dir}" />
+        </drush>
+    </target>
+
+    <target
+        name="enable-config-read-only"
+        depends="writable-settings-folder, writable-settings-php"
+        description="Make config read-only.">
+        <phingcall target="enable-module">
+            <property name="module" value="config_readonly" />
+        </phingcall>
+        <append destFile="${website.settings.php}" text="$settings['config_readonly'] = TRUE;${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="compile-sass" />
+        depends="install-composer-dependencies-dist, compile-sass, setup-virtuoso-permissions, purge-rdf-backend, install, export-config" />
 
     <target
         name="build-dev"
@@ -204,11 +228,11 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
 
 </project>
