@@ -28,9 +28,6 @@
 .fieldset
   p:last-child
     margin-bottom: 0
-  img
-    max-width: 100%
-    height: auto
 
 // Modifiers
 // --------------------------------------------------
@@ -63,25 +60,25 @@
 .fieldset--border-bottom
   position: relative
   margin-bottom: 25px
-  padding-bottom: 27px
-  &:before
-    position: absolute
-    right: -20px
-    bottom: 0
-    left: -20px
-    height: 2px
-    content: ''
-    background-color: $color-grey-light
-    +breakpoint(sm)
-      right: -30px
-      left: -30px
-    +breakpoint(md)
-      right: -60px
-      left: -60px
+  padding-bottom: 25px
+  margin-right: -20px
+  margin-left: -20px
+  padding-right: 20px
+  padding-left: 20px
+  border-bottom: 2px solid $color-grey-light
+  +breakpoint(sm)
+    margin-right: -30px
+    margin-left: -30px
+    padding-right: 30px
+    padding-left: 30px
+  +breakpoint(md)
+    margin-right: -60px
+    margin-left: -60px
+    padding-right: 60px
+    padding-left: 60px
 
 .fieldset--textarea
-  p
-    overflow: hidden
+  overflow: hidden
   img
     margin-bottom: 16px
   img.align-left
