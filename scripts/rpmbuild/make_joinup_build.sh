@@ -33,7 +33,7 @@ cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT}
 # Collect the source files for the package.
 SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
-mkdir ${JOINUP_DIR}
+mkdir -p ${JOINUP_DIR}
 
 cp -r config/ src/ vendor/ web/ ${JOINUP_DIR}
 
