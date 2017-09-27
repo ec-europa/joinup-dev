@@ -226,7 +226,7 @@ function _joinup_is_create_form_route($route_name) {
  * @return array
  *   Renderable array contains the author.
  */
-function _joinup_get_author(NodeInterface $node) {
+function _joinup_theme_get_author(NodeInterface $node) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
@@ -830,7 +830,7 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  $author_inline = _joinup_get_author($node);
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -844,7 +844,7 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  $author_inline = _joinup_get_author($node);
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -858,7 +858,7 @@ function joinup_theme_preprocess_page_title__node__video(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  $author_inline = _joinup_get_author($node);
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -878,7 +878,7 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
-  $author_inline = _joinup_get_author($node);
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -957,7 +957,7 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
 
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
 
-  $author_inline = _joinup_get_author($node);
+  $author_inline = _joinup_theme_get_author($node);
 
   $variables['additional_content']['field_event_date'] = $field_event_date;
   $variables['additional_content']['field_location'] = $field_event_location;
