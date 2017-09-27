@@ -948,8 +948,17 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
   $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
 
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+
   $variables['additional_content']['field_event_date'] = $field_event_date;
   $variables['additional_content']['field_location'] = $field_event_location;
+  $variables['additional_content']['created'] = $created;
+  $variables['additional_content']['author'] = $author_inline;
 }
 
 /**
