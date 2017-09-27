@@ -10,11 +10,13 @@
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
-    <div class="fieldset fieldset--box">
-      <h3 class="fieldset__title ">{{ 'References'|t }}</h3>
-      {{ content.field_event_web_url }}
-      {{ content.field_event_contact_email }}
-    </div>
+    {% if content.field_event_web_url|render or content.field_event_contact_email|render %}
+      <div class="fieldset fieldset--box">
+        <h3 class="fieldset__title ">{{ 'References'|t }}</h3>
+        {{ content.field_event_web_url }}
+        {{ content.field_event_contact_email }}
+      </div>
+    {% endif %}
     {% if content.field_event_agenda|render %}
       <div class="fieldset fieldset--box">
         <h3 class="fieldset__title ">{{ 'Details'|t }}</h3>
