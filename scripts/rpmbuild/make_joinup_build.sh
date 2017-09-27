@@ -18,7 +18,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Download composer dependencies.
-/usr/bin/composer install --no-dev
+composer install --no-dev
 
 # Build the site.
 ./vendor/bin/phing build-dist
