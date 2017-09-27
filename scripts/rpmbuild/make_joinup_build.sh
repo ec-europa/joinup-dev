@@ -36,6 +36,7 @@ JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 mkdir -p ${JOINUP_DIR}
 
 cp -r config/ src/ vendor/ web/ ${JOINUP_DIR}
+cp build* ${JOINUP_DIR}
 
 # Replace environment specific files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php
