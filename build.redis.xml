@@ -17,9 +17,9 @@
                 <phingcall target="enable-module">
                     <property name="module" value="redis" />
                 </phingcall>
-                <append destFile="${website.settings.local.php}" text="$settings['redis.connection']['interface'] = 'PhpRedis'; // REDIS SETTING${line.separator}" />
-                <append destFile="${website.settings.local.php}" text="$settings['redis.connection']['host']      = '${redis.host}'; // REDIS SETTING${line.separator}" />
-                <append destFile="${website.settings.local.php}" text="$settings['cache']['default'] = 'cache.backend.redis'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.php}" text="$settings['redis.connection']['interface'] = 'PhpRedis'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.php}" text="$settings['redis.connection']['host']      = '${redis.host}'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.php}" text="$settings['cache']['default'] = 'cache.backend.redis'; // REDIS SETTING${line.separator}" />
             </then>
         </if>
         <drush
