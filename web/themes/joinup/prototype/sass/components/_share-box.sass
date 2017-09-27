@@ -37,9 +37,10 @@
   flex-direction: column
   justify-content: space-between
   max-width: $screen-sm
+  overflow-y: hidden
   +breakpoint(sm)
     flex-direction: row
-    min-width: $screen-sm
+    min-width: $screen-sm / 2
 
 .share-box__title
   margin-top: 0
@@ -49,11 +50,13 @@
   margin-bottom: 20px
   +breakpoint(sm)
     margin-right: 40px
+    margin-bottom: 0
   .share-box__item
     display: flex
     align-items: center
     margin-right: 5px
     margin-left: 5px
+    padding-right: 10px
 
 .share-box__collections
   .share-box__row
@@ -67,6 +70,12 @@
 
 // Modifiers
 // --------------------------------------------------
+.share-box__container--single-column
+  justify-content: center
+  .share-box__social
+    margin-right: 0
+    .share-box__title
+      text-align: center
 
 // Dependiencies
 // --------------------------------------------------

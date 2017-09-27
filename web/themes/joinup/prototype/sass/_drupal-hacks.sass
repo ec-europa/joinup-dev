@@ -178,10 +178,14 @@ form .description
 
 // jQuery ui hacks
 .ui-dialog
-  width: auto !important
+  width: calc(100% - 30px) !important
   max-width: 840px
+  margin-left: 15px
+  margin-right: 15px
   padding: 20px
   +z-index(modal)
+  +breakpoint(sm)
+    width: auto !important
   .ui-dialog-buttonpane
     border: none
     padding: 0 !important
@@ -197,7 +201,6 @@ form .description
 
   .ui-dialog-content
     padding: 0
-    margin-bottom: $form-margin
     font-weight: $font-weight-thin
     color: $color-grey-medium
     font-size: $font-size-small
@@ -229,6 +232,7 @@ form .description
 
   .ui-dialog-buttonset
     float: none !important
+    margin-top: $form-margin
     +breakpoint(sm)
       display: flex
       justify-content: space-between
