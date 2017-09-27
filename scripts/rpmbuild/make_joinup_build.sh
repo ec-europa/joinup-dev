@@ -28,7 +28,7 @@ rm -rf ${BUILD_ROOT}
 mkdir -p ${BUILD_ROOT}
 
 # Create a fresh build root containing the scaffolding files.
-cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT}
+cp -r ${PROJECT_ROOT}/resources/rpmbuild/* ${BUILD_ROOT}
 
 # Collect the source files for the package.
 SOURCES_DIR=${BUILD_ROOT}/SOURCES
