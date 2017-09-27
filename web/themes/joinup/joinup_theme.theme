@@ -17,6 +17,7 @@ use Drupal\Core\Url;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\node\NodeInterface;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -219,13 +220,13 @@ function _joinup_is_create_form_route($route_name) {
 /**
  * Get an inline autor.
  *
- * @param \Drupal\node\Entity\Node $node
+ * @param \Drupal\node\NodeInterface $node
  *   The node, where we get the author.
  *
  * @return array
  *   Renderable array contains the author.
  */
-function _joinup_get_author(Node $node) {
+function _joinup_get_author(NodeInterface $node) {
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
