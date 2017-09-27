@@ -25,7 +25,7 @@ composer install --no-dev
 
 # Clean up existing builds.
 rm -rf ${BUILD_ROOT}
-mkdir -p > build.properties.local
+mkdir -p ${BUILD_ROOT}
 
 # Create a fresh build root containing the scaffolding files.
 cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT}
