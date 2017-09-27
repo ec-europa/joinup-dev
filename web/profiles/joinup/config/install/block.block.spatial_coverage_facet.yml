@@ -11,7 +11,7 @@ dependencies:
 id: spatial_coverage_facet
 theme: joinup_theme
 region: filters
-weight: -10
+weight: -11
 provider: null
 plugin: 'facet_block:spatial_coverage'
 settings:
