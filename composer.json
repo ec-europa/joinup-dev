@@ -196,6 +196,9 @@
             "drupal/rdf_entity": {
                 "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch"
             },
+            "drupal/rdf_entity": {
+                "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch"
+            },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
             },
