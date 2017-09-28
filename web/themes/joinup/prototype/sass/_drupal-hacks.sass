@@ -71,57 +71,64 @@ textarea
   +z-index(navigation)
   button.trigger
     font-family: 'WAAT Icons'
-    speak: none
-    font-style: normal
+    font-size: 0
     font-weight: normal
+    font-style: normal
     font-variant: normal
-    text-transform: none
-    display: inline-block
     line-height: 100%
+    position: relative !important
+    display: inline-block
+    width: 30px !important
+    height: 30px !important
+    padding: 0
+    text-indent: 0
+    text-transform: none
+    color: $color-base
+    border: none !important
+    border-radius: 30px !important
+    background: none
+    speak: none
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
-    background: none
-    border: none !important
-    text-indent: 0
-    color: $color-base
-    font-size: 0
-    padding: 0
-    height: 30px !important
-    width: 30px !important
-    border-radius: 30px !important
-    position: relative !important
-    &:hover, &:focus
+    &:hover,
+    &:focus
       background: $color-grey-light
     &:before
-      +icon-size(15px)
       content: '\e8ab'
+      +icon-size(15px)
 
 // Change contextual button color
 // on dark backgrounds
-.section--featured, .section--header, .section--footer
+.section--featured,
+.section--header,
+.section--footer
   .contextual
     button.trigger
       color: #fff
-      &:hover, &:focus
+      &:hover,
+      &:focus
         background-image: none
         background: $color-grey-medium
 
-// Move contextual button to the left
-// on pinned tiles.
+// Contextual links behaviour in tiles.
+.listing__card
+  .contextual
+    button.trigger
+      // Restore the default absolute positioning applied by .visually-hidden class.
+      position: absolute !important
+
 .listing__card--title-pin
   .contextual
-    left: 0
     right: auto
-  .contextual .trigger
-    float: left
-    right: auto
-    left: 0
-  .contextual .contextual-links
-    border-radius: 0 4px 4px 4px
-    float: left
-    left: 0
-    right: auto
-
+    left: 6px
+    .trigger
+      right: auto
+      left: 0
+      float: left
+    .contextual-links
+      right: auto
+      left: 0
+      border-radius: 0 4px 4px 4px
 
 ul.contextual-links
   +z-index(highlight+2)
@@ -171,8 +178,10 @@ form .description
 
 // jQuery ui hacks
 .ui-dialog
+  width: auto !important
+  max-width: 840px
+  padding: 20px
   +z-index(modal)
-  padding: $field-margin
   .ui-dialog-buttonpane
     border: none
     padding: 0 !important
@@ -214,6 +223,23 @@ form .description
         +icon-size(15px)
         content: '\e617'
 
+  .ui-dialog-buttonset
+    float: none !important
+    +breakpoint(sm)
+      display: flex
+      justify-content: space-between
+    .button
+      width: 100%
+      margin-bottom: 10px
+      +breakpoint(sm)
+        width: auto
+        margin-right: 15px
+        margin-bottom: 0
+      &:last-of-type
+        margin-bottom: 0
+        +breakpoint(sm)
+          margin-right: 0
+
   .ui-widget-header
     font-size: $font-size-h3
     margin-bottom: $field-margin
@@ -247,3 +273,8 @@ form .description
   &:first-child
     .icon
       color: $color-base
+
+// Remove border for iframes
+article
+  iframe
+    border: none

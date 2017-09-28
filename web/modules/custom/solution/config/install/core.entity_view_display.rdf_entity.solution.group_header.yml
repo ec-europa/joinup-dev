@@ -113,11 +113,6 @@ content:
       joinup:
         template_suggestion: ''
     region: content
-  licence:
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   releases_overview:
     weight: 6
     region: content

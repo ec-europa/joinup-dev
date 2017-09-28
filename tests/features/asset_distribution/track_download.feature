@@ -60,6 +60,8 @@ Feature: Asset distribution editing.
     When I click "Download" in the "OpenBSD images" asset distribution
     Then a modal should open
     And I should see the text "Download in progress"
+    And I should see the text "If you do not have a Joinup account, please take some time to create one, at this page. It will allow you to fully exploit the functionalities of Joinup to create new content, contribute to existing one and collaborate with other users."
+    And I should see the text "If you do not want to create a Joinup account, please select any of the following options and provide your email address if you want to be kept updated on the status of the solution. Your personal data will be treated in compliance with the legal notice"
     When I fill in "E-mail address" with "trackme@example.com" in the "Modal content" region
     Then I press "Submit" in the "Modal buttons" region
     Then the modal should be closed
@@ -92,7 +94,7 @@ Feature: Asset distribution editing.
     And I go to the "OpenBSD" solution
     # The only download link is the one in the "OpenBSD images" tile.
     Then I click "Download"
-    And I click "Winter of 95 6.1"
+    And I click "Winter of 95"
     # The only download link is the one in the "Changelog" tile.
     And I click "Download"
 

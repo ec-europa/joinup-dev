@@ -302,11 +302,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     region: content
-  licence:
-    weight: 35
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   changed: true
   collections: true
