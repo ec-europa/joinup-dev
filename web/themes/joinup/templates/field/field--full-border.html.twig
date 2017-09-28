@@ -39,18 +39,18 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes.addClass('fieldset--border-bottom') }}>
+    <div{{ attributes.addClass('fieldset fieldset--border-bottom') }}>
       {% for item in items %}
         <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass('fieldset--border-bottom') }}>{{ item.content }}</div>
+      <div{{ attributes.addClass('fieldset fieldset--border-bottom') }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes.addClass('fieldset--border-bottom') }}>
+  <div{{ attributes.addClass('fieldset fieldset--border-bottom') }}>
     <div{{ title_attributes }}>{{ label }}</div>
     {% if multiple %}
       <div>

@@ -38,17 +38,21 @@
 #}
 {% if label_hidden %}
   {% if multiple %}
+    <div{{ attributes.addClass('fieldset') }}>
       {% for item in items %}
         {{ item.content }}
       {% endfor %}
+    </div>
   {% else %}
     {% for item in items %}
-      {{ item.content }}
+      <div{{ attributes.addClass('fieldset') }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
+  <div{{ attributes.addClass('fieldset') }}>
     <div{{ title_attributes.addClass('form__label') }}>{{ label }}</div>
     {% for item in items %}
       {{ item.content }}
     {% endfor %}
+  </div>
 {% endif %}
