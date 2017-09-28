@@ -97,7 +97,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $build = [
       'header' => [
         '#type' => 'inline_template',
-        '#template' => '<p class="mdl-cell mdl-cell--12-col mdl-cell--12-col-wide">{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
+        '#template' => '<p>{% trans %}Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.{% endtrans %}</p>',
       ],
     ];
 
@@ -122,13 +122,14 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       $entities += $this->getPopularContent($count - count($entities));
     }
 
-    $build += [
-      '#attributes' => ['class' => ['listing', 'listing--grid', 'mdl-grid']],
+    $build['listing'] = [
+      '#type' => 'container',
+      '#extra_suggestion' => 'container__grid',
     ];
 
     foreach ($entities as $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
-      $build[] = [
+      $build['listing'][] = [
         '#theme' => 'search_api_field_result',
         '#item' => $view,
         '#entity' => $entity,
