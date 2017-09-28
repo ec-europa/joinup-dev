@@ -19,9 +19,10 @@
                 </phingcall>
                 <phingcall target="writable-settings-folder" />
                 <phingcall target="writable-settings-php" />
-                <append destFile="${website.settings.php}" text="$settings['redis.connection']['interface'] = 'PhpRedis'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.php}" text="$settings['redis.connection']['interface'] = 'Predis'; // REDIS SETTING${line.separator}" />
                 <append destFile="${website.settings.php}" text="$settings['redis.connection']['host']      = '${redis.host}'; // REDIS SETTING${line.separator}" />
                 <append destFile="${website.settings.php}" text="$settings['cache']['default'] = 'cache.backend.redis'; // REDIS SETTING${line.separator}" />
+                <append destFile="${website.settings.php}" text="$settings['container_yamls'][] = 'modules/redis/example.services.yml'; // REDIS SETTING${line.separator}" />
             </then>
         </if>
         <drush
