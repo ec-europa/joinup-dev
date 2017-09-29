@@ -20,6 +20,7 @@ process:
     source:
       - '@source_path_encoded'
       - destination_uri
+    rename: true
   status:
     plugin: default_value
     default_value: 1
