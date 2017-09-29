@@ -20,14 +20,11 @@ class FileInline extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    global $base_path;
-
     if (!$value) {
       return $value;
     }
 
     $file_storage = \Drupal::entityTypeManager()->getStorage('file');
-    $public_dir = \Drupal::service('stream_wrapper.public')->getDirectoryPath();
 
     $document = Html::load($value);
     $search = ['img' => 'src', 'a' => 'href'];

@@ -29,7 +29,7 @@ $this->assertEquals('BE, NL: governments will not use ISO OOXML', $news->field_n
 $this->assertEquals('news', $news->bundle());
 $this->assertEquals(1207612800, $news->created->value);
 $this->assertEquals(1, $news->uid->target_id);
-$this->assertTrue($news->get('field_news_source_url')->isEmpty());
+$this->assertEquals('http://example.com', $news->field_news_source_url->uri);
 $this->assertContains('IDG News item', $news->body->value);
 $this->assertKeywords([
   '[GL] Belgium',
