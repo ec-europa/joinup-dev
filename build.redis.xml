@@ -4,7 +4,7 @@
     <target
             name="clean-redis-settings"
             description="Remove redis settings from the settings file. Ideal to facilitate re-installs.">
-        <replaceregexp file="${website.settings.local.php}" pattern="(.*)// REDIS SETTING${line.separator}" replace="" />
+        <replaceregexp file="${website.settings.php}" pattern="(.*)// REDIS SETTING${line.separator}" replace="" />
     </target>
 
     <target
