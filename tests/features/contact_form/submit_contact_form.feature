@@ -14,7 +14,7 @@ Feature: Submit the contact form
     # There should be a link to the contact form in the footer.
     Given I am not logged in
     When I am on the homepage
-    And I click "Contact" in the "Footer" region
+    And I click "Contact Joinup Support" in the "Footer" region
     Then I should see the heading "Contact"
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"

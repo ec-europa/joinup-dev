@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0feb7aec1258bcba11e9b6c592a82337",
+    "content-hash": "7ed603a6634499f610ffe03d3b9dcb90",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2765,6 +2765,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4035,6 +4038,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
