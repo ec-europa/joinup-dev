@@ -10,20 +10,19 @@ entity_type: node
 type: list_string
 settings:
   allowed_values:
-    -
-      value: document
+    - value: document
       label: Document
-    -
-      value: case
-      label: Case
-    -
-      value: factsheet
+    - value: case_general
+      label: 'General case study'
+    - value: case_guideline
+      label: Guideline
+    - value: case_open_source
+      label: 'Open source case study'
+    - value: factsheet
       label: Factsheet
-    -
-      value: legal
+    - value: legal
       label: 'Legal Document'
-    -
-      value: presentation
+    - value: presentation
       label: Presentation
   allowed_values_function: ''
 module: options

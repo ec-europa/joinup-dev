@@ -83,7 +83,7 @@ $this->assertEquals('http://example.com/this_collection', $collection->id());
 $this->assertEquals(1454595297, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
-$this->assertReferences(static::$europeCountries, $collection->field_spatial_coverage);
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Collaboration'], $collection->field_policy_domain);
 $this->assertEquals(0, $collection->field_ar_elibrary_creation->value);
 $this->assertTrue($collection->get('field_ar_owner')->isEmpty());
@@ -156,7 +156,7 @@ $this->assertEquals('default', $collection->graph->value);
 $this->assertReferences([
   'Digital Signature Service',
 ], $collection->get('field_ar_affiliates'));
-$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertTrue($collection->get('field_ar_owner')->isEmpty());
@@ -182,7 +182,7 @@ $this->assertEquals('collection', $collection->bundle());
 $this->assertEquals(1370001810, $collection->getCreatedTime());
 $this->assertEquals('default', $collection->graph->value);
 $this->assertTrue($collection->get('field_ar_affiliates')->isEmpty());
-$this->assertReferences(static::$europeCountries, $collection->get('field_spatial_coverage'));
+$this->assertTrue($collection->get('field_spatial_coverage')->isEmpty());
 $this->assertReferences(['Open government'], $collection->field_policy_domain);
 $this->assertEquals(1, $collection->field_ar_elibrary_creation->value);
 $this->assertTrue($collection->get('field_ar_owner')->isEmpty());

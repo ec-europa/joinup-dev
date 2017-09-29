@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.newsletter.body
     - field.field.node.newsletter.simplenews_issue
+    - field.field.node.newsletter.og_audience
     - node.type.newsletter
   module:
     - allowed_formats
@@ -56,6 +57,7 @@ content:
     region: content
 hidden:
   current_workflow_state: true
+  og_audience: true
   path: true
   promote: true
   sticky: true
