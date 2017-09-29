@@ -37,7 +37,7 @@ INNER JOIN content_field_asset_distribution cfad ON n.nid = cfad.field_asset_dis
 INNER JOIN node ar ON cfad.vid = ar.vid AND ar.type = 'asset_release'
 INNER JOIN og_ancestry o ON ar.nid = o.nid
 INNER JOIN node g ON o.group_nid = g.nid
-INNER JOIN content_type_distribution ctd ON n.vid = ctd.vid
+LEFT JOIN content_type_distribution ctd ON n.vid = ctd.vid
 LEFT JOIN files f ON ctd.field_distribution_access_url_fid = f.fid
 LEFT JOIN content_field_distribution_access_url1 cfdau1 ON n.vid = cfdau1.vid
 LEFT JOIN content_field_distribution_licence cfdl ON n.vid = cfdl.vid

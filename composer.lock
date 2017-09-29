@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9210a378a10b4e00a8123b92b86207cf",
+    "content-hash": "fa709c4140054ce3a71bebb0534e753f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3962,6 +3962,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

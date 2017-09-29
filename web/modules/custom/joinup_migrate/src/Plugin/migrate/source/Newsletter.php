@@ -17,6 +17,7 @@ class Newsletter extends NodeBase {
   public function fields() {
     return [
       'newsletter' => $this->t('Newsletter'),
+      'collection' => $this->t('Collection'),
     ] + parent::fields();
   }
 

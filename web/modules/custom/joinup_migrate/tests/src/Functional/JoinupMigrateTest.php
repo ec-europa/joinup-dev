@@ -332,67 +332,6 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   }
 
   /**
-   * List of Europe countries.
-   *
-   * Used to test spatial coverage from Drupal 6 'Europe' term.
-   *
-   * @var string[]
-   */
-  protected static $europeCountries = [
-    'Albania',
-    'Andorra',
-    'Austria',
-    'Belarus',
-    'Belgium',
-    'Bosnia and Herzegovina',
-    'Bulgaria',
-    'Croatia',
-    'Cyprus',
-    'Czech Republic',
-    'Denmark',
-    'Estonia',
-    'European Union',
-    'Faroes',
-    'Finland',
-    'France',
-    'Former Yugoslav Republic of Macedonia',
-    'Germany',
-    'Gibraltar',
-    'Greece',
-    'Guernsey',
-    'Hungary',
-    'Iceland',
-    'Ireland',
-    'Italy',
-    'Jersey',
-    'Kosovo',
-    'Latvia',
-    'Liechtenstein',
-    'Lithuania',
-    'Luxembourg',
-    'Malta',
-    'Moldova',
-    'Monaco',
-    'Montenegro',
-    'Netherlands',
-    'Norway',
-    'Poland',
-    'Portugal',
-    'Romania',
-    'Russia',
-    'San Marino',
-    'Serbia',
-    'Slovakia',
-    'Slovenia',
-    'Spain',
-    'Sweden',
-    'Switzerland',
-    'Ukraine',
-    'United Kingdom',
-    'Vatican City',
-  ];
-
-  /**
    * Migrations that are creating RDF objects or are writing in the source.
    *
    * @var string[]

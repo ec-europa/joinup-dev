@@ -1,0 +1,31 @@
+diff --git a/src/Entity/RdfEntitySparqlStorage.php b/src/Entity/RdfEntitySparqlStorage.php
+index 6e1361f..97c2dae 100644
+--- a/src/Entity/RdfEntitySparqlStorage.php
++++ b/src/Entity/RdfEntitySparqlStorage.php
+@@ -531,11 +531,14 @@ QUERY;
+       return [];
+     }
+     $uuid_key = $this->entityType->getKey('uuid');
+-    array_walk($entities, function (ContentEntityInterface $rdf_entity) use ($uuid_key) {
++    foreach ($entities as $key => $entity) {
++      if (empty($entity)) {
++        unset($entities[$key]);
++      }
+       // The ID of 'rdf_entity' is universally unique because it's a URI. As
+       // the backend schema has no UUID, ID is reused as UUID.
+-      $rdf_entity->set($uuid_key, $rdf_entity->id());
+-    });
++      $entity->set($uuid_key, $entity->id());
++    }
+     return $entities;
+   }
+ 
+@@ -1109,7 +1112,7 @@ QUERY;
+       // Get the entities that were found in the cache.
+       foreach ($ids as $index => $id) {
+         $cid = $cid_map[$id];
+-        if (isset($cache[$cid]) && !isset($entities[$id])) {
++        if (!empty($cache[$cid]) && !isset($entities[$id])) {
+           $entities[$id] = $cache[$cid]->data;
+           unset($ids[$index]);
+         }

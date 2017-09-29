@@ -87,7 +87,7 @@ process:
     source: country
     vocabulary: spatial
   field_is_state: state
-  field_status: status
+  field_status: status_field
   i18n: i18n
 destination:
   plugin: entity:rdf_entity

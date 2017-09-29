@@ -29,6 +29,10 @@ process:
     source: newsletter
     migration: newsletter_type
     no_stub: true
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
 destination:
   plugin: entity:node
   default_bundle: newsletter
