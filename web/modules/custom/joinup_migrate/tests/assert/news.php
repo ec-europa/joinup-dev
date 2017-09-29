@@ -17,7 +17,7 @@ $this->assertEquals(1, $news->uid->target_id);
 $this->assertEquals('http://www.mobile-age.eu/newsletters-issues/newsletter-issue-no-2-october-2016.html', $news->field_news_source_url->uri);
 $this->assertContains('City/Location: Athens', $news->body->value);
 $this->assertKeywords([], $news);
-$this->assertReferences(static::$europeCountries, $news->field_news_spatial_coverage);
+$this->assertTrue($news->get('field_news_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $news->og_audience->target_id);
 $this->assertEquals('validated', $news->field_state->value);
 $this->assertRedirects(['news/mobile-age-project-co-created-personalised-mobile-access-public-services-senior-citizens-–-2nd-'], $news);

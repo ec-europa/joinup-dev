@@ -19,11 +19,24 @@ $this->assertEquals('2010-10-20T00:00:00', $document->field_document_publication
 $this->assertEquals('http://www.baa.com/', $document->field_file->target_id);
 $this->assertContains('More information can be found on the ', $document->body->value);
 $this->assertTrue($document->get('field_keywords')->isEmpty());
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertReferences([
+  'Antarctica',
+  'Austria',
+  'Côte d’Ivoire',
+  'European Union',
+  'Faroes',
+  'Former Yugoslav Republic of Macedonia',
+  'Kiribati',
+  'Romania',
+  'South Korea',
+  'São Tomé and Príncipe',
+  'The Gambia',
+  'Tuvalu',
+  'United States Minor Outlying Islands',
+], $document->get('field_document_spatial_coverage'));
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/baa'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(42233);
 $this->assertEquals('Good Practice Study', $document->label());
@@ -40,7 +53,6 @@ $this->assertReferences(['Belgium'], $document->field_document_spatial_coverage)
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/document/good-practice-study'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(138766);
 $this->assertEquals('CAMSS method (v1.0) scenario 2 - SMEF', $document->label());
@@ -53,16 +65,15 @@ $file = FileUrlHandler::urlToFile($document->field_file->target_id);
 $this->assertEquals('public://document/2015-03/CAMSS method (v1.0) scenario 2 - SMEF.xlsm', $file->getFileUri());
 $this->assertContains('v1.0 by the CAMSS team.', $document->body->value);
 $this->assertKeywords(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-smef'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(133560);
 $this->assertEquals('The Irish ePassport', $document->label());
 $this->assertEquals('document', $document->bundle());
-$this->assertEquals('case', $document->field_type->value);
+$this->assertEquals('case_general', $document->field_type->value);
 $this->assertEquals(1170370800, $document->created->value);
 $this->assertEquals(1, $document->uid->target_id);
 $this->assertEquals(gmdate('Y-m-d\TH:i:s', 1170370800), $document->field_document_publication_date->value);
@@ -80,7 +91,6 @@ $this->assertReferences(['Ireland'], $document->field_document_spatial_coverage)
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['community/epractice/case/irish-epassport'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(53012);
 $this->assertEquals('National Interoperability Framework Observatory (NIFO) Factsheets', $document->label());
@@ -128,11 +138,10 @@ $this->assertKeywords([
   'Government Interoperability Frameworks',
   'nifo',
 ], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/factsheet/national-interoperability-framework-observatory-nifo-factsheets'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(63578);
 $this->assertEquals('ISA Contributor Agreement v1.1', $document->label());
@@ -147,7 +156,6 @@ $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['asset/dcat_application_profile/legaldocument/isa-contributor-agreement-v11'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(155691);
 $this->assertEquals('E-government Action plan 2016-2020 - Opinion of the European Committee of the Regions - Martin Andreasson', $document->label());
@@ -160,11 +168,10 @@ $file = FileUrlHandler::urlToFile($document->field_file->target_id);
 $this->assertEquals('public://document/2016-09/e-government_action_plan_2016-2020_-_opinion_of_the_european_committee_of_the_regions_-_martin_andreasson.pdf', $file->getFileUri());
 $this->assertContains('took place on 20 September 2016 in Brussels.', $document->body->value);
 $this->assertKeywords(['Other'], $document);
-$this->assertReferences(static::$europeCountries, $document->field_document_spatial_coverage);
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
 $this->assertEquals('proposed', $document->field_state->value);
 $this->assertRedirects(['elibrary/presentation/e-government-action-plan-2016-2020-opinion-european-committee-regions-martin-a'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
 
 $document = Node::load(125548);
 $this->assertEquals("FR: 6th Edition of 'Words of Elected Representatives'", $document->label());
@@ -211,4 +218,61 @@ $collection = $this->loadEntityByLabel('rdf_entity', 'Archived collection', 'col
 $this->assertEquals($collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['community/epractice/document/fr-6th-edition-words-elected-representatives'], $document);
-// @todo Test also the licence when the final excel mapping table is in.
+
+$document = Node::load(144018);
+$this->assertEquals('UK\'s CAP ITC Solution - Successes and Issues', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('case_general', $document->field_type->value);
+$this->assertEquals(1434788459, $document->created->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2015-06-20T08:20:59', $document->field_document_publication_date->value);
+$this->assertReferences([
+  'sketchmap-no-details.jpg',
+  'all-crayons-left-behind-building-digital-services-not-websites-for-rural-payments.jpg',
+  'all-crayons-left-behind-building-digital-services-not-websites-for-rural-payments',
+], $document->get('field_file'));
+$this->assertContains('was scheduled to go into production after March 2015', $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
+$collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
+$this->assertEquals($collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
+$this->assertRedirects(['elibrary/case/uks-cap-itc-solution-successes-and-issues'], $document);
+
+$document = Node::load(135110);
+$this->assertEquals('Study on the use of Open Source Software in the public sector (2001)', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('case_guideline', $document->field_type->value);
+$this->assertEquals(1316425513, $document->created->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2011-09-19T09:45:13', $document->field_document_publication_date->value);
+$this->assertReferences([
+  'oss-fact-sheet.pdf',
+  'oss-alphabetical-list-and-software-identification.pdf',
+], $document->get('field_file'));
+$this->assertContains('Annex: OSS alphabetical list and software identification', $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
+$collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
+$this->assertEquals($collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
+$this->assertRedirects(['community/osor/case/study-use-open-source-software-public-sector-2001'], $document);
+
+$document = Node::load(135160);
+$this->assertEquals('Ossmeter: a platform to automatically assess, monitor and compare OSS packages', $document->label());
+$this->assertEquals('document', $document->bundle());
+$this->assertEquals('case_open_source', $document->field_type->value);
+$this->assertEquals(1401040377, $document->created->value);
+$this->assertEquals(1, $document->uid->target_id);
+$this->assertEquals('2014-05-25T17:52:57', $document->field_document_publication_date->value);
+$this->assertReferences([
+  'OSSmeter3-short2-EC.pdf',
+  'OSSmeter3-short2-EC.odt',
+], $document->get('field_file'));
+$this->assertContains('Ossmeter is a research project aiming to further', $document->body->value);
+$this->assertTrue($document->get('field_keywords')->isEmpty());
+$this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
+$collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
+$this->assertEquals($collection->id(), $document->og_audience->target_id);
+$this->assertEquals('validated', $document->field_state->value);
+$this->assertRedirects(['community/osor/case/ossmeter-platform-automatically-assess-monitor-and-compare-oss-packages'], $document);
