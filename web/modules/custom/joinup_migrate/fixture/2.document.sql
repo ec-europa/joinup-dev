@@ -9,6 +9,7 @@ CREATE OR REPLACE VIEW d8_document (
   created,
   changed,
   uid,
+  status,
   body,
   policy_context,
   desc_target_users_groups,
@@ -49,6 +50,7 @@ SELECT
   n.created,
   n.changed,
   n.uid,
+  n.status,
   CONCAT(
     n.body,
     IF(ctd.field_isbn_value IS NOT NULL AND TRIM(ctd.field_isbn_value) <> '', CONCAT('\n<p>ISBN Number: ', TRIM(ctd.field_isbn_value), '</p>\n'), ''),

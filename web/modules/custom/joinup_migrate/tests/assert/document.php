@@ -67,7 +67,7 @@ $this->assertContains('v1.0 by the CAMSS team.', $document->body->value);
 $this->assertKeywords(['CAMSS', 'Netherlands', 'SMEF', 'standard'], $document);
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
-$this->assertEquals('proposed', $document->field_state->value);
+$this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['community/camss/document/camss-method-v10-scenario-2-smef'], $document);
 
 $document = Node::load(133560);
@@ -170,7 +170,7 @@ $this->assertContains('took place on 20 September 2016 in Brussels.', $document-
 $this->assertKeywords(['Other'], $document);
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $this->assertEquals($new_collection->id(), $document->og_audience->target_id);
-$this->assertEquals('proposed', $document->field_state->value);
+$this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['elibrary/presentation/e-government-action-plan-2016-2020-opinion-european-committee-regions-martin-a'], $document);
 
 $document = Node::load(125548);
@@ -220,7 +220,7 @@ $this->assertEquals('validated', $document->field_state->value);
 $this->assertRedirects(['community/epractice/document/fr-6th-edition-words-elected-representatives'], $document);
 
 $document = Node::load(144018);
-$this->assertEquals('UK\'s CAP ITC Solution - Successes and Issues', $document->label());
+$this->assertEquals("UK's CAP ITC Solution - Successes and Issues", $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('case_general', $document->field_type->value);
 $this->assertEquals(1434788459, $document->created->value);
@@ -236,7 +236,8 @@ $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
 $this->assertEquals($collection->id(), $document->og_audience->target_id);
-$this->assertEquals('validated', $document->field_state->value);
+$this->assertEquals('proposed', $document->field_state->value);
+$this->assertFalse($document->isPublished());
 $this->assertRedirects(['elibrary/case/uks-cap-itc-solution-successes-and-issues'], $document);
 
 $document = Node::load(135110);
@@ -256,6 +257,7 @@ $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
 $this->assertEquals($collection->id(), $document->og_audience->target_id);
 $this->assertEquals('validated', $document->field_state->value);
+$this->assertTrue($document->isPublished());
 $this->assertRedirects(['community/osor/case/study-use-open-source-software-public-sector-2001'], $document);
 
 $document = Node::load(135160);
@@ -274,5 +276,6 @@ $this->assertTrue($document->get('field_keywords')->isEmpty());
 $this->assertTrue($document->get('field_document_spatial_coverage')->isEmpty());
 $collection = $collection = $this->loadEntityByLabel('rdf_entity', 'Membership testing', 'collection');
 $this->assertEquals($collection->id(), $document->og_audience->target_id);
-$this->assertEquals('validated', $document->field_state->value);
+$this->assertEquals('draft', $document->field_state->value);
+$this->assertFalse($document->isPublished());
 $this->assertRedirects(['community/osor/case/ossmeter-platform-automatically-assess-monitor-and-compare-oss-packages'], $document);

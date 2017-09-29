@@ -24,7 +24,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
-  use StatusTrait;
+  use StatusFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -60,10 +60,11 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
       'version_notes' => $this->t('Version notes'),
       'version_number' => $this->t('Version number'),
       'country' => $this->t('Country'),
-      'status' => $this->t('Status'),
+      'status_field' => $this->t('Status field'),
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
+      'status' => $this->t('Status'),
     ] + parent::fields();
   }
 
@@ -85,6 +86,7 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
       'version_number',
       'state',
       'item_state',
+      'status',
     ]);
   }
 
@@ -124,8 +126,8 @@ class Release extends JoinupSqlBase implements RedirectImportInterface, FieldTra
     list($file_source_id_values, $urls) = $this->getAssetReleaseDocumentation($vid);
     $this->setFileUrlTargetId($row, 'documentation', $file_source_id_values, 'file:documentation', $urls, JoinupSqlBase::FILE_URL_MODE_MULTIPLE);
 
-    // Status.
-    $this->setStatus($vid, $row);
+    // Status field.
+    $this->setStatusField($vid, $row);
 
     // State.
     if ($row->getSourceProperty('item_state') === 'proposed') {

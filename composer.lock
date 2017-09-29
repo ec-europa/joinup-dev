@@ -15,7 +15,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-03-23T16:26:10+00:00"
+            "time": "2017-03-23 16:26:10"
         },
         {
             "name": "alchemy/zippy",
@@ -3046,7 +3046,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
             },
-            "time": "2016-11-14T20:32:26+00:00"
+            "time": "2016-11-14 20:32:26"
         },
         {
             "name": "drupal/linkit",
@@ -3097,7 +3097,7 @@
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
             },
-            "time": "2017-05-29T21:27:56+00:00"
+            "time": "2017-05-29 21:27:56"
         },
         {
             "name": "drupal/mailsystem",
@@ -3188,7 +3188,7 @@
                 "source": "https://github.com/Gizra/message/tree/8.x-1.x",
                 "issues": "https://github.com/Gizra/message/issues"
             },
-            "time": "2017-04-03T16:46:18+00:00"
+            "time": "2017-04-03 16:46:18"
         },
         {
             "name": "drupal/message_notify",
@@ -3491,7 +3491,7 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2017-09-06T15:58:25+00:00"
+            "time": "2017-09-06 15:58:25"
         },
         {
             "name": "drupal/og_menu",
@@ -3618,7 +3618,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_policy"
             },
-            "time": "2017-02-27T15:47:09+00:00"
+            "time": "2017-02-27 15:47:09"
         },
         {
             "name": "drupal/pathauto",
@@ -3674,7 +3674,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
             },
-            "time": "2017-08-23T20:51:31+00:00"
+            "time": "2017-08-23 20:51:31"
         },
         {
             "name": "drupal/persistent_login",
@@ -3728,7 +3728,7 @@
                 "source": "http://cgit.drupalcode.org/persistent_login",
                 "issues": "http://drupal.org/project/issues/persistent_login"
             },
-            "time": "2017-03-03T10:53:37+00:00"
+            "time": "2017-03-03 10:53:37"
         },
         {
             "name": "drupal/phingdrushtask",
@@ -3820,7 +3820,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2017-09-01T16:27:45+00:00"
+            "time": "2017-09-01 16:27:45"
         },
         {
             "name": "drupal/piwik",
@@ -4003,7 +4003,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
             },
-            "time": "2017-02-08T04:20:19+00:00"
+            "time": "2017-02-08 04:20:19"
         },
         {
             "name": "drupal/rdf_entity",
@@ -4127,7 +4127,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/redirect"
             },
-            "time": "2017-08-26T11:22:53+00:00"
+            "time": "2017-08-26 11:22:53"
         },
         {
             "name": "drupal/search_api",
@@ -4945,7 +4945,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-31T12:05:17+00:00"
+            "time": "2017-07-31 12:05:17"
         },
         {
             "name": "egulias/email-validator",
@@ -5361,7 +5361,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2017-07-12 23:38:25"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -5656,7 +5656,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
+            "time": "2017-05-26 17:09:44"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6158,7 +6158,7 @@
                 }
             ],
             "description": "VersionControl_Git is a library that provides OO interface to handle Git repository.",
-            "time": "2017-08-23T19:37:51+00:00"
+            "time": "2017-08-23 19:37:51"
         },
         {
             "name": "pfrenssen/piwik-reporting-api",
@@ -6194,7 +6194,7 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "time": "2017-07-17T09:33:42+00:00"
+            "time": "2017-07-17 09:33:42"
         },
         {
             "name": "phing/phing",
@@ -6416,7 +6416,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-09-11T16:06:48+00:00"
+            "time": "2017-09-11 16:06:48"
         },
         {
             "name": "psr/cache",
@@ -9587,7 +9587,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-07-10T06:23:49+00:00"
+            "time": "2017-07-10 06:23:49"
         },
         {
             "name": "behat/transliterator",
@@ -10037,7 +10037,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
             },
-            "time": "2017-05-01T21:54:12+00:00"
+            "time": "2017-05-01 21:54:12"
         },
         {
             "name": "drupal/devel",
@@ -10176,7 +10176,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-04-09T08:39:37+00:00"
+            "time": "2017-04-09 08:39:37"
         },
         {
             "name": "drupal/drupal-extension",
@@ -10237,7 +10237,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-09-13T19:53:22+00:00"
+            "time": "2017-09-13 19:53:22"
         },
         {
             "name": "fabpot/goutte",
