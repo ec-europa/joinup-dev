@@ -142,18 +142,21 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
     ];
 
     $query->setParameters([
-      'period' => 'range',
+      'period' => 'year',
       'date' => implode(',', $date_range),
       'showColumns' => $type,
     ]);
     $response = $query->execute();
     if (!$response->hasError()) {
-      $result = reset($response->getResponse());
-      if (!empty($result->$type)) {
-        return $result->$type;
+      $response = $response->getResponse();
+      $count = 0;
+      foreach ($response as $year => $result) {
+        $item = $result[0];
+        if (!empty($item->$type)) {
+          $count = $count + (int) $item->$type;
+        }
       }
-      // No error occurred, but no results have been recorded in Piwik.
-      return 0;
+      return $count;
     }
 
     // An error occurred. Log it to notify the devops team.

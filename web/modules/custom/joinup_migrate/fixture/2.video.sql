@@ -8,6 +8,7 @@ CREATE OR REPLACE VIEW d8_video (
   created,
   changed,
   uid,
+  status,
   video
 ) AS
 SELECT
@@ -20,6 +21,7 @@ SELECT
   n.created,
   n.changed,
   n.uid,
+  n.status,
   CONCAT('https://www.youtube.com/watch?v=', ctv.field_video_link_to_video_value)
 FROM d8_node n
 LEFT JOIN content_type_video ctv ON n.vid = ctv.vid

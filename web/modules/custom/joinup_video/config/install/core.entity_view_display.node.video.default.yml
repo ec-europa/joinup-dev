@@ -55,7 +55,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: fieldset
+        template_suggestion: fieldset_wrapper
     type: video_embed_field_video
     region: content
   field_video_spatial_coverage:

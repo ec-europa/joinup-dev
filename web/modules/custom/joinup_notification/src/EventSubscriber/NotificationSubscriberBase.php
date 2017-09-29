@@ -4,7 +4,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
 use Drupal\joinup_core\JoinupRelationManager;
@@ -103,7 +103,7 @@ abstract class NotificationSubscriberBase {
   /**
    * Constructs a new CommunityContentSubscriber object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The config factory service.
@@ -120,7 +120,7 @@ abstract class NotificationSubscriberBase {
    * @param \Drupal\message_notify\MessageNotifier $message_notifier
    *   The message notifier service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
