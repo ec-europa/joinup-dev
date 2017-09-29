@@ -78,7 +78,7 @@ Feature: Sharing content between collections
 
     # Share the content in a collection.
     When I check "Classic Rock"
-    And I press "Save"
+    And I press "Share"
     Then I should see the success message "Sharing updated."
     # Verify that the collections where the content has already been shared are
     # not shown anymore in the list.
