@@ -6,6 +6,7 @@ CREATE OR REPLACE VIEW d8_document (
   document_type,
   case_type,
   title,
+  acronym,
   created,
   changed,
   uid,
@@ -46,7 +47,8 @@ SELECT
     ELSE n.type
   END,
   t.name,
-  TRIM(CONCAT(n.title, IF(ctce.field_acronym_value IS NOT NULL AND TRIM(ctce.field_acronym_value) <> '', CONCAT(' (', TRIM(ctce.field_acronym_value), ')'), ''))),
+  TRIM(n.title),
+  TRIM(ctce.field_acronym_value),
   n.created,
   n.changed,
   n.uid,
