@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\migrate\Row;
 
 /**
@@ -65,6 +66,7 @@ class Document extends NodeBase {
       'factsheet_topic',
       'presentation_nature_of_doc',
       'state',
+      'acronym',
     ]);
   }
 
@@ -75,6 +77,21 @@ class Document extends NodeBase {
     $nid = $row->getSourceProperty('nid');
     $vid = $row->getSourceProperty('vid');
     $document_type = $row->getSourceProperty('document_type');
+
+    if ($acronym = $row->getSourceProperty('acronym')) {
+      // Because of the Case title suffix, the length might exceed 255 chars.
+      $title = $row->getSourceProperty('title');
+      $title_length = Unicode::strlen($title);
+      if ($title_length + Unicode::strlen($acronym) <= 252) {
+        $title .= " ($acronym)";
+      }
+      else {
+        // Space, opening and closing parenthesis and ellipsis.
+        $acronym_length = 255 - $title_length - 4;
+        $title .= ' (' . Unicode::substr($acronym, 0, $acronym_length) . "…)";
+      }
+      $row->setSourceProperty('title', $title);
+    }
 
     // Resolve 'field_file'.
     $table = "d8_file_document_{$document_type}";

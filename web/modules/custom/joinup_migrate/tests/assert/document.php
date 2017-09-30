@@ -261,7 +261,7 @@ $this->assertTrue($document->isPublished());
 $this->assertRedirects(['community/osor/case/study-use-open-source-software-public-sector-2001'], $document);
 
 $document = Node::load(135160);
-$this->assertEquals('Ossmeter: a platform to automatically assess, monitor and compare OSS packages', $document->label());
+$this->assertEquals('Ossmeter: a platform to automatically assess, monitor and compare OSS packages (a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very v…)', $document->label());
 $this->assertEquals('document', $document->bundle());
 $this->assertEquals('case_open_source', $document->field_type->value);
 $this->assertEquals(1401040377, $document->created->value);
