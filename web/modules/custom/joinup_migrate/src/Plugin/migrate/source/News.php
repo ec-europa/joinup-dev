@@ -72,14 +72,15 @@ class News extends NodeBase {
     $row->setSourceProperty('kicker', $kicker);
 
     // Source URL.
-    $source_url = $row->getSourceProperty('source_url');
-    if (strtolower($source_url) === 'n/a') {
-      $source_url = NULL;
+    if ($source_url = $row->getSourceProperty('source_url')) {
+      if (strtolower($source_url) === 'n/a') {
+        $source_url = NULL;
+      }
+      elseif (!preg_match('#^https?://#', $source_url)) {
+        $source_url = "http://$source_url";
+      }
+      $row->setSourceProperty('source_url', $source_url);
     }
-    elseif (!preg_match('#^https?://#', $source_url)) {
-      $source_url = "http://$source_url";
-    }
-    $row->setSourceProperty('source_url', $source_url);
 
     return parent::prepareRow($row);
   }
