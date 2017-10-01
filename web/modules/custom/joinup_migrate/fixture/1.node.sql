@@ -7,7 +7,8 @@ CREATE OR REPLACE VIEW d8_node (
   created,
   changed,
   uid,
-  body
+  body,
+  status
 ) AS
 SELECT
   m.collection,
@@ -18,7 +19,8 @@ SELECT
   n.created,
   n.changed,
   IF(u.uid IS NOT NULL, u.uid, -1),
-  nr.body
+  nr.body,
+  n.status
 FROM node n
 INNER JOIN node_revisions nr ON n.vid = nr.vid
 LEFT JOIN d8_user u ON n.uid = u.uid
