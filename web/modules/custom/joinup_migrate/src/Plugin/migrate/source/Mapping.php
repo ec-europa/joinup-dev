@@ -55,7 +55,7 @@ class Mapping extends TestableSpreadsheetBase {
     }
 
     $messages = [];
-    $title = $type = NULL;
+    $type = NULL;
 
     $row_index = (int) $row['row_index'];
     $nid = $row['Nid'];
@@ -88,46 +88,45 @@ class Mapping extends TestableSpreadsheetBase {
         $title = $node->title;
         $type = $node->type;
         $this->nids[$nid] = $row_index;
+
+        $lower_type = Unicode::strtolower($row['Type of content item']);
+        if (isset(static::$typeMapping[$lower_type])) {
+          $declared_type = static::$typeMapping[$lower_type];
+          if (!empty($node) && $type && ($type !== $declared_type)) {
+            $node_type = "{$this->getNodeType($type)} ($type)";
+            $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$node_type' in Drupal 6";
+          }
+
+          $row['type'] = $type;
+
+          if ($row['type'] === 'asset_release') {
+            // Check for 'asset_release' acting as 'release'.
+            /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+            $query = $this->db->select('og_ancestry', 'o')
+              ->fields('o', ['nid'])
+              ->condition('o.nid', (int) $nid)
+              ->condition('g.type', 'project_project');
+            $query->join('node', 'g', 'o.group_nid = g.nid');
+            // Is release.
+            if ($query->execute()->fetchField()) {
+              $messages[] = "'$title' is a release and shouldn't be in the Excel file. Releases are computed";
+            }
+          }
+          elseif ($row['type'] === 'project') {
+            $messages[] = "Software (project) content should not be in the Excel file. Replace with Project (project_project)";
+          }
+          elseif (!empty($node) && $type && !in_array($row['type'], static::$allowedNodeTypes)) {
+            $messages[] = "{$this->getNodeType($type)} ($type) is not allowed in the Excel file.";
+          }
+
+          if (!empty($row['Collection state']) && !in_array($row['Collection state'], ['validated', 'archived'])) {
+            $messages[] = "Invalid 'Collection state': '{$row['Collection state']}' (allowed empty or 'validated' or 'archived')";
+          }
+        }
+        else {
+          $messages[] = "Unknown type '{$row['Type of content item']}'";
+        }
       }
-    }
-
-    $lower_type = Unicode::strtolower($row['Type of content item']);
-    if (isset(static::$typeMapping[$lower_type])) {
-      $declared_type = static::$typeMapping[$lower_type];
-    }
-    else {
-      throw new \Exception("Unknown type {$row['Type of content item']}. Add the mapping in " . __METHOD__ . '()');
-    }
-
-    if (!empty($node) && $type && ($type !== $declared_type)) {
-      $node_type = "{$this->getNodeType($type)} ($type)";
-      $messages[] = "Type '{$row['Type of content item']}' declared, but nid $nid is '$node_type' in Drupal 6";
-    }
-
-    $row['type'] = $type;
-
-    if ($row['type'] === 'asset_release') {
-      // Check for 'asset_release' acting as 'release'.
-      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-      $query = $this->db->select('og_ancestry', 'o')
-        ->fields('o', ['nid'])
-        ->condition('o.nid', (int) $nid)
-        ->condition('g.type', 'project_project');
-      $query->join('node', 'g', 'o.group_nid = g.nid');
-      // Is release.
-      if ($query->execute()->fetchField()) {
-        $messages[] = "'$title' is a release and shouldn't be in the Excel file. Releases are computed";
-      }
-    }
-    elseif ($row['type'] === 'project') {
-      $messages[] = "Software (project) content should not be in the Excel file. Replace with Project (project_project)";
-    }
-    elseif (!empty($node) && $type && !in_array($row['type'], static::$allowedNodeTypes)) {
-      $messages[] = "{$this->getNodeType($type)} ($type) is not allowed in the Excel file.";
-    }
-
-    if (!empty($row['Collection state']) && !in_array($row['Collection state'], ['validated', 'archived'])) {
-      $messages[] = "Invalid 'Collection state': '{$row['Collection state']}' (allowed empty or 'validated' or 'archived')";
     }
 
     // Register inconsistencies.

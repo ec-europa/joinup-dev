@@ -46,7 +46,7 @@ process:
         'WSMO (Web Service Modeling Ontology)': 'Web Service Modelling Ontology'
     - plugin: term_reference
       vocabulary: representation_technique
-  field_status: status
+  field_status: status_field
   i18n: i18n
 destination:
   plugin: entity:rdf_entity

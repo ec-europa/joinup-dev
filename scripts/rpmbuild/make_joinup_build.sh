@@ -18,23 +18,26 @@ if [ $? -ne 0 ]; then
 fi
 
 # Download composer dependencies.
-/usr/bin/composer install --no-dev
+composer install --no-dev
 
 # Build the site.
 ./vendor/bin/phing build-dist
 
 # Clean up existing builds.
 rm -rf ${BUILD_ROOT}
+mkdir -p ${BUILD_ROOT}
 
 # Create a fresh build root containing the scaffolding files.
-cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT}
+cp -r ${PROJECT_ROOT}/resources/rpmbuild/* ${BUILD_ROOT}/
 
 # Collect the source files for the package.
 SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
-mkdir ${JOINUP_DIR}
+mkdir -p ${JOINUP_DIR}
 
-cp -r config/ src/ vendor/ web/ ${JOINUP_DIR}
+cp -r config/ src/ vendor/ web/ resources/ ${JOINUP_DIR}
+cp build* ${JOINUP_DIR}
+cp composer* ${JOINUP_DIR}
 
 # Replace environment specific files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php

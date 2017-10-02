@@ -31,7 +31,7 @@ $owner = $this->loadEntityByLabel('rdf_entity', 'Geodetic Institute of Slovenia'
 $this->assertEquals('Geodetic Institute of Slovenia', $owner->label());
 $this->assertEquals('owner', $owner->bundle());
 $this->assertReferences(['Academia/Scientific organisation'], $owner->field_owner_type);
-$this->assertEquals('validated', $owner->field_owner_state->value);
+$this->assertEquals('draft', $owner->field_owner_state->value);
 $this->assertRedirects([
   'node/137962',
   'catalogue/publisher/geodetic-institute-slovenia',
