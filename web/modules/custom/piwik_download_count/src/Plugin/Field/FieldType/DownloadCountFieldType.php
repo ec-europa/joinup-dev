@@ -23,10 +23,13 @@ use Drupal\field\Entity\FieldConfig;
  * )
  */
 class DownloadCountFieldType extends FieldItemBase {
+
+  /**
+   * {@inheritdoc}
+   */
   public static function defaultFieldSettings() {
     return parent::defaultFieldSettings() + ['file_field' => NULL];
   }
-
 
   /**
    * {@inheritdoc}
@@ -70,7 +73,7 @@ class DownloadCountFieldType extends FieldItemBase {
   /**
    * {@inheritdoc}
    *
-   * blablabla
+   * Blablabla.
    */
   public function getConstraints() {
     $constraints = parent::getConstraints();

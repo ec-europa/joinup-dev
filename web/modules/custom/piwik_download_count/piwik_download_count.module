@@ -25,7 +25,6 @@ function piwik_download_count_help($route_name, RouteMatchInterface $route_match
   }
 }
 
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -45,7 +44,6 @@ function piwik_download_count_form_field_config_edit_form_alter(&$form, FormStat
   ];
   $form['#entity_builders'][] = 'piwik_download_count_form_alter_builder';
 }
-
 
 /**
  * Entity builder callback: Save the setting.
