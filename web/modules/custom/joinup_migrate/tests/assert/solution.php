@@ -150,7 +150,6 @@ $this->assertRedirects([
 $solution = $this->loadEntityByLabel('rdf_entity', 'DCAT application profile for data portals in Europe', 'solution');
 $this->assertEquals('DCAT application profile for data portals in Europe', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
-$this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(1445872685, $solution->getCreatedTime());
 $this->assertTrue($solution->get('field_is_distribution')->isEmpty());
 $this->assertReferences([
@@ -166,7 +165,8 @@ $this->assertReferences([
   'Dark Side of The Force',
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
-$this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('proposed', $solution->field_is_state->value);
+$this->assertEquals('draft', $solution->graph->value);
 $this->assertEquals('user6364', $solution->uid->entity->getAccountName());
 $this->assertRedirects([
   'node/63567',
@@ -254,7 +254,6 @@ $this->assertRedirects([
 $solution = Rdf::load('http://www.w3.org/TR/2011/WD-EARL10-Schema-20110510');
 $this->assertEquals('Evaluation and Report Language (EARL) 1.0 Schema', $solution->label());
 $this->assertEquals('solution', $solution->bundle());
-$this->assertEquals('default', $solution->graph->value);
 $this->assertEquals(1304985600, $solution->getCreatedTime());
 $this->assertReferences([
   'Evaluation and Report Language (EARL) 1.0 Schema',
@@ -269,7 +268,8 @@ $this->assertReferences([
   'World Wide Web Consortium',
 ], $solution->get('field_is_owner'));
 $this->assertReferences(['Under development'], $solution->get('field_status'));
-$this->assertEquals('validated', $solution->field_is_state->value);
+$this->assertEquals('draft', $solution->field_is_state->value);
+$this->assertEquals('draft', $solution->graph->value);
 $this->assertEquals('Anonymous', $solution->uid->entity->label());
 $this->assertRedirects([
   'node/60208',

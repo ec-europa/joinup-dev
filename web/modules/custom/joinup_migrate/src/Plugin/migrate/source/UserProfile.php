@@ -50,7 +50,7 @@ class UserProfile extends UserBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $countries = $this->getCountries([$row->getSourceProperty('vid')], FALSE);
+    $countries = $this->getCountries([$row->getSourceProperty('vid')]);
     // We don't migrate nationality in the case when the source user has more
     // than one country set. The user will have to manually update its profile.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2960
