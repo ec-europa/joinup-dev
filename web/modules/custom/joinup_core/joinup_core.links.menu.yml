@@ -1,9 +1,3 @@
-joinup_core.content_overview:
-  title: 'Keep up to date'
-  weight: 2
-  url: 'internal:/keep-up-to-date'
-  menu_name: main
-
 # Add the 'Piwik integration' settings form to the administration menu.
 joinup_core.piwik_integration_settings:
   title: 'Piwik integration'
