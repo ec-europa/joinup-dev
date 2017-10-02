@@ -1,0 +1,7 @@
+name: Piwik download count
+type: module
+description: Fetches the download count of file fields from the Piwik analytics server.
+core: 8.x
+package: Statistics
+dependencies:
+  - piwik
