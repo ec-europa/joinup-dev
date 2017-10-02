@@ -19,6 +19,7 @@ form-components:
   Version: 1.x
   js:
     js/form.js: {}
+    vendor/autosize/dist/autosize.js: {}
   dependencies:
     - core/jquery
     - core/jquery.once

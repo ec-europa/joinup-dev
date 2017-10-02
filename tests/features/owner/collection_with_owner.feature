@@ -8,7 +8,7 @@ Feature: Creation of owners through UI
   Scenario: Propose a collection
     Given the following owner:
       | name            | type    |
-      | My organisation | Company |
+      | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus | Company |
     And I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     Then the following field widgets should be present "Contact information, Owner"
@@ -60,10 +60,14 @@ Feature: Creation of owners through UI
 
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
-    And I fill in "Owner" with "My organisation"
+    # Regression test for a bug that occurred when the entities being
+    # referenced had a very long title.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3444
+    And I pick "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus" from the "Owner" autocomplete suggestions
     And I press "Add owner"
-    And I press "Save"
+    Then I should see the text "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus"
 
+    When I press "Save"
     Then I should see the heading "Classical and Ancient Mythology"
 
     # Clean up the collection that was created.

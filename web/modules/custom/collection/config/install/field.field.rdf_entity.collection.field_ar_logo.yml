@@ -17,9 +17,9 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: collection/logo
+  file_directory: 'collection/logo/[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
-  max_filesize: '1 MB'
+  max_filesize: '5 MB'
   max_resolution: ''
   min_resolution: ''
   alt_field: false

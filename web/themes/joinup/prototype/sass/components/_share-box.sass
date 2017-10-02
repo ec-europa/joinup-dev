@@ -1,71 +1,98 @@
 // Share box
 //
 
+// Component
+// --------------------------------------------------
+
 // Elements
-//
-.share-box__item-icon
-  +icon-size(50px)
-  color: $color-blue-dark
-  display: none
-
+// --------------------------------------------------
 .share-box__row
-  padding: 10px 50px 10px 10px
-  margin-bottom: 0 !important
   position: relative
-  min-height: 70px
-  &:hover
-    cursor: pointer
-  &.already-shared
-    padding-right: 0
-    background: $color-grey-lighter
-    .share-box__item-icon
-      display: table-cell
-      vertical-align: middle
-  .form-type-checkbox
-    .form__label
-      display: none
+  min-height: 50px
+  margin-bottom: 20px
+  &:last-child
+    border-bottom: none
+    min-height: auto
+    margin-bottom: 0
 
-.share-box__item-image
-  padding-right: 10px
-  img
-    max-width: 50px
-    max-height: 50px
+.share-box__item
+  text-decoration: none
 
-.share-box__item-image,
-.share-box__item-label,
-.share-box__item-social-icon
-  display: table-cell
-  vertical-align: middle
+.share-box__label
+  margin-left: 14px
+  color: $color-base
+  font-size: $font-size-base
+  font-weight: $font-weight
 
-.share-box__item-label
-  width: 100%
+.share-box__image img
+  max-width: 50px
+  max-height: 50px
 
-.share-box__item-social-icon
-  padding-right: 10px
-  +icon-size(50px)
+.share-box__social-icon
   color: $color-blue-dark
+  +icon-size(50px)
 
 .share-box__container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
   max-width: $screen-sm
+  overflow-y: hidden
+  +breakpoint(sm)
+    flex-direction: row
+    min-width: $screen-sm / 2
+
+.share-box__title
+  margin-top: 0
+  color: $color-base
+
+.share-box__social
+  margin-bottom: 20px
+  +breakpoint(sm)
+    margin-right: 40px
+    margin-bottom: 0
+  .share-box__item
+    display: flex
+    align-items: center
+    margin-right: 5px
+    margin-left: 5px
+    padding-right: 10px
+
+.share-box__collections
+  .share-box__row
+    margin-left: 10px
+    padding-left: 30px
+    +breakpoint(sm)
+      margin-left: 0
+  .share-box__item
+    display: flex
+    align-items: flex-start
+
+// Modifiers
+// --------------------------------------------------
+.share-box__container--single-column
+  justify-content: center
+  .share-box__social
+    margin-right: 0
+    .share-box__title
+      text-align: center
+
+// Dependiencies
+// --------------------------------------------------
+.share-box__container
   fieldset
     margin-bottom: 0
-  +breakpoint(tablet)
-    min-width: $screen-sm
+  .form-type-checkbox
+    position: absolute
+    top: 0
+    left: 0
+    .form__label
+      display: none
 
 .share-content-form
   .form__legend
     margin: 0
 
-// Modal box classes
-.ui-dialog
-  z-index: 600
-  .ui-dialog-titlebar
-    background: none
-    border: none
-  .ui-dialog-title
-    font-size: 16px
-    font-weight: 600
-    color: $color-blue-dark
-
-.ajax-progress-throbber .message
-  display: none
+.ajax-progress-throbber
+  .message
+    display: none

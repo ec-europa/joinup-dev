@@ -23,7 +23,7 @@ Feature: Owner moderation
     And I select "EU and European Policies" from "Policy domain"
 
     # An authenticated user can create an owner in published state.
-    When I click the 'Description' tab
+    When I click the 'Additional fields' tab
     And I press "Add new" at the "Owner" field
     And I set the Owner type to "Academia/Scientific organisation"
     And I fill in "Name" with "EU healthy movement"
@@ -104,7 +104,7 @@ Feature: Owner moderation
     # Change the owner in the collection.
     When I go to the homepage of the "The healthy food European project" collection
     And I click "Edit"
-    And I click the 'Description' tab
+    And I click the 'Additional fields' tab
     And I press "Remove" at the "Owner" field
     # Confirm removal.
     And I press "Remove" at the "Owner" field

@@ -4,7 +4,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.email_textalt
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.newsletter
+    - field.field.node.newsletter.simplenews_issue
+    - field.field.node.newsletter.og_audience
     - node.type.newsletter
   module:
     - link
@@ -24,5 +25,6 @@ content:
     region: content
 hidden:
   links: true
-  newsletter: true
+  og_audience: true
+  simplenews_issue: true
   report: true

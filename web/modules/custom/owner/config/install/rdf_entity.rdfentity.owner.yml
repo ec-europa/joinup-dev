@@ -28,6 +28,7 @@ third_party_settings:
     graph:
       default: 'http://joinup.eu/owner/published'
       draft: 'http://joinup.eu/owner/draft'
+    entity_id_plugin: joinup_po_namespace
 name: Owner
 rid: owner
 description: ''

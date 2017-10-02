@@ -1,0 +1,7 @@
+eu.webtools.load:
+  js:
+    '//europa.eu/webtools/load.js':
+      type: external
+      minified: true
+      attributes:
+        async: true

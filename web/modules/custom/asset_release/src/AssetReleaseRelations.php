@@ -28,6 +28,22 @@ class AssetReleaseRelations implements ContainerInjectionInterface {
   protected $membershipManager;
 
   /**
+   * The map of 'solution' and 'asset_release' fields that are in sync.
+   *
+   * @var string[]
+   */
+  protected static $fieldsInSync = [
+    'field_is_description' => 'field_isr_description',
+    'field_is_solution_type' => 'field_isr_solution_type',
+    'field_is_contact_information' => 'field_isr_contact_information',
+    'field_is_owner' => 'field_isr_owner',
+    'field_is_related_solutions' => 'field_isr_related_solutions',
+    'field_is_included_asset' => 'field_isr_included_asset',
+    'field_is_translation' => 'field_isr_translation',
+    'field_policy_domain' => 'field_policy_domain',
+  ];
+
+  /**
    * Constructs an AssetReleaseRelations service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -65,6 +81,36 @@ class AssetReleaseRelations implements ContainerInjectionInterface {
     }
     $target_id = $asset_release->field_isr_is_version_of->first()->target_id;
     return $this->entityTypeManager->getStorage('rdf_entity')->load($target_id);
+  }
+
+  /**
+   * Synchronizes common fields from the parent solution of a given release.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $release
+   *   The 'asset_release' RDF entity.
+   *
+   * @return bool
+   *   Whether at least one of the release fields was changed. The caller may
+   *   use this value to determine if the entity should be saved or not.
+   */
+  public function syncFieldsFromParentSolution(RdfInterface $release) {
+    $changed = FALSE;
+
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    $solution = $release->field_isr_is_version_of->entity;
+    if (!$solution || $release->bundle() !== 'asset_release') {
+      // Exit here if it's not a release having a valid parent solution.
+      return $changed;
+    }
+
+    foreach (static::$fieldsInSync as $solution_field => $release_field) {
+      if (!$solution->get($solution_field)->equals($release->get($release_field))) {
+        $release->set($release_field, $solution->get($solution_field)->getValue());
+        $changed = TRUE;
+      }
+    }
+
+    return $changed;
   }
 
 }

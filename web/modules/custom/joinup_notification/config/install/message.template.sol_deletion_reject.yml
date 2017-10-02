@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_deletion_reject
+label: 'Solution deletion reject'
+description: 'Template 12: Reject deletion request'
+text:
+  -
+    value: 'Joinup: Your request to delete your solution has been rejected'
+    format: full_html
+  -
+    value: "<p>You recently requested that the interoperability solution @entity:title be deleted.</p>\r\n<p>Your request was rejected by @actor:full_name, due to @transition:motivation.</p>\r\n<p>You can review the content at the following link: <a href=\"@entity:url\">@entity:url</a></p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

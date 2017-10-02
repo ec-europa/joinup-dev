@@ -5,16 +5,17 @@ dependencies:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
     - ds
-    - joinup_core
     - text
     - user
 id: node.discussion.view_mode_featured
@@ -23,7 +24,7 @@ bundle: discussion
 mode: view_mode_featured
 content:
   body:
-    weight: 2
+    weight: 1
     label: hidden
     settings:
       trim_length: 200
@@ -37,6 +38,24 @@ content:
             classes: {  }
     type: text_trimmed
     region: content
+  field_keywords:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
   field_policy_domain:
     type: entity_reference_label
     weight: 0
@@ -59,6 +78,7 @@ hidden:
   field_attachment: true
   field_replies: true
   field_shared_in: true
+  field_site_featured: true
   field_state: true
   field_visit_count: true
   langcode: true

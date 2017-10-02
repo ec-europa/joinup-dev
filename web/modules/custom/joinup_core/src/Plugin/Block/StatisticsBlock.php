@@ -101,6 +101,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The number of validated entities.
    */
   protected function getCount($type) {
+    /** @var \Drupal\search_api\Entity\Index $index */
     $index = $this->entityTypeManager->getStorage('search_api_index')->load('published');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
@@ -118,6 +119,8 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
         break;
 
     }
+    // We don't need the actual items, just the count.
+    $query->range(0, 0);
     $results = $query->execute();
     return $results->getResultCount();
   }

@@ -10,7 +10,7 @@ id: user.user.field_user_nationality
 field_name: field_user_nationality
 entity_type: user
 bundle: user
-label: Nationality
+label: 'Country of origin'
 description: ''
 required: false
 translatable: false

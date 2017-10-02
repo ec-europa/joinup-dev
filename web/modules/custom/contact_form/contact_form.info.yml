@@ -28,3 +28,4 @@ config_devel:
  - field.storage.message.field_contact_subject
  - field.storage.message.field_contact_url
  - message.template.contact_form_submission
+ - message.template.report_contact_form

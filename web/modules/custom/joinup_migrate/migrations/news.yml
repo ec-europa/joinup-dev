@@ -9,7 +9,7 @@ source:
   track_changes: true
 process:
   nid: nid
-  title: title
+  title: kicker
   field_news_headline: title
   created: created
   changed: changed

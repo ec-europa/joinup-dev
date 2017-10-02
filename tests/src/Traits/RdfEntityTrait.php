@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -117,6 +118,34 @@ trait RdfEntityTrait {
     $entity = (object) $fields;
     parent::parseEntityFields('rdf_entity', $entity);
     return (array) $entity;
+  }
+
+  /**
+   * Creates and saves an rdf entity of a specific bundle.
+   *
+   * @param string $bundle
+   *   The rdf entity bundle.
+   * @param array $values
+   *   An array of field values.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf
+   *   The newly created entity.
+   */
+  protected function createRdfEntity($bundle, array $values) {
+    // Convert timestamp fields from human-readable to timestamp.
+    // @todo Replace this with a Behat hook.
+    foreach (['changed', 'created'] as $field) {
+      if (isset($values[$field])) {
+        $date = new DrupalDateTime($values[$field]);
+        $values[$field] = $date->getTimestamp();
+      }
+    }
+
+    $values['rid'] = $bundle;
+    $entity = Rdf::create($values);
+    $entity->save();
+
+    return $entity;
   }
 
 }

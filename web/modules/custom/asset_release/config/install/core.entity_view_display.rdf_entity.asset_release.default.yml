@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -12,7 +11,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -26,8 +24,8 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - datetime
     - ds
+    - file_url
     - state_machine
     - text
     - user
@@ -36,6 +34,25 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  created:
+    weight: 1
+    label: hidden
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 1
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: timestamp_ago
+    region: content
   field_isr_affiliations_requests:
     weight: 22
     label: above
@@ -60,27 +77,8 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_isr_creation_date:
-    weight: 1
-    label: hidden
-    settings:
-      future_format: '@interval hence'
-      past_format: '@interval ago'
-      granularity: 1
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: no_wrappers
-    type: datetime_time_ago
-    region: content
   field_isr_distribution:
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       view_mode: view_mode_tile
@@ -98,20 +96,16 @@ content:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
     region: content
-  field_isr_elibrary_creation:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
+  field_isr_documentation:
+    type: file_url_default
+    weight: 5
     region: content
-  field_isr_is_version_of:
-    weight: 2
-    label: above
+    label: hidden
     settings:
-      link: true
+      mode: link
     third_party_settings:
       ds:
+        ds_limit: ''
         ft:
           id: default
           settings:
@@ -119,8 +113,13 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: no_wrappers
-    type: entity_reference_label
+        template_suggestion: ''
+  field_isr_elibrary_creation:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_isr_issue_tracker:
     weight: 19
@@ -178,7 +177,7 @@ content:
     region: content
   field_isr_release_notes:
     type: text_default
-    weight: 4
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings:
@@ -190,7 +189,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: no_wrappers
+        template_suggestion: ''
     region: content
   field_isr_source_code_repository:
     weight: 21
@@ -206,7 +205,7 @@ content:
     region: content
   field_isr_state:
     type: state_transition_form
-    weight: 5
+    weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -263,14 +262,14 @@ content:
         template_suggestion: no_wrappers
     region: content
 hidden:
+  changed: true
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true
-  field_isr_documentation: true
   field_isr_included_asset: true
+  field_isr_is_version_of: true
   field_isr_language: true
   field_isr_logo: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_release_number: true

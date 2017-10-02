@@ -5,7 +5,6 @@ dependencies:
     - core.entity_view_mode.rdf_entity.view_mode_tile
     - field.field.rdf_entity.asset_release.field_isr_banner
     - field.field.rdf_entity.asset_release.field_isr_contact_information
-    - field.field.rdf_entity.asset_release.field_isr_creation_date
     - field.field.rdf_entity.asset_release.field_isr_description
     - field.field.rdf_entity.asset_release.field_isr_distribution
     - field.field.rdf_entity.asset_release.field_isr_documentation
@@ -13,7 +12,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_isr_is_version_of
     - field.field.rdf_entity.asset_release.field_isr_language
     - field.field.rdf_entity.asset_release.field_isr_logo
-    - field.field.rdf_entity.asset_release.field_isr_modification_date
     - field.field.rdf_entity.asset_release.field_isr_owner
     - field.field.rdf_entity.asset_release.field_isr_related_solutions
     - field.field.rdf_entity.asset_release.field_isr_release_notes
@@ -199,6 +197,23 @@ content:
     third_party_settings: {  }
     type: link
     region: content
+  field_status:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   label:
     label: hidden
     type: string
@@ -217,9 +232,10 @@ content:
         template_suggestion: ''
     region: content
 hidden:
+  changed: true
+  created: true
   field_isr_banner: true
   field_isr_contact_information: true
-  field_isr_creation_date: true
   field_isr_description: true
   field_isr_distribution: true
   field_isr_documentation: true
@@ -228,7 +244,6 @@ hidden:
   field_isr_is_version_of: true
   field_isr_language: true
   field_isr_logo: true
-  field_isr_modification_date: true
   field_isr_owner: true
   field_isr_related_solutions: true
   field_isr_solution_type: true
@@ -237,6 +252,5 @@ hidden:
   field_keywords: true
   field_policy_domain: true
   field_spatial_coverage: true
-  field_status: true
   langcode: true
   og_audience: true

@@ -4,7 +4,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.newsletter
+    - field.field.node.newsletter.simplenews_issue
+    - field.field.node.newsletter.og_audience
     - node.type.newsletter
   module:
     - ds
@@ -39,5 +40,6 @@ content:
     third_party_settings: {  }
 hidden:
   langcode: true
-  newsletter: true
+  og_audience: true
+  simplenews_issue: true
   report: true

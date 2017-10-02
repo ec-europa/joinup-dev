@@ -1,0 +1,3 @@
+action.configuration.joinup_collection_og_membership_delete_action:
+  type: action_configuration_default
+  label: 'Joinup Delete the selected membership(s) config'

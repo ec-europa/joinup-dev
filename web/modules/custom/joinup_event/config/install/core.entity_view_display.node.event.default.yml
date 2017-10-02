@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.event.field_scope
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
+    - field.field.node.event.field_site_featured
     - field.field.node.event.field_state
     - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
@@ -48,10 +49,10 @@ content:
     third_party_settings: {  }
     region: content
   field_attachment:
-    type: file_table
+    type: file_default
     weight: 13
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings:
       ds:
@@ -63,7 +64,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: with_label
+        template_suggestion: ''
   field_comments:
     weight: 9
     label: above
@@ -75,7 +76,7 @@ content:
     region: content
   field_event_adtl_address_info:
     weight: 4
-    label: hidden
+    label: above
     settings: {  }
     third_party_settings:
       ds:
@@ -91,9 +92,18 @@ content:
     region: content
   field_event_agenda:
     weight: 2
-    label: hidden
+    label: above
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: text_default
     region: content
   field_event_contact_email:
@@ -169,7 +179,16 @@ content:
     weight: 7
     label: above
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
     type: basic_string
     region: content
   field_shared_in:
@@ -190,7 +209,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: entity_reference__listing_tile
   links:
     weight: 0
     region: content
@@ -230,6 +249,7 @@ hidden:
   field_policy_domain: true
   field_scope: true
   field_short_title: true
+  field_site_featured: true
   field_state: true
   field_visit_count: true
   langcode: true

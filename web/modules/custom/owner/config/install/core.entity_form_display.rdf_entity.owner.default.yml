@@ -1,4 +1,3 @@
-langcode: en
 status: true
 dependencies:
   config:
@@ -51,4 +50,5 @@ content:
     region: content
 hidden:
   label: true
+  langcode: true
   uid: true

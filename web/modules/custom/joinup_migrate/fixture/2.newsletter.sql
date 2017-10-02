@@ -8,6 +8,7 @@ CREATE OR REPLACE VIEW d8_newsletter (
   created,
   changed,
   uid,
+  status,
   newsletter
 ) AS
 SELECT
@@ -20,6 +21,7 @@ SELECT
   n.created,
   n.changed,
   n.uid,
+  n.status,
   td.name
 FROM d8_node n
 INNER JOIN term_node tn ON n.vid = tn.vid

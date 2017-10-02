@@ -7,7 +7,7 @@ Feature: Creation of contact information
   Scenario: Create a contact information
     Given I am logged in as an "authenticated user"
     And I go to the propose collection form
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I press "Add new" at the "Contact information" field
     # Also check that the help text for the website field is visible.
     Then I should see the description "This must be an external URL such as http://example.com." for the "Website URL" field

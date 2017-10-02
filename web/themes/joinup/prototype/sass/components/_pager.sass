@@ -1,66 +1,102 @@
+// Pager
+//
+// Markup: html/pager.html
+// 
+// Default listing pager with maximum 9 items
+// 
+// Styleguide 2.15
+
 // Component
 // --------------------------------------------------
 .pager
-  font-size: 0 // display inline-block gap fix
-  min-height: 30px
-  margin: 30px 0 0 0
-  padding: 0
-  text-align: center
-
+  margin: 40px 0 0 0
 
 // Elements
 // --------------------------------------------------
-.pager__item
-  display: none
-  padding-bottom: 0
-  +breakpoint(tablet)
-    display: inline-block
-    vertical-align: middle
-  > a,
-  > span
-    font-weight: 500
-    line-height: 30px
-    float: left
-    height: 30px
-    padding: 0 9px
-    text-decoration: none
-    color: $color-base
-
-.pager__items
+.pager__list
+  display: flex
+  display: -webkit-flex
+  flex-direction: row
+  flex-wrap: nowrap
+  justify-content: center
+  -webkit-justify-content: center
+  align-items: center
+  margin-top: 0
+  margin-bottom: 0
   padding-left: 0
+  list-style-type: none
+
+.pager__item
+  position: relative
+  width: 50px
+  height: 50px
+  padding-bottom: 0
+  padding-left: 0
+  margin-bottom: 0
+  &:before
+    display: none
+  +breakpoint(md)
+    width: 40px
+    height: 40px
+
+.pager__link
+  width: 100%
+  height: 100%
+  display: block
+  text-decoration: none
 
 // Modifiers
 // --------------------------------------------------
+.pager__item--active
+  background-color: $color-blue-default
+
+.pager__item--inactive, .pager__item--ellipsis
+  display: none
+  +breakpoint(md)
+    display: block
 
 // States
 // --------------------------------------------------
 .pager__item
-  > a,
-  > span
-    &:hover,
-    &:focus,
-    &:active
-      color: $color-base
-      background-color: $color-grey-lighter
+  &:hover,
+  &:focus,
+  &:active
+    color: $color-base
+    background-color: $color-grey-lighter
 
-.pager__item--active, .pager__item.is-active
-  display: inline-block
-  > span, a
-    &,
-    &:hover,
-    &:focus,
-    &:active
-      cursor: default
-      color: #fff
-      background-color: $color-blue-default
+.pager__item--active
+  &,
+  &:hover,
+  &:focus,
+  &:active
+    cursor: default
+    background-color: $color-blue-default
 
 .pager__item--ellipsis
-  > span
-    &:hover,
-    &:focus,
-    &:active
-      cursor: default
-      background-color: transparent
+  &:hover,
+  &:focus,
+  &:active
+    cursor: default
+    background-color: transparent
 
 // Dependencies
 // --------------------------------------------------
+.pager__item
+  .text,
+  .icon
+    color: $color-base
+    +centered
+  .text
+    font-size: 20px
+    +breakpoint(md)
+      font-size: 14px
+  .icon
+    font-size: 16px
+    +breakpoint(md)
+      font-size: 12px
+
+.pager__item--active
+  .pager__link
+    cursor: default
+  .text
+    color: #fff

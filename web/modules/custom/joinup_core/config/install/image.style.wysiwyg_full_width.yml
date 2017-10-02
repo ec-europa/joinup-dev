@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: wysiwyg_full_width
+label: 'Full width'
+effects:
+  9dfaf805-c1fa-4301-9f1f-8181e7135f7d:
+    uuid: 9dfaf805-c1fa-4301-9f1f-8181e7135f7d
+    id: image_scale
+    weight: 1
+    data:
+      width: 920
+      height: null
+      upscale: false

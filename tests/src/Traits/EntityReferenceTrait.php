@@ -34,7 +34,10 @@ trait EntityReferenceTrait {
       // Retrieve the entity type and bundles that can be referenced.
       $settings = $definition->getSettings();
       $target_entity_type = $settings['target_type'];
-      $target_entity_bundles = !empty($settings['handler_settings']['target_bundles']) ? $settings['handler_settings']['target_bundles'] : NULL;
+      $target_entity_bundles = !empty($settings['handler_settings']['target_bundles']) ? $settings['handler_settings']['target_bundles'] : [];
+      if ($target_entity_type === 'user') {
+        $values[$name] = [$values[$name]];
+      }
 
       // Multi-value fields are separated by comma.
       foreach ($values[$name] as &$label) {
@@ -66,8 +69,7 @@ trait EntityReferenceTrait {
    *   The id of the found entity, false otherwise.
    */
   protected function getEntityIdByLabel($label, $entity_type, array $entity_bundle = []) {
-    $label_key = \Drupal::entityTypeManager()->getDefinition($entity_type)->getKey('label');
-
+    $label_key = $this->getEntityLabelKey($entity_type);
     $query = \Drupal::entityQuery($entity_type)
       ->condition($label_key, $label)
       ->range(0, 1);
@@ -76,10 +78,33 @@ trait EntityReferenceTrait {
       $bundle_key = \Drupal::entityTypeManager()->getDefinition($entity_type)->getKey('bundle');
       $query->condition($bundle_key, $entity_bundle, 'IN');
     }
-
     $result = $query->execute();
 
     return reset($result);
+  }
+
+  /**
+   * Retrieves the label key for the given entity type.
+   *
+   * Some entity types, like 'user', might not have a label entity key so these
+   * entity types have to be explicitly handled.
+   *
+   * @param string $entity_type
+   *   The entity type.
+   *
+   * @return string
+   *   The label key or property.
+   *
+   * @throws \Exception
+   *    Thrown if there is no label key or property defined.
+   */
+  protected function getEntityLabelKey($entity_type) {
+    $label_mapping = ['user' => 'name'];
+    $label_key = \Drupal::entityTypeManager()->getDefinition($entity_type)->getKey('label');
+    if (empty($label_key) && !isset($label_mapping[$entity_type])) {
+      throw new \Exception("No label key or property could be found for the {$entity_type} entity type");
+    }
+    return $label_key ?: $label_mapping[$entity_type];
   }
 
 }

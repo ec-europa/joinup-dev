@@ -16,9 +16,7 @@ destination:
 migration_dependencies:
   required:
     - collection
-    # @todo Disable till ISAICP-3514 gets clarified.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3514
-    # - comment
+    - comment
     - custom_page
     - discussion
     - distribution

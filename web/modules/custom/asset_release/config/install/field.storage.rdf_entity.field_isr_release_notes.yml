@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
-        format: literal
+        format: t_literal
       format:
         predicate: ''
         format: ''
@@ -21,7 +21,7 @@ settings: {  }
 module: text
 locked: false
 cardinality: 1
-translatable: false
+translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

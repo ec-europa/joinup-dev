@@ -417,18 +417,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
               'publish',
             ],
           ],
-          ELibraryCreationOptions::MEMBERS => [
-            'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
-            ],
-            'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
-            ],
-          ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'save_as_draft',
@@ -452,16 +440,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         ],
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
-            'userModerator' => [
-              'save_as_draft',
-              'publish',
-            ],
-            'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
-            ],
-          ],
-          ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
               'save_as_draft',
               'publish',

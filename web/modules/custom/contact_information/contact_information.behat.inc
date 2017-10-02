@@ -8,17 +8,14 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Traits\RandomGeneratorTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
-use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing contact information entities.
  */
 class ContactInformationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use RandomGeneratorTrait;
   use RdfEntityTrait;
   use UserTrait;
 
@@ -161,6 +158,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    */
   public function cleanContactInformationEntities() {
     foreach ($this->contactInformations as $entity) {
+      $entity->skip_notification = TRUE;
       $entity->delete();
     }
   }
@@ -178,16 +176,12 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    *   When the author is specified but the related user doesn't exist.
    */
   protected function createContactInformation(array $values) {
-    $values['rid'] = 'contact_information';
-    $values['id'] = isset($values['id']) ? $values['id'] : $this->getRandomUri();
-
     // The 'author' key was replaced by 'uid' in the calling function.
     if (!empty($values['uid'])) {
       $values['uid'] = $this->getUserByName($values['uid'])->id();
     }
 
-    $entity = Rdf::create($this->parseRdfEntityFields($values));
-    $entity->save();
+    $entity = $this->createRdfEntity('contact_information', $this->parseRdfEntityFields($values));
     $this->contactInformations[$entity->id()] = $entity;
 
     return $entity;

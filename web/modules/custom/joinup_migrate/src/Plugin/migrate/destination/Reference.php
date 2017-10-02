@@ -104,7 +104,6 @@ class Reference extends DestinationBase implements ContainerFactoryPluginInterfa
   public function import(Row $row, array $old_destination_id_values = []) {
     $entity_type_id = $row->getDestinationProperty('entity_type_id');
     $entity_id = $row->getDestinationProperty('entity_id');
-    $bundle = $row->getDestinationProperty('bundle');
 
     // Save values and remove them from destination.
     $values = $row->getDestinationProperty('values');
@@ -121,10 +120,7 @@ class Reference extends DestinationBase implements ContainerFactoryPluginInterfa
     // Statically cache the entity keys.
     if (!isset($this->key[$entity_type_id])) {
       $entity_type = \Drupal::entityTypeManager()->getDefinition($entity_type_id);
-      $this->key[$entity_type_id] = [
-        'id' => $entity_type->getKey('id'),
-        'bundle' => $entity_type->getKey('bundle'),
-      ];
+      $this->key[$entity_type_id] = $entity_type->getKeys();
     }
 
     // Move the entity ID and bundle under their entity keys.

@@ -1,0 +1,9 @@
+name: Joinup invite
+type: module
+description: A light invitation system for joinup.
+core: 8.x
+package: Joinup
+dependencies:
+  - joinup_core
+  - og
+  - rdf_entity

@@ -15,6 +15,7 @@ Feature: Related solution
       | C      |                   | Blazing fast segmetation faults. | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
       | Java   | C                 | Because inheritance is cool.     | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
       | PHP    |                   | Make a site.                     | text.pdf      | yes        | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
+      | Golang |                   | Concurrency for the masses       | text.pdf      | yes        | logo.png | banner.jpg | Demography    | proposed  | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
       | Python |                   | Get stuff done.                  | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
 
     # Scenario A. A collection owner manages his own collection.
@@ -25,6 +26,8 @@ Feature: Related solution
     And I see the "C" tile
     # Not referenced.
     And I should not see the "Python" tile
+    # Golang is not published, and should not be shown
+    And I should not see the "Golang" tile
 
     # Relate two solutions.
     When I am logged in as a facilitator of the "Java" solution

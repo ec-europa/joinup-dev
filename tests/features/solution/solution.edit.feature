@@ -54,23 +54,23 @@ Feature: Solution editing.
     And I fill in "Owner" with "Acme inc."
     And I press "Add owner"
     And I press "Propose"
+    # Then print last response
     Then I should see the heading "Solution A"
 
     And I should see the link "Edit"
     When I go to the "Solution A" solution edit form
     Then I should see the heading "Edit Solution Solution A"
-    And the following fields should be present "Title, Description, Upload a new file or enter a URL, Related Solutions, Moderated, Landing page, Metrics page, Motivation"
+    Then the fields "Logo, Banner, Upload a new file or enter a URL, Spatial coverage, Keywords, Related Solutions, Status, Languages, Landing page, Metrics page" should be correctly ordered in the region "Management solution vertical tab"
+    Then the fields "Title, Description, Contact information, Policy domain, Owner, Solution type, Moderated, eLibrary creation" should be correctly ordered in the region "Main solution vertical tab"
+
     And the following fields should not be present "Issue tracker, Wiki, Langcode, Translation"
-    And the following field widgets should be present "Contact information, Owner, eLibrary creation"
+    And the following fieldsets should be present "Contact information, Owner, eLibrary creation"
     # Logo and banner fields are required, so they are filled up during
     # the creation of the solution. Unfortunately, file fields with a file
     # already attached cannot be found by named xpath, so we look for the
     # related labels.
     And I should see the text "Logo"
     And I should see the text "Banner"
-
-    # The TRR fieldgroup should only be visible inside the TRR collection.
-    And I should not see the text "TRR"
 
     When I fill in "Title" with "Solution A revised"
     And I press "Propose"

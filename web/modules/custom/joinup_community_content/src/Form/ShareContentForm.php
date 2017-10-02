@@ -74,6 +74,11 @@ class ShareContentForm extends ShareContentFormBase {
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
     $form = parent::buildForm($form, $form_state, $node);
 
+    $form['share'] = [
+      '#theme' => 'social_share',
+      '#entity' => $this->node,
+    ];
+
     $collections = $this->getShareableCollections();
 
     // Wrap all the elements with a fieldset, like the "checkboxes" element
@@ -110,7 +115,7 @@ class ShareContentForm extends ShareContentFormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => empty($collections) ? $this->t('Close') : $this->t('Save'),
+      '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
     ];
 
     if ($this->isModal() || $this->isAjaxForm()) {

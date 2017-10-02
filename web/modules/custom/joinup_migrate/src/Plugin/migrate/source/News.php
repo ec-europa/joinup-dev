@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\migrate\Row;
 
 /**
@@ -26,6 +27,7 @@ class News extends NodeBase {
       'keywords' => $this->t('Keywords'),
       'country' => $this->t('Spatial coverage'),
       'state' => $this->t('State'),
+      'kicker' => $this->t('Kicker'),
     ] + parent::fields();
   }
 
@@ -62,6 +64,23 @@ class News extends NodeBase {
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('fids', $fids);
+
+    $kicker = trim($row->getSourceProperty('title'));
+    if (Unicode::strlen($kicker) > 30) {
+      $kicker = trim(Unicode::substr($kicker, 0, 29)) . '…';
+    }
+    $row->setSourceProperty('kicker', $kicker);
+
+    // Source URL.
+    if ($source_url = $row->getSourceProperty('source_url')) {
+      if (strtolower($source_url) === 'n/a') {
+        $source_url = NULL;
+      }
+      elseif (!preg_match('#^https?://#', $source_url)) {
+        $source_url = "http://$source_url";
+      }
+      $row->setSourceProperty('source_url', $source_url);
+    }
 
     return parent::prepareRow($row);
   }

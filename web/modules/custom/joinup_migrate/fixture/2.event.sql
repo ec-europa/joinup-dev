@@ -8,6 +8,7 @@ CREATE OR REPLACE VIEW d8_event (
   created,
   changed,
   uid,
+  status,
   start_date,
   end_date,
   city,
@@ -39,6 +40,7 @@ SELECT
   n.created,
   n.changed,
   n.uid,
+  n.status,
   DATE_FORMAT(cte.field_event_dates_value, '%Y-%m-%d\T%H:%i:%s'),
   DATE_FORMAT(cte.field_event_dates_value2, '%Y-%m-%d\T%H:%i:%s'),
   cte.field_event_city_value,
@@ -60,3 +62,5 @@ LEFT JOIN files f ON cte.field_event_logo_fid = f.fid
 LEFT JOIN workflow_node w ON n.nid = w.nid
 LEFT JOIN workflow_states ws ON w.sid = ws.sid
 WHERE n.type = 'event'
+AND cte.field_event_dates_value IS NOT NULL
+AND SUBSTR(cte.field_event_dates_value, 1, 10) <> '1970-01-01'

@@ -1,0 +1,8 @@
+# Beneath the tabs on the page. Action buttons.
+joinup_invite.add_facilitator:
+  route_name: entity.rdf_entity.members.invite
+  title: 'Add facilitators'
+  appears_on:
+    - entity.rdf_entity.member_overview
+  cache_contexts:
+    - og_role
