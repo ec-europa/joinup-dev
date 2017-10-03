@@ -39,7 +39,7 @@ ${COMPOSER_PATH} install --no-dev || exit 1
 ./vendor/bin/phing build-dist || exit 1
 
 # Collect the source files for the package.
-cp -r build* composer.* config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+cp -r build* composer.* resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php

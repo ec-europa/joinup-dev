@@ -245,7 +245,7 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass, setup-virtuoso-permissions, purge-rdf-backend, install, export-config" />
+        depends="install-composer-dependencies-dist, compile-sass" />
 
     <target
         name="build-dev"
