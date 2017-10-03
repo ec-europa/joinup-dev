@@ -3,6 +3,8 @@
 namespace Drupal\Tests\joinup_core\Functional;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
@@ -25,6 +27,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
    */
   protected static $modules = [
     'file_url_entity_test',
+    'joinup_core',
   ];
 
   /**
@@ -41,25 +44,64 @@ class FileUrlFieldTest extends RdfWebTestBase {
    * Tests upload of a file to an file URL field.
    */
   public function testSingleValuedWidgetLocalFile() {
+    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $rdf_storage */
+    $rdf_storage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
+
     $this->drupalLogin($this->rootUser);
 
     $field_name = 'field_file_url';
     $test_file = $this->getTestFile('text');
     $this->assertTrue($test_file instanceof FileInterface);
 
+    $rdf_entity = Rdf::create([
+      'rid' => 'file_url',
+      'label' => 'Foo',
+    ]);
+    $rdf_entity->save();
+
     // Test file for new entities.
-    $this->drupalGet('rdf_entity/add/file_url');
+    $this->drupalGet($rdf_entity->toUrl('edit-form'));
     $this->addFileUrlItem($field_name, 'upload', $test_file->getFileUri());
     $this->drupalPostForm(NULL, ['label[0][value]' => 'Foo'], 'Save');
 
     // Check that the file has been uploaded to the file URL field.
-    $rdf_entity = $this->loadEntityByLabel('rdf_entity', 'Foo');
+    $rdf_entity = Rdf::load($rdf_entity->id());
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $this->assertFileExists($rdf_entity_file->getFileUri());
+    $initial_uri = $rdf_entity_file->getFileUri();
+    $this->assertFileExists($initial_uri);
 
     // Ensure the file can be downloaded.
-    $this->drupalGet(file_create_url($rdf_entity_file->getFileUri()));
+    $this->drupalGet(file_create_url($initial_uri));
     $this->assertSession()->statusCodeEquals(200);
+
+    // Upload the same file again to test if the file is saved with in new
+    // location while still keeping the same file basename.
+    $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
+    $this->addFileUrlItem($field_name, 'upload', $test_file->getFileUri());
+    $this->drupalPostForm(NULL, [], 'Save');
+
+    // @todo We should not need cache clearing here. The cache should have been
+    //   wiped out at this point. Fix this regression in ISAICP-3392.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    $rdf_storage->resetCache([$rdf_entity->id()]);
+
+    // Check that the file has been uploaded to the file URL field.
+    $rdf_entity = Rdf::load($rdf_entity->id());
+    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $final_uri = $rdf_entity_file->getFileUri();
+    $this->assertFileExists($final_uri);
+
+    // Ensure the file can be downloaded.
+    $this->drupalGet(file_create_url($final_uri));
+    $this->assertSession()->statusCodeEquals(200);
+
+    // Check that the same file is uploaded to different locations.
+    $this->assertNotEquals($initial_uri, $final_uri);
+
+    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+    $file_system = $this->container->get('file_system');
+    // Check that the basename is preserved.
+    $this->assertEquals($file_system->basename($initial_uri), $file_system->basename($final_uri));
 
     // Edit the entity and change the field to a remote URL.
     $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
@@ -67,10 +109,10 @@ class FileUrlFieldTest extends RdfWebTestBase {
     $this->addFileUrlItem($field_name, 'remote', $url);
     $this->drupalPostForm(NULL, [], 'Save');
 
-    // @todo We should not need cache clearing hre. The cache should have been
-    //   be wiped out at this point. Fix this regression in ISAICP-3392.
+    // @todo We should not need cache clearing here. The cache should have been
+    //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache([$rdf_entity->id()]);
+    $rdf_storage->resetCache([$rdf_entity->id()]);
 
     // Check that the remote URL replaced the uploaded file.
     $rdf_entity = Rdf::load($rdf_entity->id());
@@ -119,6 +161,32 @@ class FileUrlFieldTest extends RdfWebTestBase {
     elseif ($file_mode === 'remote') {
       $wrapper->fillField('Remote URL', $value);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * When 'joinup_core' module is enabled, the login button has 'Sign in' as
+   * value, thus we cannot use the original method because that searches for the
+   * login button with 'Log in' as value.
+   */
+  protected function drupalLogin(AccountInterface $account) {
+    if ($this->loggedInUser) {
+      $this->drupalLogout();
+    }
+
+    $this->drupalGet('user/login');
+    $this->submitForm([
+      'name' => $account->getUsername(),
+      'pass' => $account->passRaw,
+    ], t('Sign in'));
+
+    // @see BrowserTestBase::drupalUserIsLoggedIn()
+    $account->sessionId = $this->getSession()->getCookie($this->getSessionName());
+    $this->assertTrue($this->drupalUserIsLoggedIn($account), new FormattableMarkup('User %name successfully logged in.', ['%name' => $account->getAccountName()]));
+
+    $this->loggedInUser = $account;
+    $this->container->get('current_user')->setAccount($account);
   }
 
 }
