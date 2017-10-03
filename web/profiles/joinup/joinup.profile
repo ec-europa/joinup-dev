@@ -341,7 +341,7 @@ function joinup_preprocess_menu__main(&$variables) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
     switch ($group->bundle()) {
       case 'collection':
-        $variables['items']['views_view:views.collection.page_1']['in_active_trail'] = TRUE;
+        $variables['items']['views_view:views.collections.page_1']['in_active_trail'] = TRUE;
         break;
 
       case 'solution':
