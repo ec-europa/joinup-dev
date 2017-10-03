@@ -14,7 +14,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "1.x-dev#4a548ac781c04a49065b0fafd5eea334af06a196",
+        "drupal/config_sync": "1.x-dev#fe26123f2fe991777858492806773696f566d65d",
         "drupal/config_update": "~1.4",
         "drupal/console": "^1.0.1",
         "drupal/core": "8.4.0-rc1",
@@ -135,7 +135,7 @@
         },
         "patches": {
             "drupal/config_sync": {
-                "Add Drush support to Configuration Synchronizer. @see https://www.drupal.org/node/2445463": "https://www.drupal.org/files/issues/2445463-12.patch"
+                "Add Drush support to Configuration Synchronizer. @see https://www.drupal.org/node/2445463": "https://www.drupal.org/files/issues/2445463-13.patch"
             },
             "drupal/core": {
                 "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
