@@ -76,3 +76,34 @@ Feature: Homepage feature
       | Lightning Lass' Powers          |
       | The Danger of the Bridges       |
       | The Sacred Future documentation |
+
+  Scenario: Popular content with the same number of visits should be ordered by creation date.
+    Given the following collection:
+      | title            | Green is leet   |
+      | state            | validated       |
+      | pinned site-wide | yes             |
+      | creation date    | 2017-05-06 8:00 |
+    And news content:
+      | title                                    | body                                        | collection    | state     | visits | created          |
+      | Amsterdam is the most green city in 2016 | Bikes are the way to go.                    | Green is leet | validated | 1983   | 2017-10-02 18:00 |
+      | Green cities are more livable            | New research proved what was already known. | Green is leet | validated | 1983   | 2016-08-23 10:00 |
+
+    When I am logged in as a moderator
+    And I am on the homepage
+    Then I should see the following tiles in the correct order:
+      | Green is leet                            |
+      | Amsterdam is the most green city in 2016 |
+      | Green cities are more livable            |
+    When I click the contextual link "Pin site-wide" in the "Amsterdam is the most green city in 2016" tile
+    And I go to the homepage
+    Then I should see the following tiles in the correct order:
+      | Amsterdam is the most green city in 2016 |
+      | Green is leet                            |
+      | Green cities are more livable            |
+
+    When I click the contextual link "Unpin site-wide" in the "Amsterdam is the most green city in 2016" tile
+    And I go to the homepage
+    Then I should see the following tiles in the correct order:
+      | Green is leet                            |
+      | Amsterdam is the most green city in 2016 |
+      | Green cities are more livable            |
