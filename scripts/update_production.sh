@@ -9,8 +9,8 @@ PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/..)
 # Perform the necessary steps for the update
 cd ${PROJECT_ROOT}
 ./vendor/bin/drush updatedb --yes &&
-./vendor/bin/drush config-import --yes &&
 ./vendor/bin/drush entity-updates --yes &&
+./vendor/bin/drush cs-update --yes &&
 ./vendor/bin/drush cache-rebuild --yes
 
 # Check if any of the steps returned an error.
