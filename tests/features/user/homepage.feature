@@ -17,11 +17,15 @@ Feature: Homepage feature
       | Boy of Courage      | Boy of Courage      | logo.png | banner.jpg | Jared Mcgee | validated |
       | Legion Constitution | Legion Constitution | logo.png | banner.jpg | Jared Mcgee | validated |
     And news content:
-      | title                     | body                      | policy domain     | collection          | state     | visits |
-      | The Danger of the Bridges | The Danger of the Bridges | Finance in EU     | The Sacred Future   | validated | 649    |
-      | Girl in the Dreams        | Girl in the Dreams        | Supplier exchange | Boy of Courage      | validated | 9421   |
-      | An Explosion in Space     | An Explosion in Space     | E-health          | Legion Constitution | validated | 5064   |
-      | Lightning Lass' Powers    | Lightning Lass' Powers    | Demography        | Legion Constitution | validated | 2951   |
+      | title                     | body                      | policy domain     | collection          | state     | visits | created          |
+      | The Danger of the Bridges | The Danger of the Bridges | Finance in EU     | The Sacred Future   | validated | 649    | 2013-06-15 16:00 |
+      | Girl in the Dreams        | Girl in the Dreams        | Supplier exchange | Boy of Courage      | validated | 9421   | 2014-05-11 16:00 |
+      | An Explosion in Space     | An Explosion in Space     | E-health          | Legion Constitution | validated | 5064   | 2015-04-07 16:00 |
+      # Create a news with the same number of visits but with a more recent creation date.
+      # The node needs to be created in this order, so it's placed later in the Solr index.
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3963
+      | Magenta Mountain          | Magenta Mountain          | E-health          | Legion Constitution | validated | 5064   | 2017-11-30 16:00 |
+      | Lightning Lass' Powers    | Lightning Lass' Powers    | Demography        | Legion Constitution | validated | 2951   | 2016-09-22 16:00 |
     And the following collection user memberships:
       | collection        | user         | roles |
       | The Sacred Future | Henry Austin |       |
@@ -68,42 +72,44 @@ Feature: Homepage feature
     Then I should see the "The Sacred Future documentation" tile
 
     # An anonymous user should see the most popular content.
+    # Nodes with the same visit count should be additionally sorted by creation
+    # date.
     Given I am not logged in
     And I am on the homepage
     Then I should see the following tiles in the correct order:
+      | Girl in the Dreams              |
+      | Magenta Mountain                |
+      | An Explosion in Space           |
+      | Lightning Lass' Powers          |
+      | The Danger of the Bridges       |
+      | The Sacred Future documentation |
+
+    When I am logged in as a moderator
+    And I go to the homepage
+    Then I click the contextual link "Pin site-wide" in the "Magenta Mountain" tile
+
+    Given I am not logged in
+    And I am on the homepage
+    Then I should see the following tiles in the correct order:
+      | Magenta Mountain                |
       | Girl in the Dreams              |
       | An Explosion in Space           |
       | Lightning Lass' Powers          |
       | The Danger of the Bridges       |
       | The Sacred Future documentation |
 
-  Scenario: Popular content with the same number of visits should be ordered by creation date.
-    Given the following collection:
-      | title            | Green is leet   |
-      | state            | validated       |
-      | pinned site-wide | yes             |
-      | creation date    | 2017-05-06 8:00 |
-    And news content:
-      | title                                    | body                                        | collection    | state     | visits | created          |
-      | Amsterdam is the most green city in 2016 | Bikes are the way to go.                    | Green is leet | validated | 1983   | 2017-10-02 18:00 |
-      | Green cities are more livable            | New research proved what was already known. | Green is leet | validated | 1983   | 2016-08-23 10:00 |
-
+    # When unpinning the node, its position should be restored following the
+    # sorting by visits and creation date.
     When I am logged in as a moderator
+    And I go to the homepage
+    Then I click the contextual link "Unpin site-wide" in the "Magenta Mountain" tile
+
+    Given I am not logged in
     And I am on the homepage
     Then I should see the following tiles in the correct order:
-      | Green is leet                            |
-      | Amsterdam is the most green city in 2016 |
-      | Green cities are more livable            |
-    When I click the contextual link "Pin site-wide" in the "Amsterdam is the most green city in 2016" tile
-    And I go to the homepage
-    Then I should see the following tiles in the correct order:
-      | Amsterdam is the most green city in 2016 |
-      | Green is leet                            |
-      | Green cities are more livable            |
-
-    When I click the contextual link "Unpin site-wide" in the "Amsterdam is the most green city in 2016" tile
-    And I go to the homepage
-    Then I should see the following tiles in the correct order:
-      | Green is leet                            |
-      | Amsterdam is the most green city in 2016 |
-      | Green cities are more livable            |
+      | Girl in the Dreams              |
+      | Magenta Mountain                |
+      | An Explosion in Space           |
+      | Lightning Lass' Powers          |
+      | The Danger of the Bridges       |
+      | The Sacred Future documentation |
