@@ -16,11 +16,6 @@
   background: #fff
   display: flex
   align-items: stretch
-  // Temporarily added to make featured tiles visible.
-  // Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3147
-  // To be removed by front end team.
-  .is-featured
-    animation: pulse 1.25s 1 cubic-bezier(0.66, 1.85, 0.5, 1.38)
 
 .listing__card
   display: flex
@@ -116,13 +111,13 @@
   margin-top: 30px
   margin-bottom: 30px
 
-.listing__pin
+.listing__corner
   position: absolute
   top: 7px
   right: 7px
   width: 30px
   height: 30px
-  background-color: #d4393a
+  background-color: $color-orange
   +z-index(highlight+1)
   +border-radius(50%)
   .icon
@@ -171,7 +166,7 @@
 .listing__title--link a
   color: $color-orange
 
-.listing__card--title-pin
+.listing__card--corner-title
   .listing__title
     margin-right: 20px
 
@@ -246,6 +241,12 @@
     margin-right: 10px
     text-align: right
     display: inline-block
+
+// Modifiers
+// --------------------------------------------------
+.listing__card
+  &.is-featured
+    background: $color-grey-light
 
 // Listing
 //

@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
+    - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
     - field.field.node.document.field_visit_count
@@ -77,7 +78,7 @@ content:
     third_party_settings: {  }
     region: content
   field_comments:
-    weight: 8
+    weight: 7
     label: above
     settings:
       pager_id: 0
@@ -140,7 +141,7 @@ content:
         template_suggestion: fieldset
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 9
+    weight: 8
     region: content
     label: above
     settings:
@@ -192,7 +193,7 @@ content:
         template_suggestion: fieldset
   report:
     label: hidden
-    weight: 7
+    weight: 6
     region: content
     settings:
       trim_length: 80
@@ -212,7 +213,7 @@ content:
         template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -220,8 +221,8 @@ hidden:
   field_document_spatial_coverage: true
   field_keywords: true
   field_policy_domain: true
-  field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_state: true
   field_visit_count: true
   langcode: true
