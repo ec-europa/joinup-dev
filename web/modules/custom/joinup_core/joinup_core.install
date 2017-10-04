@@ -53,3 +53,10 @@ function joinup_core_requirements($phase) {
 
   return $requirements;
 }
+
+/**
+ * Enable the Config Sync module.
+ */
+function joinup_core_update_8000(&$sandbox) {
+  \Drupal::service('module_installer')->install(['config_sync']);
+}
