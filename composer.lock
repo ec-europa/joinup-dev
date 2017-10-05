@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c944bf673d9e89180dab50d1fefad406",
+    "content-hash": "bca0e2cebcac3a6eb0671744183e493a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1936,11 +1936,17 @@
         },
         {
             "name": "drupal/config_sync",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_sync",
-                "reference": "4a548ac781c04a49065b0fafd5eea334af06a196"
+                "reference": "8.x-1.0-alpha5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha5.zip",
+                "reference": "8.x-1.0-alpha5",
+                "shasum": "c2b5a62be69fb84427c34fa761990c12ef0142ed"
             },
             "require": {
                 "drupal/config_provider": "*",
@@ -1953,15 +1959,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+3-dev",
-                    "datestamp": "1506610144",
+                    "version": "8.x-1.0-alpha5",
+                    "datestamp": "1507196343",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Add Drush support to Configuration Synchronizer. @see https://www.drupal.org/node/2445463": "https://www.drupal.org/files/issues/2445463-12.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1984,14 +1987,17 @@
                 {
                     "name": "nedjo",
                     "homepage": "https://www.drupal.org/user/4481"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
                 }
             ],
             "description": "Synchronize your site with updated configuration provided by modules and themes.",
             "homepage": "https://www.drupal.org/project/config_sync",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_sync"
-            },
-            "time": "2017-09-30T20:29:54+00:00"
+            }
         },
         {
             "name": "drupal/config_update",
@@ -3229,8 +3235,8 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta5+4-dev",
-                    "datestamp": "1496093583",
+                    "version": "8.x-5.0-beta5+8-dev",
+                    "datestamp": "1505340845",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3488,7 +3494,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha4",
-                    "datestamp": "1498129143",
+                    "datestamp": "1507658345",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3580,7 +3586,7 @@
                 "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/coder": "~2.0"
+                "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
             "extra": {
@@ -3589,7 +3595,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1504592344",
+                    "datestamp": "1508150044",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4258,8 +4264,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+3-dev",
-                    "datestamp": "1503745145",
+                    "version": "8.x-1.0-beta1+4-dev",
+                    "datestamp": "1503745744",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4376,7 +4382,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.4",
-                    "datestamp": "1504799343",
+                    "datestamp": "1507989244",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4450,7 +4456,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1505488144",
+                    "datestamp": "1505488645",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10391,10 +10397,6 @@
                     "homepage": "https://www.drupal.org/u/matio89"
                 },
                 {
-                    "name": "bolbol",
-                    "homepage": "https://www.drupal.org/user/3400070"
-                },
-                {
                     "name": "eme",
                     "homepage": "https://www.drupal.org/user/542492"
                 },
@@ -10550,11 +10552,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1448357340",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1448357340"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10682,7 +10680,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1502736865",
+                    "datestamp": "1507195143",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12186,7 +12184,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
-        "drupal/config_sync": 20,
         "drupal/diff": 5,
         "drupal/inline_entity_form": 20,
         "drupal/linkit": 20,
