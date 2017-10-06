@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3624322633df8a6d83b29dfb819eb13a",
+    "content-hash": "b97abe58359ea2e90de0fdae4d5af920",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.20",
+            "version": "3.36.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d6515144f8f80b95ed1c3d0a8ecc736a58154d7f"
+                "reference": "010aea6ccdc76ad63fdca556f9a408544d390dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d6515144f8f80b95ed1c3d0a8ecc736a58154d7f",
-                "reference": "d6515144f8f80b95ed1c3d0a8ecc736a58154d7f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/010aea6ccdc76ad63fdca556f9a408544d390dfb",
+                "reference": "010aea6ccdc76ad63fdca556f9a408544d390dfb",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-04T21:57:05+00:00"
+            "time": "2017-10-05T19:28:13+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,16 +686,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "dev-master",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "f7c6143807d365646e3753f29d96a2cb1b956cdc"
+                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/f7c6143807d365646e3753f29d96a2cb1b956cdc",
-                "reference": "f7c6143807d365646e3753f29d96a2cb1b956cdc",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/07d3c88a5de4bdd2f4aba7193387b75389dea642",
+                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642",
                 "shasum": ""
             },
             "require": {
@@ -734,11 +734,11 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-10-03T21:30:44+00:00"
+            "time": "2017-10-05T20:48:16+00:00"
         },
         {
             "name": "consolidation/config",
-            "version": "dev-master",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
@@ -4971,22 +4971,22 @@
         },
         {
             "name": "drush/drush",
-            "version": "9.0.0-beta5",
+            "version": "9.0.0-beta6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "fc3ec716f60eb00790984315161198adca7960b2"
+                "reference": "84082c5c8e2b4c306c69a6127349dd0fa7780651"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/fc3ec716f60eb00790984315161198adca7960b2",
-                "reference": "fc3ec716f60eb00790984315161198adca7960b2",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/84082c5c8e2b4c306c69a6127349dd0fa7780651",
+                "reference": "84082c5c8e2b4c306c69a6127349dd0fa7780651",
                 "shasum": ""
             },
             "require": {
                 "chi-teck/drupal-code-generator": "^1.17.3",
-                "consolidation/annotated-command": "dev-master as 2.7.0",
-                "consolidation/config": "dev-master",
+                "consolidation/annotated-command": "^2.7.2",
+                "consolidation/config": "^1.0.3",
                 "consolidation/output-formatters": "^3.1.11",
                 "consolidation/robo": "^1.1.2",
                 "ext-dom": "*",
@@ -5068,7 +5068,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2017-10-04T03:14:47+00:00"
+            "time": "2017-10-06T01:59:13+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -6571,12 +6571,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "088a76737ee295a121172624c0f0b2984a8f0de9"
+                "reference": "4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/088a76737ee295a121172624c0f0b2984a8f0de9",
-                "reference": "088a76737ee295a121172624c0f0b2984a8f0de9",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1",
+                "reference": "4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1",
                 "shasum": ""
             },
             "require": {
@@ -6643,7 +6643,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-10-04T03:57:01+00:00"
+            "time": "2017-10-06T05:01:20+00:00"
         },
         {
             "name": "predis/predis",
@@ -7746,16 +7746,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v2.8.27",
+            "version": "v2.8.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "ba3204654efa779691fac9e948a96b4a7067e4ab"
+                "reference": "ef01ca1352deb0c029cf496a89a6b175659c1ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ba3204654efa779691fac9e948a96b4a7067e4ab",
-                "reference": "ba3204654efa779691fac9e948a96b4a7067e4ab",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ef01ca1352deb0c029cf496a89a6b175659c1ec3",
+                "reference": "ef01ca1352deb0c029cf496a89a6b175659c1ec3",
                 "shasum": ""
             },
             "require": {
@@ -7795,7 +7795,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-01T14:31:55+00:00"
+            "time": "2017-10-01T21:00:16+00:00"
         },
         {
             "name": "symfony/debug",
@@ -10071,17 +10071,11 @@
         },
         {
             "name": "drupal/config_devel",
-            "version": "1.1.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "c5ef4dd63c747671e6dbaacd059da19d12a5ea84"
+                "reference": "0ca0da6fb222a504ae40f18d58b88d3f829e86a9"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -10092,11 +10086,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1505141044",
+                    "version": "8.x-1.0+9-dev",
+                    "datestamp": "1502829543",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -10266,21 +10260,22 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "98ea9bf81fff44fe243a98b65beb23773c2e80b6"
+                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "01f3349ef75f6e21fceef24be9d3d6506ca29647"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -10294,8 +10289,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1507195143",
+                    "version": "8.x-1.2",
+                    "datestamp": "1507197844",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11818,6 +11813,7 @@
         "minimaxir/big-list-of-naughty-strings": 20,
         "tom-waat/material-design-lite": 20,
         "behat/mink-selenium2-driver": 20,
+        "drupal/config_devel": 20,
         "drupal/config_inspector": 10,
         "drupal/default_content": 20,
         "drupal/devel": 15,
