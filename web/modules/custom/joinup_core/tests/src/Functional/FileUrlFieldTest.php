@@ -41,12 +41,35 @@ class FileUrlFieldTest extends RdfWebTestBase {
   ];
 
   /**
+   * The helper service that deals with files and stream wrappers.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
+   * The RDF storage.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityStorageInterface
+   */
+  protected $rdfStorage;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    $this->fileSystem = $this->container->get('file_system');
+    // @todo This will no longer be needed once ISAICP-3392 is fixed.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
+    $this->rdfStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
+  }
+
+  /**
    * Tests upload of a file to an file URL field.
    */
   public function testSingleValuedWidgetLocalFile() {
-    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $rdf_storage */
-    $rdf_storage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
-
     $this->drupalLogin($this->rootUser);
 
     $field_name = 'field_file_url';
@@ -83,7 +106,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $rdf_storage->resetCache([$rdf_entity->id()]);
+    $this->rdfStorage->resetCache([$rdf_entity->id()]);
 
     // Check that the file has been uploaded to the file URL field.
     $rdf_entity = Rdf::load($rdf_entity->id());
@@ -98,10 +121,8 @@ class FileUrlFieldTest extends RdfWebTestBase {
     // Check that the same file is uploaded to different locations.
     $this->assertNotEquals($initial_uri, $final_uri);
 
-    /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-    $file_system = $this->container->get('file_system');
     // Check that the basename is preserved.
-    $this->assertEquals($file_system->basename($initial_uri), $file_system->basename($final_uri));
+    $this->assertEquals($this->fileSystem->basename($initial_uri), $this->fileSystem->basename($second_uri));
 
     // Edit the entity and change the field to a remote URL.
     $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
@@ -112,7 +133,7 @@ class FileUrlFieldTest extends RdfWebTestBase {
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $rdf_storage->resetCache([$rdf_entity->id()]);
+    $this->rdfStorage->resetCache([$rdf_entity->id()]);
 
     // Check that the remote URL replaced the uploaded file.
     $rdf_entity = Rdf::load($rdf_entity->id());
