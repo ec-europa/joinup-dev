@@ -111,15 +111,15 @@ class FileUrlFieldTest extends RdfWebTestBase {
     // Check that the file has been uploaded to the file URL field.
     $rdf_entity = Rdf::load($rdf_entity->id());
     $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
-    $final_uri = $rdf_entity_file->getFileUri();
-    $this->assertFileExists($final_uri);
+    $second_uri = $rdf_entity_file->getFileUri();
+    $this->assertFileExists($second_uri);
 
     // Ensure the file can be downloaded.
-    $this->drupalGet(file_create_url($final_uri));
+    $this->drupalGet(file_create_url($second_uri));
     $this->assertSession()->statusCodeEquals(200);
 
     // Check that the same file is uploaded to different locations.
-    $this->assertNotEquals($initial_uri, $final_uri);
+    $this->assertNotEquals($initial_uri, $second_uri);
 
     // Check that the basename is preserved.
     $this->assertEquals($this->fileSystem->basename($initial_uri), $this->fileSystem->basename($second_uri));
