@@ -97,8 +97,8 @@ class FileUrlFieldTest extends RdfWebTestBase {
     $this->drupalGet(file_create_url($initial_uri));
     $this->assertSession()->statusCodeEquals(200);
 
-    // Upload the same file again to test if the file is saved with in new
-    // location while still keeping the same file basename.
+    // Upload the same file again to test if the file is saved in a new location
+    // while still keeping the same file basename.
     $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
     $this->addFileUrlItem($field_name, 'upload', $test_file->getFileUri());
     $this->drupalPostForm(NULL, [], 'Save');
