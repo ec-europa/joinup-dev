@@ -70,11 +70,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     $html = empty($html) || $html === 'yes';
 
     $user = user_load_by_name($recipient);
-    if (empty($user)) {
-      throw new \Exception("User $recipient was not found.");
+    if (!empty($user)) {
+      $recipient = $user->getEmail();
     }
-    if (empty($user->getEmail())) {
-      throw new \Exception("User $recipient does not have an e-mail address.");
+    elseif (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+      throw new \Exception("Recipient with user/mail {$user} could not be understood.");
     }
 
     \Drupal::state()->resetCache();
@@ -85,7 +85,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
 
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $user->getEmail()) {
+      if ($mail['to'] !== $recipient) {
         continue;
       }
 
@@ -119,7 +119,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // In non user emails, html p tags are used for new lines and these are
       // stripped instead of replaced. Thus, a regex will be used to properly
       // identify the signature regardless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      if ($mail['key'] !== 'contact_form_submission' && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
         throw new Exception('The signature of the email was not found or is not correct.');
       }
 

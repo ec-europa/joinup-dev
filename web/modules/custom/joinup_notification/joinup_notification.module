@@ -145,10 +145,12 @@ function joinup_notification_mail_alter(&$message) {
   if ($message['module'] === 'message_notify') {
     $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     $user = user_load_by_mail($message['to']);
-    $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
-    $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
-    $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
-    $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
+    if ($user) {
+      $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
+      $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
+      $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
+      $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
+    }
   }
 }
 
