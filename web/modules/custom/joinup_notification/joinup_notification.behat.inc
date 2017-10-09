@@ -81,7 +81,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       $recipient = $user->getEmail();
     }
     elseif (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-      throw new \Exception("Recipient with user/mail {$user} could not be understood.");
+      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
     }
 
     \Drupal::state()->resetCache();
