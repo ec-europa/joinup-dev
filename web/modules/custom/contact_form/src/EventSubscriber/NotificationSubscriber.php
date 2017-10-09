@@ -8,7 +8,6 @@ use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
 use Drupal\message\Entity\Message;
-use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -65,7 +64,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     try {
       $url = Url::fromUri($uri);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return NULL;
     }
 
