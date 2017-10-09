@@ -37,11 +37,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Asserts that an email has been sent.
    *
    * Table format:
-   * | template  | Comment deletion |
-   * | recipient | username0123     |
-   * | subject   | The mail subject |
-   * | body      | The message body |
-   * | html      | yes/no           |
+   * | template           | Comment deletion |
+   * | recipient          | username0123     |
+   * | subject            | The mail subject |
+   * | body               | The message body |
+   * | html               | yes/no           |
+   * | signature_required | yes/no           |
    *
    * The 'template' can be either the name or the description of the message
    * template. If the template row is not present, no matching on template will
@@ -63,7 +64,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $recipient */
     /** @var string $subject */
     /** @var string $template */
+    /** @var string $signature_required Optional. */
     extract($table->getRowsHash());
+    if (!isset($signature_required) || $signature_required === 'yes') {
+      $signature_required = TRUE;
+    }
+    elseif ($signature_required === 'no') {
+      $signature_required = ($signature_required !== 'no');
+    }
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
@@ -115,12 +123,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         throw new Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
-      // Ensure that the signature is always placed.
-      // In non user emails, html p tags are used for new lines and these are
-      // stripped instead of replaced. Thus, a regex will be used to properly
-      // identify the signature regardless of spaces.
-      if ($mail['key'] !== 'contact_form_submission' && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      // Check the existence or absence of the signature.
+      if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
         throw new Exception('The signature of the email was not found or is not correct.');
+      }
+      else if (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new Exception('The signature of the email was found in the email but shoult not.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -169,11 +177,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Asserts that a system email has been sent.
    *
    * Table format:
-   * | recipient      | username0123     |
-   * | recipient_mail | user@example.com |
-   * | subject        | The mail subject |
-   * | body           | The message body |
-   * | html           | yes/no           |
+   * | recipient          | username0123     |
+   * | subject            | The mail subject |
+   * | body               | The message body |
+   * | html               | yes/no           |
+   * | signature_required | yes/no           |
    *
    * The 'body' is a partial text based match.
    * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
@@ -189,9 +197,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   public function assertSystemEmailSent(TableNode $table) {
     /** @var string $body */
     /** @var string $recipient */
-    /** @var string $recipient_mail */
     /** @var string $subject */
+    /** @var string $template */
+    /** @var string $signature_required Optional. */
     extract($table->getRowsHash());
+    if (!isset($signature_required) || $signature_required === 'yes') {
+      $signature_required = TRUE;
+    }
+    else {
+      $signature_required = FALSE;
+    }
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
@@ -246,12 +261,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         throw new Exception('There were arguments found in the mail or the body that were not replaced.');
       }
 
-      // Ensure that the signature is always placed.
-      // In non user emails, html p tags are used for new lines and these are
-      // stripped instead of replaced. Thus, a regex will be used to properly
-      // identify the signature regardless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      // Check the existence or absence of the signature.
+      if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
         throw new Exception('The signature of the email was not found or is not correct.');
+      }
+      else if (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new Exception('The signature of the email was found in the email but shoult not.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
