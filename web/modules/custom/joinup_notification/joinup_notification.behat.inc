@@ -44,12 +44,13 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * | html               | yes/no           |
    * | signature_required | yes/no           |
    *
-   * The 'template' can be either the name or the description of the message
-   * template. If the template row is not present, no matching on template will
-   * be done. This is needed for system mails (like the ones sent by the user
-   * module).
-   * The 'body' is a partial text based match.
-   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
+   * - The 'template' can be either the name or the description of the message
+   *   template. If the template row is not present, no matching on template
+   *   will be done. This is needed for system mails (like the ones sent by the
+   *   user module).
+   * - The 'body' is a partial text based match.
+   * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
+   *   When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -183,8 +184,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * | html               | yes/no           |
    * | signature_required | yes/no           |
    *
-   * The 'body' is a partial text based match.
-   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
+   * - The 'body' is a partial text based match.
+   * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
+   *   When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
