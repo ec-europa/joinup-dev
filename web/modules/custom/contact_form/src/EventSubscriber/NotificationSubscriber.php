@@ -4,12 +4,10 @@ namespace Drupal\contact_form\EventSubscriber;
 
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
 use Drupal\message\Entity\Message;
-use Drupal\message_notify\MessageNotifier;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
