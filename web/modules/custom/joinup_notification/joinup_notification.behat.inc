@@ -88,7 +88,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception('No mail was sent.');
     }
 
     $email_found = FALSE;
@@ -120,15 +120,15 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception('There were arguments found in the subject or the body of the email that were not replaced.');
+        throw new \Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
       // Check the existence or absence of the signature.
       if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was not found or is not correct.');
+        throw new \Exception('The signature of the email was not found or is not correct.');
       }
-      else if (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was found in the email but shoult not.');
+      elseif (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -226,7 +226,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception('No mail was sent.');
     }
 
     $email_found = FALSE;
@@ -258,15 +258,15 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception('There were arguments found in the mail or the body that were not replaced.');
+        throw new \Exception('There were arguments found in the mail or the body that were not replaced.');
       }
 
       // Check the existence or absence of the signature.
       if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was not found or is not correct.');
+        throw new \Exception('The signature of the email was not found or is not correct.');
       }
-      else if (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was found in the email but shoult not.');
+      elseif (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+        throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
