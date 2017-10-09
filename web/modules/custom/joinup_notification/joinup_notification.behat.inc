@@ -67,12 +67,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $template */
     /** @var string $signature_required Optional. */
     extract($table->getRowsHash());
-    if (!isset($signature_required) || $signature_required === 'yes') {
-      $signature_required = TRUE;
-    }
-    elseif ($signature_required === 'no') {
-      $signature_required = ($signature_required !== 'no');
-    }
+
+    // Translate the human readable value for the requirement of the signature
+    // to a boolean. This defaults to TRUE.
+    $signature_required = !isset($signature_required) || $signature_required !== 'no';
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
@@ -125,10 +123,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       // Check the existence or absence of the signature.
-      if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
+      if ($signature_required && !$signature_present) {
         throw new \Exception('The signature of the email was not found or is not correct.');
       }
-      elseif (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      elseif (!$signature_required && $signature_present) {
         throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
@@ -203,12 +202,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $template */
     /** @var string $signature_required Optional. */
     extract($table->getRowsHash());
-    if (!isset($signature_required) || $signature_required === 'yes') {
-      $signature_required = TRUE;
-    }
-    else {
-      $signature_required = FALSE;
-    }
+
+    // Translate the human readable value for the requirement of the signature
+    // to a boolean. This defaults to TRUE.
+    $signature_required = !isset($signature_required) || $signature_required !== 'no';
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
@@ -264,10 +261,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       // Check the existence or absence of the signature.
-      if ($signature_required && !preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      // Check the existence or absence of the signature.
+      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
+      if ($signature_required && !$signature_present) {
         throw new \Exception('The signature of the email was not found or is not correct.');
       }
-      elseif (!$signature_required && preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
+      elseif (!$signature_required && $signature_present) {
         throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
