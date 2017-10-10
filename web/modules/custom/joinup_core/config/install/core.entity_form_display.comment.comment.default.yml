@@ -28,6 +28,12 @@ content:
         hide_guidelines: '1'
     type: text_textarea
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
 hidden:
-  langcode: true
   subject: true

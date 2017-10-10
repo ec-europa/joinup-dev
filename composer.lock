@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8a00ecbc33d0d8983de9a682db8a4ae",
+    "content-hash": "395337e70aeac9a20b1988e7d24f034a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.20",
+            "version": "3.36.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d6515144f8f80b95ed1c3d0a8ecc736a58154d7f"
+                "reference": "755ff10ad2ea4ebb04b4e2b150a4a4fb13a22060"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d6515144f8f80b95ed1c3d0a8ecc736a58154d7f",
-                "reference": "d6515144f8f80b95ed1c3d0a8ecc736a58154d7f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/755ff10ad2ea4ebb04b4e2b150a4a4fb13a22060",
+                "reference": "755ff10ad2ea4ebb04b4e2b150a4a4fb13a22060",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-04T21:57:05+00:00"
+            "time": "2017-10-06T22:26:58+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,16 +686,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "dev-master",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "f7c6143807d365646e3753f29d96a2cb1b956cdc"
+                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/f7c6143807d365646e3753f29d96a2cb1b956cdc",
-                "reference": "f7c6143807d365646e3753f29d96a2cb1b956cdc",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/07d3c88a5de4bdd2f4aba7193387b75389dea642",
+                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642",
                 "shasum": ""
             },
             "require": {
@@ -734,11 +734,11 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-10-03T21:30:44+00:00"
+            "time": "2017-10-05T20:48:16+00:00"
         },
         {
             "name": "consolidation/config",
-            "version": "dev-master",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
@@ -3744,8 +3744,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3+5-dev",
-                    "datestamp": "1495469584",
+                    "version": "8.x-3.0-alpha4+0-dev",
+                    "datestamp": "1506649448",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4265,8 +4265,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+4-dev",
-                    "datestamp": "1503745744",
+                    "version": "8.x-1.0-beta1+6-dev",
+                    "datestamp": "1505206745",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4723,6 +4723,57 @@
             }
         },
         {
+            "name": "drupal/subpathauto",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/subpathauto",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/subpathauto-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "9dc67937f6a4e8a07aa311fa380adf0740993def"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1479450840",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Dave Reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                }
+            ],
+            "description": "Provides support for extending sub-paths of URL aliases.",
+            "homepage": "https://www.drupal.org/project/subpathauto",
+            "support": {
+                "source": "http://cgit.drupalcode.org/subpathauto"
+            }
+        },
+        {
             "name": "drupal/swiftmailer",
             "version": "1.0.0-beta1",
             "source": {
@@ -5047,7 +5098,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Araña Cruz",
+                    "name": "Jonathan Ara??a Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -5733,7 +5784,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch??nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -5743,7 +5794,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2017-10-04T20:57:36+00:00"
+            "time": "2017-10-03T00:49:49+00:00"
         },
         {
             "name": "league/container",
@@ -6572,12 +6623,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "088a76737ee295a121172624c0f0b2984a8f0de9"
+                "reference": "0bccbca031f25d8e88906f8a8d7b260f7965ed55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/088a76737ee295a121172624c0f0b2984a8f0de9",
-                "reference": "088a76737ee295a121172624c0f0b2984a8f0de9",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/0bccbca031f25d8e88906f8a8d7b260f7965ed55",
+                "reference": "0bccbca031f25d8e88906f8a8d7b260f7965ed55",
                 "shasum": ""
             },
             "require": {
@@ -6644,7 +6695,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-10-04T03:57:01+00:00"
+            "time": "2017-10-10T07:14:19+00:00"
         },
         {
             "name": "predis/predis",
@@ -7747,16 +7798,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v2.8.27",
+            "version": "v2.8.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "ba3204654efa779691fac9e948a96b4a7067e4ab"
+                "reference": "ef01ca1352deb0c029cf496a89a6b175659c1ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ba3204654efa779691fac9e948a96b4a7067e4ab",
-                "reference": "ba3204654efa779691fac9e948a96b4a7067e4ab",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ef01ca1352deb0c029cf496a89a6b175659c1ec3",
+                "reference": "ef01ca1352deb0c029cf496a89a6b175659c1ec3",
                 "shasum": ""
             },
             "require": {
@@ -7796,7 +7847,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-01T14:31:55+00:00"
+            "time": "2017-10-01T21:00:16+00:00"
         },
         {
             "name": "symfony/debug",
@@ -10006,6 +10057,10 @@
                     "homepage": "https://www.drupal.org/u/matio89"
                 },
                 {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
+                },
+                {
                     "name": "eme",
                     "homepage": "https://www.drupal.org/user/542492"
                 },
@@ -10268,17 +10323,17 @@
         },
         {
             "name": "drupal/devel",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "98ea9bf81fff44fe243a98b65beb23773c2e80b6"
+                "url": "https://ftp.drupal.org/files/projects/devel-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "01f3349ef75f6e21fceef24be9d3d6506ca29647"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -10292,8 +10347,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1507195143",
+                    "version": "8.x-1.2",
+                    "datestamp": "1507197844",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11809,6 +11864,7 @@
         "drupal/r4032login": 20,
         "drupal/redirect": 20,
         "drupal/redis": 5,
+        "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
         "drush/drush": 20,

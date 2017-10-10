@@ -61,6 +61,7 @@ config_devel:
   - image.style.wysiwyg_one_third_width
   - joinup_core.piwik_settings
   - rdf_draft.settings
+  - subpathauto.settings
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
