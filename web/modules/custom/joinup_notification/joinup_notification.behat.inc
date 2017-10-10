@@ -65,7 +65,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $recipient */
     /** @var string $subject */
     /** @var string $template */
-    /** @var string $signature_required Optional. */
+    /** @var string $signature_required */
     extract($table->getRowsHash());
 
     // Translate the human readable value for the requirement of the signature
@@ -200,7 +200,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     /** @var string $recipient */
     /** @var string $subject */
     /** @var string $template */
-    /** @var string $signature_required Optional. */
+    /** @var string $signature_required */
     extract($table->getRowsHash());
 
     // Translate the human readable value for the requirement of the signature
