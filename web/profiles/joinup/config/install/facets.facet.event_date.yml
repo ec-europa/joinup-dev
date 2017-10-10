@@ -1,0 +1,73 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.content_overview
+  module:
+    - search_api
+id: event_date
+name: 'Event date'
+url_alias: event_type
+weight: 0
+min_count: 1
+show_only_one_result: false
+field_identifier: nid
+facet_source_id: 'search_api:views_page__content_overview__page_1'
+widget:
+  type: links_inline
+  config:
+    show_numbers: true
+    all_text: 'All events'
+    prefix_text: ''
+    suffix_text: ''
+    arbitrary_facet_plugin: events_arbitrary
+query_operator: or
+use_hierarchy: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+hard_limit: 0
+exclude: false
+only_visible_when_facet_source_is_visible: true
+processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: -10
+    settings:
+      sort: DESC
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: -9
+    settings:
+      sort: DESC
+  dependent_processor:
+    processor_id: dependent_processor
+    weights:
+      build: 5
+    settings:
+      content_bundle:
+        enable: 1
+        condition: values
+        values: Event
+        negate: 0
+      content_my_content:
+        enable: 0
+        condition: null
+        values: ''
+        negate: 0
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: -8
+    settings:
+      sort: ASC
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+empty_behavior:
+  behavior: none
