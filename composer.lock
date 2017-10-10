@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8a00ecbc33d0d8983de9a682db8a4ae",
+    "content-hash": "666c4598e35f73a85f2564ed3629be9e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3473,20 +3473,23 @@
         },
         {
             "name": "drupal/migrate_run",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_run",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "eca1d7edac198ddea5fe831948b9cdfe999db435"
+                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha6.zip",
+                "reference": "8.x-1.0-alpha6",
+                "shasum": "36369465976a3bb9960e6f2ece20cf48d8c61dae"
             },
             "require": {
                 "drupal/core": "^8.2"
+            },
+            "require-dev": {
+                "drupal/coder": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -3494,8 +3497,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1498129143",
+                    "version": "8.x-1.0-alpha6",
+                    "datestamp": "1507658345",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
