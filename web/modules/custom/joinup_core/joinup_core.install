@@ -60,3 +60,10 @@ function joinup_core_requirements($phase) {
 function joinup_core_update_8000(&$sandbox) {
   \Drupal::service('module_installer')->install(['config_sync']);
 }
+
+/**
+ * Enable the Sub-Pathauto module.
+ */
+function joinup_core_update_8001(&$sandbox) {
+  \Drupal::service('module_installer')->install(['subpathauto']);
+}
