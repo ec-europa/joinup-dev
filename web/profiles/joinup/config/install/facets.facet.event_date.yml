@@ -12,7 +12,7 @@ url_alias: event_type
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: nid
+field_identifier: field_event_date
 facet_source_id: 'search_api:views_page__content_overview__page_1'
 widget:
   type: links_inline
