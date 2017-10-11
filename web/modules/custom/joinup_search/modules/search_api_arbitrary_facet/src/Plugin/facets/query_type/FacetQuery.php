@@ -95,9 +95,12 @@ class FacetQuery extends SearchApiString {
     if (!empty($this->results)) {
       $facet_results = [];
       foreach ($this->results as $result) {
+        $result_filter = trim($result['filter'], '"');
+        if (!isset($facet_definition[$result_filter])) {
+          continue;
+        }
         if ($result['count'] || $query_operator == 'or') {
           $count = $result['count'];
-          $result_filter = trim($result['filter'], '"');
           $label = $facet_definition[$result_filter]['label'];
           $result = new Result($result_filter, $label, $count);
           $facet_results[] = $result;
