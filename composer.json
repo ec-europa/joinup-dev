@@ -97,7 +97,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.1.4"
+            "php": "7.1.9"
         }
     },
     "autoload": {
