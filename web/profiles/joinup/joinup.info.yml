@@ -83,8 +83,9 @@ dependencies:
   - tour
   - trr
   - user
-  - view_unpublished
   - views
+  - views_bulk_operations
+  - view_unpublished
 
 themes:
   - seven
