@@ -42,7 +42,8 @@ Feature: Add comments
     # The configuration options for comments should not be shown to
     # facilitators. Whether or not comments are available is managed on
     # collection level.
-    When I click "Edit" in the "Entity actions" region
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     Then I should not see the text "Comment settings"
 
     Examples:
