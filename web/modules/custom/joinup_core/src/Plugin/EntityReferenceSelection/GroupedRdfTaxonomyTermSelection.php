@@ -11,7 +11,7 @@ use Drupal\taxonomy\Plugin\EntityReferenceSelection\TermSelection;
  * is adapted to use string ID for the parent term.
  *
  * @EntityReferenceSelection(
- *   id = "grouped_rdf_taxonomy_term_selection",
+ *   id = "grouped_rdf_taxonomy_term_selection:default",
  *   label = @Translation("Taxonomy RDF term selection (with groups)"),
  *   entity_types = {"taxonomy_term"},
  *   group = "grouped_rdf_taxonomy_term_selection",

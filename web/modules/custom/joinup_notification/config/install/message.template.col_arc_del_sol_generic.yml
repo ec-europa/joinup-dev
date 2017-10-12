@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: col_arc_del_sol_generic
+label: 'Collection archive/delete affiliates generic'
+description: 'Template 12 - This will be sent instead of template 11 if there are affiliates left in the solution'
+text:
+  -
+    value: "<p>The @entity:bundle @entity:title was @transition:request_action:past</p>\r\n"
+    format: full_html
+  -
+    value: "<p>The \"@entity:title\" @entity:bundle, to which your \"@affiliate:title\" solution was affiliated, was recently @transition:request_action:past.</p>\r\n\r\n<p>Please verify the updated details of your solution at <a href=\"@affiliate:url\">@affiliate:url</a>.</p>\r\n"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

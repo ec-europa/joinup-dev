@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: wysiwyg_half_width
+label: 'Half width'
+effects:
+  a9cdd657-7589-42f7-a3c8-c218d25fe067:
+    uuid: a9cdd657-7589-42f7-a3c8-c218d25fe067
+    id: image_scale
+    weight: 1
+    data:
+      width: 460
+      height: null
+      upscale: false

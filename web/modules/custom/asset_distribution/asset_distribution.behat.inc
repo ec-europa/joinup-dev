@@ -140,9 +140,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       }
     }
 
-    $values['rid'] = 'asset_distribution';
-    $asset_distribution = Rdf::create($values);
-    $asset_distribution->save();
+    $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
@@ -212,7 +210,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function deleteAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $this->getAssetDistributionByName($asset_distribution)->delete();
+    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
+    $asset_distribution->skip_notification = TRUE;
+    $asset_distribution->delete();
   }
 
   /**
@@ -286,6 +286,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function cleanAssetDistributions() {
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
+      $asset_distribution->skip_notification = TRUE;
       $asset_distribution->delete();
     }
   }
@@ -300,13 +301,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     // Mapping alias - field name.
     return [
       'access url' => 'field_ad_access_url',
-      'creation date' => 'field_ad_creation_date',
+      'creation date' => 'created',
       'description' => 'field_ad_description',
       'downloads' => 'field_download_count',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
-      'modification date' => 'field_ad_modification_date',
+      'modification date' => 'changed',
       'representation technique' => 'field_ad_repr_technique',
       'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
       'status' => 'field_status',

@@ -19,6 +19,7 @@ homepage.content:
     _controller: '\Drupal\joinup\Controller\JoinupController::homepageContent'
   requirements:
     _permission: 'access content'
+
 joinup.collection_tca_form:
   path: '/joinup/tca/collection'
   defaults:
@@ -26,3 +27,87 @@ joinup.collection_tca_form:
     _title: 'Why create a Collection?'
   requirements:
     _permission: 'propose collection rdf entity'
+
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
+  requirements:
+    _access: 'TRUE'
+
+joinup.eligibility_criteria:
+  path: '/joinup/eligibility-criteria'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::eligibilityCriteria'
+    _title: 'Eligibility criteria'
+  requirements:
+    _access: 'TRUE'
+
+joinup.site_feature:
+  path: '/feature/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Feature'
+    field_name: field_site_featured
+    value: true
+    message: '@bundle %title has been set as featured content.'
+  requirements:
+    _permission: 'feature entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unfeature:
+  path: '/feature/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Remove from featured'
+    field_name: field_site_featured
+    value: false
+    message: '@bundle %title has been removed from the feature contents.'
+  requirements:
+    _permission: 'unfeature entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_pin:
+  path: '/pin/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Pin'
+    field_name: field_site_pinned
+    value: true
+    message: '@bundle %title has been set as pinned content.'
+  requirements:
+    _permission: 'pin entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unpin:
+  path: '/pin/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Remove from pinned'
+    field_name: field_site_pinned
+    value: false
+    message: '@bundle %title has been removed from the pinned contents.'
+  requirements:
+    _permission: 'unpin entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}

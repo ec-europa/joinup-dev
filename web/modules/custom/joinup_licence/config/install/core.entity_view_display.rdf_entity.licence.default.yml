@@ -6,6 +6,7 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
+    - ds
     - text
     - user
 id: rdf_entity.licence.default
@@ -34,7 +35,16 @@ content:
     weight: -5
     settings:
       link_to_entity: false
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     region: content
 hidden:
   langcode: true

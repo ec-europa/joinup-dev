@@ -41,6 +41,18 @@ Feature: Solution API
       | state             | validated                   |
     Then I should have 1 solution
 
+  Scenario: Programmatically create a solution that is affiliated with a collection
+    Given the following collection:
+      | title             | Inflatable mascots |
+      | state             | validated          |
+    And the following solution:
+      | title             | Inflatable rooster             |
+      | description       | For placing near a white house |
+      | state             | validated                      |
+      | collection        | Inflatable mascots             |
+    Then I should have 1 solution
+    And the "Inflatable rooster" solution should be affiliated with the "Inflatable mascots" collection
+
   @terms
   Scenario: Assign ownership during creation of solutions through UI
     Given the following owner:

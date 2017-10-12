@@ -10,7 +10,7 @@ field_name: field_is_owner
 entity_type: rdf_entity
 bundle: solution
 label: Owner
-description: ''
+description: 'The Owner is the organisation that owns this entity and is the only responsible for it.'
 required: true
 translatable: false
 default_value: {  }
@@ -23,5 +23,5 @@ settings:
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: null
+    auto_create_bundle: ''
 field_type: entity_reference

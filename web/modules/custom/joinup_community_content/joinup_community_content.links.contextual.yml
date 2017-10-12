@@ -2,3 +2,11 @@ joinup_community_content.unshare:
   route_name: joinup_community_content.unshare_content_form
   title: Unshare
   group: node
+joinup_community_content.pin:
+  route_name: joinup_community_content.pin_content
+  title: Pin
+  group: node
+joinup_community_content.unpin:
+  route_name: joinup_community_content.unpin_content
+  title: Unpin
+  group: node

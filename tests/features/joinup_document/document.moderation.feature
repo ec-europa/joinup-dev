@@ -42,11 +42,12 @@ Feature: Document moderation
     # Edit the collection and set it as moderated.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check the box "Moderated"
     Then I press "Publish"
-    And I should see the capitalised heading "The Naked Ashes"
+    And I should see the heading "The Naked Ashes"
 
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create documents but not to publish them.
@@ -61,8 +62,9 @@ Feature: Document moderation
     # content.
     When I am logged in as a moderator
     And I go to the homepage of the "The Naked Ashes" collection
+    And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I click the "Description" tab
+    And I click the "Additional fields" tab
     And I check "Closed collection"
     And I wait for AJAX to finish
     And I select "Only members can create new content." from "eLibrary creation"

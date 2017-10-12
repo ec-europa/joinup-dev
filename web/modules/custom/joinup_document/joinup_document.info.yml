@@ -9,6 +9,7 @@ dependencies:
   - file_url
   - joinup_community_content
   - joinup_licence
+  - language
 
 config_devel:
   - core.base_field_override.node.document.title
@@ -27,6 +28,8 @@ config_devel:
   - field.field.node.document.field_policy_domain
   - field.field.node.document.field_shared_in
   - field.field.node.document.field_short_title
+  - field.field.node.document.field_site_featured
+  - field.field.node.document.field_site_pinned
   - field.field.node.document.field_state
   - field.field.node.document.field_type
   - field.field.node.document.field_visit_count

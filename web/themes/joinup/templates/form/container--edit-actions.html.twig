@@ -23,10 +23,10 @@
   set classes = [
     has_parent ? 'js-form-wrapper',
     has_parent ? 'form-wrapper',
-    is_collection ? 'mdl-grid',
-    is_collection ? 'mdl-grid--no-spacing',
-    is_collection ? 'vertical-tabs__actions',
-    'form__actions-wrapper',
+    has_vertical_tabs ? 'mdl-grid',
+    has_vertical_tabs ? 'mdl-grid--no-spacing',
+    has_vertical_tabs ? 'vertical-tabs__actions',
+    'form__actions',
   ]
 %}
 
@@ -34,7 +34,7 @@
   set inner_classes = 'mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop mdl-cell--6-col-tablet mdl-cell--2-offset-tablet form__actions_inner'
 %}
 <div{{ attributes.addClass(classes) }}>
-  <div class="{{ is_collection ? inner_classes : 'form__actions_inner'}}">
+  <div class="{{ has_vertical_tabs ? inner_classes : 'form__actions_inner'}}">
     {{ children }}
   </div>
 </div>

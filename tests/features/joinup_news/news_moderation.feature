@@ -308,10 +308,10 @@ Feature: News moderation.
     And the "Hawkgirl is a spy" "news" content should have 2 revisions
     And I should see the link "Edit"
     When I click "Edit"
-    And for "Kicker" I enter "Hawkgirl saves the planet again"
+    And for "Kicker" I enter "Hawkgirl saves the planet"
     And I fill in "Motivation" with "Let's change the kicker."
     And I press "Request changes"
-    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
+    Then I should see the success message "News Hawkgirl saves the planet has been updated."
     # A new draft has been created with a new title. The previously validated
     # revision (with the original title) should still be published.
     But I should see the heading "Hawkgirl is a spy"
@@ -320,6 +320,6 @@ Feature: News moderation.
     # revision, and the revision with the new title should become published.
     When I click "Edit"
     And I press "Publish"
-    Then I should see the success message "News Hawkgirl saves the planet again has been updated."
-    And I should see the heading "Hawkgirl saves the planet again"
-    And the "Hawkgirl saves the planet again" "news" content should have 4 revisions
+    Then I should see the success message "News Hawkgirl saves the planet has been updated."
+    And I should see the heading "Hawkgirl saves the planet"
+    And the "Hawkgirl saves the planet" "news" content should have 4 revisions

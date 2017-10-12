@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\EventSubscriber;
 
+use Drupal\Core\Site\Settings;
 use Drupal\joinup_migrate\MockFileSystem;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
@@ -26,7 +27,7 @@ class PostPrepareSubscriber implements EventSubscriberInterface {
    *   The event object.
    */
   public function mockFileSystem(MigrateImportEvent $event) {
-    if ($event->getMigration()->id() === 'prepare') {
+    if ($event->getMigration()->id() === 'prepare' && Settings::get('joinup_migrate.mock_filesystem', TRUE)) {
       MockFileSystem::createTestingFiles();
     }
   }

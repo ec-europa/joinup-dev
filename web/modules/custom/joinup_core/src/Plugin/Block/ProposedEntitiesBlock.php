@@ -66,11 +66,10 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
       // The 'listing' child key is needed to avoid copying the #attributes to
       // the parent block.
       // @see \Drupal\block\BlockViewBuilder::preRender()
+      '#extra_suggestion' => 'block__separated',
       'listing' => [
         '#type' => 'container',
-        '#attributes' => [
-          'class' => ['listing', 'listing--grid', 'mdl-grid'],
-        ],
+        '#extra_suggestion' => 'container__grid',
       ],
     ];
 
@@ -108,14 +107,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $rows[] = [
         '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'listing__item',
-            'listing__item--tile',
-            'mdl-cell',
-            'mdl-cell--4-col',
-          ],
-        ],
+        '#extra_suggestion' => 'container__grid_item',
         'entity' => $view,
       ];
     }

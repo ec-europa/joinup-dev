@@ -92,8 +92,8 @@ Feature: Global search
       | title          | description                                                | keywords | owner             | contact information | state     |
       | Solution alpha | <p>This is the solution <strong>beta</strong> description. | Alphabet | Responsible owner | Go-to contact       | validated |
     And the following releases:
-      | title         | release notes                               | keywords | is version of  | owner             | contact information | state     |
-      | Release Alpha | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
+      | title         | release number | release notes                               | keywords | is version of  | owner             | contact information | state     |
+      | Release Alpha | 1              | <p>Release notes for <em>beta</em> changes. | Alphabet | Solution alpha | Responsible owner | Go-to contact       | validated |
     And the following distributions:
       | title              | description                                    | parent        | access url |
       | Distribution alpha | <p>A simple beta distribution description.</p> | Release Alpha | test.zip   |
@@ -193,3 +193,41 @@ Feature: Global search
     Then the page should show the tiles "Jenessa Carlyle"
     When I enter "Omero+snc" in the header search bar and hit enter
     Then the page should show the tiles "Ulysses Freeman"
+
+  Scenario: Collections and solutions are shown first in search results with the same relevance.
+    Given the following solution:
+      | title       | Bird outposts in the wild            |
+      | description | Exotic wings and where to find them. |
+      | state       | validated                            |
+    And collection:
+      | title       | Ornithology: the study of birds     |
+      | description | Ornithology is a branch of zoology. |
+      | state       | validated                           |
+      | affiliates  | Bird outposts in the wild           |
+    And custom_page content:
+      | title           | body                                  | collection                      |
+      | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
+    And news content:
+      | title                    | body                   | collection                      | state     |
+      | Chickens are small birds | Domesticated in India. | Ornithology: the study of birds | validated |
+    And event content:
+      | title         | body                   | collection                      | state     |
+      | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |
+    And discussion content:
+      | title                             | body                    | collection                      | state     |
+      | Best place to find an exotic bird | Somewhere exotic maybe? | Ornithology: the study of birds | validated |
+    And user:
+      | Username    | Bird watcher |
+      | First name  | Bird         |
+      | Family name | Birdman      |
+
+    # The bird is the word... to search.
+    When I enter "Bird" in the header search bar and hit enter
+    Then I should see the following tiles in the correct order:
+      | Ornithology: the study of birds   |
+      | Bird outposts in the wild         |
+      | Disturbed birds                   |
+      | Chickens are small birds          |
+      | Bird spotting                     |
+      | Best place to find an exotic bird |
+      | Bird Birdman                      |

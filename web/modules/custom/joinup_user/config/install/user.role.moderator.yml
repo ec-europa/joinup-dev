@@ -7,6 +7,7 @@ weight: 3
 is_admin: false
 permissions:
   - 'access contextual links'
+  - 'access dashboard'
   - 'access toolbar'
   - 'access user profiles'
   - 'administer comments'
@@ -33,9 +34,13 @@ permissions:
   - 'edit licence rdf entity'
   - 'edit own document content'
   - 'edit owner rdf entity'
+  - 'feature entity'
   - 'moderate entity parents'
+  - 'pin entity'
   - 'propose collection rdf entity'
   - 'skip comment approval'
+  - 'unfeature entity'
+  - 'unpin entity'
   - 'view any unpublished content'
   - 'view licence overview page'
   - 'view rdf_entity draft graph'

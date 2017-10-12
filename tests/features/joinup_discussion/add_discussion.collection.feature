@@ -1,5 +1,5 @@
 @api
-Feature: "Add discussion" visibility options.
+Feature: Discussions added to collections
   In order to manage discussions
   As a collection member
   I need to be able to add "Discussion" content through UI.
@@ -34,10 +34,18 @@ Feature: "Add discussion" visibility options.
     Then I should see the link "Add discussion"
 
   Scenario: Add discussion as a facilitator.
-    Given collections:
+    Given user:
+      | Username    | kesha1988                             |
+      | First name  | Kesha                                 |
+      | Family name | Pontecorvo                            |
+      | E-mail      | kesha.pontecorvo@ec-europa.example.eu |
+    And collections:
       | title                  | logo     | banner     | state     |
       | The World of the Waves | logo.png | banner.jpg | validated |
-    And I am logged in as a facilitator of the "The World of the Waves" collection
+    And the following collection user membership:
+      | collection             | user      | roles       |
+      | The World of the Waves | kesha1988 | facilitator |
+    And I am logged in as kesha1988
 
     When I go to the homepage of the "The World of the Waves" collection
     And I click "Add discussion" in the plus button menu
@@ -45,10 +53,7 @@ Feature: "Add discussion" visibility options.
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
-
-    # The section about managing revisions should not be visible.
-    And I should not see the text "Revision information"
-    And the following fields should not be present "Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Shared in"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"
@@ -67,12 +72,36 @@ Feature: "Add discussion" visibility options.
     Then I should see the heading "An amazing discussion"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
-    # Check that the link to the discussion is visible on the collection page.
-    When I go to the homepage of the "The World of the Waves" collection
-    Then I should see the link "An amazing discussion"
 
     # Regression test: the workflow state should not be shown to the user.
-    When I click "An amazing discussion"
-    Then I should see the heading "An amazing discussion"
     But I should not see the text "State" in the "Content" region
     And I should not see the text "Validated" in the "Content" region
+
+    # Check that the tile for the discussion is visible on the collection page.
+    When I go to the homepage of the "The World of the Waves" collection
+    Then I should see the link "An amazing discussion"
+    And I should see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
+    # Initially there are 0 comments on the discussion.
+    And I should see the text "0" in the "An amazing discussion" tile
+
+    # Make sure that the page is cached, so that we can ascertain that adding a
+    # comment will invalidate the cache.
+    # @todo: uncomment when ISAICP-3899 is fixed.
+    # When I reload the page
+    # Then the page should be cached
+
+    # Create two new comments and check that the counter is incremented.
+    Given comments:
+      | message                | author    | parent                |
+      | Product up and running | kesha1988 | An amazing discussion |
+      | Smart contract         | kesha1988 | An amazing discussion |
+    When I reload the page
+    Then I should see the text "2" in the "An amazing discussion" tile
+    And I should not see the text "0" in the "An amazing discussion" tile
+
+    # Check that the page cache has been correctly invalidated, and a reload
+    # will serve again from cache.
+    # @todo: uncomment when ISAICP-3899 is fixed.
+    # And the page should not be cached
+    # When I reload the page
+    # Then the page should be cached

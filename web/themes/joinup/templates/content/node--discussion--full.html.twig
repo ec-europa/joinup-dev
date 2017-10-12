@@ -70,24 +70,14 @@
  *   in different view modes.
  */
 #}
-{% set domains = content.field_policy_domain|render %}
 <article{{ attributes }}>
   <div class="page__content">
     {{ content.body }}
-    {{ content.field_attachment }}
-    <div class="details__bottom">
-      {% if domains %}
-        {% trans %}This discussion is about {{ domains }}{% endtrans %}
-      {% endif %}
-    </div>
     <div class="action-link__wrapper right">
       {{ content.report }}
       {{ content.share_link }}
     </div>
   </div>
-
-  {{ content.field_replies }}
-
   {{ content.field_shared_in }}
-
+  {{ content.field_replies }}
 </article>

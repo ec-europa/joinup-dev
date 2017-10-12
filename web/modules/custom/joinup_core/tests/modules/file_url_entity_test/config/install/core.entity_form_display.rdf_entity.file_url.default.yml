@@ -18,12 +18,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_url_generic
-  field_ar_creation_date:
-    weight: 12
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-    type: datetime_create_update
   id:
     type: auto_uri
     weight: 0

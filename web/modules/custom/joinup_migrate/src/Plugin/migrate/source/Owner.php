@@ -52,6 +52,7 @@ class Owner extends JoinupSqlBase implements RedirectImportInterface {
       'owner_type' => $this->t('Owner type'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
+      'status' => $this->t('Status'),
     ];
   }
 
@@ -70,6 +71,7 @@ class Owner extends JoinupSqlBase implements RedirectImportInterface {
         'title',
         'state',
         'item_state',
+        'status',
       ]);
   }
 

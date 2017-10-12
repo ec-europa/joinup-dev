@@ -150,7 +150,7 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
           $elements[$delta] = [
             '#type' => 'link',
             '#title' => $this->getSetting('remote_files_title'),
-            '#url' => Url::fromUri(file_create_url($file->getFileUri())),
+            '#url' => Url::fromUri($file->getFileUri()),
           ];
         }
       }

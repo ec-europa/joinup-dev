@@ -17,3 +17,23 @@ group_header_block.moderate_content:
   title: 'Moderate content'
   route_name: 'moderation.content_moderation_overview'
   group: group_header_block
+
+joinup.site_feature:
+  title: Feature
+  route_name: joinup.site_feature
+  group: entity
+
+joinup.site_unfeature:
+  title: 'Remove from featured'
+  route_name: joinup.site_unfeature
+  group: entity
+
+joinup.site_pin:
+  title: 'Pin site-wide'
+  route_name: joinup.site_pin
+  group: entity
+
+joinup.site_unpin:
+  title: 'Unpin site-wide'
+  route_name: joinup.site_unpin
+  group: entity

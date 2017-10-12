@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\migrate\Row;
 
 /**
@@ -50,13 +49,6 @@ class Prepare extends TestableSpreadsheetBase {
   protected $importedUsers;
 
   /**
-   * A list of OG roles users.
-   *
-   * @var int[]
-   */
-  protected $ogUserRoles;
-
-  /**
    * {@inheritdoc}
    */
   public function getIds() {
@@ -73,7 +65,6 @@ class Prepare extends TestableSpreadsheetBase {
       'publisher' => $this->t('Publisher'),
       'contact' => $this->t('Contact'),
       'contact_email' => $this->t('E-mail contact'),
-      'roles' => $this->t('Roles'),
     ] + parent::fields();
   }
 
@@ -90,10 +81,8 @@ class Prepare extends TestableSpreadsheetBase {
       'publisher',
       'contact',
       'contact_email',
-      'roles',
     ], NULL);
 
-    $collection = $row['Collection_name'];
     $nid = !empty($row['Nid']) ? (int) $row['Nid'] : NULL;
     $vid = NULL;
 
@@ -124,8 +113,8 @@ class Prepare extends TestableSpreadsheetBase {
     // Add E-mail contact, if case.
     $this->setContactEmail($row, $nid);
 
-    // The collection admin.
-    $this->setCollectionUserRoles($row);
+    // Prepare the collection owner.
+    $this->setCollectionOwner($row);
 
     // Register inconsistencies.
     if ($messages) {
@@ -137,91 +126,6 @@ class Prepare extends TestableSpreadsheetBase {
     }
 
     return empty($messages);
-  }
-
-  /**
-   * Sets the collection OG roles.
-   *
-   * @param array $row
-   *   The iterator current row.
-   */
-  protected function setCollectionUserRoles(array &$row) {
-    $roles = [];
-
-    // Get only once and statically cache the list of imported users.
-    if (!isset($this->importedUsers)) {
-      $this->importedUsers = $this->db->select('d8_user', 'u')
-        ->fields('u', ['mail', 'uid'])
-        ->execute()
-        ->fetchAllKeyed();
-    }
-
-    /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-    $collection_owner = trim((string) $row['Collection Owner']);
-    if ($collection_owner) {
-      // Collection owners is a comma separated string of E-mails.
-      $collection_owner = array_filter(array_map('trim', explode(',', $collection_owner)));
-      // Convert E-mails to UIDs.
-      $uids = array_filter(array_map(function ($mail) {
-        return isset($this->importedUsers[$mail]) ? $this->importedUsers[$mail] : NULL;
-      }, $collection_owner));
-
-      if ($uids) {
-        $request_time = \Drupal::time()->getRequestTime();
-        $roles['admin'] = array_fill_keys($uids, [1, $request_time]);
-      }
-    }
-
-    // Get only once and statically cache OG data from Drupal 6 backend.
-    if (!isset($this->ogUserRoles)) {
-      /** @var \Drupal\Core\Database\Query\SelectInterface $query */
-      $query = $this->db->select('d8_mapping', 'm')
-        ->fields('m', ['collection'])
-        ->fields('ou', ['is_admin', 'is_active', 'created'])
-        ->fields('our', ['uid', 'rid'])
-        ->orderBy('m.collection')
-        ->condition('m.owner', ['Y', 'Yes'], 'IN');
-      $query->join('og_uid', 'ou', 'm.nid = ou.nid');
-      $query->join('og_users_roles', 'our', 'ou.nid = our.gid AND ou.uid = our.uid');
-      // Only migrated users are allowed.
-      $query->join('d8_user', 'u', 'ou.uid = u.uid');
-
-      $this->ogUserRoles = [];
-      foreach ($query->execute()->fetchAll() as $data) {
-        $collection = $data->collection;
-        $uid = (int) $data->uid;
-        $rid = (int) $data->rid;
-        $created = (int) $data->created;
-        $is_active = (int) $data->is_active;
-
-        // Drupal 6 admin role, which is 'facilitator' in Drupal 8, is computed
-        // in a different way.
-        if ($data->is_admin && !isset($this->ogUserRoles[$collection][static::$roleMap[6]][$uid])) {
-          $this->ogUserRoles[$collection][static::$roleMap[6]][$uid] = [$is_active, $created];
-        }
-        // Add as member only if it was not previously added as 'facilitator'.
-        if (!isset($this->ogUserRoles[$collection][static::$roleMap[6]][$uid])) {
-          $this->ogUserRoles[$collection][static::$roleMap[$rid]][$uid] = [$is_active, $created];
-        }
-      }
-    }
-
-    $data = isset($this->ogUserRoles[$row['Collection_name']]) ? $this->ogUserRoles[$row['Collection_name']] : [];
-    if (isset($roles['admin'])) {
-      // Remove facilitators and members that are already owners/admins.
-      foreach ($data as $role => &$users) {
-        $users = array_diff_key($users, $roles['admin']);
-        if (empty($users)) {
-          unset($data[$role]);
-        }
-      }
-    }
-    $roles += $data;
-
-    // Add roles to row.
-    if ($roles) {
-      $row['roles'] = Json::encode($roles);
-    }
   }
 
   /**
@@ -341,37 +245,47 @@ class Prepare extends TestableSpreadsheetBase {
   }
 
   /**
+   * Sets the collection owner.
+   *
+   * @param array $row
+   *   The iterator current row.
+   */
+  protected function setCollectionOwner(array &$row) {
+    // Convert collection owners E-mails into user IDs.
+    $collection_owner = trim($row['Collection Owner']);
+
+    if ($collection_owner) {
+      // Collection owners is a comma separated string of E-mails.
+      $collection_owner = array_filter(array_map('trim', explode(',', $collection_owner)));
+      // Convert E-mails to UIDs.
+      if (!isset($this->importedUsers)) {
+        $this->importedUsers = $this->db->select('d8_user', 'u')
+          ->fields('u', ['mail', 'uid'])
+          ->execute()
+          ->fetchAllKeyed();
+      }
+      $uids = array_filter(array_map(function ($mail) {
+        return isset($this->importedUsers[$mail]) ? (int) $this->importedUsers[$mail] : NULL;
+      }, $collection_owner));
+      $collection_owner = implode(',', $uids);
+    }
+
+    $row['Collection Owner'] = $collection_owner ?: NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $roles = Json::decode($row->getSourceProperty('roles'));
-    if (!isset($roles['admin'])) {
+    if (!$row->getSourceProperty('Collection Owner')) {
       $row_index = $row->getSourceProperty('row_index');
       $collection = $row->getSourceProperty('Collection_name');
-      $this->migration->getIdMap()->saveMessage($row->getSourceIdValues(), "Row: $row_index, Collection: '$collection': The collection owner is missed or the user was not migrated");
+      $this->migration->getIdMap()->saveMessage(
+        $row->getSourceIdValues(),
+        "Row: $row_index, Collection: '$collection': The collection owner is missed or the user was not migrated");
     }
 
     return parent::prepareRow($row);
   }
-
-  /**
-   * Roles mapping.
-   *
-   * @var string[]
-   */
-  protected static $roleMap = [
-    // 'administrator‘.
-    6 => 'facilitator',
-    // 'facilitator'.
-    4 => 'member',
-    // 'contributor'.
-    18 => 'member',
-    // 'developer'.
-    9 => 'member',
-    // 'release manager'.
-    17 => 'member',
-    // 'member'.
-    5 => 'member',
-  ];
 
 }

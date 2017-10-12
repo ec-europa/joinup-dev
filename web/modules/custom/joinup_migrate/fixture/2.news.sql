@@ -8,6 +8,7 @@ CREATE OR REPLACE VIEW d8_news (
   created,
   changed,
   uid,
+  status,
   source_url,
   state
 ) AS
@@ -21,6 +22,7 @@ SELECT
   n.created,
   n.changed,
   n.uid,
+  n.status,
   TRIM(ctn.field_source_url_url),
   IFNULL(ws.state, 'validated')
 FROM d8_node n

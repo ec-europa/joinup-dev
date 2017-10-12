@@ -5,8 +5,8 @@
 // Component
 // --------------------------------------------------
 .sidebar-menu
-  z-index: 2
   position: relative
+  +z-index(navigation)
   +breakpoint(desktop)
     width: 100%
     .mdl-menu__container,
@@ -29,10 +29,15 @@
   width: 60px
   height: 60px
   border-radius: 0
-  z-index: 999
+  +z-index(navigation)
 
 .sidebar-menu__item
   padding: 0
+
+.sidebar-menu__link--active
+  background-color: #fff
+  border-left-color: $color-orange
+  font-weight: $font-weight-medium
 
 .sidebar-menu__link
   display: block
@@ -42,10 +47,10 @@
   text-decoration: none
   &:hover,
   &:active,
-  &:focus
-    background-color: #fff
-    border-left-color: $color-orange
-    font-weight: $font-weight-medium
+  &:focus,
+  &.is-active
+    @extend .sidebar-menu__link--active
+
 
 .sidebar-menu
   .icon
@@ -53,10 +58,16 @@
     +icon-size(35px)
     +centered
 
+.sidebar-menu__contextual
+  +breakpoint(desktop)
+    .contextual
+      +z-index(dropdown)
+
 // Modifiers
 // --------------------------------------------------
 .sidebar-menu__button--mobile
-  margin-top: -80px
+  position: absolute
+  top: -115px
   .icon
     color: #fff
   +breakpoint(desktop)
@@ -70,19 +81,11 @@
   +breakpoint(desktop)
     display: block
 
-.sidebar-menu__contextual
-  ul
-    z-index: 3
-    position: relative
-  button
-    position: relative !important
-
 // Dependiencies
 // --------------------------------------------------
 .section--sidebar-left
   .sidebar-menu
     +breakpoint(desktop)
-      margin-top: 60px
       .mdl-menu
         position: relative
         opacity: 1
@@ -90,9 +93,15 @@
       .mdl-menu__item
         opacity: 1
       .mdl-menu__container
-        z-index: 999
         visibility: visible
         background: transparent
         position: relative
-        &.desktop-hidden
+        +z-index(navigation)
+        &.is-hidden
           visibility: hidden
+        &:not(.is-hidden)
+          height: auto
+
+.menu-item--active-trail
+  .sidebar-menu__link
+    @extend .sidebar-menu__link--active

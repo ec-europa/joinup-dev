@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_site_featured
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_site_featured
+field_name: field_site_featured
+entity_type: rdf_entity
+bundle: solution
+label: 'Site featured'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

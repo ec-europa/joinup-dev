@@ -23,6 +23,13 @@ class PolicyDomain extends ProcessPluginBase {
   protected static $cache = [];
 
   /**
+   * Taxonomy term storage.
+   *
+   * @var \Drupal\rdf_taxonomy\TermRdfStorage
+   */
+  protected $termStorage;
+
+  /**
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
@@ -31,14 +38,12 @@ class PolicyDomain extends ProcessPluginBase {
     }
 
     if (!isset(static::$cache[$value])) {
-      /** @var \Drupal\rdf_taxonomy\TermRdfStorage $storage */
-      $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-      $terms = $storage->loadByProperties([
-        'name' => (array) $value,
+      $terms = $this->getTermStorage()->loadByProperties([
+        'name' => $value,
         'vid' => 'policy_domain',
       ]);
       foreach ($terms as $tid => $term) {
-        if ($storage->loadParents($tid)) {
+        if ($this->getTermStorage()->loadParents($tid)) {
           // We stop on the first term with parents (AKA is 2nd level term').
           static::$cache[$value] = $tid;
           break;
@@ -46,11 +51,24 @@ class PolicyDomain extends ProcessPluginBase {
       }
     }
     if (!isset(static::$cache[$value])) {
-      $migrate_executable->saveMessage("Term '$value' does not exits in destination.");
+      $migrate_executable->saveMessage("Term '$value' missed from D8 vocabulary 'Policy domain' (policy_domain).");
       return NULL;
     }
 
     return static::$cache[$value];
+  }
+
+  /**
+   * Returns the RDF taxonomy term storage.
+   *
+   * @return \Drupal\rdf_taxonomy\TermRdfStorage
+   *   The RDF taxonomy term storage.
+   */
+  protected function getTermStorage() {
+    if (!isset($this->termStorage)) {
+      $this->termStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    }
+    return $this->termStorage;
   }
 
 }

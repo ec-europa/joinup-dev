@@ -1,3 +1,0 @@
-rdf.entities:
-  class: \Drupal\Core\Menu\LocalTaskDefault
-  deriver: \Drupal\rdf_export\Plugin\Derivative\RdfExportLocalTask

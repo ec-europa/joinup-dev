@@ -11,8 +11,10 @@
  * @ingroup themeable
  */
 #}
-<div class="tab__icon icon icon--{{ type }}"></div>
-<div class="tab__text">
-    {% if show_count %}<div class="tab__text--upper">{{ count }}</div>{% endif %}
-    <div class="tab__text--lower">{{ value }}</div>
-</div>
+<span class="tab__content">
+  <span class="tab__icon icon icon--{{ type }}"></span>
+  <span class="tab__text">
+    {% if show_count %}<span class="tab__text--upper">{{ count }}</span>{% endif %}
+    <span class="tab__text--lower">{{ value }}</span>
+  </span>
+</span>

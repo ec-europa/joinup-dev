@@ -5,9 +5,11 @@ dependencies:
     - core.entity_view_mode.node.moderation
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
@@ -38,9 +40,11 @@ content:
     region: content
 hidden:
   field_attachment: true
+  field_keywords: true
   field_policy_domain: true
   field_replies: true
   field_shared_in: true
+  field_site_featured: true
   field_visit_count: true
   langcode: true
   links: true

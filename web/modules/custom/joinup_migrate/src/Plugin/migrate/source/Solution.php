@@ -22,7 +22,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
   use FileUrlFieldTrait;
   use KeywordsTrait;
   use StateTrait;
-  use StatusTrait;
+  use StatusFieldTrait;
 
   /**
    * {@inheritdoc}
@@ -67,14 +67,16 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
       'policy2' => $this->t('Policy domain'),
       'related' => $this->t('Related solutions'),
       'country' => $this->t('Country'),
-      'status' => $this->t('Status'),
+      'status_field' => $this->t('Status field'),
       'contact' => $this->t('Contact info'),
       'contact_email' => $this->t('Contact E-mail'),
       'distribution' => $this->t('Distribution'),
       'documentation' => $this->t('Documentation'),
       'state' => $this->t('State'),
       'item_state' => $this->t('Item state'),
+      'uid' => $this->t('Author ID'),
       'i18n' => $this->t('Field translations'),
+      'status' => $this->t('Status'),
     ];
   }
 
@@ -85,6 +87,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
     return $this->select('d8_solution', 's')->fields('s', [
       'nid',
       'vid',
+      'uid',
       'type',
       'title',
       'uri',
@@ -101,6 +104,7 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
       'owner_type',
       'logo_id',
       'banner',
+      'status',
     ]);
   }
 
@@ -145,8 +149,8 @@ class Solution extends JoinupSqlBase implements RedirectImportInterface, FieldTr
     $distributions = $query->execute()->fetchCol();
     $row->setSourceProperty('distribution', $distributions);
 
-    // Status.
-    $this->setStatus($vid, $row);
+    // Status field.
+    $this->setStatusField($vid, $row);
 
     // State.
     $this->setState($row);

@@ -67,7 +67,7 @@ Feature: Content notification system
       | template  | Message to collection facilitators when a community content is deleted by a moderator                                                    |
       | recipient | Devyn Queshire                                                                                                                           |
       | subject   | Joinup: your news "Infrared long-range communications" was deleted                                                                       |
-      | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Moderation Team. |
+      | body      | Dear Devyn Queshire, your news "Infrared long-range communications" was successfully deleted. Kinds regards, The Joinup Support Team. |
 
     When I am logged in as "Jerrard Verity"
     And all the e-mails have been sent
@@ -79,4 +79,4 @@ Feature: Content notification system
       | template  | Message to solution facilitators when a community content is deleted by a moderator                                                   |
       | recipient | Reed Mondy                                                                                                                            |
       | subject   | Joinup: your event "Smoke signals pre-conference party" was deleted                                                                   |
-      | body      | Dear Reed Mondy, your event "Smoke signals pre-conference party" was successfully deleted. Kinds regards, The Joinup Moderation Team. |
+      | body      | Dear Reed Mondy, your event "Smoke signals pre-conference party" was successfully deleted. Kinds regards, The Joinup Support Team. |
