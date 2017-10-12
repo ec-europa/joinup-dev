@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a88ec9d0ecae4047f08fdf4d090677c3",
+    "content-hash": "d93e9a8b7d9fd4120917d50ad7eb44c3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4186,12 +4186,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "1ed63c39d0f8e2ac3e91f7fb9a42a07cee1c0bf9"
+                "reference": "2cfd3d48dda7aeead5f48608e51b0a2c5e3ab0d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/1ed63c39d0f8e2ac3e91f7fb9a42a07cee1c0bf9",
-                "reference": "1ed63c39d0f8e2ac3e91f7fb9a42a07cee1c0bf9",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/2cfd3d48dda7aeead5f48608e51b0a2c5e3ab0d7",
+                "reference": "2cfd3d48dda7aeead5f48608e51b0a2c5e3ab0d7",
                 "shasum": ""
             },
             "require": {
@@ -4211,7 +4211,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2017-10-11T16:18:17+00:00"
+            "time": "2017-10-12T12:15:24+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -4716,6 +4716,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Redirect module causes redirect back to unaliased path. @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2875026-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10328,8 +10331,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-05-01T21:54:12+00:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -11897,6 +11899,6 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.1.4"
+        "php": "7.1.9"
     }
 }
