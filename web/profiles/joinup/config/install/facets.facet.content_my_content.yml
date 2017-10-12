@@ -42,21 +42,6 @@ processor_configs:
       sort: -9
     settings:
       sort: DESC
-  dependent_processor:
-    processor_id: dependent_processor
-    weights:
-      build: 5
-    settings:
-      content_bundle:
-        enable: 1
-        condition: values
-        values: Event
-        negate: 1
-      event_date:
-        enable: 0
-        condition: null
-        values: ''
-        negate: 0
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
@@ -67,7 +52,7 @@ processor_configs:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -9
     settings: {  }
 empty_behavior:
   behavior: none

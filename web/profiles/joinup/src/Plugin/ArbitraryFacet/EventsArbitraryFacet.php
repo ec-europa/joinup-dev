@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Plugin\ArbitraryFacet;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetBase;
 
 /**
@@ -19,12 +20,15 @@ class EventsArbitraryFacet extends ArbitraryFacetBase {
    */
   public function getFacetDefinition() {
     $current_user = \Drupal::currentUser();
-
+    // Yesterday midnight translates to yesterday's 24:00:00 which is today's
+    // 00:00:00. This will put today's events to the list of upcoming events.
+    $today_midnight = DrupalDateTime::createFromTimestamp(strtotime('yesterday midnight'))->format('Y-m-d\Th:m:i\Z');
     $definition = [
-      'future_events' => [
+      'upcoming_events' => [
         'field_name' => 'field_event_date',
-        'field_condition' => '[NOW TO *]',
-        'label' => $this->t('Future events'),
+        'field_condition' => $today_midnight,
+        'field_operator' => '>=',
+        'label' => $this->t('Upcoming events'),
       ],
     ];
 
@@ -39,7 +43,8 @@ class EventsArbitraryFacet extends ArbitraryFacetBase {
     $definition += [
       'past_events' => [
         'field_name' => 'field_event_date',
-        'field_condition' => '[* TO NOW]',
+        'field_condition' => $today_midnight,
+        'field_operator' => '<=',
         'label' => $this->t('Past events'),
       ],
     ];

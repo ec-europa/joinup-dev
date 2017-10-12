@@ -52,7 +52,9 @@ class FacetQuery extends SearchApiString {
         $active_filter = $facet_definition[$active_item];
         $field_name = $active_filter['field_name'];
         $condition = $active_filter['field_condition'];
-        $filter->addCondition($field_name, $condition, $exclude ? '<>' : '=');
+        $operator = isset($active_filter['field_operator']) ? $active_filter['field_operator'] : NULL;
+        $exclude = $exclude ? '<>' : '=';
+        $filter->addCondition($field_name, $condition, $operator ?: $exclude);
       }
       $query->addConditionGroup($filter);
     }
