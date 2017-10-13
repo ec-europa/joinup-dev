@@ -19,7 +19,9 @@ Feature: Add comments
     Given I am an anonymous user
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
-    And I fill in "Your name" with "Mr Scandal"
+    # The honeypot field that needs to be empty on submission.
+    Then the following fields should be present "user_homepage"
+    When I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
     And I fill in "Create comment" with "I've heard this story..."
     And I wait for the honeypot validation to pass
@@ -57,7 +59,9 @@ Feature: Add comments
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
-    And I fill in "Create comment" with "Mr scandal was doing something weird the other day."
+    # The honeypot field that needs to be empty on submission.
+    Then the following fields should be present "user_homepage"
+    When I fill in "Create comment" with "Mr scandal was doing something weird the other day."
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
