@@ -79,12 +79,11 @@
     </target>
 
     <target name="import-rdf-fixtures">
-        <import-rdf-fixtures
+        <rdf-import-fixtures
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}"
-            SharedDirectory="${sparql.shareddirectory}" />
+            Password="${sparql.password}" />
 
         <afterrdffixturesimport
             IsqlPath="${isql.bin}"
