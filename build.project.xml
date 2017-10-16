@@ -255,7 +255,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-backend, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
 
     <target
         name="install-dev"
