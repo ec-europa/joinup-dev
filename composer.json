@@ -45,7 +45,7 @@
         "drupal/rdf_entity": "^1.0-alpha3",
         "drupal/redirect": "dev-1.x#27e71182610c70636b959d9f4031fe6dd0877d87",
         "drupal/redis": "^1.0@RC",
-        "drupal/search_api": "~1.0-rc2",
+        "drupal/search_api": "1.4",
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "~1.0-alpha3",
         "drupal/social_media_links": "^2.5",

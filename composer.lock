@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "33f2ac2bfd6cee1681db5e95d64fddb6",
+    "content-hash": "18b1deee4b3788c663a8c5ca542c18cb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.21",
+            "version": "3.36.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "010aea6ccdc76ad63fdca556f9a408544d390dfb"
+                "reference": "96f2c1525d3fd17a0802329c309c76c01a78aa51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/010aea6ccdc76ad63fdca556f9a408544d390dfb",
-                "reference": "010aea6ccdc76ad63fdca556f9a408544d390dfb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/96f2c1525d3fd17a0802329c309c76c01a78aa51",
+                "reference": "96f2c1525d3fd17a0802329c309c76c01a78aa51",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-05T19:28:13+00:00"
+            "time": "2017-10-12T19:45:50+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,22 +686,21 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "2.7.2",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642"
+                "reference": "5d504efcec48f6fb4eed3255b1d2cc4a64cd017c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/07d3c88a5de4bdd2f4aba7193387b75389dea642",
-                "reference": "07d3c88a5de4bdd2f4aba7193387b75389dea642",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/5d504efcec48f6fb4eed3255b1d2cc4a64cd017c",
+                "reference": "5d504efcec48f6fb4eed3255b1d2cc4a64cd017c",
                 "shasum": ""
             },
             "require": {
-                "consolidation/output-formatters": "^3.1.10",
+                "consolidation/output-formatters": "^3.1.12",
                 "php": ">=5.4.0",
-                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
                 "psr/log": "^1",
                 "symfony/console": "^2.8|~3",
                 "symfony/event-dispatcher": "^2.5|^3",
@@ -734,7 +733,7 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-10-05T20:48:16+00:00"
+            "time": "2017-10-13T21:51:21+00:00"
         },
         {
             "name": "consolidation/config",
@@ -834,16 +833,16 @@
         },
         {
             "name": "consolidation/output-formatters",
-            "version": "3.1.11",
+            "version": "3.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/output-formatters.git",
-                "reference": "3a1160440819269e6d8d9c11db67129384b8fb35"
+                "reference": "88ef346a1cefb92aab8b57a3214a6d5fc63f5d2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/3a1160440819269e6d8d9c11db67129384b8fb35",
-                "reference": "3a1160440819269e6d8d9c11db67129384b8fb35",
+                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/88ef346a1cefb92aab8b57a3214a6d5fc63f5d2a",
+                "reference": "88ef346a1cefb92aab8b57a3214a6d5fc63f5d2a",
                 "shasum": ""
             },
             "require": {
@@ -879,7 +878,7 @@
                 }
             ],
             "description": "Format text by applying transformations provided by plug-in formatters.",
-            "time": "2017-08-17T22:11:07+00:00"
+            "time": "2017-10-12T19:38:03+00:00"
         },
         {
             "name": "consolidation/robo",
@@ -993,22 +992,25 @@
         },
         {
             "name": "continuousphp/aws-sdk-phing",
-            "version": "0.4.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/continuousphp/aws-sdk-phing.git",
-                "reference": "64d22c59c4c0218267d0598c5fd27d6bfbb1ade7"
+                "reference": "ed4399d5a7f2a1a602b285726db594ce3c538a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/continuousphp/aws-sdk-phing/zipball/64d22c59c4c0218267d0598c5fd27d6bfbb1ade7",
-                "reference": "64d22c59c4c0218267d0598c5fd27d6bfbb1ade7",
+                "url": "https://api.github.com/repos/continuousphp/aws-sdk-phing/zipball/ed4399d5a7f2a1a602b285726db594ce3c538a44",
+                "reference": "ed4399d5a7f2a1a602b285726db594ce3c538a44",
                 "shasum": ""
             },
             "require": {
                 "aws/aws-sdk-php": "~3.0",
                 "phing/phing": "~2.7",
                 "php": ">=5.4"
+            },
+            "require-dev": {
+                "psy/psysh": "@stable"
             },
             "type": "library",
             "autoload": {
@@ -1028,7 +1030,7 @@
             ],
             "description": "phing tasks for Amazon AWS",
             "homepage": "https://github.com/continuousphp/aws-sdk-phing",
-            "time": "2017-02-06T18:41:03+00:00"
+            "time": "2017-10-13T13:25:42+00:00"
         },
         {
             "name": "cweagans/composer-patches",
@@ -3584,7 +3586,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "d081ad05012e67bbfbf828b0293da9c420b0bcc6"
+                "reference": "0704fc26c3fefbda6dc6f8b538719e50c938fe64"
             },
             "require": {
                 "drupal/core": "*"
@@ -3599,7 +3601,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1508149745",
+                    "datestamp": "1508150044",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3659,7 +3661,7 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2017-10-16T10:30:14+00:00"
+            "time": "2017-10-16T12:37:36+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -5740,16 +5742,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.4",
+            "version": "5.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "7ccb0e67ea8ace0f84c40900ca3c8a234467628c"
+                "reference": "0d4fda8efdf216ade084a7f0aad5637572ce9835"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/7ccb0e67ea8ace0f84c40900ca3c8a234467628c",
-                "reference": "7ccb0e67ea8ace0f84c40900ca3c8a234467628c",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/0d4fda8efdf216ade084a7f0aad5637572ce9835",
+                "reference": "0d4fda8efdf216ade084a7f0aad5637572ce9835",
                 "shasum": ""
             },
             "require": {
@@ -5802,7 +5804,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2017-10-04T20:57:36+00:00"
+            "time": "2017-10-10T13:22:37+00:00"
         },
         {
             "name": "league/container",
@@ -6631,12 +6633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1"
+                "reference": "79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1",
-                "reference": "4b4bac53aaf51b16b3d3d9cbec5b31e626b2b2a1",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb",
+                "reference": "79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb",
                 "shasum": ""
             },
             "require": {
@@ -6703,7 +6705,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-10-06T05:01:20+00:00"
+            "time": "2017-10-14T05:57:44+00:00"
         },
         {
             "name": "predis/predis",
@@ -6997,16 +6999,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.11",
+            "version": "v0.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "b193cd020e8c6b66cea6457826ae005e94e6d2c0"
+                "reference": "1502354ebc70d59d8e3a87c325b0eb78a79da25b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/b193cd020e8c6b66cea6457826ae005e94e6d2c0",
-                "reference": "b193cd020e8c6b66cea6457826ae005e94e6d2c0",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1502354ebc70d59d8e3a87c325b0eb78a79da25b",
+                "reference": "1502354ebc70d59d8e3a87c325b0eb78a79da25b",
                 "shasum": ""
             },
             "require": {
@@ -7066,7 +7068,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-07-29T19:30:02+00:00"
+            "time": "2017-10-14T17:14:13+00:00"
         },
         {
             "name": "sebastian/version",
@@ -9294,16 +9296,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "2faa791b66bac33ca40031d8bce03b7dc8143490"
+                "reference": "c8664b92a6d5bc229e48b0923486c097e45a7877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/2faa791b66bac33ca40031d8bce03b7dc8143490",
-                "reference": "2faa791b66bac33ca40031d8bce03b7dc8143490",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/c8664b92a6d5bc229e48b0923486c097e45a7877",
+                "reference": "c8664b92a6d5bc229e48b0923486c097e45a7877",
                 "shasum": ""
             },
             "require": {
@@ -9342,7 +9344,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-09-13T14:47:08+00:00"
+            "time": "2017-10-12T15:24:51+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -10131,7 +10133,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_devel",
-                "reference": "0ca0da6fb222a504ae40f18d58b88d3f829e86a9"
+                "reference": "e0b2a62c4f596bf9fe93923f2a98db0a0afffc9d"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -10142,15 +10144,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0+9-dev",
-                    "datestamp": "1502829543",
+                    "version": "8.x-1.1+1-dev",
+                    "datestamp": "1507206545",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Update Drush integration to Drush 9. @see https://www.drupal.org/node/2914083": "https://www.drupal.org/files/issues/2914083-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10191,8 +10190,7 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            },
-            "time": "2017-10-05T12:27:13+00:00"
+            }
         },
         {
             "name": "drupal/config_inspector",
