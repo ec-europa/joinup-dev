@@ -779,9 +779,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertNodeOgMembership($title, $collection) {
     $collection = $this->getRdfEntityByLabel($collection, 'collection');
-    if (!$node = $this->getNodeByTitle($title)) {
-      throw new \Exception("The node titled '$title' was not found.");
-    }
+    $node = $this->getNodeByTitle($title);
     if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $collection->id()) {
       throw new \Exception("The node '$title' is not associated with collection '{$collection->label()}'.");
     }

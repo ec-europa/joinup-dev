@@ -32,7 +32,7 @@ Feature: Tests the UI that allows content managing.
     And I go to the homepage of the "Source collection" collection
     Then I should not see the link "Manage content"
 
-    Given I am logged in as an moderator
+    Given I am logged in as a moderator
     And I go to the homepage of the "Source collection" collection
     Then I should see the link "Manage content"
 
