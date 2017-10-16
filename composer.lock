@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "441c7cad04e73f85f22da6efe661035a",
+    "content-hash": "33f2ac2bfd6cee1681db5e95d64fddb6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3584,13 +3584,13 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "781922f64f16af45dee4dd6c209098a85777619a"
+                "reference": "d081ad05012e67bbfbf828b0293da9c420b0bcc6"
             },
             "require": {
                 "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/coder": "~2.0"
+                "drupal/coder": "~8.2"
             },
             "type": "drupal-module",
             "extra": {
@@ -3599,14 +3599,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1504592344",
+                    "datestamp": "1508149745",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Avoid exception in case a membership is already found. @see https://github.com/Gizra/og": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/296.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3662,7 +3659,7 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
             },
-            "time": "2017-09-06T15:58:25+00:00"
+            "time": "2017-10-16T10:30:14+00:00"
         },
         {
             "name": "drupal/og_menu",
