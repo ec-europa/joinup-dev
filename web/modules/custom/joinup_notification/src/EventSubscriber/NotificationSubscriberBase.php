@@ -253,7 +253,7 @@ abstract class NotificationSubscriberBase {
     // We need to handle possible broken relationships or memberships that
     // are not removed yet.
     $user_ids = array_map(function ($membership) {
-      $user = $membership->getUser();
+      $user = $membership->getOwner();
       return empty($user) ? NULL : $user->id();
     }, $memberships);
     return array_values(array_filter($user_ids));
