@@ -4,3 +4,7 @@ services:
     arguments: ['@entity.manager']
     tags:
      - { name: event_subscriber }
+  custom_page.og_menu_link_updater:
+    class: Drupal\custom_page\CustomPageOgMenuLinksUpdater
+    arguments: ['@entity_type.manager', '@plugin.manager.menu.link']
+    lazy: true

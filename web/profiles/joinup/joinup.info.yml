@@ -206,6 +206,7 @@ config_devel:
   - views.view.collection_content
   - views.view.collections
   - views.view.content_overview
+  - views.view.group_content_management
   - views.view.members_overview
   - views.view.solutions
   - views.view.user_admin_people

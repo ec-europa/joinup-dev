@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
@@ -54,56 +53,30 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  *
  * Create menu link when a custom page gets saved.
  */
-function custom_page_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
-    return;
+function custom_page_node_insert(EntityInterface $entity) {
+  if ($entity->bundle() === 'custom_page') {
+    \Drupal::service('custom_page.og_menu_link_updater')->addLink($entity);
   }
-
-  /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first();
-  if (!$group) {
-    return;
-  }
-  $value = $group->getValue();
-  // Fetch the menu.
-  $values = [
-    'type' => 'navigation',
-    OgGroupAudienceHelperInterface::DEFAULT_FIELD => $value['target_id'],
-  ];
-  $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
-  $instances = $storage->loadByProperties($values);
-  if (!$instances) {
-    return;
-  }
-  /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
-  $instance = array_pop($instances);
-  $menu_link_content = MenuLinkContent::create([
-    'title' => $entity->getTitle(),
-    'menu_name' => 'ogmenu-' . $instance->id(),
-    'link' => ['uri' => 'internal:/node/' . $entity->id()],
-    // The 'exclude_from_menu' property is used as a hidden API trick to allow
-    // a disabled menu item.
-    'enabled' => empty($entity->exclude_from_menu),
-  ]);
-  $menu_link_content->save();
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function custom_page_entity_update(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() !== 'node' || $entity->bundle() !== 'custom_page') {
+function custom_page_node_update(NodeInterface $entity) {
+  if ($entity->bundle() !== 'custom_page') {
     return;
   }
 
+  /** @var \Drupal\node\NodeInterface $original */
+  $original = $entity->original;
+
   // Update all links that point to this custom page if the title has changed,
   // or if the entity becomes (un)published.
-  /** @var \Drupal\node\NodeInterface $entity */
-  if ($entity->isPublished() !== $entity->original->isPublished() || $entity->getTitle() !== $entity->original->getTitle()) {
+  if ($entity->isPublished() !== $original->isPublished() || $entity->getTitle() !== $original->getTitle()) {
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
@@ -113,6 +86,13 @@ function custom_page_entity_update(EntityInterface $entity) {
         $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
       }
     }
+  }
+
+  // Update the OG menu link if the group has changed.
+  if ($entity->og_audience->target_id !== $original->og_audience->target_id) {
+    \Drupal::service('custom_page.og_menu_link_updater')
+      ->deleteLinks($original)
+      ->addLink($entity);
   }
 }
 
