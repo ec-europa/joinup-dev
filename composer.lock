@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "afbbc78b99dfe95e526b3fa98e02a18b",
+    "content-hash": "bd380f861371bd97afab7452666d4aa3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10045,7 +10045,8 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                }
+                },
+                "patches_applied": []
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
@@ -10085,7 +10086,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-10-06T10:01:31+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -10213,7 +10215,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
