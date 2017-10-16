@@ -30,6 +30,8 @@
     <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
+    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
@@ -91,6 +93,75 @@
             Username="${sparql.user}"
             Password="${sparql.password}" />
     </target>
+
+    <target name="run-updates">
+        <drush
+                command="updatedb"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="entity:updates"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+           <param>config_sync</param>
+        </drush>
+        <drush
+                command="cs-update"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="discard-overrides" />
+        </drush>
+    </target>
+
+    <target name="fetch-databases">
+        <s3dl
+                object="joinupv2.0/dumps/prod/virtuoso/full/20171011_JOINUP_FULL_DUMP_1.bp"
+                target="${project.basedir}/vendor/ec-europa/virtuoso/backup/20171011_JOINUP_FULL_DUMP_1.bp"
+                bucket="joinup2"
+                />
+        <s3dl
+                object="joinupv2.0/dumps/prod/20171011-JOINUP-FULL.sql"
+                target="${project.basedir}/resources/backups/full.sql"
+                bucket="joinup2"
+        />
+
+    </target>
+
+    <target name="restore-mysql-dump">
+        <drush
+                command="sql-drop"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="sql-query"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="file" value="${project.basedir}/resources/backups/full.sql" />
+        </drush>
+    </target>
+
+    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-stop, virtuoso-restore-backup" />
+
+    <target name="rebuild-environment" depends="restore-databases, import-rdf-fixtures, run-updates" />
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">

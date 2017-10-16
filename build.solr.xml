@@ -174,4 +174,25 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
         description="Set up Apache Solr."
         depends="download-apache-solr, start-apache-solr, configure-apache-solr" />
 
+    <target
+        name="reindex-apache-solr"
+        description="Re-indexes the two solr cores.">
+        <drush
+                command="sapi-c"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="batch-size" value="50" />
+        </drush>
+        <drush
+                command="sapi-i"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="batch-size" value="250" />
+        </drush>
+    </target>
+
 </project>
