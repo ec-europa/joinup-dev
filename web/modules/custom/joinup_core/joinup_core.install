@@ -64,6 +64,6 @@ function joinup_core_update_8100(&$sandbox) {
 /**
  * Enable the Sub-Pathauto module.
  */
-function joinup_core_update_8001(&$sandbox) {
+function joinup_core_update_8101(&$sandbox) {
   \Drupal::service('module_installer')->install(['subpathauto']);
 }
