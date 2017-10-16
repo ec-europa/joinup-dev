@@ -14,6 +14,9 @@
     <!-- Import Phing targets related to Piwik. -->
     <import file="${project.basedir}/build.piwik.xml" optional="true" />
 
+    <!-- Import Phing targets related to Redis cache. -->
+    <import file="${project.basedir}/build.redis.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
@@ -36,7 +39,7 @@
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
     <!-- Install the website. -->
-    <target name="install" depends="writable-settings-folder, writable-settings-php">
+    <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
             command="site-install"
             assume="yes"
@@ -216,9 +219,33 @@
     </target>
 
     <target
+        name="disable-config-read-only"
+        depends="writable-settings-folder, writable-settings-php"
+        description="Make config writable.">
+        <if>
+            <available file="${website.settings.php}" type="file" property="settings.php.available" />
+            <then>
+                <reflexive>
+                    <fileset dir="${website.settings.dir}">
+                        <include pattern="settings.php" />
+                    </fileset>
+                    <filterchain>
+                        <replaceregexp>
+                            <regexp
+                                pattern="^\$settings\['config_readonly'\].*$\n"
+                                replace=""
+                                modifiers="m" />
+                        </replaceregexp>
+                    </filterchain>
+                </reflexive>
+            </then>
+        </if>
+    </target>
+
+    <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass, setup-virtuoso-permissions, purge-rdf-backend, install, export-config" />
+        depends="install-composer-dependencies-dist, compile-sass" />
 
     <target
         name="build-dev"
@@ -228,11 +255,11 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-backend, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, install, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-rdf-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
 
 </project>

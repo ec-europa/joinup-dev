@@ -36,6 +36,7 @@ abstract class NodeBase extends JoinupSqlBase implements RedirectImportInterface
       'changed' => $this->t('Changed time'),
       'uid' => $this->t('Author ID'),
       'body' => $this->t('Body'),
+      'status' => $this->t('Status'),
     ];
   }
 
@@ -56,6 +57,7 @@ abstract class NodeBase extends JoinupSqlBase implements RedirectImportInterface
       'changed',
       'uid',
       'body',
+      'status',
     ]);
 
     return $this->query;

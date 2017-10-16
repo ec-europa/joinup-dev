@@ -29,6 +29,16 @@
             depends="enable-migration-modules, disable-solr-index">
         <echo message="Running migration IDs" />
         <drush
+                command="sql-query"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="database" value="migrate" />
+            <param>"UPDATE users SET status = 1 WHERE uid = 6364"</param>
+        </drush>
+
+        <drush
             command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"

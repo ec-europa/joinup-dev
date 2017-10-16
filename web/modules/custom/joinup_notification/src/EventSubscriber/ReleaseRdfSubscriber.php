@@ -213,8 +213,16 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     }
 
     $user_data = [
+      'roles' => [
+        'moderator' => [
+          self::TEMPLATE_DELETE,
+        ],
+      ],
       'og_roles' => [
         'rdf_entity-solution-administrator' => [
+          self::TEMPLATE_DELETE,
+        ],
+        'rdf_entity-solution-facilitator' => [
           self::TEMPLATE_DELETE,
         ],
       ],

@@ -14,6 +14,7 @@ dependencies:
   - ckeditor
   - collection
   - config_readonly
+  - config_sync
   - contact_form
   - content_translation
   - contextual
@@ -69,6 +70,7 @@ dependencies:
   - rdf_export
   - rdf_taxonomy
   - search_api
+  - search_api_arbitrary_facet
   - search_api_db
   - semic
   - social_media_links_field
@@ -104,7 +106,10 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
+  - block.block.mycontent
+  - block.block.mycontentsolution
   - block.block.navigation
+  - block.block.overviewmessage
   - block.block.pagetitle
   - block.block.policy_domain_facet
   - block.block.primaryadminactions
@@ -159,6 +164,8 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - facets.facet.solution_my_content
+  - facets.facet.content_my_content
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience

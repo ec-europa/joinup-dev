@@ -53,7 +53,9 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
  * types, one with a property set to false and one without the property, will
  * result in having the one without the property placed last.
  *
- * For all entities apart from nodes, set the property 'sticky' equals to false.
+ * Set the "sticky" and "site_pinned" properties to all documents that are
+ * missing them. The properties are prefixed with "bs_" because "b" stands for
+ * boolean and "s" for single value, as they are used for sorting.
  */
 function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
   /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
@@ -61,15 +63,26 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
     if (empty($document->getFields()['bs_sticky'])) {
       $document->setField('bs_sticky', FALSE);
     }
+    if (!isset($document->getFields()['bs_site_pinned'])) {
+      $document->setField('bs_site_pinned', FALSE);
+    }
   }
 }
 
 /**
  * Implements hook_search_api_solr_field_mapping_alter().
+ *
+ * Single value fields need to be used for sorting.
  */
 function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields) {
-  if (isset($fields['entity_created'])) {
-    // The aggregated field 'entity_created' must be used as a single value.
-    $fields['entity_created'] = 'ds_entity_created';
+  $mappings = [
+    'entity_created' => 'ds_entity_created',
+    'site_pinned' => 'bs_site_pinned',
+  ];
+
+  foreach ($mappings as $alias => $solr_field) {
+    if (isset($fields[$alias])) {
+      $fields[$alias] = $solr_field;
+    }
   }
 }

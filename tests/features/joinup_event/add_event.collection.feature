@@ -73,12 +73,12 @@ Feature: "Add event" visibility options.
     And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
-    Then I see the text "National"
-    Then I see the text "Regional"
+    Then I should not see the text "National"
+    Then I should not see the text "Regional"
     And I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
     And the "Stream of Dreams" collection has a event titled "An amazing event"
-    And I should see the text "France"
+    And I should not see the text "France"
     # Check that the link to the event is visible on the collection page.
     When I go to the homepage of the "Stream of Dreams" collection
     Then I should see the link "An amazing event"

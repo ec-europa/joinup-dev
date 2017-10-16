@@ -11,11 +11,15 @@
  * @ingroup themeable
  */
 #}
-<div class="mdl-grid share-box__container">
-  <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--8-col-tablet">
+<div class="share-box__container{{ not form.collections|render ? ' share-box__container--single-column' }}">
+  <div class="share-box__social">
+    <h3 class="share-box__title">{{ 'Social networks'|t }}</h3>
     {{ form.share }}
   </div>
-  <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet">
-    {{ form|without('share')|render }}
-  </div>
+  {% if form.collections|render %}
+    <div class="share-box__collections">
+      <h3 class="share-box__title">{{ 'Other collections in Joinup'|t }}</h3>
+      {{ form|without('share')|render }}
+    </div>
+  {% endif %}
 </div>

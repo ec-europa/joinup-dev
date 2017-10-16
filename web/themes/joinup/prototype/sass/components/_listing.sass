@@ -16,11 +16,6 @@
   background: #fff
   display: flex
   align-items: stretch
-  // Temporarily added to make featured tiles visible.
-  // Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3147
-  // To be removed by front end team.
-  .is-featured
-    animation: pulse 1.25s 1 cubic-bezier(0.66, 1.85, 0.5, 1.38)
 
 .listing__card
   display: flex
@@ -69,7 +64,7 @@
   word-wrap: break-word
 
 .listing__subtitle
-  margin: 5px 0 0 0
+  margin: 0
 
 .listing__teaser
   font-size: 14px
@@ -116,13 +111,13 @@
   margin-top: 30px
   margin-bottom: 30px
 
-.listing__pin
+.listing__corner
   position: absolute
   top: 7px
   right: 7px
   width: 30px
   height: 30px
-  background-color: #d4393a
+  background-color: $color-orange
   +z-index(highlight+1)
   +border-radius(50%)
   .icon
@@ -171,9 +166,57 @@
 .listing__title--link a
   color: $color-orange
 
-.listing__card--title-pin
+.listing__card--corner-title
   .listing__title
     margin-right: 20px
+
+.listing__subtitle:first-of-type
+  margin-top: 5px
+
+// Set fixed height for fields.
+.listing__card
+  +breakpoint(xs)
+    min-height: 285px
+
+.listing__title
+  +number-rows(1, $row-height)
+
+.listing__card--collection,
+.listing__card--solution
+  .listing__title
+    +number-rows(3, $row-height)
+
+.listing__card--event,
+.listing__card--asset-distribution,
+.listing__card--asset-release
+  .listing__title
+    +number-rows(3, $row-height)
+
+.listing__author,
+.listing__tags,
+.listing__date,
+.listing__status,
+.listing__single
+  +number-rows(1, $row-height)
+
+.listing__subtitle
+  +number-rows(1, $row-height-small)
+
+.listing__teaser
+  +number-rows(4, $row-height)
+
+.listing__card--discussion,
+.listing__card--document
+  .listing__teaser
+    +number-rows(4, $row-height)
+
+.listing__card--custom-page
+  .listing__teaser
+    +number-rows(7, $row-height)
+
+.listing__card--user
+  .listing__teaser
+    +number-rows(1, $row-height)
 
 // Dependiencies
 // --------------------------------------------------
@@ -184,25 +227,26 @@
     margin-left: 6px
     +icon-size(16px)
 
-.listing__card--detail-container
-  .listing__metadata
-    padding-bottom: 30px
-  .listing__title
-    font-size: $font-size-small
-    a
-      display: block
-  .listing__title--underline
-    text-decoration: underline
-    color: $color-orange
+.listing__single
   .label,
   .value
     font-size: $font-size-xsmall
-    display: inline-block
     vertical-align: middle
+    a
+      color: $color-base
+  .value
+    display: inline
   .label
-    width: 60px
+    width: 50px
     margin-right: 10px
     text-align: right
+    display: inline-block
+
+// Modifiers
+// --------------------------------------------------
+.listing__card
+  &.is-featured
+    background: $color-grey-light
 
 // Listing
 //

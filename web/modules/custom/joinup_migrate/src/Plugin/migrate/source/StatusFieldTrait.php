@@ -7,14 +7,14 @@ use Drupal\migrate\Row;
 /**
  * Provides helper methods for field status migration.
  */
-trait StatusTrait {
+trait StatusFieldTrait {
 
   /**
-   * Status mapping.
+   * Status field mapping.
    *
    * @var string[]
    */
-  protected static $statusMap = [
+  protected static $statusFieldMap = [
     // Terms from vid 69 ('assert_release', 'distribution').
     11646 => 'http://purl.org/adms/status/Completed',
     11647 => 'http://purl.org/adms/status/Deprecated',
@@ -28,14 +28,14 @@ trait StatusTrait {
   ];
 
   /**
-   * Sets the status for a given node revision ID.
+   * Sets the status field for a given node revision ID.
    *
    * @param int $vid
    *   Node revision ID.
    * @param \Drupal\migrate\Row $row
    *   The migration row.
    */
-  protected function setStatus($vid, Row &$row) {
+  protected function setStatusField($vid, Row &$row) {
     $query = $this->select('term_node', 'tn');
     $query->join('term_data', 'td', 'tn.tid = td.tid');
     $tid = $query
@@ -46,9 +46,9 @@ trait StatusTrait {
       ->execute()
       ->fetchField();
 
-    $status_id = isset(static::$statusMap[$tid]) ? static::$statusMap[$tid] : NULL;
+    $status_id = isset(static::$statusFieldMap[$tid]) ? static::$statusFieldMap[$tid] : NULL;
 
-    $row->setSourceProperty('status', $status_id);
+    $row->setSourceProperty('status_field', $status_id);
   }
 
 }

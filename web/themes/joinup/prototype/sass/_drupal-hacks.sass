@@ -111,13 +111,15 @@ textarea
         background: $color-grey-medium
 
 // Contextual links behaviour in tiles.
-.listing__card
+.listing__card--corner
   .contextual
     button.trigger
       // Restore the default absolute positioning applied by .visually-hidden class.
       position: absolute !important
 
-.listing__card--title-pin
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card--corner
   .contextual
     right: auto
     left: 6px
@@ -178,8 +180,14 @@ form .description
 
 // jQuery ui hacks
 .ui-dialog
+  width: calc(100% - 30px) !important
+  max-width: 840px
+  margin-left: 15px
+  margin-right: 15px
+  padding: 20px
   +z-index(modal)
-  padding: $field-margin
+  +breakpoint(sm)
+    width: auto !important
   .ui-dialog-buttonpane
     border: none
     padding: 0 !important
@@ -195,7 +203,6 @@ form .description
 
   .ui-dialog-content
     padding: 0
-    margin-bottom: $form-margin
     font-weight: $font-weight-thin
     color: $color-grey-medium
     font-size: $font-size-small
@@ -203,6 +210,10 @@ form .description
       margin: 0
     .form__actions_inner
       display: block
+
+  .ui-dialog-title
+    margin: 0
+    font-size: $font-size-h2
 
   .ui-dialog-titlebar-close
     height: 15px !important
@@ -220,6 +231,24 @@ form .description
       &:before
         +icon-size(15px)
         content: '\e617'
+
+  .ui-dialog-buttonset
+    float: none !important
+    margin-top: $form-margin
+    +breakpoint(sm)
+      display: flex
+      justify-content: space-between
+    .button
+      width: 100%
+      margin-bottom: 10px
+      +breakpoint(sm)
+        width: auto
+        margin-right: 15px
+        margin-bottom: 0
+      &:last-of-type
+        margin-bottom: 0
+        +breakpoint(sm)
+          margin-right: 0
 
   .ui-widget-header
     font-size: $font-size-h3
@@ -254,3 +283,8 @@ form .description
   &:first-child
     .icon
       color: $color-base
+
+// Remove border for iframes
+article
+  iframe
+    border: none

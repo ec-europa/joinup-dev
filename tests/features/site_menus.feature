@@ -27,7 +27,7 @@ Feature: Site menus
       | Firecrakers list | Check the list first. | Hungry Firecracker | validated |
 
     When I am on the homepage
-    And I click "Contact" in the Footer region
+    And I click "Contact Joinup Support" in the Footer region
     Then no menu items should be active in the "Header menu" menu
 
     # Collections menu item should be active when visiting a collection homepage.

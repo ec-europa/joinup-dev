@@ -9,16 +9,15 @@ use Drupal\joinup_core\JoinupRelationManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller to feature/unfeature entities site-wide.
+ * Controller that allows to toggle a boolean field on or off.
+ *
+ * To use the route provided, some parameters need to be specified in the route
+ * definition, under the "defaults" section:
+ * - field_name: the name of the field itself.
+ * - value: the value to set for the field.
+ * - message: the message to show to the user upon completion.
  */
-class SiteFeatureController extends ControllerBase {
-
-  /**
-   * The machine name of the featured field.
-   *
-   * @var string
-   */
-  const FEATURED_FIELD = 'field_site_featured';
+class BooleanFieldToggleController extends ControllerBase {
 
   /**
    * The Joinup relation manager.
@@ -47,18 +46,29 @@ class SiteFeatureController extends ControllerBase {
   }
 
   /**
-   * Features a content entity site-wide.
+   * Route callback that sets the entity field to the specified value.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content entity being featured.
+   *   The content entity being processed.
+   * @param string $field_name
+   *   The name of the boolean field.
+   * @param bool $value
+   *   The value to set in the field.
+   * @param string $message
+   *   The message to show to the user.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function feature(ContentEntityInterface $entity) {
-    $entity->set(self::FEATURED_FIELD, TRUE)->save();
+  public function doToggle(ContentEntityInterface $entity, $field_name, $value, $message) {
+    $entity->set($field_name, $value)->save();
 
-    drupal_set_message($this->t('@bundle %title has been set as featured content.', [
+    // Passing a variable to the t() function triggers a warning, but in this
+    // case our message is not really dynamic. Core does the same for the
+    // "_title" route parameter.
+    // @see \Drupal\Core\Controller\TitleResolver::getTitle()
+    // @codingStandardsIgnoreLine
+    drupal_set_message($this->t($message, [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
     ]));
@@ -67,49 +77,20 @@ class SiteFeatureController extends ControllerBase {
   }
 
   /**
-   * Unfeatures a content entity site-wide.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content entity being unfeatured.
-   *
-   * @return \Symfony\Component\HttpFoundation\RedirectResponse
-   *   The redirect response.
-   */
-  public function unfeature(ContentEntityInterface $entity) {
-    $entity->set(self::FEATURED_FIELD, FALSE)->save();
-
-    drupal_set_message($this->t('@bundle %title has been removed from the feature contents.', [
-      '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
-      '%title' => $entity->label(),
-    ]));
-
-    return $this->getRedirect($entity);
-  }
-
-  /**
-   * Access check for the feature route.
+   * Access check for a toggle route.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being featured.
+   * @param string $field_name
+   *   The name of the boolean field.
+   * @param bool $value
+   *   The value to set in the field.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function featureAccess(ContentEntityInterface $entity) {
-    return AccessResult::allowedIf($entity->hasField(self::FEATURED_FIELD) && !$entity->get(self::FEATURED_FIELD)->value);
-  }
-
-  /**
-   * Access check for the unfeature route.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content entity being unfeatured.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   The access result.
-   */
-  public function unfeatureAccess(ContentEntityInterface $entity) {
-    return AccessResult::allowedIf($entity->hasField(self::FEATURED_FIELD) && $entity->get(self::FEATURED_FIELD)->value);
+  public function routeAccess(ContentEntityInterface $entity, $field_name, $value) {
+    return AccessResult::allowedIf($entity->hasField($field_name) && (bool) $entity->get($field_name)->value !== $value);
   }
 
   /**
