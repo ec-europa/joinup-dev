@@ -74,10 +74,11 @@ Feature: Proposing a collection
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About                                       |
-      | Body  | Some more information about the collection. |
+      | Title | About                                                        |
+      | Body  | <p>Some more<em>information</em><br />about the collection.<p> |
     And I press "Save"
     Then I should see the success message "Custom page About has been created."
+    And the page should contain the html text "<p>Some more<em>information</em><br>about the collection.</p>"
 
     # Clean up the collection that was created.
     Then I delete the "Ancient and Classical Mythology" collection

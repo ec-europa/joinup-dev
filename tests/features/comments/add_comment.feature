@@ -53,6 +53,9 @@ Feature: Add comments
       | discussion   | Is gossip bad?      | validated |
       | document     | Wikileaks           | validated |
 
+  # This scenario uses javascript to work as regression test for a bug that
+  # makes CKEditor unusable upon a page load.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
   @javascript
   Scenario Outline: Make an authenticated comment, skips moderation.
     Given <content type> content:
@@ -67,7 +70,7 @@ Feature: Add comments
     And I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
-    And I should see text matching "Mr scandal was doing something weird the other day."
+    And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
@@ -75,6 +78,26 @@ Feature: Add comments
       | recipient | Comment moderator                                                                       |
       | subject   | Joinup: A new comment has been created.                                                 |
       | body      | Miss Tales posted a comment in collection "Gossip collection".To view the comment click |
+
+    Examples:
+      | content type | title               | state     |
+      | news         | Scandalous news     | validated |
+      | event        | Celebrity gathering | validated |
+      | discussion   | Is gossip bad?      | validated |
+      | document     | Wikileaks           | validated |
+
+  Scenario Outline: Authenticated users can insert <p> and <br> tags in the comment body.
+    Given <content type> content:
+      | title   | body                                                | collection        | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
+    Given I am logged in as "Miss tell tales"
+    And all e-mails have been sent
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
+    Then I press "Post comment"
+    Then I should not see the following success messages:
+      | Your comment has been queued for review by site administrators and will be published after approval. |
+    And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
 
     Examples:
       | content type | title               | state     |
