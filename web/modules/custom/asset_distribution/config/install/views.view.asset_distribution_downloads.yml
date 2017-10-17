@@ -569,7 +569,7 @@ display:
         title: 'Distribution downloads'
         description: ''
         expanded: false
-        parent: system.admin
+        parent: joinup_core.admin_statistics
         weight: 50
         context: '0'
         menu_name: admin
