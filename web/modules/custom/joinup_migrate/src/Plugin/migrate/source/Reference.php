@@ -319,12 +319,6 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   If $markup has been changed.
    */
   protected function process(&$markup) {
-    // Perform a bird-eye check and exit here if there are no internal links,
-    // for performance reasons.
-    if (!static::needsProcessing($markup)) {
-      return FALSE;
-    }
-
     // Build the DOM based on this markup.
     $document = Html::load($markup);
     $changed = FALSE;
@@ -562,8 +556,16 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
    *   The relative path parts or NULL.
    */
   protected function getRelativePath($path) {
-    if ((strpos($path, '#') === 0) || !UrlHelper::isValid(UrlHelper::encodePath($path))) {
-      // Only fragment or invalid.
+    if (
+      // If it's only a fragment.
+      (strpos($path, '#') === 0) ||
+      // Or a Data URI file scheme.
+      // @see https://en.wikipedia.org/wiki/Data_URI_scheme
+      (substr($path, 0, 5) === 'data:') ||
+      // Or an invalid path.
+      !UrlHelper::isValid(UrlHelper::encodePath($path))
+    ) {
+      // Exit early.
       return NULL;
     }
 
@@ -615,24 +617,6 @@ class Reference extends SourcePluginBase implements ContainerFactoryPluginInterf
     }
 
     return parse_url($path) ?: NULL;
-  }
-
-  /**
-   * Preforms a bird-eye check on the markup to see if processing is needed.
-   *
-   * This method is called just to avoid processing on markup that doesn't
-   * really need processing and improving the performance.
-   *
-   * @param string $markup
-   *   The markup to be checked.
-   *
-   * @return bool
-   *   TRUE, if process is needed.
-   */
-  protected static function needsProcessing($markup) {
-    $a_pattern = "@<a\s+[^>]*href\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
-    $img_pattern = "@<img\s+[^>]*src\s*=\s*(['\"])??((http|https)?://joinup.ec.europa.eu)?[/]?([^\\1]*?)\\1[^>]*>@i";
-    return preg_match($a_pattern, $markup) || preg_match($img_pattern, $markup);
   }
 
   /**

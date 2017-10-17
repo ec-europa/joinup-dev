@@ -18,7 +18,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\Controller\SiteFeatureController;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -76,6 +75,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function givenUser(TableNode $user_table) {
     $this->createUser($user_table->getRowsHash());
+  }
+
+  /**
+   * Asserts that the given html exists in the page.
+   *
+   * @param string $text
+   *   The html that is expected to be found.
+   *
+   * @Then the page should contain the html text :text
+   */
+  public function assertHtmlText($text) {
+    $actual = $this->getSession()->getPage()->getHtml();
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
+
+    PHPUnit_Framework_Assert::assertRegExp($regex, $actual, $message);
   }
 
   /**
@@ -578,7 +593,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       'yes' => 1,
       'no' => 0,
     ], 'sticky');
-    self::convertObjectPropertyValues($node, SiteFeatureController::FEATURED_FIELD, [
+    self::convertObjectPropertyValues($node, 'field_site_featured', [
+      'yes' => 1,
+      'no' => 0,
+    ]);
+    self::convertObjectPropertyValues($node, 'field_site_pinned', [
       'yes' => 1,
       'no' => 0,
     ]);
@@ -635,7 +654,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
         'visits' => 'field_visit_count',
-        'featured' => SiteFeatureController::FEATURED_FIELD,
+        'featured' => 'field_site_featured',
+        'pinned site-wide' => 'field_site_pinned',
       ],
     ];
 

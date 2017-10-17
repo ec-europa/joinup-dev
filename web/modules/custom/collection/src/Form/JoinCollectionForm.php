@@ -198,7 +198,7 @@ class JoinCollectionForm extends FormBase {
       'type' => OgMembershipInterface::TYPE_DEFAULT,
     ]);
     $membership
-      ->setUser($user)
+      ->setOwner($user)
       ->setGroup($collection)
       ->setState($state)
       ->setRoles([$og_role])

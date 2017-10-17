@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.node.moderation
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
@@ -39,6 +40,7 @@ content:
     region: content
 hidden:
   field_attachment: true
+  field_keywords: true
   field_policy_domain: true
   field_replies: true
   field_shared_in: true
