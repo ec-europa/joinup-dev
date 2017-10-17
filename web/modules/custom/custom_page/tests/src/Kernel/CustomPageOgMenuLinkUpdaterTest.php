@@ -159,9 +159,9 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
     // Move back the child custom page to the 1st collection.
     $child_custom_page->set('og_audience', $collection_ids[1])->save();
 
-    // Check that the menu link has been removed from the 2st collection.
+    // Check that the menu link has been removed from the 2nd collection.
     $this->assertNotMenuLink($ogmenu_instance_ids[2], $child_custom_page->id());
-    // Check that a menu link has been created in the 1nd collection.
+    // Check that a menu link has been created in the 1st collection.
     $child_link = $this->assertMenuLink($ogmenu_instance_ids[1], $child_custom_page->id());
     // Restore the parent relation by recreating the menu link relationship.
     $child_link->set('parent', "menu_link_content:{$link->uuid()}")->save();
