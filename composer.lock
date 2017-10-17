@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e83826e6a0a01b2831aba6e20559e624",
+    "content-hash": "f4ee883a809da70ae62aa1575ac3e56b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3693,8 +3693,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha4+0-dev",
-                    "datestamp": "1506649448",
+                    "version": "8.x-3.0-alpha3+5-dev",
+                    "datestamp": "1495469584",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4214,8 +4214,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+6-dev",
-                    "datestamp": "1505206745",
+                    "version": "8.x-1.0-beta1+4-dev",
+                    "datestamp": "1503745744",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4332,7 +4332,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.4",
-                    "datestamp": "1507989244",
+                    "datestamp": "1504799343",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9956,10 +9956,6 @@
                     "homepage": "https://www.drupal.org/u/matio89"
                 },
                 {
-                    "name": "bolbol",
-                    "homepage": "https://www.drupal.org/user/3400070"
-                },
-                {
                     "name": "eme",
                     "homepage": "https://www.drupal.org/user/542492"
                 },
@@ -10083,7 +10079,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-10-06T10:01:31+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -10211,7 +10208,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
