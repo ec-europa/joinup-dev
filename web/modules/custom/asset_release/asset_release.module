@@ -48,6 +48,11 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
 
+     // @todo Should be reverted after go live in ISAICP-3856.
+    if (!empty($parent)) {
+      return;
+    }
+
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);
