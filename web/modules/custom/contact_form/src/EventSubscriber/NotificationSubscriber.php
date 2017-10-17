@@ -4,13 +4,10 @@ namespace Drupal\contact_form\EventSubscriber;
 
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
 use Drupal\message\Entity\Message;
-use Drupal\message_notify\MessageNotifier;
-use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -46,16 +43,12 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     }
 
     // If it is not a report category, follow the normal process.
-    $user_ids = $this->getRecipientIdsByRole('moderator');
+    $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
     $message->save();
-
-    foreach ($this->entityTypeManager->getStorage('user')->loadMultiple(array_filter($user_ids)) as $user_id => $user) {
-      /** @var \Drupal\user\Entity\User $user */
-      $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
-      $this->messageNotifier->send($message, $options);
-    }
+    $options = ['save on success' => FALSE, 'mail' => $recipient];
+    $this->messageNotifier->send($message, $options);
   }
 
   /**
@@ -71,7 +64,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     try {
       $url = Url::fromUri($uri);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return NULL;
     }
 
