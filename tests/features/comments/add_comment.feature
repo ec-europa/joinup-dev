@@ -61,12 +61,12 @@ Feature: Add comments
     When I go to the content page of the type "<content type>" with the title "<title>"
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
-    When I fill in "Create comment" with "Mr scandal was doing something weird the other day."
+    When I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
-    And I should see text matching "Mr scandal was doing something weird the other day."
+    And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
