@@ -78,6 +78,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that the given html exists in the page.
+   *
+   * @param string $text
+   *   The html that is expected to be found.
+   *
+   * @Then the page should contain the html text :text
+   */
+  public function assertHtmlText($text) {
+    $actual = $this->getSession()->getPage()->getHtml();
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
+
+    PHPUnit_Framework_Assert::assertRegExp($regex, $actual, $message);
+  }
+
+  /**
    * Creates and authenticates a user with the given og role(s).
    *
    * Multiple roles can be passed separated with comma.
@@ -1740,7 +1756,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
+    \PHPUnit_Framework_Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
   }
 
   /**

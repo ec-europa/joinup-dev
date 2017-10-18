@@ -26,7 +26,7 @@ function joinup_collection_user_insert(UserInterface $account) {
     if (!$membership = Og::getMembership($joinup_collection, $account, [])) {
       OgMembership::create()
         ->setGroup($joinup_collection)
-        ->setUser($account)
+        ->setOwner($account)
         ->setState(OgMembershipInterface::STATE_ACTIVE)
         ->save();
     }

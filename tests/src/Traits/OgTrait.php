@@ -50,7 +50,7 @@ trait OgTrait {
     $membership = $membership_manager->getMembership($group, $user, $states);
     if (!$membership) {
       $membership = OgMembership::create()
-        ->setUser($user)
+        ->setOwner($user)
         ->setGroup($group);
     }
     if (!empty($state)) {
