@@ -189,6 +189,7 @@ function template_preprocess_social_share(array &$variables) {
   ])->setAbsolute()->setOption('alias', TRUE);
 
   $variables['encoded_url'] = urlencode($variables['url']->toString());
+  $variables['encoded_title'] = urlencode($entity->label());
 }
 
 /**
