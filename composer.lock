@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3367fe6e5ff6dbcc0394da8bfae8ff2e",
+    "content-hash": "78bcb9974ab5b6080e9e88116be99272",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2937,7 +2937,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch"
+                    "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
+                    "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10080,7 +10081,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-10-06T10:01:31+00:00"
         },
         {
             "name": "drupal/config_inspector",
