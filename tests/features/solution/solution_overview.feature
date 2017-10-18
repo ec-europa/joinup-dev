@@ -191,6 +191,10 @@ Feature: Solutions Overview
     Then I should see the "Hungry herbalists" tile
     But I should not see the "Pretty phytologists" tile
     When I click "Featured solutions" in the "My solutions content" inline facet
-    Then "Solutions" should be the active item in the "Header menu" menu
     And I should see the "Pretty phytologists" tile
     But I should not see the "Hungry herbalists" tile
+
+  Scenario: Solution overview active trail should persist on urls with arguments.
+    Given I am an anonymous user
+    And I visit "/solutions?a=1"
+    Then "Solutions" should be the active item in the "Header menu" menu

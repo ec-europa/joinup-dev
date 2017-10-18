@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7bd0b56588be026de5d78fe6329491d0",
+    "content-hash": "408f58a78837ee463fc19ed8841a776e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.26",
+            "version": "3.36.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "96f2c1525d3fd17a0802329c309c76c01a78aa51"
+                "reference": "65ca98c303ea1489b2719b6d892d800dd604d4b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/96f2c1525d3fd17a0802329c309c76c01a78aa51",
-                "reference": "96f2c1525d3fd17a0802329c309c76c01a78aa51",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/65ca98c303ea1489b2719b6d892d800dd604d4b2",
+                "reference": "65ca98c303ea1489b2719b6d892d800dd604d4b2",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-12T19:45:50+00:00"
+            "time": "2017-10-17T19:51:40+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,16 +686,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "5d504efcec48f6fb4eed3255b1d2cc4a64cd017c"
+                "reference": "7f94009d732922d61408536f9228aca8f22e9135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/5d504efcec48f6fb4eed3255b1d2cc4a64cd017c",
-                "reference": "5d504efcec48f6fb4eed3255b1d2cc4a64cd017c",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/7f94009d732922d61408536f9228aca8f22e9135",
+                "reference": "7f94009d732922d61408536f9228aca8f22e9135",
                 "shasum": ""
             },
             "require": {
@@ -733,20 +733,20 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-10-13T21:51:21+00:00"
+            "time": "2017-10-17T01:48:51+00:00"
         },
         {
             "name": "consolidation/config",
-            "version": "1.0.3",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
-                "reference": "d2afb616af44750c07283442944e3286ea48df8c"
+                "reference": "a57ff3a302aac6f7e6fc0d81fe0778550a0fe9aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/config/zipball/d2afb616af44750c07283442944e3286ea48df8c",
-                "reference": "d2afb616af44750c07283442944e3286ea48df8c",
+                "url": "https://api.github.com/repos/consolidation/config/zipball/a57ff3a302aac6f7e6fc0d81fe0778550a0fe9aa",
+                "reference": "a57ff3a302aac6f7e6fc0d81fe0778550a0fe9aa",
                 "shasum": ""
             },
             "require": {
@@ -782,7 +782,7 @@
                 }
             ],
             "description": "Provide configuration services for a commandline tool.",
-            "time": "2017-10-05T04:39:22+00:00"
+            "time": "2017-10-17T17:09:36+00:00"
         },
         {
             "name": "consolidation/log",
@@ -882,20 +882,20 @@
         },
         {
             "name": "consolidation/robo",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/Robo.git",
-                "reference": "21370cc6fea83729ab6d903f8f382389b14ae90c"
+                "reference": "ce11f3f842298ce6215c68c631af5b0420b18f53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/Robo/zipball/21370cc6fea83729ab6d903f8f382389b14ae90c",
-                "reference": "21370cc6fea83729ab6d903f8f382389b14ae90c",
+                "url": "https://api.github.com/repos/consolidation/Robo/zipball/ce11f3f842298ce6215c68c631af5b0420b18f53",
+                "reference": "ce11f3f842298ce6215c68c631af5b0420b18f53",
                 "shasum": ""
             },
             "require": {
-                "consolidation/annotated-command": "^2.2",
+                "consolidation/annotated-command": "^2.8.1",
                 "consolidation/config": "^1.0.1",
                 "consolidation/log": "~1",
                 "consolidation/output-formatters": "^3.1.5",
@@ -957,7 +957,7 @@
                 }
             ],
             "description": "Modern task runner",
-            "time": "2017-09-23T15:53:19+00:00"
+            "time": "2017-10-17T01:59:38+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -2937,7 +2937,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch"
+                    "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
+                    "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3693,8 +3694,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha3+5-dev",
-                    "datestamp": "1495469584",
+                    "version": "8.x-3.0-alpha4+0-dev",
+                    "datestamp": "1506649448",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4214,8 +4215,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+4-dev",
-                    "datestamp": "1503745744",
+                    "version": "8.x-1.0-beta1+6-dev",
+                    "datestamp": "1505206745",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4407,7 +4408,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1505488144",
+                    "datestamp": "1505488645",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4487,7 +4488,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Avoid double sync of fields from subscription to user when user is being saved": "https://www.drupal.org/files/issues/2914814-2.patch"
+                    "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6525,12 +6526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb"
+                "reference": "b3e65380661b0ed5dc9620d2b9f23da92f06dfc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb",
-                "reference": "79ab852bf5a1c9a0c33960cf8c69a4b73476d6cb",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/b3e65380661b0ed5dc9620d2b9f23da92f06dfc3",
+                "reference": "b3e65380661b0ed5dc9620d2b9f23da92f06dfc3",
                 "shasum": ""
             },
             "require": {
@@ -6597,7 +6598,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-10-14T05:57:44+00:00"
+            "time": "2017-10-17T07:16:54+00:00"
         },
         {
             "name": "predis/predis",
@@ -8272,16 +8273,16 @@
         },
         {
             "name": "symfony/polyfill-iconv",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "1ea0e08453819ecc7130e1fb0ee10862c2f33ed0"
+                "reference": "7a84ccdb8c953ee274c96dd6bde778d873fc824a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/1ea0e08453819ecc7130e1fb0ee10862c2f33ed0",
-                "reference": "1ea0e08453819ecc7130e1fb0ee10862c2f33ed0",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/7a84ccdb8c953ee274c96dd6bde778d873fc824a",
+                "reference": "7a84ccdb8c953ee274c96dd6bde778d873fc824a",
                 "shasum": ""
             },
             "require": {
@@ -8293,7 +8294,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -8327,20 +8328,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
                 "shasum": ""
             },
             "require": {
@@ -8352,7 +8353,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -8386,7 +8387,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/process",
@@ -9957,6 +9958,14 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
+                },
+                {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
