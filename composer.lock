@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2497e16241712e56e4f1040901ba956c",
+    "content-hash": "de5664b377eb9bf9c306358a3255eea6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3539,7 +3539,7 @@
                 "drupal/core": "^8.2"
             },
             "require-dev": {
-                "drupal/coder": "*"
+                "drupal/coder": "^8"
             },
             "type": "drupal-module",
             "extra": {
@@ -3905,14 +3905,8 @@
             "version": "dev-7.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/phingdrushtask.git",
+                "url": "https://git.drupal.org/project/phingdrushtask.git",
                 "reference": "c002b90fc069d846f93a4dfee4fddc54a358b48c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/phingdrushtask/zipball/c002b90fc069d846f93a4dfee4fddc54a358b48c",
-                "reference": "c002b90fc069d846f93a4dfee4fddc54a358b48c",
-                "shasum": ""
             },
             "require": {
                 "drush/drush": "6 - 9",
@@ -4461,7 +4455,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1505488144",
+                    "datestamp": "1505488645",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10064,6 +10058,10 @@
                     "homepage": "https://www.drupal.org/u/matio89"
                 },
                 {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
                     "name": "bolbol",
                     "homepage": "https://www.drupal.org/user/3400070"
                 },
@@ -10191,8 +10189,7 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            },
-            "time": "2017-10-06T10:01:31+00:00"
+            }
         },
         {
             "name": "drupal/config_inspector",
@@ -10320,8 +10317,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-05-01T21:54:12+00:00"
+            }
         },
         {
             "name": "drupal/devel",
