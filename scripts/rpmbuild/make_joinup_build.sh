@@ -21,8 +21,10 @@ if [ $? -ne 0 ]; then
 fi
 
 # Clean up existing builds.
-chmod -R u+w ${BUILD_ROOT} 2>/dev/null
-rm -rf ${BUILD_ROOT} || exit 1
+if [ -d ${BUILD_ROOT} ]; then
+  chmod -R u+w ${BUILD_ROOT}
+  rm -rf ${BUILD_ROOT} || exit 1
+fi
 
 # Create a fresh build root containing the scaffolding files.
 cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT} || exit 1
