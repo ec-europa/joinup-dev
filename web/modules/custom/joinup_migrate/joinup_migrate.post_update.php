@@ -69,6 +69,8 @@ function joinup_migrate_post_update_more_redirects() {
   $db = Database::getConnection();
   $legacy_db = Database::getConnection('default', 'migrate');
   $legacy_db_name = $legacy_db->getConnectionOptions()['database'];
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
+  $redirect_storage = \Drupal::service('entity_type.manager')->getStorage('redirect');
 
   // Update the 'd8_solution' MySQL view.
   $legacy_db->query(file_get_contents(__DIR__ . '/fixture/0.solution.sql'))->execute();
@@ -117,8 +119,26 @@ function joinup_migrate_post_update_more_redirects() {
     $redirects["community/$short_name/communications/all"] = $redirect;
   }
 
-  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
-  $redirect_storage = \Drupal::service('entity_type.manager')->getStorage('redirect');
+  // Parent custom page redirects.
+  $query = $db->select('migrate_map_custom_page_parent', 'm')->fields('m', ['sourceid1', 'destid1']);
+  // @see https://api.drupal.org/api/drupal/includes%21path.inc/function/drupal_lookup_path/6.x
+  $sql = "SELECT dst FROM {url_alias} WHERE language IN ('', 'en') AND src = :src ORDER BY pid DESC";
+  $deleted_redirects = [];
+  foreach ($query->execute()->fetchAllKeyed() as $source_nid => $destination_nid) {
+    $deleted_redirects[] = "node/$source_nid";
+    $redirect = ['uri' => "internal:/node/$destination_nid"];
+    $redirects["node/$source_nid"] = $redirect;
+    if ($alias = $legacy_db->queryRange($sql, 0, 1, [':src' => "node/$source_nid"])->fetchField()) {
+      $deleted_redirects[] = $alias;
+      $redirects[$alias] = $redirect;
+    }
+  }
+  if ($rids = $redirect_storage->getQuery()
+    ->condition('redirect_source.path', $deleted_redirects, 'IN')
+    ->execute()) {
+    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  }
+
   // Create the redirects.
   foreach ($redirects as $source_path => $redirect) {
     if (!$redirect_storage->loadByProperties(['redirect_source__path' => $source_path])) {
