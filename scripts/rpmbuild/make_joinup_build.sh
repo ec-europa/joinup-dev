@@ -24,6 +24,7 @@ fi
 if [ -d ${BUILD_ROOT} ]; then
   chmod -R u+w ${BUILD_ROOT}
   rm -rf ${BUILD_ROOT} || exit 1
+  mkdir -p ${BUILD_ROOT}
 fi
 
 # Create a fresh build root containing the scaffolding files.
