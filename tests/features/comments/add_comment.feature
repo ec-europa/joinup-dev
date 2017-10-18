@@ -70,7 +70,7 @@ Feature: Add comments
     And I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
-    And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
+    And the page should contain the html text "Mr scandal was doing something weird the other day."
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
