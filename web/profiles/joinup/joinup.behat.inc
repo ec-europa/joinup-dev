@@ -1756,7 +1756,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
+    \PHPUnit_Framework_Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
   }
 
   /**

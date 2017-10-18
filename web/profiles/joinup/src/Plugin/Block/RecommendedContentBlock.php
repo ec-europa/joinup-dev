@@ -213,6 +213,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->sort('field_visit_count', 'DESC');
+    $query->sort('created', 'DESC');
     $query->range(0, $limit);
     $this->excludeEntitiesFromQuery($query);
     $results = $query->execute();
