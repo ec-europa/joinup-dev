@@ -340,19 +340,11 @@ function joinup_preprocess_menu__main(&$variables) {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
     switch ($group->bundle()) {
       case 'collection':
-        $variables['items']['collection.collection_overview']['in_active_trail'] = TRUE;
+        $variables['items']['views_view:views.collections.page_1']['in_active_trail'] = TRUE;
         break;
 
       case 'solution':
-        $variables['items']['solution.solution_overview']['in_active_trail'] = TRUE;
-        break;
-    }
-  }
-  else {
-    $route_name = \Drupal::service('current_route_match')->getRouteName();
-    switch ($route_name) {
-      case 'view.solutions.page_1':
-        $variables['items']['solution.solution_overview']['in_active_trail'] = TRUE;
+        $variables['items']['views_view:views.solutions.page_1']['in_active_trail'] = TRUE;
         break;
     }
   }

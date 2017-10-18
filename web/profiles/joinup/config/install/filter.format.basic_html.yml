@@ -1,8 +1,6 @@
 langcode: en
 status: true
-dependencies:
-  module:
-    - editor
+dependencies: {  }
 name: 'Basic HTML'
 format: basic_html
 weight: 0
