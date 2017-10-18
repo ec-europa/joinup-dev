@@ -29,7 +29,7 @@ fi
 mkdir -p ${BUILD_ROOT}
 
 # Create a fresh build root containing the scaffolding files.
-cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT} || exit 1
+cp -r ${PROJECT_ROOT}/resources/rpmbuild/* ${BUILD_ROOT} || exit 1
 
 SOURCES_DIR=${BUILD_ROOT}/SOURCES
 JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
