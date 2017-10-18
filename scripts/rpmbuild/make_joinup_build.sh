@@ -24,8 +24,9 @@ fi
 if [ -d ${BUILD_ROOT} ]; then
   chmod -R u+w ${BUILD_ROOT}
   rm -rf ${BUILD_ROOT} || exit 1
-  mkdir -p ${BUILD_ROOT}
 fi
+
+mkdir -p ${BUILD_ROOT}
 
 # Create a fresh build root containing the scaffolding files.
 cp -r ${PROJECT_ROOT}/resources/rpmbuild ${BUILD_ROOT} || exit 1
