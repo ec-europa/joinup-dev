@@ -112,3 +112,8 @@ Feature: Content Overview
     And I should not see the following facet items "Collection"
     And I should not see the following facet items "Document"
     And I should not see the following facet items "Event"
+
+  Scenario: Content overview active trail should persist on urls with arguments.
+    Given I am an anonymous user
+    And I visit "/keep-up-to-date?a=1"
+    Then "Keep up to date" should be the active item in the "Header menu" menu
