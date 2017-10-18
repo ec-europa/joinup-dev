@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7be8ba46b1b513ce2f42ebf2c4cf6b8",
+    "content-hash": "2497e16241712e56e4f1040901ba956c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10320,7 +10320,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
