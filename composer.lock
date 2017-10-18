@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "de5664b377eb9bf9c306358a3255eea6",
+    "content-hash": "0f076e1915292b2e2fafed927aa2999c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3905,8 +3905,14 @@
             "version": "dev-7.x-2.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/phingdrushtask.git",
-                "reference": "c002b90fc069d846f93a4dfee4fddc54a358b48c"
+                "url": "https://github.com/pfrenssen/phingdrushtask.git",
+                "reference": "f4b020f09da3c174fce40f2bd9a9617689f57124"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pfrenssen/phingdrushtask/zipball/f4b020f09da3c174fce40f2bd9a9617689f57124",
+                "reference": "f4b020f09da3c174fce40f2bd9a9617689f57124",
+                "shasum": ""
             },
             "require": {
                 "drush/drush": "6 - 9",
@@ -3984,7 +3990,7 @@
                 "issues": "https://www.drupal.org/project/issues/phingdrushtask",
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
-            "time": "2017-09-01T18:07:06+00:00"
+            "time": "2017-09-01T16:27:45+00:00"
         },
         {
             "name": "drupal/piwik",
@@ -10189,7 +10195,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-10-06T10:01:31+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -10317,7 +10324,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-05-01T21:54:12+00:00"
         },
         {
             "name": "drupal/devel",
