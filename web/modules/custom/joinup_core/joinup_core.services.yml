@@ -21,8 +21,3 @@ services:
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
     arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager']
-  joinu_core.route_subscriber:
-    class: Drupal\joinup_core\EventSubscriber\GroupManageContentSubscriber
-    arguments: ['@entity.manager']
-    tags:
-     - { name: event_subscriber }
