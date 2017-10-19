@@ -1,8 +1,10 @@
 @api
-Feature: Tests the UI that allows content managing.
+Feature:
+  As a moderator
+  In order to better organize the content
+  I need to be able to move content between groups
 
-  Scenario: As an anonymous or authenticated user I cannot access the content
-    management UI. As a site-wide moderator I can move content between groups.
+  Scenario: Use the content management UI
 
     Given the following collections:
       | title                  | state     |
