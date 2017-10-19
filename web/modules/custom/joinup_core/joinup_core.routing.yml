@@ -54,3 +54,13 @@ joinup_core.id_redirect:
     _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
   requirements:
     _access: 'TRUE'
+
+joinup_core.go_to_rdf_entity_page:
+  path: '/rdf'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\GoToRdfEntityPage'
+    _title: 'Go to RDF entity page'
+  requirements:
+    _permission: 'administer nodes'
+  options:
+    _admin_route: TRUE
