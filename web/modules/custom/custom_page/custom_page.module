@@ -55,7 +55,7 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
 /**
  * Implements hook_ENTITY_TYPE_insert().
  *
- * Create menu link when a custom page gets saved.
+ * Create a menu link when a custom page gets saved.
  */
 function custom_page_node_insert(EntityInterface $entity) {
   if ($entity->bundle() === 'custom_page') {
