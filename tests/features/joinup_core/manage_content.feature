@@ -34,6 +34,10 @@ Feature:
     And I go to the homepage of the "Source collection" collection
     Then I should not see the link "Manage content"
 
+    Given I am logged in as a facilitator of the "Source collection" collection
+    And I go to the homepage of the "Source collection" collection
+    Then I should not see the link "Manage content"
+
     Given I am logged in as a moderator
     And I go to the homepage of the "Source collection" collection
     Then I should see the link "Manage content"
