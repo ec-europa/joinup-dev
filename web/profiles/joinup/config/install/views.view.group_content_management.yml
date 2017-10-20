@@ -612,8 +612,8 @@ display:
     display_title: Page
     position: 1
     display_options:
-      admin_theme: true
       display_extenders: {  }
+      enforce_admin_theme: true
       path: rdf_entity/%rdf_entity/manage-content
       menu:
         type: tab
