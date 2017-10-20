@@ -5,6 +5,7 @@ CREATE OR REPLACE VIEW d8_solution (
   vid,
   uid,
   title,
+  short_name,
   created_time,
   changed_time,
   status,
@@ -32,6 +33,7 @@ SELECT
   n.vid,
   n.uid,
   n.title,
+  pp.uri,
   n.created,
   n.changed,
   n.status,
@@ -72,6 +74,7 @@ LEFT JOIN files fl ON ctdl.field_documentation_access_url_fid = fl.fid
 LEFT JOIN content_field_project_soft_logo cfsl ON n.vid = cfsl.vid
 LEFT JOIN files fpl ON cfsl.field_project_soft_logo_fid = fpl.fid
 LEFT JOIN content_field_project_common_contact cfpcc ON n.vid = cfpcc.vid
+LEFT JOIN project_projects pp ON n.nid = pp.nid
 WHERE m.type IN('asset_release', 'project_project')
 AND (
   (m.type = 'asset_release' AND g.type = 'repository')
