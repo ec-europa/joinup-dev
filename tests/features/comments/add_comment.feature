@@ -100,6 +100,7 @@ Feature: Add comments
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
+    And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
