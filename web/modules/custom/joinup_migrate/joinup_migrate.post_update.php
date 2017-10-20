@@ -14,7 +14,7 @@ use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
 /**
- * Add the missed 'simatosc' user (uid 73932).
+ * Add the missed 'simatosc' user (uid 73932) [ISAICP-4004].
  */
 function joinup_migrate_post_update_add_user_73932() {
   $uid = 73932;
@@ -61,17 +61,16 @@ function joinup_migrate_post_update_add_user_73932() {
 }
 
 /**
- * Disable the Update module.
+ * Disable the Update module [ISAICP-4033].
  */
 function joinup_migrate_post_update_disable_update() {
   \Drupal::service('module_installer')->uninstall(['update']);
 }
 
 /**
- * Add more specific redirects.
+ * Add more specific redirects [ISAICP-4012].
  */
 function joinup_migrate_post_update_more_redirects() {
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4012
   $redirects = [];
   $db = Database::getConnection();
   $legacy_db = Database::getConnection('default', 'migrate');
@@ -157,5 +156,88 @@ function joinup_migrate_post_update_more_redirects() {
         'status_code' => 301,
       ])->save();
     }
+  }
+}
+
+/**
+ * Fix distribution files with the same name [ISAICP-3968].
+ */
+function joinup_migrate_post_update_same_name_distribution_files() {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+  /** @var \Drupal\Component\Uuid\UuidInterface $uuid_generator */
+  $uuid_generator = Drupal::service('uuid');
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
+  $redirect_storage = \Drupal::entityTypeManager()->getStorage('redirect');
+
+  $legacy_db = Database::getConnection('default', 'migrate');
+  $legacy_db_name = $legacy_db->getConnectionOptions()['database'];
+
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query = Database::getConnection()->select('file_managed', 'f')
+    ->fields('f', ['fid', 'uri'])
+    ->fields('d6f', ['filename', 'filepath'])
+    ->orderBy('f.uri')
+    ->condition('f.uri', 'public://distribution/%', 'LIKE');
+  $query->join("$legacy_db_name.files", 'd6f', 'f.fid = d6f.fid');
+  $file_groups = [];
+  foreach ($query->execute()->fetchAll() as $row) {
+    $dir = substr($file_system->dirname($row->uri), 22);
+    // We accept only date formatted dirs.
+    if (preg_match('@^\d{4}\-\d{2}$@', $dir)) {
+      $file_groups[$dir][$row->filename][$row->fid] = $row->filepath;
+    }
+  }
+
+  // Keep only duplicates.
+  array_walk($file_groups, function (array &$file_group) {
+    $file_group = array_filter($file_group, function (array $files) {
+      return count($files) > 1;
+    });
+  });
+  $file_groups = array_filter($file_groups, function (array $file_group) {
+    return (bool) $file_group;
+  });
+
+  $prefix = "public://distribution/access_url";
+  $redirects = [];
+  foreach ($file_groups as $month => $file_group) {
+    foreach ($file_group as $file_name => $files) {
+      foreach ($files as $fid => $source_path) {
+        $destination = "$prefix/$month/{$uuid_generator->generate()}";
+        // Create the destination directory.
+        if (!is_dir($destination)) {
+          $file_system->mkdir($destination, NULL, TRUE);
+        }
+        $file = File::load($fid);
+
+        // Ensure the filename.
+        $file->setFilename($file_name);
+        if (!$file = file_move($file, "$destination/$file_name")) {
+          throw new \Exception("Can't move file $file_name (fid $fid).");
+        }
+        $redirects[$source_path] = "base:/sites/default/files/" . str_replace('public://', '', $file->getFileUri());
+      }
+    }
+  }
+
+  // Delete existing redirects.
+  if ($rids = $redirect_storage->getQuery()
+    ->condition('redirect_source.path', array_keys($redirects), 'IN')
+    ->execute()) {
+    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  }
+  // Create the new redirects.
+  foreach ($redirects as $source_path => $redirect_uri) {
+    Redirect::create([
+      'uid' => 1,
+      'redirect_source' => ['path' => $source_path, 'query' => NULL],
+      'redirect_redirect' => [
+        'uri' => $redirect_uri,
+        'title' => '',
+        'options' => [],
+      ],
+      'status_code' => 301,
+    ])->save();
   }
 }
