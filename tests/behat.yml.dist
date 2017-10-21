@@ -42,6 +42,7 @@ default:
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
+        SevenHeader: '.region-header'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:

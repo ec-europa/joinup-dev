@@ -43,7 +43,7 @@ Feature:
     Then I should see the link "Manage content"
 
     Given I click "Manage content"
-    Then I should see "Manage content" in the Header
+    Then I should see "Manage content" in the SevenHeader
 
     # Select rows.
     Given I select the "A document" row
