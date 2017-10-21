@@ -151,7 +151,7 @@
                 "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
                 "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
-                "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-40-8.4.x.patch"
+                "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-52-8.4.x.patch"
             },
             "drupal/facets": {
                 "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
