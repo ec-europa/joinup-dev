@@ -55,12 +55,12 @@ joinup_core.id_redirect:
   requirements:
     _access: 'TRUE'
 
-joinup_core.go_to_rdf_entity_page:
+joinup_core.rdf_entity_uri_web_converter_page:
   path: '/rdf'
   defaults:
-    _form: 'Drupal\joinup_core\Form\GoToRdfEntityPage'
-    _title: 'Go to RDF entity page'
+    _form: 'Drupal\joinup_core\Form\RdfEntityUriWebConverterForm'
+    _title: 'Convert a RDF entity ID'
   requirements:
-    _permission: 'administer nodes'
+    _permission: 'access uri converter'
   options:
     _admin_route: TRUE
