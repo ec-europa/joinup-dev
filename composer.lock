@@ -3540,7 +3540,7 @@
                 "drupal/core": "^8.2"
             },
             "require-dev": {
-                "drupal/coder": "^8"
+                "drupal/coder": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -4462,7 +4462,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1505488645",
+                    "datestamp": "1505488144",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5149,12 +5149,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "68317ec3f25a4167c44222d210c4f5a5964b5976"
+                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/68317ec3f25a4167c44222d210c4f5a5964b5976",
-                "reference": "68317ec3f25a4167c44222d210c4f5a5964b5976",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
+                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
                 "shasum": ""
             },
             "require": {
@@ -5179,7 +5179,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-07-31T12:05:17+00:00"
+            "time": "2017-10-23T16:46:00+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -10216,7 +10216,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1448357340"
+                    "datestamp": "1448357340",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10314,7 +10318,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
