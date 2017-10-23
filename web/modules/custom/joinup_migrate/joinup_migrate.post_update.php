@@ -10,6 +10,8 @@ use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
+use Drupal\rdf_entity\UriEncoder;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Add the missed 'simatosc' user (uid 73932).
@@ -63,4 +65,97 @@ function joinup_migrate_post_update_add_user_73932() {
  */
 function joinup_migrate_post_update_disable_update() {
   \Drupal::service('module_installer')->uninstall(['update']);
+}
+
+/**
+ * Add more specific redirects.
+ */
+function joinup_migrate_post_update_more_redirects() {
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4012
+  $redirects = [];
+  $db = Database::getConnection();
+  $legacy_db = Database::getConnection('default', 'migrate');
+  $legacy_db_name = $legacy_db->getConnectionOptions()['database'];
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
+  $redirect_storage = \Drupal::service('entity_type.manager')->getStorage('redirect');
+
+  // Update the 'd8_solution' MySQL view.
+  $legacy_db->query(file_get_contents(__DIR__ . '/fixture/0.solution.sql'))->execute();
+
+  // Redirects due to source 'project_project'.
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query = $db->select("$legacy_db_name.d8_solution", 's')
+    ->fields('s', ['short_name'])
+    ->fields('ms', ['destid1'])
+    ->fields('t', ['field_project_common_type_value'])
+    ->isNotNull('s.short_name')
+    ->isNotNull('ms.destid1');
+  $query->join('migrate_map_solution', 'ms', 's.nid = ms.sourceid1');
+  $query->join("$legacy_db_name.content_field_project_common_type", 't', 's.vid = t.vid');
+  foreach ($query->execute()->fetchAll() as $row) {
+    $short_name = $row->short_name;
+    $solution_uri = 'internal:/rdf_entity/' . UriEncoder::encodeUrl($row->destid1);
+    $redirect = ['uri' => $solution_uri];
+    $redirect_download_releases = ['uri' => "$solution_uri/releases"];
+    foreach (['asset', 'software'] as $prefix) {
+      $redirects["$prefix/$short_name/asset_release/all"] = $redirect_download_releases;
+      $redirects["$prefix/$short_name/communications/all"] = $redirect;
+      $redirects["$prefix/$short_name/issue/all"] = $redirect + [
+        'options' => [
+          'query' => ['f[0]' => 'solution_content_bundle:discussion'],
+        ],
+      ];
+    }
+    // Project forum pages are not duplicating the URL.
+    $prefix = $row->field_project_common_type_value == 1 ? 'software' : 'asset';
+    $redirects["$prefix/$short_name/forum/all"] = $redirect;
+  }
+
+  // Redirects due to source 'community'.
+  $query = $db->select("$legacy_db_name.d8_mapping", 'm')
+    ->fields('c', ['field_community_short_name_value'])
+    ->fields('mc', ['destid1'])
+    ->isNotNull('c.field_community_short_name_value')
+    ->isNotNull('mc.destid1');
+  $query->join("$legacy_db_name.node", 'n', 'm.nid = n.nid');
+  $query->join("$legacy_db_name.content_type_community", 'c', 'n.vid = c.vid');
+  $query->join('migrate_map_collection', 'mc', 'm.collection = mc.sourceid1');
+  foreach ($query->execute()->fetchAllKeyed() as $short_name => $id) {
+    $redirect = ['uri' => 'internal:/rdf_entity/' . UriEncoder::encodeUrl($id)];
+    $redirects["community/$short_name/forum/all"] = $redirect;
+    $redirects["community/$short_name/communications/all"] = $redirect;
+  }
+
+  // Parent custom page redirects.
+  $query = $db->select('migrate_map_custom_page_parent', 'm')->fields('m', ['sourceid1', 'destid1']);
+  // @see https://api.drupal.org/api/drupal/includes%21path.inc/function/drupal_lookup_path/6.x
+  $sql = "SELECT dst FROM {url_alias} WHERE language IN ('', 'en') AND src = :src ORDER BY pid DESC";
+  $deleted_redirects = [];
+  foreach ($query->execute()->fetchAllKeyed() as $source_nid => $destination_nid) {
+    $deleted_redirects[] = "node/$source_nid";
+    $redirect = ['uri' => "internal:/node/$destination_nid"];
+    $redirects["node/$source_nid"] = $redirect;
+    if ($alias = $legacy_db->queryRange($sql, 0, 1, [':src' => "node/$source_nid"])->fetchField()) {
+      $deleted_redirects[] = $alias;
+      $redirects[$alias] = $redirect;
+    }
+  }
+  if ($rids = $redirect_storage->getQuery()
+    ->condition('redirect_source.path', $deleted_redirects, 'IN')
+    ->execute()) {
+    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  }
+
+  // Create the redirects.
+  foreach ($redirects as $source_path => $redirect) {
+    if (!$redirect_storage->loadByProperties(['redirect_source__path' => $source_path])) {
+      $redirect += ['title' => '', 'options' => []];
+      Redirect::create([
+        'uid' => 1,
+        'redirect_source' => ['path' => $source_path, 'query' => NULL],
+        'redirect_redirect' => $redirect,
+        'status_code' => 301,
+      ])->save();
+    }
+  }
 }
