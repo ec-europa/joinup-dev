@@ -21,7 +21,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
     $form['rdf_entity_id'] = [
       '#type' => 'textfield',
       '#title' => $this->t('RDF entity ID or a URL'),
-      '#description' => $this->t('Paste either a RDF entity ID to be redirected to the RDF entity page, or a canonical or aliased RDF entity URL to get the decoded ID of the entity,'),
+      '#description' => $this->t('Paste either a RDF entity ID in order to be redirected to the RDF entity page, or a system or aliased RDF entity URL to get the decoded ID of the entity,'),
     ];
     $form['submit'] = [
       '#type' => 'submit',
@@ -68,7 +68,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
         return;
       }
     }
-    $form_state->setErrorByName('id', $this->t('The entered value (:id) is not a valid RDF entity ID, nor a RDF entity URL.', [':id' => $id]));
+    $form_state->setErrorByName('id', $this->t('The entered value (:id) is neither a valid RDF entity ID, nor a RDF entity URL.', [':id' => $id]));
   }
 
   /**
