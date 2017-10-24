@@ -106,21 +106,6 @@
                 verbose="${drush.verbose}">
         </drush>
         <drush
-                command="entity:updates"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
-        <drush
-                command="pm-enable"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-           <param>config_sync</param>
-        </drush>
-        <drush
                 command="cs-update"
                 assume="yes"
                 root="${website.drupal.dir}"
