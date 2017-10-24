@@ -17,6 +17,7 @@
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
 
+    <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
 
     <echo msg="Loading Behat task." />
@@ -25,11 +26,13 @@
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
-    <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup"/>
+    <echo msg="Loading After Import RDF fixtures task." />
+    <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
     <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
+    <echo msg="Loading Amazon S3 download task." />
     <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
 
     <!-- Install the website. -->
