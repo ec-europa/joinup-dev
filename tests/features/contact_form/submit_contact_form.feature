@@ -34,15 +34,11 @@ Feature: Submit the contact form
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
-      | template  | Contact form submission          |
-      | recipient | Valentína Řezník                 |
-      | subject   | Joinup - Contact form submission |
-      | body      | Dear sir, madam, ...             |
-    And the following email should have been sent:
-      | template  | Contact form submission          |
-      | recipient | Oluwakanyinsola Opeyemi          |
-      | subject   | Joinup - Contact form submission |
-      | body      | Dear sir, madam, ...             |
+      | template           | Contact form submission          |
+      | recipient          | digit-joinup@ec.europa.eu        |
+      | subject            | Joinup - Contact form submission |
+      | body               | Dear sir, madam, ...             |
+      | signature_required | no                               |
 
   Scenario: Check required fields
     When I am on the contact form

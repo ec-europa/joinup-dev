@@ -108,7 +108,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
       return;
     }
 
-    $recipient_id = $this->membership->getUser()->id();
+    $recipient_id = $this->membership->getOwnerId();
     $user_data = [
       self::TEMPLATE_APPROVE_REJECT_MEMBERSHIP => [
         $recipient_id => $recipient_id,
@@ -154,7 +154,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
       return;
     }
 
-    $recipient_id = $this->membership->getUser()->id();
+    $recipient_id = $this->membership->getOwnerId();
     $user_data = [
       self::TEMPLATE_APPROVE_REJECT_MEMBERSHIP => [
         $recipient_id => $recipient_id,

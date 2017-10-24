@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - search_api.index.published
+    - system.menu.main
   module:
     - joinup_core
     - search_api
@@ -532,6 +533,15 @@ display:
     display_options:
       display_extenders: {  }
       path: collections
+      menu:
+        type: normal
+        title: Collections
+        description: ''
+        expanded: false
+        parent: ''
+        weight: -49
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

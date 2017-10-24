@@ -146,3 +146,8 @@ Feature: Collections Overview
     When I go to the homepage of the "Jira" collection
     Then I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
+
+  Scenario: Collection overview active trail should persist on urls with arguments.
+    Given I am an anonymous user
+    And I visit "/collections?a=1"
+    Then "Collections" should be the active item in the "Header menu" menu
