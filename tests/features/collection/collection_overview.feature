@@ -172,11 +172,6 @@ Feature: Collections Overview
       | state    | validated          |
       | featured | no                 |
 
-    # The "My collections" facet item should not be shown to anonymous users.
-    When I am an anonymous user
-    And I click "Collections"
-    Then the "My collections content" inline facet should allow selecting the following values "Featured collections (2)"
-
     When I am logged in as "Yiannis Parios"
     And I click "Collections"
     Then the "My collections content" inline facet should allow selecting the following values "My collections (3), Featured collections (2)"
