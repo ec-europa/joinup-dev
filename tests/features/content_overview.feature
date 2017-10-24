@@ -90,28 +90,6 @@ Feature: Content Overview
     And I should see the "The Men's Female" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
-    And the "My content" inline facet should allow selecting the following values "Featured content (2)"
-
-    When I am logged in as "batbull"
-    And I am on the homepage
-    And I click "Keep up to date"
-    Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
-    When I click "My content" in the "My content" inline facet
-    Then I should see the following tiles in the correct order:
-      | The Playful Tale |
-    But I should not see the "Seventh Windows" tile
-    But I should not see the "History of Flight" tile
-    But I should not see the "The Men's Female" tile
-    When I click "All content" in the "My content" inline facet
-    And I click "Featured content" in the "My content" inline facet
-    Then I should see the following tiles in the correct order:
-      | The Playful Tale |
-      | The Men's Female |
-    But I should not see the "History of Flight" tile
-    And I should see the following facet items "Discussion, News" in this order
-    And I should not see the following facet items "Collection"
-    And I should not see the following facet items "Document"
-    And I should not see the following facet items "Event"
 
   Scenario: Content overview active trail should persist on urls with arguments.
     Given I am an anonymous user
