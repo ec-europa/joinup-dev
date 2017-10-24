@@ -135,7 +135,7 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
     $link = $this->assertMenuLink($ogmenu_instance_ids[1], $custom_page->id());
 
     // Create a 2nd custom page as child of the first (linked by the menu link,
-    // see bellow).
+    // see below).
     $child_custom_page = Node::create([
       'type' => 'custom_page',
       'title' => $this->randomString(),

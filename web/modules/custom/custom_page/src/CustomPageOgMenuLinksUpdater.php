@@ -86,6 +86,7 @@ class CustomPageOgMenuLinksUpdater implements CustomPageOgMenuLinksUpdaterInterf
                 ->execute();
               if ($mids) {
                 // Remove the relationship to the deleted parent menu link.
+                /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link_content */
                 foreach (MenuLinkContent::loadMultiple($mids) as $menu_link_content) {
                   $menu_link_content->set('parent', NULL)->save();
                 }
@@ -109,7 +110,7 @@ class CustomPageOgMenuLinksUpdater implements CustomPageOgMenuLinksUpdaterInterf
    */
   protected function getOgMenuInstance(NodeInterface $custom_page) {
     $field_name = OgGroupAudienceHelperInterface::DEFAULT_FIELD;
-    // If the node have no OG audience, exit.
+    // If the node doesn't have an OG audience field, exit.
     if (!$group_id = $custom_page->{$field_name}->target_id) {
       return NULL;
     }
