@@ -12,6 +12,7 @@ Feature: Add comments
       | Miss tell tales   | tell.tales@example.com        |           | Miss       | Tales       |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
 
+  @javascript
   Scenario Outline: Make an anonymous comment, needs moderation.
     Given <content type> content:
       | title   | body                                                | collection        | state   |
@@ -19,7 +20,9 @@ Feature: Add comments
     Given I am an anonymous user
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
-    And I fill in "Your name" with "Mr Scandal"
+    # Anonymous users do not have a rich text editor.
+    Then the "Create comment" field should not have a wysiwyg editor
+    When I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
     And I fill in "Create comment" with "I've heard this story..."
     Then I press "Post comment"
@@ -39,7 +42,8 @@ Feature: Add comments
     # The configuration options for comments should not be shown to
     # facilitators. Whether or not comments are available is managed on
     # collection level.
-    When I click "Edit"
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     Then I should not see the text "Comment settings"
 
     Examples:
@@ -49,7 +53,40 @@ Feature: Add comments
       | discussion   | Is gossip bad?      | validated |
       | document     | Wikileaks           | validated |
 
+  # This scenario uses javascript to work as regression test for a bug that
+  # makes CKEditor unusable upon a page load.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
+  @javascript
   Scenario Outline: Make an authenticated comment, skips moderation.
+    Given <content type> content:
+      | title   | body                                                | collection        | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
+    Given I am logged in as "Miss tell tales"
+    And all e-mails have been sent
+    When I go to the content page of the type "<content type>" with the title "<title>"
+    # Authenticated users can use a rich text editor to enter comments.
+    Then I should see the "Create comment" wysiwyg editor
+    When I enter "Mr scandal was doing something weird the other day." in the "Create comment" wysiwyg editor
+    And I press "Post comment"
+    Then I should not see the following success messages:
+      | Your comment has been queued for review by site administrators and will be published after approval. |
+    And the page should contain the html text "Mr scandal was doing something weird the other day."
+    # The author's full name should be shown, not the username.
+    And I should see the link "Miss Tales"
+    But I should not see the link "Miss tell tales"
+    And the following email should have been sent:
+      | recipient | Comment moderator                                                                       |
+      | subject   | Joinup: A new comment has been created.                                                 |
+      | body      | Miss Tales posted a comment in collection "Gossip collection".To view the comment click |
+
+    Examples:
+      | content type | title               | state     |
+      | news         | Scandalous news     | validated |
+      | event        | Celebrity gathering | validated |
+      | discussion   | Is gossip bad?      | validated |
+      | document     | Wikileaks           | validated |
+
+  Scenario Outline: Authenticated users can insert <p> and <br> tags in the comment body.
     Given <content type> content:
       | title   | body                                                | collection        | state   |
       | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
@@ -61,13 +98,6 @@ Feature: Add comments
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
-    # The author's full name should be shown, not the username.
-    And I should see the link "Miss Tales"
-    But I should not see the link "Miss tell tales"
-    And the following email should have been sent:
-      | recipient | Comment moderator                                                                       |
-      | subject   | Joinup: A new comment has been created.                                                 |
-      | body      | Miss Tales posted a comment in collection "Gossip collection".To view the comment click |
 
     Examples:
       | content type | title               | state     |
