@@ -986,12 +986,12 @@ function joinup_core_ckeditor_css_alter(array &$css) {
  */
 function joinup_core_block_build_alter(array &$build, BlockPluginInterface $block) {
   $arbitrary_facets_ids = [
-    'mycontent',
-    'mycontentcollection',
-    'mycontentsolution',
+    'facet_block:collection_my_content',
+    'facet_block:content_my_content',
+    'facet_block:solution_my_content',
   ];
 
-  if (in_array($block->getPluginDefinition()['id'], $arbitrary_facets_ids)) {
+  if (in_array($block->getPluginId(), $arbitrary_facets_ids)) {
     $build['#cache']['contexts'][] = 'user';
   }
 }
