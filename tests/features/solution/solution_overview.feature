@@ -170,13 +170,13 @@ Feature: Solutions Overview
       | title                 | state     |
       | Insane Wooden Crystal | validated |
     And the following solutions:
-      | title                | collection            | state     | featured | author          |
-      | Enemies of the state | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
-      | Fed up meatlovers    | Insane Wooden Crystal | validated | no       | Ryker Brandon   |
-      | Ugly farmers         | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
-      | Lost Yard            | Insane Wooden Crystal | validated | no       | Joann Womack    |
-      | Lost Scattered Fish  | Insane Wooden Crystal | validated | no       | Joann Womack    |
-      | Silver Gravel        | Insane Wooden Crystal | validated | no       | Joann Womack    |
+      | title                        | collection            | state     | featured | author          |
+      | Subdivision Morbid           | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
+      | Long Tungsten                | Insane Wooden Crystal | validated | no       | Ryker Brandon   |
+      | Hungry Disappointed Tungsten | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
+      | Lost Yard                    | Insane Wooden Crystal | validated | no       | Joann Womack    |
+      | Lost Scattered Fish          | Insane Wooden Crystal | validated | no       | Joann Womack    |
+      | Silver Gravel                | Insane Wooden Crystal | validated | no       | Joann Womack    |
     # Technical: use a separate step to create a collection associated to the anonymous user.
     And the following solution:
       | title      | Flag Rough            |
@@ -205,7 +205,7 @@ Feature: Solutions Overview
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
-      | Fed up meatlovers |
+      | Long Tungsten |
     And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
@@ -218,8 +218,8 @@ Feature: Solutions Overview
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
     When I click "Featured solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
-      | Enemies of the state |
-      | Ugly farmers         |
+      | Subdivision Morbid           |
+      | Hungry Disappointed Tungsten |
     And the "My solutions content" inline facet should allow selecting the following values "All solutions"
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
@@ -228,8 +228,8 @@ Feature: Solutions Overview
     And I click "Solutions"
     And I click "Featured solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
-      | Enemies of the state |
-      | Ugly farmers         |
+      | Subdivision Morbid           |
+      | Hungry Disappointed Tungsten |
 
   Scenario: Solution overview active trail should persist on urls with arguments.
     Given I am an anonymous user
