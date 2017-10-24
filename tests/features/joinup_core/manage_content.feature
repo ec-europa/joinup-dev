@@ -56,11 +56,11 @@ Feature:
     Given I select "Move to other group" from "Action"
     And I press "Apply to selected items"
 
-    Then I fill in "Select the destination collection or solution" with "Destination collection"
-    And I press "Apply"
+    And I fill in "Select the destination collection or solution" with "Destination collection"
 
     # Run the batch process.
-    Given I wait for the batch process to finish
+    When I press "Apply"
+    And I wait for the batch process to finish
 
     Then I should see "The group of Document 'A document' has been changed to 'Destination collection'."
     And I should see "The group of News 'Breaking news' has been changed to 'Destination collection'."
