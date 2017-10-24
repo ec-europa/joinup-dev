@@ -117,16 +117,13 @@
 
     <target name="fetch-databases">
         <s3dl
-                object="joinupv2.0/dumps/prod/virtuoso/full/20171011_JOINUP_FULL_DUMP_1.bp"
-                target="${project.basedir}/vendor/ec-europa/virtuoso/backup/20171011_JOINUP_FULL_DUMP_1.bp"
-                bucket="joinup2"
-                />
+                object="${exports.virtuoso.source}"
+                target="${exports.virtuoso.destination}"
+                bucket="${exports.s3.bucket}" />
         <s3dl
-                object="joinupv2.0/dumps/prod/20171011-JOINUP-FULL.sql"
-                target="${project.basedir}/resources/backups/full.sql"
-                bucket="joinup2"
-        />
-
+                object="${exports.sql.source}"
+                target="${exports.sql.destination}"
+                bucket="${exports.s3.bucket}" />
     </target>
 
     <target name="restore-mysql-dump">
