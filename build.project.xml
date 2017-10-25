@@ -97,6 +97,7 @@
             Password="${sparql.password}" />
     </target>
 
+    <!-- Execute Drupal updates. -->
     <target name="execute-updates">
         <drush
                 command="updatedb"
@@ -115,15 +116,47 @@
         </drush>
     </target>
 
-    <target name="fetch-databases">
+    <!-- Download database backups from Amazon S3. -->
+    <target name="fetch-database-dumps" depends="fetch-virtuoso-database-dump, fetch-sql-database-dumps">
+
+    <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
+    <target name="fetch-virtuoso-database-dumps">
+        <echo msg="Downloading Virtuoso database dump from Amazon S3." />
+        <s3list
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
+                prefix="${exports.virtuoso.source.folder}"
+                propertyName="exports.virtuoso.sources" />
+        <foreach
+                list="${exports.virtuoso.sources}"
+                target="fetch-virtuoso-database-dump"
+                param="exports.virtuoso.source" />
+    </target>
+
+    <!-- Downloads a single Virtuoso backup file from Amazon S3. -->
+    <target name="fetch-virtuoso-database-dump">
+        <echo msg="Downloading ${exports.virtuoso.source}." />
         <s3dl
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
                 object="${exports.virtuoso.source}"
-                target="${exports.virtuoso.destination}"
-                bucket="${exports.s3.bucket}" />
+                target="${exports.virtuoso.destination.folder}" />
+    </target>
+
+    <!-- Downloads a backup of the SQL database from Amazon S3. -->
+    <target name="fetch-sql-database-dump">
+        <echo msg="Downloading SQL database dump from Amazon S3." />
         <s3dl
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
                 object="${exports.sql.source}"
-                target="${exports.sql.destination}"
-                bucket="${exports.s3.bucket}" />
+                target="${exports.sql.destination}" />
     </target>
 
     <target name="restore-mysql-dump">
