@@ -5,6 +5,7 @@
  * Contains \CustomPageSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -12,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\node\Entity\Node;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 
@@ -257,6 +259,47 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $group = $this->getRdfEntityByLabel($group_label, $group_type);
     $menu_instance = $this->getOgMenuInstance($group->id(), $menu_name);
     return $this->getOgMenuTree($menu_instance);
+  }
+
+  /**
+   * Creates custom pages.
+   *
+   * Features should provide data in the form:
+   * | title    | author     | status | created           | parent      |
+   * | My title | Joe Editor | 1      | 2014-10-17 8:00am | Parent page |
+   * | ...      | ...        | ...    | ...               | ...         |
+   *
+   * Unlike DrupalContext::createNodes(), this method allows to pass a parent
+   * custom page in order to create an OG menu parent relationship.
+   *
+   * @see \Drupal\DrupalExtension\Context\DrupalContext::createNodes()
+   *
+   * @Given custom pages:
+   */
+  public function createCustomPage(TableNode $nodesTable) {
+    foreach ($nodesTable->getHash() as $nodeHash) {
+      $node = (object) $nodeHash;
+      $node->type = 'custom_page';
+      $parent_title = !empty($node->parent) ? $node->parent : NULL;
+      /** @var \Drupal\node\NodeInterface $node */
+      $saved = $this->nodeCreate($node);
+
+      if ($parent_title) {
+        $node = Node::load($saved->nid);
+        $parent = $this->getNodeByTitle($parent_title, 'custom_page');
+        /** @var \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface $manager */
+        $manager = \Drupal::service('custom_page.og_menu_links_manager');
+        $og_menu = $manager->getOgMenuInstanceByCustomPage($node);
+        $menu_name = "ogmenu-{$og_menu->id()}";
+        /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+        $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+        $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $node->id()], $menu_name);
+        $child_plugin = reset($links);
+        $links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $parent->id()], $menu_name);
+        $parent_plugin = reset($links);
+        $menu_link_manager->updateDefinition($child_plugin->getPluginId(), ['parent' => $parent_plugin->getPluginId()], TRUE);
+      }
+    }
   }
 
 }

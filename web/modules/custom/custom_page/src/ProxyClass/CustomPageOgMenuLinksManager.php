@@ -2,17 +2,17 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\custom_page\CustomPageOgMenuLinksUpdater' "modules/custom/custom_page/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\custom_page\CustomPageOgMenuLinksManager' "modules/custom/custom_page/src".
  */
 
 namespace Drupal\custom_page\ProxyClass {
 
     /**
-     * Provides a proxy class for \Drupal\custom_page\CustomPageOgMenuLinksUpdater.
+     * Provides a proxy class for \Drupal\custom_page\CustomPageOgMenuLinksManager.
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class CustomPageOgMenuLinksUpdater implements \Drupal\custom_page\CustomPageOgMenuLinksUpdaterInterface
+    class CustomPageOgMenuLinksManager implements \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -27,7 +27,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\custom_page\CustomPageOgMenuLinksUpdater
+         * @var \Drupal\custom_page\CustomPageOgMenuLinksManager
          */
         protected $service;
 
@@ -70,6 +70,14 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
+        public function getChildren(\Drupal\node\NodeInterface $custom_page)
+        {
+            return $this->lazyLoadItself()->getChildren($custom_page);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
         public function addLink(\Drupal\node\NodeInterface $custom_page)
         {
             return $this->lazyLoadItself()->addLink($custom_page);
@@ -78,9 +86,25 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
+        public function moveLinks(\Drupal\node\NodeInterface $custom_page, $group_id)
+        {
+            return $this->lazyLoadItself()->moveLinks($custom_page, $group_id);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
         public function deleteLinks(\Drupal\node\NodeInterface $custom_page)
         {
             return $this->lazyLoadItself()->deleteLinks($custom_page);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getOgMenuInstanceByCustomPage(\Drupal\node\NodeInterface $custom_page)
+        {
+            return $this->lazyLoadItself()->getOgMenuInstanceByCustomPage($custom_page);
         }
 
     }

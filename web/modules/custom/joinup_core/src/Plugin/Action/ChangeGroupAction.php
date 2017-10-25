@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
@@ -43,6 +44,13 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   protected $renderer;
 
   /**
+   * The custom pages OG menu links manager service.
+   *
+   * @var \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
+   */
+  protected $customPageOgMenuLinksManager;
+
+  /**
    * Constructs a new 'joinup_change_group' action plugin.
    *
    * @param array $configuration
@@ -55,11 +63,14 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    *   The selection plugin manager service.
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer service.
+   * @param \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface $custom_page_og_links_manager
+   *   The custom pages OG menu links manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, SelectionPluginManagerInterface $selection_plugin_manager, Renderer $renderer) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, SelectionPluginManagerInterface $selection_plugin_manager, Renderer $renderer, CustomPageOgMenuLinksManagerInterface $custom_page_og_links_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->selectionPluginManager = $selection_plugin_manager;
     $this->renderer = $renderer;
+    $this->customPageOgMenuLinksManager = $custom_page_og_links_manager;
   }
 
   /**
@@ -71,7 +82,8 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
       $plugin_id,
       $plugin_definition,
       $container->get('plugin.manager.entity_reference_selection'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('custom_page.og_menu_links_manager')
     );
   }
 
@@ -93,41 +105,59 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
       throw new \RuntimeException("Cannot load RDF entity with ID $group_id");
     }
 
+    $initial_nids = array_map(function (NodeInterface $node) {
+      return $node->id();
+    }, $nodes);
     /** @var \Drupal\node\NodeInterface[] $nodes */
-    foreach ($nodes as $node) {
+    while ($nodes) {
+      $node = array_shift($nodes);
       $is_custom_page = $node->bundle() === 'custom_page';
-      $args = [
-        '%title' => $node->label(),
-        '%group' => $group->label(),
-        '@type' => $node->type->entity->label(),
-      ];
       // Custom pages cannot be group content in solutions.
       if ($group->bundle() === 'solution' && $is_custom_page) {
         $message['warning'][] = $this->t("Group of %title cannot be changed because a custom page cannot be be attached to a solution.", $args);
         continue;
       }
+
+      // It might be a parent custom page.
+      if ($is_custom_page && $children = $this->customPageOgMenuLinksManager->getChildren($node)) {
+        // Filter out child nodes that are already in the main set.
+        $children = array_diff_key($children, array_flip($initial_nids));
+        array_walk($children, function (NodeInterface $child) {
+          // Flag this as a child.
+          $child->isChild = TRUE;
+        });
+        // Add children in the flow, just after the parent.
+        $nodes = array_merge($children, $nodes);
+      }
+
+      $args = [
+        '@title' => $node->label(),
+        ':url' => $node->toUrl()->toString(),
+        '@type' => $node->type->entity->label(),
+        '@group' => $group->label(),
+        ':group_url' => $group->toUrl()->toString(),
+      ];
       try {
-        if ($is_custom_page) {
-          // Custom pages should create disabled menu items.
-          // @see \Drupal\custom_page\CustomPageOgMenuLinksUpdater::addLink()
-          $node->exclude_from_menu = TRUE;
-        }
         // Prevent notification dispatching.
         // @see joinup_notification_dispatch_notification()
         $node->skip_notification = TRUE;
         $node->set('og_audience', $group_id)->save();
-
-        $status = ['#markup' => $this->t("The group of @type '%title' has been changed to '%group'.", $args)];
-        if ($is_custom_page) {
-          $status[] = [
-            '#prefix' => ' ',
-            '#markup' => $this->t('The custom page menu link is disabled in the new group and it should be manually enabled.'),
-          ];
+        if (empty($node->isChild)) {
+          $message['status'][] = [['#markup' => $this->t('@type <a href=":url">@title</a> group was changed to <a href=":group_url">@group</a>.', $args)]];
         }
-        $message['status'][] = $status;
+        else {
+          $last_message =& $message['status'][count($message['status']) - 1];
+          if (!isset($last_message[1])) {
+            $last_message[1] = [
+              '#theme' => 'item_list',
+              '#items' => [],
+            ];
+          }
+          $last_message[1]['#items'][] = $this->t('Child @type <a href=":url">@title</a> group was changed too.', $args);
+        }
       }
       catch (\Exception $e) {
-        $message['error'][] = $this->t("Error while trying to change the group for %title.", $args);
+        $message['error'][] = $this->t("Error while trying to change the group for '@title'.", $args);
       }
     }
 

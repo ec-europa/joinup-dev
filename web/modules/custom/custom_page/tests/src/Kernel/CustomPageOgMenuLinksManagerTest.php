@@ -5,7 +5,6 @@ namespace Drupal\Tests\custom_page\Kernel;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -20,7 +19,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  *
  * @group custom_page
  */
-class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
+class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
@@ -124,6 +123,7 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
     }
 
     // Create a custom page in the first collection.
+    /** @var \Drupal\node\NodeInterface $custom_page */
     $custom_page = Node::create([
       'type' => 'custom_page',
       'title' => $this->randomString(),
@@ -134,49 +134,13 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
     // Check that a corresponding menu link has been created.
     $link = $this->assertMenuLink($ogmenu_instance_ids[1], $custom_page->id());
 
-    // Create a 2nd custom page as child of the first (linked by the menu link,
-    // see below).
-    $child_custom_page = Node::create([
-      'type' => 'custom_page',
-      'title' => $this->randomString(),
-      'og_audience' => $collection_ids[1],
-    ]);
-    $child_custom_page->save();
-
-    // Check that a corresponding menu link has been created.
-    $child_link = $this->assertMenuLink($ogmenu_instance_ids[1], $child_custom_page->id());
-    // Make the 2nd page child of the first page using the menu link.
-    $child_link->set('parent', "menu_link_content:{$link->uuid()}")->save();
-
-    // Move the child custom page to the 2nd collection.
-    $child_custom_page->set('og_audience', $collection_ids[2])->save();
-
-    // Check that the menu link has been removed from the 1st collection.
-    $this->assertNotMenuLink($ogmenu_instance_ids[1], $child_custom_page->id());
-    // Check that a menu link has been created in the 2nd collection.
-    $child_link = $this->assertMenuLink($ogmenu_instance_ids[2], $child_custom_page->id());
-
-    // Move back the child custom page to the 1st collection.
-    $child_custom_page->set('og_audience', $collection_ids[1])->save();
-
-    // Check that the menu link has been removed from the 2nd collection.
-    $this->assertNotMenuLink($ogmenu_instance_ids[2], $child_custom_page->id());
-    // Check that a menu link has been created in the 1st collection.
-    $child_link = $this->assertMenuLink($ogmenu_instance_ids[1], $child_custom_page->id());
-    // Restore the parent relation by recreating the menu link relationship.
-    $child_link->set('parent', "menu_link_content:{$link->uuid()}")->save();
-
-    // Move the parent custom page to the 2nd collection.
+    // Move the custom page in the 2nd collection.
     $custom_page->set('og_audience', $collection_ids[2])->save();
 
     // Check that the menu link has been removed from the 1st collection.
     $this->assertNotMenuLink($ogmenu_instance_ids[1], $custom_page->id());
-    // Check that a menu link has been created in the 2nd collection.
+    // Check that a menu link has been moved in the 2nd collection.
     $this->assertMenuLink($ogmenu_instance_ids[2], $custom_page->id());
-
-    $child_link = MenuLinkContent::load($child_link->id());
-    // Check that the child custom page parent relation has been removed.
-    $this->assertTrue($child_link->get('parent')->isEmpty());
   }
 
   /**
@@ -186,25 +150,9 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
    *   The OG menu instance ID.
    * @param int $nid
    *   The targeted custom page node ID.
-   * @param int|null $occurrences
-   *   (optional) Number of expected occurrences. If not passed, this test will
-   *   assume only one occurence.
-   *
-   * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
-   *   The menu link content entity or NULL.
    */
-  protected function assertMenuLink($og_menu_instance_id, $nid, $occurrences = 1) {
-    $properties = [
-      'bundle' => 'menu_link_content',
-      'menu_name' => "ogmenu-{$og_menu_instance_id}",
-      'link__uri' => "internal:/node/$nid",
-    ];
-    $storage = $this->container->get('entity_type.manager')
-      ->getStorage('menu_link_content');
-    $links = $storage->loadByProperties($properties);
-    $this->assertNotEmpty($links);
-    $this->assertCount($occurrences, $links);
-    return reset($links);
+  protected function assertMenuLink($og_menu_instance_id, $nid) {
+    $this->assertNotEmpty($this->assertMenuLinkHelper($og_menu_instance_id, $nid));
   }
 
   /**
@@ -216,6 +164,21 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
    *   The targeted custom page node ID.
    */
   protected function assertNotMenuLink($og_menu_instance_id, $nid) {
+    $this->assertEmpty($this->assertMenuLinkHelper($og_menu_instance_id, $nid));
+  }
+
+  /**
+   * Provides a helper for menu links assertions.
+   *
+   * @param int $og_menu_instance_id
+   *   The OG menu instance ID.
+   * @param int $nid
+   *   The targeted custom page node ID.
+   *
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface[]
+   *   A list of menu link content entities.
+   */
+  protected function assertMenuLinkHelper($og_menu_instance_id, $nid) {
     $properties = [
       'bundle' => 'menu_link_content',
       'menu_name' => "ogmenu-{$og_menu_instance_id}",
@@ -223,8 +186,7 @@ class CustomPageOgMenuLinkUpdaterTest extends KernelTestBase {
     ];
     $storage = $this->container->get('entity_type.manager')
       ->getStorage('menu_link_content');
-    $links = $storage->loadByProperties($properties);
-    $this->assertEmpty($links);
+    return $storage->loadByProperties($properties);
   }
 
   /**

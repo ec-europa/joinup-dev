@@ -59,7 +59,7 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
  */
 function custom_page_node_insert(EntityInterface $entity) {
   if ($entity->bundle() === 'custom_page') {
-    \Drupal::service('custom_page.og_menu_link_updater')->addLink($entity);
+    \Drupal::service('custom_page.og_menu_links_manager')->addLink($entity);
   }
 }
 
@@ -88,11 +88,10 @@ function custom_page_node_update(NodeInterface $entity) {
     }
   }
 
-  // Update the OG menu link if the group has changed.
+  // Update the OG menu link only if the group has changed.
   if ($entity->og_audience->target_id !== $original->og_audience->target_id) {
-    \Drupal::service('custom_page.og_menu_link_updater')
-      ->deleteLinks($original)
-      ->addLink($entity);
+    \Drupal::service('custom_page.og_menu_links_manager')
+      ->moveLinks($original, $entity->og_audience->target_id);
   }
 }
 
