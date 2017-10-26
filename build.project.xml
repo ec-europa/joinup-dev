@@ -33,7 +33,10 @@
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
     <echo msg="Loading Amazon S3 download task." />
-    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3Get" />
+    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3GetTask" />
+
+    <echo msg="Loading Amazon S3 list task." />
+    <taskdef name="s3list" classname="\DrupalProject\Phing\AwsS3ListTask" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
@@ -117,11 +120,12 @@
     </target>
 
     <!-- Download database backups from Amazon S3. -->
-    <target name="fetch-database-dumps" depends="fetch-virtuoso-database-dump, fetch-sql-database-dumps">
+    <target name="fetch-database-dumps" depends="fetch-virtuoso-database-dumps, fetch-sql-database-dump" />
 
     <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
     <target name="fetch-virtuoso-database-dumps">
-        <echo msg="Downloading Virtuoso database dump from Amazon S3." />
+        <mkdir dir="${exports.virtuoso.destination.folder}" />
+        <echo msg="Fetching list of files to download." />
         <s3list
                 region="${aws.region}"
                 bucket="${exports.s3.bucket}"
@@ -144,7 +148,8 @@
                 key="${exports.s3.key}"
                 secret="${exports.s3.secret}"
                 object="${exports.virtuoso.source}"
-                target="${exports.virtuoso.destination.folder}" />
+                prefix="${exports.virtuoso.source.folder}"
+                target="${exports.virtuoso.destination.folder}${exports.virtuoso.source}" />
     </target>
 
     <!-- Downloads a backup of the SQL database from Amazon S3. -->
