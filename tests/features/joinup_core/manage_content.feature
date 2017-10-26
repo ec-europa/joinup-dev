@@ -7,40 +7,43 @@ Feature:
   Scenario: Use the content management UI
 
     Given the following collections:
-      | title                        | state     |
-      | Grand Vintage Art Collection | validated |
-      | Decadent Art Collection      | validated |
+      | title        | state     |
+      | Vintage Art  | validated |
+      | Decadent Art | validated |
     And document content:
-      | title             | document type | collection                   |
-      | The Panama Papers | Document      | Grand Vintage Art Collection |
+      | title             | document type | collection  | state     |
+      | The Panama Papers | Document      | Vintage Art | validated |
     And discussion content:
-      | title               | collection                   |
-      | The Ultimate Debate | Grand Vintage Art Collection |
+      | title               | collection  | state     |
+      | The Ultimate Debate | Vintage Art | validated |
     And event content:
-      | title                    | collection                   |
-      | Version 2.0 Launch Party | Grand Vintage Art Collection |
+      | title                    | collection  | state     |
+      | Version 2.0 Launch Party | Vintage Art | validated |
     And news content:
-      | title                              | collection                   |
-      | Exports Leap Despite Currency Gain | Grand Vintage Art Collection |
-    And custom pages:
-      | title                | collection                   | parent |
-      | HOWTOs               | Grand Vintage Art Collection |        |
-      | Looking for Support? | Grand Vintage Art Collection | HOWTOs |
+      | title                              | collection  | state     |
+      | Exports Leap Despite Currency Gain | Vintage Art | validated |
+    And custom_page content:
+      | title                | collection  |
+      | HOWTOs               | Vintage Art |
+      | Looking for Support? | Vintage Art |
+    And the following custom page menu structure:
+      | title                | parent | weight |
+      | Looking for Support? | HOWTOs | 1      |
 
     Given I am an anonymous user
-    And I go to the homepage of the "Grand Vintage Art Collection" collection
+    And I go to the homepage of the "Vintage Art" collection
     Then I should not see the link "Manage content"
 
     Given I am logged in as an "authenticated user"
-    And I go to the homepage of the "Grand Vintage Art Collection" collection
+    And I go to the homepage of the "Vintage Art" collection
     Then I should not see the link "Manage content"
 
-    Given I am logged in as a facilitator of the "Grand Vintage Art Collection" collection
-    And I go to the homepage of the "Grand Vintage Art Collection" collection
+    Given I am logged in as a facilitator of the "Vintage Art" collection
+    And I go to the homepage of the "Vintage Art" collection
     Then I should not see the link "Manage content"
 
     Given I am logged in as a moderator
-    And I go to the homepage of the "Grand Vintage Art Collection" collection
+    And I go to the homepage of the "Vintage Art" collection
     Then I should see the link "Manage content"
 
     Given I click "Manage content"
@@ -57,29 +60,51 @@ Feature:
     Given I select "Move to other group" from "Action"
     And I press "Apply to selected items"
 
-    And I fill in "Select the destination collection or solution" with "Decadent Art Collection"
+    And I fill in "Select the destination collection or solution" with "Decadent Art"
 
     # Run the batch process.
     When I press "Apply"
     And I wait for the batch process to finish
 
-    Then I should see "Document The Panama Papers group was changed to Decadent Art Collection."
-    And the "Decadent Art Collection" collection should have a community content titled "The Panama Papers"
+    Then I should see "Document The Panama Papers group was changed to Decadent Art."
+    And the "Decadent Art" collection should have a community content titled "The Panama Papers"
 
-    Then I should see "News Exports Leap Despite Currency Gain group was changed to Decadent Art Collection."
-    And the "Decadent Art Collection" collection should have a community content titled "Exports Leap Despite Currency Gain"
+    Then I should see "News Exports Leap Despite Currency Gain group was changed to Decadent Art."
+    And the "Decadent Art" collection should have a community content titled "Exports Leap Despite Currency Gain"
 
-    And I should see "Discussion The Ultimate Debate group was changed to Decadent Art Collection."
-    And the "Decadent Art Collection" collection should have a community content titled "The Ultimate Debate"
+    And I should see "Discussion The Ultimate Debate group was changed to Decadent Art."
+    And the "Decadent Art" collection should have a community content titled "The Ultimate Debate"
 
-    And I should see "Event Version 2.0 Launch Party group was changed to Decadent Art Collection."
-    And the "Decadent Art Collection" collection should have a community content titled "Version 2.0 Launch Party"
+    And I should see "Event Version 2.0 Launch Party group was changed to Decadent Art."
+    And the "Decadent Art" collection should have a community content titled "Version 2.0 Launch Party"
 
-    And I should see "Custom page HOWTOs group was changed to Decadent Art Collection."
-    And the "Decadent Art Collection" collection should have a custom page titled "HOWTOs"
+    And I should see "Custom page HOWTOs group was changed to Decadent Art."
+    And the "Decadent Art" collection should have a custom page titled "HOWTOs"
 
     # The child page was moved too, even only its parent has been selected.
     And I should see "Child Custom page Looking for Support? group was changed too."
-    And the "Decadent Art Collection" collection should have a custom page titled "Looking for Support?"
+    And the "Decadent Art" collection should have a custom page titled "Looking for Support?"
 
     And I should see "Action processing results: Move to other group (5)."
+
+    # Visit the source collection.
+    Given I go to the "Vintage Art" collection
+    And I should not see the "The Panama Papers" tile
+    And I should not see the "Exports Leap Despite Currency Gain" tile
+    And I should not see the "The Ultimate Debate" tile
+    And I should not see the "Version 2.0 Launch Party" tile
+    And I should not see the link "HOWTOs" in the "Navigation menu block" region
+    And I should not see the link "Looking for Support?" in the "Navigation menu block" region
+
+    # Visit the destination collection.
+    Given I go to the "Decadent Art" collection
+    And I should see the "The Panama Papers" tile
+    And I should see the "Exports Leap Despite Currency Gain" tile
+    And I should see the "The Ultimate Debate" tile
+    And I should see the "Version 2.0 Launch Party" tile
+    Then I should see the link "HOWTOs" in the "Navigation menu block" region
+    When I click "HOWTOs" in the "Navigation menu block" region
+    Then I should see the link "HOWTOs" in the "Navigation menu block" region
+    And I should not see the link "Looking for Support?" in the "Navigation menu block" region
+    But I should see the following tiles in the "Subpages menu" region:
+      | Looking for Support? |
