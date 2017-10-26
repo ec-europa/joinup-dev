@@ -57,7 +57,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
     $children = [];
     if ($og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
       $menu_name = "ogmenu-{$og_menu_instance->id()}";
-      // Collect the IDs of link to the custom page.
+      // Collect the IDs of links to the custom page.
       $mids = $this->menuLinkContentStorage->getQuery()
         ->condition('bundle', 'menu_link_content')
         ->condition('menu_name', $menu_name)
