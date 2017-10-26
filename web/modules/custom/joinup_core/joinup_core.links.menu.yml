@@ -12,3 +12,10 @@ joinup_core.rdf_entity_uri_web_converter_page:
   description: 'Encodes and decodes RDF entity IDs.'
   parent: system.admin
   weight: 1
+
+joinup_core.redirects:
+  title: 'Redirects'
+  route_name: redirect.list
+  description: 'Configure redirects.'
+  parent: system.admin
+  weight: 0
