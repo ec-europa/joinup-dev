@@ -9,6 +9,7 @@ permissions:
   - 'access contextual links'
   - 'access dashboard'
   - 'access toolbar'
+  - 'access uri converter'
   - 'access user profiles'
   - 'administer comments'
   - 'administer group'
