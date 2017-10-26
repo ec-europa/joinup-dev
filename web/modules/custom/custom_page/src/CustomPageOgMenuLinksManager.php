@@ -53,6 +53,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * {@inheritdoc}
    */
   public function getChildren(NodeInterface $custom_page) {
+    $this->verifyCustomPage($custom_page);
     $children = [];
     if ($og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
       $menu_name = "ogmenu-{$og_menu_instance->id()}";
@@ -101,6 +102,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * {@inheritdoc}
    */
   public function addLink(NodeInterface $custom_page) {
+    $this->verifyCustomPage($custom_page);
     if ($og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
       $this->menuLinkContentStorage->create([
         'title' => $custom_page->label(),
@@ -118,6 +120,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * {@inheritdoc}
    */
   public function moveLinks(NodeInterface $custom_page, $group_id) {
+    $this->verifyCustomPage($custom_page);
     if ($source_og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
       if ($target_og_menu_instance = $this->getOgMenuInstanceByGroupId($group_id)) {
         $source_menu_name = "ogmenu-{$source_og_menu_instance->id()}";
@@ -143,6 +146,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * {@inheritdoc}
    */
   public function deleteLinks(NodeInterface $custom_page) {
+    $this->verifyCustomPage($custom_page);
     /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $t */
     if ($og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
       $menu_name = "ogmenu-{$og_menu_instance->id()}";
@@ -177,10 +181,24 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * {@inheritdoc}
    */
   public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page) {
+    $this->verifyCustomPage($custom_page);
     if ($group_id = $custom_page->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id) {
       return $this->getOgMenuInstanceByGroupId($group_id);
     }
     return NULL;
+  }
+
+  /**
+   * Checks that the passed in node is a custom page.
+   *
+   * @param \Drupal\node\NodeInterface $custom_page
+   *   The node to check.
+   */
+  protected function verifyCustomPage(NodeInterface $custom_page) : void {
+    $bundle = $custom_page->bundle();
+    if ($bundle() !== 'custom_page') {
+      throw new \InvalidArgumentException("The entity is not a custom page, but a '$bundle'.");
+    }
   }
 
   /**
