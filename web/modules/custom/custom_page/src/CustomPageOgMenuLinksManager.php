@@ -143,6 +143,8 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
         }
       }
     }
+
+    return $this;
   }
 
   /**
