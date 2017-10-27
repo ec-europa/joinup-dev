@@ -70,7 +70,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getChildren(\Drupal\node\NodeInterface $custom_page)
+        public function getChildren(\Drupal\node\NodeInterface $custom_page) : array
         {
             return $this->lazyLoadItself()->getChildren($custom_page);
         }
@@ -78,7 +78,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function addLink(\Drupal\node\NodeInterface $custom_page)
+        public function addLink(\Drupal\node\NodeInterface $custom_page) : \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
         {
             return $this->lazyLoadItself()->addLink($custom_page);
         }
@@ -86,7 +86,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function moveLinks(\Drupal\node\NodeInterface $custom_page, $group_id)
+        public function moveLinks(\Drupal\node\NodeInterface $custom_page, $group_id) : \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
         {
             return $this->lazyLoadItself()->moveLinks($custom_page, $group_id);
         }
@@ -94,7 +94,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function deleteLinks(\Drupal\node\NodeInterface $custom_page)
+        public function deleteLinks(\Drupal\node\NodeInterface $custom_page) : \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
         {
             return $this->lazyLoadItself()->deleteLinks($custom_page);
         }
@@ -102,7 +102,7 @@ namespace Drupal\custom_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getOgMenuInstanceByCustomPage(\Drupal\node\NodeInterface $custom_page)
+        public function getOgMenuInstanceByCustomPage(\Drupal\node\NodeInterface $custom_page) : ?\Drupal\og_menu\OgMenuInstanceInterface
         {
             return $this->lazyLoadItself()->getOgMenuInstanceByCustomPage($custom_page);
         }
