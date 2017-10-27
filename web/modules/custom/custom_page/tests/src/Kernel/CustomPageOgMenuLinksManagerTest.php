@@ -199,6 +199,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     foreach ([1, 2] as $index) {
       Rdf::load("http://example.com/$index")->delete();
     }
+    parent::tearDown();
   }
 
 }
