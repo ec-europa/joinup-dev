@@ -114,6 +114,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
       $is_custom_page = $node->bundle() === 'custom_page';
       // Custom pages cannot be group content in solutions.
       if ($group->bundle() === 'solution' && $is_custom_page) {
+        $args = ['%title' => $node->label()];
         $message['warning'][] = $this->t("Group of %title cannot be changed because a custom page cannot be be attached to a solution.", $args);
         continue;
       }
