@@ -172,6 +172,9 @@
                 "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch",
                 "Drush 9 port of commands @see https://www.drupal.org/node/2914478": "https://www.drupal.org/files/issues/2914478-9.patch"
             },
+            "drupal/simplenews": {
+                "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
+            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
