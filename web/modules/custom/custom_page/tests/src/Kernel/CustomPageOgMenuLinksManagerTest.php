@@ -113,6 +113,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
       // Create also the paired OG menu link instance. Normally this is
       // automatically accomplished by the 'joinup_core' module but we don't
       // want to enable that module due to its complex dependencies.
+      // @see joinup_core_rdf_entity_insert()
       $ogmenu_instance = OgMenuInstance::create([
         'type' => 'navigation',
         OgGroupAudienceHelperInterface::DEFAULT_FIELD => $collection_ids[$index],
@@ -192,6 +193,9 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
+    // Clean up the RDF entities that were created during the test. We clean
+    // them up here instead of at the end of the test so that this always
+    // happens, even if the test fails.
     foreach ([1, 2] as $index) {
       Rdf::load("http://example.com/$index")->delete();
     }
