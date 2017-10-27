@@ -200,7 +200,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   protected function verifyCustomPage(NodeInterface $custom_page) : void {
     $bundle = $custom_page->bundle();
     if ($bundle !== 'custom_page') {
-      throw new \InvalidArgumentException("The entity is not a custom page, but a '$bundle'.");
+      throw new \InvalidArgumentException("The node is not a custom page, but a '$bundle'.");
     }
   }
 
