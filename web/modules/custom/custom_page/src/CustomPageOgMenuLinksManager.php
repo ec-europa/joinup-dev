@@ -111,9 +111,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
         'title' => $custom_page->label(),
         'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
         'link' => ['uri' => 'internal:/node/' . $custom_page->id()],
-        // The 'exclude_from_menu' property is used as a hidden API trick to
-        // allow a disabled menu item.
-        'enabled' => empty($custom_page->exclude_from_menu),
+        'enabled' => TRUE,
       ])->save();
     }
     return $this;
