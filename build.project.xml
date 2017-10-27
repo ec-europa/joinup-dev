@@ -327,6 +327,32 @@
         </if>
     </target>
 
+    <!-- Create demo users. -->
+    <target name="create-demo-users" description="Create demo users.">
+        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
+        <!-- Create a user with only "authenticated user" role assigned. -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="user@example.com" />
+            <option name="password" value="user" />
+            <param>user</param>
+        </drush>
+        <!-- Grant the moderator role also to the administrator. -->
+        <drush
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>moderator</param>
+            <param>administrator</param>
+        </drush>
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."

@@ -77,6 +77,7 @@ dependencies:
   - solution
   - state_machine
   - state_machine_revisions
+  - subpathauto
   - swiftmailer
   - text
   - toolbar
@@ -195,6 +196,7 @@ config_devel:
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
   - r4032login.settings
+  - subpathauto.settings
   - swiftmailer.message
   - swiftmailer.transport
   - system.date

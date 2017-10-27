@@ -34,6 +34,7 @@ Feature: User authentication
       | path                               |
       | admin                              |
       | admin/config                       |
+      | admin/config/search/redirect       |
       | admin/content                      |
       | admin/content/rdf                  |
       | admin/people                       |
@@ -130,6 +131,7 @@ Feature: User authentication
       | path                               |
       | admin                              |
       | admin/config                       |
+      | admin/config/search/redirect       |
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
@@ -156,9 +158,9 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path        |
-      | collections |
-      | dashboard   |
+      | path                         |
+      | admin/config/search/redirect |
+      | collections                  |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development
