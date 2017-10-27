@@ -126,7 +126,8 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
           // Flag this as a child.
           $child->isChild = TRUE;
         });
-        // Add children in the flow, just after the parent.
+        // Add children in the flow, just after the parent which is currently
+        // being processed.
         $nodes = array_merge($children, $nodes);
       }
 
