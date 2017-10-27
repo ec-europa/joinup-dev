@@ -43,9 +43,16 @@ Feature:
     Then I should not see the link "Manage content"
 
     Given I am logged in as a moderator
-    And I go to the homepage of the "Vintage Art" collection
-    Then I should see the link "Manage content"
 
+    # Visit one of the pages to warm up the render caches. We can then later
+    # check that no stale cached content is being shown.
+    When I go to the homepage of the "Vintage Art" collection
+    And I click "HOWTOs" in the "Navigation menu block" region
+    Then I should see the heading "Vintage Art"
+
+    # Start the actual test scenario as a moderator.
+    When I go to the homepage of the "Vintage Art" collection
+    Then I should see the link "Manage content"
     Given I click "Manage content"
     Then I should see "Manage content" in the SevenHeader
 
@@ -105,6 +112,25 @@ Feature:
     Then I should see the link "HOWTOs" in the "Navigation menu block" region
     When I click "HOWTOs" in the "Navigation menu block" region
     Then I should see the link "HOWTOs" in the "Navigation menu block" region
+    And I should see the heading "Decadent Art"
     And I should not see the link "Looking for Support?" in the "Navigation menu block" region
     But I should see the following tiles in the "Subpages menu" region:
       | Looking for Support? |
+
+    # Try moving a child page without moving the parent page. This should move
+    # the child to the root of the menu.
+    When I go to the homepage of the "Decadent Art" collection
+    And I click "Manage content"
+    And I select the "Looking for Support?" row
+    And I select "Move to other group" from "Action"
+    And I press "Apply to selected items"
+    And I fill in "Select the destination collection or solution" with "Vintage Art"
+    And I press "Apply"
+    And I wait for the batch process to finish
+    Then I should see "Custom page Looking for Support? group was changed to Vintage Art."
+    And I should see "Action processing results: Move to other group (1)."
+    And the "Vintage Art" collection should have a custom page titled "Looking for Support?"
+
+    When I go to the "Vintage Art" collection
+    Then I should see the "Looking for Support?" tile
+    And I should see the link "Looking for Support?" in the "Navigation menu block" region
