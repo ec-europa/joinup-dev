@@ -132,7 +132,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $custom_page->save();
 
     // Check that a corresponding menu link has been created.
-    $link = $this->assertMenuLink($ogmenu_instance_ids[1], $custom_page->id());
+    $this->assertMenuLink($ogmenu_instance_ids[1], $custom_page->id());
 
     // Move the custom page in the 2nd collection.
     $custom_page->set('og_audience', $collection_ids[2])->save();
