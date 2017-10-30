@@ -178,7 +178,7 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="file" value="${project.basedir}/resources/backups/full.sql" />
+            <option name="file" value="${exports.sql.destination}" />
         </drush>
     </target>
 
