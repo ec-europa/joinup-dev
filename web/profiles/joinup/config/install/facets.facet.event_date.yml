@@ -50,7 +50,7 @@ processor_configs:
       content_bundle:
         enable: 1
         condition: values
-        values: Event
+        values: event
         negate: 0
       content_my_content:
         enable: 0
