@@ -61,6 +61,10 @@ Feature: Collection membership overview
     # The first 12 active members should be shown, ordered by first name - last name.
     When I click "Members"
     Then I should see the heading "Members"
+
+    # Check that clean URLs are being applied to the "members" subpage.
+    And I should be on "/collection/jubilant-robots/members"
+
     And I should see the following tiles in the correct order:
       | Aali Dalton           |
       | Aniruddha Kováts      |
