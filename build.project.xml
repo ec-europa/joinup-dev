@@ -182,7 +182,7 @@
         </drush>
     </target>
 
-    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-stop, virtuoso-restore-backup" />
+    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
 
     <target name="rebuild-environment" depends="restore-databases, import-rdf-fixtures, execute-updates" />
 
