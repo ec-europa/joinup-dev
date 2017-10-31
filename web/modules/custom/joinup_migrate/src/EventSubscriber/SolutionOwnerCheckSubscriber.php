@@ -69,8 +69,9 @@ class SolutionOwnerCheckSubscriber implements EventSubscriberInterface {
           $missing_owner = !$db->query("SELECT 1 FROM {og_membership__roles} WHERE entity_id IN(:ids[]) AND roles_target_id = 'rdf_entity-solution-administrator'", [':ids[]' => $row['ids']])->fetchField();
         }
         if ($missing_owner) {
-          $solution = Rdf::load($id);
-          $id_map->saveMessage(['nid' => $row['nid']], "Solution '{$solution->label()}' (source nid {$row['nid']}): The solution owner is missed or the user was not migrated");
+          if ($solution = Rdf::load($id)) {
+            $id_map->saveMessage(['nid' => $row['nid']], "Solution '{$solution->label()}' (source nid {$row['nid']}): The solution owner is missed or the user was not migrated");
+          }
         }
       }
     }
