@@ -131,6 +131,7 @@ Feature:
     And I should see "Action processing results: Move to other group (1)."
     And the "Vintage Art" collection should have a custom page titled "Looking for Support?"
 
-    When I go to the "Vintage Art" collection
-    Then I should see the "Looking for Support?" tile
-    And I should see the link "Looking for Support?" in the "Navigation menu block" region
+    Given I go to the "Vintage Art" collection
+    Then I should see the link "Looking for Support?" in the "Navigation menu block" region
+    When I click "Looking for Support?" in the "Navigation menu block" region
+    Then I should not see the "Looking for Support?" tile
