@@ -15,6 +15,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupCustomInstallTasks;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -402,4 +403,35 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * When the content overview view is being filtered on events, change the
+ * sorting to be by event date.
+ */
+function joinup_search_api_query_views_content_overview_alter(QueryInterface &$query) {
+  /** @var \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager */
+  $facet_manager = \Drupal::service('facets.manager');
+  $facet_source_id = 'search_api:views_page__content_overview__page_1';
+
+  /** @var \Drupal\facets\FacetInterface[] $facets */
+  $facets = [];
+  foreach ($facet_manager->getFacetsByFacetSourceId($facet_source_id) as $facet) {
+    $facets[$facet->id()] = $facet;
+  }
+
+  // No further processing is needed if we are not filtering on events.
+  if (!isset($facets['content_bundle']) || !$facets['content_bundle']->isActiveValue('event')) {
+    return;
+  }
+
+  $sorts = &$query->getSorts();
+  // When filtering for upcoming events, show first the events that are going
+  // to happen sooner.
+  $order = isset($facets['event_date']) && $facets['event_date']->isActiveValue('upcoming_events') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
+  $sorts = [
+    'field_event_date' => $order,
+  ] + $sorts;
 }
