@@ -27,7 +27,7 @@ Feature: As a user of the website
       | solution        | user | roles |
       | Flight of Night | Hulk | owner |
     When I am logged in as a "facilitator" of the "Professional Dreams" solution
-    And I go to the homepage of the "Professional Dreams" solution
+    And I go to the overview page of the "Professional Dreams" solution
     Then I should see the heading "Professional Dreams"
     And I should see the link "View draft"
     # @todo: Fix the visibility issue.
@@ -37,11 +37,11 @@ Feature: As a user of the website
     And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft solutions I'm not a facilitator of.
-    When I go to the homepage of the "The Falling Swords" solution
+    When I go to the overview page of the "The Falling Swords" solution
     Then I should see the heading "Access denied"
 
     When I am logged in as a "facilitator" of the "Flight of Night" solution
-    And I go to the homepage of the "Flight of Night" solution
+    And I go to the overview page of the "Flight of Night" solution
     Then I should see the heading "Flight of Night"
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
@@ -68,13 +68,13 @@ Feature: As a user of the website
 
     # Ensure that the message is not shown to non privileged users.
     When I am an anonymous user
-    And I go to the homepage of the "Flight of Night" solution
+    And I go to the overview page of the "Flight of Night" solution
     And I should not see the following warning messages:
       | You are viewing the published version. To view the latest draft version, click here. |
 
     # Publish draft version of the solution.
     When I am logged in as a moderator
-    And I go to the homepage of the "Flight of Day" solution
+    And I go to the overview page of the "Flight of Day" solution
     And I click "Edit"
     Then the current workflow state should be "Draft"
     When I press "Publish"
@@ -84,6 +84,6 @@ Feature: As a user of the website
 
     # Ensure that the users do not lose their membership.
     When I am logged in as "Hulk"
-    And I go to the homepage of the "Flight of Day" solution
+    And I go to the overview page of the "Flight of Day" solution
     Then I should not see the link "View Draft"
     But I should see the link "Edit" in the "Entity actions" region

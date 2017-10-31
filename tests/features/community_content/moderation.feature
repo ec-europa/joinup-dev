@@ -15,7 +15,7 @@ Feature: Moderate community content
     # Before adding content, check that the 'empty message' is displayed on the
     # content moderation overview.
     When I am logged in as a facilitator of the "Black hole research" collection
-    And I go to the homepage of the "Black hole research" collection
+    And I go to the overview page of the "Black hole research" collection
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
     And I should see the text "Nothing to moderate. Enjoy your day!"
@@ -175,7 +175,7 @@ Feature: Moderate community content
 
     # Now repeat this for the solution.
     When I am logged in as a facilitator of the "Survey For Supernovae" solution
-    And I go to the homepage of the "Survey For Supernovae" solution
+    And I go to the overview page of the "Survey For Supernovae" solution
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
     Then I should see the following headings:
@@ -315,7 +315,7 @@ Feature: Moderate community content
       | Metal-rich star cluster | Standard pulsar recycling theory | Neutron stars | deletion request |
 
     When I am logged in as a facilitator of the "Neutron stars" collection
-    And I go to the homepage of the "Neutron stars" collection
+    And I go to the overview page of the "Neutron stars" collection
     And I click the contextual link "Moderate content" in the "Header" region
     Then I should see the heading "Content moderation"
     And the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"

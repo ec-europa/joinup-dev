@@ -34,14 +34,14 @@ Feature: Document moderation
     # create content, authenticated users that are not members can create
     # documents.
     When I am logged in as "Crab y Patties"
-    And go to the homepage of the "The Naked Ashes" collection
+    And go to the overview page of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     # Post moderated collections allow publishing content directly.
     And I should see the button "Publish"
 
     # Edit the collection and set it as moderated.
     When I am logged in as a moderator
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -52,7 +52,7 @@ Feature: Document moderation
     # The parent group is now pre-moderated: authenticated non-member users
     # should still be able to create documents but not to publish them.
     When I am logged in as "Crab y Patties"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     Then I should not see the button "Publish"
     But I should see the button "Save as draft"
@@ -61,7 +61,7 @@ Feature: Document moderation
     # Edit the collection and set it to allow only members to create new
     # content.
     When I am logged in as a moderator
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
@@ -75,12 +75,12 @@ Feature: Document moderation
 
     # Non-members should not be able to create documents anymore.
     When I am logged in as "Crab y Patties"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     Then the plus button menu should be empty
 
   Scenario: Transit documents from one state to another.
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     When I fill in the following:
       | Title       | An amazing document                      |
@@ -100,7 +100,7 @@ Feature: Document moderation
 
     # Request modification as facilitator.
     When I am logged in as "Kirk Collier"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Published"
@@ -111,7 +111,7 @@ Feature: Document moderation
     Given I fill in "Motivation" with "Request some regression changes"
     And I press "Request changes"
     When I am logged in as "Gretchen Greene"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"
@@ -121,7 +121,7 @@ Feature: Document moderation
 
     # Approve changes as facilitator.
     When I am logged in as "Kirk Collier"
-    And I go to the homepage of the "The Naked Ashes" collection
+    And I go to the overview page of the "The Naked Ashes" collection
     And I click "A not so amazing document"
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Proposed"

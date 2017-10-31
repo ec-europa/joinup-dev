@@ -10,7 +10,7 @@ Feature: Add community content
       | state | validated       |
 
     When I am logged in as a "<member type>" of the "The night shift" collection
-    And I go to the homepage of the "The night shift" collection
+    And I go to the overview page of the "The night shift" collection
     And I click "Add <content type>"
     Then I should see the heading "Add <content type>"
     But I should not see the following lines of text:
@@ -42,7 +42,7 @@ Feature: Add community content
       | state | validated       |
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "The night shift" collection
+    And I go to the overview page of the "The night shift" collection
     And I click "Add <content type>"
     Then I should see the heading "Add <content type>"
     But I should not see the following lines of text:

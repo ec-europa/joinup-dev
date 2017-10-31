@@ -19,20 +19,20 @@ Feature:
 
   Scenario: Community content listing widget should be shown only to moderators
     Given I am logged in as a facilitator of the "Nintendo64" collection
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the overview page of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     And the following fields should not be present "Display a community content listing, Query presets, Limit"
 
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the overview page of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     And the following fields should be present "Display a community content listing, Query presets, Limit"
 
   Scenario: Configure a custom page to show only news of its collection
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the overview page of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
@@ -50,7 +50,7 @@ Feature:
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
     Given I am logged in as a moderator
-    When I go to the homepage of the "Nintendo64" collection
+    When I go to the overview page of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:

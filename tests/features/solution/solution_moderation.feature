@@ -22,7 +22,7 @@ Feature: Solution moderation
     And the following buttons should not be present "Request changes, Blacklist, Request deletion"
 
     When I am logged in as a "facilitator" of the "Collection propose state test" collection
-    And I go to the homepage of the "Collection propose state test" collection
+    And I go to the overview page of the "Collection propose state test" collection
     And I click "Add solution"
     Then the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Blacklist, Request deletion"
@@ -70,7 +70,7 @@ Feature: Solution moderation
     # The following table tests the allowed transitions in a solution.
     # For each entry, the following steps must be performed:
     # Login with the given user (or a user with the same permissions).
-    # Go to the homepage of the given solution.
+    # Go to the overview page of the given solution.
     # If the expected states (states column) are empty, I should not have access
     # to the edit screen.
     # If the expected states are not empty, then I see the "Edit" link.

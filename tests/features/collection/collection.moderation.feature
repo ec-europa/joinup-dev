@@ -59,7 +59,7 @@ Feature: Collection moderation
     # The following table tests the allowed transitions in a collection.
     # For each entry, the following steps must be performed:
     # Login with the given user (or a user with the same permissions).
-    # Go to the homepage of the given collection.
+    # Go to the overview page of the given collection.
     # If the expected states (states column) are empty, I should not have access
     # to the edit screen.
     # If the expected states are not empty, then I see the "Edit" link.
@@ -156,7 +156,7 @@ Feature: Collection moderation
 
     When I go to my dashboard
     Then I should see the "Some berry pie" tile
-    When I go to the homepage of the "Some berry pie" collection
+    When I go to the overview page of the "Some berry pie" collection
     And I click "Edit"
     And I fill in "Title" with "No berry pie"
     And I press "Publish"
@@ -203,7 +203,7 @@ Feature: Collection moderation
     When I press "Propose"
     Then I should see the heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
-    And I go to the homepage of the "Spectres in fog" collection
+    And I go to the overview page of the "Spectres in fog" collection
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab

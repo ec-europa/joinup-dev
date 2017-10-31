@@ -35,7 +35,7 @@ Feature: Solution editing.
   @terms
   Scenario: A solution owner can edit only its own solutions.
     When I am logged in as "Yancy Burton"
-    And I go to the homepage of the "Collection example" collection
+    And I go to the overview page of the "Collection example" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     When I fill in the following:
@@ -77,7 +77,7 @@ Feature: Solution editing.
     Then I should see the heading "Solution A revised"
 
     # This user is an owner only of Solution A.
-    When I go to the homepage of the "Another solution" solution
+    When I go to the overview page of the "Another solution" solution
     Then I should not see the link "Edit"
     When I go to the "Another solution" solution edit form
     Then I should get an access denied error
@@ -96,12 +96,12 @@ Feature: Solution editing.
       | state               | validated      |
       | solution type       | [ABB8] Citizen |
     When I am logged in as a facilitator of the "Solution B" solution
-    And I go to the homepage of the "Solution B" solution
+    And I go to the overview page of the "Solution B" solution
     Then I should see the link "Edit"
     When I go to the "Solution B" solution edit form
     Then I should see the heading "Edit Solution Solution B"
 
-    When I go to the homepage of the "Another solution" solution
+    When I go to the overview page of the "Another solution" solution
     Then I should not see the link "Edit"
     When I go to the "Another solution" solution edit form
     Then I should get an access denied error

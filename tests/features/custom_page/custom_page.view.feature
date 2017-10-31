@@ -28,5 +28,5 @@ Feature:
     Then I should see the "About places" tile
     And I should not see the "About means" tile
 
-    When I go to the homepage of the "Drafty things" collection
+    When I go to the overview page of the "Drafty things" collection
     Then I should see the "About means" tile

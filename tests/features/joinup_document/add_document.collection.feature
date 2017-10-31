@@ -11,26 +11,26 @@ Feature: "Add document" visibility options.
       | The Storms of the Waves | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the overview page of the "Ring of Truth" collection
     Then I should not see the link "Add document"
 
     When I am an anonymous user
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the overview page of the "Ring of Truth" collection
     Then I should not see the link "Add document"
 
     When I am logged in as a member of the "Ring of Truth" collection
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the overview page of the "Ring of Truth" collection
     Then I should see the link "Add document"
 
     When I am logged in as a "facilitator" of the "Ring of Truth" collection
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the overview page of the "Ring of Truth" collection
     Then I should see the link "Add document"
     # I should not be able to add a document to a different collection
-    When I go to the homepage of the "The Storms of the Waves" collection
+    When I go to the overview page of the "The Storms of the Waves" collection
     Then I should not see the link "Add document"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "Ring of Truth" collection
+    And I go to the overview page of the "Ring of Truth" collection
     Then I should see the link "Add document"
 
   Scenario: Add document as a facilitator.
@@ -48,7 +48,7 @@ Feature: "Add document" visibility options.
     # Log in as a facilitator of the "Hunter in the Swords" collection.
     Given I am logged in as napcheese
 
-    When I go to the homepage of the "Hunter in the Swords" collection
+    When I go to the overview page of the "Hunter in the Swords" collection
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
@@ -72,7 +72,7 @@ Feature: "Add document" visibility options.
     And I should see the link "Eirik Andries" in the "Content" region
     But I should not see the link "napcheese" in the "Content" region
     # Check that the link to the document is visible on the collection page.
-    When I go to the homepage of the "Hunter in the Swords" collection
+    When I go to the overview page of the "Hunter in the Swords" collection
     Then I should see the link "An amazing document"
 
   # Regression test to ensure that no critical errors are thrown when a new

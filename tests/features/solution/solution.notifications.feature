@@ -38,7 +38,7 @@ Feature: Solution notifications
 
     # Template 7. The moderation team proposes changes.
     And all e-mails have been sent
-    And I go to the homepage of the "Solution notification to propose changes" solution
+    And I go to the overview page of the "Solution notification to propose changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     # Motivation required.
@@ -52,7 +52,7 @@ Feature: Solution notifications
 
     # Template 11. The moderation team approves a deletion request.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to approve deletion" solution
+    And I go to the overview page of the "Solution notification to approve deletion" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
@@ -63,7 +63,7 @@ Feature: Solution notifications
 
     # Template 12. The moderation team rejects the deletion.
     And all e-mails have been sent
-    And I go to the homepage of the "Solution notification to reject deletion" solution
+    And I go to the overview page of the "Solution notification to reject deletion" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     # Motivation required.
@@ -77,7 +77,7 @@ Feature: Solution notifications
 
     # Template 13. The moderation team blacklists a solution.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to blacklist" solution
+    And I go to the overview page of the "Solution notification to blacklist" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Blacklist"
     Then the following email should have been sent:
@@ -87,7 +87,7 @@ Feature: Solution notifications
 
     # Template 14. The moderation team restores a solution from blacklisted.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to publish from blacklisted" solution
+    And I go to the overview page of the "Solution notification to publish from blacklisted" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
@@ -97,7 +97,7 @@ Feature: Solution notifications
 
     # Template 15. The moderation team requests changes.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to request changes" solution
+    And I go to the overview page of the "Solution notification to request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Request changes"
     # Motivation required.
@@ -111,7 +111,7 @@ Feature: Solution notifications
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to delete" solution
+    And I go to the overview page of the "Solution notification to delete" solution
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
@@ -124,7 +124,7 @@ Feature: Solution notifications
 
     # Template 18. The owner proposes changes.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to propose from request changes" solution
+    And I go to the overview page of the "Solution notification to propose from request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
@@ -134,7 +134,7 @@ Feature: Solution notifications
 
     # Template 10. The owner requests a deletion.
     When all e-mails have been sent
-    And I go to the homepage of the "Solution notification to request deletion" solution
+    And I go to the overview page of the "Solution notification to request deletion" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
     Then the following email should have been sent:

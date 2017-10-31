@@ -47,7 +47,7 @@ Feature: Solution notification system
 
     # Test deletion email.
     When I am logged in as "Cecelia Kim"
-    And I go to the homepage of the "Some Scent" solution
+    And I go to the overview page of the "Some Scent" solution
     And I click Edit
     And I click "Delete"
     And I press "Delete"

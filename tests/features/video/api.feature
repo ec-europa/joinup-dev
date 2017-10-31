@@ -24,7 +24,7 @@ Feature: Video API
 
     # Regression test for asserting that the video should appear as a tile.
     # @todo: This should move to the appropriate test once the video functionality is implemented.
-    When I go to the homepage of the "Video library" <group type>
+    When I go to the overview page of the "Video library" <group type>
     Then I should see the "Dummy Video" tile
   Examples:
     | group type |

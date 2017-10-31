@@ -21,7 +21,7 @@ Feature: Asset distribution deleting.
       | parent      | Rough valentine's day |
 
     When I am logged in as a facilitator of the "Rough valentine's day" solution
-    And I go to the homepage of the "Francesco's cats" asset distribution
+    And I go to the overview page of the "Francesco's cats" asset distribution
     And I click "Edit"
     Then I should see the link "Delete"
     When I click "Delete"

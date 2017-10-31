@@ -39,26 +39,26 @@ Feature: Asset distribution editing.
 
   Scenario: "Edit" button should be shown to facilitators of the related solution.
     When I am logged in as a facilitator of the "Solution A" solution
-    And I go to the homepage of the "Asset distribution example" asset distribution
+    And I go to the overview page of the "Asset distribution example" asset distribution
     Then I should see the link "Edit" in the "Entity actions" region
 
     When I am logged in as a facilitator of the "Solution B" solution
-    And I go to the homepage of the "Asset distribution example" asset distribution
+    And I go to the overview page of the "Asset distribution example" asset distribution
     Then I should not see the link "Edit" in the "Entity actions" region
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Asset distribution example" asset distribution
+    And I go to the overview page of the "Asset distribution example" asset distribution
     Then I should not see the link "Edit" in the "Entity actions" region
 
     When I am an anonymous user
-    And I go to the homepage of the "Asset distribution example" asset distribution
+    And I go to the overview page of the "Asset distribution example" asset distribution
     Then I should not see the link "Edit" in the "Entity actions" region
 
   @email
   Scenario: Edit a distribution as a solution facilitator.
     When all e-mails have been sent
     When I am logged in as a facilitator of the "Solution A" solution
-    And I go to the homepage of the "Asset distribution example" asset distribution
+    And I go to the overview page of the "Asset distribution example" asset distribution
     And I click "Edit"
     Then I should see the heading "Edit Distribution Asset distribution example"
     And the following fields should not be present "Langcode, Translation"

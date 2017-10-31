@@ -91,7 +91,7 @@ Feature: Unpublished content of the website
     And I fill in "Location" with "Somewhere"
     And I fill in "Motivation" with "Some regression issues"
     And I press "Request changes"
-    And I go to the homepage of the "Invisible Boyfriend" collection
+    And I go to the overview page of the "Invisible Boyfriend" collection
     Then I should see the "The Male of the Gift" tile
     And I should see the "The Gift of the Female" tile
     When I am logged in as "Preston Fields"
@@ -101,14 +101,14 @@ Feature: Unpublished content of the website
 
     # Publishing a parent should update the index of the children as well.
     When I am logged in as a moderator
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the overview page of the "Grey Swords" collection
     And I click the contextual link "Edit" in the Header region
     And I press "Publish"
     Then I should see the heading "Grey Swords"
 
     # An anonymous user should see the even in the newly saved version.
     When I am not logged in
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the overview page of the "Grey Swords" collection
     Then I should see the heading "Grey Swords"
     And I should not see the following tiles in the "Unpublished content area" region:
       | Mists that are published maybe? |
@@ -116,7 +116,7 @@ Feature: Unpublished content of the website
 
     # Test that unpublished content are ordered by create date.
     When I am logged in as "Ed Abbott"
-    And I go to the homepage of the "Grey Swords" collection
+    And I go to the overview page of the "Grey Swords" collection
     And I should see the following tiles in the correct order:
       # Published content appears first in the content listing.
       | Mists that are published maybe?       |

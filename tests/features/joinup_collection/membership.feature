@@ -12,10 +12,10 @@ Feature: Tests membership to Joinup collection.
     Given I am logged in as a user with the member role of the "An arbitrary collection" collection
     Then I am member of "Joinup" collection
 
-    And I go to the homepage of the "An arbitrary collection" collection
+    And I go to the overview page of the "An arbitrary collection" collection
     Then I should see the link "Leave this collection"
 
-    When I go to the homepage of the "Joinup" collection
+    When I go to the overview page of the "Joinup" collection
     Then I should not see the link "Leave this collection"
     But I should see "You cannot leave the Joinup collection"
 
@@ -36,13 +36,13 @@ Feature: Tests membership to Joinup collection.
     And user "jane" is member of "Joinup" collection
 
     Given I am logged in as a user with the moderator role
-    And I go to the homepage of the "An arbitrary collection" collection
+    And I go to the overview page of the "An arbitrary collection" collection
     And I click "Members"
     And I check "edit-og-membership-bulk-form-0"
     And I select "Delete the selected membership(s)" from "Action"
     And I press "Apply to selected items"
     Then I should see "Delete the selected membership(s) was applied to 1 item."
 
-    Given I go to the homepage of the "Joinup" collection
+    Given I go to the overview page of the "Joinup" collection
     And I click "Members"
     Then the available options in the "Action" select should not include the "Delete the selected membership(s)" options

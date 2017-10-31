@@ -39,9 +39,9 @@ Feature: About this solution
       | status              | Under development                                                   |
       | collection          | Monoclonal Antibody Development                                     |
 
-    # The link to the about page should be visible on the solution homepage.
+    # The link to the about page should be visible on the solution overview.
     When I am not logged in
-    And I go to the homepage of the "Size exclusion chromatography" solution
+    And I go to the overview page of the "Size exclusion chromatography" solution
     Then I should see the link "About"
 
     # All the public information from the basic fields should be visible on the

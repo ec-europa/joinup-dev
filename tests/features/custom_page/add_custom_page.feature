@@ -13,7 +13,7 @@ Feature: "Add custom page" visibility options.
     # Custom pages cannot be added by normal members. Custom pages are
     # considered to be important, and are not considered 'community content'.
     When I am logged in as a member of the "Code Camp" collection
-    And I go to the homepage of the "Code Camp" collection
+    And I go to the overview page of the "Code Camp" collection
     Then I should not see the link "Add custom page" in the "Plus button menu"
     And I should not see the link "Add a new page" in the "Left sidebar"
     And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
@@ -27,21 +27,21 @@ Feature: "Add custom page" visibility options.
     # An authenticated user which is not a member should also not see the links
     # and help text.
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Code Camp" collection
+    And I go to the overview page of the "Code Camp" collection
     Then I should not see the plus button menu
     And I should not see the link "Add a new page" in the "Left sidebar"
     And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
 
     # An anonymous user should also not see the links and help text.
     When I am an anonymous user
-    And I go to the homepage of the "Code Camp" collection
+    And I go to the overview page of the "Code Camp" collection
     Then I should not see the plus button menu
     And I should not see the link "Add a new page" in the "Left sidebar"
     And I should not see the text "There are no pages yet. Why don't you start by creating an About page?"
 
     # A facilitator should see it.
     When I am logged in as a facilitator of the "Code Camp" collection
-    And I go to the homepage of the "Code Camp" collection
+    And I go to the overview page of the "Code Camp" collection
     Then I should see the link "Add custom page" in the "Plus button menu"
     And I should see the contextual link "Add new page" in the "Left sidebar" region
 
@@ -54,7 +54,7 @@ Feature: "Add custom page" visibility options.
 
     # Initially there are no custom pages. A help text should inform the user
     # that it is possible to add custom pages.
-    When I go to the homepage of the "Open Collective" collection
+    When I go to the overview page of the "Open Collective" collection
     Then the "Open Collective" collection should have 0 custom pages
     And I should see the contextual link "Add new page" in the "Left sidebar" region
     When I click the contextual link "Add new page" in the "Left sidebar" region
@@ -73,14 +73,14 @@ Feature: "Add custom page" visibility options.
     And I should see the success message "Custom page About us has been created."
     And the "Open Collective" collection should have a custom page titled "About us"
     # Check that the link to the custom page is visible on the collection page.
-    When I go to the homepage of the "Open Collective" collection
+    When I go to the overview page of the "Open Collective" collection
     And I click "About us"
     # Check that the collection content such as the 'Join collection block' is
     # available in context of the custom page.
     Then I should see the link "Leave this collection"
 
     # I should not be able to add a custom page to a different collection
-    When I go to the homepage of the "Code Camp" collection
+    When I go to the overview page of the "Code Camp" collection
     Then I should not see the link "Add custom page"
 
   Scenario: Add custom page as a moderator.
@@ -97,8 +97,8 @@ Feature: "Add custom page" visibility options.
 
     # Moderators can add custom pages in any collection, whether they are a member or not.
     Given I am logged in as "Falstad"
-    When I go to the homepage of the "Open Collective" collection
+    When I go to the overview page of the "Open Collective" collection
     Then I should see the link "Add custom page" in the "Plus button menu"
 
-    When I go to the homepage of the "Code Camp" collection
+    When I go to the overview page of the "Code Camp" collection
     Then I should see the link "Add custom page" in the "Plus button menu"

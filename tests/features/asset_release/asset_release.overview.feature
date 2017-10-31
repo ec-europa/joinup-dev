@@ -28,7 +28,7 @@ Feature: Asset distribution overview on solution.
       | affiliates | Lovely Butterfly |
       | state      | validated        |
 
-    When I go to the homepage of the "Lovely Butterfly" solution
+    When I go to the overview page of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the heading "Releases for Lovely Butterfly solution"
 
@@ -64,7 +64,7 @@ Feature: Asset distribution overview on solution.
 
     # Create a new release.
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
-    And I go to the homepage of the "Lovely Butterfly" solution
+    And I go to the overview page of the "Lovely Butterfly" solution
     And I click "Add release" in the plus button menu
     Then I should see the heading "Add Release"
     When I fill in "Name" with "The Deep Doors"
@@ -77,7 +77,7 @@ Feature: Asset distribution overview on solution.
     And I press "Save as draft"
     Then I should see the heading "The Deep Doors 4"
     When I am an anonymous user
-    And I go to the homepage of the "Lovely Butterfly" solution
+    And I go to the overview page of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the following releases in the exact order:
       | release                 |
@@ -87,7 +87,7 @@ Feature: Asset distribution overview on solution.
 
     # Publish the release as a solution facilitator.
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
-    And I go to the homepage of the "The Deep Doors" release
+    And I go to the overview page of the "The Deep Doors" release
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "The Deep Doors 4"
@@ -96,7 +96,7 @@ Feature: Asset distribution overview on solution.
     # privileged users.
     # @see ISAICP-3393
     When I am an anonymous user
-    And I go to the homepage of the "Lovely Butterfly" solution
+    And I go to the overview page of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the following releases in the exact order:
       | release                 |

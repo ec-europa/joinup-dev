@@ -18,7 +18,7 @@ Feature: "Document" overview.
       | VAT refund sample document | document      | VAT refund fac-simile | upload    | text.pdf                                                    | Valid for people living outside the EU.         | Traveller tools | Beer licence | validated |
       | Local maps archive         | document      | Local maps            | remote    | https://github.com/ec-europa/joinup-dev/archive/develop.zip | Contains maps with the top locations in the EU. | Traveller tools | Beer licence | validated |
 
-    When I go to the homepage of the "Traveller tools" collection
+    When I go to the overview page of the "Traveller tools" collection
     Then I should see the "VAT refund sample document" tile
     And I should see the "Local maps archive" tile
     # The description should be visible

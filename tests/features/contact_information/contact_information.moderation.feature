@@ -25,7 +25,7 @@ Feature: Contact Information moderation
 
     # Add contact information to the collection as a facilitator.
     When I am logged in as "Sæwine Cynebald"
-    And I go to the homepage of the "Games of the Anglo-Saxon age" collection
+    And I go to the overview page of the "Games of the Anglo-Saxon age" collection
     And I click "Edit" in the "Entity actions" region
     And I click the 'Additional fields' tab
     And I press "Add new" at the "Contact information" field

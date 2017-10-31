@@ -30,7 +30,7 @@ Feature: Asset release moderation
       | Dark Ship | Bonnie Holloway | owner       |
       | Dark Ship | Felix Russell   | facilitator |
     When I am logged in as "Bonnie Holloway"
-    And I go to the homepage of the "Dark Ship" solution
+    And I go to the overview page of the "Dark Ship" solution
     And I click "Add release" in the plus button menu
     And I fill in the following:
       | Name           | Release of the dark ship |

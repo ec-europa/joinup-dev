@@ -63,8 +63,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $collection
    *   The title of the collection.
    *
-   * @When (I )go to (the homepage of )the :collection collection
-   * @When (I )visit (the homepage of )the :collection collection
+   * @When (I )go to (the overview page of )the :collection collection
+   * @When (I )visit (the overview page of )the :collection collection
    */
   public function visitCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */

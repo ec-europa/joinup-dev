@@ -1,7 +1,7 @@
 @api @email
 Feature: Pinning content inside collections
   As a facilitator of a collection
-  I want to pin content at the top of the collection homepage
+  I want to pin content at the top of the collection overview
   So that important content has more visibility
 
   Scenario Outline: Facilitators can pin and unpin content inside their collections.
@@ -30,7 +30,7 @@ Feature: Pinning content inside collections
       | Cloudy Beam   | Xanthia Gilbert |             |
 
     When I am an anonymous user
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should see the following tiles in the correct order:
       | Very important              |
       | What is the HEX for orange? |
@@ -39,29 +39,29 @@ Feature: Pinning content inside collections
     Then I should not see the contextual link "Unpin" in the "Very important" tile
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should not see the contextual link "Pin" in the "Useful information" tile
     Then I should not see the contextual link "Unpin" in the "Very important" tile
 
     # Members and facilitators of other collections cannot pin nor unpin.
     When I am logged in as "Andy Cross"
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should not see the contextual link "Pin" in the "Useful information" tile
     Then I should not see the contextual link "Unpin" in the "Very important" tile
     When I am logged in as "Xanthia Gilbert"
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should not see the contextual link "Pin" in the "Useful information" tile
     Then I should not see the contextual link "Unpin" in the "Very important" tile
 
     # Collection members cannot pin nor unpin content.
     When I am logged in as "Tyron Ingram"
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should not see the contextual link "Pin" in the "Useful information" tile
     Then I should not see the contextual link "Unpin" in the "Very important" tile
 
     # Facilitators of the collection the content belongs to can pin/unpin.
     When I am logged in as "Rozanne Minett"
-    And I go to the homepage of the "Orange Wrench" collection
+    And I go to the overview page of the "Orange Wrench" collection
     Then I should see the contextual link "Pin" in the "Useful information" tile
     Then I should see the contextual link "Unpin" in the "Very important" tile
 
@@ -87,7 +87,7 @@ Feature: Pinning content inside collections
       | news         | News       |
 
   @javascript
-  Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
+  Scenario Outline: Pinned content tiles should show a visual cue only in their collection overview.
     Given the following collections:
       | title             | state     |
       | Gloomy Lantern    | validated |
@@ -97,12 +97,12 @@ Feature: Pinning content inside collections
       | Lantern FAQs  | Gloomy Lantern | validated | yes    | Digital scarecrow |
       | Lantern terms | Gloomy Lantern | validated | no     |                   |
 
-    When I go to the homepage of the "Gloomy Lantern" collection
+    When I go to the overview page of the "Gloomy Lantern" collection
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
     # When shared in other collection, content shouldn't show the pin icon.
-    When I go to the homepage of the "Digital scarecrow" collection
+    When I go to the overview page of the "Digital scarecrow" collection
     Then the "Lantern FAQs" tile should not be marked as pinned
 
     When I am at "/search"
@@ -110,7 +110,7 @@ Feature: Pinning content inside collections
 
     # Verify that changes in the pinned state are reflected to the tile.
     When I am logged in as a facilitator of the "Gloomy Lantern" collection
-    When I go to the homepage of the "Gloomy Lantern" collection
+    When I go to the overview page of the "Gloomy Lantern" collection
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
@@ -138,7 +138,7 @@ Feature: Pinning content inside collections
       | To be pinned | Space Silver | validated |
 
     When I am logged in as a facilitator of the "Space Silver" solution
-    And I go to the homepage of the "Space Silver" solution
+    And I go to the overview page of the "Space Silver" solution
     Then I should not see the contextual link "Pin" in the "To be pinned" tile
 
     Examples:

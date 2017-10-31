@@ -17,22 +17,22 @@ Feature: "Add discussion" visibility options.
       | state      | validated                        |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Eager Sliver" solution
+    And I go to the overview page of the "Eager Sliver" solution
     Then I should not see the link "Add discussion"
 
     When I am an anonymous user
-    And I go to the homepage of the "Eager Sliver" solution
+    And I go to the overview page of the "Eager Sliver" solution
     Then I should not see the link "Add discussion"
 
     When I am logged in as a "facilitator" of the "Eager Sliver" solution
-    And I go to the homepage of the "Eager Sliver" solution
+    And I go to the overview page of the "Eager Sliver" solution
     Then I should see the link "Add discussion"
     # I should not be able to add a discussion to a different solution
-    When I go to the homepage of the "The Silent Bridges" solution
+    When I go to the overview page of the "The Silent Bridges" solution
     Then I should not see the link "Add discussion"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "Eager Sliver" solution
+    And I go to the overview page of the "Eager Sliver" solution
     Then I should see the link "Add discussion"
 
   Scenario: Add discussion as a facilitator.
@@ -47,7 +47,7 @@ Feature: "Add discussion" visibility options.
       | state      | validated                      |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
-    When I go to the homepage of the "Emerald in the Luck" solution
+    When I go to the overview page of the "Emerald in the Luck" solution
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
@@ -71,5 +71,5 @@ Feature: "Add discussion" visibility options.
     And I should see the success message "Discussion Flight of Girlfriend has been created."
     And the "Emerald in the Luck" solution has a discussion titled "Flight of Girlfriend"
     # Check that the link to the discussion is visible on the solution page.
-    When I go to the homepage of the "Emerald in the Luck" solution
+    When I go to the overview page of the "Emerald in the Luck" solution
     Then I should see the link "Flight of Girlfriend"

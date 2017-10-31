@@ -26,7 +26,7 @@ Feature: As a user of the website
       | collection           | user      | roles              |
       | Destruction of Scent | Cornelius | owner, facilitator |
     When I am logged in as a "facilitator" of the "Willing Fairy" collection
-    And I go to the homepage of the "Willing Fairy" collection
+    And I go to the overview page of the "Willing Fairy" collection
     Then I should see the heading "Willing Fairy"
     And I should see the link "View draft"
     And I should see the link "View"
@@ -36,11 +36,11 @@ Feature: As a user of the website
     And I should see the link "Edit" in the "Entity actions" region
 
     # I should not be able to view draft collections I'm not a facilitator of.
-    When I go to the homepage of the "The Fallen Thoughts" collection
+    When I go to the overview page of the "The Fallen Thoughts" collection
     Then I should see the heading "Access denied"
 
     When I am logged in as a "facilitator" of the "Destruction of Scent" collection
-    And I go to the homepage of the "Destruction of Scent" collection
+    And I go to the overview page of the "Destruction of Scent" collection
     Then I should see the heading "Destruction of Scent"
     # Since it's validated, the normal view is the published view and the
     # "View draft" should not be shown.
@@ -69,13 +69,13 @@ Feature: As a user of the website
 
     # Ensure that the message is not shown to non privileged users.
     When I am an anonymous user
-    And I go to the homepage of the "Destruction of Scent" collection
+    And I go to the overview page of the "Destruction of Scent" collection
     And I should not see the following warning messages:
       | You are viewing the published version. To view the latest draft version, click here. |
 
     # Publish draft version of the collection.
     When I am logged in as a moderator
-    And I go to the homepage of the "Construction of Scent" collection
+    And I go to the overview page of the "Construction of Scent" collection
     And I click "Edit"
     Then the current workflow state should be "Draft"
     When I press "Publish"
@@ -85,6 +85,6 @@ Feature: As a user of the website
 
     # Ensure that the users do not lose their membership.
     When I am logged in as "Cornelius"
-    And I go to the homepage of the "Construction of Scent" collection
+    And I go to the overview page of the "Construction of Scent" collection
     Then I should not see the link "View Draft"
     But I should see the link "Edit" in the "Entity actions" region
