@@ -24,31 +24,31 @@ Feature: Joining and leaving collections through the web interface
 
     # Anonymous users should not be able to join or leave a collection.
     Given I am an anonymous user
-    When I go to the homepage of the "Überwaldean Land Eels" collection
+    When I go to the overview page of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
     And I should not see the link "Leave this collection"
 
     # Authenticated users can join. The Join button should be hidden if the user
     # already is a member of the collection.
     Given I am logged in as "Madame Sharn"
-    When I go to the homepage of the "Überwaldean Land Eels" collection
+    When I go to the overview page of the "Überwaldean Land Eels" collection
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 1 active member
-    When I go to the homepage of the "Überwaldean Land Eels" collection
+    When I go to the overview page of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
     And I should not see the link "Edit"
     But I should see the link "Leave this collection"
 
     # Check that it is possible to join a closed collection.
-    When I go to the homepage of the "Folk Dance and Song Society" collection
+    When I go to the overview page of the "Folk Dance and Song Society" collection
     Then I should see the "Join this collection" button
     When I press the "Join this collection" button
     Then I should see the success message "Your membership to the Folk Dance and Song Society collection is under approval."
     And the "Folk Dance and Song Society" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 1 pending member
-    When I go to the homepage of the "Folk Dance and Song Society" collection
+    When I go to the overview page of the "Folk Dance and Song Society" collection
     Then I should not see the "Join this collection" button
     And I should not see the "Leave this collection" button
     But I should see the link "Membership is pending"
@@ -56,7 +56,7 @@ Feature: Joining and leaving collections through the web interface
     # Check that a second authenticated user can join, the form should not be
     # cached.
     Given I am logged in as "Goodie Whemper"
-    When I go to the homepage of the "Überwaldean Land Eels" collection
+    When I go to the overview page of the "Überwaldean Land Eels" collection
     And I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 2 active members
@@ -73,7 +73,7 @@ Feature: Joining and leaving collections through the web interface
     And the "Überwaldean Land Eels" collection should have 1 active member
 
     When I am logged in as "Madame Sharn"
-    And I go to the homepage of the "Überwaldean Land Eels" collection
+    And I go to the overview page of the "Überwaldean Land Eels" collection
     And I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
     When I press the "Confirm" button
@@ -87,7 +87,7 @@ Feature: Joining and leaving collections through the web interface
     #   with a test for the cancellation of a pending membership.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3658
     Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
-    And I go to the homepage of the "Folk Dance and Song Society" collection
+    And I go to the overview page of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"
     Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society?"
     When I press the "Confirm" button

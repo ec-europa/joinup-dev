@@ -13,7 +13,7 @@ Feature: Navigation menu for custom pages
     # By default, a link to the collection canonical page and a link to the
     # about page are added to the menu.
     When I am logged in as a facilitator of the "Rainbow tables" collection
-    And I go to the homepage of the "Rainbow tables" collection
+    And I go to the overview page of the "Rainbow tables" collection
     Then the navigation menu of the "Rainbow tables" collection should have 3 visible items
     And I should see the following collection menu items in the specified order:
       | text     |
@@ -49,7 +49,7 @@ Feature: Navigation menu for custom pages
     When I disable "Overview" in the navigation menu of the "Rainbow tables" collection
     And I disable "Members" in the navigation menu of the "Rainbow tables" collection
     And I disable "About" in the navigation menu of the "Rainbow tables" collection
-    And I go to the homepage of the "Rainbow tables" collection
+    And I go to the overview page of the "Rainbow tables" collection
     Then I should see the text "All the pages have been disabled for this collection. You can edit the menu configuration or add a new page."
     And I should see the contextual link "Edit menu" in the "Left sidebar" region
 
@@ -77,7 +77,7 @@ Feature: Navigation menu for custom pages
 
     # Test as a normal member of the collection.
     Given I am logged in as a member of the "Rainbow tables" collection
-    When I go to the homepage of the "Rainbow tables" collection
+    When I go to the overview page of the "Rainbow tables" collection
     # Members of the collection should not have access to the administration
     # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
@@ -87,14 +87,14 @@ Feature: Navigation menu for custom pages
     But I should not see the link "Eights are wild" in the "Navigation menu"
     And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
-    When I go to the homepage of the "Cripple Mr Onion" collection
+    When I go to the overview page of the "Cripple Mr Onion" collection
     Then I should see the link "Eights are wild" in the "Navigation menu"
     And I should see the link "Eights are null" in the "Navigation menu"
     But I should not see the link "About us" in the "Navigation menu"
 
     # Test as a moderator.
     Given I am logged in as a moderator
-    When I go to the homepage of the "Rainbow tables" collection
+    When I go to the overview page of the "Rainbow tables" collection
     # Even moderators should not have access to the administration pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
     # The navigation link from the current collection should be visible, but not
@@ -103,14 +103,14 @@ Feature: Navigation menu for custom pages
     But I should not see the link "Eights are wild" in the "Navigation menu"
     And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
-    When I go to the homepage of the "Cripple Mr Onion" collection
+    When I go to the overview page of the "Cripple Mr Onion" collection
     Then I should see the link "Eights are wild" in the "Navigation menu"
     And I should see the link "Eights are null" in the "Navigation menu"
     But I should not see the link "About us" in the "Navigation menu"
 
     # Test as an anonymous user.
     Given I am an anonymous user
-    When I go to the homepage of the "Rainbow tables" collection
+    When I go to the overview page of the "Rainbow tables" collection
     # Anonymous users should definitely not have access to the administration
     # pages.
     Then I should not have access to the menu link administration pages for the navigation menu of the "Rainbow tables" collection
@@ -121,7 +121,7 @@ Feature: Navigation menu for custom pages
     But I should not see the link "Eights are wild" in the "Navigation menu"
     And I should not see the link "Eights are null" in the "Navigation menu"
     # Test the navigation link of the second collection.
-    When I go to the homepage of the "Cripple Mr Onion" collection
+    When I go to the overview page of the "Cripple Mr Onion" collection
     Then I should see the link "Eights are wild" in the "Navigation menu"
     And I should see the link "Eights are null" in the "Navigation menu"
     But I should not see the link "About us" in the "Navigation menu"
@@ -138,7 +138,7 @@ Feature: Navigation menu for custom pages
       | title           | body                   | collection   |
       | Mists of dreams | This is a sample body. | Prism Gazers |
     When I am logged in as a facilitator of the "Prism Gazers" collection
-    And I go to the homepage of the "Prism Gazers" collection
+    And I go to the overview page of the "Prism Gazers" collection
     Then I should see the contextual links button in the "Navigation menu block"
     # The links to manage the navigation menu should only appear after clicking on the button.
     And the "Edit menu" link in the "Navigation menu block" should not be visible
@@ -188,7 +188,7 @@ Feature: Navigation menu for custom pages
     # Disabled links should not be shown in the sub pages menu.
     When I am logged in as a facilitator of the "Hidden Ship" collection
     And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
-    And I go to the homepage of the "Hidden Ship" collection
+    And I go to the overview page of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
@@ -199,7 +199,7 @@ Feature: Navigation menu for custom pages
     But I should not see the "The Slaves of the Mountains" tile
 
     When I am not logged in
-    And I go to the homepage of the "Hidden Ship" collection
+    And I go to the overview page of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores    |
@@ -216,7 +216,7 @@ Feature: Navigation menu for custom pages
     Then I should see the heading "The Slaves of the Air"
 
     When I am not logged in
-    And I go to the homepage of the "Hidden Ship" collection
+    And I go to the overview page of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
       | The Slaves of the Shores |
@@ -231,7 +231,7 @@ Feature: Navigation menu for custom pages
       | title       | body                                                                | collection                          |
       | Tree eaters | Given time, they will most likely strip the entire region of trees. | Ravenous wood-munching alphabeavers |
     When I am logged in as a facilitator of the "Ravenous wood-munching alphabeavers" collection
-    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    And I go to the overview page of the "Ravenous wood-munching alphabeavers" collection
     Then I should see the link "Tree eaters" in the "Navigation menu"
 
     # Change the title and check that the link is updated.
@@ -239,6 +239,6 @@ Feature: Navigation menu for custom pages
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "An army of furry little killing machines"
     And I press "Save"
-    And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
+    And I go to the overview page of the "Ravenous wood-munching alphabeavers" collection
     Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
     And I should not see the link "Tree eaters" in the "Navigation menu"

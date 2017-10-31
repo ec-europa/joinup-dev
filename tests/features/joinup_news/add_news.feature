@@ -25,12 +25,12 @@ Feature: Creation of news through the UI.
       | Density catalogue project | isotopedancer | facilitator |
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
-    And I go to the homepage of the "Metal fans" collection
+    And I go to the overview page of the "Metal fans" collection
     Then the following fields should not be present "Shared in, Motivation"
 
     # Log in as a facilitator of the "Density catalogue project" solution
     When I am logged in as isotopedancer
-    And I go to the homepage of the "Density catalogue project" solution
+    And I go to the overview page of the "Density catalogue project" solution
     And I click "Add news" in the plus button menu
 
     # Check required fields.
@@ -90,7 +90,7 @@ Feature: Creation of news through the UI.
       | Metal fans | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
 
     Given I am logged in as a "facilitator" of the "Metal fans" collection
-    And I go to the homepage of the "Metal fans" collection
+    And I go to the overview page of the "Metal fans" collection
     And I click "Add news" in the plus button menu
 
     Then I fill in the following:

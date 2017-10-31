@@ -17,22 +17,22 @@ Feature: "Add document" visibility options.
       | state      | validated                         |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Seventh Name" solution
+    And I go to the overview page of the "Seventh Name" solution
     Then I should not see the link "Add document"
 
     When I am an anonymous user
-    And I go to the homepage of the "Seventh Name" solution
+    And I go to the overview page of the "Seventh Name" solution
     Then I should not see the link "Add document"
 
     When I am logged in as a "facilitator" of the "Seventh Name" solution
-    And I go to the homepage of the "Seventh Name" solution
+    And I go to the overview page of the "Seventh Name" solution
     Then I should see the link "Add document"
     # I should not be able to add a document to a different solution
-    When I go to the homepage of the "The Obsessed Stream" solution
+    When I go to the overview page of the "The Obsessed Stream" solution
     Then I should not see the link "Add document"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "Seventh Name" solution
+    And I go to the overview page of the "Seventh Name" solution
     Then I should see the link "Add document"
 
   Scenario: Add document as a facilitator.
@@ -47,7 +47,7 @@ Feature: "Add document" visibility options.
       | state      | validated                      |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
-    When I go to the homepage of the "Winter of Beginning" solution
+    When I go to the overview page of the "Winter of Beginning" solution
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
@@ -67,5 +67,5 @@ Feature: "Add document" visibility options.
     And I should see the link "test.zip"
     And the "Winter of Beginning" solution has a document titled "The Sparks of the Butterfly"
     # Check that the link to the document is visible on the solution page.
-    When I go to the homepage of the "Winter of Beginning" solution
+    When I go to the overview page of the "Winter of Beginning" solution
     Then I should see the link "The Sparks of the Butterfly"

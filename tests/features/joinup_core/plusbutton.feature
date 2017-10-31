@@ -11,10 +11,10 @@ Feature: Plus button
       | state       | validated                                |
 
     When I am logged in as a facilitator of the "Simple solutions" solution
-    And I go to the homepage of the "Simple solutions" solution
+    And I go to the overview page of the "Simple solutions" solution
     And I click "Add document" in the plus button menu
 
     Then I am an anonymous user
-    And I go to the homepage of the "Simple solutions" solution
+    And I go to the overview page of the "Simple solutions" solution
     # Plus button is not shown.
     Then I should not see the plus button menu

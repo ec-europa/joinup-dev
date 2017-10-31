@@ -12,17 +12,17 @@ Feature: "Add release" visibility options.
       | state         | validated             |
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
-    And I go to the homepage of the "Release solution test" solution
+    And I go to the overview page of the "Release solution test" solution
     # The user has to press the '+' button for the option "Add release" to be
     # visible.
     Then I should see the link "Add release"
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Release solution test" solution
+    And I go to the overview page of the "Release solution test" solution
     Then I should not see the link "Add release"
 
     When I am an anonymous user
-    And I go to the homepage of the "Release solution test" solution
+    And I go to the overview page of the "Release solution test" solution
     Then I should not see the link "Add release"
 
   Scenario: Add release as a solution facilitator.
@@ -40,7 +40,7 @@ Feature: "Add release" visibility options.
     # Check that the release should have a unique combination of title and
     # version number.
     When I am logged in as a "facilitator" of the "Release Test 1" solution
-    When I go to the homepage of the "Release Test 1" solution
+    When I go to the overview page of the "Release Test 1" solution
     And I click "Add release"
     Then I should see the heading "Add Release"
     And the following fields should be present "Name, Release number, Release notes, Upload a new file or enter a URL, Spatial coverage, Keyword, Status, Language"
@@ -62,7 +62,7 @@ Feature: "Add release" visibility options.
 
     # Verify that the "Chasing shadows 1.1." release is registered as a release
     # of the "Release Test 1" solution.
-    When I go to the homepage of the "Release Test 1" solution
+    When I go to the overview page of the "Release Test 1" solution
     Then I should see the text "Download releases"
     When I click "Download releases"
     Then I should see the text "Chasing shadows"
@@ -70,7 +70,7 @@ Feature: "Add release" visibility options.
 
     # It should be possible to create a release with the same version number but
     # a different title.
-    When I go to the homepage of the "Release Test 1" solution
+    When I go to the overview page of the "Release Test 1" solution
     And I click "Add release"
     When I fill in "Name" with "Chasing flares"
     And I fill in "Release number" with "1.0"

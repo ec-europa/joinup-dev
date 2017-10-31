@@ -203,7 +203,7 @@ Feature: User profile
     # Join the collection. Now the cache of the user profile page should be
     # cleared and the collection that was joined should show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
+    And I go to the overview page of the "Federated Army Veterans" collection
     And I press the "Join this collection" button
 
     When I am an anonymous user
@@ -218,7 +218,7 @@ Feature: User profile
     # Leave the collection. Now the cache of the user profile page should be
     # cleared and the collection that was left should no longer show up.
     Given I am logged in as "Korben Dallas"
-    And I go to the homepage of the "Federated Army Veterans" collection
+    And I go to the overview page of the "Federated Army Veterans" collection
     And I click "Leave this collection"
     And I press the "Confirm" button
 

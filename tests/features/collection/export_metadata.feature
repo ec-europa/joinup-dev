@@ -6,7 +6,7 @@ Feature: Export collection metadata
     Given the following collection:
       | title | Fierce federation of content exporters |
       | state | validated                              |
-    When I visit the homepage of the "Fierce federation of content exporters" collection
+    When I visit the overview page of the "Fierce federation of content exporters" collection
     Then I click "Metadata"
     Then I should see the link "Turtle Terse RDF Triple Language"
     And I should see the link "RDF/XML"

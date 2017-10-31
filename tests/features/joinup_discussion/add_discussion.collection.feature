@@ -11,26 +11,26 @@ Feature: Discussions added to collections
       | White Sons         | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the overview page of the "The Fallen History" collection
     Then I should not see the link "Add discussion"
 
     When I am an anonymous user
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the overview page of the "The Fallen History" collection
     Then I should not see the link "Add discussion"
 
     When I am logged in as a member of the "The Fallen History" collection
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the overview page of the "The Fallen History" collection
     Then I should see the link "Add discussion"
 
     When I am logged in as a "facilitator" of the "The Fallen History" collection
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the overview page of the "The Fallen History" collection
     Then I should see the link "Add discussion"
     # I should not be able to add a discussion to a different collection
-    When I go to the homepage of the "White Sons" collection
+    When I go to the overview page of the "White Sons" collection
     Then I should not see the link "Add discussion"
 
     When I am logged in as a "moderator"
-    And I go to the homepage of the "The Fallen History" collection
+    And I go to the overview page of the "The Fallen History" collection
     Then I should see the link "Add discussion"
 
   Scenario: Add discussion as a facilitator.
@@ -47,7 +47,7 @@ Feature: Discussions added to collections
       | The World of the Waves | kesha1988 | facilitator |
     And I am logged in as kesha1988
 
-    When I go to the homepage of the "The World of the Waves" collection
+    When I go to the overview page of the "The World of the Waves" collection
     And I click "Add discussion" in the plus button menu
     Then I should see the heading "Add discussion"
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
@@ -78,7 +78,7 @@ Feature: Discussions added to collections
     And I should not see the text "Validated" in the "Content" region
 
     # Check that the tile for the discussion is visible on the collection page.
-    When I go to the homepage of the "The World of the Waves" collection
+    When I go to the overview page of the "The World of the Waves" collection
     Then I should see the link "An amazing discussion"
     And I should see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
     # Initially there are 0 comments on the discussion.

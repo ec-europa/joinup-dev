@@ -32,7 +32,7 @@ Feature: Featuring content site-wide
       | Elementary particles standard model | Tidy Neutron | validated | yes      |
 
     When I am an anonymous user
-    And I go to the homepage of the "Tidy Neutron" collection
+    And I go to the overview page of the "Tidy Neutron" collection
     Then I should see the following tiles in the correct order:
       | Ionizing radiation types            |
       | Elementary particles standard model |
@@ -42,7 +42,7 @@ Feature: Featuring content site-wide
     And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Tidy Neutron" collection
+    And I go to the overview page of the "Tidy Neutron" collection
     Then I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
     And I should not see the contextual link "Feature" in the "Elementary particles standard model" tile
     And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
@@ -50,7 +50,7 @@ Feature: Featuring content site-wide
 
     # Facilitators cannot use the global featured functionality.
     When I am logged in as "Niles Turner"
-    And I go to the homepage of the "Tidy Neutron" collection
+    And I go to the overview page of the "Tidy Neutron" collection
     Then I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
     And I should not see the contextual link "Feature" in the "Elementary particles standard model" tile
     And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
@@ -62,7 +62,7 @@ Feature: Featuring content site-wide
     # session is persisted, the seed won't be found and regenerated. For this reason, the already generated contextual
     # links with CSRF tokens won't be valid anymore.
     And I wait for AJAX to finish
-    And I go to the homepage of the "Tidy Neutron" collection
+    And I go to the overview page of the "Tidy Neutron" collection
     Then I should see the contextual link "Feature" in the "Ionizing radiation types" tile
     And I should see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
     But I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile

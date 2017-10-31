@@ -88,34 +88,34 @@ Feature: Sharing content between collections
     And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad"
 
     # The shared content should be shown amongst the other content tiles.
-    When I go to the homepage of the "Classic Rock" collection
+    When I go to the overview page of the "Classic Rock" collection
     Then I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
     And I should see the "Interesting content" tile
 
     # It should not be shared in the other collection.
-    When I go to the homepage of the "Drum'n'Bass" collection
+    When I go to the overview page of the "Drum'n'Bass" collection
     Then I should not see the "Interesting content" tile
 
     # Content can be un-shared only by facilitators of the collections they
     # have been shared in.
     When I am an anonymous user
-    And I go to the homepage of the "Classic Rock" collection
+    And I go to the overview page of the "Classic Rock" collection
     Then I should see the "Interesting content" tile
     And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Classic Rock" collection
+    And I go to the overview page of the "Classic Rock" collection
     Then I should see the "Interesting content" tile
     And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
     When I am logged in as a facilitator of the "Power ballad" collection
-    And I go to the homepage of the "Classic Rock" collection
+    And I go to the overview page of the "Classic Rock" collection
     Then I should see the "Interesting content" tile
     And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
     When I am logged in as a facilitator of the "Classic Rock" collection
-    And I go to the homepage of the "Classic Rock" collection
+    And I go to the overview page of the "Classic Rock" collection
     Then I should see the "Interesting content" tile
     And I should see the contextual link "Unshare" in the "Interesting content" tile
     When I click the contextual link "Unshare" in the "Interesting content" tile
@@ -136,19 +136,19 @@ Feature: Sharing content between collections
     And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
 
     # Verify that the collection content has been updated.
-    When I go to the homepage of the "Classic Rock" collection
+    When I go to the overview page of the "Classic Rock" collection
     Then I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
     But I should not see the "Interesting content" tile
 
     # Verify that the unshare link is not present when the content is not
     # shared anywhere.
-    When I go to the homepage of the "Hip-Hop" collection
+    When I go to the overview page of the "Hip-Hop" collection
     Then I should see the "Interesting content" tile
     And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
     # The content should obviously not shared in the other collection too.
-    When I go to the homepage of the "Drum'n'Bass" collection
+    When I go to the overview page of the "Drum'n'Bass" collection
     Then I should not see the "Interesting content" tile
 
     Examples:
@@ -171,13 +171,13 @@ Feature: Sharing content between collections
       | Mars content  | Mars       |             | validated |
       | Venus content | Venus      | Earth, Mars | validated |
 
-    When I go to the homepage of the "Earth" collection
+    When I go to the overview page of the "Earth" collection
     Then I should see the "Earth content" tile
     And I should see the "Venus content" tile
     And the "Venus content" tile should be marked as shared from "Venus"
     And the "Earth content" tile should not be marked as shared
 
-    When I go to the homepage of the "Mars" collection
+    When I go to the overview page of the "Mars" collection
     Then I should see the "Earth content" tile
     And I should see the "Mars content" tile
     And I should see the "Venus content" tile
@@ -185,7 +185,7 @@ Feature: Sharing content between collections
     And the "Venus content" tile should be marked as shared from "Venus"
     But the "Mars content" tile should not be marked as shared
 
-    When I go to the homepage of the "Venus" collection
+    When I go to the overview page of the "Venus" collection
     Then I should see the "Venus content" tile
     And the "Venus content" tile should not be marked as shared
 

@@ -10,7 +10,7 @@ Feature: Prefill contact form fields
       | state | validated            |
 
     When I am logged in as a facilitator of the "CAMSS test community" collection
-    When I go to the homepage of the "CAMSS test community" collection
+    When I go to the overview page of the "CAMSS test community" collection
     And I open the plus button menu
     And I click "Add custom page"
     Then I should see the heading "Add custom page"

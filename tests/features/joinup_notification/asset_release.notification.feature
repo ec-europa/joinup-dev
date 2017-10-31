@@ -29,7 +29,7 @@ Feature: Asset release notification system
   Scenario: Publish a release as a facilitator.
     When all e-mails have been sent
     And I am logged in as "Copernicus"
-    And I go to the homepage of the "My awesome solution abc" solution
+    And I go to the overview page of the "My awesome solution abc" solution
     And I click "Add release"
     And I fill in the following:
       | Name           | My awesome release abc        |
@@ -45,7 +45,7 @@ Feature: Asset release notification system
 
     # Update an existing release.
     When all e-mails have been sent
-    And I go to the homepage of the "My awesome release abc" release
+    And I go to the overview page of the "My awesome release abc" release
     And I click "Edit" in the "Entity actions" region
     And I fill in "Release number" with "v2"
     And I press "Update"

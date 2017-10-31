@@ -66,7 +66,7 @@ Feature: News moderation.
 
   Scenario Outline: Members, facilitators and owners can see and add news.
     Given I am logged in as "<user>"
-    And I go to the homepage of the "<title>" collection
+    And I go to the overview page of the "<title>" collection
     Then I should see the link "Add news"
     When I click "Add news"
     Then I should see the heading "Add news"
@@ -90,45 +90,45 @@ Feature: News moderation.
   Scenario: Anonymous users and non-members cannot see the 'Add news' button.
     # Check visibility for anonymous users.
     When I am not logged in
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
     # Check visibility for authenticated users.
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
     # User from another collection should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
 
   Scenario: "Add news" button should only be shown to moderators and group members.
     # Check visibility for anonymous users.
     When I am not logged in
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
     # Check visibility for authenticated users.
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
     # Site moderators should be able to add news.
     When I am logged in as "Batman"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should see the link "Add news"
     # User from another collection should not be able to see the 'Add news'.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should not see the link "Add news"
     # Owners should be able to add news.
     When I am logged in as "Superman"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should see the link "Add news"
     # Facilitators should be able to add news.
     When I am logged in as "Hawkgirl"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should see the link "Add news"
     # A normal member should be able to add news.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     Then I should see the link "Add news"
 
   Scenario: Add news as a member to a post-moderated collection.
@@ -137,7 +137,7 @@ Feature: News moderation.
     # he does it as a member. The transitions are the same for post moderated
     # collections in terms of news creation.
     When I am logged in as "Eagle"
-    And I go to the homepage of the "Justice League" collection
+    And I go to the overview page of the "Justice League" collection
     And I click "Add news"
     Then I should see the heading "Add news"
     And the following fields should be present "Headline, Kicker, Content, Policy domain, Keywords, Spatial coverage"
@@ -175,7 +175,7 @@ Feature: News moderation.
   Scenario: Add news as a member to a pre-moderated collection and get it validated by a facilitator.
     # Add news as a member.
     When I am logged in as "Cheetah"
-    And I go to the homepage of the "Legion of Doom" collection
+    And I go to the overview page of the "Legion of Doom" collection
     And I click "Add news"
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Request deletion, Preview"

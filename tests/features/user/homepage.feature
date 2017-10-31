@@ -1,7 +1,7 @@
 @api @terms
 Feature: Homepage feature
   As a registered user of the website
-  when I visit the homepage of Joinup
+  When I visit the homepage
   I want to see updates regarding the content that might be of interest to me.
 
   Scenario: Show content related to groups the user belongs to on the homepage.
@@ -37,7 +37,7 @@ Feature: Homepage feature
     But I should not see the "Girl in the Dreams" tile
 
     # Show new list of content when I join a collection.
-    When I go to the homepage of the "Boy of Courage" collection
+    When I go to the overview page of the "Boy of Courage" collection
     And I press the "Join this collection" button
     # Navigate to the homepage.
     When I am on the homepage
@@ -45,7 +45,7 @@ Feature: Homepage feature
     And I should see the "Girl in the Dreams" tile
 
     # Show new list of content when I leave a collection.
-    When I go to the homepage of the "Boy of Courage" collection
+    When I go to the overview page of the "Boy of Courage" collection
     And I click "Leave this collection"
     And I press the "Confirm" button
     # Navigate to the homepage.
@@ -55,7 +55,7 @@ Feature: Homepage feature
 
     # Show new items created within the parent.
     When I am logged in as a facilitator of the "The Sacred Future" collection
-    And I go to the homepage of the "The Sacred Future" collection
+    And I go to the overview page of the "The Sacred Future" collection
     And I click "Add document" in the plus button menu
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
     And I fill in the following:

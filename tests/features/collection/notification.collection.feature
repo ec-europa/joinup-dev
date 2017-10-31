@@ -79,7 +79,7 @@ Feature: Notification test for the collection transitions.
     # Test 'propose' operation (on an existing collection)
     When all e-mails have been sent
     And I am logged in as "NC owner"
-    And I go to the homepage of the "NC to propose" collection
+    And I go to the overview page of the "NC to propose" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
@@ -89,7 +89,7 @@ Feature: Notification test for the collection transitions.
 
     # Test 'request archival' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to request archival" collection
+    And I go to the overview page of the "NC to request archival" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
     Then the following email should have been sent:
@@ -99,7 +99,7 @@ Feature: Notification test for the collection transitions.
 
     # Test 'request deletion' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to request deletion" collection
+    And I go to the overview page of the "NC to request deletion" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
     Then the following email should have been sent:
@@ -110,7 +110,7 @@ Feature: Notification test for the collection transitions.
     # Test 'propose edit' operation.
     When all e-mails have been sent
     And I am logged in as "NC facilitator"
-    And I go to the homepage of the "NC to propose edit" collection
+    And I go to the overview page of the "NC to propose edit" collection
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "NC to propose edit proposed"
     And I press "Propose"
@@ -126,7 +126,7 @@ Feature: Notification test for the collection transitions.
     # Test the 'approve new' operation.
     When all e-mails have been sent
     And I am logged in as "NC moderator"
-    And I go to the homepage of the "NC to validate" collection
+    And I go to the overview page of the "NC to validate" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
@@ -136,7 +136,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the 'approve proposed' that was proposed through the 'propose edit' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to propose edit proposed" collection
+    And I go to the overview page of the "NC to propose edit proposed" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
@@ -146,7 +146,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the 'reject archival' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to reject archival" collection
+    And I go to the overview page of the "NC to reject archival" collection
     And I click "Edit" in the "Entity actions" region
     # @todo: This should change into a separate transition.
     And I press "Publish"
@@ -160,7 +160,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the 'reject deletion' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to reject deletion" collection
+    And I go to the overview page of the "NC to reject deletion" collection
     And I click "Edit" in the "Entity actions" region
     # @todo: This should change into a separate transition.
     And I press "Publish"
@@ -174,7 +174,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the 'archive' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to archive" collection
+    And I go to the overview page of the "NC to archive" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Archive"
     Then I should see the error message "This action requires you to fill in the motivation field"
@@ -203,7 +203,7 @@ Feature: Notification test for the collection transitions.
 
     # Test the 'delete' operation.
     When all e-mails have been sent
-    And I go to the homepage of the "NC to delete" collection
+    And I go to the overview page of the "NC to delete" collection
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"

@@ -19,7 +19,7 @@ Feature: Creating a test (solution) in the TRR collection.
       | name | type                         |
       | W3C  | Company, Industry consortium |
     When I am logged in as "Wobbe"
-    Given I go to the homepage of the "Friends of the test repository" collection
+    Given I go to the overview page of the "Friends of the test repository" collection
     And I click "Add solution"
     And I should see the text "TRR"
 
@@ -99,7 +99,7 @@ Feature: Creating a test (solution) in the TRR collection.
     When I go to the "TRR Distribution foo" asset distribution edit form
     Then the following fields should be present "GITB compliant"
 
-    When I go to the homepage of the "TRR release foo" release
+    When I go to the overview page of the "TRR release foo" release
     And I click "Add distribution" in the plus button menu
     Then the following fields should be present "GITB compliant"
 
@@ -107,6 +107,6 @@ Feature: Creating a test (solution) in the TRR collection.
     When I go to the "TRR Distribution bar" asset distribution edit form
     Then the following fields should not be present "GITB compliant"
 
-    When I go to the homepage of the "TRR release bar" release
+    When I go to the overview page of the "TRR release bar" release
     And I click "Add distribution" in the plus button menu
     Then the following fields should not be present "GITB compliant"

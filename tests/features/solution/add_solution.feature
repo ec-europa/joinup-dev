@@ -11,22 +11,22 @@ Feature: "Add solution" visibility options.
       | state | validated                |
 
     When I am logged in as a moderator
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the overview page of the "Collection solution test" collection
     Then I should see the link "Add solution"
 
     When I am logged in as a "facilitator" of the "Collection solution test" collection
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the overview page of the "Collection solution test" collection
     Then I should see the link "Add solution"
 
     When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the overview page of the "Collection solution test" collection
     Then I should not see the link "Add solution"
     # Regression test to ensure that the user has not access to the 'Propose solution' page.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2842
     And I should not see the link "Propose solution"
 
     When I am an anonymous user
-    And I go to the homepage of the "Collection solution test" collection
+    And I go to the overview page of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
   @terms @email
@@ -48,7 +48,7 @@ Feature: "Add solution" visibility options.
 
     When all e-mails have been sent
     And I am logged in as "Wendell Silva"
-    And I go to the homepage of the "Belgian barista's" collection
+    And I go to the overview page of the "Belgian barista's" collection
     And I click "Add solution"
     Then I should see the heading "Add Solution"
     And the following fields should be present "Title, Description, Upload a new file or enter a URL, Logo, Banner, Name, E-mail address, Website URL"
@@ -115,7 +115,7 @@ Feature: "Add solution" visibility options.
 
     When I am logged in as a facilitator of the "Belgian barista's" collection
     # Make sure that when another solution is added, both are affiliated.
-    When I go to the homepage of the "Belgian barista's" collection
+    When I go to the overview page of the "Belgian barista's" collection
     And I click "Add solution"
     When I fill in the following:
       | Title            | V60 filter coffee solution                                             |
@@ -137,7 +137,7 @@ Feature: "Add solution" visibility options.
     And I press "Propose"
     Then I should see the heading "V60 filter coffee solution"
     # The name of the solution should exist in the block of the relative content in a collection.
-    When I go to the homepage of the "Belgian barista's" collection
+    When I go to the overview page of the "Belgian barista's" collection
     Then I should see the heading "Belgian barista's"
     And I should see the link "Espresso is the solution"
     # The proposed solution should not be visible since it's not yet validated.
@@ -159,7 +159,7 @@ Feature: "Add solution" visibility options.
       | title | Language parsers |
       | state | validated        |
     When I am logged in as a facilitator of the "Language parsers" collection
-    And I go to the homepage of the "Language parsers" collection
+    And I go to the overview page of the "Language parsers" collection
     And I click "Add solution"
     And I fill in the following:
       | Title       | PHP comments parser                             |
@@ -204,7 +204,7 @@ Feature: "Add solution" visibility options.
 
     # No two solutions with the same name may be created in the same collection.
     Given I am logged in as a member of the "Ocean studies" collection
-    When I go to the homepage of the "Ocean studies" collection
+    When I go to the overview page of the "Ocean studies" collection
     And I click "Add solution" in the plus button menu
     And I fill in "Title" with "Climate change tracker"
     And I press "Propose"
@@ -214,7 +214,7 @@ Feature: "Add solution" visibility options.
     # then this is allowed to be submitted but a warning should be shown to the
     # moderator when approving the proposal.
     Given I am logged in as a member of the "Glacier monitoring" collection
-    When I go to the homepage of the "Glacier monitoring" collection
+    When I go to the overview page of the "Glacier monitoring" collection
     And I click "Add solution" in the plus button menu
     And I fill in the following:
       | Title            | Climate change tracker                      |
