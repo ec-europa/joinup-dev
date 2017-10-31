@@ -216,6 +216,7 @@ trait TraversingTrait {
       'solution spatial coverage' => 'solution_spatial_coverage',
       'spatial coverage' => 'spatial_coverage',
       'My solutions content' => 'solution_my_content',
+      'My collections content' => 'collection_my_content',
       'My content' => 'content_my_content',
     ];
 
