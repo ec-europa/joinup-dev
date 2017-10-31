@@ -32,7 +32,7 @@
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
-        "drupal/migrate_spreadsheet": "^1.0-beta4",
+        "drupal/migrate_spreadsheet": "1.0-beta6",
         "drupal/og": "dev-8.x-1.x#0704fc26c3fefbda6dc6f8b538719e50c938fe64 as 1.0",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/password_policy": "^3.0-alpha4",
