@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -210,13 +211,20 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $destination = trim($form_state->get('views_bulk_operations')['redirect_uri']['destination'], '/');
-    $raw_id = explode('/', $destination)[1];
-    $source_entity = Rdf::load(UriEncoder::decodeUrl($raw_id));
-    if ($source_entity->id() === $form_state->getValue('group')) {
-      $form_state->setErrorByName('group', $this->t("The destination group is the same as the source group: %group. Please, select other destination group.", [
-        '%group' => $source_entity->label(),
-      ]));
+    $uri = 'internal:/' . trim($form_state->get('views_bulk_operations')['redirect_uri']['destination'], '/');
+    $url = Url::fromUri($uri);
+    if ($url->isRouted() && ($parameters = $url->getRouteParameters()) && !empty($parameters['rdf_entity'])) {
+      /** @var \Drupal\rdf_entity\RdfInterface $source_entity */
+      $source_entity = Rdf::load(UriEncoder::decodeUrl($parameters['rdf_entity']));
+      if ($source_entity->id() === $form_state->getValue('group')) {
+        $form_state->setErrorByName('group', $this->t("The destination group is the same as the source group: %group. Please, select other destination group.", [
+          '%group' => $source_entity->label(),
+        ]));
+        return;
+      }
+    }
+    else {
+      throw new \RuntimeException("The view bulk operation has been triggered from an invalid page.");
     }
   }
 
