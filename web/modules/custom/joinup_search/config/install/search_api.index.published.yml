@@ -228,7 +228,7 @@ field_settings:
     property_path: sticky
     type: boolean
   field_event_date:
-    label: Date
+    label: 'Event date'
     datasource_id: 'entity:node'
     property_path: field_event_date
     type: date
