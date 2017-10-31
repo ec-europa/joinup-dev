@@ -621,6 +621,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }
   page_1:
     display_plugin: page
@@ -645,4 +646,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }

@@ -56,6 +56,10 @@ Feature: Solution membership overview
     # The first 12 active members should be shown, ordered by first name - last name.
     When I click "Members"
     Then I should see the heading "Members"
+
+    # Check that clean URLs are being applied to the "members" subpage.
+    And I should be on "/solution/growing-zone/members"
+
     And I should see the following tiles in the correct order:
       | Ariadna Astrauskas  |
       | Aušra Buhr          |
