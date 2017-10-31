@@ -544,10 +544,11 @@ function solution_invalidate_collection(EntityInterface $entity) {
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $entity->id())
       ->execute();
-    $tags = [];
     if ($ids) {
-      foreach ($ids as $id) {
-        $tags[] = "rdf_entity:$id";
+      $tags = [];
+      /* @var \Drupal\rdf_entity\RdfInterface $collection */
+      foreach (Rdf::loadMultiple($ids) as $collection) {
+        $tags = Cache::mergeTags($tags, $collection->getCacheTagsToInvalidate());
       }
       Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
     }
