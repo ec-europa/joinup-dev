@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
@@ -11,7 +13,9 @@ use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
+use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
@@ -326,7 +330,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
    *   The OG menu link.
    */
-  protected function getOgMenuLink(NodeInterface $custom_page) {
+  protected function getOgMenuLink(NodeInterface $custom_page) : ?MenuLinkContentInterface {
     $menu_link_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $uri = 'internal:/' . $custom_page->toUrl()->getInternalPath();
     $mids = $menu_link_storage->getQuery()
@@ -347,7 +351,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance.
    */
-  protected function getOgMenuInstance() {
+  protected function getOgMenuInstance() : ?OgMenuInstanceInterface {
     if (!isset($this->ogMenuInstance)) {
       $og_menu_storage = $this->entityTypeManager->getStorage('ogmenu_instance');
       $og_menu_instances = $og_menu_storage->loadByProperties([
