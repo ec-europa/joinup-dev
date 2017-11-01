@@ -331,11 +331,15 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    *   The OG menu link.
    */
   protected function getOgMenuLink(NodeInterface $custom_page) : ?MenuLinkContentInterface {
+    $menu_instance = $this->getOgMenuInstance();
+    if (empty($menu_instance)) {
+      return NULL;
+    }
     $menu_link_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $uri = 'internal:/' . $custom_page->toUrl()->getInternalPath();
     $mids = $menu_link_storage->getQuery()
       ->condition('bundle', 'menu_link_content')
-      ->condition('menu_name', "ogmenu-{$this->getOgMenuInstance()->id()}")
+      ->condition('menu_name', "ogmenu-{$menu_instance->id()}")
       ->condition('link.uri', $uri)
       ->execute();
     if ($mids) {
