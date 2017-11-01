@@ -305,7 +305,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
       if ($node->bundle() === 'custom_page') {
         /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link */
         if ($menu_link = $this->getOgMenuLink($node)) {
-          if (!$parent_id = $menu_link->getParentId()) {
+          if (!$menu_link->getParentId()) {
             // It's a top custom page.
             $this->topLevelCustomPages[] = $menu_link->uuid();
             $reordered[$nid] = $node;
