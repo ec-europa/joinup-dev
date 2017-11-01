@@ -26,3 +26,18 @@ block.settings.collection_menu_block:*:
     depth:
       type: integer
       label: 'Maximum number of levels'
+
+# Schema for 'last_update_timestamp' formatter settings.
+field.formatter.settings.last_update_timestamp:
+  type: field.formatter.settings.timestamp
+  label: 'Joinup Last Update display format settings'
+  mapping:
+    tooltip_format:
+      type: string
+      label: 'Tooltip date format'
+    tooltip_format_custom:
+      type: string
+      label: 'Tooltip custom date format'
+    timeago_settings:
+      type: ignore
+      label: 'Timeago plugin settings'

@@ -24,6 +24,7 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
+    - collection
     - ds
     - image
     - joinup_core
@@ -89,10 +90,20 @@ content:
         template_suggestion: ''
     region: content
   last_update:
+    label: hidden
+    type: last_update_timestamp
     weight: 4
-    region: content
-    settings: {  }
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+      tooltip_format: long
+      tooltip_format_custom: ''
+      timeago_settings:
+        strings:
+          seconds: 'few seconds'
     third_party_settings: {  }
+    region: content
   members:
     weight: 6
     region: content

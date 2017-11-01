@@ -1,0 +1,16 @@
+timeago:
+  remote: http://timeago.yarp.com
+  version: v1.6.1
+  license:
+    name: MIT
+    url: https://github.com/rmm5t/jquery-timeago/blob/master/LICENSE.txt
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.1/jquery.timeago.min.js:
+      type: external
+      minified: true
+last_update:
+  js:
+    js/last_update.js: {  }
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

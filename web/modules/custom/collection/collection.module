@@ -5,16 +5,17 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -313,12 +314,6 @@ function collection_entity_extra_field_info() {
     'visible' => FALSE,
   ];
 
-  $display['last_update'] = [
-    'label' => t('Last update'),
-    'description' => t('Days since last update to the collection'),
-    'visible' => FALSE,
-  ];
-
   return $fields;
 }
 
@@ -372,23 +367,6 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       ],
     ];
   }
-  if ($display->getComponent('last_update')) {
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    $tags = Cache::buildTags('og-group-content', [$tag]);
-    $days_since_update = collection_last_change($entity);
-    $build['last_update']['#cache'] = [
-      // Invalidate when community content is saved.
-      'tags' => $tags,
-    ];
-    if ($days_since_update === NULL) {
-      $build['last_update']['#markup'] = '-';
-    }
-    else {
-      $build['last_update'] = [
-        '#markup' => \Drupal::translation()->formatPlural($days_since_update, '@days day ago', '@days days ago', ['@days' => $days_since_update]),
-      ];
-    }
-  }
 }
 
 /**
@@ -434,34 +412,6 @@ function collection_solution_count(RdfInterface $entity) {
       ->execute();
   }
   return $solution_count;
-}
-
-/**
- * Determine when the last change was made to the collection content.
- *
- * @param \Drupal\rdf_entity\RdfInterface $entity
- *   The collection.
- *
- * @return null|string
- *   Days since last change.
- */
-function collection_last_change(RdfInterface $entity) {
-  $last_changed_nid = \Drupal::entityQuery('node')
-    ->condition('og_audience', $entity->id())
-    ->condition('status', TRUE)
-    ->sort('changed', 'DESC')
-    ->range(0, 1)
-    ->execute();
-  // No content yet.
-  if (empty($last_changed_nid)) {
-    return NULL;
-  }
-  $last_changed_node = Node::load(array_pop($last_changed_nid));
-  $node_last_updated_time = $last_changed_node->getChangedTime();
-  // Seconds since last update.
-  $interval = \Drupal::time()->getRequestTime() - $node_last_updated_time;
-  // Convert to days.
-  return floor($interval / 86400);
 }
 
 /**
@@ -524,4 +474,59 @@ function collection_node_access(NodeInterface $node, $op, AccountInterface $acco
   }
 
   return AccessResult::forbiddenIf($parent->get('field_ar_closed')->value && $account->isAnonymous())->addCacheableDependency($parent);
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function collection_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'collection') {
+    return [
+      'last_update' => BaseFieldDefinition::create('timestamp')
+        ->setLabel(t('Last updated'))
+        ->setDescription(t('The last updated time considering also compounding entities.'))
+        ->setComputed(TRUE)
+        ->setClass(LastUpdatedFieldItemList::class)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setCardinality(1),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_node_delete(NodeInterface $node) {
+  if (!$node->hasField('og_audience') || !$node->isPublished()) {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  if (($group = $node->og_audience->entity) && $group->bundle() === 'collection') {
+    // Touch the parent collection in order to update its changed timestamp.
+    $group->setChangedTime(\Drupal::time()->getRequestTime())->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_rdf_entity_delete(RdfInterface $solution) {
+  if (($solution->bundle() !== 'solution') || ($solution->field_is_state->value !== 'validated')) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $ids = $storage->getQuery()
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+  if ($ids) {
+    // Touch the parent collections in order to update their changed timestamp.
+    $request_time = \Drupal::time()->getRequestTime();
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    foreach ($storage->loadMultiple($ids) as $collection) {
+      $collection->setChangedTime($request_time)->save();
+    }
+  }
 }
