@@ -986,6 +986,8 @@ function joinup_core_ckeditor_css_alter(array &$css) {
 
 /**
  * Implements hook_block_build_alter().
+ *
+ * Facet blocks that show user content vary by user.
  */
 function joinup_core_block_build_alter(array &$build, BlockPluginInterface $block) {
   $arbitrary_facets_ids = [

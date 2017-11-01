@@ -24,6 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a VBO action that changes the group for nodes.
  *
+ * This will also move the node into the OG Menu for the 'navigation' menu.
+ *
  * @Action(
  *   id = "joinup_change_group",
  *   label = @Translation("Move to other group"),
@@ -358,6 +360,8 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   protected function getOgMenuInstance() : ?OgMenuInstanceInterface {
     if (!isset($this->ogMenuInstance)) {
       $og_menu_storage = $this->entityTypeManager->getStorage('ogmenu_instance');
+      // @todo If we ever support more than one OG Menu then we should no longer
+      //   hardcode on the 'navigation' menu but loop over all available menus.
       $og_menu_instances = $og_menu_storage->loadByProperties([
         'type' => 'navigation',
         'og_audience' => $this->configuration['source_entity']->id(),
