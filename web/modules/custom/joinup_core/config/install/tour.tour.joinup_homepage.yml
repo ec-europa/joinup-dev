@@ -1,0 +1,33 @@
+id: joinup_homepage
+module: joinup_core
+label: Joinup homepage tour
+langcode: en
+status: true
+dependencies: { }
+routes:
+  - route_name: 'homepage.content'
+tips:
+  welcome:
+    id: welcome
+    plugin: text
+    label: 'Welcome to Joinup'
+    body: 'Joinup is the collaborative platform of the European Commission for e-Government professionals.'
+    weight: 1
+  buzzwords:
+    id: buzzwords
+    plugin: text
+    body: 'You will find here services to share experiences, as well as to discover, choose, re-use, develop and implement interoperability solutions.'
+    weight: 2
+  next:
+    id: next
+    plugin: text
+    body: 'You may click on &lt;next&gt; to start a tour of the platform and to proceed at each step.'
+    weight: 3
+  collections:
+    id: collections
+    plugin: text
+    body: 'You may use Joinup first of all as a collaborative environment to work together with other e-Government professionals regardless of your respective geographical locations. The spaces to do so are the collections. <a href="[site:url]collections?tour=1">Let''s have a look at them</a>.'
+    weight: 4
+    location: right
+    attributes:
+      data-class: 'stats__wrapper__collections'
