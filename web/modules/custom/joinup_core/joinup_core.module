@@ -989,6 +989,7 @@ function joinup_core_block_build_alter(array &$build, BlockPluginInterface $bloc
     'facet_block:collection_my_content',
     'facet_block:content_my_content',
     'facet_block:solution_my_content',
+    'facet_block:event_date',
   ];
 
   if (in_array($block->getPluginId(), $arbitrary_facets_ids)) {
