@@ -7,15 +7,15 @@ dependencies: { }
 routes:
   - route_name: 'view.collections.page_1'
 tips:
-  welcome:
+  introduction:
     id: introduction
     plugin: text
     body: '<strong>Collections</strong> are where any other content on Joinup is stored.'
     weight: 1
     attributes:
       data-class: 'icon--collections'
-  buzzwords:
-    id: buzzwords
+  common_policy_domain:
+    id: common_policy_domain
     plugin: text
     body: 'Each of them is built around a common policy domain, that is, an area of topics over which e-professionals may exchange their experiences and share and reuse their solutions.'
     weight: 2
