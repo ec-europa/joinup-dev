@@ -7,6 +7,7 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
@@ -391,15 +392,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
  * sorting to be by event date.
  */
 function joinup_search_api_query_views_content_overview_alter(QueryInterface &$query) {
-  /** @var \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager */
-  $facet_manager = \Drupal::service('facets.manager');
-  $facet_source_id = 'search_api:views_page__content_overview__page_1';
-
-  /** @var \Drupal\facets\FacetInterface[] $facets */
-  $facets = [];
-  foreach ($facet_manager->getFacetsByFacetSourceId($facet_source_id) as $facet) {
-    $facets[$facet->id()] = $facet;
-  }
+  $facets = _joinup_get_facets_by_facet_source_id('search_api:views_page__content_overview__page_1');
 
   // No further processing is needed if we are not filtering on events.
   if (!isset($facets['content_bundle']) || !$facets['content_bundle']->isActiveValue('event')) {
@@ -413,4 +406,46 @@ function joinup_search_api_query_views_content_overview_alter(QueryInterface &$q
   $sorts = [
     'field_event_date' => $order,
   ] + $sorts;
+}
+
+/**
+ * Implements hook_views_pre_execute().
+ *
+ * Sets the view max age to tomorrow midnight when filtering down for upcoming
+ * or past events.
+ */
+function joinup_views_pre_execute(ViewExecutable $view) {
+  $facets = _joinup_get_facets_by_facet_source_id('search_api:views_page__content_overview__page_1');
+
+  if (
+    !isset($facets['event_date']) ||
+    empty(array_intersect($facets['event_date']->getActiveItems(), ['upcoming_events', 'past_events']))
+  ) {
+    return;
+  }
+
+  $max_age = (new DrupalDateTime('tomorrow'))->getTimestamp() - \Drupal::time()->getRequestTime();
+  $view->display_handler->display['cache_metadata']['max-age'] = $max_age;
+}
+
+/**
+ * Returns currently rendered facets filtered by facet source ID, keyed by ID.
+ *
+ * @param string $facet_source_id
+ *   The facet source ID to filter by.
+ *
+ * @return \Drupal\facets\FacetInterface[]
+ *   An array of facet, keyed by facet ID.
+ */
+function _joinup_get_facets_by_facet_source_id($facet_source_id) {
+  /** @var \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager */
+  $facet_manager = \Drupal::service('facets.manager');
+
+  /** @var \Drupal\facets\FacetInterface[] $facets */
+  $facets = [];
+  foreach ($facet_manager->getFacetsByFacetSourceId($facet_source_id) as $facet) {
+    $facets[$facet->id()] = $facet;
+  }
+
+  return $facets;
 }
