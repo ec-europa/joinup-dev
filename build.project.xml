@@ -120,10 +120,10 @@
     </target>
 
     <!-- Download database backups from Amazon S3. -->
-    <target name="fetch-database-dumps" depends="fetch-virtuoso-database-dumps, fetch-sql-database-dump" />
+    <target name="download-databases" depends="download-virtuoso-database, download-sql-database" />
 
     <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
-    <target name="fetch-virtuoso-database-dumps">
+    <target name="download-virtuoso-database">
         <mkdir dir="${exports.virtuoso.destination.folder}" />
         <echo msg="Fetching list of files to download." />
         <s3list
@@ -153,7 +153,7 @@
     </target>
 
     <!-- Downloads a backup of the SQL database from Amazon S3. -->
-    <target name="fetch-sql-database-dump">
+    <target name="download-sql-database">
         <echo msg="Downloading SQL database dump from Amazon S3." />
         <s3dl
                 region="${aws.region}"
