@@ -7,7 +7,6 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -979,20 +978,4 @@ function joinup_core_editor_js_settings_alter(array &$settings) {
  */
 function joinup_core_ckeditor_css_alter(array &$css) {
   $css[] = drupal_get_path('module', 'joinup_core') . '/css/wysiwyg.css';
-}
-
-/**
- * Implements hook_block_build_alter().
- */
-function joinup_core_block_build_alter(array &$build, BlockPluginInterface $block) {
-  $arbitrary_facets_ids = [
-    'facet_block:collection_my_content',
-    'facet_block:content_my_content',
-    'facet_block:solution_my_content',
-    'facet_block:event_date',
-  ];
-
-  if (in_array($block->getPluginId(), $arbitrary_facets_ids)) {
-    $build['#cache']['contexts'][] = 'user';
-  }
 }
