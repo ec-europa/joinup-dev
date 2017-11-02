@@ -14,7 +14,7 @@ index 54f2740..775e1c9 100644
 +    label: Mapping for a processor
 +    mapping:
 +      enable:
-+        type: boolean
++        type: integer
 +        label: 'Enable for this facet'
 +      condition:
 +        type: string
@@ -23,7 +23,7 @@ index 54f2740..775e1c9 100644
 +        type: label
 +        label: 'The value of the condition'
 +      negate:
-+        type: boolean
++        type: integer
 +        label: 'Should the condition be negated'
 +
  plugin.plugin_configuration.facets_processor.url_processor_handler:
