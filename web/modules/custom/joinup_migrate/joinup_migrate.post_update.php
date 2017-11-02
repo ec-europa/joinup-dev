@@ -6,10 +6,12 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
@@ -156,6 +158,48 @@ function joinup_migrate_post_update_more_redirects() {
         'redirect_redirect' => $redirect,
         'status_code' => 301,
       ])->save();
+    }
+  }
+}
+
+/**
+ * Copy the about text to distributions for CTT Spain.
+ */
+function joinup_migrate_post_update_copy_about_text_ctt_spain() {
+  // Define a reusable anonymous function to retrieve the entity reference ID
+  // from a field item.
+  $get_reference_id = function (EntityReferenceItem $item) {
+    return $item->getValue()['target_id'];
+  };
+
+  // Load all affiliated content for the CTT Spain collection.
+  $collection = Rdf::load('http://administracionelectronica.gob.es/ctt');
+  $affiliate_ids = array_map($get_reference_id, iterator_to_array($collection->get('field_ar_affiliates')));
+  foreach (Rdf::loadMultiple($affiliate_ids) as $affiliate) {
+    /** @var \Drupal\rdf_entity\RdfInterface $affiliate */
+    if ($affiliate->bundle() === 'solution') {
+      // Retrieve the description from the solution in all available languages.
+      $descriptions = [];
+      foreach (array_keys($affiliate->getTranslationLanguages()) as $langcode) {
+        $translated_entity = $affiliate->getTranslation($langcode);
+        $descriptions[$langcode] = $translated_entity->get('field_is_description')->getValue();
+      }
+
+      if (empty($descriptions)) {
+        continue;
+      }
+
+      // Load the distributions that are associated with this solution.
+      $distribution_ids = array_map($get_reference_id, iterator_to_array($affiliate->get('field_is_distribution')));
+      foreach (Rdf::loadMultiple($distribution_ids) as $distribution) {
+        /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+        foreach ($descriptions as $langcode => $description) {
+          $translated_entity = $distribution->getTranslation($langcode);
+          $translated_entity->set('field_ad_description', $description);
+        }
+        $distribution->skip_notification = TRUE;
+        $distribution->save();
+      }
     }
   }
 }
