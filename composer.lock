@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb9bf7c043b7ff0aa056d3c1ec981d43",
+    "content-hash": "c7315900c731965d3c5acba557906ac9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5208,6 +5208,22 @@
             "time": "2017-10-12T15:19:00+00:00"
         },
         {
+            "name": "ec-europa/virtuoso",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:ec-europa/virtuoso.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Virtuoso\\": "src"
+                }
+            },
+            "time": "2017-10-30T16:51:41+00:00"
+        },
+        {
             "name": "egulias/email-validator",
             "version": "1.2.14",
             "source": {
@@ -10060,7 +10076,7 @@
             "version": "8.2.12",
             "source": {
                 "type": "git",
-                "url": "https://github.com/klausi/coder.git",
+                "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
             },
             "dist": {
@@ -11979,6 +11995,7 @@
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
+        "ec-europa/virtuoso": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
