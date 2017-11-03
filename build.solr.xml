@@ -183,7 +183,6 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="batch-size" value="50" />
         </drush>
         <drush
                 command="sapi-i"
