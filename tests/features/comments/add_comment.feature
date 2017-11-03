@@ -22,9 +22,12 @@ Feature: Add comments
     When I go to the content page of the type "<content type>" with the title "<title>"
     # Anonymous users do not have a rich text editor.
     Then the "Create comment" field should not have a wysiwyg editor
+    # The honeypot field that needs to be empty on submission.
+    And the following fields should be present "user_homepage"
     When I fill in "Your name" with "Mr Scandal"
     And I fill in "Email" with "mrscandal@example.com"
     And I fill in "Create comment" with "I've heard this story..."
+    And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
@@ -64,9 +67,12 @@ Feature: Add comments
     Given I am logged in as "Miss tell tales"
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
+    # The honeypot field that needs to be empty on submission.
+    Then the following fields should be present "user_homepage"
     # Authenticated users can use a rich text editor to enter comments.
-    Then I should see the "Create comment" wysiwyg editor
+    And I should see the "Create comment" wysiwyg editor
     When I enter "Mr scandal was doing something weird the other day." in the "Create comment" wysiwyg editor
+    And I wait for the honeypot validation to pass
     And I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
@@ -94,6 +100,7 @@ Feature: Add comments
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
+    And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |

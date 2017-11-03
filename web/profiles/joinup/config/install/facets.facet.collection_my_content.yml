@@ -1,22 +1,27 @@
 langcode: en
 status: true
-dependencies: {  }
-id: solution_my_content
-name: 'My content (Solution)'
-url_alias: solution_my_content
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.collections
+  module:
+    - search_api
+id: collection_my_content
+name: 'My content (Collection)'
+url_alias: collection_my_content
 weight: 0
 min_count: 1
 show_only_one_result: true
 field_identifier: id
-facet_source_id: 'search_api:views_page__solutions__page_1'
+facet_source_id: 'search_api:views_page__collections__page_1'
 widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'All solutions'
+    all_text: 'All collections'
     prefix_text: ''
     suffix_text: ''
-    arbitrary_facet_plugin: my_solutions
+    arbitrary_facet_plugin: my_collections
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false

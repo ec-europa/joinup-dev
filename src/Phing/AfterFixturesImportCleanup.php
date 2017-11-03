@@ -7,6 +7,8 @@
 
 namespace DrupalProject\Phing;
 
+use Virtuoso\Task\VirtuosoTaskBase;
+
 /**
  * Class AfterFixturesImportCleanup.
  */
