@@ -35,6 +35,6 @@ tips:
   would_you_like_to_know_more:
     id: would_you_like_to_know_more
     plugin: text
-    body: 'Do you want to know more on collections? If yes, please have a tour inside on of them.'
+    body: 'Do you want to know more on collections? If yes, please have a tour inside one of them.'
     weight: 5
 
