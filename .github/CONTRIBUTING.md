@@ -25,7 +25,7 @@ We are however not obligated to use your contribution as part of Joinup and may 
 ## Code quality
 We try to keep the quality of Joinup as high as possible, and therefore a few measures are put in place:
 * Adherence of the drupal coding standards is verified on each commit.
-  (Please note that the coding standards can change in the future.
+  (Please note that the coding standards can change in the future).
 * Functional tests ([Behat](http://behat.org)) are ran on each commit to avoid the introduction of regression.
 
 You can [check our current test scenarios here](/tests/features/).
@@ -44,11 +44,11 @@ In order to get a contribution accepted in Joinup, follow this procedure:
    _master_ branch so it can be deployed as a hotfix.
 1. _develop_: Make sure the individual commits are well described and scoped. It
    is allowed to rebase feature branches to clean up the history. The pull
-   pull request should only contain changes that are strictly necessary to
-   complete the task on hand. It's fine to include small fixes in related code
-   even if it is not strictly in scope, such as fixing typos, updating
-   documentation and removing unused variables and use statements. The reviewer
-   will have the right to reject any of these small fixes though if they are not
+   request should only contain changes that are strictly necessary to complete
+   the task on hand. It's fine to include small fixes in related code even if
+   it is not strictly in scope, such as fixing typos, updating documentation
+   and removing unused variables and use statements. The reviewer will have
+   the right to reject any of these small fixes though if they are not
    immediately clear.
 1. _qa_: When development on the pull request is ready the code needs to be
    reviewed by the Joinup development team. The functionality offered in the PR
