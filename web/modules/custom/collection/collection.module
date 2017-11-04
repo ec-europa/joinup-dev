@@ -356,8 +356,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   // Solution count.
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    $tags = Cache::buildTags('og-group-content', [$tag]);
+    $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
     $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
     $build['solutions'] = [
       '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
