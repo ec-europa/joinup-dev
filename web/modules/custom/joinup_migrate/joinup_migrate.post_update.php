@@ -180,6 +180,15 @@ function joinup_migrate_post_update_same_name_distribution_files() {
     ->orderBy('f.uri')
     ->condition('f.uri', 'public://distribution/%', 'LIKE');
   $query->join("$legacy_db_name.files", 'd6f', 'f.fid = d6f.fid');
+  // In Drupal 6, the {files} table stores the same file base name in the
+  // 'filename' field, even the file path is different (different files having
+  // the same base name). We use a INNER JOIN to the Drupal 6 database {files}
+  // table in order to group distribution files:
+  // - first, by year and month of creation, which is the lowest Drupal 8
+  //   directory, just above the file,
+  // - second, by the common base file name,
+  // - third, by the file ID (fid), which is preserved between Drupal 6 and 8.
+  // The values are the Drupal 6 file paths.
   $file_groups = [];
   foreach ($query->execute()->fetchAll() as $row) {
     $dir = substr($file_system->dirname($row->uri), 22);
@@ -195,12 +204,9 @@ function joinup_migrate_post_update_same_name_distribution_files() {
       return count($files) > 1;
     });
   });
-  $file_groups = array_filter($file_groups, function (array $file_group) {
-    return (bool) $file_group;
-  });
 
   $prefix = "public://distribution/access_url";
-  $redirects = [];
+  $redirects = $messages = [];
   foreach ($file_groups as $month => $file_group) {
     foreach ($file_group as $file_name => $files) {
       foreach ($files as $fid => $source_path) {
@@ -210,24 +216,33 @@ function joinup_migrate_post_update_same_name_distribution_files() {
           $file_system->mkdir($destination, NULL, TRUE);
         }
         $file = File::load($fid);
+        $initial_uri = $file->getFileUri();
 
         // Ensure the filename.
         $file->setFilename($file_name);
         if (!$file = file_move($file, "$destination/$file_name")) {
-          throw new \Exception("Can't move file $file_name (fid $fid).");
+          $messages[] = t("Can't move file @file (fid @fid).", [
+            '@file' => $initial_uri,
+            '@fid' => $fid,
+          ]);
+          continue;
         }
-        $redirects[$source_path] = "base:/sites/default/files/" . str_replace('public://', '', $file->getFileUri());
+        $redirects[$source_path] = 'base:/sites/default/files/' . file_uri_target($file->getFileUri());
+        $messages[] = t('@source renamed as @destination', [
+          '@source' => $initial_uri,
+          '@destination' => $file->getFileUri(),
+        ]);
       }
     }
   }
 
-  // Delete existing redirects.
+  // Delete existing redirects created during migration.
   if ($rids = $redirect_storage->getQuery()
     ->condition('redirect_source.path', array_keys($redirects), 'IN')
     ->execute()) {
     $redirect_storage->delete($redirect_storage->loadMultiple($rids));
   }
-  // Create the new redirects.
+  // Create new redirects.
   foreach ($redirects as $source_path => $redirect_uri) {
     Redirect::create([
       'uid' => 1,
@@ -240,4 +255,6 @@ function joinup_migrate_post_update_same_name_distribution_files() {
       'status_code' => 301,
     ])->save();
   }
+
+  return $messages ? implode("\n", $messages) : t('No file renamed.');
 }
