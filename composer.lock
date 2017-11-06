@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "371b61753cc5f98d542f0e5a1af9d998",
+    "content-hash": "543abc83f29a88549a12fa1be987fec5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2531,7 +2531,7 @@
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2873480": "https://www.drupal.org/files/issues/2303877-22.patch"
+                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch"
                 }
             },
             "autoload": {
