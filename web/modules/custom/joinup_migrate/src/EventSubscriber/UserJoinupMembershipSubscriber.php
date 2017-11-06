@@ -45,7 +45,7 @@ class UserJoinupMembershipSubscriber implements EventSubscriberInterface {
           if (!Og::getMembership($joinup_collection, $user_account, [])) {
             OgMembership::create()
               ->setGroup($joinup_collection)
-              ->setUser($user_account)
+              ->setOwner($user_account)
               ->setState(OgMembershipInterface::STATE_ACTIVE)
               ->setRoles()
               ->save();

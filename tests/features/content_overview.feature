@@ -24,21 +24,21 @@ Feature: Content Overview
       | welshbuzzard | Titus      | Nicotera    | nicotito@example.org |
       | hatchingegg  | Korinna    | Morin       | korimor@example.com  |
     And the following collections:
-      | title             | description        | state     | moderation | featured |
-      | Rumble collection | Sample description | validated | yes        | yes      |
+      | title             | description        | state     | moderation |
+      | Rumble collection | Sample description | validated | yes        |
     And "event" content:
       | title           | collection        | state     | created           |
       | Seventh Windows | Rumble collection | validated | 2018-10-03 4:21am |
     And "news" content:
-      | title            | collection        | state     | author       | created           | featured |
-      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am | yes      |
-      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am | no       |
+      | title            | collection        | state     | author       | created           |
+      | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am |
+      | Night of Shadow  | Rumble collection | proposed  | welshbuzzard | 2018-10-03 4:26am |
     And "document" content:
       | title             | collection        | state     | created           |
       | History of Flight | Rumble collection | validated | 2018-10-03 4:19am |
     And "discussion" content:
-      | title            | collection        | state     | author      | created           | featured |
-      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am | yes      |
+      | title            | collection        | state     | author      | created           |
+      | The Men's Female | Rumble collection | validated | hatchingegg | 2018-10-03 4:18am |
 
     # Check that visiting as a moderator does not create cache for all users.
     When I am logged in as a user with the "moderator" role
@@ -90,25 +90,75 @@ Feature: Content Overview
     And I should see the "The Men's Female" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
-    And the "My content" inline facet should allow selecting the following values "Featured content (2)"
 
-    When I am logged in as "batbull"
-    And I am on the homepage
+  Scenario: Content overview active trail should persist on urls with arguments.
+    Given I am an anonymous user
+    And I visit "/keep-up-to-date?a=1"
+    Then "Keep up to date" should be the active item in the "Header menu" menu
+
+  Scenario: Users are able to filter content they have created or that is featured site-wide.
+    Given users:
+      | Username        | E-mail                       |
+      | michaelanewport | michaela.newport@example.com |
+      | nenaroberts     | nena.roberts@example.com     |
+    And the following collections:
+      | title            | state     |
+      | Timely Xylophone | validated |
+    And "event" content:
+      | title            | collection       | state     |
+      | Sticky Vegetable | Timely Xylophone | validated |
+    And "news" content:
+      | title            | collection       | state     | author          | featured |
+      | Early Avenue     | Timely Xylophone | validated | michaelanewport | yes      |
+      | Itchy Artificial | Timely Xylophone | validated | nenaroberts     | no       |
+    And "document" content:
+      | title             | collection       | state     |
+      | Limousine Scarlet | Timely Xylophone | validated |
+    And "discussion" content:
+      | title                  | collection       | state     | author          | featured |
+      | Hideous Dreaded Monkey | Timely Xylophone | validated | michaelanewport | yes      |
+
+    When I am logged in as "michaelanewport"
+    And I click "Keep up to date"
+    Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (2)"
+    When I click "My content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Early Avenue           |
+      | Hideous Dreaded Monkey |
+    And the "My content" inline facet should allow selecting the following values "Featured content (2), All content"
+    # Regression test to ensure that the facets are cached by user.
+    # Subsequent page loads of the content page would lead to cached facets
+    # to be leaked to other users.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    When I click "All content" in the "My content" inline facet
+    Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (2)"
+
+    When I am logged in as "nenaroberts"
     And I click "Keep up to date"
     Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
     When I click "My content" in the "My content" inline facet
     Then I should see the following tiles in the correct order:
-      | The Playful Tale |
-    But I should not see the "Seventh Windows" tile
-    But I should not see the "History of Flight" tile
-    But I should not see the "The Men's Female" tile
+      | Itchy Artificial |
+    And the "My content" inline facet should allow selecting the following values "Featured content (2), All content"
+    # Regression test to ensure that the facets are cached by user.
+    # Subsequent page loads of the content page would lead to cached facets
+    # to be leaked to other users.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All content" in the "My content" inline facet
-    And I click "Featured content" in the "My content" inline facet
+    Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
+
+    When I am an anonymous user
+    And I am on the homepage
+    And I click "Events, discussions, news ..."
     Then I should see the following tiles in the correct order:
-      | The Playful Tale  |
-      | The Men's Female  |
-    But I should not see the "History of Flight" tile
-    And I should see the following facet items "Discussion, News" in this order
-    And I should not see the following facet items "Collection"
-    And I should not see the following facet items "Document"
-    And I should not see the following facet items "Event"
+      | Sticky Vegetable       |
+      | Early Avenue           |
+      | Itchy Artificial       |
+      | Limousine Scarlet      |
+      | Hideous Dreaded Monkey |
+    And the "My content" inline facet should allow selecting the following values "Featured content (2)"
+    When I click "Featured content" in the "My content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Early Avenue           |
+      | Hideous Dreaded Monkey |
+    And the "My content" inline facet should allow selecting the following values "All content"

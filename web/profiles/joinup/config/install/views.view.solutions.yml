@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - search_api.index.published
+    - system.menu.main
   module:
     - joinup_core
     - search_api
@@ -510,6 +511,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }
   page_1:
     display_plugin: page
@@ -519,10 +521,20 @@ display:
     display_options:
       display_extenders: {  }
       path: solutions
+      menu:
+        type: normal
+        title: Solutions
+        description: ''
+        expanded: false
+        parent: ''
+        weight: -48
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
       tags: {  }

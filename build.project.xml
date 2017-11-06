@@ -17,29 +17,29 @@
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
 
+    <!-- Import Phing targets related to Virtuoso. -->
+    <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
     <echo msg="Loading Remove Patched Packages task." />
     <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
-    <echo msg="Loading Virtuoso Sparql Permissions task." />
-    <taskdef name="setvirtuososparqlpermissions" classname="\DrupalProject\Phing\SetVirtuosoSparqlPermissions" />
-
-    <echo msg="Loading Import RDF fixtures task." />
-    <taskdef name="importrdffixtures" classname="\DrupalProject\Phing\ImportRdfFixtures" />
-
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
-
-    <echo msg="Loading Purge RDF Backend task." />
-    <taskdef name="rdfpurge" classname="\DrupalProject\Phing\RdfPurge" />
 
     <echo msg="Setting-up MySQL auto-increment values for {comment}, {file_managed}, {node} and {users}." />
     <taskdef name="setmysqlautoincrement" classname="\DrupalProject\Phing\SetMysqlAutoincrement" />
 
+    <echo msg="Loading Amazon S3 download task." />
+    <taskdef name="s3dl" classname="\DrupalProject\Phing\AwsS3GetTask" />
+
+    <echo msg="Loading Amazon S3 list task." />
+    <taskdef name="s3list" classname="\DrupalProject\Phing\AwsS3ListTask" />
+
     <!-- Install the website. -->
-    <target name="install" depends="writable-settings-folder, writable-settings-php">
+    <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
             command="site-install"
             assume="yes"
@@ -69,7 +69,7 @@
     </target>
 
     <target name="setup-virtuoso-permissions">
-        <setvirtuososparqlpermissions
+        <virtuoso-set-update-permission
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
@@ -77,7 +77,7 @@
     </target>
 
     <target name="purge-rdf-backend">
-        <rdfpurge
+        <rdf-purge
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
@@ -87,12 +87,11 @@
     </target>
 
     <target name="import-rdf-fixtures">
-        <importrdffixtures
+        <rdf-import-fixtures
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}"
-            SharedDirectory="${sparql.shareddirectory}" />
+            Password="${sparql.password}" />
 
         <afterrdffixturesimport
             IsqlPath="${isql.bin}"
@@ -100,6 +99,92 @@
             Username="${sparql.user}"
             Password="${sparql.password}" />
     </target>
+
+    <!-- Execute Drupal updates. -->
+    <target name="execute-updates">
+        <drush
+                command="updatedb"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="cs-update"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="discard-overrides" />
+        </drush>
+    </target>
+
+    <!-- Download database backups from Amazon S3. -->
+    <target name="download-databases" depends="download-virtuoso-database, download-sql-database" />
+
+    <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
+    <target name="download-virtuoso-database">
+        <mkdir dir="${exports.virtuoso.destination.folder}" />
+        <echo msg="Fetching list of files to download." />
+        <s3list
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
+                prefix="${exports.virtuoso.source.folder}"
+                propertyName="exports.virtuoso.sources" />
+        <foreach
+                list="${exports.virtuoso.sources}"
+                target="fetch-virtuoso-database-dump"
+                param="exports.virtuoso.source" />
+    </target>
+
+    <!-- Downloads a single Virtuoso backup file from Amazon S3. -->
+    <target name="fetch-virtuoso-database-dump">
+        <echo msg="Downloading ${exports.virtuoso.source}." />
+        <s3dl
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
+                object="${exports.virtuoso.source}"
+                prefix="${exports.virtuoso.source.folder}"
+                target="${exports.virtuoso.destination.folder}${exports.virtuoso.source}" />
+    </target>
+
+    <!-- Downloads a backup of the SQL database from Amazon S3. -->
+    <target name="download-sql-database">
+        <echo msg="Downloading SQL database dump from Amazon S3." />
+        <s3dl
+                region="${aws.region}"
+                bucket="${exports.s3.bucket}"
+                key="${exports.s3.key}"
+                secret="${exports.s3.secret}"
+                object="${exports.sql.source}"
+                target="${exports.sql.destination}" />
+    </target>
+
+    <target name="restore-mysql-dump">
+        <drush
+                command="sql-drop"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="sql-query"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="file" value="${exports.sql.destination}" />
+        </drush>
+    </target>
+
+    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
+
+    <target name="rebuild-environment" depends="restore-databases, import-rdf-fixtures, execute-updates" />
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
@@ -219,9 +304,59 @@
     </target>
 
     <target
+        name="disable-config-read-only"
+        depends="writable-settings-folder, writable-settings-php"
+        description="Make config writable.">
+        <if>
+            <available file="${website.settings.php}" type="file" property="settings.php.available" />
+            <then>
+                <reflexive>
+                    <fileset dir="${website.settings.dir}">
+                        <include pattern="settings.php" />
+                    </fileset>
+                    <filterchain>
+                        <replaceregexp>
+                            <regexp
+                                pattern="^\$settings\['config_readonly'\].*$\n"
+                                replace=""
+                                modifiers="m" />
+                        </replaceregexp>
+                    </filterchain>
+                </reflexive>
+            </then>
+        </if>
+    </target>
+
+    <!-- Create demo users. -->
+    <target name="create-demo-users" description="Create demo users.">
+        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
+        <!-- Create a user with only "authenticated user" role assigned. -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="mail" value="user@example.com" />
+            <option name="password" value="user" />
+            <param>user</param>
+        </drush>
+        <!-- Grant the moderator role also to the administrator. -->
+        <drush
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>moderator</param>
+            <param>administrator</param>
+        </drush>
+    </target>
+
+    <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass, setup-virtuoso-permissions, purge-rdf-backend, install, export-config" />
+        depends="install-composer-dependencies-dist, compile-sass" />
 
     <target
         name="build-dev"
@@ -231,7 +366,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-content, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
+        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-backend, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
 
     <target
         name="install-dev"

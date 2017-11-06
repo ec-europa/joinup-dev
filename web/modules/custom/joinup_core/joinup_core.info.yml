@@ -23,6 +23,7 @@ dependencies:
   - search_api
   - search_api_solr
   - state_machine
+  - tour
 
 config_devel:
   - comment.type.comment
@@ -73,3 +74,5 @@ config_devel:
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
   - taxonomy.vocabulary.themes
+  - tour.tour.joinup_collections_overview
+  - tour.tour.joinup_homepage

@@ -78,6 +78,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts that the given html exists in the page.
+   *
+   * @param string $text
+   *   The html that is expected to be found.
+   *
+   * @Then the page should contain the html text :text
+   */
+  public function assertHtmlText($text) {
+    $actual = $this->getSession()->getPage()->getHtml();
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
+
+    PHPUnit_Framework_Assert::assertRegExp($regex, $actual, $message);
+  }
+
+  /**
    * Creates and authenticates a user with the given og role(s).
    *
    * Multiple roles can be passed separated with comma.
@@ -1298,6 +1314,30 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that a given field label is associated with a WYSIWYG editor.
+   *
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I should see the :label wysiwyg editor
+   */
+  public function assertWysiwyg($label) {
+    PHPUnit_Framework_Assert::assertTrue($this->hasWysiwyg($label));
+  }
+
+  /**
+   * Checks that a given field label is not associated with a WYSIWYG editor.
+   *
+   * @param string $label
+   *   The label of the field uncontaining the WYSIWYG editor.
+   *
+   * @Then the :label field should not have a wysiwyg editor
+   */
+  public function assertNoWysiwyg($label) {
+    PHPUnit_Framework_Assert::assertFalse($this->hasWysiwyg($label));
+  }
+
+  /**
    * Create comment entities.
    *
    * Table format:
@@ -1740,7 +1780,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains("{$base_url}/node/{$node->id()}", $href);
+    \PHPUnit_Framework_Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
   }
 
   /**
@@ -2141,6 +2181,26 @@ JS;
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
+  }
+
+  /**
+   * Asserts that a tour is available on the current page.
+   *
+   * @Then a tour should be available
+   */
+  public function assertTourAvailable() {
+    $element = $this->getSession()->getPage()->findById('toolbar-tab-tour');
+    PHPUnit_Framework_Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Asserts that a tour is not available on the current page.
+   *
+   * @Then a tour should not be available
+   */
+  public function assertTourNotAvailable() {
+    $element = $this->getSession()->getPage()->findById('toolbar-tab-tour');
+    PHPUnit_Framework_Assert::assertEmpty($element);
   }
 
 }

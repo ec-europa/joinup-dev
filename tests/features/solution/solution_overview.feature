@@ -160,37 +160,78 @@ Feature: Solutions Overview
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
 
-  Scenario: My content facet
-    Given user:
-      | Username | Veronique végétal |
-    And user:
-      | Username | Mario meat |
+  Scenario: Users are able to filter solutions they have created or that are featured site-wide.
+    Given users:
+      | Username        | E-mail                      |
+      | Marjorie Parker | marjorie.parker@example.com |
+      | Ryker Brandon   | ryker.brandon@example.com   |
+      | Joann Womack    | joann.womack@example.com    |
     And the following collections:
-      | title                  | state     | featured |
-      | Friends of the falafel | validated | yes      |
+      | title                 | state     |
+      | Insane Wooden Crystal | validated |
     And the following solutions:
-      | title               | collection             | state     | featured | author            |
-      | Hungry herbalists   | Friends of the falafel | validated | no       | Veronique végétal |
-      | Pretty phytologists | Friends of the falafel | validated | yes      | Mario meat        |
-    # Technical: use a separate step to create a solution associated to the anonymous user.
+      | title                        | collection            | state     | featured | author          |
+      | Subdivision Morbid           | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
+      | Long Tungsten                | Insane Wooden Crystal | validated | no       | Ryker Brandon   |
+      | Hungry Disappointed Tungsten | Insane Wooden Crystal | validated | yes      | Marjorie Parker |
+      | Lost Yard                    | Insane Wooden Crystal | validated | no       | Joann Womack    |
+      | Lost Scattered Fish          | Insane Wooden Crystal | validated | no       | Joann Womack    |
+      | Silver Gravel                | Insane Wooden Crystal | validated | no       | Joann Womack    |
+    # Technical: use a separate step to create a collection associated to the anonymous user.
     And the following solution:
-      | title      | Mad vegetarians        |
-      | collection | Friends of the falafel |
-      | state      | validated              |
-      | featured   | no                     |
+      | title      | Flag Rough            |
+      | collection | Insane Wooden Crystal |
+      | state      | validated             |
+      | featured   | no                    |
 
-    # The "My solutions" facet item should not be shown to anonymous users.
+    When I am logged in as "Joann Womack"
+    And I click "Solutions"
+    Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+    When I click "My solutions" in the "My solutions content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Lost Yard           |
+      | Lost Scattered Fish |
+      | Silver Gravel       |
+    And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    # Regression test to ensure that the facets are cached by user.
+    # Subsequent page loads of the collections page would lead to cached facets
+    # to be leaked to other users.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
+    When I click "All solutions" in the "My solutions content" inline facet
+    Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+
+    When I am logged in as "Ryker Brandon"
+    When I click "Solutions"
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+    When I click "My solutions" in the "My solutions content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Long Tungsten |
+    And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    # Verify that the facets are cached for the correct user by visiting again
+    # the collections page without any facet filter.
+    When I click "All solutions" in the "My solutions content" inline facet
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+
     When I am an anonymous user
     And I click "Solutions"
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (1)"
-
-    When I am logged in as "Veronique végétal"
-    When I click "Solutions"
-    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (1), My solutions (1)"
-    When I click "My solutions" in the "My solutions content" inline facet
-    Then I should see the "Hungry herbalists" tile
-    But I should not see the "Pretty phytologists" tile
+    # The anonymous user has no access to the "My solutions" facet entry.
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
     When I click "Featured solutions" in the "My solutions content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Subdivision Morbid           |
+      | Hungry Disappointed Tungsten |
+    And the "My solutions content" inline facet should allow selecting the following values "All solutions"
+    When I click "All solutions" in the "My solutions content" inline facet
+    Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
+
+    When I am logged in as "Ryker Brandon"
+    And I click "Solutions"
+    And I click "Featured solutions" in the "My solutions content" inline facet
+    Then I should see the following tiles in the correct order:
+      | Subdivision Morbid           |
+      | Hungry Disappointed Tungsten |
+
+  Scenario: Solution overview active trail should persist on urls with arguments.
+    Given I am an anonymous user
+    And I visit "/solutions?a=1"
     Then "Solutions" should be the active item in the "Header menu" menu
-    And I should see the "Pretty phytologists" tile
-    But I should not see the "Hungry herbalists" tile
