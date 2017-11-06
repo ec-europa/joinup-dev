@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Database\Database;
-use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
@@ -163,19 +162,15 @@ function joinup_migrate_post_update_more_redirects() {
 }
 
 /**
- * Copy the about text to distributions for CTT Spain.
+ * Copy the about text to distributions for CTT Spain [ISAICP-4057].
  */
 function joinup_migrate_post_update_copy_about_text_ctt_spain() {
-  // Define a reusable anonymous function to retrieve the entity reference ID
-  // from a field item.
-  $get_reference_id = function (EntityReferenceItem $item) {
-    return $item->getValue()['target_id'];
-  };
-
-  // Load all affiliated content for the CTT Spain collection.
+  $solution_labels = [];
   $collection = Rdf::load('http://administracionelectronica.gob.es/ctt');
-  $affiliate_ids = array_map($get_reference_id, iterator_to_array($collection->get('field_ar_affiliates')));
-  foreach (Rdf::loadMultiple($affiliate_ids) as $affiliate) {
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $solutions */
+  $solutions = $collection->get('field_ar_affiliates');
+  // Iterate over affiliated solutions for the CTT Spain collection.
+  foreach ($solutions->referencedEntities() as $affiliate) {
     /** @var \Drupal\rdf_entity\RdfInterface $affiliate */
     if ($affiliate->bundle() === 'solution') {
       // Retrieve the description from the solution in all available languages.
@@ -189,12 +184,18 @@ function joinup_migrate_post_update_copy_about_text_ctt_spain() {
         continue;
       }
 
-      // Load the distributions that are associated with this solution.
-      $distribution_ids = array_map($get_reference_id, iterator_to_array($affiliate->get('field_is_distribution')));
-      foreach (Rdf::loadMultiple($distribution_ids) as $distribution) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $distributions */
+      $distributions = $affiliate->get('field_is_distribution');
+      if (!$distributions->isEmpty()) {
+        $solution_labels[] = "- {$affiliate->label()}";
+      }
+      // Iterate over distributions that are associated with this solution.
+      foreach ($distributions->referencedEntities() as $distribution) {
         /** @var \Drupal\rdf_entity\RdfInterface $distribution */
         foreach ($descriptions as $langcode => $description) {
-          $translated_entity = $distribution->getTranslation($langcode);
+          if (!$translated_entity = $distribution->getTranslation($langcode)) {
+            $translated_entity = $distribution->addTranslation($langcode, $distribution->toArray());
+          }
           $translated_entity->set('field_ad_description', $description);
         }
         $distribution->skip_notification = TRUE;
@@ -202,4 +203,5 @@ function joinup_migrate_post_update_copy_about_text_ctt_spain() {
       }
     }
   }
+  return $solution_labels ? t('Description of following solutions were copied to their child distributions:') . "\n" . implode("\n", $solution_labels) : t('No description copied.');
 }
