@@ -5,17 +5,27 @@ Feature: Tests the collection last update time.
     update time as the maximum changed time of the collection itself, its
     affiliate solutions, community content and custom pages.
 
-    Given the following solutions:
-      | title           | state     | modification date | creation date |
-      | Roof Hole Cover | validated | 2010-07-05T23:03  | 2001-01-01    |
-      | Mosquito Killer | proposed  | 2017-05-03T11:45  | 2001-01-02    |
+    Given users:
+      | Username    | Roles     |
+      | The Cleaner | moderator |
+    And  the following contact:
+      | email | foo@bar.com           |
+      | name  | Your Cleaning Company |
+    And the following owner:
+      | name | type                  |
+      | Sean | Private Individual(s) |
+    And the following solutions:
+      | title           | state     | modification date | creation date | author      | contact information   | owner | description                    |
+      | Roof Hole Cover | validated | 2010-07-05T23:03  | 2001-01-01    | The Cleaner | Your Cleaning Company | Sean  | Keep your roof in a good shape |
+      | Mosquito Killer | proposed  | 2017-05-03T11:45  | 2001-01-02    | The Cleaner | Your Cleaning Company | Sean  | Quiet nights                   |
     And the following collection:
       | title             | Household Wizard                |
       | state             | validated                       |
       | modification date | 2011-05-06T21:56                |
       | creation date     | 2001-01-03                      |
       | affiliates        | Roof Hole Cover,Mosquito Killer |
-    And I am logged in as a user with the "facilitator" role of the "Household Wizard" collection
+      | author            | The Cleaner                     |
+    And I am logged in as "The Cleaner"
 
     Given I go to the homepage of the "Household Wizard" collection
     # The newest is 'Mosquito Killer' solution but because is not validated, it
@@ -83,6 +93,29 @@ Feature: Tests the collection last update time.
     # Open the contextual menu that contains the local primary tasks.
     And I open the header local tasks menu
     Given I click "Delete"
+    When I press "Delete"
+    And I go to the homepage of the "Household Wizard" collection
+    # The deletion of community content node changes the last updated time.
+    Then I should see "few seconds ago"
+
+    Given I wait until the page contains the text "about a minute ago"
+    Then I should see "about a minute ago"
+
+    # Editing the solution changes the last updated time.
+    Given I go to the "Roof Hole Cover" solution edit form
+    And I select "[ABB102] Public Policy Cycle" from "Solution type"
+    And I select "Defence" from "Policy domain"
+    And I press "Publish"
+
+    When I go to the homepage of the "Household Wizard" collection
+    Then I should see "few seconds ago"
+
+    Given I wait until the page contains the text "about a minute ago"
+    Then I should see "about a minute ago"
+
+    # Deleting the solution changes the last updated time.
+    Given I go to the "Roof Hole Cover" solution edit form
+    And I click "Delete"
     When I press "Delete"
     And I go to the homepage of the "Household Wizard" collection
     # The deletion of community content node refreshes the last updated time.
