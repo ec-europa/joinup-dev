@@ -550,6 +550,7 @@ function solution_invalidate_collection(EntityInterface $entity) {
       foreach (Rdf::loadMultiple($ids) as $collection) {
         $tags = Cache::mergeTags($tags, $collection->getCacheTagsToInvalidate());
       }
+      Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
     }
   }
 }

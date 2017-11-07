@@ -24,7 +24,6 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
-    - collection
     - ds
     - image
     - joinup_core
@@ -91,7 +90,7 @@ content:
     region: content
   last_update:
     label: hidden
-    type: last_update_timestamp
+    type: joinup_timestamp_timeago
     weight: 4
     settings:
       date_format: medium

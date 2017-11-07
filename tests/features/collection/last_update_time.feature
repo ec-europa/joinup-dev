@@ -81,7 +81,7 @@ Feature: Tests the collection last update time.
     # Delete a community content node.
     Given I go to the content page of the type document with the title "Get Rid of Rats"
     # Open the contextual menu that contains the local primary tasks.
-    And I press "local-tasks-primary"
+    And I open the header local tasks menu
     Given I click "Delete"
     When I press "Delete"
     And I go to the homepage of the "Household Wizard" collection
