@@ -13,7 +13,7 @@ Feature: Tours
     And I am on the homepage
     Then a tour should not be available
 
-  Scenario Outline: Anonymous user can access public pages
+  Scenario Outline: Moderators can access tours
     Given I am logged in as a user with the "moderator" role
     When I visit "<path>"
     Then a tour should be available
