@@ -2189,7 +2189,7 @@ JS;
    * @Then a tour should be available
    */
   public function assertTourAvailable() {
-    $element = $this->getSession()->getPage()->findById('toolbar-tab-tour');
+    $element = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
     PHPUnit_Framework_Assert::assertNotEmpty($element);
   }
 
@@ -2199,7 +2199,7 @@ JS;
    * @Then a tour should not be available
    */
   public function assertTourNotAvailable() {
-    $element = $this->getSession()->getPage()->findById('toolbar-tab-tour');
+    $element = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
     PHPUnit_Framework_Assert::assertEmpty($element);
   }
 
