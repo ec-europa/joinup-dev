@@ -5,6 +5,9 @@ core: 8.x
 package: Joinup
 dependencies:
   - options
+  - flag
+  - joinup_core
+  - message_subscribe
 
 config_devel:
  - core.entity_form_display.user.user.subscription_settings
@@ -15,3 +18,4 @@ config_devel:
  - field.storage.user.field_user_frequency
  - field.storage.user.field_user_group_types
  - field.storage.user.field_user_subscription_events
+ - flag.flag.subscribe_discussions

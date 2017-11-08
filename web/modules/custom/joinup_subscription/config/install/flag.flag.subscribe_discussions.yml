@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies: {  }
+id: subscribe_discussions
+label: 'Subscribe discussions'
+bundles:
+  - discussion
+entity_type: node
+global: false
+weight: 0
+flag_short: Subscribe
+flag_long: ''
+flag_message: 'You have been subscribed to the discussion.'
+unflag_short: Unsubscribe
+unflag_long: ''
+unflag_message: 'You have been unsubscribed from the discussion.'
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: reload
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+linkTypeConfig: {  }
