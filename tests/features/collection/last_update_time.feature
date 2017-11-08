@@ -1,4 +1,4 @@
-@api @javascript @clearStaticCache
+@api @javascript @terms @clearStaticCache
 Feature: Tests the collection last update time.
 
   Scenario: As a user visiting a collection, I want to see the collection last
@@ -104,7 +104,7 @@ Feature: Tests the collection last update time.
     # Editing the solution changes the last updated time.
     Given I go to the "Roof Hole Cover" solution edit form
     And I select "[ABB102] Public Policy Cycle" from "Solution type"
-    And I select "Defence" from "Policy domain"
+    And I select "Demography" from "Policy domain"
     And I press "Publish"
 
     When I go to the homepage of the "Household Wizard" collection
