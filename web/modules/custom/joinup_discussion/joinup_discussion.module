@@ -5,6 +5,10 @@
  * Hook implementations for the Joinup Discussion module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+
 /**
  * Implements hook_entity_extra_field_info().
  */
@@ -18,4 +22,37 @@ function joinup_discussion_entity_extra_field_info() {
   ];
 
   return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function joinup_discussion_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$display->getComponent('invite_link')) {
+    return;
+  }
+
+  $url = Url::fromRoute('joinup_invite.discussion', [
+    'node' => $entity->id(),
+  ]);
+
+  $build['invite_link'] = [
+    '#theme' => 'link_icon',
+    '#title' => t('Invite'),
+    '#icon' => 'user',
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['action-link'],
+    ],
+    '#access' => $url->access(),
+  ];
+
+  // The invite link varies by user role (since it is shown to moderators) and
+  // per discussion authorship, but this is very quick to render so we opt to
+  // vary per user rather than making a custom cache context for this.
+  $build['#cache'] = [
+    'contexts' => [
+      'user',
+    ],
+  ];
 }
