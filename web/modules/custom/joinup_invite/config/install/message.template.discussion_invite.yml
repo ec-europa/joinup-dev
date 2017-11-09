@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: discussion_invite
+label: 'Invite to discussion'
+description: 'Sent when a user is invited to join a discussion.'
+text:
+  -
+    value: '<p>You are invited to participate in a discussion.</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name invites you to participate in the discussion <a href=\"@entity:url\">@entity:title</a>.</p><p>If you are interested please <a href="@discussion_invite_url">accept the invitation</a>. You will be subscribed to the discussion and will be notified of updates.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
