@@ -201,3 +201,17 @@ Feature: Sharing content between collections
       | document     |
       | discussion   |
       | news         |
+
+  Scenario: Shared sticky content is erroneously shown first.
+    Given collections:
+      | title         | state     |
+      | Milky Way     | validated |
+      | Chocolate Way | validated |
+    And "document" content:
+      | title                 | collection    | shared in     | state     | created    | pinned |
+      | Milky Way content     | Milky Way     | Chocolate Way | validated | 2017-06-04 | yes    |
+      | Chocolate Way content | Chocolate Way |               | validated | 2017-06-05 | no     |
+    When I go to the homepage of the "Chocolate Way" collection
+    Then I should see the following tiles in the correct order:
+      | Chocolate Way content |
+      | Milky Way content     |
