@@ -120,7 +120,7 @@ content:
     region: content
   report:
     label: hidden
-    weight: 7
+    weight: 6
     region: content
     settings:
       trim_length: 80
@@ -139,8 +139,13 @@ content:
       joinup:
         template_suggestion: no_wrappers
     type: link
+  invite_link:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   share_link:
-    weight: 6
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -2,5 +2,20 @@
 
 /**
  * @file
- * Contains functions relative to the discussion entity.
+ * Hook implementations for the Joinup Discussion module.
  */
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_discussion_entity_extra_field_info() {
+  $fields = [];
+
+  $fields['node']['discussion']['display']['invite_link'] = [
+    'label' => t('Invite'),
+    'description' => t('A link to invite users to the discussion.'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
+}
