@@ -8,9 +8,11 @@
 use Drupal\flag\Entity\Flag;
 
 /**
- * Delete the default flags created by the message_subscribe module.
+ * Install the message_subscribe module and delete its default flags.
  */
-function joinup_subscription_post_update_delete_default_flags() {
+function joinup_subscription_post_update_install_message_subscribe() {
+  \Drupal::service('module_installer')->install(['message_subscribe']);
+
   $flag_ids = [
     'subscribe_og',
     'subscribe_node',
