@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Default theme implementation of link that are accompanied with an icon.
+ *
+ * Available variables:
+ * - icon: The name of the icon.
+ * - title: The link title.
+ * - url: The link URL.
+ *
+ * @ingroup themeable
+ */
+#}
+<a href="{{ url }}"{{ attributes }}><span class="action-link__icon icon icon--{{ icon }}"></span><span class="action-link__link">{{ title }}</span></a>

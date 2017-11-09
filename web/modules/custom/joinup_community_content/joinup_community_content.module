@@ -10,7 +10,6 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 
@@ -43,9 +42,9 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     'node' => $entity->id(),
   ]);
   $build['share_link'] = [
-    '#type' => 'link',
-    // Tech lead forced me to do this.
-    '#title' => Markup::create('<span class="action-link__icon icon icon--share"></span><span class="action-link__link">' . t('Share') . '</span>'),
+    '#theme' => 'link_icon',
+    '#title' => t('Share'),
+    '#icon' => 'share',
     '#url' => $url,
     '#attributes' => [
       'class' => ['use-ajax', 'action-link'],
@@ -56,7 +55,6 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       ]),
     ],
     '#access' => $url->access(),
-
   ];
   $build['#cache'] = [
     'contexts' => [
@@ -164,10 +162,13 @@ function joinup_community_content_preprocess_node(&$variables) {
  */
 function joinup_community_content_theme($existing, $type, $theme, $path) {
   return [
-    'social_share' => [
+    'advanced_search_pseudo_facet' => [
       'variables' => ['entity' => NULL],
     ],
-    'advanced_search_pseudo_facet' => [
+    'link_icon' => [
+      'variables' => ['icon' => NULL, 'title' => NULL, 'url' => NULL],
+    ],
+    'social_share' => [
       'variables' => ['entity' => NULL],
     ],
   ];
