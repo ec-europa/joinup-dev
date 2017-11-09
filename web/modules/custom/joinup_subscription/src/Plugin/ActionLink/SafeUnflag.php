@@ -4,8 +4,8 @@ namespace Drupal\joinup_subscription\Plugin\ActionLink;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
-use Drupal\flag\ActionLink\ActionLinkTypeBase;
 use Drupal\flag\FlagInterface;
+use Drupal\flag\Plugin\ActionLink\FormEntryTypeBase;
 
 /**
  * Provides a flag simple link for flagging and a confirm form for unflagging.
@@ -16,7 +16,7 @@ use Drupal\flag\FlagInterface;
  *   description = "A normal link to flag, a confirmation form to unflag."
  * )
  */
-class SafeUnflag extends ActionLinkTypeBase {
+class SafeUnflag extends FormEntryTypeBase {
 
   /**
    * {@inheritdoc}

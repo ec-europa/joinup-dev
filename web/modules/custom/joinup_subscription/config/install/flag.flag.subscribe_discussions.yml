@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - joinup_subscription
 id: subscribe_discussions
 label: 'Subscribe discussions'
 bundles:
@@ -16,7 +18,7 @@ unflag_long: ''
 unflag_message: 'You have been unsubscribed from the discussion.'
 unflag_denied_text: ''
 flag_type: 'entity:node'
-link_type: reload
+link_type: safe_unflag
 flagTypeConfig:
   show_in_links: {  }
   show_as_field: true
@@ -24,4 +26,9 @@ flagTypeConfig:
   show_contextual_link: false
   extra_permissions:
     owner: '0'
-linkTypeConfig: {  }
+linkTypeConfig:
+  flag_confirmation: 'Subscribe to this discussion?'
+  unflag_confirmation: 'Unsubscribe from this discussion?'
+  flag_create_button: Subscribe
+  flag_delete_button: Unsubscribe
+  form_behavior: modal
