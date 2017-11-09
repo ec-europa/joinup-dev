@@ -12,21 +12,25 @@
 <div class="mdl-layout__container">
   <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
     <header class="section section--header" role="banner">
-      <div class="mdl-layout__header-row">
+      <div class="mdl-layout__header-row mdl-layout__header-row--maintenance">
         <a href="{{ front_page }}" class="header-logo mdl-layout-title" title="{{ 'Home'|t }}">
           <img src="{{ base_path ~ directory }}/images/logo.png" alt="{{ 'Home'|t }}">
         </a>
       </div>
     </header>
 
-    <main role="main">
-      <div class="row">
-        <div class="mdl-grid mdl-grid--center">
-          <div class="section section--content-middle center">
-            {% if title %}
-              <h1>{{ title }}</h1>
-            {% endif %}
-            {{ page.content }}
+    <main class="section section--content" role="main">
+      <div class="main-container">
+        <div class="row">
+          <div class="mdl-grid mdl-grid--center">
+            <div class="section section--main mdl-cell content-container--default mdl-cell--8-col">
+              <div class="section section--content-middle center">
+                {% if title %}
+                  <h1>{{ title }}</h1>
+                {% endif %}
+                {{ page.content }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
