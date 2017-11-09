@@ -1038,4 +1038,39 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
   }
 
+  /**
+   * Attempts to check a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I select/check the :row_text row
+   */
+  public function assertSelectRow($text) {
+    $page = $this->getSession()->getPage();
+    $rows = $page->findAll('css', 'tr');
+    if (empty($rows)) {
+      throw new \Exception(sprintf('No rows found on the page %s', $this->getSession()->getCurrentUrl()));
+    }
+    $found = FALSE;
+    /** @var \Behat\Mink\Element\NodeElement $row */
+    foreach ($rows as $row) {
+      if (strpos($row->getText(), $text) !== FALSE) {
+        $found = TRUE;
+        break;
+      }
+    }
+    if (!$found) {
+      throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
+    }
+    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
+      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    }
+    $checkbox->check();
+  }
+
 }
