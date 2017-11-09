@@ -1,7 +1,7 @@
-entity.rdf_entity.members.invite:
+entity.rdf_entity.facilitators.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
   defaults:
-    _form: '\Drupal\joinup_invite\Form\InviteForm'
+    _form: '\Drupal\joinup_invite\Form\InviteFacilitatorsForm'
     _title: 'Add facilitators'
   requirements:
     _og_user_access_group: 'manage members'
