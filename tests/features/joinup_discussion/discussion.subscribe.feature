@@ -24,3 +24,9 @@ Feature: Subscribing to discussions
 
     When I click "Subscribe"
     Then I should see the link "Unsubscribe"
+
+    When I click "Unsubscribe"
+    Then I should see the heading "Unsubscribe from this discussion?"
+    When I press "Unsubscribe"
+    Then I should see the heading "Rare Butter"
+    And I should see the link "Subscribe"
