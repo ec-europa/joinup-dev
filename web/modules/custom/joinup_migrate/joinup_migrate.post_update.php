@@ -163,44 +163,43 @@ function joinup_migrate_post_update_more_redirects() {
 }
 
 /**
- * Switches the ownership of the 'Sharing and reuse of IT solutions' collection.
+ * Switch the ownership in 'Sharing and reuse of IT solutions' [ISAICP-3980].
  */
 function joinup_migrate_post_update_srits_change_owner() {
   $collection_id = 'http://data.europa.eu/w21/e5f0febe-f29c-428a-a1a2-6bb0ccd37949';
   // The 'Joinup moderator'.
-  $current_owner_id = '700003';
+  $current_owner_id = 700003;
   // The 'Joinup editor'.
-  $new_owner_id = '6363';
+  $new_owner_id = 6363;
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_storage */
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
   $entity_type_manager = \Drupal::service('entity_type.manager');
 
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
   $collection = $entity_type_manager->getStorage('rdf_entity')->load($collection_id);
   if (empty($collection)) {
-    throw new Exception(t('Collection with id :id was not found.', [
-      ':id' => $collection_id,
-    ]));
+    throw new Exception("Collection with id '$collection_id' was not found.");
   }
 
-  $current_owner = $entity_type_manager->getStorage('user')->load($current_owner_id);
+  $user_storage = $entity_type_manager->getStorage('user');
+  /** @var \Drupal\user\UserInterface $current_owner */
+  $current_owner = $user_storage->load($current_owner_id);
   if (empty($current_owner)) {
-    throw new Exception(t('User with id :id was not found.', [
-      ':id' => $current_owner_id,
-    ]));
+    throw new Exception("User with id $current_owner_id was not found.");
   }
 
-  $new_owner = $entity_type_manager->getStorage('user')->load($new_owner_id);
+  /** @var \Drupal\user\UserInterface $new_owner */
+  $new_owner = $user_storage->load($new_owner_id);
   if (empty($new_owner)) {
-    throw new Exception(t('User with id :id was not found.', [
-      ':id' => $new_owner_id,
-    ]));
+    throw new Exception("User with id $new_owner_id was not found.");
   }
 
   // Revoke the administrator role from the 'Joinup moderator'.
+  $admin_role = 'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR;
   $membership = $membership_manager->getMembership($collection, $current_owner);
   if (!empty($membership)) {
-    $membership->revokeRole(OgRole::getRole('rdf_entity', 'collection', OgRoleInterface::ADMINISTRATOR));
+    $membership->revokeRoleById($admin_role);
     $membership->skip_notification = TRUE;
     $membership->save();
   }
@@ -213,11 +212,15 @@ function joinup_migrate_post_update_srits_change_owner() {
   }
 
   $roles = [
-    'rdf_entity-collection-' . OgRoleInterface::AUTHENTICATED,
-    'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR,
+    $admin_role,
     'rdf_entity-collection-facilitator',
   ];
   $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
   $membership->skip_notification = TRUE;
   $membership->save();
+
+  // Finally, switch the author of the collection.
+  $collection->setOwner($new_owner);
+  $collection->skip_notification = TRUE;
+  $collection->save();
 }
