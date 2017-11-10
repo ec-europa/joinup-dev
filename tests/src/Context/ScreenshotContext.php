@@ -18,6 +18,38 @@ use Behat\Mink\Exception\DriverException;
 class ScreenshotContext extends RawMinkContext {
 
   /**
+   * The directory where the screenshots are saved.
+   *
+   * @var string
+   */
+  protected $screenshotDir;
+
+  /**
+   * Constructs a new ScreenshotContext context.
+   *
+   * @param string $screenshot_dir
+   *   The directory where the screenshots are saved. The value is passed in
+   *   behat.yml as:
+   *   @code
+   *   default:
+   *     suites:
+   *       default:
+   *         contexts:
+   *           - ...
+   *           - Drupal\joinup\Context\ScreenshotContext:
+   *               screenshot_dir: '/path/to/project/tmp/behat'
+   *   @endcode
+   *
+   * @see tests/behat.yml.dist
+   */
+  public function __construct($screenshot_dir) {
+    $this->screenshotDir = $screenshot_dir;
+    if (!is_dir($this->screenshotDir)) {
+      @mkdir($this->screenshotDir);
+    }
+  }
+
+  /**
    * Saves a screen-shot under a given name.
    *
    * @param string $name
@@ -26,7 +58,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then (I )take a screenshot :name
    */
   public function takeScreenshot($name = NULL) {
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $name;
+    $file_name = $this->screenshotDir . DIRECTORY_SEPARATOR . $name;
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message, FALSE);
   }
@@ -37,7 +69,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then (I )take a screenshot
    */
   public function takeScreenshotUnnamed() {
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot-' . user_password();
+    $file_name = $this->screenshotDir . DIRECTORY_SEPARATOR . 'behat-screenshot-' . user_password();
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
@@ -69,7 +101,7 @@ class ScreenshotContext extends RawMinkContext {
             $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
             $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
             $file_name = substr($file_name, 0, 30);
-            $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
+            $file_name = $this->screenshotDir . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
 
             $message = "PHP notice detected, screenshot taken: @file_name";
             $this->createScreenshot($file_name, $message);
@@ -100,7 +132,7 @@ class ScreenshotContext extends RawMinkContext {
     $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
     $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
     $file_name = substr($file_name, 0, 30);
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
+    $file_name = $this->screenshotDir . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
     $message = "Screenshot for failed step created in @file_name";
     $this->createScreenshot($file_name, $message);
   }

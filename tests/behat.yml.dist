@@ -8,8 +8,12 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\joinup\Context\ScreenshotContext:
+            screenshot_dir: '${tmp.dir}/behat'
       filters:
         tags: '~@wip'
+      paths:
+        features: features/solution/transfer_ownership.feature
   extensions:
     Behat\MinkExtension:
       base-url: '${behat.base_url}'
@@ -43,7 +47,7 @@ default:
         Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
       drupal:
-        drupal_root: '${website.drupal.dir}'
+        drupal_root: '${project.basedir}/tmp'
       selectors:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
