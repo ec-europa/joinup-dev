@@ -29,16 +29,7 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @param string $screenshot_dir
    *   The directory where the screenshots are saved. The value is passed in
-   *   behat.yml as:
-   *   @code
-   *   default:
-   *     suites:
-   *       default:
-   *         contexts:
-   *           - ...
-   *           - Drupal\joinup\Context\ScreenshotContext:
-   *               screenshot_dir: '/path/to/project/tmp/behat'
-   *   @endcode
+   *   behat.yml.
    *
    * @see tests/behat.yml.dist
    */
