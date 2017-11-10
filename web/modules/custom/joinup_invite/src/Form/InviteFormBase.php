@@ -128,6 +128,9 @@ abstract class InviteFormBase extends FormBase {
         ->condition('mail', $filter, 'CONTAINS')
         ->condition('field_user_first_name', $filter, 'CONTAINS')
         ->condition('field_user_family_name', $filter, 'CONTAINS')
+        ->sort('field_user_first_name')
+        ->sort('field_user_family_name')
+        ->range(0, 50)
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
