@@ -47,7 +47,7 @@ default:
         Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
       drupal:
-        drupal_root: '${project.basedir}/tmp'
+        drupal_root: '${website.drupal.dir}'
       selectors:
         message_selector: '.alert'
         error_message_selector: '.alert.alert--error'
