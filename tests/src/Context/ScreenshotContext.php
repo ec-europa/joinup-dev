@@ -36,7 +36,7 @@ class ScreenshotContext extends RawMinkContext {
   public function __construct($screenshot_dir) {
     $this->screenshotDir = $screenshot_dir;
     if (!is_dir($this->screenshotDir)) {
-      @mkdir($this->screenshotDir);
+      @mkdir($this->screenshotDir, 0777, TRUE);
     }
   }
 
