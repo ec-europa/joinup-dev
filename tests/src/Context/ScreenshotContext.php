@@ -152,7 +152,7 @@ class ScreenshotContext extends RawMinkContext {
       }
       $html_data = $this->getSession()->getPage()->getContent();
       file_put_contents($file_name, $html_data);
-      print_r($html_data);
+      exec("aws s3 cp $file_name s3://joinup2/");
     }
     if ($message) {
       print strtr($message, ['@file_name' => $file_name]);
