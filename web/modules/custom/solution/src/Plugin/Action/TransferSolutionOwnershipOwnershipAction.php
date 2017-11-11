@@ -186,8 +186,8 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
     $this->tempStore->delete($this->currentUser->id());
     drupal_set_message($message, 'warning');
     $url = Url::fromRoute($this->routeMatch->getRouteName(), $this->routeMatch->getRawParameters()->all());
-print_r($url->toString());
-print_r(drupal_get_messages('warning'));
+    print_r($url->toString());
+    print_r(drupal_get_messages('warning'));
     (new RedirectResponse($url->toString()))->send();
   }
 
