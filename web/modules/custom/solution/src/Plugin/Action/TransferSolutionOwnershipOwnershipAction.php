@@ -184,7 +184,7 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
    */
   protected function redirectBackToView(MarkupInterface $message) : void {
     $this->tempStore->delete($this->currentUser->id());
-    drupal_set_message($message, 'warning', true);
+    drupal_set_message($message, 'warning', TRUE);
     $url = Url::fromRoute($this->routeMatch->getRouteName(), $this->routeMatch->getRawParameters()->all());
     (new RedirectResponse($url->toString()))->send();
     exit;
