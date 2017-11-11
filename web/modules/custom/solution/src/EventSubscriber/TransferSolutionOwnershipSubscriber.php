@@ -62,7 +62,7 @@ class TransferSolutionOwnershipSubscriber implements EventSubscriberInterface {
    */
   public function alterRedirection(FilterResponseEvent $event) {
     $response = $event->getResponse();
-    if ($response->isRedirect() && $response instanceOf RedirectResponse) {
+    if ($response->isRedirect() && $response instanceof RedirectResponse) {
       $path = trim(parse_url($response->getTargetUrl(), PHP_URL_PATH), '/');
       /** @var \Symfony\Component\HttpFoundation\RedirectResponse $response */
       $url = Url::fromUri("internal:/$path");
