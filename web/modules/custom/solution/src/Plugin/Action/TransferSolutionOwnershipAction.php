@@ -4,20 +4,17 @@ declare(strict_types = 1);
 
 namespace Drupal\solution\Plugin\Action;
 
-use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides an action allowing an admin to transfer a solution ownership.
@@ -29,7 +26,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   confirm_form_route_name = "solution.transfer_ownership_confirm",
  * )
  */
-class TransferSolutionOwnershipOwnershipAction extends ActionBase implements ContainerFactoryPluginInterface {
+class TransferSolutionOwnershipAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   use StringTranslationTrait;
 
@@ -57,8 +54,10 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
   /**
    * Errors collector.
    *
-   * @var MarkupInterface
+   * @var \Drupal\Component\Render\MarkupInterface[]
    */
+  protected $warnings = [];
+
   /**
    * Constructs a new action object.
    *
@@ -102,7 +101,7 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
   public function executeMultiple(array $memberships) {
     // We only allow one user to pickup the membership.
     if (count($memberships) > 1) {
-      $this->redirectBackToView($this->t('You cannot transfer the solution ownership to more than one user. Please select a single user.'));
+      $this->warnings[] = $this->t('You cannot transfer the solution ownership to more than one user. Please select a single user.');
     }
     parent::executeMultiple($memberships);
   }
@@ -117,11 +116,12 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
         '%member' => $membership->getOwner()->label(),
         '%solution' => $membership->getGroup()->label(),
       ];
-      $this->redirectBackToView($this->t('Member %member is already the owner of %solution solution. Please select other user.', $args));
+      $this->warnings[] = $this->t('Member %member is already the owner of %solution solution. Please select other user.', $args);
     }
 
     $this->tempStore->set($this->currentUser->id(), [
       'membership' => $membership->id(),
+      'warnings' => $this->warnings,
     ]);
   }
 
@@ -179,20 +179,6 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
     return
       ($membership = Og::getMembership($solution, $account)) &&
       $membership->hasRole('rdf_entity-solution-administrator');
-  }
-
-  /**
-   * Returns to view and poop-up a warning message.
-   *
-   * @param \Drupal\Component\Render\MarkupInterface $message
-   *   The message to be displayed.
-   */
-  protected function redirectBackToView(MarkupInterface $message) : void {
-    $this->tempStore->delete($this->currentUser->id());
-    drupal_set_message($message, 'warning', TRUE);
-    $url = Url::fromRoute($this->routeMatch->getRouteName(), $this->routeMatch->getRawParameters()->all());
-    (new RedirectResponse($url->toString()))->send();
-    return;
   }
 
 }

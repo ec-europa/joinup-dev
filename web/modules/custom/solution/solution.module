@@ -778,7 +778,7 @@ function solution_form_views_form_og_members_overview_default_alter(&$form, Form
 
   /** @var \Drupal\Core\Action\ActionManager $action_manager */
   $action_manager = \Drupal::service('plugin.manager.action');
-  /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipOwnershipAction $plugin */
+  /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $plugin */
   $plugin = $action_manager->createInstance('joinup_transfer_solution_ownership');
   // Allow the ownership to be transferred only for solutions and only by users
   // with proper permissions.

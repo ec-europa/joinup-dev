@@ -245,7 +245,7 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
     if (!$this->membership) {
       return AccessResult::forbidden();
     }
-    /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipOwnershipAction $action */
+    /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $action */
     $action = $this->actionPluginManager->createInstance('joinup_transfer_solution_ownership');
     return $action->access($this->membership, $this->currentUser, TRUE);
   }
