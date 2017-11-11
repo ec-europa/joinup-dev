@@ -32,15 +32,15 @@ Feature: Tests the solution ownership transfer.
     Given I select the "cruel" row
     And I select "Transfer the ownership of the solution to the selected member" from "Action"
     When I press "Apply to selected items"
-But I take a screenshot
-    Then I should see "Member cruel is already the owner of Learn German in 1 Month solution. Please select other user."
+#But I take a screenshot
+#    Then I should see "Member cruel is already the owner of Learn German in 1 Month solution. Please select other user."
 
-#    # Try to transfer the ownership to multiple users.
-#    Given I select the "loner" row
-#    And I select the "shy" row
-#    And I select "Transfer the ownership of the solution to the selected member" from "Action"
-#    When I press "Apply to selected items"
-#    Then I should see "You cannot transfer the solution ownership to more than one user. Please select a single user."
+    # Try to transfer the ownership to multiple users.
+    Given I select the "loner" row
+    And I select the "shy" row
+    And I select "Transfer the ownership of the solution to the selected member" from "Action"
+    When I press "Apply to selected items"
+    Then I should see "You cannot transfer the solution ownership to more than one user. Please select a single user."
 #
 #    Given I select the "shy" row
 #    And I select "Transfer the ownership of the solution to the selected member" from "Action"
