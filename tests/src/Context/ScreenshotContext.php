@@ -166,7 +166,9 @@ class ScreenshotContext extends RawMinkContext {
     }
 
     if ($this->artifactsS3Path) {
-      exec("aws s3 cp $file_name s3://{$this->artifactsS3Path}/");
+      $output = ["aws s3 cp $file_name s3://{$this->artifactsS3Path}/"];
+      exec($output[0], $output);
+      print implode("\n", $output);
     }
 
     if ($message) {
