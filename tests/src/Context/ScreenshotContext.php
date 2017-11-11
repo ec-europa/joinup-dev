@@ -25,19 +25,30 @@ class ScreenshotContext extends RawMinkContext {
   protected $screenshotDir;
 
   /**
+   * The Amazon S3 bucket and path where to upload the screenshots.
+   *
+   * @var string
+   */
+  protected $artifactsS3Path;
+
+  /**
    * Constructs a new ScreenshotContext context.
    *
    * @param string $screenshot_dir
    *   The directory where the screenshots are saved. The value is passed in
    *   behat.yml.
+   * @param string $artifacts_s3_path
+   *   (optional) An Amazon S3 bucket identifier followed by path, where to
+   *   store the screenshots.
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct($screenshot_dir) {
+  public function __construct($screenshot_dir, $artifacts_s3_path = NULL) {
     $this->screenshotDir = $screenshot_dir;
     if (!is_dir($this->screenshotDir)) {
       @mkdir($this->screenshotDir, 0777, TRUE);
     }
+    $this->artifactsS3Path = trim($artifacts_s3_path, '/');
   }
 
   /**
@@ -152,8 +163,12 @@ class ScreenshotContext extends RawMinkContext {
       }
       $html_data = $this->getSession()->getPage()->getContent();
       file_put_contents($file_name, $html_data);
-      exec("aws s3 cp $file_name s3://joinup2/");
     }
+
+    if ($this->artifactsS3Path) {
+      exec("aws s3 cp $file_name s3://{$this->artifactsS3Path}/");
+    }
+
     if ($message) {
       print strtr($message, ['@file_name' => $file_name]);
     }

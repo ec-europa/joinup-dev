@@ -10,6 +10,7 @@ default:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\joinup\Context\ScreenshotContext:
             screenshot_dir: '${tmp.dir}/behat'
+            artifacts_s3_path: '${behat.artifacts_s3_path}'
       filters:
         tags: '~@wip'
       paths:
