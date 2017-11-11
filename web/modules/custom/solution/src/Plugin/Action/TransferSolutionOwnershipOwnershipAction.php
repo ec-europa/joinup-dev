@@ -99,6 +99,8 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
     if (count($memberships) > 1) {
       $this->redirectBackToView($this->t('You cannot transfer the solution ownership to more than one user. Please select a single user.'));
     }
+    print "m u l t i p l e";
+
     parent::executeMultiple($memberships);
   }
 
@@ -106,13 +108,14 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
    * {@inheritdoc}
    */
   public function execute(OgMembership $membership = NULL) {
+    print "singgggg le";
+
     // Is the selected member already the owner?
     if ($membership->hasRole('rdf_entity-solution-administrator')) {
       $args = [
         '%member' => $membership->getOwner()->label(),
         '%solution' => $membership->getGroup()->label(),
       ];
-      print "aaauhfusfsgvsyfgvyg";
       $this->redirectBackToView($this->t('Member %member is already the owner of %solution solution. Please select other user.', $args));
     }
 
