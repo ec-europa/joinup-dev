@@ -112,6 +112,7 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
         '%member' => $membership->getOwner()->label(),
         '%solution' => $membership->getGroup()->label(),
       ];
+      print "aaauhfusfsgvsyfgvyg";
       $this->redirectBackToView($this->t('Member %member is already the owner of %solution solution. Please select other user.', $args));
     }
 
