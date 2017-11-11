@@ -55,6 +55,11 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
   protected $routeMatch;
 
   /**
+   * Errors collector.
+   *
+   * @var MarkupInterface
+   */
+  /**
    * Constructs a new action object.
    *
    * @param array $configuration
@@ -187,7 +192,7 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
     drupal_set_message($message, 'warning', TRUE);
     $url = Url::fromRoute($this->routeMatch->getRouteName(), $this->routeMatch->getRawParameters()->all());
     (new RedirectResponse($url->toString()))->send();
-    exit;
+    return;
   }
 
 }
