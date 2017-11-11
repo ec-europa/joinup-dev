@@ -99,8 +99,6 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
     if (count($memberships) > 1) {
       $this->redirectBackToView($this->t('You cannot transfer the solution ownership to more than one user. Please select a single user.'));
     }
-    print "m u l t i p l e";
-
     parent::executeMultiple($memberships);
   }
 
@@ -108,8 +106,6 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
    * {@inheritdoc}
    */
   public function execute(OgMembership $membership = NULL) {
-    print "singgggg le";
-
     // Is the selected member already the owner?
     if ($membership->hasRole('rdf_entity-solution-administrator')) {
       $args = [
@@ -188,11 +184,10 @@ class TransferSolutionOwnershipOwnershipAction extends ActionBase implements Con
    */
   protected function redirectBackToView(MarkupInterface $message) : void {
     $this->tempStore->delete($this->currentUser->id());
-    drupal_set_message($message, 'warning');
+    drupal_set_message($message, 'warning', true);
     $url = Url::fromRoute($this->routeMatch->getRouteName(), $this->routeMatch->getRawParameters()->all());
-    print_r($url->toString());
-    print_r(drupal_get_messages('warning'));
     (new RedirectResponse($url->toString()))->send();
+    exit;
   }
 
 }
