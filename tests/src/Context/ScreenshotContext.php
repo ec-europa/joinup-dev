@@ -18,6 +18,48 @@ use Behat\Mink\Exception\DriverException;
 class ScreenshotContext extends RawMinkContext {
 
   /**
+   * The directory where the screenshots are saved.
+   *
+   * @var string
+   */
+  protected $screenshotsDir;
+
+  /**
+   * The location where to upload the screenshots as an Amazon S3 bucket URI.
+   *
+   * @var string
+   */
+  protected $artifactsS3Uri;
+
+  /**
+   * Constructs a new ScreenshotContext context.
+   *
+   * @param string $screenshots_dir
+   *   The directory where the screenshots are saved. The value is
+   *   passed in behat.yml. If an empty string is received, the system temporary
+   *   directory is used.
+   * @param string $artifacts_s3_uri
+   *   An Amazon S3 bucket URI, such as s3://<bucket name>/path/to/artifacts,
+   *   where to store the screenshots. If an empty value is received, no AWS S3
+   *   upload will occur.
+   *
+   * @see tests/behat.yml.dist
+   */
+  public function __construct($screenshots_dir, $artifacts_s3_uri) {
+    $screenshots_dir = trim($screenshots_dir);
+    if (!$screenshots_dir) {
+      $screenshots_dir = sys_get_temp_dir();
+    }
+    // If a directory has been passed, ensure the directory exists.
+    elseif (!is_dir($screenshots_dir)) {
+      $screenshots_dir = rtrim($screenshots_dir, '/');
+      @mkdir($screenshots_dir, 0777, TRUE);
+    }
+    $this->screenshotsDir = $screenshots_dir;
+    $this->artifactsS3Uri = rtrim($artifacts_s3_uri, '/');
+  }
+
+  /**
    * Saves a screen-shot under a given name.
    *
    * @param string $name
@@ -26,7 +68,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then (I )take a screenshot :name
    */
   public function takeScreenshot($name = NULL) {
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $name;
+    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . $name;
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message, FALSE);
   }
@@ -37,7 +79,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then (I )take a screenshot
    */
   public function takeScreenshotUnnamed() {
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot';
+    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-screenshot';
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
@@ -69,7 +111,7 @@ class ScreenshotContext extends RawMinkContext {
             $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
             $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
             $file_name = substr($file_name, 0, 30);
-            $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
+            $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
 
             $message = "PHP notice detected, screenshot taken: @file_name";
             $this->createScreenshot($file_name, $message);
@@ -100,7 +142,7 @@ class ScreenshotContext extends RawMinkContext {
     $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
     $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
     $file_name = substr($file_name, 0, 30);
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
+    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
     $message = "Screenshot for failed step created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
@@ -130,6 +172,13 @@ class ScreenshotContext extends RawMinkContext {
       $html_data = $this->getSession()->getPage()->getContent();
       file_put_contents($file_name, $html_data);
     }
+
+    if ($this->artifactsS3Uri) {
+      $output = ["aws s3 cp $file_name {$this->artifactsS3Uri}/"];
+      exec($output[0], $output);
+      print implode("\n", $output);
+    }
+
     if ($message) {
       print strtr($message, ['@file_name' => $file_name]);
     }

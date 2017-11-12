@@ -8,6 +8,9 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\joinup\Context\ScreenshotContext:
+            screenshots_dir: '${behat.screenshots_dir}'
+            artifacts_s3_uri: '${behat.artifacts_s3_uri}'
       filters:
         tags: '~@wip'
   extensions:
