@@ -104,8 +104,11 @@ class InviteToDiscussionForm extends InviteFormBase {
     foreach ($event->getResult() as $type => $results) {
       $message = self::INVITATION_MESSAGE_TEXT[$type];
       $message_type = self::INVITATION_MESSAGE_TYPE[$type];
+      // Coder complains about passing variables to the translation service, but
+      // these are actually coming from a constant so it's fine.
+      // @codingStandardsIgnoreLine
       drupal_set_message($this->t($message, [
-        ':count' => count($results)
+        ':count' => count($results),
       ]), $message_type);
     }
   }

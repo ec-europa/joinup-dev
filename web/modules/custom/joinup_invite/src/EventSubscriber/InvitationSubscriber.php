@@ -113,7 +113,7 @@ class InvitationSubscriber extends NotificationSubscriberBase implements EventSu
     $discussion = $event->getDiscussion();
 
     // Helper function that returns a single results array.
-    $get_results_array = function(NodeInterface $discussion, AccountInterface $user) {
+    $get_results_array = function (NodeInterface $discussion, AccountInterface $user) {
       return [
         'discussion' => $discussion->id(),
         'user' => $user->id(),
@@ -129,10 +129,12 @@ class InvitationSubscriber extends NotificationSubscriberBase implements EventSu
           case self::INVITATION_STATUS_ACCEPTED:
             $result['accepted'][] = $get_results_array($discussion, $user);
             break;
+
           // If the invitation was already rejected, don't send an invitation.
           case self::INVITATION_STATUS_REJECTED:
             $result['rejected'][] = $get_results_array($discussion, $user);
             break;
+
           // If the invitation is still pending, resend the invitation.
           case self::INVITATION_STATUS_PENDING:
             $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
@@ -140,6 +142,7 @@ class InvitationSubscriber extends NotificationSubscriberBase implements EventSu
             $status = $success ? 'resent' : 'failed';
             $result[$status][] = $get_results_array($discussion, $user);
             break;
+
           default:
             throw new \Exception('Unknown invitation status');
         }

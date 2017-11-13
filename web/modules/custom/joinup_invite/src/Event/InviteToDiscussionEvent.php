@@ -65,17 +65,6 @@ class InviteToDiscussionEvent extends Event {
    * The result of the event.
    *
    * @var array
-   *   An associative array with the results of the invitations, with keys:
-   *   - 'success': invitations that were successfully sent.
-   *   - 'failed': invitations that could not be sent.
-   *   - 'resent': invitations that were already sent and have been resent.
-   *   - 'accepted': invitations that were not sent because the user is already
-   *     subscribed to the discussion.
-   *   - 'rejected': invitations that were not sent because the user has already
-   *     previously rejected the invitation.
-   *   Every value is an associative array with the following keys:
-   *   - 'discussion': the discussion ID.
-   *   - 'user': the user ID.
    */
   protected $result;
 
@@ -113,14 +102,40 @@ class InviteToDiscussionEvent extends Event {
   }
 
   /**
+   * Returns the result array.
+   *
    * @return array
+   *   An associative array with the results of the invitations, with keys:
+   *   - 'success': invitations that were successfully sent.
+   *   - 'failed': invitations that could not be sent.
+   *   - 'resent': invitations that were already sent and have been resent.
+   *   - 'accepted': invitations that were not sent because the user is already
+   *     subscribed to the discussion.
+   *   - 'rejected': invitations that were not sent because the user has already
+   *     previously rejected the invitation.
+   *   Every value is an associative array with the following keys:
+   *   - 'discussion': the discussion ID.
+   *   - 'user': the user ID.
    */
   public function getResult() : array {
     return $this->result;
   }
 
   /**
+   * Sets the result array.
+   *
    * @param array $result
+   *   An associative array with the results of the invitations, with keys:
+   *   - 'success': invitations that were successfully sent.
+   *   - 'failed': invitations that could not be sent.
+   *   - 'resent': invitations that were already sent and have been resent.
+   *   - 'accepted': invitations that were not sent because the user is already
+   *     subscribed to the discussion.
+   *   - 'rejected': invitations that were not sent because the user has already
+   *     previously rejected the invitation.
+   *   Every value is an associative array with the following keys:
+   *   - 'discussion': the discussion ID.
+   *   - 'user': the user ID.
    */
   public function setResult(array $result) : void {
     $this->result = $result;

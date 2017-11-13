@@ -88,6 +88,8 @@ class AcceptDiscussionInvitationController extends ControllerBase {
    *   The discussion the user is being invited to.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user that is being invited to the discussion.
+   * @param string $hash
+   *   The hash value to check.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.

@@ -21,7 +21,7 @@ function joinup_invite_message_presave(MessageInterface $entity) {
     $user = $entity->get('field_invitation_user')->first()->entity;
     $existing_message = $discussion_helper->getInvitationMessage($discussion, $user);
     if (!empty($existing_message) && ($entity->isNew() || $existing_message->id() !== $entity->id())) {
-      throw new \Exception('Cannot save new invitation to discussion "' . $discussion->label() . '" for user "' . $user->label() .'" since an invitation already exists.');
+      throw new \Exception('Cannot save new invitation to discussion "' . $discussion->label() . '" for user "' . $user->label() . '" since an invitation already exists.');
     }
   }
 }
