@@ -347,9 +347,20 @@ abstract class NotificationSubscriberBase {
   /**
    * Returns the configuration file that the subscriber will look into.
    *
+   * For complex notifications it can be helpful to define data structures in a
+   * YAML file which can then be used to make decisions about the notifications
+   * to send.
+   *
+   * If a file is provided here it will be loaded during the initialization of
+   * the event subscriber.
+   *
+   * @see \Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase::initialize()
+   *
    * @return string
-   *   The configuration file name.
+   *   The optional configuration file name.
    */
-  abstract protected function getConfigurationName();
+  protected function getConfigurationName() {
+    return NULL;
+  }
 
 }
