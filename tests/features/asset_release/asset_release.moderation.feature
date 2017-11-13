@@ -38,10 +38,16 @@ Feature: Asset release moderation
       | Release notes  | We go live.              |
     And I press "Save as draft"
     Then I should see the heading "Release of the dark ship 1"
+    # Ensure that owners do not have access to override the creation date.
+    # @see ISAICP-4068
+    And I should not see the text "Authored on"
     Then I should not see the following warning messages:
       | You are viewing the published version. To view the latest draft version, click here. |
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    # Ensure that owners do not have access to override the creation date.
+    # @see ISAICP-4068
+    And I should not see the text "Authored on"
     When I fill in "Release number" with "v1"
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
@@ -68,12 +74,18 @@ Feature: Asset release moderation
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Validated"
     And the following fields should be present "Motivation"
+    # Ensure that owners has access to override the creation date.
+    # @see ISAICP-4068
+    And I should see the text "Authored on"
     And the following fields should not be present "Langcode, Translation"
     When I fill in "Name" with "Release"
     And I press "Request changes"
     # Motivation required.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "I don't like it"
+    # These are the two sub fields, 'date' and 'time' of the 'Authored on' field.
+    And I fill in "edit-created-0-value-date" with "2014-08-30"
+    And I fill in "edit-created-0-value-time" with "23:59:00"
     And I press "Request changes"
     # The published version does not change.
     Then I should see the heading "Release of the dark ship v1"
@@ -87,6 +99,12 @@ Feature: Asset release moderation
       | recipient | Felix Russell                                                                                                         |
       | subject   | Joinup: Modification of a release of your solution has been requested                                                 |
       | body      | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
+
+    # We do not show the created time in the UI so another visit to the edit screen is required.
+    When I go to the "Release of the dark ship" release
+    And I click "Edit" in the "Entity actions" region
+    Then the "edit-created-0-value-date" field should contain "2014-08-30"
+    And the "edit-created-0-value-time" field should contain "23:59:00"
 
     # Implement changes as a facilitator.
     When I am logged in as "Bonnie Holloway"
