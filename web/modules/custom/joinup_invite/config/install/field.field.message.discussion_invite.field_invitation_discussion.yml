@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_invitation_discussion
+    - message.template.discussion_invite
+    - node.type.discussion
+id: message.discussion_invite.field_invitation_discussion
+field_name: field_invitation_discussion
+entity_type: message
+bundle: discussion_invite
+label: Discussion
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      discussion: discussion
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

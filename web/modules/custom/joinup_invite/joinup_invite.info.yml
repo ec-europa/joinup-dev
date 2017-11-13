@@ -7,3 +7,16 @@ dependencies:
   - joinup_core
   - og
   - rdf_entity
+
+config_devel:
+ - core.entity_form_display.message.discussion_invite.default
+ - core.entity_view_display.message.discussion_invite.default
+ - core.entity_view_display.message.discussion_invite.mail_body
+ - core.entity_view_display.message.discussion_invite.mail_subject
+ - field.field.message.discussion_invite.field_invitation_discussion
+ - field.field.message.discussion_invite.field_invitation_status
+ - field.field.message.discussion_invite.field_invitation_user
+ - field.storage.message.field_invitation_discussion
+ - field.storage.message.field_invitation_status
+ - field.storage.message.field_invitation_user
+ - message.template.discussion_invite
