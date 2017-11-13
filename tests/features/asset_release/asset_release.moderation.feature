@@ -69,7 +69,13 @@ Feature: Asset release moderation
 
     # Request changes as a moderator.
     When I am logged in as a moderator
-    And all e-mails have been sent
+
+    # Ensure that the moderator has access to the 'Authored on' field when creating a release.
+    And I go to the homepage of the "Dark Ship" solution
+    And I click "Add release" in the plus button menu
+    Then I should see the text "Authored on"
+
+    When all e-mails have been sent
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Validated"
