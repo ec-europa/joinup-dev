@@ -11,6 +11,21 @@ joinup_invite.discussion:
       node:
         type: entity:node
 
+joinup_invite.discussion_accept:
+  path: 'node/{node}/accept-invitation/{user}/{hash}'
+  defaults:
+    _controller: '\Drupal\joinup_invite\Controller\AcceptDiscussionInvitationController::acceptInvitation'
+  requirements:
+    node: \d+
+    user: \d+
+    _custom_access: '\Drupal\joinup_invite\Controller\AcceptDiscussionInvitationController::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+      user:
+        type: entity:user
+
 entity.rdf_entity.facilitators.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
   defaults:
