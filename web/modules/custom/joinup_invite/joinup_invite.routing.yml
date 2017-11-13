@@ -1,3 +1,16 @@
+joinup_invite.discussion:
+  path: 'node/{node}/invite-to-discussion'
+  defaults:
+    _form: '\Drupal\joinup_invite\Form\InviteToDiscussionForm'
+    _title: 'Invite to discussion'
+  requirements:
+    node: \d+
+    _custom_access: '\Drupal\joinup_invite\Form\InviteToDiscussionForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+
 entity.rdf_entity.facilitators.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
   defaults:
