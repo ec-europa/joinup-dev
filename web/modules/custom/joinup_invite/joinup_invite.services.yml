@@ -4,3 +4,6 @@ services:
     arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender', '@joinup_invite.discussion_helper']
     tags:
       - { name: event_subscriber }
+  joinup_invite.discussion_helper:
+    class: Drupal\joinup_invite\InviteToDiscussionHelper
+    arguments: ['@entity_type.manager']
