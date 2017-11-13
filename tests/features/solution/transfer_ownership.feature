@@ -1,16 +1,17 @@
 @api
-Feature: Tests the solution ownership transfer.
+Feature: As a solution owner
+  In order to manage my solutions
+  I should be able to transfer the solution ownership.
 
   Background:
-
     Given users:
-      | Username | Roles                   |
-      | loner    |                         |
-      | happy    | administrator,moderator |
-      | cruel    |                         |
-      | shy      |                         |
-      | light    | moderator               |
-      | frozen   |                         |
+      | Username | Roles                   | Password |
+      | loner    |                         | Pass |
+      | happy    | administrator,moderator | Pass |
+      | cruel    |                         | Pass |
+      | shy      |                         | Pass |
+      | light    | moderator               | Pass |
+      | frozen   |                         | Pass |
     And the following solution:
       | title | Learn German in 1 Month |
       | state | validated               |
@@ -21,9 +22,7 @@ Feature: Tests the solution ownership transfer.
       | Learn German in 1 Month | shy    | facilitator |
       | Learn German in 1 Month | frozen | owner       |
 
-  Scenario Outline: As a site-wide administrator or as a solution owner when I
-    manage the solution members, I am able to transfer the solution ownership.
-
+  Scenario Outline: Administrators and owner can transfer the solution ownership.
     Given I am logged in as "<user>"
     And I go to the homepage of the "Learn German in 1 Month" solution
     And I click "Members"
@@ -68,10 +67,7 @@ Feature: Tests the solution ownership transfer.
       | happy | contain       |
       | cruel | not contain   |
 
-  Scenario Outline: As a site-wide moderator or as solution facilitator (but not
-    owner), when I manage the solution members, I am not able to transfer the
-    solution ownership.
-
+  Scenario Outline: Moderators and facilitators do not have access to transfer ownership.
     Given I am logged in as "<user>"
     And I go to the homepage of the "Learn German in 1 Month" solution
     Given I click "Members"
@@ -82,9 +78,7 @@ Feature: Tests the solution ownership transfer.
       | light |
       | shy   |
 
-  Scenario: As a collection facilitator, when I manage the collection's members,
-    I'm not able to transfer the collection ownership.
-
+  Scenario: Collection facilitators or authenticated users cannot transfer ownership of a solution.
     Given the following collection:
       | title | Babylon   |
       | state | validated |
