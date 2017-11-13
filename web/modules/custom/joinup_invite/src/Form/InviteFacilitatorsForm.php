@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Form;
 
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\og\MembershipManager;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,19 +19,19 @@ class InviteFacilitatorsForm extends InviteFormBase {
   /**
    * The og membership manager service.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $ogMembershipManager;
 
   /**
-   * Constructs a new InviteForm object.
+   * Constructs a new InviteFacilitatorsForm object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\og\MembershipManager $og_membership_manager
+   * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The og membership manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, MembershipManager $og_membership_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager) {
     parent::__construct($entity_type_manager);
 
     $this->ogMembershipManager = $og_membership_manager;
