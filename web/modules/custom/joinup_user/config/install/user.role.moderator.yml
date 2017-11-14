@@ -6,11 +6,9 @@ label: Moderator
 weight: 3
 is_admin: false
 permissions:
-  - 'access contextual links'
   - 'access dashboard'
   - 'access toolbar'
   - 'access uri converter'
-  - 'access user profiles'
   - 'administer comments'
   - 'administer group'
   - 'administer nodes'
@@ -21,7 +19,6 @@ permissions:
   - 'create asset_release rdf entity'
   - 'create custom collection page'
   - 'create discussion content'
-  - 'create document content'
   - 'create licence rdf entity'
   - 'create rdf entity news'
   - 'create solution releases'
@@ -38,8 +35,6 @@ permissions:
   - 'feature entity'
   - 'moderate entity parents'
   - 'pin entity'
-  - 'propose collection rdf entity'
-  - 'skip comment approval'
   - 'unfeature entity'
   - 'unpin entity'
   - 'view any unpublished content'

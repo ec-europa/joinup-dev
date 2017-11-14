@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5981ac04aab78b2818c09cabfdf2d7ac",
+    "content-hash": "f2dadfd603c6136559614716cc6c792b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4423,7 +4423,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1509541985",
+                    "datestamp": "1509546906",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5010,8 +5010,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+18-dev",
-                    "datestamp": "1507643044",
+                    "version": "8.x-1.0-beta2+0-dev",
+                    "datestamp": "1509967685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5267,6 +5267,22 @@
             },
             "type": "drupal-theme-library",
             "time": "2017-10-12T15:19:00+00:00"
+        },
+        {
+            "name": "ec-europa/virtuoso",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:ec-europa/virtuoso.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Virtuoso\\": "src"
+                }
+            },
+            "time": "2017-10-30T16:51:41+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10093,6 +10109,14 @@
                     "homepage": "https://www.drupal.org/u/matio89"
                 },
                 {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
+                },
+                {
                     "name": "eme",
                     "homepage": "https://www.drupal.org/user/542492"
                 },
@@ -10121,7 +10145,7 @@
             "version": "8.2.12",
             "source": {
                 "type": "git",
-                "url": "https://github.com/klausi/coder.git",
+                "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
             },
             "dist": {
@@ -12041,6 +12065,7 @@
         "drupal/views_bulk_operations": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
+        "ec-europa/virtuoso": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
