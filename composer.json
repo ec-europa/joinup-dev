@@ -33,7 +33,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
         "drupal/migrate_spreadsheet": "^1.0-beta4",
-        "drupal/og": "dev-8.x-1.x#0704fc26c3fefbda6dc6f8b538719e50c938fe64 as 1.0",
+        "drupal/og": "dev-8.x-1.x#4350a2781e6588ce8e713353d83af1b1b481df8f as 1.0",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/password_policy": "^3.0-alpha4",
         "drupal/pathauto": "1.x-dev#59a7bef00f6829a27c6a5dc41a6f8bb188bf5805",
@@ -151,7 +151,8 @@
                 "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                 "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch"
+                "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
+                "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch"
             },
             "drupal/facets": {
                 "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
