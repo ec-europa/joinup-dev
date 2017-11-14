@@ -47,7 +47,6 @@ Feature: Collection homepage
     When I go to the homepage of the "Middle earth daily" collection
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
-    Then I see the days passed since "2017-07-05"
     # Test caching of the metrics: Members.
     # Gimli is not a member yet.
     When I am logged in as Gimli
@@ -70,7 +69,6 @@ Feature: Collection homepage
 #    And I click "Edit" in the "Entity actions" region
 #    Then I press "Update"
 #    And I go to the homepage of the "Middle earth daily" collection
-#    And I should see the text "0 days ago"
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection

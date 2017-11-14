@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ResponseTextException;
@@ -1039,6 +1040,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+<<<<<<< HEAD
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
@@ -1086,6 +1088,54 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $url = str_replace('0; URL=', '', $content);
       $this->getSession()->visit($url);
     }
+  }
+
+  /**
+   * Clears the static cache of DatabaseCacheTagsChecksum.
+   *
+   * Static caches are typically cleared at the end of the request since a
+   * typical web request is short lived and the process disappears when the page
+   * is delivered. But if a Behat test is using DrupalContext then Drupal will
+   * be bootstrapped early on (in the BeforeSuiteScope step). This starts a
+   * request which is not short lived, but can live for several minutes while
+   * the tests run. During the lifetime of this request there will be steps
+   * executed that do requests of their own, changing the state of the Drupal
+   * site. This does not however update any of the statically cached data of the
+   * parent request, so this is totally unaware of the changes. This causes
+   * unexpected behaviour like the failure to invalidate some caches because
+   * DatabaseCacheTagsChecksum::invalidateTags() keeps a local storage of which
+   * cache tags were invalidated, and this is not reset in time.
+   *
+   * For this reason, in such limited cases, where we need to clear the cache
+   * tags cache, we tag the Behat feature with @clearStaticCache. This ensures
+   * that static cache is cleared after each step.
+   *
+   * CAUTION: Use the @clearStaticCache tag only in scenarios where you have
+   * trouble with the static caching being preserved across step requests,
+   * because clearing the static cache too often might affect performance.
+   *
+   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
+   * @see https://github.com/jhedstrom/drupalextension/issues/133
+   *
+   * @AfterStep
+   */
+  public function clearCacheTagsStaticCache(AfterStepScope $event) {
+    $feature = $event->getFeature();
+    if ($feature->hasTag('clearStaticCache')) {
+      parent::clearStaticCaches();
+    }
+  }
+
+  /**
+   * Waits until a text is dynamically added to the page.
+   *
+   * @Given I wait until the page contains the text :text
+   */
+  public function iWaitUntilPageContains($text) {
+    $text = addslashes($text);
+    $this->getSession()->wait(60000,
+      "jQuery(':contains(\"$text\")').length > 0"
+    );
   }
 
 }
