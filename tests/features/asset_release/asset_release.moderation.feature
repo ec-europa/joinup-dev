@@ -89,9 +89,8 @@ Feature: Asset release moderation
     # Motivation required.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "I don't like it"
-    # These are the two sub fields, 'date' and 'time' of the 'Authored on' field.
-    And I fill in "edit-created-0-value-date" with "2014-08-30"
-    And I fill in "edit-created-0-value-time" with "23:59:00"
+    And I fill in "Authored on" with the date "2014-08-30"
+    And I fill in "Authored on" with the time "23:59:00"
     And I press "Request changes"
     # The published version does not change.
     Then I should see the heading "Release of the dark ship v1"
@@ -109,8 +108,7 @@ Feature: Asset release moderation
     # We do not show the created time in the UI so another visit to the edit screen is required.
     When I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
-    Then the "edit-created-0-value-date" field should contain "2014-08-30"
-    And the "edit-created-0-value-time" field should contain "23:59:00"
+    Then the "Authored on" date field should contain the datetime "2014-08-30 23:59:00"
 
     # Implement changes as a facilitator.
     When I am logged in as "Bonnie Holloway"
