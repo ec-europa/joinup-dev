@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "42f35e3d03fe649e248b6e7064344b44",
+    "content-hash": "771d406ab052ab3b62fc085ef8e9b51c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2534,7 +2534,8 @@
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch"
+                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
+                    "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch"
                 }
             },
             "autoload": {
@@ -10305,7 +10306,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",

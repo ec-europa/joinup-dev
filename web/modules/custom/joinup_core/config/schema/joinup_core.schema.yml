@@ -118,3 +118,18 @@ joinup_core.piwik_settings.*.*:
 entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
   type: entity_reference_selection.default
   label: 'RDF taxonomy term selection handler settings'
+
+# Schema for 'joinup_timestamp_timeago' formatter settings.
+field.formatter.settings.joinup_timestamp_timeago:
+  type: field.formatter.settings.timestamp
+  label: 'Joinup Timestamp Timeago display format settings'
+  mapping:
+    tooltip_format:
+      type: string
+      label: 'Tooltip date format'
+    tooltip_format_custom:
+      type: string
+      label: 'Tooltip custom date format'
+    timeago_settings:
+      type: ignore
+      label: 'Timeago plugin settings'
