@@ -207,6 +207,8 @@ Feature: Content Overview
       | Bitter Finger        |
     And the "Event date" inline facet should allow selecting the following values "My events (3), Past events (3), Upcoming events (2)"
 
+    # @todo The 'Frozen Barbershop' is a current event and should also be shown here.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
       | Frozen Breeze  |
@@ -220,6 +222,8 @@ Feature: Content Overview
       | Bitter Finger     |
     And the "Event date" inline facet should allow selecting the following values "Past events (3), Upcoming events (2), All events"
 
+    # @todo The 'Frozen Barbershop' is a current event and should not be shown here.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
       | Frozen Barbershop    |
