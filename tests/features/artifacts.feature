@@ -4,5 +4,8 @@ Feature: Test creation and upload of artifacts to S3 bucket.
 
   Scenario: Take a screenshot during test.
 
+    Given users:
+     | invalid_column |
+     | value          |
     When I should see the text "This text does not exist."
     Then I take a screenshot
