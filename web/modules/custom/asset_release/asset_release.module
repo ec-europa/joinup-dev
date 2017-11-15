@@ -122,7 +122,7 @@ function asset_release_preprocess_rdf_entity(&$variables) {
     // invalidate the cache also when a release is first saved as draft and then
     // published. In that case the solution won't be updated, so we need to
     // manually take care of this.
-    $group_tag = Cache::buildTags('og-group-content', [$parent_solution->getEntityTypeId() . ':' . $parent_solution->id()]);
+    $group_tag = Cache::buildTags('og-group-content', $parent_solution->getCacheTagsToInvalidate());
     $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
   }
 }
