@@ -1040,7 +1040,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-<<<<<<< HEAD
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
