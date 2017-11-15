@@ -1,8 +1,8 @@
 @api
 Feature: Subscribing to discussions
-  As a user of the website
-  I want to subscribe to discussions
-  So that I can up to date with its evolvements.
+  As a member of a collection
+  I want to subscribe to interesting discussions
+  So that I can stay up to date with its evolvements.
 
   Scenario: Subscribe to a discussion.
     Given the following collection:
