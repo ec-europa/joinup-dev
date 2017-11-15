@@ -4351,6 +4351,11 @@
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -5161,8 +5166,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+0-dev",
-                    "datestamp": "1509967685",
+                    "version": "8.x-1.0-beta2+1-dev",
+                    "datestamp": "1510132085",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
