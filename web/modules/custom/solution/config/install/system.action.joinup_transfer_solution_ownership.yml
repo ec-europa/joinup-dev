@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+    - solution
+id: joinup_transfer_solution_ownership
+label: 'Transfer the ownership of the solution to the selected member'
+type: og_membership
+plugin: joinup_transfer_solution_ownership
+configuration: {  }

@@ -27,8 +27,11 @@ use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
@@ -978,4 +981,31 @@ function joinup_core_editor_js_settings_alter(array &$settings) {
  */
 function joinup_core_ckeditor_css_alter(array &$css) {
   $css[] = drupal_get_path('module', 'joinup_core') . '/css/wysiwyg.css';
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * RDF Entity ID is encoded when is used in the URL, thus we will receive an
+ * encoded ID as contextual filter. We cannot decode it upstream because the
+ * path display plugin, \Drupal\views\Plugin\views\display\PathPluginBase, is
+ * using the arguments to build the page route and will fail. For this reason,
+ * we have to decode just before the query is about to run.
+ *
+ * @see \Drupal\views\Plugin\views\display\PathPluginBase
+ * @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
+ */
+function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'group_content_management' || $view->current_display !== 'manage') {
+    return;
+  }
+
+  foreach ($query->where as &$group) {
+    foreach ($group['conditions'] as &$condition) {
+      if ($condition['field'] === 'node__og_audience.og_audience_target_id') {
+        $condition['value'] = UriEncoder::decodeUrl($condition['value']);
+        break 2;
+      }
+    }
+  }
 }

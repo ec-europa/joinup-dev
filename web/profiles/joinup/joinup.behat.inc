@@ -286,7 +286,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_options = array_values($this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_options, "The '{$select}' select doesn't contain all the wanted options.");
+    if (array_intersect($options, $available_options) !== $options) {
+      throw new \Exception("Options are not included in select.");
+    }
   }
 
   /**
