@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "771d406ab052ab3b62fc085ef8e9b51c",
+    "content-hash": "f9e8d6d905110ce737e8d7cdfbd5b390",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2523,19 +2523,21 @@
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-273.patch",
+                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
                     "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                     "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-112.patch",
                     "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
                     "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
+                    "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-52-8.4.x.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/2821988-37.patch",
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
-                    "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch"
+                    "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch",
+                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
                 }
             },
             "autoload": {
@@ -3640,12 +3642,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "0704fc26c3fefbda6dc6f8b538719e50c938fe64"
+                "reference": "4350a2781e6588ce8e713353d83af1b1b481df8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/0704fc26c3fefbda6dc6f8b538719e50c938fe64",
-                "reference": "0704fc26c3fefbda6dc6f8b538719e50c938fe64",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/4350a2781e6588ce8e713353d83af1b1b481df8f",
+                "reference": "4350a2781e6588ce8e713353d83af1b1b481df8f",
                 "shasum": ""
             },
             "require-dev": {
@@ -3662,7 +3664,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-10-16T12:37:36+00:00"
+            "time": "2017-11-01T14:21:35+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -4995,6 +4997,64 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/view_unpublished"
             }
+        },
+        {
+            "name": "drupal/views_bulk_operations",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/views_bulk_operations",
+                "reference": "6106b1c7a172d273e0407c49a4c4a8186c929573"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2+1-dev",
+                    "datestamp": "1510132085",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Graber",
+                    "homepage": "https://www.drupal.org/user/1599440"
+                },
+                {
+                    "name": "Jon Pugh",
+                    "homepage": "https://www.drupal.org/user/17028"
+                },
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "infojunkie",
+                    "homepage": "https://www.drupal.org/user/48424"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                }
+            ],
+            "description": "Views Bulk Operation",
+            "homepage": "https://www.drupal.org/project/views_bulk_operations",
+            "support": {
+                "source": "http://cgit.drupalcode.org/views_bulk_operations"
+            },
+            "time": "2017-10-10T13:43:17+00:00"
         },
         {
             "name": "drush/drush",
@@ -12000,6 +12060,7 @@
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
+        "drupal/views_bulk_operations": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "ec-europa/virtuoso": 20,
