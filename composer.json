@@ -80,7 +80,7 @@
         "drupal/coder": "^8.2.9",
         "drupal/config_devel": "dev-1.x#e0b2a62c4f596bf9fe93923f2a98db0a0afffc9d",
         "drupal/config_inspector": "^1.0@beta",
-        "drupal/default_content": "dev-1.x#68c30918ecd4c48f578070641c97a3b35c86a5df",
+        "drupal/default_content": "^1.0-alpha6",
         "drupal/devel": "~1.0@alpha",
         "drupal/drupal-extension": "dev-master#7756b54f2604e4762147190dec888102da253cbc",
         "jcalderonzumba/gastonjs": "^1.1@dev",

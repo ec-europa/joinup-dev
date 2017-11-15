@@ -5,10 +5,14 @@
         "This file is @generated automatically"
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
     "content-hash": "f440c04711b0d891e811c22964f37c1d",
 =======
     "content-hash": "6c79678de1d41c72ee66a8b53ecfa6d3",
 >>>>>>> @{-1}
+=======
+    "content-hash": "07aa28928c556e0bd556e72e61fae4ae",
+>>>>>>> origin/ISAICP-4057
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -139,6 +143,7 @@
         },
         {
             "name": "aws/aws-sdk-php",
+<<<<<<< HEAD
             "version": "3.38.2",
             "source": {
                 "type": "git",
@@ -149,6 +154,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7b13de0b39f29833a977176ce58eed990e1487ba",
                 "reference": "7b13de0b39f29833a977176ce58eed990e1487ba",
+=======
+            "version": "3.36.36",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aws/aws-sdk-php.git",
+                "reference": "26ed9d51a11ca88ce919d7b0884b4b47232997b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/26ed9d51a11ca88ce919d7b0884b4b47232997b4",
+                "reference": "26ed9d51a11ca88ce919d7b0884b4b47232997b4",
+>>>>>>> origin/ISAICP-4057
                 "shasum": ""
             },
             "require": {
@@ -215,7 +232,11 @@
                 "s3",
                 "sdk"
             ],
+<<<<<<< HEAD
             "time": "2017-11-14T23:47:41+00:00"
+=======
+            "time": "2017-11-02T23:56:51+00:00"
+>>>>>>> origin/ISAICP-4057
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2356,6 +2377,7 @@
         },
         {
             "name": "drupal/core",
+<<<<<<< HEAD
             "version": "8.4.2",
             "source": {
                 "type": "git",
@@ -2366,6 +2388,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/drupal/core/zipball/68d25c07b7306340900abc4020c38683a817f0eb",
                 "reference": "68d25c07b7306340900abc4020c38683a817f0eb",
+=======
+            "version": "8.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal/core.git",
+                "reference": "dbdd31c4e1a21d2188622107c0b856f5c1b0e56e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal/core/zipball/dbdd31c4e1a21d2188622107c0b856f5c1b0e56e",
+                "reference": "dbdd31c4e1a21d2188622107c0b856f5c1b0e56e",
+>>>>>>> origin/ISAICP-4057
                 "shasum": ""
             },
             "require": {
@@ -2562,7 +2596,11 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
+<<<<<<< HEAD
             "time": "2017-11-03T13:20:16+00:00"
+=======
+            "time": "2017-11-01T18:38:24+00:00"
+>>>>>>> origin/ISAICP-4057
         },
         {
             "name": "drupal/ctools",
@@ -10309,11 +10347,17 @@
         },
         {
             "name": "drupal/default_content",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/default_content",
-                "reference": "9f27238b4d58d09583cbb03a9ccc78b8c298c838"
+                "reference": "8.x-1.0-alpha7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "4f1b49cdad6d74ef879f4700caaa11703ba85ad7"
             },
             "require": {
                 "drupal/core": "~8.3"
@@ -10324,11 +10368,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7+0-dev",
+                    "version": "8.x-1.0-alpha7",
                     "datestamp": "1508448545",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -12076,7 +12120,6 @@
         "behat/mink-selenium2-driver": 20,
         "drupal/config_devel": 20,
         "drupal/config_inspector": 10,
-        "drupal/default_content": 20,
         "drupal/devel": 15,
         "drupal/drupal-extension": 20,
         "jcalderonzumba/gastonjs": 20
