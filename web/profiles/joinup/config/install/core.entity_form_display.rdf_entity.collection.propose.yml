@@ -30,7 +30,6 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
-    - rdf_entity
     - text
 third_party_settings:
   field_group:
