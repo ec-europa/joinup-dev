@@ -813,7 +813,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Checks, that the given date time field contains the requested text.
    *
-   * Example: Then the "date" date field should contain the text
+   * Example: Then the "date" date field should contain the datetime
    * "31-1-1222 22:22:22".
    *
    * The format of the datetime is "DD-MM-YYYY HH:mm:ii"
