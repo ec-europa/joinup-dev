@@ -113,7 +113,7 @@ joinup.site_unpin:
         type: entity:{entity_type}
 
 joinup.pin_entity:
-  path: '/node/{node}/pin'
+  path: '/pin/group/{entity_type}/{entity}/add'
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
     _title: 'Pin'
@@ -122,11 +122,11 @@ joinup.pin_entity:
     _csrf_token: 'TRUE'
   options:
     parameters:
-      node:
-        type: entity:node
+      entity:
+        type: entity:{entity_type}
 
 joinup.unpin_entity:
-  path: '/node/{node}/unpin'
+  path: '/pin/group/{entity_type}/{entity}/remove'
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
     _title: 'Unpin'
@@ -135,5 +135,5 @@ joinup.unpin_entity:
     _csrf_token: 'TRUE'
   options:
     parameters:
-      node:
-        type: entity:node
+      entity:
+        type: entity:{entity_type}
