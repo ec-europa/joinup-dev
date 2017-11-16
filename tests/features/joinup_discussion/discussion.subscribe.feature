@@ -24,6 +24,7 @@ Feature: Subscribing to discussions
 
     When I click "Subscribe"
     Then I should see the link "Unsubscribe"
+    And I should not see the link "Subscribe"
 
     When I click "Unsubscribe"
     Then I should see the heading "Unsubscribe from this discussion?"
