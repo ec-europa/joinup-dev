@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Controller to pin/unpin community content.
  */
-class PinContentController extends ControllerBase {
+class PinEntityController extends ControllerBase {
 
   /**
    * The OG access service.
@@ -32,7 +32,7 @@ class PinContentController extends ControllerBase {
   protected $relationManager;
 
   /**
-   * Instantiates a new PinContentController object.
+   * Instantiates a new PinEntityController object.
    *
    * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
    *   The Joinup relation manager.
