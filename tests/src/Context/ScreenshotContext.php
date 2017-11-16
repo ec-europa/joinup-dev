@@ -37,7 +37,7 @@ class ScreenshotContext extends RawMinkContext {
    * @Then (I )take a screenshot
    */
   public function takeScreenshotUnnamed() {
-    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot';
+    $file_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'behat-screenshot-' . user_password();
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
