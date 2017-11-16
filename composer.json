@@ -137,8 +137,8 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
-            "drupal/config_sync": {
-                "Config cannot be synced after enabling an extension @see https://www.drupal.org/project/config_sync/issues/2923358": "https://www.drupal.org/files/issues/2923358-2.patch"
+            "drupal/config_devel": {
+                "Drush commands throw fatal error after updating to Drush 9.0.0-beta9 @see https://www.drupal.org/project/config_devel/issues/2923795": "https://www.drupal.org/files/issues/2923795-2.patch"
             },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",

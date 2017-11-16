@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9e8d6d905110ce737e8d7cdfbd5b390",
+    "content-hash": "c518e12d260bc6f88b67da1db179a68b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.38.1",
+            "version": "3.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9f704274f4748d2039a16d45b3388ed8dde74e89"
+                "reference": "7b13de0b39f29833a977176ce58eed990e1487ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9f704274f4748d2039a16d45b3388ed8dde74e89",
-                "reference": "9f704274f4748d2039a16d45b3388ed8dde74e89",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7b13de0b39f29833a977176ce58eed990e1487ba",
+                "reference": "7b13de0b39f29833a977176ce58eed990e1487ba",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-11-09T19:15:59+00:00"
+            "time": "2017-11-14T23:47:41+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1971,9 +1971,6 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Config cannot be synced after enabling an extension @see https://www.drupal.org/project/config_sync/issues/2923358": "https://www.drupal.org/files/issues/2923358-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5015,8 +5012,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+1-dev",
-                    "datestamp": "1510132085",
+                    "version": "8.x-1.0-beta2+0-dev",
+                    "datestamp": "1509967685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -10237,8 +10234,7 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            },
-            "time": "2017-10-06T10:01:31+00:00"
+            }
         },
         {
             "name": "drupal/config_inspector",
