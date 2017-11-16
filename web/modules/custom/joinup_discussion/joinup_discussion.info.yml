@@ -18,7 +18,6 @@ config_devel:
   - core.entity_form_display.comment.reply.default
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.comment.reply.default
-  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.node.discussion.moderation
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
