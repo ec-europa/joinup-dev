@@ -105,6 +105,11 @@ content:
     third_party_settings: {  }
     type: list_default
     region: content
+  flag_subscribe_discussions:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   links:
     weight: 3
     region: content

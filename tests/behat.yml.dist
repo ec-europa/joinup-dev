@@ -42,13 +42,14 @@ default:
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
+        SevenHeader: '.region-header'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
-        message_selector: '.alert'
-        error_message_selector: '.alert.alert--error'
-        success_message_selector: '.alert.alert--status'
-        warning_message_selector: '.alert.alert--warning'
+        message_selector: '.alert, .messages'
+        error_message_selector: '.alert.alert--error, .messages.message--error'
+        success_message_selector: '.alert.alert--status, .messages.messages--status'
+        warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         paths:

@@ -84,8 +84,9 @@ dependencies:
   - tour
   - trr
   - user
-  - view_unpublished
   - views
+  - views_bulk_operations
+  - view_unpublished
 
 themes:
   - seven
@@ -149,6 +150,7 @@ config_devel:
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
@@ -209,6 +211,7 @@ config_devel:
   - views.view.collection_content
   - views.view.collections
   - views.view.content_overview
+  - views.view.group_content_management
   - views.view.members_overview
   - views.view.solutions
   - views.view.user_admin_people

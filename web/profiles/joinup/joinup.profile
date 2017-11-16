@@ -312,6 +312,9 @@ function joinup_install_tasks_alter(&$tasks, $install_state) {
   $tasks['joinup_remove_simplenews_defaults'] = [
     'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
   ];
+  $tasks['joinup_delete_message_subscribe_defaults'] = [
+    'function' => [JoinupCustomInstallTasks::class, 'deleteMessageSubscribeDefaults'],
+  ];
 }
 
 /**
