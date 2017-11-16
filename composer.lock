@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c7f73b1af25a5c0ec6737dc14cd08a6",
+    "content-hash": "a2ab5404b28840294a2a84b6f8d60c58",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2520,19 +2520,21 @@
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-273.patch",
+                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
                     "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                     "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
                     "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-112.patch",
                     "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
                     "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
+                    "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-52-8.4.x.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/2821988-37.patch",
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
                     "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                    "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
-                    "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch"
+                    "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch",
+                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
                 }
             },
             "autoload": {
@@ -3579,21 +3581,21 @@
         },
         {
             "name": "drupal/migrate_spreadsheet",
-            "version": "1.0.0-beta5",
+            "version": "1.0.0-beta6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_spreadsheet",
-                "reference": "8.x-1.0-beta5"
+                "reference": "8.x-1.0-beta6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta5.zip",
-                "reference": "8.x-1.0-beta5",
-                "shasum": "775df5161078979ed211fe33fdee7d9ad33d6093"
+                "url": "https://ftp.drupal.org/files/projects/migrate_spreadsheet-8.x-1.0-beta6.zip",
+                "reference": "8.x-1.0-beta6",
+                "shasum": "7cd3a4c4fe1bee7b237bb0de5a20281e3e53e75e"
             },
             "require": {
                 "drupal/core": "*",
-                "phpoffice/phpspreadsheet": "dev-develop#0b035713945bd8eeb83f2ea82a9c481c1f1ec9be"
+                "phpoffice/phpspreadsheet": "^1.0.0-beta"
             },
             "type": "drupal-module",
             "extra": {
@@ -3601,7 +3603,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta5",
+                    "version": "8.x-1.0-beta6",
                     "datestamp": "1509378185",
                     "security-coverage": {
                         "status": "not-covered",
@@ -4388,17 +4390,17 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-1.1"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "ff124407b883c9e56030e8c10dcd8827c922cceb"
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "cd77fc851d36ecfb04a0c29967c93e5c47e2d2c6"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4409,7 +4411,8 @@
                 "drupal/facets": "1.x-dev",
                 "drupal/geofield": "1.x-dev",
                 "drupal/search_api_autocomplete": "1.x-dev",
-                "drupal/search_api_location": "1.x-dev"
+                "drupal/search_api_location": "1.x-dev",
+                "phayes/geophp": "dev-master"
             },
             "suggest": {
                 "drupal/facets": "Provides facetted search.",
@@ -4421,8 +4424,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1505488645",
+                    "version": "8.x-1.2",
+                    "datestamp": "1509546906",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4991,6 +4994,64 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/view_unpublished"
             }
+        },
+        {
+            "name": "drupal/views_bulk_operations",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/views_bulk_operations",
+                "reference": "6106b1c7a172d273e0407c49a4c4a8186c929573"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2+0-dev",
+                    "datestamp": "1509967685",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Graber",
+                    "homepage": "https://www.drupal.org/user/1599440"
+                },
+                {
+                    "name": "Jon Pugh",
+                    "homepage": "https://www.drupal.org/user/17028"
+                },
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "infojunkie",
+                    "homepage": "https://www.drupal.org/user/48424"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                }
+            ],
+            "description": "Views Bulk Operation",
+            "homepage": "https://www.drupal.org/project/views_bulk_operations",
+            "support": {
+                "source": "http://cgit.drupalcode.org/views_bulk_operations"
+            },
+            "time": "2017-10-10T13:43:17+00:00"
         },
         {
             "name": "drush/drush",
@@ -6568,39 +6629,31 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "dev-develop",
+            "version": "1.0.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "8183c71e787f5ae4b78d40c2a82b83c335e9b65e"
+                "reference": "7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/8183c71e787f5ae4b78d40c2a82b83c335e9b65e",
-                "reference": "8183c71e787f5ae4b78d40c2a82b83c335e9b65e",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5",
+                "reference": "7d4dc74fc6219739f1b6e0a7a2f87fdbf33c6ca5",
                 "shasum": ""
             },
             "require": {
-                "ext-ctype": "*",
-                "ext-dom": "*",
-                "ext-gd": "*",
                 "ext-iconv": "*",
-                "ext-libxml": "*",
                 "ext-mbstring": "*",
-                "ext-simplexml": "*",
                 "ext-xml": "*",
-                "ext-xmlreader": "*",
                 "ext-xmlwriter": "*",
                 "ext-zip": "*",
-                "ext-zlib": "*",
                 "php": "^5.6|^7.0",
                 "psr/simple-cache": "^1.0"
             },
             "require-dev": {
                 "dompdf/dompdf": "^0.8.0",
-                "friendsofphp/php-cs-fixer": "^2.7",
-                "jpgraph/jpgraph": "^4.0",
-                "mpdf/mpdf": "^7.0.0",
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "mpdf/mpdf": "^6.1",
                 "phpunit/phpunit": "^5.7",
                 "squizlabs/php_codesniffer": "^2.7",
                 "tecnickcom/tcpdf": "^6.2"
@@ -6652,7 +6705,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2017-10-31T10:58:46+00:00"
+            "time": "2017-08-17T13:17:23+00:00"
         },
         {
             "name": "predis/predis",
@@ -12011,6 +12064,7 @@
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
+        "drupal/views_bulk_operations": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "ec-europa/virtuoso": 20,
