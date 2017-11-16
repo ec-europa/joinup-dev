@@ -111,3 +111,29 @@ joinup.site_unpin:
     parameters:
       entity:
         type: entity:{entity_type}
+
+joinup.pin_entity:
+  path: '/node/{node}/pin'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinContentController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinContentController::pinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+joinup.unpin_entity:
+  path: '/node/{node}/unpin'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinContentController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinContentController::unpinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      node:
+        type: entity:node

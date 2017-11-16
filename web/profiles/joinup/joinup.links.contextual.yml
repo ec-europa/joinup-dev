@@ -37,3 +37,13 @@ joinup.site_unpin:
   title: 'Unpin site-wide'
   route_name: joinup.site_unpin
   group: entity
+
+joinup.pin_node:
+  route_name: joinup.pin_entity
+  title: Pin
+  group: node
+
+joinup.unpin_node:
+  route_name: joinup.unpin_entity
+  title: Unpin
+  group: node
