@@ -1,6 +1,6 @@
 @api
 Feature: Subscribing to discussions
-  As a member of a collection
+  As a member of Joinup
   I want to subscribe to interesting discussions
   So that I can stay up to date with its evolvements.
 
