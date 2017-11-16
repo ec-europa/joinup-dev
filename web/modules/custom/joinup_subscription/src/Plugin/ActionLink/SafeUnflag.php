@@ -45,7 +45,7 @@ class SafeUnflag extends FormEntryTypeBase {
 
     // Store the original form behaviour configuration. Since we need to render
     // the flag link as "default", we temporarily change this configuration
-    // so we can have render the link without any ajax behaviour.
+    // so we can render the link without any ajax behaviour.
     $origin_form_behaviour = $this->configuration['form_behavior'];
     if ($action === 'flag') {
       $this->configuration['form_behavior'] = 'default';
