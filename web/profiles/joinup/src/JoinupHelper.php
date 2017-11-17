@@ -14,7 +14,7 @@ use Drupal\rdf_entity\RdfInterface;
 class JoinupHelper {
 
   /**
-   * Checks if an entity is sticky inside a certain collection.
+   * Checks if an entity is pinned inside a certain collection.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to check.
@@ -22,9 +22,9 @@ class JoinupHelper {
    *   The rdf collection.
    *
    * @return bool
-   *   True if the entity is sticky, false otherwise.
+   *   True if the entity is pinned, false otherwise.
    */
-  public static function isEntitySticky(ContentEntityInterface $entity, RdfInterface $collection) {
+  public static function isEntityPinned(ContentEntityInterface $entity, RdfInterface $collection) {
     if (self::isSolution($entity)) {
       /** @var \Drupal\rdf_entity\RdfInterface $entity */
       foreach ($entity->get(PinEntityController::SOLUTION_PIN_FIELD)->referencedEntities() as $rdf) {
@@ -44,19 +44,19 @@ class JoinupHelper {
   }
 
   /**
-   * Sets the entity sticky status inside a certain collection.
+   * Sets the entity pinned status inside a certain collection.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity itself.
    * @param \Drupal\rdf_entity\RdfInterface $collection
    *   The rdf collection.
-   * @param bool $sticky
-   *   TRUE to set the entity as sticky, FALSE otherwise.
+   * @param bool $pinned
+   *   TRUE to set the entity as pinned, FALSE otherwise.
    */
-  public static function setEntitySticky(ContentEntityInterface $entity, RdfInterface $collection, bool $sticky) {
+  public static function setEntityPinned(ContentEntityInterface $entity, RdfInterface $collection, bool $pinned) {
     if (self::isSolution($entity)) {
       $field = $entity->get(PinEntityController::SOLUTION_PIN_FIELD);
-      if ($sticky) {
+      if ($pinned) {
         $field->appendItem($collection->id());
       }
       else {
@@ -70,7 +70,7 @@ class JoinupHelper {
       // Nodes have only one possible parent, so the sticky boolean field
       // reflects the sticky status.
       /** @var \Drupal\node\NodeInterface $entity */
-      $entity->setSticky($sticky);
+      $entity->setSticky($pinned);
     }
 
     $entity->save();

@@ -79,7 +79,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    JoinupHelper::setEntitySticky($entity, $collection, TRUE);
+    JoinupHelper::setEntityPinned($entity, $collection, TRUE);
 
     drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -107,7 +107,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    JoinupHelper::setEntitySticky($entity, $collection, FALSE);
+    JoinupHelper::setEntityPinned($entity, $collection, FALSE);
 
     drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -144,7 +144,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be pinned.
     foreach ($collections as $collection) {
-      if (!JoinupHelper::isEntitySticky($entity, $collection)) {
+      if (!JoinupHelper::isEntityPinned($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'pin group content', $account);
         if ($access->isAllowed()) {
@@ -182,7 +182,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be unpinned.
     foreach ($collections as $collection) {
-      if (JoinupHelper::isEntitySticky($entity, $collection)) {
+      if (JoinupHelper::isEntityPinned($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'unpin group content', $account);
         if ($access->isAllowed()) {
