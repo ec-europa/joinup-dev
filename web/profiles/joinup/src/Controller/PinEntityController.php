@@ -9,6 +9,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupHelper;
+use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,18 +20,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class PinEntityController extends ControllerBase {
 
   /**
-   * The field that holds the collections where a solution is pinned in.
-   *
-   * @var string
-   */
-  const SOLUTION_PIN_FIELD = 'field_is_pinned_in';
-
-  /**
    * The OG access service.
    *
    * @var \Drupal\og\OgAccessInterface
    */
   protected $ogAccess;
+
+  /**
+   * The pin service.
+   *
+   * @var \Drupal\joinup\PinServiceInterface
+   */
+  protected $pinService;
 
   /**
    * The Joinup relation manager.
@@ -46,10 +47,13 @@ class PinEntityController extends ControllerBase {
    *   The Joinup relation manager.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
+   * @param \Drupal\joinup\PinServiceInterface $pinService
+   *   The pin service.
    */
-  public function __construct(JoinupRelationManager $relationManager, OgAccessInterface $ogAccess) {
+  public function __construct(JoinupRelationManager $relationManager, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
     $this->relationManager = $relationManager;
     $this->ogAccess = $ogAccess;
+    $this->pinService = $pinService;
   }
 
   /**
@@ -58,7 +62,8 @@ class PinEntityController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('joinup_core.relations_manager'),
-      $container->get('og.access')
+      $container->get('og.access'),
+      $container->get('joinup.pin_service')
     );
   }
 
@@ -79,7 +84,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    JoinupHelper::setEntityPinned($entity, $collection, TRUE);
+    $this->pinService->setEntityPinned($entity, $collection, TRUE);
 
     drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -107,7 +112,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    JoinupHelper::setEntityPinned($entity, $collection, FALSE);
+    $this->pinService->setEntityPinned($entity, $collection, FALSE);
 
     drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -144,7 +149,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be pinned.
     foreach ($collections as $collection) {
-      if (!JoinupHelper::isEntityPinned($entity, $collection)) {
+      if (!$this->pinService->isEntityPinned($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'pin group content', $account);
         if ($access->isAllowed()) {
@@ -182,7 +187,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be unpinned.
     foreach ($collections as $collection) {
-      if (JoinupHelper::isEntityPinned($entity, $collection)) {
+      if ($this->pinService->isEntityPinned($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'unpin group content', $account);
         if ($access->isAllowed()) {
