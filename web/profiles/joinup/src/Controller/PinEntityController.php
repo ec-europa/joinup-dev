@@ -8,11 +8,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup\JoinupHelper;
 use Drupal\joinup_core\JoinupRelationManager;
-use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -81,7 +79,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    $this->setEntitySticky($entity, $collection, TRUE);
+    JoinupHelper::setEntitySticky($entity, $collection, TRUE);
 
     drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -109,7 +107,7 @@ class PinEntityController extends ControllerBase {
     }
 
     $collection = reset($collections);
-    $this->setEntitySticky($entity, $collection, FALSE);
+    JoinupHelper::setEntitySticky($entity, $collection, FALSE);
 
     drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -132,7 +130,7 @@ class PinEntityController extends ControllerBase {
    *   The access result.
    */
   public function pinAccess(ContentEntityInterface $entity, AccountInterface $account) {
-    if (!$this->isSolution($entity) && !$this->isCommunityContent($entity)) {
+    if (!JoinupHelper::isSolution($entity) && !JoinupHelper::isCommunityContent($entity)) {
       return AccessResult::forbidden();
     }
 
@@ -146,7 +144,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be pinned.
     foreach ($collections as $collection) {
-      if (!$this->isEntitySticky($entity, $collection)) {
+      if (!JoinupHelper::isEntitySticky($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'pin group content', $account);
         if ($access->isAllowed()) {
@@ -170,7 +168,7 @@ class PinEntityController extends ControllerBase {
    *   The access result.
    */
   public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account) {
-    if (!$this->isSolution($entity) && !$this->isCommunityContent($entity)) {
+    if (!JoinupHelper::isSolution($entity) && !JoinupHelper::isCommunityContent($entity)) {
       return AccessResult::forbidden();
     }
 
@@ -184,7 +182,7 @@ class PinEntityController extends ControllerBase {
 
     // Check if there is any collection where the entity can be unpinned.
     foreach ($collections as $collection) {
-      if ($this->isEntitySticky($entity, $collection)) {
+      if (JoinupHelper::isEntitySticky($entity, $collection)) {
         // @todo merge all the cache metadata from each access check.
         $access = $this->ogAccess->userAccess($collection, 'unpin group content', $account);
         if ($access->isAllowed()) {
@@ -208,103 +206,14 @@ class PinEntityController extends ControllerBase {
   protected function getCollections(ContentEntityInterface $entity) {
     $collections = [];
 
-    if ($this->isSolution($entity)) {
+    if (JoinupHelper::isSolution($entity)) {
       $collections = $entity->get('collection')->referencedEntities();
     }
-    elseif ($this->isCommunityContent($entity)) {
+    elseif (JoinupHelper::isCommunityContent($entity)) {
       $collections = [$this->relationManager->getParent($entity)];
     }
 
     return $collections;
-  }
-
-  /**
-   * Returns whether the entity is an rdf solution.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is an rdf of bundle solution, false otherwise.
-   */
-  protected function isSolution(ContentEntityInterface $entity) {
-    return $entity instanceof RdfInterface && $entity->bundle() === 'solution';
-  }
-
-  /**
-   * Returns whether the entity is a community content node.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is a community content node, false otherwise.
-   */
-  protected function isCommunityContent(ContentEntityInterface $entity) {
-    return $entity instanceof NodeInterface && in_array($entity->bundle(), CommunityContentHelper::getBundles());
-  }
-
-  /**
-   * Checks if an entity is sticky inside a certain collection.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to check.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The rdf collection.
-   *
-   * @return bool
-   *   True if the entity is sticky, false otherwise.
-   */
-  protected function isEntitySticky(ContentEntityInterface $entity, RdfInterface $collection) {
-    if ($this->isSolution($entity)) {
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      foreach ($entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities() as $rdf) {
-        if ($rdf->id() === $collection->id()) {
-          return TRUE;
-        }
-      }
-    }
-    elseif ($this->isCommunityContent($entity)) {
-      // Nodes have only one possible parent, so the sticky boolean field
-      // reflects the sticky status.
-      /** @var \Drupal\node\NodeInterface $entity */
-      return $entity->isSticky();
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Sets the entity sticky status inside a certain collection.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity itself.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The rdf collection.
-   * @param bool $sticky
-   *   TRUE to set the entity as sticky, FALSE otherwise.
-   */
-  protected function setEntitySticky(ContentEntityInterface $entity, RdfInterface $collection, bool $sticky) {
-    if ($this->isSolution($entity)) {
-      $field = $entity->get(self::SOLUTION_PIN_FIELD);
-      if ($sticky) {
-        $field->appendItem($collection->id());
-      }
-      else {
-        $field->filter(function ($item) use ($collection) {
-          /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
-          return $item->target_id !== $collection->id();
-        });
-      }
-    }
-    elseif ($this->isCommunityContent($entity)) {
-      // Nodes have only one possible parent, so the sticky boolean field
-      // reflects the sticky status.
-      /** @var \Drupal\node\NodeInterface $entity */
-      $entity->setSticky($sticky);
-    }
-
-    $entity->save();
   }
 
   /**
