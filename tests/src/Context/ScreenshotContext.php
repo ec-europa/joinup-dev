@@ -166,11 +166,15 @@ class ScreenshotContext extends RawMinkContext {
       file_put_contents($file_name, $screenshot);
     }
     else {
-      if ($ext) {
-        $file_name .= '.html';
+      try {
+        if ($ext) {
+          $file_name .= '.html';
+        }
+        $html_data = $this->getSession()->getPage()->getContent();
+        file_put_contents($file_name, $html_data);
       }
-      $html_data = $this->getSession()->getPage()->getContent();
-      file_put_contents($file_name, $html_data);
+      catch (DriverException $e) {
+      }
     }
 
     if ($this->artifactsS3Uri) {
