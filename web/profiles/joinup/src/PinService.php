@@ -4,7 +4,7 @@ namespace Drupal\joinup;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,17 +23,17 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   /**
    * The relations manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
   /**
    * Constructs a PinService service.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The relations manager service.
    */
-  public function __construct(JoinupRelationManager $relationManager) {
+  public function __construct(JoinupRelationManagerInterface $relationManager) {
     $this->relationManager = $relationManager;
   }
 

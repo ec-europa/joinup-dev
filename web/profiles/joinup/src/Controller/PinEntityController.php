@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupHelper;
 use Drupal\joinup\PinServiceInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -36,21 +36,21 @@ class PinEntityController extends ControllerBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
   /**
    * Instantiates a new PinEntityController object.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The Joinup relation manager.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    * @param \Drupal\joinup\PinServiceInterface $pinService
    *   The pin service.
    */
-  public function __construct(JoinupRelationManager $relationManager, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
+  public function __construct(JoinupRelationManagerInterface $relationManager, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
     $this->relationManager = $relationManager;
     $this->ogAccess = $ogAccess;
     $this->pinService = $pinService;
