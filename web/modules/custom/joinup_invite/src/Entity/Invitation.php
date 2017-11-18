@@ -4,17 +4,28 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Entity;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\message\MessageInterface;
 use Drupal\user\UserInterface;
 
 /**
  * Defines the Invitation entity.
  *
- * @ingroup joinup_invite
+ * This entity can be used to invite a user to interact with a certain entity.
+ * Examples are to participate in a discussion, attend an event or join a
+ * collection.
+ *
+ * The Invitation entity requires to have a User and an Entity associated with
+ * it, and these cannot be changed after the Invitation is saved.
+ *
+ * Optionally you can store a reference to a Message on the entity, this can be
+ * used to send a notification to the user to inform them about the invitation.
  *
  * @ContentEntityType(
  *   id = "invitation",
@@ -72,6 +83,12 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function setOwnerId($uid) : InvitationInterface {
+    // Only allow to change the owner on new invitations. An invitation is bound
+    // to a user and an entity and these should not be changed once the
+    // invitation is saved. Instead a new invitation should be created.
+    if (!$this->isNew()) {
+      throw new \RuntimeException('The owner cannot be changed for an existing invitation.');
+    }
     $this->set('uid', $uid);
     return $this;
   }
@@ -80,8 +97,114 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function setOwner(UserInterface $account) : InvitationInterface {
+    // Only allow to change the owner on new invitations. An invitation is bound
+    // to a user and an entity and these should not be changed once the
+    // invitation is saved. Instead a new invitation should be created.
+    if (!$this->isNew()) {
+      throw new \RuntimeException('The owner cannot be changed for an existing invitation.');
+    }
     $this->set('uid', $account->id());
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEntity() : EntityInterface {
+    $entity_type = $this->get('entity_type')->value;
+    $entity_id = $this->get('entity_id')->value;
+
+    if (empty($entity_type) || empty($entity_id)) {
+      return NULL;
+    }
+
+    return \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEntity(EntityInterface $entity) : InvitationInterface {
+    // Only allow to change the entity on new invitations. An invitation is
+    // bound to a user and an entity and these should not be changed once the
+    // invitation is saved. Instead a new invitation should be created.
+    if (!$this->isNew()) {
+      throw new \RuntimeException('The entity cannot be changed for an existing invitation.');
+    }
+    $this->set('entity_type', $entity->getEntityTypeId());
+    $this->set('entity_id', $entity->id());
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMessage() : ?MessageInterface {
+    return $this->get('message')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setMessage(MessageInterface $message) : InvitationInterface {
+    $this->set('message', $message);
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatus() : string {
+    return $this->get('status')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStatus(string $status) : InvitationInterface {
+    $acceptable_statuses = [
+      InvitationInterface::STATUS_PENDING,
+      InvitationInterface::STATUS_ACCEPTED,
+      InvitationInterface::STATUS_REJECTED,
+    ];
+    if (!in_array($status, $acceptable_statuses)) {
+      throw new \InvalidArgumentException("Invalid status $status. Use one of: " . implode(', ', $acceptable_statuses));
+    }
+
+    $this->set('status', $status);
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function accept() : InvitationInterface {
+    $this->setStatus(InvitationInterface::STATUS_ACCEPTED);
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reject() : InvitationInterface {
+    $this->setStatus(InvitationInterface::STATUS_REJECTED);
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sendMessage() : bool {
+    if (!$message = $this->getMessage()) {
+      return FALSE;
+    }
+    $options = ['save on success' => FALSE, 'mail' => $this->getOwner()->getEmail()];
+    return \Drupal::service('message_notify.sender')->send($message, $options);
   }
 
   /**
@@ -90,25 +213,37 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) : array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['user'] = BaseFieldDefinition::create('entity_reference')
+    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('User'))
       ->setDescription(t('The user that has been invited.'))
       ->setRevisionable(FALSE)
       ->setSetting('target_type', 'user')
       ->setRequired(TRUE);
 
+    // We store the entity type and entity ID as separate base fields since
+    // entity reference fields expect a fixed entity type to be defined in the
+    // field storage. We want to support entities of different types.
     $fields['entity_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Group entity type'))
-      ->setDescription(t('The entity type of the entity that the user was invited to.'));
+      ->setDescription(t('The entity type of the entity that the user was invited to.'))
+      ->setRequired(TRUE);
 
     $fields['entity_id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Group entity id'))
-      ->setDescription(t('The ID of the entity that the user was invited to.'));
+      ->setDescription(t('The ID of the entity that the user was invited to.'))
+      ->setRequired(TRUE);
 
     $fields['status'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Status'))
       ->setSetting('allowed_values', static::getStatuses())
       ->setDefaultValue(InvitationInterface::STATUS_PENDING)
+      ->setRequired(TRUE);
+
+    $fields['message'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Message'))
+      ->setDescription(t('Optional notification message that can be sent when creating an invitation.'))
+      ->setRevisionable(FALSE)
+      ->setSetting('target_type', 'message')
       ->setRequired(TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
@@ -117,7 +252,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
-      ->setDescription(t('The UNIX timestamp indicating when the invitation was last edited.'));
+      ->setDescription(t('The UNIX timestamp indicating when the invitation was last updated.'));
 
     return $fields;
   }
@@ -125,7 +260,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getStatuses(): array {
+  public static function getStatuses() : array {
     return [
       InvitationInterface::STATUS_PENDING => t('Pending'),
       InvitationInterface::STATUS_ACCEPTED => t('Accepted'),
@@ -138,6 +273,56 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    */
   public function label() : string {
     throw new \Exception(__METHOD__ . ' is not yet implemented');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function set($name, $value, $notify = TRUE) : InvitationInterface {
+    // Only allow to change the user or entity on new invitations. An invitation
+    // is bound to these parameters and they should not be changed once the
+    // invitation is saved. Instead a new invitation should be created.
+    if (in_array($name, ['uid', 'entity_type', 'entity_id']) && !$this->isNew()) {
+      throw new \RuntimeException("The '$name' cannot be changed for an existing invitation.");
+    }
+    return parent::set($name, $value, $notify);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) : void {
+    // Do not allow to store an invitation if the user or entity is missing.
+    if (!$user = $this->getOwner()) {
+      throw new \LogicException('An invitation can not be created for an anonymous user.');
+    }
+
+    if (!$entity = $this->getEntity()) {
+      throw new \LogicException('An entity is required for creating an invitation.');
+    }
+
+    // Do not allow multiple invitations to be saved for a particular user and
+    // entity.
+    $existing_invitation = static::loadByEntityAndUser($entity, $user);
+    if (!empty($existing_invitation) && ($entity->isNew() || $existing_invitation->id() !== $entity->id())) {
+      throw new \Exception('An invitation already exists for entity "' . $entity->label() . '" and user "' . $user->getAccountName() . '".');
+    }
+
+    parent::preSave($storage);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function loadByEntityAndUser(EntityInterface $entity, AccountInterface $user, string $bundle = '') : ?InvitationInterface {
+    $storage = \Drupal::entityTypeManager()->getStorage('invitation');
+    $invitations = $storage->loadByProperties([
+      'entity_type' => $entity->getEntityTypeId(),
+      'entity_id' => $entity->id(),
+      'uid' => $user->id(),
+      'bundle' => $bundle,
+    ]);
+    return !empty($invitations) ? reset($invitations) : NULL;
   }
 
 }
