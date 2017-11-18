@@ -49,6 +49,7 @@
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/social_media_links": "^2.5",
+        "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
         "drupal/state_machine": "^1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
         "drupal/swiftmailer": "^1.0@beta",
