@@ -137,6 +137,9 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
+            "drupal/config_devel": {
+                "Drush commands throw fatal error after updating to Drush 9.0.0-beta9 @see https://www.drupal.org/project/config_devel/issues/2923795": "https://www.drupal.org/files/issues/2923795-2.patch"
+            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
