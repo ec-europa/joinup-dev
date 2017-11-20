@@ -18,6 +18,13 @@ use Behat\Mink\Exception\DriverException;
 class ScreenshotContext extends RawMinkContext {
 
   /**
+   * Whether the service is enabled or not.
+   *
+   * @var bool
+   */
+  protected $enabled;
+
+  /**
    * The directory where the screenshots are saved.
    *
    * @var string
@@ -34,6 +41,8 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Constructs a new ScreenshotContext context.
    *
+   * @param bool $enabled
+   *   Whether the service is enabled or not.
    * @param string $screenshots_dir
    *   The directory where the screenshots are saved. The value is
    *   passed in behat.yml. If an empty string is received, the system temporary
@@ -45,7 +54,8 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct($screenshots_dir, $artifacts_s3_uri) {
+  public function __construct($enabled, $screenshots_dir, $artifacts_s3_uri) {
+    $this->enabled = $enabled === 'true';
     $screenshots_dir = trim($screenshots_dir);
     if (!$screenshots_dir) {
       $screenshots_dir = sys_get_temp_dir();
@@ -158,6 +168,9 @@ class ScreenshotContext extends RawMinkContext {
    *   Whether to add .png or .html to the name of the screenshot.
    */
   public function createScreenshot($file_name, $message, $ext = TRUE) {
+    if (!$this->enabled) {
+      return;
+    }
     if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
       if ($ext) {
         $file_name .= '.png';

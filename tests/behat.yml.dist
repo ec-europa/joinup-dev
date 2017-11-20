@@ -11,6 +11,7 @@ default:
         - Drupal\joinup\Context\ScreenshotContext:
             screenshots_dir: '${behat.screenshots_dir}'
             artifacts_s3_uri: '${behat.artifacts_s3_uri}'
+            enabled: '${behat.options.screenshots}'
       filters:
         tags: '~@wip'
   extensions:
