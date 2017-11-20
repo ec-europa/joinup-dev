@@ -12,11 +12,12 @@ use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
 /**
- * Add the missed 'simatosc' user (uid 73932).
+ * Add the missed 'simatosc' user (uid 73932) [ISAICP-4004].
  */
 function joinup_migrate_post_update_add_user_73932() {
   $uid = 73932;
@@ -63,17 +64,16 @@ function joinup_migrate_post_update_add_user_73932() {
 }
 
 /**
- * Disable the Update module.
+ * Disable the Update module [ISAICP-4033].
  */
 function joinup_migrate_post_update_disable_update() {
   \Drupal::service('module_installer')->uninstall(['update']);
 }
 
 /**
- * Add more specific redirects.
+ * Add more specific redirects [ISAICP-4012].
  */
 function joinup_migrate_post_update_more_redirects() {
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4012
   $redirects = [];
   $db = Database::getConnection();
   $legacy_db = Database::getConnection('default', 'migrate');
@@ -223,4 +223,149 @@ function joinup_migrate_post_update_srits_change_owner() {
   $collection->setOwner($new_owner);
   $collection->skip_notification = TRUE;
   $collection->save();
+}
+
+/**
+ * Copy the about text to distributions for CTT Spain [ISAICP-4057].
+ */
+function joinup_migrate_post_update_copy_about_text_ctt_spain() {
+  $solution_labels = [];
+  $collection = Rdf::load('http://administracionelectronica.gob.es/ctt');
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $solutions */
+  $solutions = $collection->get('field_ar_affiliates');
+  // Iterate over affiliated solutions for the CTT Spain collection.
+  foreach ($solutions->referencedEntities() as $affiliate) {
+    /** @var \Drupal\rdf_entity\RdfInterface $affiliate */
+    if ($affiliate->bundle() === 'solution') {
+      // Retrieve the description from the solution in all available languages.
+      $descriptions = [];
+      foreach (array_keys($affiliate->getTranslationLanguages()) as $langcode) {
+        $translated_entity = $affiliate->getTranslation($langcode);
+        $descriptions[$langcode] = $translated_entity->get('field_is_description')->getValue();
+      }
+
+      if (empty($descriptions)) {
+        continue;
+      }
+
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $distributions */
+      $distributions = $affiliate->get('field_is_distribution');
+      if (!$distributions->isEmpty()) {
+        $solution_labels[] = "- {$affiliate->label()}";
+      }
+      // Iterate over distributions that are associated with this solution.
+      foreach ($distributions->referencedEntities() as $distribution) {
+        /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+        foreach ($descriptions as $langcode => $description) {
+          if (!$translated_entity = $distribution->getTranslation($langcode)) {
+            $translated_entity = $distribution->addTranslation($langcode, $distribution->toArray());
+          }
+          $translated_entity->set('field_ad_description', $description);
+        }
+        $distribution->skip_notification = TRUE;
+        $distribution->save();
+      }
+    }
+  }
+  return $solution_labels ? t('Description of following solutions were copied to their child distributions:') . "\n" . implode("\n", $solution_labels) : t('No description copied.');
+}
+
+/**
+ * Fix distribution files with the same name [ISAICP-3968].
+ */
+function joinup_migrate_post_update_same_name_distribution_files() {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+  /** @var \Drupal\Component\Uuid\UuidInterface $uuid_generator */
+  $uuid_generator = Drupal::service('uuid');
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
+  $redirect_storage = \Drupal::entityTypeManager()->getStorage('redirect');
+
+  $legacy_db = Database::getConnection('default', 'migrate');
+  $legacy_db_name = $legacy_db->getConnectionOptions()['database'];
+
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query = Database::getConnection()->select('file_managed', 'f')
+    ->fields('f', ['fid', 'uri'])
+    ->fields('d6f', ['filename', 'filepath'])
+    ->orderBy('f.uri')
+    ->condition('f.uri', 'public://distribution/%', 'LIKE');
+  $query->join("$legacy_db_name.files", 'd6f', 'f.fid = d6f.fid');
+  // In Drupal 6, the {files} table stores the same file base name in the
+  // 'filename' field, even the file path is different (different files having
+  // the same base name). We use a INNER JOIN to the Drupal 6 database {files}
+  // table in order to group distribution files:
+  // - first, by year and month of creation, which is the lowest Drupal 8
+  //   directory, just above the file,
+  // - second, by the common base file name,
+  // - third, by the file ID (fid), which is preserved between Drupal 6 and 8.
+  // The values are the Drupal 6 file paths.
+  $file_groups = [];
+  foreach ($query->execute()->fetchAll() as $row) {
+    $dir = substr($file_system->dirname($row->uri), 22);
+    // We accept only date formatted dirs.
+    if (preg_match('@^\d{4}\-\d{2}$@', $dir)) {
+      $file_groups[$dir][$row->filename][$row->fid] = $row->filepath;
+    }
+  }
+
+  // Keep only duplicates.
+  array_walk($file_groups, function (array &$file_group) {
+    $file_group = array_filter($file_group, function (array $files) {
+      return count($files) > 1;
+    });
+  });
+
+  $prefix = "public://distribution/access_url";
+  $redirects = $messages = [];
+  foreach ($file_groups as $month => $file_group) {
+    foreach ($file_group as $file_name => $files) {
+      foreach ($files as $fid => $source_path) {
+        $destination = "$prefix/$month/{$uuid_generator->generate()}";
+        // Create the destination directory.
+        if (!is_dir($destination)) {
+          $file_system->mkdir($destination, NULL, TRUE);
+        }
+        $file = File::load($fid);
+        $initial_uri = $file->getFileUri();
+
+        // Ensure the filename.
+        $file->setFilename($file_name);
+        if (!$file = file_move($file, "$destination/$file_name")) {
+          $messages[] = t("Can't move file @file (fid @fid).", [
+            '@file' => $initial_uri,
+            '@fid' => $fid,
+          ]);
+          continue;
+        }
+        $redirects[$source_path] = 'base:/sites/default/files/' . file_uri_target($file->getFileUri());
+        $messages[] = t('@source renamed as @destination', [
+          '@source' => $initial_uri,
+          '@destination' => $file->getFileUri(),
+        ]);
+      }
+    }
+  }
+
+  // Delete existing redirects created during migration.
+  if ($rids = $redirect_storage->getQuery()
+    ->condition('redirect_source.path', array_keys($redirects), 'IN')
+    ->execute()) {
+    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  }
+  // Create new redirects.
+  foreach ($redirects as $source_path => $redirect_uri) {
+    Redirect::create([
+      'uid' => 1,
+      'redirect_source' => ['path' => $source_path, 'query' => NULL],
+      'redirect_redirect' => [
+        'uri' => $redirect_uri,
+        'title' => '',
+        'options' => [],
+      ],
+      'status_code' => 301,
+    ])->save();
+  }
+
+  return $messages ? implode("\n", $messages) : t('No file renamed.');
 }

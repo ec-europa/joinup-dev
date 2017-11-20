@@ -88,12 +88,18 @@
   overflow: hidden
   img
     margin-bottom: 16px
+
   img.align-left
     +breakpoint(md)
       margin-right: 20px
   img.align-right
     +breakpoint(md)
       margin-left: 20px
+
+  img.align-left,
+  img.align-right
+    position: relative
+    +z-index(highlight)
 
 // Dependiencies
 // --------------------------------------------------
