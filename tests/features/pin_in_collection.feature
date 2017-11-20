@@ -190,6 +190,39 @@ Feature: Pinning content entities inside collections
       | discussion   |
       | news         |
 
+  @javascript
+  Scenario: Pinned solutions tiles should show a visual cue only in their collection homepage.
+    Given solutions:
+      | title             | collection                 | state     | pinned in     |
+      | Positive sunshine | Orange Wrench              | validated | Orange Wrench |
+      # Note: it is not yet possible to affiliate a solution to multiple collections from the UI.
+      | Fast lightning    | Orange Wrench, Cloudy Beam | validated | Cloudy Beam   |
+
+    When I go to the homepage of the "Orange Wrench" collection
+    Then the "Positive sunshine" tile should be marked as pinned
+    But the "Fast lightning" tile should not be marked as pinned
+
+    When I go to the homepage of the "Cloudy Beam" collection
+    Then the "Fast lightning" tile should be marked as pinned
+
+    When I am at "/search"
+    Then the "Positive sunshine" tile should not be marked as pinned
+    And the "Fast lightning" tile should not be marked as pinned
+
+    # Verify that changes in the pinned state are reflected to the tile.
+    When I am logged in as a facilitator of the "Orange Wrench" collection
+    When I go to the homepage of the "Orange Wrench" collection
+    Then the "Positive sunshine" tile should be marked as pinned
+    But the "Fast lightning" tile should not be marked as pinned
+
+    When I click the contextual link "Pin" in the "Fast lightning" tile
+    Then the "Fast lightning" tile should be marked as pinned
+    And the "Positive sunshine" tile should be marked as pinned
+
+    When I click the contextual link "Unpin" in the "Positive sunshine" tile
+    Then the "Positive sunshine" tile should not be marked as pinned
+    And the "Fast lightning" tile should be marked as pinned
+
   Scenario Outline: Content cannot be pinned inside solutions.
     Given <content type> content:
       | title        | solution     | state     |
