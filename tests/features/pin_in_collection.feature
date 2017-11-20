@@ -12,15 +12,6 @@ Feature: Pinning content entities inside collections
     And the following solution:
       | title | Space Silver |
       | state | validated    |
-
-  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
-    Given discussion content:
-      | title                       | collection    | state     |
-      | What is the HEX for orange? | Orange Wrench | validated |
-    And <content type> content:
-      | title              | collection    | state     | pinned |
-      | Very important     | Orange Wrench | validated | yes    |
-      | Useful information | Orange Wrench | validated | no     |
     And users:
       | Username        | E-mail                      |
       | Rozanne Minett  | rozanne.minett@example.com  |
@@ -33,6 +24,15 @@ Feature: Pinning content entities inside collections
       | Orange Wrench | Tyron Ingram    |             |
       | Cloudy Beam   | Andy Cross      | facilitator |
       | Cloudy Beam   | Xanthia Gilbert |             |
+
+  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
+    Given discussion content:
+      | title                       | collection    | state     |
+      | What is the HEX for orange? | Orange Wrench | validated |
+    And <content type> content:
+      | title              | collection    | state     | pinned |
+      | Very important     | Orange Wrench | validated | yes    |
+      | Useful information | Orange Wrench | validated | no     |
 
     When I am an anonymous user
     And I go to the homepage of the "Orange Wrench" collection
