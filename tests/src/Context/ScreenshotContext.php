@@ -18,13 +18,6 @@ use Behat\Mink\Exception\DriverException;
 class ScreenshotContext extends RawMinkContext {
 
   /**
-   * Whether the service is enabled or not.
-   *
-   * @var bool
-   */
-  protected $enabled;
-
-  /**
    * The directory where the screenshots are saved.
    *
    * @var string
@@ -41,12 +34,9 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Constructs a new ScreenshotContext context.
    *
-   * @param bool $enabled
-   *   Whether the service is enabled or not.
    * @param string $screenshots_dir
    *   The directory where the screenshots are saved. The value is
-   *   passed in behat.yml. If an empty string is received, the system temporary
-   *   directory is used.
+   *   passed in behat.yml.
    * @param string $artifacts_s3_uri
    *   An Amazon S3 bucket URI, such as s3://<bucket name>/path/to/artifacts,
    *   where to store the screenshots. If an empty value is received, no AWS S3
@@ -54,14 +44,10 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct($enabled, $screenshots_dir, $artifacts_s3_uri) {
-    $this->enabled = $enabled === 'true';
+  public function __construct($screenshots_dir, $artifacts_s3_uri) {
     $screenshots_dir = trim($screenshots_dir);
-    if (!$screenshots_dir) {
-      $screenshots_dir = sys_get_temp_dir();
-    }
     // If a directory has been passed, ensure the directory exists.
-    elseif (!is_dir($screenshots_dir)) {
+    if (!empty($this->screenshotsDir) && !is_dir($screenshots_dir)) {
       $screenshots_dir = rtrim($screenshots_dir, '/');
       @mkdir($screenshots_dir, 0777, TRUE);
     }
@@ -168,7 +154,7 @@ class ScreenshotContext extends RawMinkContext {
    *   Whether to add .png or .html to the name of the screenshot.
    */
   public function createScreenshot($file_name, $message, $ext = TRUE) {
-    if (!$this->enabled) {
+    if (empty($this->screenshotsDir)) {
       return;
     }
     if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
