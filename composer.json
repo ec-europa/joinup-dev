@@ -198,6 +198,9 @@
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+            },
+            "drupal/rdf_entity": {
+                "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
             }
         }
     },
