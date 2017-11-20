@@ -1,10 +1,10 @@
 @api @email
-Feature: Pinning content inside collections
+Feature: Pinning content entities inside collections
   As a facilitator of a collection
   I want to pin content at the top of the collection homepage
   So that important content has more visibility
 
-  Scenario Outline: Facilitators can pin and unpin content inside their collections.
+  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
     Given the following collections:
       | title         | state     |
       | Orange Wrench | validated |
