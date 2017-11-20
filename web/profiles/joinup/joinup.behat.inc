@@ -1051,46 +1051,50 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the presence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I (should )see the contextual link :link in the :heading tile
+   * @Then I (should )see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkPresentInTile($link, $heading) {
+  public function assertContextualLinkPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinksInElement($element));
 
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    $not_found = array_diff($links, $found_links);
+    if (!empty($not_found)) {
+      throw new \Exception(sprintf("Contextual links '%s' not found in the tile '%s'", implode(', ', $not_found), $heading));
     }
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the presence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I should not see the contextual link :link in the :heading tile
+   * @Then I should not see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkNotPresentInTile($link, $heading) {
+  public function assertContextualLinkNotPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinksInElement($element));
 
-    if (isset($links[$link])) {
-      throw new \Exception("Unexpected contextual link '$link' found in the tile '$heading'.");
+    $found = array_intersect($found_links, $links);
+    if (!empty($found)) {
+      throw new \Exception(sprintf("Unexpected contextual link '%s' found in the tile '%s'", implode(', ', $found), $heading));
     }
   }
 

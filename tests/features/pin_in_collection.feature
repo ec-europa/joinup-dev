@@ -40,49 +40,55 @@ Feature: Pinning content entities inside collections
       | Very important              |
       | What is the HEX for orange? |
       | Useful information          |
-    Then I should not see the contextual link "Pin" in the "Useful information" tile
-    Then I should not see the contextual link "Unpin" in the "Very important" tile
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Orange Wrench" collection
-    Then I should not see the contextual link "Pin" in the "Useful information" tile
-    Then I should not see the contextual link "Unpin" in the "Very important" tile
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
     # Members and facilitators of other collections cannot pin nor unpin.
     When I am logged in as "Andy Cross"
     And I go to the homepage of the "Orange Wrench" collection
-    Then I should not see the contextual link "Pin" in the "Useful information" tile
-    Then I should not see the contextual link "Unpin" in the "Very important" tile
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
     When I am logged in as "Xanthia Gilbert"
     And I go to the homepage of the "Orange Wrench" collection
-    Then I should not see the contextual link "Pin" in the "Useful information" tile
-    Then I should not see the contextual link "Unpin" in the "Very important" tile
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
     # Collection members cannot pin nor unpin content.
     When I am logged in as "Tyron Ingram"
     And I go to the homepage of the "Orange Wrench" collection
-    Then I should not see the contextual link "Pin" in the "Useful information" tile
-    Then I should not see the contextual link "Unpin" in the "Very important" tile
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
 
     # Facilitators of the collection the content belongs to can pin/unpin.
     When I am logged in as "Rozanne Minett"
     And I go to the homepage of the "Orange Wrench" collection
     Then I should see the contextual link "Pin" in the "Useful information" tile
-    Then I should see the contextual link "Unpin" in the "Very important" tile
+    And I should see the contextual link "Unpin" in the "Very important" tile
+    But I should not see the contextual link "Unpin" in the "Useful information" tile
+    And I should not see the contextual link "Pin" in the "Very important" tile
 
     When I click the contextual link "Unpin" in the "Very important" tile
     Then I should see the success message "<label> Very important has been unpinned in the collection Orange Wrench."
-    Then I should see the following tiles in the correct order:
+    And I should see the following tiles in the correct order:
       | What is the HEX for orange? |
       | Useful information          |
       | Very important              |
+    And I should see the contextual link "Pin" in the "Very important" tile
+    But I should not see the contextual link "Unpin" in the "Very important" tile
 
     When I click the contextual link "Pin" in the "Useful information" tile
     Then I should see the success message "<label> Useful information has been pinned in the collection Orange Wrench."
-    Then I should see the following tiles in the correct order:
+    And I should see the following tiles in the correct order:
       | Useful information          |
       | What is the HEX for orange? |
       | Very important              |
+    And I should see the contextual link "Unpin" in the "Useful information" tile
+    But I should not see the contextual link "Pin" in the "Useful information" tile
 
     Examples:
       | content type | label      |
