@@ -234,16 +234,17 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // The storage class passes the loaded entity to the hooks when a delete
     // operation occurs. This returns the wrong state of the entity so the
     // latest revision is forced here.
-    $latest_revision = $this->revisionManager->loadLatestRevision($this->entity);
-    $state = $latest_revision->get($this->stateField)->first()->value;
-    if (empty($this->config[$this->workflow->getId()][$state])) {
-      return;
-    }
+    if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
+      $state = $latest_revision->get($this->stateField)->first()->value;
+      if (empty($this->config[$this->workflow->getId()][$state])) {
+        return;
+      }
 
-    $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
-    $arguments = ['@transition:request_action:past' => $transition_action];
-    $this->sendUserDataMessages($user_data, $arguments);
+      $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
+      $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
+      $arguments = ['@transition:request_action:past' => $transition_action];
+      $this->sendUserDataMessages($user_data, $arguments);
+    }
   }
 
   /**

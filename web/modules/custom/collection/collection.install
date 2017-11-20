@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update scripts for the Joinup Collection module.
+ */
+
+/**
+ * Clear the cache after installing the 'last_update' base computed field.
+ */
+function collection_update_8100() {
+  // No action.
+}
