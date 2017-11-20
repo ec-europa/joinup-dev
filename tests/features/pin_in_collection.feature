@@ -97,6 +97,60 @@ Feature: Pinning content entities inside collections
       | discussion   | Discussion |
       | news         | News       |
 
+  Scenario: Facilitators can pin and unpin solutions inside their collections.
+    Given discussion content:
+      | title                         | collection    | state     |
+      | Where can I find this wrench? | Orange Wrench | validated |
+    And solutions:
+      | title            | collection    | state     | pinned in     |
+      | Wrench catalogue | Orange Wrench | validated | Orange Wrench |
+      | Orange estimator | Orange Wrench | validated |               |
+      | Beam analyser    | Cloudy Beam   | validated |               |
+
+    When I am an anonymous user
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+
+    # Members and facilitators of other collections cannot pin nor unpin.
+    When I am logged in as "Andy Cross"
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+    When I am logged in as "Xanthia Gilbert"
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+
+    # Collection members cannot pin nor unpin content.
+    When I am logged in as "Tyron Ingram"
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+
+    # Facilitators of the collection the content belongs to can pin/unpin.
+    When I am logged in as "Rozanne Minett"
+    And I go to the homepage of the "Orange Wrench" collection
+    Then I should see the contextual link "Pin" in the "Orange estimator" tile
+    And I should see the contextual link "Unpin" in the "Wrench catalogue" tile
+    But I should not see the contextual link "Unpin" in the "Orange estimator" tile
+    And I should not see the contextual link "Pin" in the "Wrench catalogue" tile
+
+    When I click the contextual link "Unpin" in the "Wrench catalogue" tile
+    Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
+    And I should see the contextual link "Pin" in the "Wrench catalogue" tile
+    But I should not see the contextual link "Unpin" in the "Wrench catalogue" tile
+
+    When I click the contextual link "Pin" in the "Orange estimator" tile
+    Then I should see the success message "Solution Orange estimator has been pinned in the collection Orange Wrench."
+    And I should see the contextual link "Unpin" in the "Orange estimator" tile
+    But I should not see the contextual link "Pin" in the "Orange estimator" tile
+
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
     Given <content type> content:

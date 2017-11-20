@@ -490,6 +490,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'collection' => 'field_ar_affiliates',
       'featured' => 'field_site_featured',
       'pinned site-wide' => 'field_site_pinned',
+      'pinned in' => 'field_is_pinned_in',
     ];
   }
 
