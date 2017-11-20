@@ -4,12 +4,17 @@ Feature: Pinning content entities inside collections
   I want to pin content at the top of the collection homepage
   So that important content has more visibility
 
-  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
+  Background:
     Given the following collections:
       | title         | state     |
       | Orange Wrench | validated |
       | Cloudy Beam   | validated |
-    And discussion content:
+    And the following solution:
+      | title | Space Silver |
+      | state | validated    |
+
+  Scenario Outline: Facilitators can pin and unpin community content inside their collections.
+    Given discussion content:
       | title                       | collection    | state     |
       | What is the HEX for orange? | Orange Wrench | validated |
     And <content type> content:
@@ -88,29 +93,25 @@ Feature: Pinning content entities inside collections
 
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
-    Given the following collections:
-      | title             | state     |
-      | Gloomy Lantern    | validated |
-      | Digital scarecrow | validated |
-    And <content type> content:
-      | title         | collection     | state     | pinned | shared in         |
-      | Lantern FAQs  | Gloomy Lantern | validated | yes    | Digital scarecrow |
-      | Lantern terms | Gloomy Lantern | validated | no     |                   |
+    Given <content type> content:
+      | title         | collection    | state     | pinned | shared in   |
+      | Lantern FAQs  | Orange Wrench | validated | yes    | Cloudy Beam |
+      | Lantern terms | Orange Wrench | validated | no     |             |
 
-    When I go to the homepage of the "Gloomy Lantern" collection
+    When I go to the homepage of the "Orange Wrench" collection
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
     # When shared in other collection, content shouldn't show the pin icon.
-    When I go to the homepage of the "Digital scarecrow" collection
+    When I go to the homepage of the "Cloudy Beam" collection
     Then the "Lantern FAQs" tile should not be marked as pinned
 
     When I am at "/search"
     Then the "Lantern FAQs" tile should not be marked as pinned
 
     # Verify that changes in the pinned state are reflected to the tile.
-    When I am logged in as a facilitator of the "Gloomy Lantern" collection
-    When I go to the homepage of the "Gloomy Lantern" collection
+    When I am logged in as a facilitator of the "Orange Wrench" collection
+    When I go to the homepage of the "Orange Wrench" collection
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
@@ -130,10 +131,7 @@ Feature: Pinning content entities inside collections
       | news         |
 
   Scenario Outline: Content cannot be pinned inside solutions.
-    Given the following solution:
-      | title | Space Silver |
-      | state | validated    |
-    And <content type> content:
+    Given <content type> content:
       | title        | solution     | state     |
       | To be pinned | Space Silver | validated |
 
