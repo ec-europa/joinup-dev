@@ -3112,6 +3112,81 @@
             }
         },
         {
+            "name": "drupal/flag",
+            "version": "4.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/flag",
+                "reference": "8.x-4.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/flag-8.x-4.0-alpha2.zip",
+                "reference": "8.x-4.0-alpha2",
+                "shasum": "e9ead06aadc9d26364b9ad1225354b0c47d5ce02"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-4.0-alpha2",
+                    "datestamp": "1494517385",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "fubhy",
+                    "homepage": "https://www.drupal.org/user/761344"
+                },
+                {
+                    "name": "joachim",
+                    "homepage": "https://www.drupal.org/user/107701"
+                },
+                {
+                    "name": "merlinofchaos",
+                    "homepage": "https://www.drupal.org/user/26979"
+                },
+                {
+                    "name": "mooffie",
+                    "homepage": "https://www.drupal.org/user/78454"
+                },
+                {
+                    "name": "quicksketch",
+                    "homepage": "https://www.drupal.org/user/35821"
+                },
+                {
+                    "name": "shabana.navas",
+                    "homepage": "https://www.drupal.org/user/1311398"
+                },
+                {
+                    "name": "socketwench",
+                    "homepage": "https://www.drupal.org/user/65793"
+                }
+            ],
+            "description": "Create customized flags that users can set on entities.",
+            "homepage": "https://www.drupal.org/project/flag",
+            "support": {
+                "source": "http://cgit.drupalcode.org/flag"
+            }
+        },
+        {
             "name": "drupal/honeypot",
             "version": "1.27.0",
             "source": {
@@ -3473,6 +3548,75 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/message_notify",
                 "issues": "https://drupal.org/project/issues/message_notify",
+                "irc": "irc://irc.freenode.org/drupal"
+            }
+        },
+        {
+            "name": "drupal/message_subscribe",
+            "version": "1.0.0-beta4",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_subscribe",
+                "reference": "8.x-1.0-beta4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_subscribe-8.x-1.0-beta4.zip",
+                "reference": "8.x-1.0-beta4",
+                "shasum": "edd0e7462dddb87021d42ee5a701dc2b19640888"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/flag": "~4.0",
+                "drupal/message": "~1.0",
+                "drupal/message_notify": "~1.0"
+            },
+            "require-dev": {
+                "drupal/flag": "*",
+                "drupal/message_subscribe_ui": "*",
+                "drupal/og": "~1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta4",
+                    "datestamp": "1497650343",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "RoySegall",
+                    "homepage": "https://www.drupal.org/user/1812910"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "fubhy",
+                    "homepage": "https://www.drupal.org/user/761344"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                }
+            ],
+            "description": "Subscription API for the Message and Message notify modules",
+            "homepage": "https://drupal.org/project/message_subscribe",
+            "support": {
+                "source": "https://cgit.drupalcode.org/message_subscribe",
+                "issues": "https://drupal.org/project/issues/message_subscribe",
                 "irc": "irc://irc.freenode.org/drupal"
             }
         },
@@ -10205,6 +10349,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Drush commands throw fatal error after updating to Drush 9.0.0-beta9 @see https://www.drupal.org/project/config_devel/issues/2923795": "https://www.drupal.org/files/issues/2923795-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10245,7 +10392,8 @@
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
                 "source": "http://cgit.drupalcode.org/config_devel"
-            }
+            },
+            "time": "2017-10-06T10:01:31+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -12050,7 +12198,9 @@
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
+        "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/message_subscribe": 10,
         "drupal/og": 20,
         "drupal/pathauto": 20,
         "drupal/persistent_login": 20,
