@@ -5,12 +5,17 @@ declare(strict_types = 1);
 namespace Drupal\joinup_invite\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_invite\Event\InviteToDiscussionEvent;
-use Drupal\joinup_invite\InvitationEvents;
+use Drupal\Core\Url;
+use Drupal\flag\FlagServiceInterface;
+use Drupal\joinup_invite\Controller\InvitationController;
+use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,20 +26,72 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class InviteToDiscussionForm extends InviteFormBase {
 
-  const INVITATION_MESSAGE_TEXT = [
-    InviteToDiscussionEvent::RESULT_SUCCESS => ':count user(s) have been invited to this discussion.',
-    InviteToDiscussionEvent::RESULT_FAILED => 'The invitation could not be sent for :count user(s). Please try again later.',
-    InviteToDiscussionEvent::RESULT_RESENT => 'The invitation was resent to :count user(s) that were already invited previously but haven\'t yet accepted the invitation.',
-    InviteToDiscussionEvent::RESULT_ACCEPTED => ':count user(s) were already subscribed. No new invitation was sent.',
-    InviteToDiscussionEvent::RESULT_REJECTED => ':count user(s) have previously rejected the invitation. No new invitation was sent.',
-  ];
+  /**
+   * The message template to use for the notification mail.
+   *
+   * @var string
+   */
+  const TEMPLATE_DISCUSSION_INVITE = 'discussion_invite';
 
-  const INVITATION_MESSAGE_TYPE = [
-    InviteToDiscussionEvent::RESULT_SUCCESS => 'status',
-    InviteToDiscussionEvent::RESULT_FAILED => 'error',
-    InviteToDiscussionEvent::RESULT_RESENT => 'status',
-    InviteToDiscussionEvent::RESULT_ACCEPTED => 'status',
-    InviteToDiscussionEvent::RESULT_REJECTED => 'status',
+  /**
+   * The value indicating a successful invitation.
+   *
+   * @var string
+   */
+  const RESULT_SUCCESS = 'success';
+
+  /**
+   * The value indicating a failed invitation.
+   *
+   * @var string
+   */
+  const RESULT_FAILED = 'failed';
+
+  /**
+   * The value indicating an invitation that has been resent.
+   *
+   * @var string
+   */
+  const RESULT_RESENT = 'resent';
+
+  /**
+   * The value indicating an invitation that has been previously accepted.
+   *
+   * @var string
+   */
+  const RESULT_ACCEPTED = 'accepted';
+
+  /**
+   * The value indicating an invitation that has been previously rejected.
+   *
+   * @var string
+   */
+  const RESULT_REJECTED = 'rejected';
+
+  /**
+   * The messages to display to the user, keyed by result type.
+   */
+  const INVITATION_MESSAGES = [
+    self::RESULT_SUCCESS => [
+      'message' => ':count user(s) have been invited to this discussion.',
+      'type' => 'status',
+    ],
+    self::RESULT_FAILED => [
+      'message' => 'The invitation could not be sent for :count user(s). Please try again later.',
+      'type' => 'error',
+    ],
+    self::RESULT_RESENT => [
+      'message' => 'The invitation was resent to :count user(s) that were already invited previously but haven\'t yet accepted the invitation.',
+      'type' => 'status',
+    ],
+    self::RESULT_ACCEPTED => [
+      'message' => ':count user(s) were already subscribed to the discussion. No new invitation was sent.',
+      'type' => 'status',
+    ],
+    self::RESULT_REJECTED => [
+      'message' => ':count user(s) have previously rejected the invitation. No new invitation was sent.',
+      'type' => 'status',
+    ],
   ];
 
   /**
@@ -45,17 +102,37 @@ class InviteToDiscussionForm extends InviteFormBase {
   protected $eventDispatcher;
 
   /**
+   * The helper service for creating and retrieving messages for invitations.
+   *
+   * @var \Drupal\joinup_invite\InvitationMessageHelperInterface
+   */
+  protected $invitationMessageHelper;
+
+  /**
+   * The flag service.
+   *
+   * @var \Drupal\flag\FlagServiceInterface
+   */
+  protected $flagService;
+
+  /**
    * Constructs a new InviteToDiscussionForm object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
+   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper;
+   *   The helper service for creating messages for invitations.
+   * @param \Drupal\flag\FlagServiceInterface $flagService
+   *   The flag service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EventDispatcherInterface $event_dispatcher) {
-    parent::__construct($entity_type_manager);
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, FlagServiceInterface $flagService) {
+    parent::__construct($entityTypeManager);
 
-    $this->eventDispatcher = $event_dispatcher;
+    $this->eventDispatcher = $eventDispatcher;
+    $this->invitationMessageHelper = $invitationMessageHelper;
+    $this->flagService = $flagService;
   }
 
   /**
@@ -64,7 +141,9 @@ class InviteToDiscussionForm extends InviteFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('event_dispatcher')
+      $container->get('event_dispatcher'),
+      $container->get('joinup_invite.invitation_message_helper'),
+      $container->get('flag')
     );
   }
 
@@ -95,21 +174,78 @@ class InviteToDiscussionForm extends InviteFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $user_ids = array_filter($form_state->getValue('users'));
+    /** @var \Drupal\Core\Session\AccountInterface[] $users */
     $users = $this->entityTypeManager->getStorage('user')->loadMultiple($user_ids);
     $discussion = $form_state->get('discussion');
 
-    $event = new InviteToDiscussionEvent($users, $discussion);
-    $this->eventDispatcher->dispatch(InvitationEvents::INVITE_TO_DISCUSSION_EVENT, $event);
+    $results = [
+      self::RESULT_SUCCESS => 0,
+      self::RESULT_FAILED => 0,
+      self::RESULT_RESENT => 0,
+      self::RESULT_ACCEPTED => 0,
+      self::RESULT_REJECTED => 0,
+    ];
 
-    foreach ($event->getResult() as $type => $results) {
-      $message = self::INVITATION_MESSAGE_TEXT[$type];
-      $message_type = self::INVITATION_MESSAGE_TYPE[$type];
+    foreach ($users as $user) {
+      // Check if the user is already subscribed to the discussion. In this case
+      // no invitation needs to be sent.
+      $flag = $this->flagService->getFlagById('subscribe_discussions');
+      $flagging = $this->flagService->getFlagging($flag, $discussion, $user);
+      if (!empty($flagging)) {
+        $results[self::RESULT_ACCEPTED]++;
+        continue;
+      }
+
+      // Check if a previous invitation already exists.
+      $invitation = Invitation::loadByEntityAndUser($discussion, $user, 'discussion');
+      if (!empty($invitation)) {
+        switch ($invitation->getStatus()) {
+          // If the invitation was already accepted, don't send an invitation.
+          case InvitationInterface::STATUS_ACCEPTED:
+            $results[self::RESULT_ACCEPTED]++;
+            break;
+
+          // If the invitation was already rejected, don't send an invitation.
+          case InvitationInterface::STATUS_REJECTED:
+            $results[self::RESULT_REJECTED]++;
+            break;
+
+          // If the invitation is still pending, resend the invitation.
+          case InvitationInterface::STATUS_PENDING:
+            $success = $this->invitationMessageHelper->sendMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE);
+            $status = $success ? self::RESULT_RESENT : self::RESULT_FAILED;
+            $results[$status]++;
+            break;
+
+          default:
+            throw new \Exception('Unknown invitation status: "' . $invitation->getStatus() . '".');
+        }
+        continue;
+      }
+
+
+      // No previous invitation exists. Create it.
+      /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
+      $invitation = $this->entityTypeManager->getStorage('invitation')->create(['bundle' => 'discussion']);
+      $invitation
+        ->setOwner($user)
+        ->setEntity($discussion)
+        ->save();
+
+      // Send the notification message for the invitation.
+      $success = $this->sendMessage($invitation);
+      $status = $success ? 'success' : 'failed';
+      $results[$status]++;
+    }
+
+    // Display status messages.
+    foreach (array_filter($results) as $result => $count) {
+      $message = self::INVITATION_MESSAGES[$result]['message'];
+      $type = self::INVITATION_MESSAGES[$result]['type'];
       // Coder complains about passing variables to the translation service, but
       // these are actually coming from a constant so it's fine.
       // @codingStandardsIgnoreLine
-      drupal_set_message($this->t($message, [
-        ':count' => count($results),
-      ]), $message_type);
+      drupal_set_message($this->t($message, [':count' => $count]), $type);
     }
   }
 
@@ -148,6 +284,75 @@ class InviteToDiscussionForm extends InviteFormBase {
     }
 
     return AccessResult::allowedIf($access);
+  }
+
+  /**
+   * Sends a new message to invite the given user to the given discussion.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation.
+   *
+   * @return bool
+   *   Whether or not the message was successfully delivered.
+   */
+  protected function sendMessage(InvitationInterface $invitation) : bool {
+    $arguments = $this->generateArguments($invitation->getEntity());
+
+    // Generate the invitation link.
+    $url_arguments = [
+      'invitation' => $invitation->id(),
+      'action' => 'accept',
+      'hash' => InvitationController::generateHash($invitation, 'accept'),
+    ];
+    $url_options = ['absolute' => TRUE];
+    $arguments['@invitation:accept_url'] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
+
+    $message = $this->invitationMessageHelper->createMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE, $arguments);
+    $message->save();
+
+    return $this->invitationMessageHelper->sendMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE);
+  }
+
+  /**
+   * Returns the arguments for an invitation message.
+   *
+   * @todo This was copied from NotificationSubscriberBase::generateArguments()
+   *   but we cannot call that code directly since it is contained in an
+   *   abstract class. Remove this once ISAICP-4152 is in.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $discussion
+   *   The discussion for which to generate the message arguments.
+   *
+   * @return array
+   *   The message arguments.
+   */
+  protected function generateArguments(EntityInterface $discussion) : array {
+    $arguments = [];
+    /** @var \Drupal\user\UserInterface $actor */
+    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser()->id());
+    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
+    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
+
+    $arguments['@entity:title'] = $discussion->label();
+    $arguments['@entity:url'] = $discussion->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments['@actor:field_user_first_name'] = $actor_first_name;
+    $arguments['@actor:field_user_family_name'] = $actor_family_name;
+
+    if ($actor->hasRole('moderator')) {
+      /** @var \Drupal\user\RoleInterface $role */
+      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
+      $arguments['@actor:role'] = $role->label();
+      $arguments['@actor:full_name'] = 'The Joinup Support Team';
+    }
+    elseif (!$actor->isAnonymous()) {
+      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
+        $actor_first_name . ' ' . $actor_family_name :
+        $actor->get('full_name')->value;
+    }
+
+    return $arguments;
   }
 
 }
