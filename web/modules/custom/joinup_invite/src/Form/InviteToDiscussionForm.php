@@ -122,7 +122,7 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The entity type manager service.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
-   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper;
+   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
    *   The helper service for creating messages for invitations.
    * @param \Drupal\flag\FlagServiceInterface $flagService
    *   The flag service.
@@ -222,7 +222,6 @@ class InviteToDiscussionForm extends InviteFormBase {
         }
         continue;
       }
-
 
       // No previous invitation exists. Create it.
       /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */

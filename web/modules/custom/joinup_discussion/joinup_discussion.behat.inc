@@ -43,7 +43,7 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then the :title discussion should have :count subscriber(s)
    */
   public function assertSubscribers($title, $count) {
-    $discussion = $this->getNodeByTitle($title,'discussion');
+    $discussion = $this->getNodeByTitle($title, 'discussion');
     $subscribers = \Drupal::service('message_subscribe.subscribers')->getSubscribers($discussion, new Message([], 'message'));
     PHPUnit_Framework_Assert::assertEquals($count, count($subscribers));
   }

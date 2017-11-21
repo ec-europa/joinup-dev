@@ -32,8 +32,31 @@ interface InvitationMessageHelperInterface {
    */
   public function createMessage(InvitationInterface $invitation, string $template, array $arguments): MessageInterface;
 
+  /**
+   * Retrieves the message that is associated with the given invitation.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation that is referenced by the message.
+   * @param string $template
+   *   The message template ID.
+   *
+   * @return \Drupal\message\MessageInterface|null
+   *   The message, or NULL if no message with the given template is associated
+   *   with the given invitation.
+   */
   public function getMessage(InvitationInterface $invitation, string $template): ?MessageInterface;
 
+  /**
+   * Sends the message that is associated with the given invitation.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation that is referenced by the message.
+   * @param string $template
+   *   The message template ID.
+   *
+   * @return bool
+   *   TRUE if the message was sent successfully. FALSE otherwise.
+   */
   public function sendMessage(InvitationInterface $invitation, string $template): bool;
 
 }

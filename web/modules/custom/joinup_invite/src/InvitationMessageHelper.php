@@ -31,7 +31,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   /**
    * Constructs a new InvitationMessageHelper service.
    *
-   * @param EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
    * @param \Drupal\message_notify\MessageNotifier $messageNotifier
    *   The message notifier from the message_notify module.

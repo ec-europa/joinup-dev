@@ -125,7 +125,7 @@ class InvitationController extends ControllerBase {
    *   A unique hash consisting of 8 lowercase alphanumeric characters.
    */
   public static function generateHash(InvitationInterface $invitation, string $action) : string {
-    $data = $invitation->id() ;
+    $data = $invitation->id();
     $data .= $action;
     return strtolower(substr(Crypt::hmacBase64($data, Settings::getHashSalt()), 0, 8));
   }
