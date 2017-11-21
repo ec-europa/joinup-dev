@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7621024fea15c6cace4addb7b681f96f",
+    "content-hash": "c98a56b0563dbc73739899d4a762cbd8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1748,7 +1748,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2520,7 +2524,7 @@
                 "patches_applied": {
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
-                    "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-273.patch",
+                    "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-293-8.4.x-version-of-291.patch",
                     "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch",
                     "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                     "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
@@ -2721,7 +2725,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -4016,7 +4020,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684"
+                    "datestamp": "1488538684",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4035,10 +4043,6 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -6674,6 +6678,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -6684,10 +6689,6 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
             "time": "2017-07-17T09:33:42+00:00"
         },
         {
@@ -10250,7 +10251,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1505199844"
+                    "datestamp": "1505199844",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10261,6 +10266,14 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
+                },
+                {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
@@ -10291,7 +10304,7 @@
             "version": "8.2.12",
             "source": {
                 "type": "git",
-                "url": "https://github.com/klausi/coder.git",
+                "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
             },
             "dist": {
@@ -10431,7 +10444,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -10873,7 +10886,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -10930,7 +10943,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
