@@ -26,13 +26,13 @@ class InviteFacilitatorsForm extends InviteFormBase {
   /**
    * Constructs a new InviteFacilitatorsForm object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The og membership manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager) {
-    parent::__construct($entity_type_manager);
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, MembershipManagerInterface $og_membership_manager) {
+    parent::__construct($entityTypeManager);
 
     $this->ogMembershipManager = $og_membership_manager;
   }
