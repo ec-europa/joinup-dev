@@ -469,9 +469,14 @@ function collection_search_api_solr_query_alter(Query $solarium_query, QueryInte
   // - for nodes, when they are belong to the current collection and the sticky
   //   field is set to true;
   // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function returns a score for the given subquery. The score
+  // can be different between single results, so we need to uniform it to a
+  // boolean value using the gt() function. If the score is greater than 0,
+  // it means that the result is sticky. The query() function has the default
+  // value set to 0 for non-matching results.
   // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
   $computed_sort = sprintf(
-    "query({!v='(bs_sticky:true AND sm_entity_groups:%1\$s) OR (sm_field_is_pinned_in:%1\$s)'},0)",
+    "gt(query({!v='(bs_sticky:true AND sm_entity_groups:%1\$s) OR (sm_field_is_pinned_in:%1\$s)'},0),0)",
     $solarium_query->getHelper()->escapePhrase($entity->id())
   );
   $solarium_query->setSorts([
