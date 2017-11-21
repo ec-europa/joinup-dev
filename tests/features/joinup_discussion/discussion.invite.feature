@@ -120,11 +120,14 @@ Feature: Invite members to subscribe to discussions
       | subject   | You are invited to subscribe to a discussion.                                                      |
       | body      | Viktor Bhattacharya invites you to participate in the discussion Concerned about dissolved gases?. |
 
-    # Accept an invitation by clicking on the link in the e-mail
+    # Accept an invitation by clicking on the link in the e-mail.
+    # Initially there should not be any subscriptions.
+    And the "Concerned about dissolved gases?" discussion should have 0 subscribers
     Given I am logged in as "Vikentiy Rozovsky"
     When I accept the invitation to participate in the "Concerned about dissolved gases?" discussion
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You have been subscribed to this discussion."
+    And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to invite the user again. This should not send an invitation since the
     # user is already subscribed.
@@ -136,5 +139,6 @@ Feature: Invite members to subscribe to discussions
     And I press "Filter"
     And I check "Vikentiy Rozovsky (v.rozovsky@example.com)"
     And I press "Invite to discussion"
-    Then I should see the success message "1 user(s) were already subscribed. No new invitation was sent."
+    Then I should see the success message "1 user(s) were already subscribed to the discussion. No new invitation was sent."
     And 0 e-mails should have been sent
+    And the "Concerned about dissolved gases?" discussion should have 1 subscriber
