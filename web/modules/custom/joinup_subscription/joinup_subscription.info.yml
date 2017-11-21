@@ -6,7 +6,6 @@ package: Joinup
 dependencies:
   - flag
   - joinup_core
-  - message_subscribe
   - options
 
 config_devel:
