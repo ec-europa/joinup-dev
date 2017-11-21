@@ -47,7 +47,7 @@ class ScreenshotContext extends RawMinkContext {
   public function __construct($screenshots_dir, $artifacts_s3_uri) {
     $screenshots_dir = trim($screenshots_dir);
     // If a directory has been passed, ensure the directory exists.
-    if (!empty($this->screenshotsDir) && !is_dir($screenshots_dir)) {
+    if (!empty($screenshots_dir) && !is_dir($screenshots_dir)) {
       $screenshots_dir = rtrim($screenshots_dir, '/');
       @mkdir($screenshots_dir, 0777, TRUE);
     }
