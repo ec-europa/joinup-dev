@@ -4,24 +4,3 @@
  * @file
  * Hook implementations for the Joinup Invite module.
  */
-
-use Drupal\joinup_invite\EventSubscriber\InvitationSubscriber;
-use Drupal\message\MessageInterface;
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function joinup_invite_message_presave(MessageInterface $entity) {
-  // Do not allow multiple discussion invitation messages to be saved for a
-  // particular user and discussion.
-  if ($entity->bundle() === InvitationSubscriber::TEMPLATE_DISCUSSION_INVITE) {
-    /** @var \Drupal\joinup_invite\InviteToDiscussionHelper $discussion_helper */
-    $discussion_helper = \Drupal::service('joinup_invite.discussion_helper');
-    $discussion = $entity->get('field_invitation_discussion')->first()->entity;
-    $user = $entity->get('field_invitation_user')->first()->entity;
-    $existing_message = $discussion_helper->getInvitationMessage($discussion, $user);
-    if (!empty($existing_message) && ($entity->isNew() || $existing_message->id() !== $entity->id())) {
-      throw new \Exception('Cannot save new invitation to discussion "' . $discussion->label() . '" for user "' . $user->label() . '" since an invitation already exists.');
-    }
-  }
-}
