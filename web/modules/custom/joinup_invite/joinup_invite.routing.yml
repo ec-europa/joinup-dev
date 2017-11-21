@@ -11,20 +11,18 @@ joinup_invite.discussion:
       node:
         type: entity:node
 
-joinup_invite.discussion_accept:
-  path: 'node/{node}/accept-invitation/{user}/{hash}'
+joinup_invite.update_invitation:
+  path: 'invitation/{invitation}/{action}/{hash}'
   defaults:
-    _controller: '\Drupal\joinup_invite\Controller\AcceptDiscussionInvitationController::acceptInvitation'
+    _controller: '\Drupal\joinup_invite\Controller\InvitationController::updateInvitation'
   requirements:
-    node: \d+
-    user: \d+
-    _custom_access: '\Drupal\joinup_invite\Controller\AcceptDiscussionInvitationController::access'
+    invitation: \d+
+    action: '^accept|reject$'
+    _custom_access: '\Drupal\joinup_invite\Controller\InvitationController::access'
   options:
     parameters:
-      node:
-        type: entity:node
-      user:
-        type: entity:user
+      invitation:
+        type: entity:invitation
 
 entity.rdf_entity.facilitators.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
