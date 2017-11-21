@@ -14,7 +14,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
         "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "^1.0-alpha5",
+        "drupal/config_sync": "^1.0-alpha6",
         "drupal/config_update": "~1.4",
         "drupal/console": "^1.0.1",
         "drupal/core": "~8.4",
@@ -80,7 +80,7 @@
         "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
         "drupal/admin_toolbar": "~1.17",
         "drupal/coder": "^8.2.9",
-        "drupal/config_devel": "dev-1.x#e0b2a62c4f596bf9fe93923f2a98db0a0afffc9d",
+        "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "dev-1.x#68c30918ecd4c48f578070641c97a3b35c86a5df",
         "drupal/devel": "~1.0@alpha",
@@ -139,9 +139,6 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "patches": {
-            "drupal/config_devel": {
-                "Drush commands throw fatal error after updating to Drush 9.0.0-beta9 @see https://www.drupal.org/project/config_devel/issues/2923795": "https://www.drupal.org/files/issues/2923795-2.patch"
-            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
@@ -203,6 +200,9 @@
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+            },
+            "drupal/rdf_entity": {
+                "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
             }
         }
     },
