@@ -37,7 +37,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When (I )go to (the homepage of )the :asset_release release
    * @When (I )visit (the homepage of )the :asset_release release
    */
-  public function visitCollection($asset_release) {
+  public function visitRelease($asset_release) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
     $asset_release = $this->getAssetReleaseByName($asset_release);
     $this->visitPath($asset_release->url());
