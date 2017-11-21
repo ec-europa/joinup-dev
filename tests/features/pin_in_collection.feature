@@ -99,11 +99,12 @@ Feature: Pinning content entities inside collections
 
   Scenario: Facilitators can pin and unpin solutions inside their collections.
     Given discussion content:
-      | title                         | collection    | state     |
-      | Where can I find this wrench? | Orange Wrench | validated |
+      | title                         | collection    | state     | pinned | created    |
+      | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |
+      | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |
     And solutions:
       | title            | collection    | state     | pinned in     | creation date |
-      | Wrench catalogue | Orange Wrench | validated | Orange Wrench | 2017-10-04    |
+      | Wrench catalogue | Orange Wrench | validated | Orange Wrench | 2017-10-12    |
       | Orange estimator | Orange Wrench | validated |               | 2017-10-02    |
       | Beam analyser    | Cloudy Beam   | validated |               | 2017-11-21    |
 
@@ -111,6 +112,7 @@ Feature: Pinning content entities inside collections
     And I go to the homepage of the "Orange Wrench" collection
     Then I should see the following tiles in the correct order:
       | Wrench catalogue              |
+      | Any thoughts about blue?      |
       | Where can I find this wrench? |
       | Orange estimator              |
     Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
@@ -148,6 +150,7 @@ Feature: Pinning content entities inside collections
     When I click the contextual link "Unpin" in the "Wrench catalogue" tile
     Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
     And I should see the following tiles in the correct order:
+      | Any thoughts about blue?      |
       | Where can I find this wrench? |
       | Wrench catalogue              |
       | Orange estimator              |
@@ -157,6 +160,7 @@ Feature: Pinning content entities inside collections
     When I click the contextual link "Pin" in the "Orange estimator" tile
     Then I should see the success message "Solution Orange estimator has been pinned in the collection Orange Wrench."
     And I should see the following tiles in the correct order:
+      | Any thoughts about blue?      |
       | Orange estimator              |
       | Where can I find this wrench? |
       | Wrench catalogue              |
