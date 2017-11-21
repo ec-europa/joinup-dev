@@ -11,7 +11,9 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\UserTrait;
-use Drupal\joinup_invite\InviteToDiscussionHelper;
+use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\Form\InviteToDiscussionForm;
+use Drupal\joinup_invite\InvitationMessageHelperInterface;
 
 /**
  * Behat step definitions for testing invitations.
@@ -34,21 +36,20 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $user = $this->userManager->getCurrentUser();
     $user = $this->getUserByName($user->name);
 
-    $discussion_helper = $this->getDiscussionHelper();
-    $message = $discussion_helper->getInvitationMessage($discussion, $user);
-    $arguments = $message->getArguments();
+    $invitation = Invitation::loadByEntityAndUser($discussion, $user, 'discussion');
+    $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, InviteToDiscussionForm::TEMPLATE_DISCUSSION_INVITE)->getArguments();
 
-    $this->visitPath($arguments['@discussion:invite_url']);
+    $this->visitPath($arguments['@invitation:accept_url']);
   }
 
   /**
-   * Returns the service that assists in inviting users to discussions.
+   * Returns the service that assists in working with messages for invitations.
    *
-   * @return \Drupal\joinup_invite\InviteToDiscussionHelper
+   * @return \Drupal\joinup_invite\InvitationMessageHelperInterface
    *   The service.
    */
-  protected function getDiscussionHelper() : InviteToDiscussionHelper {
-    return \Drupal::service('joinup_invite.discussion_helper');
+  protected function getInvitationMessageHelper() : InvitationMessageHelperInterface {
+    return \Drupal::service('joinup_invite.invitation_message_helper');
   }
 
 }
