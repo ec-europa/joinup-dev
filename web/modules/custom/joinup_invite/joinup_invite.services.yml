@@ -7,3 +7,6 @@ services:
   joinup_invite.discussion_helper:
     class: Drupal\joinup_invite\InviteToDiscussionHelper
     arguments: ['@entity_type.manager']
+  joinup_invite.invitation_message_helper:
+    class: Drupal\joinup_invite\InvitationMessageHelper
+    arguments: ['@entity_type.manager', '@message_notify.sender']
