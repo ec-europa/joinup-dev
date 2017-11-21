@@ -48,7 +48,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present.
@@ -79,7 +79,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are not present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -101,7 +101,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present and visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
@@ -143,7 +143,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present but not visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
@@ -184,7 +184,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found.
@@ -211,7 +211,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is not visible.
@@ -247,7 +247,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is visible.
@@ -431,6 +431,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that the radio button option should be selected.
+   *
    * @Then the :radio radio button should not be selected
    */
   public function assertRadioButtonNotChecked($radio) {
@@ -1040,7 +1042,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-<<<<<<< HEAD
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
