@@ -33,9 +33,15 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: default
 content:
+  created:
+    type: datetime_timestamp
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 10
+    weight: 9
     region: content
     settings:
       title: 'Current workflow state'
@@ -46,12 +52,13 @@ content:
     weight: 3
     settings:
       progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
     region: content
   field_isr_language:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -86,7 +93,7 @@ content:
     region: content
   field_keywords:
     type: string_textfield
-    weight: 7
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -94,7 +101,7 @@ content:
     region: content
   field_spatial_coverage:
     type: entity_reference_autocomplete
-    weight: 6
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -103,7 +110,7 @@ content:
     region: content
   field_status:
     type: options_select
-    weight: 8
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -115,7 +122,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  transition_motivation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  changed: true
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true
