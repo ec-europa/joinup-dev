@@ -2,32 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.message.discussion_invite.field_invitation_discussion
-    - field.field.message.discussion_invite.field_invitation_status
-    - field.field.message.discussion_invite.field_invitation_user
+    - field.field.message.discussion_invite.field_invitation
     - message.template.discussion_invite
 id: message.discussion_invite.default
 targetEntityType: message
 bundle: discussion_invite
 mode: default
 content:
-  field_invitation_discussion:
-    weight: 1
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_invitation_status:
+  field_invitation:
     weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_invitation_user:
-    weight: 2
     settings:
       match_operator: CONTAINS
       size: 60
