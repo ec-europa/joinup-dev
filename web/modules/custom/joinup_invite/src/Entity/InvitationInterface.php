@@ -8,7 +8,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\message\MessageInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**
@@ -62,25 +61,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   already been saved.
    */
   public function setEntity(EntityInterface $entity) : InvitationInterface;
-
-  /**
-   * Returns the message that is sent when creating the invitation.
-   *
-   * @return \Drupal\message\MessageInterface|NULL
-   *   The message.
-   */
-  public function getMessage() : ?MessageInterface;
-
-  /**
-   * Sets the message to send when creating the invitation.
-   *
-   * @param \Drupal\message\MessageInterface $message
-   *   The message.
-   *
-   * @return \Drupal\joinup_invite\Entity\InvitationInterface
-   *   The updated Invitation.
-   */
-  public function setMessage(MessageInterface $message) : InvitationInterface;
 
   /**
    * Returns the current status of the invitation.
@@ -138,14 +118,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   The rejected invitation.
    */
   public function reject() : InvitationInterface;
-
-  /**
-   * Sends the invitation message.
-   *
-   * @return bool
-   *   TRUE if the message was sent successfully. FALSE if it wasn't.
-   */
-  public function sendMessage() : bool;
 
   /**
    * Returns the available statuses for the invitation.

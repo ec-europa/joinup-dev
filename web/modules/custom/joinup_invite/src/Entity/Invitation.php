@@ -11,7 +11,6 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\message\MessageInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -24,8 +23,15 @@ use Drupal\user\UserInterface;
  * The Invitation entity requires to have a User and an Entity associated with
  * it, and these cannot be changed after the Invitation is saved.
  *
- * Optionally you can store a reference to a Message on the entity, this can be
- * used to send a notification to the user to inform them about the invitation.
+ * If you want to send a Message along with the invitation, see the
+ * InvitationMessageHelper.
+ *
+ * @see \Drupal\joinup_invite\InvitationMessageHelperInterface
+ *
+ * An example implementation of using Invitations to invite users to participate
+ * in a discussion can be found in the InviteToDiscussionForm.
+ *
+ * @see \Drupal\joinup_invite\Form\InviteToDiscussionForm
  *
  * @ContentEntityType(
  *   id = "invitation",
@@ -140,22 +146,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getMessage() : ?MessageInterface {
-    return $this->get('message')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setMessage(MessageInterface $message) : InvitationInterface {
-    $this->set('message', $message);
-
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getStatus() : string {
     return $this->get('status')->value;
   }
@@ -199,17 +189,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage() : bool {
-    if (!$message = $this->getMessage()) {
-      return FALSE;
-    }
-    $options = ['save on success' => FALSE, 'mail' => $this->getOwner()->getEmail()];
-    return \Drupal::service('message_notify.sender')->send($message, $options);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) : array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -237,13 +216,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
       ->setLabel(t('Status'))
       ->setSetting('allowed_values', static::getStatuses())
       ->setDefaultValue(InvitationInterface::STATUS_PENDING)
-      ->setRequired(TRUE);
-
-    $fields['message'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Message'))
-      ->setDescription(t('Optional notification message that can be sent when creating an invitation.'))
-      ->setRevisionable(FALSE)
-      ->setSetting('target_type', 'message')
       ->setRequired(TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
