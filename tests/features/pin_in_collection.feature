@@ -102,13 +102,17 @@ Feature: Pinning content entities inside collections
       | title                         | collection    | state     |
       | Where can I find this wrench? | Orange Wrench | validated |
     And solutions:
-      | title            | collection    | state     | pinned in     |
-      | Wrench catalogue | Orange Wrench | validated | Orange Wrench |
-      | Orange estimator | Orange Wrench | validated |               |
-      | Beam analyser    | Cloudy Beam   | validated |               |
+      | title            | collection    | state     | pinned in     | creation date |
+      | Wrench catalogue | Orange Wrench | validated | Orange Wrench | 2017-10-04    |
+      | Orange estimator | Orange Wrench | validated |               | 2017-10-02    |
+      | Beam analyser    | Cloudy Beam   | validated |               | 2017-11-21    |
 
     When I am an anonymous user
     And I go to the homepage of the "Orange Wrench" collection
+    Then I should see the following tiles in the correct order:
+      | Wrench catalogue              |
+      | Where can I find this wrench? |
+      | Orange estimator              |
     Then I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
     And I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
 
@@ -143,11 +147,19 @@ Feature: Pinning content entities inside collections
 
     When I click the contextual link "Unpin" in the "Wrench catalogue" tile
     Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
+    And I should see the following tiles in the correct order:
+      | Where can I find this wrench? |
+      | Wrench catalogue              |
+      | Orange estimator              |
     And I should see the contextual link "Pin" in the "Wrench catalogue" tile
     But I should not see the contextual link "Unpin" in the "Wrench catalogue" tile
 
     When I click the contextual link "Pin" in the "Orange estimator" tile
     Then I should see the success message "Solution Orange estimator has been pinned in the collection Orange Wrench."
+    And I should see the following tiles in the correct order:
+      | Orange estimator              |
+      | Where can I find this wrench? |
+      | Wrench catalogue              |
     And I should see the contextual link "Unpin" in the "Orange estimator" tile
     But I should not see the contextual link "Pin" in the "Orange estimator" tile
 
