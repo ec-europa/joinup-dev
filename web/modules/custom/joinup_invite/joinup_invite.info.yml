@@ -13,10 +13,7 @@ config_devel:
  - core.entity_view_display.message.discussion_invite.default
  - core.entity_view_display.message.discussion_invite.mail_body
  - core.entity_view_display.message.discussion_invite.mail_subject
- - field.field.message.discussion_invite.field_invitation_discussion
- - field.field.message.discussion_invite.field_invitation_status
- - field.field.message.discussion_invite.field_invitation_user
- - field.storage.message.field_invitation_discussion
- - field.storage.message.field_invitation_status
- - field.storage.message.field_invitation_user
+ - field.field.message.discussion_invite.field_invitation
+ - field.storage.message.field_invitation
+ - joinup_invite.invitation_type.discussion
  - message.template.discussion_invite
