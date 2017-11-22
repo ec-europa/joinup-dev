@@ -96,3 +96,17 @@ function contact_form_tokens($type, $tokens, array $data, array $options, Bubble
   }
   return $replacements;
 }
+
+/**
+ * Implements hook_mail_alter().
+ */
+function contact_form_mail_alter(&$message) {
+  if ($message['key'] !== 'contact_form_submission') {
+    return;
+  }
+
+  $from = \Drupal::service('config.factory')->get('contact_form.settings')->get('contact_form_from');
+  if (!empty($from) && \Drupal::service('email.validator')->isValid($from)) {
+    $message['from'] = $from;
+  }
+}

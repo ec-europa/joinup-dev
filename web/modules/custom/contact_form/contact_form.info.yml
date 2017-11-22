@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 config_devel:
+ - contact_form.settings
  - core.entity_form_display.message.contact_form_submission.default
  - core.entity_view_display.message.contact_form_submission.default
  - core.entity_view_display.message.contact_form_submission.mail_body
