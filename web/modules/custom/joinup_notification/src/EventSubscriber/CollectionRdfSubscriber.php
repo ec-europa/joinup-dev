@@ -6,12 +6,11 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class CommunityContentSubscriber.
  */
-class CollectionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class CollectionRdfSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_APPROVE_EDIT = 'col_approve_edit';
   const TEMPLATE_APPROVE_NEW = 'col_approve_new';

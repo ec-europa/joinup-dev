@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Notification handler for the notifications related to distributions.
@@ -23,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Recipients: owner
  * @codingStandardsIgnoreEnd
  */
-class DistributionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class DistributionRdfSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_UPDATE = 'distribution_update';
   const TEMPLATE_DELETE = 'distribution_delete';

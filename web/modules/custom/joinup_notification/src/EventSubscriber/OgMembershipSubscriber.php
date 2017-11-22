@@ -7,12 +7,11 @@ use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgMembershipInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class OgMembershipSubscriber.
  */
-class OgMembershipSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class OgMembershipSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_REQUEST_MEMBERSHIP = 'og_membership_request';
   const TEMPLATE_APPROVE_REJECT_MEMBERSHIP = 'og_membership_decision';
