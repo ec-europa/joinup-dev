@@ -8,11 +8,11 @@ Feature: Pinning content site-wide
     Given the following collections:
       | title       | state     | pinned site-wide | creation date |
       | Risky Sound | validated | yes              | 2017-12-21    |
-      | Tuna Moving | validated | no               | 2016-07-18    |
+      | Tuna Moving | validated | no               | 2018-02-28    |
     And the following solutions:
       | title            | collection  | state     | pinned site-wide | creation date |
       | D minor          | Risky Sound | validated | yes              | 2017-12-22    |
-      | Migration routes | Tuna Moving | validated | no               | 2017-01-03    |
+      | Migration routes | Tuna Moving | validated | no               | 2018-01-31    |
     And users:
       | Username      | E-mail                    |
       | Burke Abraham | burke.abraham@example.com |
