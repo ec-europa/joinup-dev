@@ -5,12 +5,11 @@ namespace Drupal\joinup_notification\EventSubscriber;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class CommentSubscriber.
  */
-class CommentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class CommentSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_CREATE = 'comment_create';
   const TEMPLATE_UPDATE = 'comment_update';

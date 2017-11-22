@@ -7,7 +7,6 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Notification handler for the notifications related to solutions.
@@ -68,7 +67,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Recipients: owner
  * @codingStandardsIgnoreEnd
  */
-class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class SolutionRdfSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_APPROVE = 'sol_approve_proposed';
   const TEMPLATE_BLACKLIST = 'sol_blacklist';

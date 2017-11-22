@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Notification handler for the notifications related to releases.
@@ -32,7 +31,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *   Recipients: owner
  * @codingStandardsIgnoreEnd
  */
-class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+class ReleaseRdfSubscriber extends NotificationSubscriberBase {
 
   const TEMPLATE_UPDATE_PUBLISHED = 'release_update';
   const TEMPLATE_DELETE = 'release_delete';
