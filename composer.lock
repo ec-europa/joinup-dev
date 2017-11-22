@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "24aab2a86d77adb174c87caf5f940119",
+    "content-hash": "6feabdf30c8db2ecc1306ad6d5a111d6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5308,16 +5308,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "dev-master",
+            "version": "dev-ISAICP-4129",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf"
+                "reference": "83219daf9eab1d6d3acb36125ae3c667f29465e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
-                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/83219daf9eab1d6d3acb36125ae3c667f29465e2",
+                "reference": "83219daf9eab1d6d3acb36125ae3c667f29465e2",
                 "shasum": ""
             },
             "require": {
@@ -5342,7 +5342,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-10-23T16:46:00+00:00"
+            "time": "2017-11-22T16:33:00+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
