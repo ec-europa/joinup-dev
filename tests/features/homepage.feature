@@ -83,7 +83,7 @@ Feature: Homepage
     # Check if the "Solutions" link leads to the pre-filtered search results.
     # This shows solutions in the states 'validated' and 'deletion request'.
     When I click "Solutions" in the "Header" region
-    Then I should see the heading "Solutionz"
+    Then I should see the heading "Solutions"
     And I should see the following lines of text:
       | Laws of economics |
       | Econometrics      |
