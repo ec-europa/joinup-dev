@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Context;
 
+use Aws\S3\S3Client;
+use Aws\S3\S3ClientInterface;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -18,64 +22,100 @@ use Behat\Mink\Exception\DriverException;
 class ScreenshotContext extends RawMinkContext {
 
   /**
-   * The directory where the screenshots are saved.
+   * Optional directory where the screenshots are saved.
    *
    * @var string
    */
-  protected $screenshotsDir;
+  protected $localDir;
 
   /**
-   * The location where to upload the screenshots as an Amazon S3 bucket URI.
+   * Optional folder on an S3 bucket where screenshots will be uploaded to.
    *
    * @var string
    */
-  protected $artifactsS3Uri;
+  protected $s3Dir;
+
+  /**
+   * Optional AWS region where the Amazon S3 bucket is located.
+   *
+   * @var string
+   */
+  protected $s3Region;
+
+  /**
+   * Optional name of the Amazon S3 bucket where screenshots will be uploaded.
+   *
+   * @var string
+   */
+  protected $s3Bucket;
+
+  /**
+   * The key to use to authenticate with Amazon S3.
+   *
+   * @var string
+   */
+  protected $s3Key;
+
+  /**
+   * The secret to use to authenticate with Amazon S3.
+   *
+   * @var string
+   */
+  protected $s3Secret;
 
   /**
    * Constructs a new ScreenshotContext context.
    *
-   * @param string $screenshots_dir
-   *   The directory where the screenshots are saved. The value is
-   *   passed in behat.yml.
-   * @param string $artifacts_s3_uri
-   *   An Amazon S3 bucket URI, such as s3://<bucket name>/path/to/artifacts,
-   *   where to store the screenshots. If an empty value is received, no AWS S3
-   *   upload will occur.
+   * @param string $localDir
+   *   Optional directory where the screenshots are saved. If omitted the
+   *   screenshots will not be saved.
+   * @param string $s3Dir
+   *   Optional folder on an Amazon S3 bucket where screenshots will be uploaded
+   *   to. If omitted, the screenshots will not be uploaded to AWS S3.
+   * @param string $s3Region
+   *   Optional AWS region where the Amazon S3 bucket is located. If omitted,
+   *   the screenshots will not be uploaded to AWS S3.
+   * @param string $s3Bucket
+   *   Optional name of the Amazon S3 bucket where screenshots will be uploaded.
+   *   If omitted, the screenshots will not be uploaded to AWS S3.
+   * @param string $s3Key
+   *   The key to use to authenticate with Amazon S3. If omitted, the key will
+   *   be taken from the environment variables.
+   * @param string $s3Secret
+   *   The secret to use to authenticate with Amazon S3. If omitted, the secret
+   *   will be taken from the environment variables.
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct($screenshots_dir, $artifacts_s3_uri) {
-    $screenshots_dir = trim($screenshots_dir);
-    // If a directory has been passed, ensure the directory exists.
-    if (!empty($screenshots_dir) && !is_dir($screenshots_dir)) {
-      $screenshots_dir = rtrim($screenshots_dir, '/');
-      @mkdir($screenshots_dir, 0777, TRUE);
-    }
-    $this->screenshotsDir = $screenshots_dir;
-    $this->artifactsS3Uri = rtrim($artifacts_s3_uri, '/');
+  public function __construct(string $localDir = NULL, string $s3Dir = NULL, string $s3Region = NULL, string $s3Bucket = NULL, string $s3Key = NULL, string $s3Secret = NULL) {
+    $this->localDir = $localDir;
+    $this->s3Dir = $s3Dir;
+    $this->s3Region = $s3Region;
+    $this->s3Bucket = $s3Bucket;
+    $this->s3Key = $s3Key;
+    $this->s3Secret = $s3Secret;
   }
 
   /**
-   * Saves a screen-shot under a given name.
+   * Saves a screenshot under a given name.
    *
    * @param string $name
    *   The file name.
    *
    * @Then (I )take a screenshot :name
    */
-  public function takeScreenshot($name = NULL) {
-    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . $name;
+  public function takeScreenshot(string $name = NULL) : void {
     $message = "Screenshot created in @file_name";
-    $this->createScreenshot($file_name, $message, FALSE);
+    $this->createScreenshot($name, $message);
   }
 
   /**
-   * Saves a screen-shot under a predefined name.
+   * Saves a screenshot under a predefined name.
    *
    * @Then (I )take a screenshot
    */
-  public function takeScreenshotUnnamed() {
-    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-screenshot-' . user_password();
+  public function takeScreenshotUnnamed() : void {
+    $file_name = 'behat-screenshot-' . user_password();
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
@@ -88,7 +128,7 @@ class ScreenshotContext extends RawMinkContext {
    *
    * @AfterStep
    */
-  public function screenshotForPhpNotices(AfterStepScope $event) {
+  public function screenshotForPhpNotices(AfterStepScope $event) : void {
     $environment = $event->getEnvironment();
     // Make sure the environment has the MessageContext.
     $class = 'Drupal\DrupalExtension\Context\MessageContext';
@@ -107,7 +147,7 @@ class ScreenshotContext extends RawMinkContext {
             $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
             $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
             $file_name = substr($file_name, 0, 30);
-            $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-notice__' . $file_name;
+            $file_name = 'behat-notice__' . $file_name;
 
             $message = "PHP notice detected, screenshot taken: @file_name";
             $this->createScreenshot($file_name, $message);
@@ -122,14 +162,14 @@ class ScreenshotContext extends RawMinkContext {
   }
 
   /**
-   * Takes a screen-shot after failed steps (image or html).
+   * Takes a screenshot after failed steps (image or html).
    *
    * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
    *   The event.
    *
    * @AfterStep
    */
-  public function takeScreenshotAfterFailedStep(AfterStepScope $event) {
+  public function takeScreenshotAfterFailedStep(AfterStepScope $event) : void {
     if ($event->getTestResult()->isPassed()) {
       // Not a failed step.
       return;
@@ -138,53 +178,127 @@ class ScreenshotContext extends RawMinkContext {
     $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());
     $file_name = preg_replace('![^0-9A-Za-z_.-]!', '', $file_name);
     $file_name = substr($file_name, 0, 30);
-    $file_name = $this->screenshotsDir . DIRECTORY_SEPARATOR . 'behat-failed__' . $file_name;
+    $file_name = 'behat-failed__' . $file_name;
     $message = "Screenshot for failed step created in @file_name";
     $this->createScreenshot($file_name, $message);
   }
 
   /**
-   * Create a screenshot or save the html.
+   * Creates a screenshot in HTML or PNG format.
    *
    * @param string $file_name
    *   The filename of the screenshot (complete).
    * @param string $message
-   *   The message to be printed. @file_name will be replaced with $file name.
-   * @param bool|true $ext
-   *   Whether to add .png or .html to the name of the screenshot.
+   *   The message to be printed. '@file_name' will be replaced with $file_name.
    */
-  public function createScreenshot($file_name, $message, $ext = TRUE) {
-    if (empty($this->screenshotsDir)) {
+  public function createScreenshot(string $file_name, string $message) : void {
+    try {
+      if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+        $file_name .= '.png';
+        $screenshot = $this->getSession()->getDriver()->getScreenshot();
+      }
+      else {
+        $file_name .= '.html';
+        $screenshot = $this->getSession()->getPage()->getContent();
+      }
+    }
+    catch (DriverException $e) {
+      // A DriverException might occur if no page has been loaded yet so no
+      // screenshot can yet be taken. In this case we exit silently, allowing
+      // the remainder of the test suite to run.
       return;
     }
-    if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-      if ($ext) {
-        $file_name .= '.png';
-      }
-      $screenshot = $this->getSession()->getDriver()->getScreenshot();
-      file_put_contents($file_name, $screenshot);
-    }
-    else {
-      try {
-        if ($ext) {
-          $file_name .= '.html';
-        }
-        $html_data = $this->getSession()->getPage()->getContent();
-        file_put_contents($file_name, $html_data);
-      }
-      catch (DriverException $e) {
-      }
-    }
 
-    if ($this->artifactsS3Uri) {
-      $output = ["aws s3 cp $file_name {$this->artifactsS3Uri}/"];
-      exec($output[0], $output);
-      print implode("\n", $output);
-    }
+    // Save the screenshot locally.
+    $this->save($screenshot, $file_name);
+
+    // Upload the screenshot to Amazon S3.
+    $this->upload($screenshot, $file_name);
 
     if ($message) {
       print strtr($message, ['@file_name' => $file_name]);
     }
+  }
+
+  /**
+   * Saves the given screenshot to the local filesystem.
+   *
+   * @param string $screenshot
+   *   The screenshot data.
+   * @param string $file_name
+   *   The file name.
+   *
+   * @throws \Exception
+   *   Thrown if the destination folder doesn't exist and couldn't be created.
+   */
+  protected function save(string $screenshot, string $file_name) : void {
+    // Don't attempt to save the screenshot if no folder name has been
+    // configured.
+    if (empty($this->localDir)) {
+      return;
+    }
+
+    // Ensure the directory exists.
+    $dir = rtrim($this->localDir, '/');
+    if (!is_dir($dir)) {
+      if (!mkdir($dir, 0755, TRUE)) {
+        throw new \Exception("The '$dir' folder does not exist and could not be created.");
+      }
+    }
+    $path = $this->localDir . DIRECTORY_SEPARATOR . $file_name;
+    file_put_contents($path, $screenshot);
+  }
+
+  /**
+   * Uploads the given screenshot to Amazon S3.
+   *
+   * @param string $screenshot
+   *   The screenshot data.
+   * @param string $file_name
+   *   The file name.
+   *
+   * @throws \Exception
+   *   Thrown if the destination folder doesn't exist and couldn't be created.
+   */
+  protected function upload(string $screenshot, string $file_name) : void {
+    // Don't attempt to upload the screenshot if any of the required parameters
+    // are missing.
+    $required_parameters = ['s3Dir', 's3Region', 's3Bucket'];
+    foreach ($required_parameters as $required_parameter) {
+      if (empty($this->$required_parameter)) {
+        return;
+      }
+    }
+
+    $client = $this->getS3Client();
+    // Prepend the UNIX timestamp to the filename to add some degree of
+    // uniqueness to the filename, because S3 doesn't allow to overwrite
+    // existing files.
+    $file_name = (string) time() . '-' . $file_name;
+    $path = $this->s3Dir . '/' . $file_name;
+    $client->upload($this->s3Bucket, $path, $screenshot);
+  }
+
+  /**
+   * Returns an instance of the Amazon S3 client.
+   *
+   * @return \Aws\S3\S3ClientInterface
+   *   The client.
+   */
+  protected function getS3Client() : S3ClientInterface {
+    $options = [
+      'version' => 'latest',
+      'region' => $this->s3Region,
+    ];
+    // If not set, credentials will be retrieved from the environment.
+    // @see \Aws\Credentials\CredentialProvider
+    if (!empty($this->s3Key) && !empty($this->s3Secret)) {
+      $options['credentials'] = [
+        'key' => $this->s3Key,
+        'secret' => $this->s3Secret,
+      ];
+    }
+    return new S3Client($options);
   }
 
 }

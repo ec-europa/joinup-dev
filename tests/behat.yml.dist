@@ -9,8 +9,12 @@ default:
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\joinup\Context\ScreenshotContext:
-            screenshots_dir: '${behat.screenshots_dir}'
-            artifacts_s3_uri: '${behat.artifacts_s3_uri}'
+            localDir: '${behat.screenshots.local.dir}'
+            s3Dir: '${behat.screenshots.s3.dir}'
+            s3Region: '${aws.region}'
+            s3Bucket: '${exports.s3.bucket}'
+            s3Key: '${exports.s3.key}'
+            s3Secret: '${exports.s3.secret}'
       filters:
         tags: '~@wip'
   extensions:
