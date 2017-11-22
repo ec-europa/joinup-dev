@@ -1,2 +1,5 @@
 message notification on validate:
   title: 'Receive notification that a solution has been moved to "Validated" state.'
+administer solution ownership:
+  title: 'Administer solutions ownership'
+  description: 'Allows users granted with this permission to transfer the solution ownership.'
