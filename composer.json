@@ -83,6 +83,7 @@
         "drupal/default_content": "dev-1.x#68c30918ecd4c48f578070641c97a3b35c86a5df",
         "drupal/devel": "~1.0@alpha",
         "drupal/drupal-extension": "dev-master#7756b54f2604e4762147190dec888102da253cbc",
+        "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mikey179/vfsStream": "~1.2",
