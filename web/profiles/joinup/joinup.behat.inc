@@ -734,18 +734,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I fill in :field_group with the :date_component :value
    */
   public function fillDateField($field_group, $date_component, $value) {
-    // Get the datetime fields and check which one of them has the label
-    // provided. This is because datetime fields have use a complex widget and
-    // render their title as a simple header, not as a label for the field.
-    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--type-datetime');
-    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field_group) {
-      return $field_selector->has('named', ['content', $field_group]);
-    });
+    $field_selectors = $this->findDateFields($field_group);
     if (count($field_selectors) > 1) {
       throw new \Exception("More than one elements were found.");
     }
     $field_selector = reset($field_selectors);
-
     $field_selector->fillField(ucfirst($date_component), $value);
   }
 
@@ -789,6 +782,64 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function clearDateRangeField($field, $date, $component) {
     $element = $this->findDateRangeComponent($field, $date, $component);
     $element->setValue('');
+  }
+
+  /**
+   * Finds a datetime field.
+   *
+   * First, get the fields that use a datetime widget. Fields of type 'created'
+   * also use the timestamp widget so this method must be able to handle them
+   * too. Datetime fields have use a complex widget and render their title as a
+   * simple header, not as a label for the field.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements found.
+   *
+   * @throws \Exception
+   *   Thrown when the field was not found.
+   */
+  public function findDateFields($field) {
+    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--widget-datetime-timestamp');
+    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field) {
+      return $field_selector->has('named', ['content', $field]);
+    });
+    if (empty($field_selectors)) {
+      throw new \Exception("Date field {$field} was not found.");
+    }
+    return $field_selectors;
+  }
+
+  /**
+   * Checks, that the given date time field contains the requested text.
+   *
+   * Example: Then the "date" date field should contain the datetime
+   * "31-1-1222 22:22:22".
+   *
+   * The format of the datetime is "DD-MM-YYYY HH:mm:ii"
+   *
+   * @param string $field
+   *   The field name.
+   * @param string $value
+   *   The value that is checked to be found.
+   *
+   * @throws \Exception
+   *   Thrown when more than one fields were found or when the field does not
+   *   contain the required text.
+   *
+   * @Then the :field date field should contain the datetime :value
+   */
+  public function assertDateFieldContains($field, $value) {
+    $elements = $this->findDateFields($field);
+    if (count($elements) > 1) {
+      throw new \Exception("More than one elements were found.");
+    }
+    $element = reset($elements);
+    $date = $element->findField('Date')->getValue();
+    $time = $element->findField('Time')->getValue();
+    PHPUnit_Framework_Assert::assertEquals(trim($date . ' ' . $time), $value);
   }
 
   /**
