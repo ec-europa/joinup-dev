@@ -25,6 +25,7 @@ dependencies:
   - dynamic_page_cache
   - editor
   - editor_file
+  - email_registration
   - field_group
   - file
   - help
