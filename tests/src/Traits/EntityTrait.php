@@ -2,6 +2,8 @@
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\Core\Entity\EntityInterface;
+
 /**
  * Helper methods to deal with entities.
  */
@@ -77,6 +79,24 @@ trait EntityTrait {
 
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link */
     return reset($menu_links);
+  }
+
+  /**
+   * Forces a reindex of the entity in search_api.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to reindex.
+   */
+  protected function forceSearchApiReindex(EntityInterface $entity) {
+    // Invalidate any static cache, so that all computed fields are calculated
+    // with updated values.
+    // For example, the "collection" computed field of solutions.
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
+    // In order to avoid copying code from search_api_entity_update(), we
+    // need to fake an update event. Said function requires the "original"
+    // property to be populated, so just fill it with the entity itself.
+    $entity->original = $entity;
+    search_api_entity_update($entity);
   }
 
 }

@@ -155,7 +155,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   protected function getPinnedEntities($limit) {
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('site_pinned', TRUE);
-    $query->sort('created', 'DESC');
+    $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);
     $results = $query->execute();
 
@@ -191,7 +191,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->addCondition('entity_groups', $cids, 'IN');
-    $query->sort('created', 'DESC');
+    $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);
     $this->excludeEntitiesFromQuery($query);
     $results = $query->execute();
@@ -213,7 +213,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
     $query->sort('field_visit_count', 'DESC');
-    $query->sort('created', 'DESC');
+    $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);
     $this->excludeEntitiesFromQuery($query);
     $results = $query->execute();
