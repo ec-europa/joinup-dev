@@ -9,5 +9,6 @@ permissions:
   - 'access uri converter'
   - 'administer account settings'
   - 'administer redirects'
+  - 'administer solution ownership'
   - 'edit collection rdf entity'
   - 'view the administration theme'
