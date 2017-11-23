@@ -217,6 +217,10 @@ class ScreenshotContext extends RawMinkContext {
 
     if ($message) {
       print strtr($message, ['@file_name' => $file_name]);
+      // Depending on the output formatter used, Behat will suppress any output
+      // generated during the test. Flush the output buffers so out message will
+      // show up in the test logs.
+      ob_flush();
     }
   }
 
