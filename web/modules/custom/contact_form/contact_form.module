@@ -99,6 +99,13 @@ function contact_form_tokens($type, $tokens, array $data, array $options, Bubble
 
 /**
  * Implements hook_mail_alter().
+ *
+ * Alter the sender of outgoing mails sent from the contact form so they will be
+ * handled by support desk software and turned into tickets.
+ *
+ * @todo This doesn't belong in the Joinup distribution and should be removed.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3988
  */
 function contact_form_mail_alter(&$message) {
   if ($message['key'] !== 'contact_form_submission') {
