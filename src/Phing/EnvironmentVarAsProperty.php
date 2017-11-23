@@ -42,14 +42,14 @@ class EnvironmentVarAsProperty extends \Task {
       // Convert to lowercase, and change underscores to dots.
       $environment_var = strtolower($environment_var);
       $property = str_replace('_', '.', $environment_var);
-      $set[$this->prefix . '.' . $property] = $value;
+      $set[$property] = $value;
     }
     $var = '';
     foreach ($set as $key => $value) {
       $var .= $key . ' = ' . $value . "\n";
     }
     if ($var) {
-      $this->project->setProperty($this->phingproperty, $var);
+      $this->project->setProperty($this->phingproperty, "\n" . $var);
     }
   }
 
