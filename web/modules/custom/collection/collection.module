@@ -476,7 +476,7 @@ function collection_search_api_solr_query_alter(Query $solarium_query, QueryInte
   // value set to 0 for non-matching results.
   // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
   $computed_sort = sprintf(
-    "gt(query({!v='(bs_sticky:true AND sm_entity_groups:%1\$s) OR (sm_field_is_pinned_in:%1\$s)'},0),0)",
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
     $solarium_query->getHelper()->escapePhrase($entity->id())
   );
   $solarium_query->setSorts([
