@@ -5165,12 +5165,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "83219daf9eab1d6d3acb36125ae3c667f29465e2"
+                "reference": "789acf1d93afcd56d3f28029b7ca0fd139aaaf24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/83219daf9eab1d6d3acb36125ae3c667f29465e2",
-                "reference": "83219daf9eab1d6d3acb36125ae3c667f29465e2",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/789acf1d93afcd56d3f28029b7ca0fd139aaaf24",
+                "reference": "789acf1d93afcd56d3f28029b7ca0fd139aaaf24",
                 "shasum": ""
             },
             "require": {
@@ -5195,7 +5195,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-11-22T16:33:00+00:00"
+            "time": "2017-11-23T10:45:12+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
