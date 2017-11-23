@@ -11,4 +11,4 @@ nohup echo "shutdown();" | isql-vt &
 
 chown -R www-data:www-data /srv/project
 # Background and detach to work around time constrains of AWS CodeDeploy.
-nohup sudo -u www-data vendor/bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini virtuoso-start install setup-acceptance  >> /var/log/subsite-install.log 2>&1 &
+nohup sudo -u www-data vendor/bin/phing -propertyfile /usr/local/etc/subsite/subsite.ini virtuoso-setup virtuoso-start install setup-acceptance  >> /var/log/subsite-install.log 2>&1 &
