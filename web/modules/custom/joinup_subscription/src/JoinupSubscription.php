@@ -6,8 +6,10 @@ namespace Drupal\joinup_subscription;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\flag\Entity\Flag;
 use Drupal\flag\Entity\Flagging;
+use Drupal\flag\FlagServiceInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -23,13 +25,23 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
   protected $entityTypeManager;
 
   /**
+   * The flag service.
+   *
+   * @var \Drupal\flag\FlagServiceInterface
+   */
+  protected $flagService;
+
+  /**
    * Constructs a new Joinup subscription service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param FlagServiceInterface $flag_service
+   *   The flag service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, FlagServiceInterface $flag_service) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->flagService = $flag_service;
   }
 
   /**
@@ -62,6 +74,24 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
     }
 
     return $subscribers;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function subscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id): bool {
+    $flag = $this->flagService->getFlagById($flag_id);
+    $flagging = $this->flagService->flag($flag, $entity, $account);
+
+    return !empty($flagging);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unsubscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : void {
+    $flag = $this->flagService->getFlagById($flag_id);
+    $this->flagService->unflag($flag, $entity, $account);
   }
 
 }
