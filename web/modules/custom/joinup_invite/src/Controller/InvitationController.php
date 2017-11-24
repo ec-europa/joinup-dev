@@ -122,7 +122,8 @@ class InvitationController extends ControllerBase {
    *   The action that is being taken, either 'accept' or 'reject'.
    *
    * @return string
-   *   A unique hash consisting of 8 lowercase alphanumeric characters.
+   *   A unique hash consisting of 8 lowercase alphanumeric characters, dashes
+   *   and underscores.
    */
   public static function generateHash(InvitationInterface $invitation, string $action) : string {
     $data = $invitation->id();
