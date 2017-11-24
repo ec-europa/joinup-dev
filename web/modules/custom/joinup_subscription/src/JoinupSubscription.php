@@ -36,7 +36,7 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param FlagServiceInterface $flag_service
+   * @param \Drupal\flag\FlagServiceInterface $flag_service
    *   The flag service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, FlagServiceInterface $flag_service) {
