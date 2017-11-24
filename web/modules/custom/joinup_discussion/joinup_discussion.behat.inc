@@ -8,7 +8,7 @@
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
-use Drupal\message\Entity\Message;
+use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 
 /**
  * Behat step definitions for testing discussions.
@@ -44,8 +44,18 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertSubscribers($title, $count) {
     $discussion = $this->getNodeByTitle($title, 'discussion');
-    $subscribers = \Drupal::service('message_subscribe.subscribers')->getSubscribers($discussion, new Message([], 'message'));
+    $subscribers = $this->getSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
     PHPUnit_Framework_Assert::assertEquals($count, count($subscribers));
+  }
+
+  /**
+   * Returns the Joinup subscription service.
+   *
+   * @return \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   *   The subscription service.
+   */
+  protected function getSubscriptionService() : JoinupSubscriptionInterface {
+    return \Drupal::service('joinup_subscription');
   }
 
 }
