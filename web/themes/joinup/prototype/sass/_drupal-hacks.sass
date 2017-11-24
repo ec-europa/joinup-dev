@@ -288,3 +288,69 @@ form .description
 article
   iframe
     border: none
+
+// Style tour popup nub
+.joyride-tip-guide
+  .joyride-nub
+    border: solid 14px $color-grey-border
+    &.top
+      border-top-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+    &.bottom
+      border-bottom-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+    &.right
+      border-top-color: transparent
+      border-right-color: transparent
+      border-bottom-color: transparent
+    &.left
+      border-top-color: transparent
+      border-left-color: transparent
+      border-bottom-color: transparent
+    &.top-right
+      border-top-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+
+// Style tour popup content
+.joyride-tip-guide
+  border-radius: 3px
+  border: 1px solid $color-grey-border
+
+.joyride-content-wrapper
+  padding: 20px 25px 70px 20px
+  .button
+    position: absolute
+    bottom: 20px
+    left: 20px
+    padding: 5px 10px
+  .tour-progress, .button
+    font-size: 12px
+  .joyride-close-tip
+    @extend .icon
+    top: 10px
+    right: 10px
+    text-decoration: none
+    color: $color-blue-dark
+    text-indent: 0
+    font-size: 0
+    &:before
+      +icon-size(15px)
+      content: '\e617'
+  .tour-tip-label
+    margin: 0 0 10px 0
+    font-size: $font-size-h3
+    &:empty
+      margin-bottom: 0
+  .tour-tip-body
+    margin-bottom: 0
+    font-weight: $font-weight-thin
+    color: $color-grey-medium
+    font-size: $font-size-small
+
+
+
+
+
