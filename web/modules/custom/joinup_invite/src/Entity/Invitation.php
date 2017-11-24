@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Entity;
 
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -116,7 +116,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntity() : EntityInterface {
+  public function getEntity() : ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
 
@@ -130,7 +130,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setEntity(EntityInterface $entity) : InvitationInterface {
+  public function setEntity(ContentEntityInterface $entity) : InvitationInterface {
     // Only allow to change the entity on new invitations. An invitation is
     // bound to a user and an entity and these should not be changed once the
     // invitation is saved. Instead a new invitation should be created.
@@ -286,7 +286,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function loadByEntityAndUser(EntityInterface $entity, AccountInterface $user, string $bundle = '') : ?InvitationInterface {
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $user, string $bundle = '') : ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $invitations = $storage->loadByProperties([
       'entity_type' => $entity->getEntityTypeId(),

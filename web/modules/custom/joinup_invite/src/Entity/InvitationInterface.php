@@ -6,7 +6,6 @@ namespace Drupal\joinup_invite\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
 
@@ -39,10 +38,10 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Returns the entity the user has been invited to.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The entity.
    */
-  public function getEntity() : EntityInterface;
+  public function getEntity() : ContentEntityInterface;
 
   /**
    * Sets the entity the user will be invited to.
@@ -50,7 +49,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * It is only allowed to set this on new invitations. Once an invitation has
    * been saved the entity and user can no longer be changed.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to set.
    *
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
@@ -60,7 +59,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   Thrown when attempting to change the entity of an Invitation that has
    *   already been saved.
    */
-  public function setEntity(EntityInterface $entity) : InvitationInterface;
+  public function setEntity(ContentEntityInterface $entity) : InvitationInterface;
 
   /**
    * Returns the current status of the invitation.
@@ -130,7 +129,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Returns the invitation that matches the given entity and user.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The user.
@@ -140,6 +139,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface|null
    *   The invitation, or NULL if the requested invitation doesn't exist.
    */
-  public static function loadByEntityAndUser(EntityInterface $entity, AccountInterface $user, string $bundle) : ?InvitationInterface;
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $user, string $bundle) : ?InvitationInterface;
 
 }
