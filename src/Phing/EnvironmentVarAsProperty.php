@@ -21,7 +21,7 @@ class EnvironmentVarAsProperty extends \Task {
    *
    * @var string
    */
-  protected $phingproperty;
+  protected $phingProperty;
 
   /**
    * Converts prefixed environment variables in to prefixed phing properties.
@@ -49,7 +49,7 @@ class EnvironmentVarAsProperty extends \Task {
       $var .= $key . ' = ' . $value . "\n";
     }
     if ($var) {
-      $this->project->setProperty($this->phingproperty, "\n" . $var);
+      $this->project->setProperty($this->phingProperty, "\n" . $var);
     }
   }
 
@@ -70,7 +70,7 @@ class EnvironmentVarAsProperty extends \Task {
    *   The prefix for both the environment variable and phing property name.
    */
   public function setPhingProperty(string $prefix) {
-    $this->phingproperty = $prefix;
+    $this->phingProperty = $prefix;
   }
 
 }
