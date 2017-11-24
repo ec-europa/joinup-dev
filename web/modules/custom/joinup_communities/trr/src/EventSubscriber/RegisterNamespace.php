@@ -8,8 +8,6 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class RegisterNamespace.
- *
- * @package Drupal\trr
  */
 class RegisterNamespace implements EventSubscriberInterface {
 

@@ -18,8 +18,6 @@ use Drupal\user\Entity\User;
 
 /**
  * A base class for the notification subscribers.
- *
- * @package Drupal\joinup_notification\EventSubscriber
  */
 abstract class NotificationSubscriberBase {
 
