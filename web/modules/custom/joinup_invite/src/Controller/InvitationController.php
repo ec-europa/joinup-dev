@@ -10,8 +10,12 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Site\Settings;
 use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_invite\Event\InvitationEvent;
+use Drupal\joinup_invite\Event\InvitationEventInterface;
+use Drupal\joinup_invite\Event\InvitationEvents;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -50,13 +54,23 @@ class InvitationController extends ControllerBase {
   protected $invitationMessageHelper;
 
   /**
+   * The event dispatcher.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
+
+  /**
    * Constructs an InvitationController object.
    *
    * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
    *   The helper service for creating and retrieving messages for invitations.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   *   The event dispatcher.
    */
-  public function __construct(InvitationMessageHelperInterface $invitationMessageHelper) {
+  public function __construct(InvitationMessageHelperInterface $invitationMessageHelper, EventDispatcherInterface $eventDispatcher) {
     $this->invitationMessageHelper = $invitationMessageHelper;
+    $this->eventDispatcher = $eventDispatcher;
   }
 
   /**
@@ -64,7 +78,8 @@ class InvitationController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('joinup_invite.invitation_message_helper')
+      $container->get('joinup_invite.invitation_message_helper'),
+      $container->get('event_dispatcher')
     );
   }
 
@@ -82,8 +97,20 @@ class InvitationController extends ControllerBase {
    *   The redirect response.
    */
   public function updateInvitation(InvitationInterface $invitation, string $action, string $hash) : RedirectResponse {
-    $action === self::ACTION_ACCEPT ? $invitation->accept() : $invitation->reject();
-    $invitation->save();
+    switch ($action) {
+      case self::ACTION_ACCEPT:
+        $invitation->accept()->save();
+        $this->eventDispatcher->dispatch(InvitationEvents::ACCEPT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+        break;
+
+      case self::ACTION_REJECT:
+        $invitation->reject()->save();
+        $this->eventDispatcher->dispatch(InvitationEvents::REJECT_INVITATION_EVENT, $this->getEvent($invitation, $action));
+        break;
+
+      default:
+        throw new \InvalidArgumentException("Unknow action '$action'.");
+    }
 
     $url = $invitation->getEntity()->toUrl();
     return $this->redirect($url->getRouteName(), $url->getRouteParameters());
@@ -129,6 +156,23 @@ class InvitationController extends ControllerBase {
     $data = $invitation->id();
     $data .= $action;
     return strtolower(substr(Crypt::hmacBase64($data, Settings::getHashSalt()), 0, 8));
+  }
+
+  /**
+   * Returns an InvitationEvent for the given invitation and action.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation for which to create an event.
+   * @param string $action
+   *   The action that has been taken on the invitation.
+   *
+   * @return \Drupal\joinup_invite\Event\InvitationEventInterface
+   *   The event.
+   */
+  protected function getEvent(InvitationInterface $invitation, string $action) : InvitationEventInterface {
+    return (new InvitationEvent())
+      ->setInvitation($invitation)
+      ->setAction($action);
   }
 
 }
