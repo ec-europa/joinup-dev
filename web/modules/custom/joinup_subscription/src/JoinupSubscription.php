@@ -57,8 +57,6 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
       ->condition('entity_type', $entity->getEntityTypeId())
       ->condition('entity_id', $entity->id())
       ->condition('uid', 0, '>')
-      // Sort on subscription date.
-      ->sort('created')
       ->execute();
 
     $subscribers = [];

@@ -24,7 +24,7 @@ interface JoinupSubscriptionInterface {
    *   The ID of the subscription flag entity.
    *
    * @return \Drupal\user\UserInterface[]
-   *   A list of subscriber user accounts.
+   *   An associative array of subscriber user accounts, keyed by user ID.
    */
   public function getSubscribers(ContentEntityInterface $entity, string $flag_id) : array;
 
