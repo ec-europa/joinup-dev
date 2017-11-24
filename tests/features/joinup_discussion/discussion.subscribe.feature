@@ -46,7 +46,7 @@ Feature: Subscribing to discussions
     And I go to the "Rare Butter" discussion
     When I click "Subscribe"
 
-    # Anonymous users comments are notifications are sent in comment approval.
+    # Anonymous users comments notifications are sent in comment approval.
     Given I am an anonymous user
     And I go to the "Rare Butter" discussion
     Then I fill in "Create comment" with "Is Dale in love with Flash?"
