@@ -16,21 +16,21 @@ Feature: Subscribing to discussions
       | Rare Butter | I think that the rarest butter out there is the milky way butter | Dairy products | validated | Dr. Hans Zarkov |
 
   Scenario: Subscribe to a discussion.
-    Given I am an anonymous user
+    When I am an anonymous user
     And I go to the "Rare Butter" discussion
     Then I should not see the link "Subscribe"
     And I should not see the link "Unsubscribe"
 
-    Given I am logged in as an "authenticated user"
+    When I am logged in as an "authenticated user"
     And I go to the "Rare Butter" discussion
     Then I should see the link "Subscribe"
     And I should not see the link "Unsubscribe"
 
-    Given I click "Subscribe"
+    When I click "Subscribe"
     Then I should see the link "Unsubscribe"
     And I should not see the link "Subscribe"
 
-    Given I click "Unsubscribe"
+    When I click "Unsubscribe"
     Then I should see the heading "Unsubscribe from this discussion?"
     When I press "Unsubscribe"
     Then I should see the heading "Rare Butter"
@@ -55,7 +55,7 @@ Feature: Subscribing to discussions
     But I wait for the honeypot validation to pass
     Then I press "Post comment"
     # Moderate the anonymous comment.
-    Given I am logged in as a user with the "administer comments" permission
+    Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
     Given I select the "Rare Butter" row
     Then I select "Publish comment" from "Action"
