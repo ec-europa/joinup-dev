@@ -3,3 +3,8 @@ services:
     class: Drupal\joinup_discussion\EventSubscriber\WorkflowTransitionEventSubscriber
     tags:
       - { name: event_subscriber }
+  joinup_discussion.subscribed_discussion_comment:
+    class: Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionCommentSubscriber
+    arguments: ['@joinup_subscription', '@joinup.message_delivery']
+    tags:
+      - { name: event_subscriber }
