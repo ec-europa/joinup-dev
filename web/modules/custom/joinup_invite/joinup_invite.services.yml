@@ -7,4 +7,3 @@ services:
     arguments: ['@joinup_subscription']
     tags:
       - { name: event_subscriber }
-
