@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -172,7 +174,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   /**
    * Builds the message arguments.
    */
-  protected function getArguments() {
+  protected function getArguments(): array {
     return [
       '@comment:author:username' => $this->comment->getOwner()->getDisplayName(),
       '@entity:title' => $this->discussion->label(),
