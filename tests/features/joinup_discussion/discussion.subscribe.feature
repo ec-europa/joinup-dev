@@ -42,11 +42,14 @@ Feature: Subscribing to discussions
       | Username | E-mail            | First name | Family name |
       | follower | dale@example.com  | Dale       | Arden       |
       | debater  | flash@example.com | Flash      | Gordon      |
+
+    # Subscribe the 'follower' user to the discussion.
     And I am logged in as follower
     And I go to the "Rare Butter" discussion
-    When I click "Subscribe"
+    And I click "Subscribe"
 
-    # Anonymous users comments notifications are sent in comment approval.
+    # Notifications are only sent for anonymous users when the comment is
+    # approved.
     Given I am an anonymous user
     And I go to the "Rare Butter" discussion
     Then I fill in "Create comment" with "Is Dale in love with Flash?"
@@ -54,6 +57,7 @@ Feature: Subscribing to discussions
     And I fill in "Email" with "trollingismylife@example.com"
     But I wait for the honeypot validation to pass
     Then I press "Post comment"
+    Then 0 e-mails should have been sent
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
