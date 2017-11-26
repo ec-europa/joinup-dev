@@ -141,8 +141,9 @@ interface JoinupMessageDeliveryInterface {
   /**
    * Sends the message to the recipients.
    *
-   * @return $this
+   * @return bool
+   *   Whether or not the messages were sent successfully.
    */
-  public function sendMail(): self;
+  public function sendMail(): bool;
 
 }

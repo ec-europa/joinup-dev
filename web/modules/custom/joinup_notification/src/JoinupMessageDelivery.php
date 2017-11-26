@@ -104,7 +104,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMail(): JoinupMessageDeliveryInterface {
+  public function sendMail(): bool {
     if (empty($this->message) || !$this->message instanceof MessageInterface) {
       throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");
     }
@@ -134,12 +134,10 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $mails = array_unique(array_merge($mails, $this->mails));
 
     // Send E-mail messages.
-    array_walk($mails, function (string $mail): void {
+    return array_reduce($mails, function (bool $success, string $mail): bool {
       $options = ['save on success' => FALSE, 'mail' => $mail];
-      $this->messageNotifier->send($this->message, $options);
-    });
-
-    return $this;
+      return $success && $this->messageNotifier->send($this->message, $options);
+    }, TRUE);
   }
 
 }
