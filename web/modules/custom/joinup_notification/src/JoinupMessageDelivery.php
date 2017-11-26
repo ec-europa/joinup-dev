@@ -11,6 +11,14 @@ use Drupal\user\UserInterface;
 
 /**
  * Provides a service class for creating and delivering messages.
+ *
+ * @todo Since this class is a service it acts as a singleton and all data that
+ *   is stored in properties will be persisted and be present the next time the
+ *   service is called. This will cause problems if this is used more than once,
+ *   especially because if different calls store data on both the `$accounts`
+ *   and `$mails` properties.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4169
  */
 class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
 
