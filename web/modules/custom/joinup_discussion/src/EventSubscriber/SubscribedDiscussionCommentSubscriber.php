@@ -107,7 +107,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     }
 
     // No recipients, no reaction.
-    if (!$this->recipients = $this->buildRecipientList()) {
+    if (!$this->getRecipients()) {
       return;
     }
 
@@ -152,18 +152,21 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   }
 
   /**
-   * Builds the list of recipients.
+   * Returns the list of recipients.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of recipients as an array of user accounts, keyed by user ID.
    */
-  protected function buildRecipientList(): array {
-    return [
-      // The discussion owner is added to the list of subscribers. We don't
-      // check if the author is anonymous as this is handled by the message
-      // delivery service.
-      $this->discussion->getOwnerId() => $this->discussion->getOwner(),
-    ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+  protected function getRecipients(): array {
+    if (is_null($this->recipients)) {
+      $this->recipients = [
+        // The discussion owner is added to the list of subscribers. We don't
+        // check if the author is anonymous as this is handled by the message
+        // delivery service.
+        $this->discussion->getOwnerId() => $this->discussion->getOwner(),
+      ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+    }
+    return $this->recipients;
   }
 
   /**
@@ -192,7 +195,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     return $this->messageDelivery
       ->createMessage('discussion_comment_new')
       ->setArguments($this->getArguments())
-      ->setRecipients($this->recipients)
+      ->setRecipients($this->getRecipients())
       ->sendMail();
   }
 
