@@ -131,12 +131,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     // normally happens when an anonymous user is posting a comment because such
     // comments are subject of approval.
     if ($this->comment->isPublished()) {
-      // Deliver the notification message.
-      $this->messageDelivery
-        ->createMessage('discussion_comment_new')
-        ->setArguments($this->getArguments())
-        ->setRecipients($this->recipients)
-        ->sendMail();
+      $this->sendMessage();
     }
   }
 
@@ -151,12 +146,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
       $original_comment = $this->comment->original;
       // An anonymous comment has been just approved.
       if (!$original_comment->isPublished() && $this->comment->isPublished()) {
-        // Deliver the notification message.
-        $this->messageDelivery
-          ->createMessage('discussion_comment_new')
-          ->setArguments($this->getArguments())
-          ->setRecipients($this->recipients)
-          ->sendMail();
+        $this->sendMessage();
       }
     }
   }
@@ -190,6 +180,20 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
         'fragment' => "comment-{$this->comment->id()}",
       ])->toString(),
     ];
+  }
+
+  /**
+   * Sends the notification to the recipients.
+   *
+   * @return bool
+   *   Whether or not the sending of the e-mails has succeeded.
+   */
+  protected function sendMessage(): bool {
+    return $this->messageDelivery
+      ->createMessage('discussion_comment_new')
+      ->setArguments($this->getArguments())
+      ->setRecipients($this->recipients)
+      ->sendMail();
   }
 
 }
