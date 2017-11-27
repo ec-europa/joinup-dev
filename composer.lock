@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6feabdf30c8db2ecc1306ad6d5a111d6",
+    "content-hash": "24aab2a86d77adb174c87caf5f940119",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5308,16 +5308,16 @@
         },
         {
             "name": "ec-europa/infra",
-            "version": "dev-ISAICP-4129",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "789acf1d93afcd56d3f28029b7ca0fd139aaaf24"
+                "reference": "4c04e8620077588ec88c5623250de4366717c916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/789acf1d93afcd56d3f28029b7ca0fd139aaaf24",
-                "reference": "789acf1d93afcd56d3f28029b7ca0fd139aaaf24",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/4c04e8620077588ec88c5623250de4366717c916",
+                "reference": "4c04e8620077588ec88c5623250de4366717c916",
                 "shasum": ""
             },
             "require": {
@@ -5342,7 +5342,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-11-23T10:45:12+00:00"
+            "time": "2017-11-27T08:24:32+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
