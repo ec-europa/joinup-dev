@@ -29,7 +29,8 @@ interface InvitationMessageHelperInterface {
    *   The message template ID.
    * @param array $arguments
    *   The array of arguments that will be used to replace token-like strings in
-   *   the message.
+   *   the message. The `@invitation:accept_url` and `@invitation:reject_url`
+   *   arguments will be added automatically.
    *
    * @return \Drupal\message\MessageInterface
    *   The newly created, unsaved, message.

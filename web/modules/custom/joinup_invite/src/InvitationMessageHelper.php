@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_invite;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
+use Drupal\joinup_invite\Controller\InvitationController;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\message\MessageInterface;
@@ -51,6 +53,9 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
       throw new \InvalidArgumentException('Messages can only be created for saved invitations.');
     }
 
+    // Add defaults `@invitation:accept_url` and `@invitation:reject_url`.
+    $arguments += $this->getDefaultArguments($invitation);
+
     /** @var \Drupal\message\MessageInterface $message */
     $message = $this->entityTypeManager->getStorage('message')->create([
       'template' => $template,
@@ -84,6 +89,31 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
       ->setMessage($message)
       ->setRecipients([$invitation->getOwner()])
       ->sendMail();
+  }
+
+  /**
+   * Returns default arguments for invitation messages.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation for which to create the default arguments.
+   *
+   * @return array
+   *   An associative array of default arguments, keyed by argument ID.
+   */
+  protected function getDefaultArguments(InvitationInterface $invitation) : array {
+    $arguments = [];
+
+    foreach (['accept', 'reject'] as $action) {
+      $url_arguments = [
+        'invitation' => $invitation->id(),
+        'action' => $action,
+        'hash' => InvitationController::generateHash($invitation, $action),
+      ];
+      $url_options = ['absolute' => TRUE];
+      $arguments["@invitation:${action}_url"] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
+    }
+
+    return $arguments;
   }
 
 }

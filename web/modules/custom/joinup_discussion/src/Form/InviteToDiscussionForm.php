@@ -10,9 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\Url;
 use Drupal\flag\FlagServiceInterface;
-use Drupal\joinup_invite\Controller\InvitationController;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
@@ -297,16 +295,6 @@ class InviteToDiscussionForm extends InviteFormBase {
    */
   protected function sendMessage(InvitationInterface $invitation) : bool {
     $arguments = $this->generateArguments($invitation->getEntity());
-
-    // Generate the invitation link.
-    $url_arguments = [
-      'invitation' => $invitation->id(),
-      'action' => 'accept',
-      'hash' => InvitationController::generateHash($invitation, 'accept'),
-    ];
-    $url_options = ['absolute' => TRUE];
-    $arguments['@invitation:accept_url'] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
-
     $message = $this->invitationMessageHelper->createMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE, $arguments);
     $message->save();
 
