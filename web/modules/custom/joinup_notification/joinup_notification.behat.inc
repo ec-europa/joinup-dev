@@ -174,6 +174,48 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Asserts that an email has been sent.
+   *
+   * See ::assertEmailSent() for the structure of the table node argument.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
+   *
+   * @throws \Exception
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @see self::assertEmailSent()
+   *
+   * @Then the following email should not have been sent:
+   */
+  public function assertEmailNotSent(TableNode $table) {
+    $hash = $table->getRowsHash();
+    $recipient = $hash['recipient'];
+    $user = user_load_by_name($recipient);
+    if (!empty($user)) {
+      $recipient = $user->getEmail();
+    }
+    if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
+    }
+
+    try {
+      // Reusing ::assertEmailSent().
+      $this->assertEmailSent($table);
+      $email_was_sent = TRUE;
+    }
+    catch (\Exception $e) {
+      $email_was_sent = FALSE;
+    }
+
+    if ($email_was_sent) {
+      // Allow pass if an exception was throw, meaning the expected E-mail was
+      // not sent.
+      throw new \Exception('E-mail was sent.');
+    }
+  }
+
+  /**
    * Asserts that a system email has been sent.
    *
    * Table format:
