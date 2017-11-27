@@ -39,16 +39,16 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I :action the invitation for the :title :type
    */
-  public function acceptDiscussionInvitation(string $action, string $title, string $type) : void {
+  public function acceptInvitation(string $action, string $title, string $type) : void {
     if (!in_array($action, ['accept', 'reject'])) {
       throw new \InvalidArgumentException("Unknown action '$action'. Valid actions are 'accept' and 'reject'.");
     }
-    $discussion = $this->getNodeByTitle($title, $type);
+    $entity = $this->getNodeByTitle($title, $type);
     $user = $this->userManager->getCurrentUser();
     $user = $this->getUserByName($user->name);
 
     $invitation_info = $this->getInvitationInfo($type);
-    $invitation = Invitation::loadByEntityAndUser($discussion, $user, $invitation_info['invitation_bundle']);
+    $invitation = Invitation::loadByEntityAndUser($entity, $user, $invitation_info['invitation_bundle']);
     $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, $invitation_info['message_template'])->getArguments();
 
     $this->visitPath($arguments["@invitation:${action}_url"]);
