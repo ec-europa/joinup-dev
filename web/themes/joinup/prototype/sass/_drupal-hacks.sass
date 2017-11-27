@@ -293,26 +293,64 @@ article
 .joyride-tip-guide
   .joyride-nub
     border: solid 14px $color-grey-border
+    &:after
+      content: " "
+      display: block
+      border: 14px solid #fff
+      width: 0
+      height: 0
+      +z-index(modal)
+      position: absolute
     &.top
       border-top-color: transparent
       border-left-color: transparent
       border-right-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        top: -13px
+        left: -14px
     &.bottom
       border-bottom-color: transparent
       border-left-color: transparent
       border-right-color: transparent
+      &:after
+        border-bottom-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        bottom: -13px
+        left: -14px
     &.right
       border-top-color: transparent
       border-right-color: transparent
       border-bottom-color: transparent
+      &:after
+        border-top-color: transparent
+        border-right-color: transparent
+        border-bottom-color: transparent
+        top: -14px
+        right: -13px
     &.left
       border-top-color: transparent
       border-left-color: transparent
       border-bottom-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-bottom-color: transparent
+        top: -14px
+        left: -13px
     &.top-right
       border-top-color: transparent
       border-left-color: transparent
       border-right-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        top: -13px
+        right: -14px
 
 // Style tour popup content
 .joyride-tip-guide
