@@ -57,4 +57,20 @@ interface JoinupSubscriptionInterface {
    */
   public function unsubscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : void;
 
+  /**
+   * Checks whether a user is subscribed to a given entity through a given flag.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user for which to check if a subscription exists.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity the user is possibly subscribed to.
+   * @param string $flag_id
+   *   The ID of the subscription flag entity that keeps track of the
+   *   subscription.
+   *
+   * @return bool
+   *   TRUE if the user is subscribed, FALSE otherwise.
+   */
+  public function isSubscribed(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : bool;
+
 }

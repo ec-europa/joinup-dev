@@ -92,4 +92,12 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
     $this->flagService->unflag($flag, $entity, $account);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isSubscribed(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : bool {
+    $flag = $this->flagService->getFlagById($flag_id);
+    return (bool) $this->flagService->getFlagging($flag, $entity, $account);
+  }
+
 }

@@ -144,6 +144,18 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   }
 
   /**
+   * Tests checking if a user is subscribed.
+   */
+  public function testIsSubscribed() {
+    $subscribed_users = $this->createSubscribedUsers(1);
+    $subscribed_user = reset($subscribed_users);
+    $unsubscribed_user = $this->createUser();
+
+    \PHPUnit_Framework_Assert::assertTrue($this->subscriptionService->isSubscribed($subscribed_user, $this->entity, $this->testFlagId));
+    \PHPUnit_Framework_Assert::assertFalse($this->subscriptionService->isSubscribed($unsubscribed_user, $this->entity, $this->testFlagId));
+  }
+
+  /**
    * Creates a number of test users and subscribes them using the Flag service.
    *
    * @param int $count
