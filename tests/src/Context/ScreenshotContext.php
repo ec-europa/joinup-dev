@@ -210,13 +210,13 @@ class ScreenshotContext extends RawMinkContext {
     }
 
     // Save the screenshot locally.
-    $this->save($screenshot, $file_name);
+    $path = $this->save($screenshot, $file_name);
 
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
 
     if ($message) {
-      print strtr($message, ['@file_name' => $file_name]);
+      print strtr($message, ['@file_name' => $path ?: $file_name]);
       // Depending on the output formatter used, Behat will suppress any output
       // generated during the test. Flush the output buffers so out message will
       // show up in the test logs.
@@ -232,14 +232,17 @@ class ScreenshotContext extends RawMinkContext {
    * @param string $file_name
    *   The file name.
    *
+   * @return string|null
+   *   The saved screenshot path.
+   *
    * @throws \Exception
    *   Thrown if the destination folder doesn't exist and couldn't be created.
    */
-  protected function save(string $screenshot, string $file_name) : void {
+  protected function save(string $screenshot, string $file_name) : ?string {
     // Don't attempt to save the screenshot if no folder name has been
     // configured.
     if (empty($this->localDir)) {
-      return;
+      return NULL;
     }
 
     // Ensure the directory exists.
@@ -251,6 +254,8 @@ class ScreenshotContext extends RawMinkContext {
     }
     $path = $this->localDir . DIRECTORY_SEPARATOR . $file_name;
     file_put_contents($path, $screenshot);
+
+    return $path;
   }
 
   /**
