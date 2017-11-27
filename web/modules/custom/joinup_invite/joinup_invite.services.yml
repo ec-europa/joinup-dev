@@ -1,7 +1,7 @@
 services:
   joinup_invite.invitation_message_helper:
     class: Drupal\joinup_invite\InvitationMessageHelper
-    arguments: ['@entity_type.manager', '@message_notify.sender']
+    arguments: ['@entity_type.manager', '@joinup.message_delivery']
   joinup_invite.invitation_subscriber:
     class: Drupal\joinup_invite\EventSubscriber\InvitationSubscriber
     arguments: ['@joinup_subscription']

@@ -6,8 +6,8 @@ namespace Drupal\joinup_invite;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\message\MessageInterface;
-use Drupal\message_notify\MessageNotifier;
 
 /**
  * Service that assists in creating and retrieving messages for invitations.
@@ -22,23 +22,23 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   protected $entityTypeManager;
 
   /**
-   * The message notifier from the message_notify module.
+   * The helper service for delivering messages.
    *
-   * @var \Drupal\message_notify\MessageNotifier
+   * @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface
    */
-  protected $messageNotifier;
+  protected $messageDelivery;
 
   /**
    * Constructs a new InvitationMessageHelper service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\message_notify\MessageNotifier $messageNotifier
-   *   The message notifier from the message_notify module.
+   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $messageDelivery
+   *   The helper service for delivering messages.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, MessageNotifier $messageNotifier) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupMessageDeliveryInterface $messageDelivery) {
     $this->entityTypeManager = $entityTypeManager;
-    $this->messageNotifier = $messageNotifier;
+    $this->messageDelivery = $messageDelivery;
   }
 
   /**
@@ -80,9 +80,10 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
     if (!$message = $this->getMessage($invitation, $template)) {
       return FALSE;
     }
-    $options = ['save on success' => FALSE, 'mail' => $invitation->getOwner()->getEmail()];
-
-    return $this->messageNotifier->send($message, $options);
+    return $this->messageDelivery
+      ->setMessage($message)
+      ->setRecipients([$invitation->getOwner()])
+      ->sendMail();
   }
 
 }
