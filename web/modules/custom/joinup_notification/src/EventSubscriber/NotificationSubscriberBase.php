@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
@@ -321,17 +323,22 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
    *   Optionally pass additional arguments.
+   *
+   * @return bool
+   *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) {
+  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
     $arguments += $this->generateArguments($this->entity);
 
+    $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $this->messageDelivery
+      $success = $success && $this->messageDelivery
         ->createMessage($template_id)
         ->setArguments($arguments)
         ->setRecipients(User::loadMultiple($user_ids))
         ->sendMail();
     }
+    return $success;
   }
 
   /**

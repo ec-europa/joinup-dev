@@ -17,22 +17,22 @@ Feature: Subscribing to discussions
     Then the "Rare butter" discussion should have 0 subscribers
 
   Scenario: Subscribe to a discussion.
-    Given I am an anonymous user
+    When I am an anonymous user
     And I go to the "Rare Butter" discussion
     Then I should not see the link "Subscribe"
     And I should not see the link "Unsubscribe"
 
-    Given I am logged in as an "authenticated user"
+    When I am logged in as an "authenticated user"
     And I go to the "Rare Butter" discussion
     Then I should see the link "Subscribe"
     And I should not see the link "Unsubscribe"
 
-    Given I click "Subscribe"
+    When I click "Subscribe"
     Then I should see the link "Unsubscribe"
     And I should not see the link "Subscribe"
     And the "Rare butter" discussion should have 1 subscriber
 
-    Given I click "Unsubscribe"
+    When I click "Unsubscribe"
     Then I should see the heading "Unsubscribe from this discussion?"
     When I press "Unsubscribe"
     Then I should see the heading "Rare Butter"
@@ -45,11 +45,14 @@ Feature: Subscribing to discussions
       | Username | E-mail            | First name | Family name |
       | follower | dale@example.com  | Dale       | Arden       |
       | debater  | flash@example.com | Flash      | Gordon      |
+
+    # Subscribe the 'follower' user to the discussion.
     And I am logged in as follower
     And I go to the "Rare Butter" discussion
-    When I click "Subscribe"
+    And I click "Subscribe"
 
-    # Anonymous users comments are notifications are sent in comment approval.
+    # Notifications are only sent for anonymous users when the comment is
+    # approved.
     Given I am an anonymous user
     And I go to the "Rare Butter" discussion
     Then I fill in "Create comment" with "Is Dale in love with Flash?"
@@ -57,8 +60,9 @@ Feature: Subscribing to discussions
     And I fill in "Email" with "trollingismylife@example.com"
     But I wait for the honeypot validation to pass
     Then I press "Post comment"
+    Then 0 e-mails should have been sent
     # Moderate the anonymous comment.
-    Given I am logged in as a user with the "administer comments" permission
+    Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
     Given I select the "Rare Butter" row
     Then I select "Publish comment" from "Action"

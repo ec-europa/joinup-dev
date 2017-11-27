@@ -11,6 +11,14 @@ use Drupal\user\UserInterface;
 
 /**
  * Provides a service class for creating and delivering messages.
+ *
+ * @todo Since this class is a service it acts as a singleton and all data that
+ *   is stored in properties will be persisted and be present the next time the
+ *   service is called. This will cause problems if this is used more than once,
+ *   especially because if different calls store data on both the `$accounts`
+ *   and `$mails` properties.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4169
  */
 class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
 
@@ -104,7 +112,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMail(): JoinupMessageDeliveryInterface {
+  public function sendMail(): bool {
     if (empty($this->message) || !$this->message instanceof MessageInterface) {
       throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");
     }
@@ -134,12 +142,10 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $mails = array_unique(array_merge($mails, $this->mails));
 
     // Send E-mail messages.
-    array_walk($mails, function (string $mail): void {
+    return array_reduce($mails, function (bool $success, string $mail): bool {
       $options = ['save on success' => FALSE, 'mail' => $mail];
-      $this->messageNotifier->send($this->message, $options);
-    });
-
-    return $this;
+      return $success && $this->messageNotifier->send($this->message, $options);
+    }, TRUE);
   }
 
 }

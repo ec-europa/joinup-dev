@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -107,7 +109,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     }
 
     // No recipients, no reaction.
-    if (!$this->recipients = $this->buildRecipientList()) {
+    if (!$this->getRecipients()) {
       return;
     }
 
@@ -131,12 +133,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     // normally happens when an anonymous user is posting a comment because such
     // comments are subject of approval.
     if ($this->comment->isPublished()) {
-      // Deliver the notification message.
-      $this->messageDelivery
-        ->createMessage('discussion_comment_new')
-        ->setArguments($this->getArguments())
-        ->setRecipients($this->recipients)
-        ->sendMail();
+      $this->sendMessage();
     }
   }
 
@@ -151,35 +148,33 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
       $original_comment = $this->comment->original;
       // An anonymous comment has been just approved.
       if (!$original_comment->isPublished() && $this->comment->isPublished()) {
-        // Deliver the notification message.
-        $this->messageDelivery
-          ->createMessage('discussion_comment_new')
-          ->setArguments($this->getArguments())
-          ->setRecipients($this->recipients)
-          ->sendMail();
+        $this->sendMessage();
       }
     }
   }
 
   /**
-   * Builds the list of recipients.
+   * Returns the list of recipients.
    *
    * @return \Drupal\user\UserInterface[]
    *   The list of recipients as an array of user accounts, keyed by user ID.
    */
-  protected function buildRecipientList(): array {
-    return [
-      // The discussion owner is added to the list of subscribers. We don't
-      // check if the author is anonymous as this is handled by the message
-      // delivery service.
-      $this->discussion->getOwnerId() => $this->discussion->getOwner(),
-    ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+  protected function getRecipients(): array {
+    if (is_null($this->recipients)) {
+      $this->recipients = [
+        // The discussion owner is added to the list of subscribers. We don't
+        // check if the author is anonymous as this is handled by the message
+        // delivery service.
+        $this->discussion->getOwnerId() => $this->discussion->getOwner(),
+      ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+    }
+    return $this->recipients;
   }
 
   /**
    * Builds the message arguments.
    */
-  protected function getArguments() {
+  protected function getArguments(): array {
     return [
       '@comment:author:username' => $this->comment->getOwner()->getDisplayName(),
       '@entity:title' => $this->discussion->label(),
@@ -190,6 +185,20 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
         'fragment' => "comment-{$this->comment->id()}",
       ])->toString(),
     ];
+  }
+
+  /**
+   * Sends the notification to the recipients.
+   *
+   * @return bool
+   *   Whether or not the sending of the e-mails has succeeded.
+   */
+  protected function sendMessage(): bool {
+    return $this->messageDelivery
+      ->createMessage('discussion_comment_new')
+      ->setArguments($this->getArguments())
+      ->setRecipients($this->getRecipients())
+      ->sendMail();
   }
 
 }
