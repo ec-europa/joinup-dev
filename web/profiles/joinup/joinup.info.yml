@@ -27,6 +27,7 @@ dependencies:
   - editor_file
   - field_group
   - file
+  - flag
   - help
   - honeypot
   - image
