@@ -103,10 +103,10 @@ Feature: Pinning content entities inside collections
       | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |
       | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |
     And solutions:
-      | title            | collection    | state     | pinned in     | creation date |
-      | Wrench catalogue | Orange Wrench | validated | Orange Wrench | 2017-10-12    |
-      | Orange estimator | Orange Wrench | validated |               | 2017-10-02    |
-      | Beam analyser    | Cloudy Beam   | validated |               | 2017-11-21    |
+      | title            | collection                 | state     | pinned in     | creation date |
+      | Wrench catalogue | Orange Wrench              | validated | Orange Wrench | 2017-10-12    |
+      | Orange estimator | Orange Wrench, Cloudy Beam | validated |               | 2017-10-02    |
+      | Beam analyser    | Cloudy Beam                | validated |               | 2017-11-21    |
 
     When I am an anonymous user
     And I go to the homepage of the "Orange Wrench" collection

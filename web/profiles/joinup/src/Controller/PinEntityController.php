@@ -12,6 +12,7 @@ use Drupal\joinup\JoinupHelper;
 use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\OgAccessInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -76,14 +77,14 @@ class PinEntityController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pin(ContentEntityInterface $entity) {
-    $collections = $this->getCollections($entity);
-
-    if (count($collections) > 1) {
-      // @todo Show a form to choose where to pin.
+  public function pin(ContentEntityInterface $entity, RdfInterface $collection = null) {
+    if (empty($collection)) {
+      $collections = $this->getCollections($entity);
+      if (count($collections) > 1) {
+        // @todo Show a form to choose where to pin.
+      }
+      $collection = reset($collections);
     }
-
-    $collection = reset($collections);
     $this->pinService->setEntityPinned($entity, $collection, TRUE);
 
     drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
@@ -134,18 +135,25 @@ class PinEntityController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function pinAccess(ContentEntityInterface $entity, AccountInterface $account) {
+  public function pinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $collection = NULL) {
     if (!JoinupHelper::isSolution($entity) && !JoinupHelper::isCommunityContent($entity)) {
       return AccessResult::forbidden();
+    }
+
+    $cacheable_metadata = new CacheableMetadata();
+    $cacheable_metadata->addCacheableDependency($entity);
+
+    if (!empty($collection)) {
+      if ($this->pinService->isEntityPinned($entity, $collection)) {
+        return AccessResult::forbidden();
+      }
+      return $this->ogAccess->userAccess($collection, 'pin group content', $account);
     }
 
     $collections = $this->getCollections($entity);
     if (empty($collections)) {
       return AccessResult::forbidden();
     }
-
-    $cacheable_metadata = new CacheableMetadata();
-    $cacheable_metadata->addCacheableDependency($entity);
 
     // Check if there is any collection where the entity can be pinned.
     foreach ($collections as $collection) {

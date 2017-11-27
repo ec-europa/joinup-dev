@@ -374,6 +374,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     $collection = \Drupal::service('og.context')->getGroup();
     if (JoinupHelper::isCollection($collection)) {
       $build['#contextual_links']['entity']['metadata']['collection'] = $collection->id();
+      $build['#contextual_links']['entity']['route_parameters']['collection'] = $collection->id();
       $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
     }
   }
@@ -446,6 +447,18 @@ function joinup_contextual_links_alter(array &$links, $group, array $route_param
     return;
   }
 
-  // Redo route checking but with collection passed in.
-  // @see \Drupal\Core\Menu\ContextualLinkManager::getContextualLinksArrayByGroup()
+  $link_ids = ['joinup.unpin_entity', 'joinup.pin_entity'];
+  foreach ($link_ids as $id) {
+    if (isset($links[$id])) {
+      if (isset($links[$id]['metadata']['collection'])) {
+        $parameters = $route_parameters + ['collection' => $links[$id]['metadata']['collection']];
+        $access = \Drupal::accessManager()->checkNamedRoute($links[$id]['route_name'], $parameters);
+
+        if ($access) {
+          continue;
+        }
+      }
+      unset($links[$id]);
+    }
+  }
 }
