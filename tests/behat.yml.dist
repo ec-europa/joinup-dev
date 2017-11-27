@@ -64,5 +64,6 @@ default:
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'
+        username_field: 'E-mail or username'
   formatters:
     ${behat.formatter.name}: ~
