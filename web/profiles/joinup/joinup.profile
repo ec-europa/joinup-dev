@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -367,6 +368,15 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
       'metadata' => ['changed' => $entity->getChangedTime()],
     ];
   }
+
+  if (JoinupHelper::isSolution($entity)) {
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    $collection = \Drupal::service('og.context')->getGroup();
+    if (JoinupHelper::isCollection($collection)) {
+      $build['#contextual_links']['entity']['metadata']['collection'] = $collection->id();
+      $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
+    }
+  }
 }
 
 /**
@@ -418,4 +428,24 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
       $variables['attributes']['data-drupal-pinned-in'] = implode(',', $collection_ids);
     }
   }
+}
+
+/**
+ * Implements hook_contextual_links_alter().
+ */
+function joinup_contextual_links_alter(array &$links, $group, array $route_parameters) {
+  if ($group !== 'entity') {
+    return;
+  }
+
+  $entity = \Drupal::service('entity_type.manager')
+    ->getStorage($route_parameters['entity_type'])
+    ->load($route_parameters['entity']);
+
+  if (!JoinupHelper::isSolution($entity)) {
+    return;
+  }
+
+  // Redo route checking but with collection passed in.
+  // @see \Drupal\Core\Menu\ContextualLinkManager::getContextualLinksArrayByGroup()
 }
