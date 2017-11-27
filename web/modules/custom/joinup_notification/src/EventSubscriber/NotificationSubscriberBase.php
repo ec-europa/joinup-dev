@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactory;
@@ -10,11 +12,11 @@ use Drupal\Core\Url;
 use Drupal\joinup_core\JoinupRelationManager;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
-use Drupal\message\Entity\Message;
-use Drupal\message_notify\MessageNotifier;
+use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgMembershipInterface;
+use Drupal\user\Entity\User;
 
 /**
  * A base class for the notification subscribers.
@@ -94,11 +96,11 @@ abstract class NotificationSubscriberBase {
   protected $relationManager;
 
   /**
-   * The message notifier service.
+   * The message delivery service.
    *
-   * @var \Drupal\message_notify\MessageNotifier
+   * @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface
    */
-  protected $messageNotifier;
+  protected $messageDelivery;
 
   /**
    * Constructs a new CommunityContentSubscriber object.
@@ -117,10 +119,10 @@ abstract class NotificationSubscriberBase {
    *   The workflow helper service.
    * @param \Drupal\joinup_core\JoinupRelationManager $joinup_core_relations_manager
    *   The relation manager service.
-   * @param \Drupal\message_notify\MessageNotifier $message_notifier
-   *   The message notifier service.
+   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
+   *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
@@ -128,7 +130,7 @@ abstract class NotificationSubscriberBase {
     $this->membershipManager = $og_membership_manager;
     $this->workflowHelper = $joinup_core_workflow_helper;
     $this->relationManager = $joinup_core_relations_manager;
-    $this->messageNotifier = $message_notifier;
+    $this->messageDelivery = $message_delivery;
   }
 
   /**
@@ -323,25 +325,22 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
    *   Optionally pass additional arguments.
+   *
+   * @return bool
+   *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) {
+  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
     $arguments += $this->generateArguments($this->entity);
 
+    $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $values = ['template' => $template_id, 'arguments' => $arguments];
-      $message = Message::create($values);
-      $message->save();
-
-      foreach ($user_ids as $user_id) {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = $this->entityTypeManager->getStorage('user')->load($user_id);
-        if ($user->isAnonymous()) {
-          continue;
-        }
-        $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
-        $this->messageNotifier->send($message, $options);
-      }
+      $success = $success && $this->messageDelivery
+        ->createMessage($template_id)
+        ->setArguments($arguments)
+        ->setRecipients(User::loadMultiple($user_ids))
+        ->sendMail();
     }
+    return $success;
   }
 
   /**

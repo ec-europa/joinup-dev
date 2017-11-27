@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "08fc8eecf274a5e561644039ad461958",
+    "content-hash": "6c0b2206780c21595fc595a658da10fd",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1823,6 +1823,53 @@
             }
         },
         {
+            "name": "drupal/changed_fields",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/changed_fields",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "bc8c910698ca0cc6938a49716fdac7893790ea91"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0",
+                    "datestamp": "1501324743",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Loparev",
+                    "homepage": "https://www.drupal.org/user/3158841"
+                }
+            ],
+            "description": "Allows developers to react on changed node fields",
+            "homepage": "https://www.drupal.org/project/changed_fields",
+            "support": {
+                "source": "http://cgit.drupalcode.org/changed_fields"
+            }
+        },
+        {
             "name": "drupal/config_provider",
             "version": "1.0.0-beta4",
             "source": {
@@ -3548,75 +3595,6 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/message_notify",
                 "issues": "https://drupal.org/project/issues/message_notify",
-                "irc": "irc://irc.freenode.org/drupal"
-            }
-        },
-        {
-            "name": "drupal/message_subscribe",
-            "version": "1.0.0-beta4",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/message_subscribe",
-                "reference": "8.x-1.0-beta4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message_subscribe-8.x-1.0-beta4.zip",
-                "reference": "8.x-1.0-beta4",
-                "shasum": "edd0e7462dddb87021d42ee5a701dc2b19640888"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/flag": "~4.0",
-                "drupal/message": "~1.0",
-                "drupal/message_notify": "~1.0"
-            },
-            "require-dev": {
-                "drupal/flag": "*",
-                "drupal/message_subscribe_ui": "*",
-                "drupal/og": "~1.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta4",
-                    "datestamp": "1497650343",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "RoySegall",
-                    "homepage": "https://www.drupal.org/user/1812910"
-                },
-                {
-                    "name": "amitaibu",
-                    "homepage": "https://www.drupal.org/user/57511"
-                },
-                {
-                    "name": "fubhy",
-                    "homepage": "https://www.drupal.org/user/761344"
-                },
-                {
-                    "name": "jhedstrom",
-                    "homepage": "https://www.drupal.org/user/208732"
-                }
-            ],
-            "description": "Subscription API for the Message and Message notify modules",
-            "homepage": "https://drupal.org/project/message_subscribe",
-            "support": {
-                "source": "https://cgit.drupalcode.org/message_subscribe",
-                "issues": "https://drupal.org/project/issues/message_subscribe",
                 "irc": "irc://irc.freenode.org/drupal"
             }
         },
@@ -12299,7 +12277,6 @@
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
-        "drupal/message_subscribe": 10,
         "drupal/og": 20,
         "drupal/pathauto": 20,
         "drupal/persistent_login": 20,

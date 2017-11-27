@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Post update functions for the Joinup subscription module.
+ * Post update functions for Joinup Subscription module.
  */
 
 /**
- * Install the message_subscribe module.
+ * Install the 'flag' module.
  */
-function joinup_subscription_post_update_install_message_subscribe() {
-  \Drupal::service('module_installer')->install(['message_subscribe']);
+function joinup_subscription_post_update_install_flag() {
+  \Drupal::service('module_installer')->install(['flag']);
 }
