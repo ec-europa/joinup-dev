@@ -16,7 +16,7 @@ use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
-use Drupal\og\OgRoleInterface;
+use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -115,6 +115,13 @@ class InviteToDiscussionForm extends InviteFormBase {
   protected $subscription;
 
   /**
+   * The OG access service.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
    * Constructs a new InviteToDiscussionForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -125,13 +132,16 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The helper service for creating messages for invitations.
    * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription
    *   The subscription service.
+   * @param \Drupal\og\OgAccessInterface $ogAccess
+   *   The OG access service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
     parent::__construct($entityTypeManager);
 
     $this->eventDispatcher = $eventDispatcher;
     $this->invitationMessageHelper = $invitationMessageHelper;
     $this->subscription = $subscription;
+    $this->ogAccess = $ogAccess;
   }
 
   /**
@@ -142,7 +152,8 @@ class InviteToDiscussionForm extends InviteFormBase {
       $container->get('entity_type.manager'),
       $container->get('event_dispatcher'),
       $container->get('joinup_invite.invitation_message_helper'),
-      $container->get('joinup_subscription')
+      $container->get('joinup_subscription'),
+      $container->get('og.access')
     );
   }
 
@@ -256,27 +267,24 @@ class InviteToDiscussionForm extends InviteFormBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public static function access(AccountProxyInterface $account, NodeInterface $node = NULL) : AccessResult {
+  public function access(AccountProxyInterface $account, NodeInterface $node = NULL) : AccessResult {
     $access = FALSE;
 
     // The node should be a discussion.
     if ($node->bundle() === 'discussion') {
-      // Only allow access if the current user is a moderator, a facilitator of
-      // the solution or collection that contains the discussion, or the author
-      // of the discussion itself.
+      // Only allow access if the current user is a group administrator (a.k.a.
+      // the user is a moderator), has permission to invite users to discussions
+      // in the solution or collection that contains the discussion (a.k.a. the
+      // user is a facilitator), or the author of the discussion itself.
       $user = $account->getAccount();
       /** @var \Drupal\rdf_entity\Entity\Rdf $group */
       $group = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-      /** @var \Drupal\og\OgMembershipInterface $membership */
-      $membership = \Drupal::service('og.membership_manager')->getMembership($group, $user);
 
-      $is_moderator = in_array('moderator', $user->getRoles());
+      $is_group_administrator = $user->hasPermission('administer groups');
       $is_owner = $user->id() == $node->getOwnerId();
-      $is_facilitator = !empty($membership) && (bool) array_filter($membership->getRoles(), function (OgRoleInterface $role) {
-        return $role->getName() === 'facilitator';
-      });
+      $is_discussion_inviter = $this->ogAccess->userAccess($group, 'invite users to discussions')->isAllowed();
 
-      $access = $is_moderator || $is_owner || $is_facilitator;
+      $access = $is_group_administrator || $is_owner || $is_discussion_inviter;
     }
 
     return AccessResult::allowedIf($access);
