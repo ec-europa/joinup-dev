@@ -90,16 +90,16 @@ Feature: Subscribing to discussions
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
       | recipient | dale@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                      |
+      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
     But the following email should not have been sent:
       | recipient | flash@example.com                                                                             |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                      |
+      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient | hans@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                      |
+      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
