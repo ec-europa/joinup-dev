@@ -24,22 +24,59 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
   use UserTrait;
 
   /**
-   * Navigates to the canonical page display of a event.
+   * Accepts or rejects an invitation.
    *
+   * @param string $action
+   *   The action being taken on the invitation, can be either 'accept' or
+   *   'reject'.
    * @param string $title
-   *   The name of the discussion.
+   *   The title of the entity the user has been invited to.
+   * @param string $type
+   *   The type of the entity the user has been invited to.
    *
-   * @When I accept the invitation to participate in the :title discussion
+   * @throws \InvalidArgumentException
+   *   Thrown when the action is anything other than 'accept' or 'reject'.
+   *
+   * @When I :action the invitation for the :title :type
    */
-  public function acceptDiscussionInvitation(string $title) : void {
-    $discussion = $this->getNodeByTitle($title, 'discussion');
+  public function acceptDiscussionInvitation(string $action, string $title, string $type) : void {
+    if (!in_array($action, ['accept', 'reject'])) {
+      throw new \InvalidArgumentException("Unknown action '$action'. Valid actions are 'accept' and 'reject'.");
+    }
+    $discussion = $this->getNodeByTitle($title, $type);
     $user = $this->userManager->getCurrentUser();
     $user = $this->getUserByName($user->name);
 
-    $invitation = Invitation::loadByEntityAndUser($discussion, $user, 'discussion');
-    $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, InviteToDiscussionForm::TEMPLATE_DISCUSSION_INVITE)->getArguments();
+    $invitation_info = $this->getInvitationInfo($type);
+    $invitation = Invitation::loadByEntityAndUser($discussion, $user, $invitation_info['invitation_bundle']);
+    $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, $invitation_info['message_template'])->getArguments();
 
-    $this->visitPath($arguments['@invitation:accept_url']);
+    $this->visitPath($arguments["@invitation:${action}_url"]);
+  }
+
+  /**
+   * Returns information about the invitations related to the given entity type.
+   *
+   * @param string $entity_type
+   *   The entity type for which to return relevant invitation info.
+   *
+   * @return array
+   *   An associative array with the following keys:
+   *   - invitation_bundle: The ID of the InvitationType that is associated with
+   *     inviting people to content of the given entity type.
+   *   - message_template: The message template which is used to generate
+   *     invitation notifications when people are invited to content of the
+   *     given entity type.
+   */
+  protected function getInvitationInfo(string $entity_type) : array {
+    $mapping = [
+      'discussion' => [
+        'invitation_bundle' => 'discussion',
+        'message_template' => InviteToDiscussionForm::TEMPLATE_DISCUSSION_INVITE,
+      ],
+    ];
+
+    return $mapping[$entity_type];
   }
 
   /**
