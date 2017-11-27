@@ -19,14 +19,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Controller that accepts a user's invitation to a discussion.
+ * Controller that accepts a user's invitation to a content entity.
  *
- * It is possible for discussion owners, facilitators and moderators to invite
- * any user to participate in a discussion. The user will receive an e-mail with
- * an invitation link. The link leads to this page, which will automatically
- * subscribe the user to the discussion. It also changes the status of the
- * invitation from 'pending' to 'accepted'. This data is stored in the Message
- * entity that was used to send the notification.
+ * It is possible for certain users such as content owners, facilitators and
+ * moderators to invite any user to look at certain content. The user will
+ * receive an e-mail with an invitation link. The link leads to this page, which
+ * will accept (or reject) the invitation. It also changes the status of the
+ * invitation from 'pending' to 'accepted' (or 'rejected'). This data is stored
+ * in the Message entity that was used to send the notification.
  *
  * For an example implementation, see the InviteToDiscussionForm.
  *
@@ -143,7 +143,7 @@ class InvitationController extends ControllerBase {
   /**
    * Returns a unique hash based on the invitation and action.
    *
-   * This protects the discussions invitations from being brute forced.
+   * This protects the invitations from being brute forced.
    *
    * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
    *   The invitation.
