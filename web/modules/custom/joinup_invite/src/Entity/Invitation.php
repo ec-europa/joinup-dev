@@ -24,7 +24,8 @@ use Drupal\user\UserInterface;
  * it, and these cannot be changed after the Invitation is saved.
  *
  * If you want to send a Message along with the invitation, see the
- * InvitationMessageHelper.
+ * InvitationMessageHelperInterface for instructions on how to create the
+ * message template.
  *
  * @see \Drupal\joinup_invite\InvitationMessageHelperInterface
  *

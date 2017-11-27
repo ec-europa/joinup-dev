@@ -9,6 +9,14 @@ use Drupal\message\MessageInterface;
 
 /**
  * Interface for services that assist in managing messages for invitations.
+ *
+ * When creating invitations it is recommended to also send a message to the
+ * user to notify them about the pending invitation. If you are building a new
+ * invitation, create a new Message template and make sure it has an entity
+ * reference field named `field_invitation` that references entities of type
+ * `Invitation` and is limited to only accept the bundle of the invitation that
+ * you have created. When creating a new notification message through this
+ * service, the Invitation will automatically be referenced through that field.
  */
 interface InvitationMessageHelperInterface {
 
