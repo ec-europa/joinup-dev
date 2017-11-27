@@ -8,6 +8,13 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\joinup\Context\ScreenshotContext:
+            localDir: '${behat.screenshots.local.dir}'
+            s3Dir: '${behat.screenshots.s3.dir}'
+            s3Region: '${aws.region}'
+            s3Bucket: '${exports.s3.bucket}'
+            s3Key: '${exports.s3.key}'
+            s3Secret: '${exports.s3.secret}'
       filters:
         tags: '~@wip'
   extensions:
