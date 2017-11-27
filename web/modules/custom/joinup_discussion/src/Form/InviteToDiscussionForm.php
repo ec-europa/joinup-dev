@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_invite\Form;
+namespace Drupal\joinup_discussion\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
@@ -15,6 +15,7 @@ use Drupal\flag\FlagServiceInterface;
 use Drupal\joinup_invite\Controller\InvitationController;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgRoleInterface;

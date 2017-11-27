@@ -32,7 +32,7 @@ use Drupal\user\UserInterface;
  * An example implementation of using Invitations to invite users to participate
  * in a discussion can be found in the InviteToDiscussionForm.
  *
- * @see \Drupal\joinup_invite\Form\InviteToDiscussionForm
+ * @see \Drupal\joinup_discussion\Form\InviteToDiscussionForm
  *
  * @ContentEntityType(
  *   id = "invitation",

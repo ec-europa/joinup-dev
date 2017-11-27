@@ -11,8 +11,8 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup_discussion\Form\InviteToDiscussionForm;
 use Drupal\joinup_invite\Entity\Invitation;
-use Drupal\joinup_invite\Form\InviteToDiscussionForm;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 
 /**

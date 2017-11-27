@@ -32,7 +32,7 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
     return;
   }
 
-  $url = Url::fromRoute('joinup_invite.discussion', [
+  $url = Url::fromRoute('joinup_discussion.invite_form', [
     'node' => $entity->id(),
   ]);
 

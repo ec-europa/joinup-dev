@@ -28,7 +28,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * invitation from 'pending' to 'accepted'. This data is stored in the Message
  * entity that was used to send the notification.
  *
- * @see \Drupal\joinup_invite\Form\InviteToDiscussionForm
+ * For an example implementation, see the InviteToDiscussionForm.
+ *
+ * @see \Drupal\joinup_discussion\Form\InviteToDiscussionForm
  */
 class InvitationController extends ControllerBase {
 
