@@ -81,12 +81,21 @@ Feature: Subscribing to discussions
     # Authenticated users comments are sent on comment creation.
     Given I am logged in as debater
     And I go to the "Rare Butter" discussion
+    # User 'debater' is also subscribing. We check later if, as being the author
+    # of the comment, he will not receive notification.
+    And I click "Subscribe"
     And I fill in "Create comment" with "I'm the moderator of this discussion. Let's talk."
     But I wait for the honeypot validation to pass
     Then I press "Post comment"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
       | recipient | dale@example.com                                                                              |
+      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                      |
+      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    # The user 'debater' is also a discussion subscriber but because he's the
+    # author of the comment, he will not receive the notification.
+    But the following email should not have been sent:
+      | recipient | flash@example.com                                                                             |
       | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                      |
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
