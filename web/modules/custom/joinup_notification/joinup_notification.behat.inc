@@ -174,7 +174,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
-   * Asserts that an email has been sent.
+   * Asserts that an email has not been sent.
    *
    * See ::assertEmailSent() for the structure of the table node argument.
    *
