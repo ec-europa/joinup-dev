@@ -213,6 +213,9 @@ class PinEntityController extends ControllerBase {
 
     if (JoinupHelper::isSolution($entity)) {
       $collections = $entity->get('collection')->referencedEntities();
+      uasort($collections, function ($a, $b) {
+        return $a->id() <=> $b->id();
+      });
     }
     elseif (JoinupHelper::isCommunityContent($entity)) {
       $collections = [$this->relationManager->getParent($entity)];
