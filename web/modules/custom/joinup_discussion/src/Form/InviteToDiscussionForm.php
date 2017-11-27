@@ -10,11 +10,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\flag\FlagServiceInterface;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
+use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -108,11 +108,11 @@ class InviteToDiscussionForm extends InviteFormBase {
   protected $invitationMessageHelper;
 
   /**
-   * The flag service.
+   * The subscription service.
    *
-   * @var \Drupal\flag\FlagServiceInterface
+   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
    */
-  protected $flagService;
+  protected $subscription;
 
   /**
    * Constructs a new InviteToDiscussionForm object.
@@ -123,15 +123,15 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The event dispatcher.
    * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
    *   The helper service for creating messages for invitations.
-   * @param \Drupal\flag\FlagServiceInterface $flagService
-   *   The flag service.
+   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription
+   *   The subscription service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, FlagServiceInterface $flagService) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription) {
     parent::__construct($entityTypeManager);
 
     $this->eventDispatcher = $eventDispatcher;
     $this->invitationMessageHelper = $invitationMessageHelper;
-    $this->flagService = $flagService;
+    $this->subscription = $subscription;
   }
 
   /**
@@ -142,7 +142,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       $container->get('entity_type.manager'),
       $container->get('event_dispatcher'),
       $container->get('joinup_invite.invitation_message_helper'),
-      $container->get('flag')
+      $container->get('joinup_subscription')
     );
   }
 
@@ -188,9 +188,7 @@ class InviteToDiscussionForm extends InviteFormBase {
     foreach ($users as $user) {
       // Check if the user is already subscribed to the discussion. In this case
       // no invitation needs to be sent.
-      $flag = $this->flagService->getFlagById('subscribe_discussions');
-      $flagging = $this->flagService->getFlagging($flag, $discussion, $user);
-      if (!empty($flagging)) {
+      if ($this->subscription->isSubscribed($user, $discussion, 'subscribe_discussions')) {
         $results[self::RESULT_ACCEPTED]++;
         continue;
       }
