@@ -167,6 +167,12 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
         // delivery service.
         $this->discussion->getOwnerId() => $this->discussion->getOwner(),
       ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+
+      // The non-anonymous author of the comment should not be notified, if
+      // eventually he/she is in the subscribers list.
+      if (!$this->comment->getOwner()->isAnonymous()) {
+        unset($this->recipients[$this->comment->getOwnerId()]);
+      }
     }
     return $this->recipients;
   }
