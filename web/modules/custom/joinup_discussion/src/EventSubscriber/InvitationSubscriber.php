@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_invite\EventSubscriber;
+namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
@@ -10,7 +10,7 @@ use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class InvitationSubscriber.
+ * Event subscriber handling invitations to discussions.
  */
 class InvitationSubscriber implements EventSubscriberInterface {
 
@@ -42,13 +42,15 @@ class InvitationSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Accepts invitations provided by the Joinup Invite module.
+   * Accepts invitations to discussions.
    *
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
   public function acceptInvitation(InvitationEventInterface $event) : void {
     $invitation = $event->getInvitation();
+
+    // Ignore invitations to other content entities.
     if ($invitation->bundle() !== 'discussion') {
       return;
     }
@@ -65,13 +67,15 @@ class InvitationSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Rejects invitations provided by the Joinup Invite module.
+   * Rejects invitations to discussions.
    *
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
   public function rejectInvitation(InvitationEventInterface $event) : void {
     $invitation = $event->getInvitation();
+
+    // Ignore invitations to other content entities.
     if ($invitation->bundle() !== 'discussion') {
       return;
     }

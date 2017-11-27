@@ -8,3 +8,8 @@ services:
     arguments: ['@joinup_subscription', '@joinup.message_delivery']
     tags:
       - { name: event_subscriber }
+  joinup_invite.invitation_subscriber:
+    class: Drupal\joinup_discussion\EventSubscriber\InvitationSubscriber
+    arguments: ['@joinup_subscription']
+    tags:
+      - { name: event_subscriber }
