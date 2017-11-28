@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2924dc8bfaa83ee896f0bbb40e6bd597",
+    "content-hash": "7901402480e68d3023b6d7e5b743757d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2725,7 +2725,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -5142,7 +5142,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara??a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -5239,12 +5239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf"
+                "reference": "4c04e8620077588ec88c5623250de4366717c916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
-                "reference": "b1bb0fddd376fb06afcd2a8afc326e2f01abc6bf",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/4c04e8620077588ec88c5623250de4366717c916",
+                "reference": "4c04e8620077588ec88c5623250de4366717c916",
                 "shasum": ""
             },
             "require": {
@@ -5269,7 +5269,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-10-23T16:46:00+00:00"
+            "time": "2017-11-27T08:24:32+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -5855,7 +5855,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Sch??nthal",
+                    "name": "Robert Schönthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -7853,7 +7853,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran??ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -10106,7 +10106,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1505199844",
+                    "datestamp": "1511190785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10291,7 +10291,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -10650,7 +10650,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2017-11-15T09:36:28+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -10801,7 +10802,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -10858,7 +10859,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
