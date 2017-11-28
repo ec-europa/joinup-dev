@@ -111,7 +111,7 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
-   * Return the rows.
+   * Returns the rows.
    *
    * @param string $filter
    *   The filter.
