@@ -55,7 +55,7 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The subscription service.
    */
   protected function getSubscriptionService() : JoinupSubscriptionInterface {
-    return \Drupal::service('joinup_subscription');
+    return \Drupal::service('joinup_subscription.subscription');
   }
 
 }
