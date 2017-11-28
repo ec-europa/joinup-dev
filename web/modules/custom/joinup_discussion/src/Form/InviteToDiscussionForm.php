@@ -68,29 +68,16 @@ class InviteToDiscussionForm extends InviteFormBase {
   const RESULT_REJECTED = 'rejected';
 
   /**
-   * The messages to display to the user, keyed by result type.
+   * The severity of the messages displayed to the user, keyed by result type.
+   *
+   * @var string[]
    */
-  const INVITATION_MESSAGES = [
-    self::RESULT_SUCCESS => [
-      'message' => ':count user(s) have been invited to this discussion.',
-      'type' => 'status',
-    ],
-    self::RESULT_FAILED => [
-      'message' => 'The invitation could not be sent for :count user(s). Please try again later.',
-      'type' => 'error',
-    ],
-    self::RESULT_RESENT => [
-      'message' => 'The invitation was resent to :count user(s) that were already invited previously but haven\'t yet accepted the invitation.',
-      'type' => 'status',
-    ],
-    self::RESULT_ACCEPTED => [
-      'message' => ':count user(s) were already subscribed to the discussion. No new invitation was sent.',
-      'type' => 'status',
-    ],
-    self::RESULT_REJECTED => [
-      'message' => ':count user(s) have previously rejected the invitation. No new invitation was sent.',
-      'type' => 'status',
-    ],
+  const INVITATION_MESSAGE_TYPES = [
+    self::RESULT_SUCCESS => 'message',
+    self::RESULT_FAILED => 'error',
+    self::RESULT_RESENT => 'status',
+    self::RESULT_ACCEPTED => 'status',
+    self::RESULT_REJECTED => 'status',
   ];
 
   /**
@@ -188,13 +175,7 @@ class InviteToDiscussionForm extends InviteFormBase {
     $users = $this->entityTypeManager->getStorage('user')->loadMultiple($user_ids);
     $discussion = $form_state->get('discussion');
 
-    $results = [
-      self::RESULT_SUCCESS => 0,
-      self::RESULT_FAILED => 0,
-      self::RESULT_RESENT => 0,
-      self::RESULT_ACCEPTED => 0,
-      self::RESULT_REJECTED => 0,
-    ];
+    $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
 
     foreach ($users as $user) {
       // Check if the user is already subscribed to the discussion. In this case
@@ -247,12 +228,33 @@ class InviteToDiscussionForm extends InviteFormBase {
 
     // Display status messages.
     foreach (array_filter($results) as $result => $count) {
-      $message = self::INVITATION_MESSAGES[$result]['message'];
-      $type = self::INVITATION_MESSAGES[$result]['type'];
-      // Coder complains about passing variables to the translation service, but
-      // these are actually coming from a constant so it's fine.
-      // @codingStandardsIgnoreLine
-      drupal_set_message($this->t($message, [':count' => $count]), $type);
+      $type = self::INVITATION_MESSAGE_TYPES[$result];
+      $args = [':count' => $count];
+      switch ($result) {
+        case self::RESULT_SUCCESS:
+          $message = $this->t(':count user(s) have been invited to this discussion.', $args);
+          break;
+
+        case self::RESULT_FAILED:
+          $message = $this->t('The invitation could not be sent for :count user(s). Please try again later.', $args);
+          break;
+
+        case self::RESULT_RESENT:
+          $message = $this->t("The invitation was resent to :count user(s) that were already invited previously but haven't yet accepted the invitation.", $args);
+          break;
+
+        case self::RESULT_ACCEPTED:
+          $message = $this->t(':count user(s) were already subscribed to the discussion. No new invitation was sent.', $args);
+          break;
+
+        case self::RESULT_REJECTED:
+          $message = $this->t(':count user(s) have previously rejected the invitation. No new invitation was sent.', $args);
+          break;
+
+        default:
+          throw new \Exception("Unknown resukt type '$result'.");
+      }
+      drupal_set_message($message, $type);
     }
   }
 
