@@ -11,6 +11,7 @@ dependencies:
   - joinup_community_content
   - joinup_core
   - joinup_invite
+  - joinup_notification
   - joinup_subscription
   - joinup_user
   - language
@@ -52,6 +53,7 @@ config_devel:
   - field.storage.node.field_replies
   - joinup_invite.invitation_type.discussion
   - message.template.discussion_comment_new
+  - message.template.discussion_delete
   - message.template.discussion_invite
   - message.template.discussion_updated
   - node.type.discussion

@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\changed_fields\NodeSubject;
+use Drupal\joinup_discussion\DiscussionEvents;
 use Drupal\joinup_discussion\DiscussionObserver;
 use Drupal\node\NodeInterface;
 
@@ -72,4 +73,17 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_discussion_node_predelete(EntityInterface $entity) : void {
+  if ($entity->bundle() !== 'discussion') {
+    return;
+  }
+
+  // Send a message to subscribed users to inform that the discussion was
+  // deleted.
+  joinup_notification_dispatch_notification('delete', DiscussionEvents::DISCUSSION_DELETED, $entity);
 }
