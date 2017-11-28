@@ -152,7 +152,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       $container->get('entity_type.manager'),
       $container->get('event_dispatcher'),
       $container->get('joinup_invite.invitation_message_helper'),
-      $container->get('joinup_subscription'),
+      $container->get('joinup_subscription.subscription'),
       $container->get('og.access')
     );
   }

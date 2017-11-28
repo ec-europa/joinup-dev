@@ -84,7 +84,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('flagging');
 
-    $this->subscriptionService = $this->container->get('joinup_subscription');
+    $this->subscriptionService = $this->container->get('joinup_subscription.subscription');
     $this->flagService = $this->container->get('flag');
 
     $this->flag = Flag::create([
