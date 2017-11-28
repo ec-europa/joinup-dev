@@ -37,19 +37,19 @@ Feature: As a user of the website
     And I should not see the link "Upcoming events (3)"
     When I click "Event"
     Then I should see the tiles in the correct order:
-      | Walking Unofficial Humans |
+      | Spring Freezing           |
       | Hot Air                   |
       | Melted Hairdresser        |
+      | Walking Unofficial Humans |
       | Sweet Palm                |
-      | Spring Freezing           |
     And the "Event date" inline facet should allow selecting the following values "My events (3), Past events (3), Upcoming events (2)"
 
     # @todo The 'Melted Hairdresser' is a current event and should also be shown here.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Upcoming events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Hot Air         |
       | Spring Freezing |
+      | Hot Air         |
     And the "Event date" inline facet should allow selecting the following values "My events (3), Past events (3), All events"
 
     When I click "My events" in the "Event date" inline facet
@@ -63,8 +63,8 @@ Feature: As a user of the website
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4133
     When I click "Past events" in the "Event date" inline facet
     Then I should see the following tiles in the correct order:
-      | Walking Unofficial Humans |
       | Melted Hairdresser        |
+      | Walking Unofficial Humans |
       | Sweet Palm                |
     And the "Event date" inline facet should allow selecting the following values "My events (3), Upcoming events (2), All events"
 
