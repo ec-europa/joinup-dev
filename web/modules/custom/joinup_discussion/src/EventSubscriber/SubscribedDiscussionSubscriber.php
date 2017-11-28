@@ -171,10 +171,14 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
   protected function getSubscribers(NodeInterface $discussion) : array {
-    $subscribers = [
-      // The discussion owner is added to the list of subscribers.
-      $discussion->getOwnerId() => $discussion->getOwner(),
-    ] + $this->subscribeService->getSubscribers($discussion, 'subscribe_discussions');
+    $subscribers = [];
+
+    // The discussion owner is added to the list of subscribers.
+    $owner = $discussion->getOwner();
+    if (!empty($owner) && !$owner->isAnonymous()) {
+      $subscribers[$owner->id()] = $owner;
+    }
+    $subscribers += $this->subscribeService->getSubscribers($discussion, 'subscribe_discussions');
 
     // Exclude the current user from the list.
     $current_user = $this->getCurrentUser();
