@@ -10,6 +10,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
 
 /**
@@ -26,12 +27,42 @@ function joinup_search_entity_field_access($operation, FieldDefinitionInterface 
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_search_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'search_api_query_alter') {
+    // The search_api_field_search_api_query_alter is always executed last and
+    // is responsible for converting the facets into condition groups. We need
+    // to add a sort parameter based on the content bundle on the collection
+    // content search api field. Thus, the hook invoked by the collection module
+    // should be called last.
+    // @see search_api_field_search_api_query_alter
+    // @see joinup_search_search_api_query_alter
+    $group = $implementations['joinup_search'];
+    unset($implementations['joinup_search']);
+    $implementations['joinup_search'] = $group;
+  }
+}
+
+/**
  * Implements hook_search_api_query_alter().
  *
  * Sets a default search ordering for the content displayed in the collections'
  * and solutions' overview page as well as the custom pages.
  */
 function joinup_search_search_api_query_alter(QueryInterface &$query) {
+  if ($query->getSearchId() !== 'rdf_entity.field_collection_content') {
+    return;
+  }
+
+  // In case the user has filtered by event, first sort by the event date.
+  // @todo: This will be generic when the event calendar will be implemented for
+  // the rdf_entity.field_is_content and the node.field_cp_content_listing
+  // instances of the search api field listing.
+  if (_joinup_search_search_api_has_event_bundle($query->getConditionGroup())) {
+    $query->sort('field_event_date', QueryInterface::SORT_DESC);
+  }
+
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
@@ -41,8 +72,30 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
   if (!in_array($query->getSearchId(), $search_ids)) {
     return;
   }
-
   $query->sort('entity_created', 'DESC');
+}
+
+/**
+ * Checks if the query has a filter to event bundle.
+ *
+ * @param \Drupal\search_api\Query\ConditionGroupInterface|\Drupal\search_api\Query\ConditionInterface $conditions
+ *   A condition group or a condition interface.
+ *
+ * @return bool
+ *   True if the condition group has the required condition or false otherwise.
+ */
+function _joinup_search_search_api_has_event_bundle($conditions) {
+  foreach ($conditions->getConditions() as $c) {
+    if ($c instanceof ConditionGroupInterface) {
+      if (_joinup_search_search_api_has_event_bundle($c)) {
+        return TRUE;
+      }
+    }
+    elseif ($c->getField() === 'entity_bundle' && $c->getOperator() === '=' && $c->getValue() === 'event') {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
