@@ -1,0 +1,22 @@
+flag.link_type.plugin.safe_unflag:
+  type: mapping
+  label: 'Safe unflag link type'
+  mapping:
+    flag_confirmation:
+      type: label
+      label: 'Flag confirmation'
+    unflag_confirmation:
+       type: label
+       label: 'Unflag confirmation'
+    flag_create_button:
+      type: label
+      label: 'Create flagging button text'
+    flag_delete_button:
+      type: label
+      label: 'Delete flagging button text'
+    flag_update_button:
+      type: label
+      label: 'Update flagging button text'
+    form_behavior:
+      type: string
+      label: 'Where should the form open (new page, modal, etc)'

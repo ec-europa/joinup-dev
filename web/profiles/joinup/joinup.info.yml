@@ -27,6 +27,7 @@ dependencies:
   - editor_file
   - field_group
   - file
+  - flag
   - help
   - honeypot
   - image
@@ -94,6 +95,7 @@ themes:
 
 config_devel:
   - block.block.entity_bundle_facet
+  - block.block.eventdate
   - block.block.exposed_form_search_page
   - block.block.contentbundle
   - block.block.footer_menu
@@ -150,6 +152,7 @@ config_devel:
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
@@ -167,6 +170,7 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - facets.facet.event_date
   - facets.facet.solution_my_content
   - facets.facet.collection_my_content
   - facets.facet.content_my_content

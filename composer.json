@@ -25,6 +25,7 @@
         "drupal/facets": "^1.0-alpha11",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
+        "drupal/flag": "^4.0@alpha",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "^5.0-beta6",
@@ -80,7 +81,7 @@
         "drupal/coder": "^8.2.9",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
-        "drupal/default_content": "dev-1.x#68c30918ecd4c48f578070641c97a3b35c86a5df",
+        "drupal/default_content": "^1.0-alpha6",
         "drupal/devel": "~1.0@alpha",
         "drupal/drupal-extension": "dev-master#7756b54f2604e4762147190dec888102da253cbc",
         "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
@@ -160,7 +161,9 @@
             },
             "drupal/facets": {
                 "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
-                "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch"
+                "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch",
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "https://www.drupal.org/files/issues/facet_summary_for_facet-2873480-18.patch",
+                "Dependent facet processor schema is missing @see https://www.drupal.org/node/2919439": "resources/patch/facets-2919439-for-alpha11.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
@@ -190,6 +193,10 @@
             "drupal/subpathauto": {
                 "Redirect module causes redirect back to unaliased path. @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2875026-2.patch"
             },
+            "drupal/rdf_entity": {
+                "Bad karma. Work around for rare case that entityloadmultiple goes whoosh. See ISAICP-3945": "resources/patch/ihavetoshipsorry.patch",
+                "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
+            },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
             },
@@ -199,9 +206,6 @@
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
-            },
-            "drupal/rdf_entity": {
-                "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
             }
         }
     },
