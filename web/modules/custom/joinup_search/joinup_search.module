@@ -52,20 +52,18 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  * and solutions' overview page as well as the custom pages.
  */
 function joinup_search_search_api_query_alter(QueryInterface &$query) {
-  if ($query->getSearchId() !== 'rdf_entity.field_collection_content') {
-    return;
-  }
-
-  // In case the user has filtered by event, first sort by the event date.
-  // @todo: This will be generic when the event calendar will be implemented for
-  // the rdf_entity.field_is_content and the node.field_cp_content_listing
-  // instances of the search api field listing.
-  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
-    // If the upcoming events are selected, set the order to 'ASC'.
-    // @see \Drupal\joinup\Plugin\ArbitraryFacet\EventsArbitraryFacet::getFacetDefinition
-    $value = \Drupal::service('facets.utility.date_handler')->isoDate((new DrupalDateTime('today'))->getTimestamp());
-    $order = _joinup_search_search_api_has_condition($query->getConditionGroup(), 'field_event_date', $value, '>=') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
-    $query->sort('field_event_date', $order);
+  if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
+    // In case the user has filtered by event, first sort by the event date.
+    // @todo: This will be generic when the event calendar will be implemented for
+    // the rdf_entity.field_is_content and the node.field_cp_content_listing
+    // instances of the search api field listing.
+    if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+      // If the upcoming events are selected, set the order to 'ASC'.
+      // @see \Drupal\joinup\Plugin\ArbitraryFacet\EventsArbitraryFacet::getFacetDefinition
+      $value = \Drupal::service('facets.utility.date_handler')->isoDate((new DrupalDateTime('today'))->getTimestamp());
+      $order = _joinup_search_search_api_has_condition($query->getConditionGroup(), 'field_event_date', $value, '>=') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
+      $query->sort('field_event_date', $order);
+    }
   }
 
   $search_ids = [
