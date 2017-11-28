@@ -150,3 +150,30 @@ Feature: Subscribing to discussions
       | recipient | flash@example.com                                                                  |
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+
+    # Delete the discussion and check that the notifications are sent.
+    # Promote one of the subscribers to be a moderator so they can delete the
+    # discussion.
+    And the following collection user membership:
+      | collection     | user    | roles       |
+      | Dairy products | debater | facilitator |
+    Given I am logged in as debater
+    When I go to the "Rare butter" discussion
+    And I click "Delete" in the "Entity actions" region
+    And I press "Delete"
+
+    Then the following email should have been sent:
+      | recipient | dale@example.com                                                                                                      |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+    # The user 'debater' is also a discussion subscriber but because he's the
+    # person who has deleted the comment, he will not receive the notification.
+    But the following email should not have been sent:
+      | recipient | flash@example.com                                                                                                     |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+    # Discussion author is receiving the notifications too.
+    And the following email should have been sent:
+      | recipient | hans@example.com                                                                                                      |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
