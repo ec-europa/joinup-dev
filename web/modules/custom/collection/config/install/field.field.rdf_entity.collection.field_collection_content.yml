@@ -21,8 +21,11 @@ default_value:
         collection_type:
           weight: 0
           region: top
+        collection_event_type:
+          weight: 0
+          region: inline_facets
         collection_policy_domain:
-          weight: 1
+          weight: 0
           region: inline_facets
       enabled: 1
       query_presets: ''
