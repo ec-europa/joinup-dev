@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -59,8 +60,12 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
   // @todo: This will be generic when the event calendar will be implemented for
   // the rdf_entity.field_is_content and the node.field_cp_content_listing
   // instances of the search api field listing.
-  if (_joinup_search_search_api_has_event_bundle($query->getConditionGroup())) {
-    $query->sort('field_event_date', QueryInterface::SORT_DESC);
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    // If the upcoming events are selected, set the order to 'ASC'.
+    // @see \Drupal\joinup\Plugin\ArbitraryFacet\EventsArbitraryFacet::getFacetDefinition
+    $value = \Drupal::service('facets.utility.date_handler')->isoDate((new DrupalDateTime('today'))->getTimestamp());
+    $order = _joinup_search_search_api_has_condition($query->getConditionGroup(), 'field_event_date', $value, '>=') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
+    $query->sort('field_event_date', $order);
   }
 
   $search_ids = [
@@ -80,18 +85,24 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
  *
  * @param \Drupal\search_api\Query\ConditionGroupInterface|\Drupal\search_api\Query\ConditionInterface $conditions
  *   A condition group or a condition interface.
+ * @param string $field
+ *   The field name.
+ * @param mixed $value
+ *   The requested value. Can be an array but will has to be passed identically.
+ * @param string $operator
+ *   The requested operator. Defaults to '='.
  *
  * @return bool
  *   True if the condition group has the required condition or false otherwise.
  */
-function _joinup_search_search_api_has_event_bundle($conditions) {
+function _joinup_search_search_api_has_condition($conditions, $field, $value, $operator = '=') {
   foreach ($conditions->getConditions() as $c) {
     if ($c instanceof ConditionGroupInterface) {
-      if (_joinup_search_search_api_has_event_bundle($c)) {
+      if (_joinup_search_search_api_has_condition($c, $field, $value, $operator)) {
         return TRUE;
       }
     }
-    elseif ($c->getField() === 'entity_bundle' && $c->getOperator() === '=' && $c->getValue() === 'event') {
+    elseif ($c->getField() === $field && $c->getValue() === $value && $c->getOperator() === $operator) {
       return TRUE;
     }
   }
