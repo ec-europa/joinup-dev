@@ -159,6 +159,10 @@
                 "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
             },
+            "drupal/email_registration": {
+                "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
+                "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2214225": "https://www.drupal.org/files/issues/allow_username_on_the-2214225-17.patch"
+            },
             "drupal/facets": {
                 "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
                 "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch"
