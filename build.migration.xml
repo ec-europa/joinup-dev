@@ -23,7 +23,7 @@
         </drush>
     </target>
 
-    <!-- Run the migration IDs specified in the configuration. -->
+    <!-- Run all the migrations. -->
     <target name="run-migrations"
             description="Run the migrations."
             depends="enable-migration-modules, disable-solr-index">
@@ -39,35 +39,68 @@
         </drush>
 
         <drush
-            command="migrate-import"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <option name="${migration.ids}" />
+                command="migrate-import"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="all" />
             <option name="feedback" value="1000" />
             <option name="force" />
             <option name="timestamp" />
         </drush>
+        <phingcall target="migration-cleanup"/>
+    </target>
 
+    <!-- Run the migration ids specified in the configuration. -->
+    <target name="run-migration-ids"
+            description="Run the migration ids."
+            depends="enable-migration-modules, disable-solr-index">
+        <echo message="Running migration IDs" />
+        <drush
+                command="sql-query"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <option name="database" value="migrate" />
+            <param>"UPDATE users SET status = 1 WHERE uid = 6364"</param>
+        </drush>
+
+        <drush
+                command="migrate-import"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>${migration.ids}</param>
+            <option name="feedback" value="1000" />
+            <option name="force" />
+            <option name="timestamp" />
+        </drush>
+        <phingcall target="migration-cleanup"/>
+    </target>
+
+    <target name="migration-cleanup"
+        description="Should be run after a migration.">
         <!-- If a migration crashes, it's possible that the system mailer is not
             restored. Thus we are forcing the restore of system mailer. -->
         <drush
-            command="cset"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
             <param>system.mail</param>
             <param>interface.default</param>
             <param>php_mail</param>
         </drush>
         <drush
-            command="cset"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="cset"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
             <param>mailsystem.settings</param>
             <param>defaults.sender</param>
             <param>swiftmailer</param>
