@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion\EventSubscriber;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
@@ -13,6 +14,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Event subscriber handling invitations to discussions.
  */
 class InvitationSubscriber implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The subscription service.
@@ -59,10 +62,10 @@ class InvitationSubscriber implements EventSubscriberInterface {
     // should subscribe the user and show them a success message.
     $result = $this->joinupSubscription->subscribe($invitation->getOwner(), $invitation->getEntity(), 'subscribe_discussions');
     if ($result) {
-      drupal_set_message(t('You have been subscribed to this discussion.'));
+      drupal_set_message($this->t('You have been subscribed to this discussion.'));
     }
     else {
-      drupal_set_message(t('Your subscription request could not be processed. Please try again later.'));
+      drupal_set_message($this->t('Your subscription request could not be processed. Please try again later.'));
     }
   }
 
@@ -83,7 +86,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     // After an invitation to participate in a discussion has been rejected we
     // should unsubscribe the user and show them a success message.
     $this->joinupSubscription->unsubscribe($invitation->getOwner(), $invitation->getEntity(), 'subscribe_discussions');
-    drupal_set_message(t('You have rejected the invitation to this discussion.'));
+    drupal_set_message($this->t('You have rejected the invitation to this discussion.'));
   }
 
 }
