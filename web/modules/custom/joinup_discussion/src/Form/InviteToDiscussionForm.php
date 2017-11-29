@@ -73,7 +73,7 @@ class InviteToDiscussionForm extends InviteFormBase {
    * @var string[]
    */
   const INVITATION_MESSAGE_TYPES = [
-    self::RESULT_SUCCESS => 'message',
+    self::RESULT_SUCCESS => 'status',
     self::RESULT_FAILED => 'error',
     self::RESULT_RESENT => 'status',
     self::RESULT_ACCEPTED => 'status',
