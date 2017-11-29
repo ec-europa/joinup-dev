@@ -13,7 +13,6 @@ use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Event\InvitationEvent;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
-use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -49,13 +48,6 @@ class InvitationController extends ControllerBase {
   const ACTION_REJECT = 'reject';
 
   /**
-   * The helper service for creating and retrieving messages for invitations.
-   *
-   * @var \Drupal\joinup_invite\InvitationMessageHelperInterface
-   */
-  protected $invitationMessageHelper;
-
-  /**
    * The event dispatcher.
    *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
@@ -65,13 +57,10 @@ class InvitationController extends ControllerBase {
   /**
    * Constructs an InvitationController object.
    *
-   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
-   *   The helper service for creating and retrieving messages for invitations.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
    */
-  public function __construct(InvitationMessageHelperInterface $invitationMessageHelper, EventDispatcherInterface $eventDispatcher) {
-    $this->invitationMessageHelper = $invitationMessageHelper;
+  public function __construct(EventDispatcherInterface $eventDispatcher) {
     $this->eventDispatcher = $eventDispatcher;
   }
 
@@ -79,10 +68,7 @@ class InvitationController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('joinup_invite.invitation_message_helper'),
-      $container->get('event_dispatcher')
-    );
+    return new static($container->get('event_dispatcher'));
   }
 
   /**
