@@ -140,10 +140,12 @@ function joinup_migrate_post_update_more_redirects() {
       $redirects[$alias] = $redirect;
     }
   }
-  if ($rids = $redirect_storage->getQuery()
-    ->condition('redirect_source.path', $deleted_redirects, 'IN')
-    ->execute()) {
-    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  if ($deleted_redirects) {
+    if ($rids = $redirect_storage->getQuery()
+      ->condition('redirect_source.path', $deleted_redirects, 'IN')
+      ->execute()) {
+      $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+    }
   }
 
   // Create the redirects.
