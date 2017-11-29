@@ -10,6 +10,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
+use Drupal\joinup_invite\Controller\InvitationController;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
@@ -302,11 +304,12 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   Whether or not the message was successfully delivered.
    */
   protected function sendMessage(InvitationInterface $invitation) : bool {
+    $arguments = $this->generateArguments($invitation->getEntity()) + $this->getDefaultArguments($invitation);
     return $this->messageDelivery
       ->createMessage(self::TEMPLATE_DISCUSSION_INVITE, [
         'field_invitation' => $invitation->id(),
       ])
-      ->setArguments($this->generateArguments($invitation->getEntity()))
+      ->setArguments($arguments)
       ->setRecipients([$invitation->getOwner()])
       ->sendMail();
   }
@@ -348,6 +351,31 @@ class InviteToDiscussionForm extends InviteFormBase {
       $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
         $actor_first_name . ' ' . $actor_family_name :
         $actor->get('full_name')->value;
+    }
+
+    return $arguments;
+  }
+
+  /**
+   * Returns default arguments for invitation messages.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation for which to create the default arguments.
+   *
+   * @return array
+   *   An associative array of default arguments, keyed by argument ID.
+   */
+  protected function getDefaultArguments(InvitationInterface $invitation) : array {
+    $arguments = [];
+
+    foreach (['accept', 'reject'] as $action) {
+      $url_arguments = [
+        'invitation' => $invitation->id(),
+        'action' => $action,
+        'hash' => InvitationController::generateHash($invitation, $action),
+      ];
+      $url_options = ['absolute' => TRUE];
+      $arguments["@invitation:${action}_url"] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
     }
 
     return $arguments;
