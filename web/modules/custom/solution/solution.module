@@ -768,3 +768,22 @@ function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_co
 
   return empty($result);
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function solution_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!$solution = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+    throw new \RuntimeException('Called from a wrong page.');
+  }
+
+  /** @var \Drupal\Core\Action\ActionManager $action_manager */
+  $action_manager = \Drupal::service('plugin.manager.action');
+  /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $plugin */
+  $plugin = $action_manager->createInstance('joinup_transfer_solution_ownership');
+  // Allow the ownership to be transferred only for solutions and only by users
+  // with proper permissions.
+  if (!$plugin->canTransferOwnership($solution, \Drupal::currentUser())) {
+    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_solution_ownership']);
+  }
+}

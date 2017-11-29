@@ -34,6 +34,7 @@ Feature: Featuring content site-wide
     When I am an anonymous user
     And I go to the homepage of the "Tidy Neutron" collection
     Then I should see the following tiles in the correct order:
+      | Opensource neutron generators       |
       | Ionizing radiation types            |
       | Elementary particles standard model |
     And I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
