@@ -23,12 +23,6 @@ use Drupal\user\UserInterface;
  * The Invitation entity requires to have a User and an Entity associated with
  * it, and these cannot be changed after the Invitation is saved.
  *
- * If you want to send a Message along with the invitation, see the
- * InvitationMessageHelperInterface for instructions on how to create the
- * message template.
- *
- * @see \Drupal\joinup_invite\InvitationMessageHelperInterface
- *
  * An example implementation of using Invitations to invite users to participate
  * in a discussion can be found in the InviteToDiscussionForm.
  *

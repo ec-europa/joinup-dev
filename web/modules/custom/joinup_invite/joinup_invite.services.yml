@@ -1,4 +1,0 @@
-services:
-  joinup_invite.invitation_message_helper:
-    class: Drupal\joinup_invite\InvitationMessageHelper
-    arguments: ['@entity_type.manager', '@joinup.message_delivery']

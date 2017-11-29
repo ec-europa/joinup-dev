@@ -13,7 +13,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
-use Drupal\joinup_invite\InvitationMessageHelperInterface;
+use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
@@ -88,11 +88,11 @@ class InviteToDiscussionForm extends InviteFormBase {
   protected $eventDispatcher;
 
   /**
-   * The helper service for creating and retrieving messages for invitations.
+   * The message delivery service.
    *
-   * @var \Drupal\joinup_invite\InvitationMessageHelperInterface
+   * @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface
    */
-  protected $invitationMessageHelper;
+  protected $messageDelivery;
 
   /**
    * The subscription service.
@@ -115,18 +115,18 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The entity type manager service.
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
-   * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
-   *   The helper service for creating messages for invitations.
+   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $messageDelivery
+   *   The message delivery service.
    * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription
    *   The subscription service.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, JoinupMessageDeliveryInterface $messageDelivery, JoinupSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
     parent::__construct($entityTypeManager);
 
     $this->eventDispatcher = $eventDispatcher;
-    $this->invitationMessageHelper = $invitationMessageHelper;
+    $this->messageDelivery = $messageDelivery;
     $this->subscription = $subscription;
     $this->ogAccess = $ogAccess;
   }
@@ -138,7 +138,7 @@ class InviteToDiscussionForm extends InviteFormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('event_dispatcher'),
-      $container->get('joinup_invite.invitation_message_helper'),
+      $container->get('joinup.message_delivery'),
       $container->get('joinup_subscription.subscription'),
       $container->get('og.access')
     );
@@ -201,7 +201,7 @@ class InviteToDiscussionForm extends InviteFormBase {
 
           // If the invitation is still pending, resend the invitation.
           case InvitationInterface::STATUS_PENDING:
-            $success = $this->invitationMessageHelper->sendMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE);
+            $success = $this->sendMessage($invitation);
             $status = $success ? self::RESULT_RESENT : self::RESULT_FAILED;
             $results[$status]++;
             break;
@@ -302,11 +302,13 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   Whether or not the message was successfully delivered.
    */
   protected function sendMessage(InvitationInterface $invitation) : bool {
-    $arguments = $this->generateArguments($invitation->getEntity());
-    $message = $this->invitationMessageHelper->createMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE, $arguments);
-    $message->save();
-
-    return $this->invitationMessageHelper->sendMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE);
+    return $this->messageDelivery
+      ->createMessage(self::TEMPLATE_DISCUSSION_INVITE, [
+        'field_invitation' => $invitation->id(),
+      ])
+      ->setArguments($this->generateArguments($invitation->getEntity()))
+      ->setRecipients([$invitation->getOwner()])
+      ->sendMail();
   }
 
   /**
