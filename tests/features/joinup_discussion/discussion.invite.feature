@@ -12,6 +12,14 @@ Feature: Invite members to subscribe to discussions
       | Vikentiy Rozovsky   | v.rozovsky@example.com   | Vikentiy   | Rozovsky     |
       | Roxanne Stavros     | whackyroxy@example.com   | Roxanne    | Stavros      |
       | Rodrigo Villanueva  | r.villanueva@example.com | Rodrigo    | Villanueva   |
+    And the following solution:
+      | title       | Stainless Steel Siphons |
+      | description | Will last forever       |
+      | state       | validated               |
+    And the following solution user membership:
+      | solution                | user               | roles       |
+      | Stainless Steel Siphons | Rodrigo Villanueva | member      |
+      | Stainless Steel Siphons | Vikentiy Rozovsky  | facilitator |
     And the following collection:
       | title             | The Siphon Community |
       | description       | We just love siphons |
@@ -22,37 +30,50 @@ Feature: Invite members to subscribe to discussions
       | The Siphon Community | Rodrigo Villanueva  | member      |
       | The Siphon Community | Vikentiy Rozovsky   | facilitator |
     And discussion content:
-      | title                            | content                            | author              | state     | collection           |
-      | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Viktor Bhattacharya | validated | The Siphon Community |
+      | title                            | content                            | author              | state     | collection           | solution                |
+      | For your lifetime                | Are you kidding?                   | Viktor Bhattacharya | validated |                      | Stainless Steel Siphons |
+      | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Viktor Bhattacharya | validated | The Siphon Community |                         |
 
     # Check that only moderators and the discussion owner can invite members.
     # Anonymous users cannot invite users.
     Given I am not logged in
+    And I go to the "For your lifetime" discussion
+    Then I should not see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should not see the link "Invite"
 
-    # Users that are not a member of the collection cannot invite users.
+    # Users not a members of the collection/solution cannot invite other users.
     Given I am logged in as "Roxanne Stavros"
+    And I go to the "For your lifetime" discussion
+    Then I should not see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should not see the link "Invite"
 
-    # Users that are a regular member of the collection cannot invite users.
+    # Regular members of the collection/solution cannot invite other users.
     Given I am logged in as "Rodrigo Villanueva"
+    And I go to the "For your lifetime" discussion
+    Then I should not see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should not see the link "Invite"
 
     # Facilitators can invite users.
     Given I am logged in as "Vikentiy Rozovsky"
+    And I go to the "For your lifetime" discussion
+    Then I should see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
 
     # Moderators can invite users.
     Given I am logged in as a "moderator"
+    And I go to the "For your lifetime" discussion
+    Then I should see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
 
     # The discussion owner can invite users.
     Given I am logged in as "Viktor Bhattacharya"
+    And I go to the "For your lifetime" discussion
+    Then I should see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
 
