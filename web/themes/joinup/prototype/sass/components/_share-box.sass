@@ -3,9 +3,37 @@
 
 // Component
 // --------------------------------------------------
+.share-box
+  position: fixed
+  bottom: 0
+  left: 50%
+  background-color: #fff
+  padding: 20px
+  width: 100%
+  box-sizing: border-box
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.22), 0px 14px 56px rgba(0, 0, 0, 0.25)
+  transform: translate(-50%, 100%)
+  transition: all 450ms cubic-bezier(0.32,1,0.23,1) 100ms
+  +breakpoint(tablet)
+    padding: 30px 60px
+    width: auto
 
 // Elements
 // --------------------------------------------------
+.share-box__overlay
+  position: fixed
+  right: 0
+  left: 0
+  bottom: 0
+  background-color: rgba(0,0,0,0.50)
+  opacity: 0
+  transition: all 450ms cubic-bezier(0.32,1,0.23,1) 0ms
+  text-align: left
+
+.share-box__header
+  font-size: 24px
+  margin: 0 0 10px
+
 .share-box__row
   position: relative
   min-height: 50px
@@ -17,6 +45,7 @@
 
 .share-box__item
   text-decoration: none
+  text-transform: none !important
 
 .share-box__label
   margin-left: 14px
@@ -49,7 +78,7 @@
 .share-box__social
   margin-bottom: 20px
   +breakpoint(sm)
-    margin-right: 40px
+    margin-right: 60px
     margin-bottom: 0
   .share-box__item
     display: flex
@@ -79,6 +108,23 @@
 
 // Dependiencies
 // --------------------------------------------------
+.share-box__overlay
+  .btn-close
+    display: block
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    outline: 0 none
+    transform: scale(1,1)
+    text-align: right
+
+    .icon
+      color: #fff
+      font-size: 40px
+      margin: 30px 30px 0 0
+
 .share-box__container
   fieldset
     margin-bottom: 0
@@ -96,3 +142,17 @@
 .ajax-progress-throbber
   .message
     display: none
+
+// States
+// --------------------------------------------------
+.share-box__overlay
+  &:target
+    display: block
+    position: fixed
+    top: 0
+    opacity: 1
+    z-index: 20
+
+    .share-box
+      transform: translate(-50%, 0)
+      z-index: 9
