@@ -237,11 +237,14 @@ function joinup_migrate_post_update_same_name_distribution_files() {
   }
 
   // Delete existing redirects created during migration.
-  if ($rids = $redirect_storage->getQuery()
-    ->condition('redirect_source.path', array_keys($redirects), 'IN')
-    ->execute()) {
-    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  if ($redirects) {
+    if ($rids = $redirect_storage->getQuery()
+      ->condition('redirect_source.path', array_keys($redirects), 'IN')
+      ->execute()) {
+      $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+    }
   }
+
   // Create new redirects.
   foreach ($redirects as $source_path => $redirect_uri) {
     Redirect::create([
