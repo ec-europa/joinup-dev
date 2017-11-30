@@ -13,6 +13,7 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup_discussion\Form\InviteToDiscussionForm;
 use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\InvitationMessageHelperInterface;
 
 /**
  * Behat step definitions for testing invitations.
@@ -48,17 +49,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
 
     $invitation_info = $this->getInvitationInfo($type);
     $invitation = Invitation::loadByEntityAndUser($entity, $user, $invitation_info['invitation_bundle']);
-
-    $messages = \Drupal::entityTypeManager()->getStorage('message')->loadByProperties([
-      'template' => $invitation_info['message_template'],
-      'field_invitation' => $invitation->id(),
-    ]);
-    if (!$messages) {
-      throw new \InvalidArgumentException("Message '{$invitation_info['message_template']}' for invitation {$invitation->id()} doesn't exist.");
-    }
-    /** @var \Drupal\message\MessageInterface $message */
-    $message = $messages ? reset($messages) : NULL;
-    $arguments = $message->getArguments();
+    $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, $invitation_info['message_template'])->getArguments();
 
     $this->visitPath($arguments["@invitation:${action}_url"]);
   }
@@ -86,6 +77,16 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     ];
 
     return $mapping[$entity_type];
+  }
+
+  /**
+   * Returns the service that assists in working with messages for invitations.
+   *
+   * @return \Drupal\joinup_invite\InvitationMessageHelperInterface
+   *   The service.
+   */
+  protected function getInvitationMessageHelper() : InvitationMessageHelperInterface {
+    return \Drupal::service('joinup_invite.invitation_message_helper');
   }
 
 }
