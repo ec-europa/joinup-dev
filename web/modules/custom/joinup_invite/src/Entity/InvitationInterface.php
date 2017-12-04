@@ -95,7 +95,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *
    * @return $this
    */
-  public function setRecipientId(int $recipient_id) : self;
+  public function setRecipientId($recipient_id) : self;
 
   /**
    * Returns the current status of the invitation.
