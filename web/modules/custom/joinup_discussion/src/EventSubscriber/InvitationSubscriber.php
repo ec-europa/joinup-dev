@@ -60,7 +60,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
 
     // After an invitation to participate in a discussion has been accepted we
     // should subscribe the user and show them a success message.
-    $result = $this->joinupSubscription->subscribe($invitation->getOwner(), $invitation->getEntity(), 'subscribe_discussions');
+    $result = $this->joinupSubscription->subscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
     if ($result) {
       drupal_set_message($this->t('You have been subscribed to this discussion.'));
     }
@@ -85,7 +85,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
 
     // After an invitation to participate in a discussion has been rejected we
     // should unsubscribe the user and show them a success message.
-    $this->joinupSubscription->unsubscribe($invitation->getOwner(), $invitation->getEntity(), 'subscribe_discussions');
+    $this->joinupSubscription->unsubscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
     drupal_set_message($this->t('You have rejected the invitation to this discussion.'));
   }
 

@@ -171,7 +171,7 @@ class InviteToDiscussionForm extends InviteFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $user_ids = array_filter($form_state->getValue('users'));
-    /** @var \Drupal\Core\Session\AccountInterface[] $users */
+    /** @var \Drupal\user\UserInterface[] $users */
     $users = $this->entityTypeManager->getStorage('user')->loadMultiple($user_ids);
     $discussion = $form_state->get('discussion');
 
@@ -201,7 +201,7 @@ class InviteToDiscussionForm extends InviteFormBase {
 
           // If the invitation is still pending, resend the invitation.
           case InvitationInterface::STATUS_PENDING:
-            $success = $this->invitationMessageHelper->sendMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE);
+            $success = $this->sendMessage($invitation);
             $status = $success ? self::RESULT_RESENT : self::RESULT_FAILED;
             $results[$status]++;
             break;
@@ -216,7 +216,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
       $invitation = $this->entityTypeManager->getStorage('invitation')->create(['bundle' => 'discussion']);
       $invitation
-        ->setOwner($user)
+        ->setRecipient($user)
         ->setEntity($discussion)
         ->save();
 

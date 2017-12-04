@@ -90,12 +90,6 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function setOwnerId($uid) : InvitationInterface {
-    // Only allow to change the owner on new invitations. An invitation is bound
-    // to a user and an entity and these should not be changed once the
-    // invitation is saved. Instead a new invitation should be created.
-    if (!$this->isNew()) {
-      throw new \RuntimeException('The owner cannot be changed for an existing invitation.');
-    }
     $this->set('uid', $uid);
     return $this;
   }
@@ -104,14 +98,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function setOwner(UserInterface $account) : InvitationInterface {
-    // Only allow to change the owner on new invitations. An invitation is bound
-    // to a user and an entity and these should not be changed once the
-    // invitation is saved. Instead a new invitation should be created.
-    if (!$this->isNew()) {
-      throw new \RuntimeException('The owner cannot be changed for an existing invitation.');
-    }
-    $this->set('uid', $account->id());
-    return $this;
+    return $this->setOwnerId($account->id());
   }
 
   /**
@@ -141,6 +128,35 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
     $this->set('entity_type', $entity->getEntityTypeId());
     $this->set('entity_id', $entity->id());
 
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRecipient(): UserInterface {
+    return $this->get('recipient_id')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRecipientId(): int {
+    return $this->get('recipient_id')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRecipient(UserInterface $recipient): InvitationInterface {
+    return $this->setRecipientId($recipient->id());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRecipientId(int $recipient_id): InvitationInterface {
+    $this->set('recipient_id', $recipient_id);
     return $this;
   }
 
@@ -193,8 +209,8 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) : array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('User'))
+    $fields['recipient_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Recipient'))
       ->setDescription(t('The user that has been invited.'))
       ->setRevisionable(FALSE)
       ->setSetting('target_type', 'user')
@@ -217,6 +233,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
       ->setLabel(t('Status'))
       ->setSetting('allowed_values', static::getStatuses())
       ->setDefaultValue(InvitationInterface::STATUS_PENDING)
+      ->setRequired(TRUE);
+
+    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Author'))
+      ->setDescription(t('The user that made the invitation.'))
+      ->setRevisionable(FALSE)
+      ->setSetting('target_type', 'user')
+      ->setDefaultValueCallback(static::class . '::getCurrentUserId')
       ->setRequired(TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
@@ -252,10 +276,10 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    * {@inheritdoc}
    */
   public function set($name, $value, $notify = TRUE) : InvitationInterface {
-    // Only allow to change the user or entity on new invitations. An invitation
-    // is bound to these parameters and they should not be changed once the
-    // invitation is saved. Instead a new invitation should be created.
-    if (in_array($name, ['uid', 'entity_type', 'entity_id']) && !$this->isNew()) {
+    // Only allow to change the recipient or the entity on new invitations. An
+    // invitation is bound to these parameters and they should not be changed
+    // once the invitation is saved. Instead a new invitation should be created.
+    if (in_array($name, ['recipient_id', 'entity_type', 'entity_id']) && !$this->isNew()) {
       throw new \RuntimeException("The '$name' cannot be changed for an existing invitation.");
     }
     return parent::set($name, $value, $notify);
@@ -266,8 +290,9 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
    */
   public function preSave(EntityStorageInterface $storage) : void {
     // Do not allow to store an invitation if the user or entity is missing.
-    if (!$user = $this->getOwner()) {
-      throw new \LogicException('An invitation can not be created for an anonymous user.');
+    $recipient = $this->getRecipient();
+    if ($recipient->isAnonymous()) {
+      throw new \LogicException('Only registered user can receive invitations.');
     }
 
     if (!$entity = $this->getEntity()) {
@@ -276,9 +301,9 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
 
     // Do not allow multiple invitations to be saved for a particular user and
     // entity.
-    $existing_invitation = static::loadByEntityAndUser($entity, $user);
+    $existing_invitation = static::loadByEntityAndUser($entity, $recipient);
     if (!empty($existing_invitation) && ($entity->isNew() || $existing_invitation->id() !== $entity->id())) {
-      throw new \Exception('An invitation already exists for entity "' . $entity->label() . '" and user "' . $user->getAccountName() . '".');
+      throw new \Exception("An invitation already exists for {$entity->getEntityType()->getLabel()} '{$entity->label()}' and user '{$recipient->getAccountName()}'.");
     }
 
     parent::preSave($storage);
@@ -287,15 +312,27 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $user, string $bundle = '') : ?InvitationInterface {
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle = '') : ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $invitations = $storage->loadByProperties([
       'entity_type' => $entity->getEntityTypeId(),
       'entity_id' => $entity->id(),
-      'uid' => $user->id(),
+      'recipient_id' => $recipient->id(),
       'bundle' => $bundle,
     ]);
     return !empty($invitations) ? reset($invitations) : NULL;
+  }
+
+  /**
+   * Default value callback for 'uid' base field definition.
+   *
+   * @see ::baseFieldDefinitions()
+   *
+   * @return array
+   *   An array of default values.
+   */
+  public static function getCurrentUserId() {
+    return [\Drupal::currentUser()->id()];
   }
 
 }

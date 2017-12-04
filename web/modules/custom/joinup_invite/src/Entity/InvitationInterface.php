@@ -6,8 +6,8 @@ namespace Drupal\joinup_invite\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Provides an interface for defining Invitation entities.
@@ -59,7 +59,43 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   Thrown when attempting to change the entity of an Invitation that has
    *   already been saved.
    */
-  public function setEntity(ContentEntityInterface $entity) : InvitationInterface;
+  public function setEntity(ContentEntityInterface $entity) : self;
+
+  /**
+   * Returns the invitation recipient user account.
+   *
+   * @return \Drupal\user\UserInterface
+   *   The invitation recipient user account.
+   */
+  public function getRecipient() : UserInterface;
+
+  /**
+   * Returns the invitation recipient user account ID.
+   *
+   * @return int
+   *   The invitation recipient user account ID.
+   */
+  public function getRecipientId() : int;
+
+  /**
+   * Sets the invitation recipient's user account entity.
+   *
+   * @param \Drupal\user\UserInterface $recipient
+   *   The invitation recipient's user account entity.
+   *
+   * @return $this
+   */
+  public function setRecipient(UserInterface $recipient) : self;
+
+  /**
+   * Sets the invitation recipient's user account ID.
+   *
+   * @param int $recipient_id
+   *   The invitation recipient's user account ID.
+   *
+   * @return $this
+   */
+  public function setRecipientId(int $recipient_id) : self;
 
   /**
    * Returns the current status of the invitation.
@@ -81,7 +117,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @throws \InvalidArgumentException
    *   Thrown when an invalid status is passed.
    */
-  public function setStatus(string $status) : InvitationInterface;
+  public function setStatus(string $status) : self;
 
   /**
    * Gets the Invitation creation timestamp.
@@ -100,7 +136,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The updated Invitation.
    */
-  public function setCreatedTime(int $timestamp) : InvitationInterface;
+  public function setCreatedTime(int $timestamp) : self;
 
   /**
    * Accepts an invitation.
@@ -108,7 +144,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The accepted invitation.
    */
-  public function accept() : InvitationInterface;
+  public function accept() : self;
 
   /**
    * Rejects an invitation.
@@ -116,7 +152,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The rejected invitation.
    */
-  public function reject() : InvitationInterface;
+  public function reject() : self;
 
   /**
    * Returns the available statuses for the invitation.
@@ -127,18 +163,18 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   public static function getStatuses() : array;
 
   /**
-   * Returns the invitation that matches the given entity and user.
+   * Returns the invitation that matches the given entity and recipient.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user.
+   * @param \Drupal\user\UserInterface $recipient
+   *   The invitation recipient user account.
    * @param string $bundle
    *   The invitation type.
    *
-   * @return \Drupal\joinup_invite\Entity\InvitationInterface|null
+   * @return self|null
    *   The invitation, or NULL if the requested invitation doesn't exist.
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $user, string $bundle) : ?InvitationInterface;
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle) : ?self;
 
 }

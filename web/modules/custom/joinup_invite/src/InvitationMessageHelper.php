@@ -87,7 +87,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
     }
     return $this->messageDelivery
       ->setMessage($message)
-      ->setRecipients([$invitation->getOwner()])
+      ->setRecipients([$invitation->getRecipient()])
       ->sendMail();
   }
 

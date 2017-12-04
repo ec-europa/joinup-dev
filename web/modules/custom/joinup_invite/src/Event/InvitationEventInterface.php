@@ -26,9 +26,8 @@ interface InvitationEventInterface {
    *   The invitation.
    *
    * @return $this
-   *   The current event.
    */
-  public function setInvitation(InvitationInterface $invitation) : InvitationEventInterface;
+  public function setInvitation(InvitationInterface $invitation) : self;
 
   /**
    * Returns the action taken on the invitation for which the event takes place.
@@ -45,8 +44,7 @@ interface InvitationEventInterface {
    *   The action.
    *
    * @return $this
-   *   The current event.
    */
-  public function setAction(string $action) : InvitationEventInterface;
+  public function setAction(string $action) : self;
 
 }

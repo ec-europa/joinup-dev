@@ -6,11 +6,11 @@ namespace Drupal\joinup_subscription;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\flag\Entity\Flag;
 use Drupal\flag\Entity\Flagging;
 use Drupal\flag\FlagServiceInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * Provides a service class to handle subscriptions to content.
@@ -77,7 +77,7 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
   /**
    * {@inheritdoc}
    */
-  public function subscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id): bool {
+  public function subscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id): bool {
     $flag = $this->flagService->getFlagById($flag_id);
     $flagging = $this->flagService->flag($flag, $entity, $account);
 
@@ -87,7 +87,7 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
   /**
    * {@inheritdoc}
    */
-  public function unsubscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : void {
+  public function unsubscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id) : void {
     $flag = $this->flagService->getFlagById($flag_id);
     $this->flagService->unflag($flag, $entity, $account);
   }
@@ -95,7 +95,7 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
   /**
    * {@inheritdoc}
    */
-  public function isSubscribed(AccountInterface $account, ContentEntityInterface $entity, string $flag_id) : bool {
+  public function isSubscribed(UserInterface $account, ContentEntityInterface $entity, string $flag_id) : bool {
     $flag = $this->flagService->getFlagById($flag_id);
     return (bool) $this->flagService->getFlagging($flag, $entity, $account);
   }
