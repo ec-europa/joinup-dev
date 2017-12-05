@@ -5,7 +5,7 @@ services:
       - { name: event_subscriber }
   joinup_discussion.subscribed_discussion_comment:
     class: Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionCommentSubscriber
-    arguments: ['@joinup_subscription.subscription', '@joinup.message_delivery']
+    arguments: ['@joinup_subscription.subscription', '@joinup_notification.message_delivery']
     tags:
       - { name: event_subscriber }
   joinup_invite.invitation_subscriber:
