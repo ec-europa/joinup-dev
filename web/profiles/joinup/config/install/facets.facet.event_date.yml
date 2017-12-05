@@ -46,12 +46,12 @@ processor_configs:
         enable: true
         condition: values
         values: event
-        negate: 0
+        negate: false
       content_my_content:
         enable: 0
         condition: null
         values: ''
-        negate: 0
+        negate: false
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
