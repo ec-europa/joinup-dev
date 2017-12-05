@@ -11,6 +11,7 @@ dependencies:
   - asset_distribution
   - asset_release
   - block
+  - changed_fields
   - ckeditor
   - collection
   - config_readonly

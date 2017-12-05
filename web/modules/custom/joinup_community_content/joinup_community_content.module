@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the community content module.
  */
 
+use Drupal\changed_fields\NodeSubject;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -13,6 +14,8 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_community_content\CommunityContentObserver;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -272,4 +275,21 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   }
 
   return $arguments;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * We use an observer to detect changes to the relevant fields of the community
+ * content nodes. Then we call the observer update method to take action.
+ */
+function joinup_community_content_node_presave(NodeInterface $node) {
+  if (!in_array($node->bundle(), CommunityContentHelper::getBundles())) {
+    return;
+  }
+
+  // Create a node subject object, add the observer and notify about changes.
+  $node_subject = new NodeSubject($node, 'default_field_comparator');
+  $node_subject->attach(new CommunityContentObserver(\Drupal::service('event_dispatcher')));
+  $node_subject->notify();
 }
