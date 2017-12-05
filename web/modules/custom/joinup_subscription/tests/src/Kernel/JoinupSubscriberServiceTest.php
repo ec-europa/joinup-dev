@@ -93,7 +93,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     }
 
     /** @var \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription_service */
-    $subscription_service = $this->container->get('joinup_subscription');
+    $subscription_service = $this->container->get('joinup_subscription.subscription');
     // Get the subscribers.
     $subscribers = $subscription_service->getSubscribers($entity, 'follow');
 
