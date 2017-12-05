@@ -22,7 +22,7 @@
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
-        "drupal/facets": "^1.0-alpha11",
+        "drupal/facets": "1.0-alpha11",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/honeypot": "^1.27",
@@ -156,7 +156,8 @@
                 "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
                 "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch",
-                "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
+                "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                "PHP 7.2 incompatible method declarations @see https://www.drupal.org/project/drupal/issues/2923015": "https://www.drupal.org/files/issues/2923015-42-8.4.x.patch"
             },
             "drupal/facets": {
                 "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
