@@ -223,3 +223,12 @@ function search_api_arbitrary_facet_config_schema_info_alter(array &$definitions
     'type' => 'string',
   ];
 }
+
+/**
+ * Implements hook_facets_search_api_query_type_mapping_alter().
+ */
+function search_api_arbitrary_facet_facets_search_api_query_type_mapping_alter($backend_plugin_id, array &$query_types) {
+  if ($backend_plugin_id === 'search_api_solr') {
+    $query_types['facet_query'] = 'facet_query';
+  }
+}
