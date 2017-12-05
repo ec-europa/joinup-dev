@@ -13,3 +13,8 @@ services:
     arguments: ['@joinup_subscription.subscription']
     tags:
       - { name: event_subscriber }
+  cache_context.can_invite_to_discussion:
+    class: Drupal\joinup_discussion\Cache\CanInviteToDiscussionCacheContext
+    arguments: ['@current_user', '@current_route_match']
+    tags:
+      - { name: cache.context }

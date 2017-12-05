@@ -45,14 +45,11 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
       'class' => ['action-link'],
     ],
     '#access' => $url->access(),
-  ];
-
-  // The invite link varies by user role (since it is shown to moderators) and
-  // per discussion authorship, but this is very quick to render so we opt to
-  // vary per user rather than making a custom cache context for this.
-  $build['#cache'] = [
-    'contexts' => [
-      'user',
+    '#cache' => [
+      'contexts' => [
+        // Using our custom context.
+        'can_invite_to_discussion',
+      ],
     ],
   ];
 }
