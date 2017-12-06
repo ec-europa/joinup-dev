@@ -26,7 +26,7 @@ interface JoinupSubscriptionInterface {
    * @return \Drupal\user\UserInterface[]
    *   An associative array of subscriber user accounts, keyed by user ID.
    */
-  public function getSubscribers(ContentEntityInterface $entity, string $flag_id) : array;
+  public function getSubscribers(ContentEntityInterface $entity, string $flag_id): array;
 
   /**
    * Subscribes a user to a given content entity through a given flag.
@@ -42,7 +42,7 @@ interface JoinupSubscriptionInterface {
    * @return bool
    *   TRUE if the subscription was successful, FALSE otherwise.
    */
-  public function subscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id) : bool;
+  public function subscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id): bool;
 
   /**
    * Unsubscribes a user from a given content entity through a given flag.
@@ -55,7 +55,7 @@ interface JoinupSubscriptionInterface {
    *   The ID of the subscription flag entity that keeps track of the
    *   subscription.
    */
-  public function unsubscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id) : void;
+  public function unsubscribe(UserInterface $account, ContentEntityInterface $entity, string $flag_id): void;
 
   /**
    * Checks whether a user is subscribed to a given entity through a given flag.
@@ -71,6 +71,6 @@ interface JoinupSubscriptionInterface {
    * @return bool
    *   TRUE if the user is subscribed, FALSE otherwise.
    */
-  public function isSubscribed(UserInterface $account, ContentEntityInterface $entity, string $flag_id) : bool;
+  public function isSubscribed(UserInterface $account, ContentEntityInterface $entity, string $flag_id): bool;
 
 }

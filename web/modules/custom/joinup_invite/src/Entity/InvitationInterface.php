@@ -41,7 +41,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The entity.
    */
-  public function getEntity() : ContentEntityInterface;
+  public function getEntity(): ContentEntityInterface;
 
   /**
    * Sets the entity the user will be invited to.
@@ -59,7 +59,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   Thrown when attempting to change the entity of an Invitation that has
    *   already been saved.
    */
-  public function setEntity(ContentEntityInterface $entity) : self;
+  public function setEntity(ContentEntityInterface $entity): self;
 
   /**
    * Returns the invitation recipient user account.
@@ -67,7 +67,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\user\UserInterface
    *   The invitation recipient user account.
    */
-  public function getRecipient() : UserInterface;
+  public function getRecipient(): UserInterface;
 
   /**
    * Returns the invitation recipient user account ID.
@@ -75,7 +75,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return int
    *   The invitation recipient user account ID.
    */
-  public function getRecipientId() : int;
+  public function getRecipientId(): int;
 
   /**
    * Sets the invitation recipient's user account entity.
@@ -85,7 +85,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *
    * @return $this
    */
-  public function setRecipient(UserInterface $recipient) : self;
+  public function setRecipient(UserInterface $recipient): self;
 
   /**
    * Sets the invitation recipient's user account ID.
@@ -103,7 +103,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return string
    *   The invitation status. Can be one of 'pending', 'accepted' or 'rejected'.
    */
-  public function getStatus() : string;
+  public function getStatus(): string;
 
   /**
    * Sets the invitation status.
@@ -117,7 +117,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @throws \InvalidArgumentException
    *   Thrown when an invalid status is passed.
    */
-  public function setStatus(string $status) : self;
+  public function setStatus(string $status): self;
 
   /**
    * Gets the Invitation creation timestamp.
@@ -125,7 +125,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return int
    *   Creation timestamp of the Invitation.
    */
-  public function getCreatedTime() : int;
+  public function getCreatedTime(): int;
 
   /**
    * Sets the Invitation creation timestamp.
@@ -136,7 +136,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The updated Invitation.
    */
-  public function setCreatedTime(int $timestamp) : self;
+  public function setCreatedTime(int $timestamp): self;
 
   /**
    * Accepts an invitation.
@@ -144,7 +144,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The accepted invitation.
    */
-  public function accept() : self;
+  public function accept(): self;
 
   /**
    * Rejects an invitation.
@@ -152,7 +152,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The rejected invitation.
    */
-  public function reject() : self;
+  public function reject(): self;
 
   /**
    * Returns the available statuses for the invitation.
@@ -160,7 +160,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return array
    *   An array of status labels, keyed by status ID.
    */
-  public static function getStatuses() : array;
+  public static function getStatuses(): array;
 
   /**
    * Returns the invitation that matches the given entity and recipient.
@@ -175,6 +175,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return self|null
    *   The invitation, or NULL if the requested invitation doesn't exist.
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle) : ?self;
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle): ?self;
 
 }

@@ -60,14 +60,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCreatedTime() : int {
+  public function getCreatedTime(): int {
     return $this->get('created')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setCreatedTime(int $timestamp) : InvitationInterface {
+  public function setCreatedTime(int $timestamp): InvitationInterface {
     $this->set('created', $timestamp);
     return $this;
   }
@@ -75,21 +75,21 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getOwner() : AccountInterface {
+  public function getOwner(): AccountInterface {
     return $this->get('uid')->entity;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getOwnerId() : int {
+  public function getOwnerId(): int {
     return $this->get('uid')->target_id;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setOwnerId($uid) : InvitationInterface {
+  public function setOwnerId($uid): InvitationInterface {
     $this->set('uid', $uid);
     return $this;
   }
@@ -97,14 +97,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setOwner(UserInterface $account) : InvitationInterface {
+  public function setOwner(UserInterface $account): InvitationInterface {
     return $this->setOwnerId($account->id());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEntity() : ContentEntityInterface {
+  public function getEntity(): ContentEntityInterface {
     $entity_type = $this->get('entity_type')->value;
     $entity_id = $this->get('entity_id')->value;
 
@@ -118,7 +118,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setEntity(ContentEntityInterface $entity) : InvitationInterface {
+  public function setEntity(ContentEntityInterface $entity): InvitationInterface {
     // Only allow to change the entity on new invitations. An invitation is
     // bound to a user and an entity and these should not be changed once the
     // invitation is saved. Instead a new invitation should be created.
@@ -163,14 +163,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStatus() : string {
+  public function getStatus(): string {
     return $this->get('status')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setStatus(string $status) : InvitationInterface {
+  public function setStatus(string $status): InvitationInterface {
     $acceptable_statuses = [
       InvitationInterface::STATUS_PENDING,
       InvitationInterface::STATUS_ACCEPTED,
@@ -188,7 +188,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function accept() : InvitationInterface {
+  public function accept(): InvitationInterface {
     $this->setStatus(InvitationInterface::STATUS_ACCEPTED);
 
     return $this;
@@ -197,7 +197,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function reject() : InvitationInterface {
+  public function reject(): InvitationInterface {
     $this->setStatus(InvitationInterface::STATUS_REJECTED);
 
     return $this;
@@ -206,7 +206,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) : array {
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['recipient_id'] = BaseFieldDefinition::create('entity_reference')
@@ -257,7 +257,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getStatuses() : array {
+  public static function getStatuses(): array {
     return [
       InvitationInterface::STATUS_PENDING => t('Pending'),
       InvitationInterface::STATUS_ACCEPTED => t('Accepted'),
@@ -268,14 +268,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function label() : string {
+  public function label(): string {
     throw new \Exception(__METHOD__ . ' is not yet implemented');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function set($name, $value, $notify = TRUE) : InvitationInterface {
+  public function set($name, $value, $notify = TRUE): InvitationInterface {
     // Only allow to change the recipient or the entity on new invitations. An
     // invitation is bound to these parameters and they should not be changed
     // once the invitation is saved. Instead a new invitation should be created.
@@ -288,7 +288,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function preSave(EntityStorageInterface $storage) : void {
+  public function preSave(EntityStorageInterface $storage): void {
     // Do not allow to store an invitation if the user or entity is missing.
     $recipient = $this->getRecipient();
     if ($recipient->isAnonymous()) {
@@ -312,7 +312,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle = '') : ?InvitationInterface {
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle = ''): ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $invitations = $storage->loadByProperties([
       'entity_type' => $entity->getEntityTypeId(),
