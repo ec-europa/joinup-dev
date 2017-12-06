@@ -4,3 +4,22 @@
  * @file
  * Contains functions relative to the discussion entity.
  */
+
+use Drupal\changed_fields\NodeSubject;
+use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * We use an observer to detect changes to the relevant fields of the discussion
+ * nodes. Then we call the observer update method to take action.
+ */
+function joinup_discussion_node_presave(NodeInterface $discussion) {
+  if ($discussion->bundle() === 'discussion') {
+    // Create a node subject object, add the observer and notify about changes.
+    $node_subject = new NodeSubject($discussion, 'default_field_comparator');
+    $node_subject->attach(new DiscussionObserver(\Drupal::service('event_dispatcher')));
+    $node_subject->notify();
+  }
+}

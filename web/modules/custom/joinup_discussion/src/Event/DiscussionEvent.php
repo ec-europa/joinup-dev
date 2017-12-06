@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\joinup_community_content\Event;
+namespace Drupal\joinup_discussion\Event;
 
 use Drupal\node\NodeInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Defines a community content event.
+ * Defines a discussion event.
  */
-class CommunityContentEvent extends Event {
+class DiscussionEvent extends Event {
 
   /**
-   * The community content node.
+   * The discussion node.
    *
    * @var \Drupal\node\NodeInterface
    */
@@ -25,10 +25,10 @@ class CommunityContentEvent extends Event {
   protected $changedFields;
 
   /**
-   * Creates a new community content event object.
+   * Creates a new discussion event object.
    *
    * @param \Drupal\node\NodeInterface $node
-   *   The community content node subject of event.
+   *   The discussion node subject of event.
    * @param array $changed_fields
    *   A list of changed fields, keyed by field name.
    */
@@ -38,10 +38,10 @@ class CommunityContentEvent extends Event {
   }
 
   /**
-   * Returns the community content node.
+   * Returns the discussion node.
    *
    * @return \Drupal\node\NodeInterface
-   *   The community content node.
+   *   The discussion node.
    */
   public function getNode(): NodeInterface {
     return $this->node;

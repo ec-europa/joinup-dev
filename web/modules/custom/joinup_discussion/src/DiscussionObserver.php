@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\joinup_community_content;
+namespace Drupal\joinup_discussion;
 
 use Drupal\changed_fields\ObserverInterface;
 use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
-use Drupal\joinup_community_content\Event\CommunityContentEvent;
-use Drupal\joinup_community_content\Event\CommunityContentEvents;
+use Drupal\joinup_discussion\Event\DiscussionEvent;
+use Drupal\joinup_discussion\Event\DiscussionEvents;
 
 /**
- * Defines an observer for community content node changes.
+ * Defines an observer for discussion node changes.
  */
-class CommunityContentObserver implements ObserverInterface {
+class DiscussionObserver implements ObserverInterface {
 
   /**
    * The event dispatcher service.
@@ -20,7 +20,7 @@ class CommunityContentObserver implements ObserverInterface {
   protected $eventDispatcher;
 
   /**
-   * Builds a new community content observer.
+   * Builds a new discussion observer.
    *
    * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $event_dispatcher
    *   The event dispatcher service.
@@ -52,19 +52,8 @@ class CommunityContentObserver implements ObserverInterface {
     /** @var \Drupal\changed_fields\NodeSubject $node_subject */
     if ($changed_fields = $node_subject->getChangedFields()) {
       $node = $node_subject->getNode();
-      switch ($node->bundle()) {
-        case 'discussion':
-          if (!$node->isNew()) {
-            $event_id = CommunityContentEvents::DISCUSSION_UPDATE;
-          }
-          break;
-      }
-
-      // Dispatch the event.
-      if (isset($event_id)) {
-        $event = new CommunityContentEvent($node, $changed_fields);
-        $this->eventDispatcher->dispatch($event_id, $event);
-      }
+      $event = new DiscussionEvent($node, $changed_fields);
+      $this->eventDispatcher->dispatch(DiscussionEvents::UPDATE, $event);
     }
   }
 

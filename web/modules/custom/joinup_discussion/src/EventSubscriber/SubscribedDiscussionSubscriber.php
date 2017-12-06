@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion\EventSubscriber;
 
-use Drupal\joinup_community_content\Event\CommunityContentEvent;
-use Drupal\joinup_community_content\Event\CommunityContentEvents;
+use Drupal\joinup_discussion\Event\DiscussionEvent;
+use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -67,16 +67,16 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    return [CommunityContentEvents::DISCUSSION_UPDATE => 'onDiscussionUpdate'];
+    return [DiscussionEvents::UPDATE => 'onDiscussionUpdate'];
   }
 
   /**
    * Reacts when a discussion is updated.
    *
-   * @param \Drupal\joinup_community_content\Event\CommunityContentEvent $event
-   *   The notification event object.
+   * @param \Drupal\joinup_discussion\Event\DiscussionEvent $event
+   *   The event object.
    */
-  public function onDiscussionUpdate(CommunityContentEvent $event): void {
+  public function onDiscussionUpdate(DiscussionEvent $event): void {
     $this->discussion = $event->getNode();
 
     // Don't handle inconsistent discussions, without a parent group.
@@ -103,7 +103,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The list of recipients as an array of user accounts, keyed by user ID.
    */
   protected function getRecipients(): array {
-    if (is_null($this->recipients)) {
+    if (!isset($this->recipients)) {
       $this->recipients = [
         // The discussion owner is added to the list of subscribers. We don't
         // check if the author is anonymous as this is handled by the message

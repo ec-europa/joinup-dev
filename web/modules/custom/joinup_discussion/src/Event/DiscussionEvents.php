@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\joinup_community_content\Event;
+namespace Drupal\joinup_discussion\Event;
 
 /**
  * Defines community content events.
  */
-final class CommunityContentEvents {
+final class DiscussionEvents {
 
   /**
    * The ID of the event triggered when discussion relevant fields are changed.
@@ -14,6 +14,6 @@ final class CommunityContentEvents {
    *
    * @var string
    */
-  const DISCUSSION_UPDATE = 'joinup.community_content.discussion.update';
+  const UPDATE = 'joinup_discussion.discussion.update';
 
 }

@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - cached_computed_field
+  - changed_fields
   - comment
   - joinup_community_content
   - joinup_core

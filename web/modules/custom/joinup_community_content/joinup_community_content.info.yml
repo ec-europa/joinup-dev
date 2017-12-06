@@ -5,7 +5,6 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - changed_fields
   - comment
   - diff
   - field
