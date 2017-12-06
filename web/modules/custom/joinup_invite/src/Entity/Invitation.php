@@ -148,14 +148,14 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setRecipient(UserInterface $recipient): InvitationInterface {
-    return $this->setRecipientId($recipient->id());
+  public function setRecipient(AccountInterface $recipient): InvitationInterface {
+    return $this->setRecipientId((int) $recipient->id());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setRecipientId($recipient_id): InvitationInterface {
+  public function setRecipientId(int $recipient_id): InvitationInterface {
     $this->set('recipient_id', $recipient_id);
     return $this;
   }
