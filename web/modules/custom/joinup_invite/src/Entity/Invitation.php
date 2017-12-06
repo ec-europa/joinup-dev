@@ -134,7 +134,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRecipient(): UserInterface {
+  public function getRecipient(): AccountInterface {
     return $this->get('recipient_id')->entity;
   }
 
@@ -312,7 +312,7 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle = ''): ?InvitationInterface {
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = ''): ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $invitations = $storage->loadByProperties([
       'entity_type' => $entity->getEntityTypeId(),

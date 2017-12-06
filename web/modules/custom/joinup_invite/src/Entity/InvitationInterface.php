@@ -6,8 +6,8 @@ namespace Drupal\joinup_invite\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Provides an interface for defining Invitation entities.
@@ -64,10 +64,10 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Returns the invitation recipient user account.
    *
-   * @return \Drupal\user\UserInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   The invitation recipient user account.
    */
-  public function getRecipient(): UserInterface;
+  public function getRecipient(): AccountInterface;
 
   /**
    * Returns the invitation recipient user account ID.
@@ -80,12 +80,12 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
   /**
    * Sets the invitation recipient's user account entity.
    *
-   * @param \Drupal\user\UserInterface $recipient
+   * @param \Drupal\Core\Session\AccountInterface $recipient
    *   The invitation recipient's user account entity.
    *
    * @return $this
    */
-  public function setRecipient(UserInterface $recipient): self;
+  public function setRecipient(AccountInterface $recipient): self;
 
   /**
    * Sets the invitation recipient's user account ID.
@@ -167,7 +167,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
-   * @param \Drupal\user\UserInterface $recipient
+   * @param \Drupal\Core\Session\AccountInterface $recipient
    *   The invitation recipient user account.
    * @param string $bundle
    *   The invitation type.
@@ -175,6 +175,6 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return self|null
    *   The invitation, or NULL if the requested invitation doesn't exist.
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, UserInterface $recipient, string $bundle): ?self;
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle): ?self;
 
 }
