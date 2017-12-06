@@ -48,7 +48,7 @@ processor_configs:
         values: event
         negate: false
       content_my_content:
-        enable: 0
+        enable: false
         condition: null
         values: ''
         negate: false
