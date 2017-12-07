@@ -46,9 +46,9 @@ Feature: Subscribing to discussions
       | debater  | flash@example.com | Flash      | Gordon      |
 
     # Subscribe the 'follower' user to the discussion.
-    And I am logged in as follower
+    Given I am logged in as follower
     And I go to the "Rare Butter" discussion
-    And I click "Subscribe"
+    Then I click "Subscribe"
 
     # Notifications are only sent for anonymous users when the comment is
     # approved.
@@ -105,7 +105,7 @@ Feature: Subscribing to discussions
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    Given  the mail collector cache is empty
+    Given the mail collector cache is empty
     And I am logged in as "Dr. Hans Zarkov"
     When I go to the discussion content "Rare Butter" edit screen
     And I press "Update"
@@ -125,8 +125,25 @@ Feature: Subscribing to discussions
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The author of the discussion update doesn't receive any notification.
-    But the following email should have been sent:
-      | recipient | flash@example.com                                                                  |
+    But the following email should not have been sent:
+      | recipient | hans@example.com                                                                  |
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     Then 2 e-mails should have been sent
+
+    # If the discussion is moved from 'validated' to any other state, no
+    # notification will be send, regardless if a relevant field is changed.
+    Given the mail collector cache is empty
+    And I am logged in as a moderator
+    When I go to the discussion content "Rare Butter" edit screen
+    And I fill in "Content" with "Is this change triggering notifications?"
+    And I fill in "Motivation" with "Reporting this content..."
+    And I press "Report"
+    Then the following email should not have been sent:
+      | recipient | dale@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should not have been sent:
+      | recipient | flash@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |

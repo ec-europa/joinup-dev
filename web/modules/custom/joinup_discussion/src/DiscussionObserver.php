@@ -40,7 +40,7 @@ class DiscussionObserver implements ObserverInterface {
         'field_policy_domain',
         'field_keywords',
         'field_attachment',
-        'status',
+        'field_state',
       ],
     ];
   }
@@ -50,9 +50,12 @@ class DiscussionObserver implements ObserverInterface {
    */
   public function update(\SplSubject $node_subject) {
     /** @var \Drupal\changed_fields\NodeSubject $node_subject */
-    if ($changed_fields = $node_subject->getChangedFields()) {
-      $node = $node_subject->getNode();
-      $event = new DiscussionEvent($node, $changed_fields);
+    $discussion = $node_subject->getNode();
+    $changed_fields = $node_subject->getChangedFields();
+    // Dispatch the update event only if there are changes of relevant fields
+    // and the discussion is in the 'validated' state.
+    if ($changed_fields && $discussion->get('field_state')->value === 'validated') {
+      $event = new DiscussionEvent($discussion, $changed_fields);
       $this->eventDispatcher->dispatch(DiscussionEvents::UPDATE, $event);
     }
   }

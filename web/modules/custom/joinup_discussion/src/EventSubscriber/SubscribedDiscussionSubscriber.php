@@ -104,13 +104,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   protected function getRecipients(): array {
     if (!isset($this->recipients)) {
-      $this->recipients = [
-        // The discussion owner is added to the list of subscribers. We don't
-        // check if the author is anonymous as this is handled by the message
-        // delivery service.
-        $this->discussion->getOwnerId() => $this->discussion->getOwner(),
-      ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
-
+      $this->recipients = $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
       // The author of the discussion update should not be notified, if
       // eventually he/she is in the subscribers list.
       if (!$this->discussion->getRevisionUser()->isAnonymous()) {
