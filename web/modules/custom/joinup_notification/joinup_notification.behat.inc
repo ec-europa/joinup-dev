@@ -61,6 +61,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
+    /** @var string $from */
     /** @var string $body */
     /** @var string $recipient */
     /** @var string $subject */
@@ -93,6 +94,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     $email_found = FALSE;
     foreach ($mails as $mail) {
       if ($mail['to'] !== $recipient) {
+        continue;
+      }
+
+      // Check the sender email if it is set.
+      if (!empty($from) && $mail['from'] !== $from) {
         continue;
       }
 
