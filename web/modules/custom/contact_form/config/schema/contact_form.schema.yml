@@ -5,3 +5,6 @@ contact_form.settings:
     default_recipient:
       label: 'Default recipient'
       type: string
+    contact_form_from:
+      label: 'Default sender for contact form (except from reports)'
+      type: string
