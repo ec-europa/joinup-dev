@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6037bbd11e3de97bc6da8b2204dcadbf",
+    "content-hash": "4b02ab2f49e7370602a58ad14c69f188",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2948,7 +2948,7 @@
                 },
                 "patches_applied": {
                     "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
-                    "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2214225": "https://www.drupal.org/files/issues/allow_username_on_the-2214225-17.patch"
+                    "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2927109-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
