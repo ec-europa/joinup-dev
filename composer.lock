@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c6463dc8013d8e1be2ec106baf135ef",
+    "content-hash": "6037bbd11e3de97bc6da8b2204dcadbf",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1748,7 +1748,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2721,7 +2725,7 @@
                     "homepage": "https://www.drupal.org/user/139189"
                 },
                 {
-                    "name": "r??tzi",
+                    "name": "rötzi",
                     "homepage": "https://www.drupal.org/user/73064"
                 },
                 {
@@ -3002,7 +3006,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha11",
-                    "datestamp": "1500888543",
+                    "datestamp": "1512228488",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3935,7 +3939,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684"
+                    "datestamp": "1488538684",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3954,10 +3962,6 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -5083,8 +5087,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+1-dev",
-                    "datestamp": "1510132085",
+                    "version": "8.x-1.0-beta2+0-dev",
+                    "datestamp": "1509967685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5201,7 +5205,7 @@
                     "email": "greg.1.anderson@greenknowe.org"
                 },
                 {
-                    "name": "Jonathan Ara??a Cruz",
+                    "name": "Jonathan Araña Cruz",
                     "email": "jonhattan@faita.net"
                 },
                 {
@@ -6592,6 +6596,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -6602,10 +6607,6 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
             "time": "2017-07-17T09:33:42+00:00"
         },
         {
@@ -7915,7 +7916,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-Fran??ois Simon",
+                    "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -10168,7 +10169,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1505199844"
+                    "datestamp": "1511190785",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10179,6 +10184,14 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
+                },
+                {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
@@ -10349,7 +10362,7 @@
             ],
             "authors": [
                 {
-                    "name": "G??bor Hojtsy",
+                    "name": "Gábor Hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -10438,7 +10451,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
@@ -10860,7 +10874,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -10917,7 +10931,7 @@
             ],
             "authors": [
                 {
-                    "name": "Juan Francisco Calder??n Zumba",
+                    "name": "Juan Francisco Calderón Zumba",
                     "email": "juanfcz@gmail.com",
                     "homepage": "http://github.com/jcalderonzumba"
                 }
@@ -12189,7 +12203,6 @@
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
-        "drupal/email_registration": 5,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/pathauto": 20,
