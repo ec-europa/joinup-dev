@@ -5,15 +5,22 @@
  * Post update functions for Joinup Migrate module.
  */
 
+use Aws\S3\S3Client;
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
+use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\UriEncoder;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\user\Entity\User;
 
 /**
  * Add the missed 'simatosc' user (uid 73932).
@@ -309,4 +316,60 @@ function joinup_migrate_post_update_srits_change_owner() {
   $collection->setOwner($new_owner);
   $collection->skip_notification = TRUE;
   $collection->save();
+}
+
+/**
+ * Add new users to 'Open PM² Project Management Methodology' [ISAICP-4170].
+ */
+function joinup_migrate_post_update_opm2pmm_new_users() {
+  if (!$collection = Rdf::load('http://data.europa.eu/w21/c911719d-206e-433f-9639-04c440cf7b26')) {
+    // Fail quietly if this collection doesn't exist.
+    return NULL;
+  }
+
+  // As the user list contains sensitive data, like user names and E-mails, we
+  // don't store it in the VCS, because that is public accessible. Instead we
+  // download the list from a private S3 bucket. The AWS key and secret are
+  // passed through the environment variables.
+  $s3_client = new S3Client([
+    'version' => Settings::get('aws.s3.version', 'latest'),
+    'region' => Settings::get('aws.s3.region', 'eu-west-1'),
+  ]);
+  $result = $s3_client->getObject([
+    'Bucket' => Settings::get('aws.s3.bucket', 'joinup2'),
+    'Key' => 'fixtures/post_update/opm2pmm_new_users.json',
+  ]);
+
+  $users = Json::decode($result['Body']);
+
+  $return = [
+    t("New users added to '@collection':", ['@collection' => $collection->label()]),
+  ];
+  foreach ($users as $user) {
+    // Create and save the user account.
+    $account = User::create([
+      'status' => TRUE,
+      'name' => $user['username'],
+      'mail' => $user['mail'],
+      'field_user_first_name' => $user['first_name'],
+      'field_user_family_name' => $user['last_name'],
+    ]);
+    $account->save();
+
+    // Notify the user.
+    _user_mail_notify('register_admin_created', $account);
+
+    // Add the 'Open PM² Project Management Methodology' membership.
+    OgMembership::create()
+      ->setOwner($account)
+      ->setGroup($collection)
+      ->setState(OgMembershipInterface::STATE_ACTIVE)
+      ->save();
+
+    $return[] = t("- @name (@mail)", [
+      '@name' => $account->getDisplayName(),
+      '@mail' => $account->getEmail(),
+    ]);
+  }
+  return implode("\n", $return);
 }
