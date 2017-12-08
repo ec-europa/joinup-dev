@@ -9,7 +9,7 @@
         "composer/composer": "~1.0",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.6",
+        "cweagans/composer-patches": "1.x-dev#462e65061606dc6149349535d4322241515d1b16",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
@@ -137,6 +137,8 @@
             "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": 1,
         "patches": {
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
