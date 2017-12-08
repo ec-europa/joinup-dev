@@ -76,7 +76,7 @@
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
-        "drupal/admin_toolbar": "~1.17",
+        "drupal/admin_toolbar": "1.20",
         "drupal/coder": "^8.2.9",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
