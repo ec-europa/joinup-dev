@@ -10556,8 +10556,6 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
-                "drupal/coder": "^8.2",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -10582,14 +10580,6 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
-                },
-                {
-                    "name": "Melissa Anderson",
-                    "homepage": "https://github.com/eliza411"
-                },
-                {
-                    "name": "Pieter Frenssen",
-                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
@@ -10668,8 +10658,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2017-11-15T09:36:28+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
