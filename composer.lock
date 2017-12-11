@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b516068b6e90a5bf823aeda4409c6586",
+    "content-hash": "55a59b99c815a7a8ba0af8bce38afae3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1972,6 +1972,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5067,16 +5070,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir",
+            "version": "dev-updb-use-updatekernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/claudiu-cristea/drush.git",
-                "reference": "c88ea50aceac282c0a44fbb32cfc5c2f6c51640f"
+                "reference": "db668b12e0e62f5b2541c12f8cea7cbe4767fd09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claudiu-cristea/drush/zipball/c88ea50aceac282c0a44fbb32cfc5c2f6c51640f",
-                "reference": "c88ea50aceac282c0a44fbb32cfc5c2f6c51640f",
+                "url": "https://api.github.com/repos/claudiu-cristea/drush/zipball/db668b12e0e62f5b2541c12f8cea7cbe4767fd09",
+                "reference": "db668b12e0e62f5b2541c12f8cea7cbe4767fd09",
                 "shasum": ""
             },
             "require": {
@@ -5191,9 +5194,9 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/claudiu-cristea/drush/tree/combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir"
+                "source": "https://github.com/claudiu-cristea/drush/tree/updb-use-updatekernel"
             },
-            "time": "2017-12-11T14:41:20+00:00"
+            "time": "2017-12-11T15:48:33+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -12170,7 +12173,7 @@
         {
             "alias": "9.0.0-rc1",
             "alias_normalized": "9.0.0.0-RC1",
-            "version": "dev-combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir",
+            "version": "dev-updb-use-updatekernel",
             "package": "drush/drush"
         },
         {
