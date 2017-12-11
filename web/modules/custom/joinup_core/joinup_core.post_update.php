@@ -18,3 +18,10 @@ function joinup_core_post_update_enable_subpathauto() {
 function joinup_core_post_update_install_vbo() {
   \Drupal::service('module_installer')->install(['views_bulk_operations']);
 }
+
+/**
+ * Enable the Joinup Invite module.
+ */
+function joinup_core_post_update_install_joinup_invite() {
+  \Drupal::service('module_installer')->install(['joinup_invite']);
+}
