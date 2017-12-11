@@ -48,6 +48,7 @@
         "drupal/search_api": "~1.5",
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "^1.0-alpha3",
+        "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/state_machine": "^1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
