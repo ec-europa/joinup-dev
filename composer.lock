@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0414648c384d98c70df221bc0c644d82",
+    "content-hash": "b516068b6e90a5bf823aeda4409c6586",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5067,16 +5067,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-updb-use-updatekernel",
+            "version": "dev-combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/drush.git",
-                "reference": "31cd9828ab00e04a16531c19133d7b9d43c40d8f"
+                "url": "https://github.com/claudiu-cristea/drush.git",
+                "reference": "c88ea50aceac282c0a44fbb32cfc5c2f6c51640f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/31cd9828ab00e04a16531c19133d7b9d43c40d8f",
-                "reference": "31cd9828ab00e04a16531c19133d7b9d43c40d8f",
+                "url": "https://api.github.com/repos/claudiu-cristea/drush/zipball/c88ea50aceac282c0a44fbb32cfc5c2f6c51640f",
+                "reference": "c88ea50aceac282c0a44fbb32cfc5c2f6c51640f",
                 "shasum": ""
             },
             "require": {
@@ -5191,9 +5191,9 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/pfrenssen/drush/tree/updb-use-updatekernel"
+                "source": "https://github.com/claudiu-cristea/drush/tree/combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir"
             },
-            "time": "2017-12-07T14:55:03+00:00"
+            "time": "2017-12-11T14:41:20+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -12170,7 +12170,7 @@
         {
             "alias": "9.0.0-rc1",
             "alias_normalized": "9.0.0.0-RC1",
-            "version": "dev-updb-use-updatekernel",
+            "version": "dev-combine--pfrenssen-updb-use-updatekernel+claudiu-cristea-cache-dir",
             "package": "drush/drush"
         },
         {
