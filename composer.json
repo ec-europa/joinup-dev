@@ -9,7 +9,7 @@
         "composer/composer": "~1.0",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.6",
+        "cweagans/composer-patches": "1.x-dev#462e65061606dc6149349535d4322241515d1b16",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
@@ -17,7 +17,7 @@
         "drupal/config_sync": "^1.0-alpha6",
         "drupal/config_update": "~1.4",
         "drupal/console": "^1.0.1",
-        "drupal/core": "8.4.2",
+        "drupal/core": "~8.4",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -76,7 +76,7 @@
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
-        "drupal/admin_toolbar": "~1.17",
+        "drupal/admin_toolbar": "1.20",
         "drupal/coder": "^8.2.9",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
@@ -109,7 +109,8 @@
             "DrupalProject\\": "src"
         },
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "scripts/composer/RemoveWrongPatchedObjects.php"
         ]
     },
     "scripts": {
@@ -121,10 +122,12 @@
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
         ],
         "post-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ]
     },
     "extra": {
@@ -137,6 +140,8 @@
             "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": 1,
         "patches": {
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
@@ -156,7 +161,6 @@
                 "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                 "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                "Computed field @see https://www.drupal.org/node/2392845": "https://www.drupal.org/files/issues/2392845-143.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
             },
             "drupal/facets": {
