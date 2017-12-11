@@ -109,7 +109,8 @@
             "DrupalProject\\": "src"
         },
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "scripts/composer/RemoveWrongPatchedObjects.php"
         ]
     },
     "scripts": {

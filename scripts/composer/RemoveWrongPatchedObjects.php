@@ -1,6 +1,6 @@
 <?php
 
-namespace DrupalProject\Composer;
+namespace DrupalProject\composer;
 
 use Composer\EventDispatcher\Event;
 use DrupalFinder\DrupalFinder;
