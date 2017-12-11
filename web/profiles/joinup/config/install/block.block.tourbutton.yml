@@ -7,8 +7,8 @@ dependencies:
     - joinup_theme
 id: tourbutton
 theme: joinup_theme
-region: content_top
-weight: -14
+region: header
+weight: -15
 provider: null
 plugin: tour_button_block
 settings:

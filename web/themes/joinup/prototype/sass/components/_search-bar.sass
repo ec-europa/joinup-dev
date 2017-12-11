@@ -77,6 +77,9 @@
   padding: 0
   +z-index(highlight)
 
+.search-bar--header-shifted
+  right: 120px
+
 .search-bar--section
   width: 85%
   margin-left: -40px
@@ -159,4 +162,13 @@
     .search-bar__input-container
       width: calc(100% - 50px)
       max-width: 100%
+
+.search-bar--header-shifted
+  &.is-focused,
+  &.is-dirty
+    width: calc(100% - 175px)
+    +breakpoint(tablet)
+      width: calc(100% - 245px)
+    .search-bar__input-container
+      width: calc(100% - 50px)
 
