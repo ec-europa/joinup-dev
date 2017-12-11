@@ -14,14 +14,16 @@ dependencies:
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
+    - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
     - field.field.node.document.field_visit_count
     - field.field.node.document.og_audience
     - node.type.document
   module:
+    - ds
     - options
-    - text
+    - smart_trim
     - user
 id: node.document.moderation
 targetEntityType: node
@@ -29,13 +31,30 @@ bundle: document
 mode: moderation
 content:
   body:
-    type: text_summary_or_trimmed
+    type: smart_trim
     weight: 2
     region: content
     label: hidden
     settings:
-      trim_length: 600
-    third_party_settings: {  }
+      trim_length: '600'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: 0
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_state:
     type: list_default
     weight: 1
@@ -54,6 +73,7 @@ hidden:
   field_shared_in: true
   field_short_title: true
   field_site_featured: true
+  field_site_pinned: true
   field_type: true
   field_visit_count: true
   langcode: true

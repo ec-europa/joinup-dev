@@ -25,7 +25,7 @@ dependencies:
   module:
     - ds
     - image
-    - text
+    - smart_trim
     - user
 id: rdf_entity.collection.view_mode_featured
 targetEntityType: rdf_entity
@@ -33,12 +33,20 @@ bundle: collection
 mode: view_mode_featured
 content:
   field_ar_abstract:
-    type: text_trimmed
+    type: smart_trim
     weight: 3
     region: content
     label: hidden
     settings:
-      trim_length: 200
+      trim_length: '200'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      trim_options:
+        text: 0
+      more_class: more-link
+      summary_handler: full
     third_party_settings:
       ds:
         ft:

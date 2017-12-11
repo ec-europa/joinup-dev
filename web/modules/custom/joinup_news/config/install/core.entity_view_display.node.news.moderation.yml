@@ -14,13 +14,15 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - node.type.news
   module:
+    - ds
     - options
-    - text
+    - smart_trim
     - user
 id: node.news.moderation
 targetEntityType: node
@@ -29,11 +31,28 @@ mode: moderation
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: smart_trim
     weight: 2
     settings:
-      trim_length: 600
-    third_party_settings: {  }
+      trim_length: '600'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: 0
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     region: content
   field_state:
     weight: 1
@@ -53,6 +72,7 @@ hidden:
   field_policy_domain: true
   field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_visit_count: true
   langcode: true
   links: true

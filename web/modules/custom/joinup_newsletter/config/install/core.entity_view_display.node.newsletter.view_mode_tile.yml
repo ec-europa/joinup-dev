@@ -4,12 +4,12 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.simplenews_issue
     - field.field.node.newsletter.og_audience
+    - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
     - ds
-    - text
+    - smart_trim
     - user
 id: node.newsletter.view_mode_tile
 targetEntityType: node
@@ -17,11 +17,19 @@ bundle: newsletter
 mode: view_mode_tile
 content:
   body:
-    type: text_trimmed
+    type: smart_trim
     weight: 0
     label: hidden
     settings:
-      trim_length: 200
+      trim_length: '200'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: 0
+      more_class: more-link
     third_party_settings:
       ds:
         ft:
@@ -41,5 +49,5 @@ content:
 hidden:
   langcode: true
   og_audience: true
-  simplenews_issue: true
   report: true
+  simplenews_issue: true

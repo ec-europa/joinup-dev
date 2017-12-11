@@ -45,7 +45,7 @@ dependencies:
   module:
     - ds
     - image
-    - text
+    - smart_trim
     - user
 id: rdf_entity.solution.view_mode_featured
 targetEntityType: rdf_entity
@@ -61,7 +61,15 @@ content:
     weight: 3
     label: hidden
     settings:
-      trim_length: 200
+      trim_length: '200'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      trim_options:
+        text: 0
+      more_class: more-link
+      summary_handler: full
     third_party_settings:
       ds:
         ft:
@@ -70,7 +78,9 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    type: text_trimmed
+      joinup:
+        template_suggestion: ''
+    type: smart_trim
     region: content
   field_is_logo:
     type: image

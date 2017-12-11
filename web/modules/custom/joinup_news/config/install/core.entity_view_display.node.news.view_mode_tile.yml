@@ -14,13 +14,14 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - node.type.news
   module:
     - ds
-    - text
+    - smart_trim
     - user
 id: node.news.view_mode_tile
 targetEntityType: node
@@ -28,11 +29,19 @@ bundle: news
 mode: view_mode_tile
 content:
   body:
-    type: text_trimmed
+    type: smart_trim
     weight: 0
     label: hidden
     settings:
-      trim_length: 200
+      trim_length: '200'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: 0
+      more_class: more-link
     third_party_settings:
       ds:
         ft:
@@ -41,6 +50,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+      joinup:
+        template_suggestion: ''
     region: content
   field_keywords:
     type: string
@@ -70,6 +81,7 @@ hidden:
   field_policy_domain: true
   field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_state: true
   field_visit_count: true
   langcode: true
