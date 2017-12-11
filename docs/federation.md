@@ -35,7 +35,7 @@ TODO
 ### Business architecture
 
 * _Member state data portal_
-Tight budgets within public administrations force administrators to look into lower the operational costs by collaborating around particular problems and by attracting co-maintainers.
+Tight budgets within public administrations force administrators to look into lowering the operational costs by collaborating around particular problems and by attracting co-maintainers.
 Sharing SBBs as broad as possible will in the long run lower costs.
 
 * _Joinup portal_
