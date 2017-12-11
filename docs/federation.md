@@ -91,7 +91,7 @@ It is of uttermost importance that a good relation is established with the repos
 * Joinup compatibility checks
     For __each entity__ defined in the STAGING graph:
     1. Load the object
-    2. Call the ->validate() method
+    2. Call the `->validate()` method
     3. Collect a report of constraint violations
     4. Report back any errors to the repository owner
     5. Abort for all non-compliant repositories
