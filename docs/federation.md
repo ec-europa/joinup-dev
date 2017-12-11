@@ -85,7 +85,7 @@ It is of uttermost importance that a good relation is established with the repos
     2. Remove any unmapped properties
     3. Remove all properties defined by ADMS-APv2
         (This leaves all Joinup specific properties)
-    4. Remove all triples from the STAGING graph whose predicate are present in the SINK graph
+    4. Remove all triples from the STAGING graph whose predicates are present in the SINK graph
     5. Copy all triples from the SINK graph to the STAGING graph
 
 * Joinup compatibility checks
