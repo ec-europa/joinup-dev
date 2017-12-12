@@ -56,3 +56,76 @@ Feature: Solution homepage
     When I go to the homepage of the "ARM9" solution
     Then I should see the link "Disappointed Steel"
     But I should not see the link "Random Arm"
+
+  @terms
+  Scenario: Test that a pager is shown on the solution page when needed.
+    Given the following owner:
+      | name                  | type                  |
+      | Chiricahua Foundation | Private Individual(s) |
+    And the following contact:
+      | name  | Geronimo             |
+      | email | geronimo@example.com |
+    And the following solutions:
+      | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type     | policy domain |
+      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | [ABB169] Business | E-inclusion   |
+    # There should not be a pager when the solution is empty.
+    When I go to the homepage of the "Chiricahua Server" solution
+    Then I should not see the "Pager" region
+
+    # The pager should only appear when there are more than 12 items.
+    Given the following distributions:
+      | title           | description    | solution          |
+      | Distribution 1  | Description 1  | Chiricahua Server |
+      | Distribution 2  | Description 2  | Chiricahua Server |
+      | Distribution 3  | Description 3  | Chiricahua Server |
+      | Distribution 4  | Description 4  | Chiricahua Server |
+      | Distribution 5  | Description 5  | Chiricahua Server |
+      | Distribution 6  | Description 6  | Chiricahua Server |
+      | Distribution 7  | Description 7  | Chiricahua Server |
+      | Distribution 8  | Description 8  | Chiricahua Server |
+      | Distribution 9  | Description 9  | Chiricahua Server |
+      | Distribution 10 | Description 10 | Chiricahua Server |
+      | Distribution 11 | Description 11 | Chiricahua Server |
+      | Distribution 12 | Description 12 | Chiricahua Server |
+    When I go to the homepage of the "Chiricahua Server" solution
+    Then I should not see the "Pager" region
+    And I should not see the "Distribution 13" tile
+
+    Given the following distributions:
+      | title           | description    | solution          |
+      | Distribution 13 | Description 13 | Chiricahua Server |
+    When I go to the homepage of the "Chiricahua Server" solution
+    Then I should see the following links:
+      | Current page    |
+      | Go to page 2    |
+      | Go to next page |
+      | Go to last page |
+    But I should not see the following links:
+      | Go to first page    |
+      | Go to previous page |
+      | Go to page 3        |
+
+    When I click "Go to page 2"
+    Then I should see the following links:
+      | Go to first page    |
+      | Go to previous page |
+      | Go to page 1        |
+      | Current page        |
+    And I should see the "Distribution 13" tile
+    But I should not see the following links:
+      | Go to next page |
+      | Go to last page |
+      | Go to page 3    |
+    And I should not see the "Distribution 12" tile
+
+    # The pager being visible in one solution should not affect other solutions.
+    Given the following solution:
+      | title       | Chiricahua Solr       |
+      | description | Searching your datas  |
+      | state       | validated             |
+      | owner       | Chiricahua Foundation |
+    And the following distributions:
+      | title               | description   | solution        |
+      | Solr distribution 1 | Description 1 | Chiricahua Solr |
+    When I go to the homepage of the "Chiricahua Solr" solution
+    Then I should not see the "Pager" region
