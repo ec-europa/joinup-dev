@@ -38,13 +38,13 @@ content:
     region: content
     label: hidden
     settings:
-      trim_length: '200'
+      trim_length: 200
       trim_type: chars
       trim_suffix: …
-      more_link: '0'
+      more_link: false
       more_text: More
       trim_options:
-        text: 0
+        text: false
       more_class: more-link
       summary_handler: full
     third_party_settings:

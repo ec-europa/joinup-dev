@@ -34,14 +34,14 @@ content:
     type: smart_trim
     weight: 2
     settings:
-      trim_length: '600'
+      trim_length: 600
       trim_type: chars
       trim_suffix: …
-      more_link: '0'
+      more_link: false
       more_text: More
       summary_handler: trim
       trim_options:
-        text: 0
+        text: false
       more_class: more-link
     third_party_settings:
       ds:
