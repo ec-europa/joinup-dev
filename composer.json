@@ -17,7 +17,7 @@
         "drupal/config_sync": "^1.0-alpha6",
         "drupal/config_update": "~1.4",
         "drupal/console": "^1.0.1",
-        "drupal/core": "~8.4",
+        "drupal/core": "~8.4@stable",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
