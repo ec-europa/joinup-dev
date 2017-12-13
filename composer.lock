@@ -4276,7 +4276,8 @@
             "type": "drupal-module",
             "extra": {
                 "patches_applied": {
-                    "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
+                    "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch",
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
                 }
             },
             "license": [
