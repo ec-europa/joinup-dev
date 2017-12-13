@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb1aed2ec94f351fda7ef6b7d3e0454e",
+    "content-hash": "63d6b907965c6c70781069ad05bb2cec",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4584,6 +4584,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Missing schema.yml @see https://www.drupal.org/project/smart_trim/issues/2851703": "https://www.drupal.org/files/issues/2851703-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
