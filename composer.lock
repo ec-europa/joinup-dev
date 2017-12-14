@@ -1971,7 +1971,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
+                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
