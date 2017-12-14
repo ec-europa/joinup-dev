@@ -1,6 +1,11 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.collections
+  module:
+    - search_api
 id: collection_my_content
 name: 'My content (Collection)'
 url_alias: collection_my_content

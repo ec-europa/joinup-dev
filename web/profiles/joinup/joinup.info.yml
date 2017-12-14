@@ -93,6 +93,8 @@ themes:
   - joinup_theme
 
 config_devel:
+  - block.block.authoredon
+  - block.block.changed
   - block.block.entity_bundle_facet
   - block.block.eventdate
   - block.block.exposed_form_search_page
@@ -128,6 +130,7 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - block.block.solutiontype
   - block.block.spatial_coverage_facet
   - block.block.statistics
   - block.block.unpublished_content_of_group
@@ -168,10 +171,13 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - facets.facet.aggregated_changed
+  - facets.facet.authoredon
   - facets.facet.event_date
   - facets.facet.solution_my_content
   - facets.facet.collection_my_content
   - facets.facet.content_my_content
+  - facets.facet.solution_type
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
@@ -214,5 +220,6 @@ config_devel:
   - views.view.content_overview
   - views.view.group_content_management
   - views.view.members_overview
+  - views.view.moderator_solutions_by_type
   - views.view.solutions
   - views.view.user_admin_people

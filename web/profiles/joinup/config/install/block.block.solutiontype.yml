@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.solution_type
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: solutiontype
+theme: joinup_theme
+region: filters
+weight: 0
+provider: null
+plugin: 'facet_block:solution_type'
+settings:
+  id: 'facet_block:solution_type'
+  label: 'Solution type'
+  provider: facets
+  label_display: visible
+visibility: {  }
