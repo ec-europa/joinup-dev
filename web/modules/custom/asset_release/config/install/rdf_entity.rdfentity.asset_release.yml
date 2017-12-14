@@ -68,3 +68,6 @@ third_party_settings:
 name: Release
 rid: asset_release
 description: ''
+label_singular: release
+label_plural: releases
+label_count: "Release\x03Releases"

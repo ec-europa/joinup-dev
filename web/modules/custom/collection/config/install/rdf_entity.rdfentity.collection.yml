@@ -72,3 +72,6 @@ third_party_settings:
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
+label_singular: collection
+label_plural: collections
+label_count: "Collection\x03Collections"

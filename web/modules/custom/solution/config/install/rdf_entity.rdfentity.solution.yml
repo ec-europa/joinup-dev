@@ -68,3 +68,6 @@ third_party_settings:
 name: Solution
 rid: solution
 description: ''
+label_singular: solution
+label_plural: solutions
+label_count: "Solution\x03Solutions"

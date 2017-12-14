@@ -6,3 +6,6 @@ rid: agent
 description: ''
 rdftype: 'http://purl.org/dc/terms/publisher'
 rdf_label: 'http://xmlns.com/foaf/0.1/name'
+label_singular: agent
+label_plural: agents
+label_count: "1 agent\x03@count agents"

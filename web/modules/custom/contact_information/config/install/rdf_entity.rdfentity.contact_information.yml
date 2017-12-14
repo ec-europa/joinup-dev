@@ -32,3 +32,6 @@ third_party_settings:
 name: 'Contact information'
 rid: contact_information
 description: ''
+label_singular: 'contact information entry'
+label_plural: 'contact information entries'
+label_count: "Contact information entry\x03Contact information entries"

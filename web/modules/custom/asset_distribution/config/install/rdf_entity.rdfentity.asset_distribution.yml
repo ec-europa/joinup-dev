@@ -68,3 +68,6 @@ third_party_settings:
 name: Distribution
 rid: asset_distribution
 description: ''
+label_singular: distribution
+label_plural: distributions
+label_count: "Distribution\x03Distributions"

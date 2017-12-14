@@ -5,3 +5,6 @@ name: 'Software project'
 rid: software_project
 description: ''
 rdftype: 'admssw:SoftwareProject'
+label_singular: 'software project'
+label_plural: 'software projects'
+label_count: "1 software project\x03@count software projects"
