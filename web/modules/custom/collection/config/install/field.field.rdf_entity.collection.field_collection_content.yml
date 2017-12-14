@@ -22,7 +22,7 @@ default_value:
           weight: 0
           region: top
         collection_event_type:
-          weight: 0
+          weight: -1
           region: inline_facets
         collection_policy_domain:
           weight: 0
