@@ -191,4 +191,22 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     return [];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewsDisplay() {
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDataDefinition($field_name) {
+    $field = $this->getIndex()->getField($field_name);
+    if ($field) {
+      return $field->getDataDefinition();
+    }
+    throw new Exception("Field with name {$field_name} does not have a definition");
+  }
+
 }

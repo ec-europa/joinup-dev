@@ -1,11 +1,6 @@
 langcode: en
 status: true
-dependencies:
-  config:
-    - search_api.index.published
-    - views.view.content_overview
-  module:
-    - search_api
+dependencies: {  }
 id: event_date
 name: 'Event date'
 url_alias: event_type
@@ -48,15 +43,15 @@ processor_configs:
       build: 5
     settings:
       content_bundle:
-        enable: 1
+        enable: true
         condition: values
         values: event
-        negate: 0
+        negate: false
       content_my_content:
-        enable: 0
+        enable: false
         condition: null
         values: ''
-        negate: 0
+        negate: false
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:

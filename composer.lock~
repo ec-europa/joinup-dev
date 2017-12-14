@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "content-hash": "55a59b99c815a7a8ba0af8bce38afae3",
+=======
     "content-hash": "7021ca164a0aad7ee5cc1b3a134f6691",
+>>>>>>> ISAICP-4188
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2917,7 +2921,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
+<<<<<<< HEAD
+                    "version": "8.x-1.0-alpha11",
+=======
                     "version": "8.x-1.0-beta1",
+>>>>>>> ISAICP-4188
                     "datestamp": "1512228488",
                     "security-coverage": {
                         "status": "not-covered",
