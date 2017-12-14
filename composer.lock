@@ -10361,7 +10361,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
@@ -10451,12 +10452,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "5dec6566756f2e3465936b2d9dbdf196327120e4"
+                "reference": "8f3991e25e769cdfa4fa713b0567f2d535200a1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/5dec6566756f2e3465936b2d9dbdf196327120e4",
-                "reference": "5dec6566756f2e3465936b2d9dbdf196327120e4",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/8f3991e25e769cdfa4fa713b0567f2d535200a1d",
+                "reference": "8f3991e25e769cdfa4fa713b0567f2d535200a1d",
                 "shasum": ""
             },
             "require": {
@@ -10501,7 +10502,7 @@
                 "test",
                 "web"
             ],
-            "time": "2017-12-12T20:50:00+00:00"
+            "time": "2017-12-13T23:40:53+00:00"
         },
         {
             "name": "drupal/drupal-extension",
