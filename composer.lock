@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7c25560b90d7d5ff1d4df68348d7c89",
+    "content-hash": "ed3a155bd0e7e53537fa683390ee3720",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4227,52 +4227,26 @@
         },
         {
             "name": "drupal/redirect",
-            "version": "dev-1.x",
+            "version": "dev-8.x-1.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/redirect",
-                "reference": "1aa7894ba038656d56df945ddf3b8f840ba958a0"
+                "url": "https://git.drupal.org/project/redirect.git",
+                "reference": "345e9555ca74911ba7b0b3be00f3117083063434"
             },
             "require": {
                 "drupal/core": "~8"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta1+6-dev",
-                    "datestamp": "1505206745",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
                 "patches_applied": {
                     "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
                 }
             },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
-            "authors": [
-                {
-                    "name": "Berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
-                {
-                    "name": "Dave Reid",
-                    "homepage": "https://www.drupal.org/user/53892"
-                }
-            ],
             "description": "Allows users to redirect from old URLs to new URLs.",
-            "homepage": "https://www.drupal.org/project/redirect",
-            "support": {
-                "source": "http://cgit.drupalcode.org/redirect"
-            },
-            "time": "2017-09-20T07:37:48+00:00"
+            "time": "2017-11-13T08:23:39+00:00"
         },
         {
             "name": "drupal/redis",
