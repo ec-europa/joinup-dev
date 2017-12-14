@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe30676987abc84f93e9f8c01233ee1a",
+    "content-hash": "0e7f1fb2306824bb91c5584350190d5b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3646,12 +3646,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "4350a2781e6588ce8e713353d83af1b1b481df8f"
+                "reference": "4ef717368875f78204f6ff14bcd27b448f099404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/4350a2781e6588ce8e713353d83af1b1b481df8f",
-                "reference": "4350a2781e6588ce8e713353d83af1b1b481df8f",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/4ef717368875f78204f6ff14bcd27b448f099404",
+                "reference": "4ef717368875f78204f6ff14bcd27b448f099404",
                 "shasum": ""
             },
             "require-dev": {
@@ -3668,7 +3668,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2017-11-01T14:21:35+00:00"
+            "time": "2017-11-26T08:33:55+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -10506,7 +10506,7 @@
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "dev-master",
+            "version": "v4.0.0alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
@@ -12166,7 +12166,7 @@
         "drupal/config_inspector": 10,
         "drupal/default_content": 20,
         "drupal/devel": 15,
-        "drupal/drupal-extension": 20,
+        "drupal/drupal-extension": 15,
         "drupal/stage_file_proxy": 20,
         "jcalderonzumba/gastonjs": 20
     },
