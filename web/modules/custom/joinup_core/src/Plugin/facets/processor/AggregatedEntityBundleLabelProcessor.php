@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\facets\processor;
 
+use Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\facets\Processor\BuildProcessorInterface;
+use Drupal\facets\Processor\ProcessorInterface;
 use Drupal\facets\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -45,14 +50,13 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
     $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): ProcessorInterface {
     return new static(
       $configuration,
       $plugin_id,
@@ -64,7 +68,35 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
   /**
    * {@inheritdoc}
    */
-  public function build(FacetInterface $facet, array $results) {
+  public function defaultConfiguration(): array {
+    return [
+      'use_plural_label' => FALSE,
+    ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state, FacetInterface $facet): array {
+    return [
+      'use_plural_label' => [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Show the bundle label as plural count variant'),
+        '#description' => $this->t('If checked, the plural count variant of the bundle label will be used, instead of the normal bundle entity label. This label will show the singular variant if the number of count equals 1, or the appropriate plural variant if the count is greater than 1.'),
+        '#default_value' => $this->getConfiguration()['use_plural_label'],
+      ],
+    ] + parent::buildConfigurationForm($form, $form_state, $facet);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build(FacetInterface $facet, array $results): array {
+    // Avoid processing if there's no result.
+    if (!$results) {
+      return [];
+    }
+
     // Bail out early if the source is not coming from Search API.
     $source = $facet->getFacetSource();
     if (!$source instanceof SearchApiFacetSourceInterface) {
@@ -82,7 +114,12 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
     // is unlikely going to happen.
     $bundles = [];
     foreach ($datasources as $datasource) {
-      $bundles += $datasource->getBundles();
+      // The values of the $bundles array are either bundle entities, for those
+      // having plural count labels, or the standard bundle label for the
+      // others. The keys are the bundle IDs. By giving precedence to bundles
+      // with plural count labels we assure the standard bundle label as
+      // fallback, in case a plural count label is missed.
+      $bundles += $this->getBundlesWithLabelPluralCount($datasource->getEntityTypeId()) + $datasource->getBundles();
     }
 
     foreach ($results as $delta => $result) {
@@ -91,13 +128,55 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
         continue;
       }
 
-      // We should use the singular/plural version of the bundle label but
-      // there is no support yet.
-      // @see https://www.drupal.org/node/2765065
-      $result->setDisplayValue($bundles[$bundle_id]);
+      if ($bundles[$bundle_id] instanceof EntityBundleWithPluralLabelsInterface) {
+        $result->setDisplayValue($bundles[$bundle_id]->getCountLabel($result->getCount()));
+      }
+      else {
+        $result->setDisplayValue($bundles[$bundle_id]);
+      }
     }
 
     return $results;
+  }
+
+  /**
+   * Returns a list of bundles allowing and having label count plural variants.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID.
+   *
+   * @return \Drupal\Core\Config\Entity\EntityBundleWithPluralLabelsInterface[]
+   *   A list of bundle entities keyed by bundle entity ID.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   If the bundle entity type did not specify a storage handler.
+   */
+  protected function getBundlesWithLabelPluralCount(string $entity_type_id): array {
+    // Are plural labels requested by plugin configuration?
+    if ($this->getConfiguration()['use_plural_label']) {
+      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      // Not all bundles are defined as config entities.
+      if ($bundle_entity_type_id = $entity_type->getBundleEntityType()) {
+        // Ensure there's valid entity type for this bundle entity type ID.
+        if ($bundle_entity_type = $this->entityTypeManager->getDefinition($bundle_entity_type_id)) {
+          $bundle_class = $bundle_entity_type->getClass();
+          $bundle_class_interfaces = class_implements($bundle_class);
+          // Limit to entity types with bundle entities allowing label plurals.
+          if (in_array(EntityBundleWithPluralLabelsInterface::class, $bundle_class_interfaces)) {
+            if ($bundle_entity_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id)) {
+              // Get all the bundle config entities of this entity type.
+              $bundles = $bundle_entity_storage->loadMultiple();
+              // Filter out bundles with count label returning an empty value.
+              return array_filter($bundles, function (EntityBundleWithPluralLabelsInterface $bundle): bool {
+                // Ensure at least the singular and one plural.
+                return !empty($bundle->getCountLabel(1)) && !empty($bundle->getCountLabel(2));
+              });
+            }
+          }
+        }
+      }
+    }
+    return [];
   }
 
 }

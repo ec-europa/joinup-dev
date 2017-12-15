@@ -1,8 +1,10 @@
 plugin.plugin_configuration.facets_processor.aggregated_entity_bundle_label:
-  type: sequence
-  label: 'Aggregated entity label'
-  sequence:
-    type: string
+  type: mapping
+  label: 'Aggregated bundle entity label'
+  mapping:
+    use_plural_label:
+      type: boolean
+      label: 'Show bundle label as plural'
 
 plugin.plugin_configuration.facets_processor.aggregated_entity_reference_label:
   type: sequence
