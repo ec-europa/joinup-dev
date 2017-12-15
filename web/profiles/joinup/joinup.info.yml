@@ -25,6 +25,7 @@ dependencies:
   - dynamic_page_cache
   - editor
   - editor_file
+  - email_registration
   - field_group
   - file
   - help
@@ -173,6 +174,7 @@ config_devel:
   - editor.editor.simple_html
   - facets.facet.aggregated_changed
   - facets.facet.authoredon
+  - email_registration.settings
   - facets.facet.event_date
   - facets.facet.solution_my_content
   - facets.facet.collection_my_content
