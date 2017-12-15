@@ -11,7 +11,7 @@ dependencies:
 id: group_facet
 theme: joinup_theme
 region: filters
-weight: -13
+weight: -14
 provider: null
 plugin: 'facet_block:group'
 settings:

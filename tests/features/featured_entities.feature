@@ -34,6 +34,7 @@ Feature: Featuring content site-wide
     When I am an anonymous user
     And I go to the homepage of the "Tidy Neutron" collection
     Then I should see the following tiles in the correct order:
+      | Opensource neutron generators       |
       | Ionizing radiation types            |
       | Elementary particles standard model |
     And I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
@@ -89,6 +90,7 @@ Feature: Featuring content site-wide
 
   Scenario Outline: Moderators can feature and unfeature collections and solutions site-wide.
     When I am an anonymous user
+    And I am on the homepage
     And I click "<header link>" in the "Header" region
     Then I should see the following tiles in the correct order:
       | <featured>   |

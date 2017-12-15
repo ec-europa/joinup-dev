@@ -8,6 +8,13 @@ default:
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\joinup\Context\ScreenshotContext:
+            localDir: '${behat.screenshots.local.dir}'
+            s3Dir: '${behat.screenshots.s3.dir}'
+            s3Region: '${aws.region}'
+            s3Bucket: '${exports.s3.bucket}'
+            s3Key: '${exports.s3.key}'
+            s3Secret: '${exports.s3.secret}'
       filters:
         tags: '~@wip'
   extensions:
@@ -38,17 +45,19 @@ default:
         Navigation menu block: '#block-navigation'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
+        Pager: 'nav.pager'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
         Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
+        SevenHeader: '.region-header'
       drupal:
         drupal_root: '${website.drupal.dir}'
       selectors:
-        message_selector: '.alert'
-        error_message_selector: '.alert.alert--error'
-        success_message_selector: '.alert.alert--status'
-        warning_message_selector: '.alert.alert--warning'
+        message_selector: '.alert, .messages'
+        error_message_selector: '.alert.alert--error, .messages.message--error'
+        success_message_selector: '.alert.alert--status, .messages.messages--status'
+        warning_message_selector: '.alert.alert--warning, .messages.message--warning'
         login_form_selector: '#user-login-form'
       subcontexts:
         paths:
@@ -56,5 +65,6 @@ default:
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'
+        username_field: 'E-mail or username'
   formatters:
     ${behat.formatter.name}: ~

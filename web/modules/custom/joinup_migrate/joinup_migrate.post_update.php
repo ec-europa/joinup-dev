@@ -10,6 +10,8 @@ use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
+use Drupal\og\Entity\OgRole;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
@@ -139,10 +141,12 @@ function joinup_migrate_post_update_more_redirects() {
       $redirects[$alias] = $redirect;
     }
   }
-  if ($rids = $redirect_storage->getQuery()
-    ->condition('redirect_source.path', $deleted_redirects, 'IN')
-    ->execute()) {
-    $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+  if ($deleted_redirects) {
+    if ($rids = $redirect_storage->getQuery()
+      ->condition('redirect_source.path', $deleted_redirects, 'IN')
+      ->execute()) {
+      $redirect_storage->delete($redirect_storage->loadMultiple($rids));
+    }
   }
 
   // Create the redirects.
@@ -260,4 +264,151 @@ function joinup_migrate_post_update_same_name_distribution_files() {
   }
 
   return $messages ? implode("\n", $messages) : t('No file renamed.');
+}
+
+/**
+ * Add additional redirects [ISAICP-4123].
+ */
+function joinup_migrate_post_update_redirects2() {
+  $db = Database::getConnection();
+  $legacy_db = Database::getConnection('default', 'migrate');
+  $legacy_db_name = $legacy_db->getConnectionOptions()['database'];
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $redirect_storage */
+  $redirect_storage = \Drupal::service('entity_type.manager')->getStorage('redirect');
+
+  $redirects = [
+    // ISAICP-4123, point 5.
+    'interoperability/search' => ['uri' => "internal:/solutions"],
+    // ISAICP-4123, point 6.
+    'project/all' => ['uri' => "internal:/solutions"],
+    'software/all' => ['uri' => "internal:/solutions"],
+    'asset/all' => ['uri' => "internal:/solutions"],
+    // ISAICP-4123, point 7.
+    'page/legal-notice' => ['uri' => "internal:/joinup/legal-notice"],
+  ];
+  // ISAICP-4123, point 2.
+  foreach (['event', 'news'] as $node_type) {
+    $redirects["$node_type/all"] = [
+      'uri' => 'internal:/keep-up-to-date',
+      'options' => ['query' => ['f[0]' => "content_bundle:$node_type"]],
+    ];
+  }
+
+  // Redirects due to source 'community'.
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $query = $db->select("$legacy_db_name.d8_mapping", 'm')
+    ->isNotNull('c.field_community_short_name_value')
+    ->isNotNull('mc.destid1');
+  $query->join("$legacy_db_name.node", 'n', 'm.nid = n.nid');
+  $query->join("$legacy_db_name.content_type_community", 'c', 'n.vid = c.vid');
+  $query->join('migrate_map_collection', 'mc', 'm.collection = mc.sourceid1');
+  $query->leftJoin('migrate_map_custom_page_parent', 'mcpp', 'm.nid = mcpp.sourceid1');
+  $query->addField('mcpp', 'destid1', 'parentPageNid');
+  $query->addField('mc', 'destid1', 'collectionId');
+  $query->addField('c', 'field_community_short_name_value', 'shortName');
+  foreach ($query->execute()->fetchAll() as $row) {
+    $collection_uri = 'internal:/rdf_entity/' . UriEncoder::encodeUrl($row->collectionId);
+    // ISAICP-4123, point 1a, 1b.
+    $uri = empty($row->parentPageNid) ? $collection_uri : "internal:/node/{$row->parentPageNid}";
+    $redirects["community/{$row->shortName}"] = ['uri' => $uri];
+    // ISAICP-4123, point 3a.
+    $redirects["community/{$row->shortName}/home"] = ['uri' => $collection_uri];
+  }
+
+  // Redirects due to source 'project_project'.
+  $query = $db->select("$legacy_db_name.d8_solution", 's')
+    ->isNotNull('s.short_name')
+    ->isNotNull('ms.destid1');
+  $query->join('migrate_map_solution', 'ms', 's.nid = ms.sourceid1');
+  $query->join("$legacy_db_name.content_field_project_common_type", 't', 's.vid = t.vid');
+  $query->addField('s', 'short_name', 'shortName');
+  $query->addField('ms', 'destid1', 'solutionId');
+  $query->addExpression("CONCAT(IF(t.field_project_common_type_value = 1, 'software', 'asset'), '/', s.short_name)", 'path');
+  foreach ($query->execute()->fetchAll() as $row) {
+    $solution_uri = 'internal:/rdf_entity/' . UriEncoder::encodeUrl($row->solutionId);
+    $redirect = ['uri' => $solution_uri];
+    $redirect_download_releases = ['uri' => "$solution_uri/releases"];
+    // ISAICP-4123, point 1c.
+    $redirects[$row->path] = $redirect;
+    // ISAICP-4123, point 3b, 3c.
+    $redirects["{$row->path}/home"] = $redirect;
+    // ISAICP-4123, point 4.
+    $redirects["software/{$row->shortName}/release/all"] = $redirect_download_releases;
+  }
+
+  // Create the redirects.
+  foreach ($redirects as $source_path => $redirect) {
+    if (!$redirect_storage->loadByProperties(['redirect_source__path' => $source_path])) {
+      $redirect += ['title' => '', 'options' => []];
+      Redirect::create([
+        'uid' => 1,
+        'redirect_source' => ['path' => $source_path, 'query' => NULL],
+        'redirect_redirect' => $redirect,
+        'status_code' => 301,
+      ])->save();
+    }
+  }
+}
+
+/**
+ * Switch the ownership in 'Sharing and reuse of IT solutions' [ISAICP-3980].
+ */
+function joinup_migrate_post_update_srits_change_owner() {
+  $collection_id = 'http://data.europa.eu/w21/e5f0febe-f29c-428a-a1a2-6bb0ccd37949';
+  // The 'Joinup moderator'.
+  $current_owner_id = 700003;
+  // The 'Joinup editor'.
+  $new_owner_id = 6363;
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
+  $entity_type_manager = \Drupal::service('entity_type.manager');
+
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
+  $collection = $entity_type_manager->getStorage('rdf_entity')->load($collection_id);
+  if (empty($collection)) {
+    throw new Exception("Collection with id '$collection_id' was not found.");
+  }
+
+  $user_storage = $entity_type_manager->getStorage('user');
+  /** @var \Drupal\user\UserInterface $current_owner */
+  $current_owner = $user_storage->load($current_owner_id);
+  if (empty($current_owner)) {
+    throw new Exception("User with id $current_owner_id was not found.");
+  }
+
+  /** @var \Drupal\user\UserInterface $new_owner */
+  $new_owner = $user_storage->load($new_owner_id);
+  if (empty($new_owner)) {
+    throw new Exception("User with id $new_owner_id was not found.");
+  }
+
+  // Revoke the administrator role from the 'Joinup moderator'.
+  $admin_role = 'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR;
+  $membership = $membership_manager->getMembership($collection, $current_owner);
+  if (!empty($membership)) {
+    $membership->revokeRoleById($admin_role);
+    $membership->skip_notification = TRUE;
+    $membership->save();
+  }
+
+  // Make user 'Joinup editor' the owner for the 'Sharing and reuse of IT
+  // solutions' collection.
+  $membership = $membership_manager->getMembership($collection, $new_owner);
+  if (empty($membership)) {
+    $membership = $membership_manager->createMembership($collection, $new_owner);
+  }
+
+  $roles = [
+    $admin_role,
+    'rdf_entity-collection-facilitator',
+  ];
+  $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+  $membership->skip_notification = TRUE;
+  $membership->save();
+
+  // Finally, switch the author of the collection.
+  $collection->setOwner($new_owner);
+  $collection->skip_notification = TRUE;
+  $collection->save();
 }

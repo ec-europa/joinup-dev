@@ -52,7 +52,9 @@ class FacetQuery extends SearchApiString {
         $active_filter = $facet_definition[$active_item];
         $field_name = $active_filter['field_name'];
         $condition = $active_filter['field_condition'];
-        $filter->addCondition($field_name, $condition, $exclude ? '<>' : '=');
+        $operator = isset($active_filter['field_operator']) ? $active_filter['field_operator'] : NULL;
+        $exclude = $exclude ? '<>' : '=';
+        $filter->addCondition($field_name, $condition, $operator ?: $exclude);
       }
       $query->addConditionGroup($filter);
     }
@@ -95,11 +97,14 @@ class FacetQuery extends SearchApiString {
     if (!empty($this->results)) {
       $facet_results = [];
       foreach ($this->results as $result) {
+        $result_filter = trim($result['filter'], '"');
+        if (!isset($facet_definition[$result_filter])) {
+          continue;
+        }
         if ($result['count'] || $query_operator == 'or') {
           $count = $result['count'];
-          $result_filter = trim($result['filter'], '"');
           $label = $facet_definition[$result_filter]['label'];
-          $result = new Result($result_filter, $label, $count);
+          $result = new Result($this->facet, $result_filter, $label, $count);
           $facet_results[] = $result;
         }
       }
