@@ -22,7 +22,7 @@
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
-        "drupal/facets": "1.0-alpha11",
+        "drupal/facets": "^1.0-beta1",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/honeypot": "^1.27",
@@ -167,10 +167,7 @@
                 "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
             },
             "drupal/facets": {
-                "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
-                "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch",
-                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "https://www.drupal.org/files/issues/facet_summary_for_facet-2873480-18.patch",
-                "Dependent facet processor schema is missing @see https://www.drupal.org/node/2919439": "resources/patch/facets-2919439-for-alpha11.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",

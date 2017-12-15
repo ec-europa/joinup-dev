@@ -1,0 +1,121 @@
+diff --git a/src/Plugin/facets/processor/DependentFacetProcessor.php b/src/Plugin/facets/processor/DependentFacetProcessor.php
+index 1800b9a..5d27059 100644
+--- a/src/Plugin/facets/processor/DependentFacetProcessor.php
++++ b/src/Plugin/facets/processor/DependentFacetProcessor.php
+@@ -171,35 +171,52 @@ public function build(FacetInterface $facet, array $results) {
+     $return = TRUE;
+ 
+     foreach ($enabled_conditions as $facet_id => $condition_settings) {
++      $return = $this->dependentConditionMet($facet_id, $condition_settings);
++    }
+ 
+-      /** @var \Drupal\facets\Entity\Facet $current_facet */
+-      $current_facet = $this->facetStorage->load($facet_id);
+-      $current_facet = $this->facetsManager->returnProcessedFacet($current_facet);
++    return $return ? $results : [];
++  }
+ 
+-      if ($condition_settings['condition'] == 'not_empty') {
+-        $return = !empty($current_facet->getActiveItems());
+-      }
++  /**
++   * Check if a condition settings is met for the specified facet.
++   *
++   * @param string $facet_id
++   *   The facet id of the facet for which condition_settings has to be checked.
++   * @param array $condition_settings
++   *   The conditions array from the processor setting of the specified facet.
++   *
++   * @return bool
++   *   TRUE if condition is met. FALSE otherwise.
++   */
++  public function dependentConditionMet($facet_id, $condition_settings) {
++    /* @var \Drupal\facets\Entity\Facet $current_facet */
++    $current_facet = $this->facetStorage->load($facet_id);
++    $current_facet = $this->facetsManager->returnProcessedFacet($current_facet);
+ 
+-      if ($condition_settings['condition'] == 'values') {
+-        $return = FALSE;
+-
+-        $values = explode(',', $condition_settings['values']);
+-        foreach ($current_facet->getResults() as $result) {
+-          $isActive = $result->isActive();
+-          $raw_value_in_expected = in_array($result->getRawValue(), $values);
+-          $display_value_in_expected = in_array($result->getDisplayValue(), $values);
+-          if ($isActive && ($raw_value_in_expected || $display_value_in_expected)) {
+-            $return = TRUE;
+-          }
++    $return = TRUE;
++
++    if ($condition_settings['condition'] == 'not_empty') {
++      $return = !empty($current_facet->getActiveItems());
++    }
++
++    if ($condition_settings['condition'] == 'values') {
++      $return = FALSE;
++      $values = explode(',', $condition_settings['values']);
++      foreach ($current_facet->getResults() as $result) {
++        $is_active = $result->isActive();
++        $raw_value_in_expected = in_array($result->getRawValue(), $values);
++        $display_value_in_expected = in_array($result->getDisplayValue(), $values);
++        if ($is_active && ($raw_value_in_expected || $display_value_in_expected)) {
++          $return = TRUE;
+         }
+       }
++    }
+ 
+-      if (!empty($condition_settings['negate'])) {
+-        $return = !$return;
+-      }
++    if (!empty($condition_settings['negate'])) {
++      $return = !$return;
+     }
+ 
+-    return $return ? $results : [];
++    return $return;
+   }
+ 
+ }
+diff --git a/src/Plugin/facets/url_processor/QueryString.php b/src/Plugin/facets/url_processor/QueryString.php
+index 39723e8..d8d089f 100644
+--- a/src/Plugin/facets/url_processor/QueryString.php
++++ b/src/Plugin/facets/url_processor/QueryString.php
+@@ -68,6 +68,25 @@ public function buildUrls(FacetInterface $facet, array $results) {
+       $request = Request::create($facet->getFacetSource()->getPath());
+     }
+ 
++    // Get dependent facets that has to be removed with active values.
++    $dependent_facets_aliases = [];
++    /* @var \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager */
++    $facet_manager = \Drupal::service('facets.manager');
++    $facet_manager->processFacets($facet->getFacetSourceId());
++    $facets = $facet_manager->getFacetsByFacetSourceId($facet->getFacetSourceId());
++    foreach ($facets as $other_facet) {
++      $config = $other_facet->getProcessorConfigs();
++      if (empty($config['dependent_processor']['settings'][$facet->id()]['enable'])) {
++        continue;
++      }
++      /* @var \Drupal\facets\Plugin\facets\processor\DependentFacetProcessor $dependent_processor */
++      $dependent_processor = $other_facet->getProcessors()['dependent_processor'];
++      $condition_met = $dependent_processor->dependentConditionMet($facet->id(), $config['dependent_processor']['settings'][$facet->id()]);
++      if ($condition_met) {
++        $dependent_facets_aliases[] = $other_facet->getUrlAlias();
++      }
++    }
++
+     /** @var \Drupal\facets\Result\ResultInterface[] $results */
+     foreach ($results as &$result) {
+       // Reset the URL for each result.
+@@ -89,6 +108,12 @@ public function buildUrls(FacetInterface $facet, array $results) {
+           if ($filter_param == $filter_string) {
+             unset($filter_params[$key]);
+           }
++
++          // Remove also dependent facets.
++          $filter_key = explode($this->getSeparator(), $filter_param);
++          if (in_array($filter_key[0], $dependent_facets_aliases)) {
++            unset($filter_params[$key]);
++          }
+         }
+         if ($facet->getEnableParentWhenChildGetsDisabled() && $facet->getUseHierarchy()) {
+           // Enable parent id again if exists.

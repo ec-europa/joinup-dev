@@ -104,7 +104,7 @@ class FacetQuery extends SearchApiString {
         if ($result['count'] || $query_operator == 'or') {
           $count = $result['count'];
           $label = $facet_definition[$result_filter]['label'];
-          $result = new Result($result_filter, $label, $count);
+          $result = new Result($this->facet, $result_filter, $label, $count);
           $facet_results[] = $result;
         }
       }
