@@ -32,9 +32,7 @@ display:
         options: {  }
       query:
         type: views_query
-        options:
-          bypass_access: false
-          skip_access: false
+        options: {  }
       exposed_form:
         type: basic
         options:
