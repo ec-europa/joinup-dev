@@ -43,15 +43,15 @@ processor_configs:
       build: -10
     settings:
       collection_policy_domain:
-        enable: 0
+        enable: false
         condition: null
         values: ''
-        negate: 0
+        negate: false
       collection_type:
-        enable: 1
+        enable: true
         condition: values
         values: event
-        negate: 0
+        negate: false
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
