@@ -73,11 +73,13 @@ class PinEntityController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being pinned.
+   * @param \Drupal\rdf_entity\RdfInterface|null $collection
+   *   The collection where to pin the content. Defaults to null.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pin(ContentEntityInterface $entity, RdfInterface $collection = null) {
+  public function pin(ContentEntityInterface $entity, RdfInterface $collection = NULL) {
     if (empty($collection)) {
       $collections = $this->getCollections($entity);
       if (count($collections) > 1) {
@@ -131,6 +133,8 @@ class PinEntityController extends ControllerBase {
    *   The content entity being pinned.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to check access for.
+   * @param \Drupal\rdf_entity\RdfInterface|null $collection
+   *   The collection where to pin the content. Defaults to null.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
