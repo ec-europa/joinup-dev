@@ -67,15 +67,16 @@ ln -s %{_prefix}/%{name}-%{version}/ %{_prefix}/current
 cd %{_prefix}
 ls -td1 Join* | tail -n +4 | xargs sudo rm -rf
 
+cd current
+mkdir -p config/sync
+cd ..
+
 IS_USER=`cat /etc/passwd |grep '%{_prefix}' | tr ":" "\n" | head -n 1`
 
 if [ $IS_USER ]; then
   echo "Changing access rights of deployed app !"
   chown $IS_USER:apache %{name}-%{version} -R
 fi
-
-cd current
-mkdir -p config/sync
 
 %files
 %{_prefix}/%{name}-%{version}/*
