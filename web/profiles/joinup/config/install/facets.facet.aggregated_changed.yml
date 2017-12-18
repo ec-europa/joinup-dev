@@ -18,7 +18,7 @@ widget:
   type: links
   config:
     show_numbers: false
-    soft_limit: 0
+    soft_limit: 15
     soft_limit_settings:
       show_less_label: 'Show less'
       show_more_label: 'Show more'

@@ -126,6 +126,16 @@ field_settings:
       fields:
         - 'entity:node/field_site_pinned'
         - 'entity:rdf_entity/field_site_pinned'
+  entity_changed:
+    label: Changed
+    property_path: aggregated_field
+    type: date
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/changed'
+        - 'entity:rdf_entity/changed'
+        - 'entity:user/changed'
   title:
     label: Title
     datasource_id: 'entity:node'
