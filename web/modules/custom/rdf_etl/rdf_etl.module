@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains rdf_etl.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function rdf_etl_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the rdf_etl module.
+    case 'help.page.rdf_etl':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The RDF ETL module facilitates creating data pipelines to federate data in to a triplestore.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
