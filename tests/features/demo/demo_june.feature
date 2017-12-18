@@ -53,7 +53,7 @@ Feature: June 2016 demo
     # Scenario A. A collection owner manages his own collection.
     And I am on the homepage
     When I go to "/user"
-    And I fill in "Username" with "Nick Fury"
+    And I fill in "E-mail or username" with "Nick Fury"
     And I fill in "Password" with "ihaveasecret"
     And I press "Sign in"
     # Login was successful if I see my profile page.
