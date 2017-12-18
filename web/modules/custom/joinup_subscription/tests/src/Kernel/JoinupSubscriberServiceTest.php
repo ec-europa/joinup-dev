@@ -2,10 +2,11 @@
 
 namespace Drupal\Tests\joinup_subscription\Kernel;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\flag\Entity\Flag;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\user\Entity\User;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Tests the JoinupSubscription service.
@@ -16,6 +17,8 @@ use Drupal\user\Entity\User;
  */
 class JoinupSubscriberServiceTest extends KernelTestBase {
 
+  use UserCreationTrait;
+
   /**
    * A flag entity.
    *
@@ -24,11 +27,39 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   protected $flag;
 
   /**
+   * A test content entity that the test users will subscribe to.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityInterface
+   */
+  protected $entity;
+
+  /**
    * A list of users used for testing.
    *
    * @var \Drupal\user\UserInterface[]
    */
   protected $users = [];
+
+  /**
+   * A test flag ID.
+   *
+   * @var string
+   */
+  protected $testFlagId = 'follow';
+
+  /**
+   * The subscription service. This is the system under test.
+   *
+   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   */
+  protected $subscriptionService;
+
+  /**
+   * The flag service.
+   *
+   * @var \Drupal\flag\FlagServiceInterface
+   */
+  protected $flagService;
 
   /**
    * {@inheritdoc}
@@ -53,22 +84,22 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('flagging');
 
+    $this->subscriptionService = $this->container->get('joinup_subscription.subscription');
+    $this->flagService = $this->container->get('flag');
+
     $this->flag = Flag::create([
-      'id' => 'follow',
+      'id' => $this->testFlagId,
       'label' => $this->randomString(),
       'entity_type' => 'entity_test',
       'flag_type' => 'entity:entity_test',
     ]);
     $this->flag->save();
 
-    for ($i = 0; $i < 3; $i++) {
-      $this->users[$i] = User::create([
-        'name' => $name = strtolower($this->randomMachineName()),
-        'mail' => "$name@example.com",
-        'pass' => user_password(),
-      ]);
-      $this->users[$i]->save();
-    }
+    $this->entity = EntityTest::create([
+      'name' => $this->randomString(),
+      'type' => 'entity_test',
+    ]);
+    $this->entity->save();
   }
 
   /**
@@ -77,33 +108,94 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
    * @covers ::getSubscribers
    */
   public function testGetSubscribers() {
-    $entity = EntityTest::create([
-      'name' => $this->randomString(),
-      'type' => 'entity_test',
-    ]);
-    $entity->save();
+    // Create some subscribed test users.
+    $users = $this->createSubscribedUsers();
 
-    /** @var \Drupal\flag\FlagServiceInterface $flag_service */
-    $flag_service = $this->container->get('flag');
+    // Check that the subscribed users are returned.
+    $this->assertSubscribers($users);
+  }
+
+  /**
+   * Tests subscribing a user.
+   *
+   * @covers ::subscribe
+   */
+  public function testSubscribe() {
+    $users = [];
     for ($i = 0; $i < 3; $i++) {
-      $flag_service->flag($this->flag, $entity, $this->users[$i]);
-      // We want different subscription creation times in order to check later
-      // the subscription order.
-      sleep(1);
+      $users[$i] = $this->createUser();
+      $this->subscriptionService->subscribe($users[$i], $this->entity, $this->testFlagId);
+      $this->assertSubscribers($users);
+    }
+  }
+
+  /**
+   * Tests subscribing a user.
+   *
+   * @covers ::unsubscribe
+   */
+  public function testUnsubscribe() {
+    $users = $this->createSubscribedUsers();
+    foreach ($users as $key => $user) {
+      $this->subscriptionService->unsubscribe($user, $this->entity, $this->testFlagId);
+      unset($users[$key]);
+      $this->assertSubscribers($users);
+    }
+  }
+
+  /**
+   * Tests checking if a user is subscribed.
+   */
+  public function testIsSubscribed() {
+    $subscribed_users = $this->createSubscribedUsers(1);
+    $subscribed_user = reset($subscribed_users);
+    $unsubscribed_user = $this->createUser();
+
+    \PHPUnit_Framework_Assert::assertTrue($this->subscriptionService->isSubscribed($subscribed_user, $this->entity, $this->testFlagId));
+    \PHPUnit_Framework_Assert::assertFalse($this->subscriptionService->isSubscribed($unsubscribed_user, $this->entity, $this->testFlagId));
+  }
+
+  /**
+   * Creates a number of test users and subscribes them using the Flag service.
+   *
+   * @param int $count
+   *   The number of test users to create.
+   *
+   * @return \Drupal\Core\Session\AccountInterface[]
+   *   The subscribed users.
+   */
+  protected function createSubscribedUsers(int $count = 3) : array {
+    $users = [];
+    for ($i = 0; $i < $count; $i++) {
+      $users[$i] = $this->createUser();
+      $this->flagService->flag($this->flag, $this->entity, $users[$i]);
+    }
+    return $users;
+  }
+
+  /**
+   * Checks that the subscription service returns the correct subscribers.
+   *
+   * @param \Drupal\Core\Session\AccountInterface[] $expected_subscribers
+   *   The subscribers that are expected to be present.
+   */
+  protected function assertSubscribers(array $expected_subscribers) : void {
+    $actual_subscribers = $this->subscriptionService->getSubscribers($this->entity, $this->testFlagId);
+    foreach ($expected_subscribers as $expected_subscriber) {
+      // Check that an entry with the subscriber ID is present in the list.
+      $id = $expected_subscriber->id();
+      \PHPUnit_Framework_Assert::assertArrayHasKey($id, $actual_subscribers);
+
+      // Check that the entry is a user account and that it is the right one.
+      $actual_subscriber = $actual_subscribers[$id];
+      \PHPUnit_Framework_Assert::assertInstanceOf(AccountInterface::class, $actual_subscriber);
+      \PHPUnit_Framework_Assert::assertEquals($expected_subscriber->id(), $actual_subscriber->id());
+
+      unset($actual_subscribers[$id]);
     }
 
-    /** @var \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription_service */
-    $subscription_service = $this->container->get('joinup_subscription.subscription');
-    // Get the subscribers.
-    $subscribers = $subscription_service->getSubscribers($entity, 'follow');
-
-    // Check that the entity has 3 subscribers.
-    $this->assertCount(3, $subscribers);
-
-    // Check subscribed users.
-    $this->assertEquals($this->users[0]->id(), (array_shift($subscribers))->id());
-    $this->assertEquals($this->users[1]->id(), (array_shift($subscribers))->id());
-    $this->assertEquals($this->users[2]->id(), (array_shift($subscribers))->id());
+    // Check that no unexpected subscribers are present.
+    \PHPUnit_Framework_Assert::assertEmpty($actual_subscribers);
   }
 
 }

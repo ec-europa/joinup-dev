@@ -204,6 +204,9 @@
             "drupal/subpathauto": {
                 "Redirect module causes redirect back to unaliased path. @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2875026-2.patch"
             },
+            "drupal/swiftmailer": {
+                "Typecast mail() return value to boolean. @see https://www.drupal.org/project/swiftmailer/issues/2886062": "https://www.drupal.org/files/issues/swiftmailer-typecast_returned_result-2886062-2-8.x-1.x.patch"
+            },
             "drupal/redirect": {
                 "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
             },

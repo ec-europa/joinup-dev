@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee1873b34dac47e8bd3d64be33df184d",
+    "content-hash": "68ba49435f73bd187bfc1816e95067af",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -366,16 +366,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.5.5",
+            "version": "1.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "aab6229c9a4b6731f23b36107c39f4007c290b50"
+                "reference": "4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/aab6229c9a4b6731f23b36107c39f4007c290b50",
-                "reference": "aab6229c9a4b6731f23b36107c39f4007c290b50",
+                "url": "https://api.github.com/repos/composer/composer/zipball/4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab",
+                "reference": "4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2017-12-01T13:42:57+00:00"
+            "time": "2017-12-18T11:09:18+00:00"
         },
         {
             "name": "composer/installers",
@@ -4951,6 +4951,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Typecast mail() return value to boolean. @see https://www.drupal.org/project/swiftmailer/issues/2886062": "https://www.drupal.org/files/issues/swiftmailer-typecast_returned_result-2886062-2-8.x-1.x.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
