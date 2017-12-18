@@ -222,6 +222,10 @@
     "repositories": [
         {
             "type": "vcs",
+            "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
         },
         {

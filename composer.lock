@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef8921131521aa6aebfcb461c34778d9",
+    "content-hash": "57ea083e469dc742f84ba5629906d8d4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -734,28 +734,29 @@
         },
         {
             "name": "consolidation/config",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
-                "reference": "b59a3b9ea750c21397f26a68fd2e04d9580af42e"
+                "reference": "ad5598d1b37be30e0a2e2a46c939bcedca3180dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/config/zipball/b59a3b9ea750c21397f26a68fd2e04d9580af42e",
-                "reference": "b59a3b9ea750c21397f26a68fd2e04d9580af42e",
+                "url": "https://api.github.com/repos/consolidation/config/zipball/ad5598d1b37be30e0a2e2a46c939bcedca3180dd",
+                "reference": "ad5598d1b37be30e0a2e2a46c939bcedca3180dd",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-data": "^1.1.0",
-                "grasmash/yaml-expander": "^1.1",
+                "grasmash/yaml-expander": "^1.4",
                 "php": ">=5.4.0"
             },
             "require-dev": {
+                "greg-1-anderson/composer-test-scenarios": "^1",
                 "phpunit/phpunit": "^4",
                 "satooshi/php-coveralls": "^1.0",
                 "squizlabs/php_codesniffer": "2.*",
-                "symfony/console": "^2.5|^3"
+                "symfony/console": "^2.5|^3|^4"
             },
             "type": "library",
             "extra": {
@@ -779,7 +780,7 @@
                 }
             ],
             "description": "Provide configuration services for a commandline tool.",
-            "time": "2017-10-25T05:50:10+00:00"
+            "time": "2017-12-16T17:14:19+00:00"
         },
         {
             "name": "consolidation/log",
@@ -4297,7 +4298,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/redirect.git",
-                "reference": "345e9555ca74911ba7b0b3be00f3117083063434"
+                "reference": "5b2d1e3aa0c676935111832bdc9ceea7d93b206d"
             },
             "require": {
                 "drupal/core": "~8"
@@ -4312,7 +4313,7 @@
                 "GPL-2.0+"
             ],
             "description": "Allows users to redirect from old URLs to new URLs.",
-            "time": "2017-11-13T08:23:39+00:00"
+            "time": "2017-12-16T15:41:51+00:00"
         },
         {
             "name": "drupal/redis",
