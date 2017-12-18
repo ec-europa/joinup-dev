@@ -15,7 +15,7 @@ Feature:
   Scenario: A user logging in from the front page should be redirected to his profile.
     When I go to the homepage
     And I click "Sign in"
-    And I fill in "Username" with "Mr Redirect"
+    And I fill in "E-mail or username" with "Mr Redirect"
     And I fill in "Password" with "Mr Redirect"
     And I press "Sign in"
     And I should be on the homepage
@@ -24,7 +24,7 @@ Feature:
     When I am on "/search?keys=how+to+redirect"
     And I open the account menu
     And I click "Sign in"
-    And I fill in "Username" with "Mr Redirect"
+    And I fill in "E-mail or username" with "Mr Redirect"
     And I fill in "Password" with "Mr Redirect"
     And I press "Sign in"
     Then I should not see the heading "Mr Redirect"
@@ -34,7 +34,7 @@ Feature:
     When I am on "/search?keys=how+to+redirect&destination=/contact"
     And I open the account menu
     And I click "Sign in"
-    And I fill in "Username" with "Mr Redirect"
+    And I fill in "E-mail or username" with "Mr Redirect"
     And I fill in "Password" with "Mr Redirect"
     And I press "Sign in"
     Then I should not see the heading "Mr Redirect"

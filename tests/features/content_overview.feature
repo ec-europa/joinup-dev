@@ -3,7 +3,7 @@ Feature: Content Overview
 
   Scenario: Ensure access to content overview landing page, called "Keep up to date".
     Given I am an anonymous user
-    # Anonymous users land on the homepage.
+    And I am on the homepage
     Then I should see the link "Events, discussions, news ..."
     When I click "Events, discussions, news ..."
     # Visually hidden heading.
