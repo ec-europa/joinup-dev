@@ -420,26 +420,18 @@ function joinup_contextual_links_alter(array &$links, $group, array $route_param
     return;
   }
 
-  $entity = \Drupal::service('entity_type.manager')
-    ->getStorage($route_parameters['entity_type'])
-    ->load($route_parameters['entity']);
-
-  if (!JoinupHelper::isSolution($entity)) {
-    return;
-  }
-
   $link_ids = ['joinup.unpin_entity', 'joinup.pin_entity'];
   foreach ($link_ids as $id) {
     if (isset($links[$id])) {
+      $links[$id]['route_parameters'] += ['collection' => NULL];
       if (isset($links[$id]['metadata']['collection'])) {
-        $parameters = $route_parameters + ['collection' => $links[$id]['metadata']['collection']];
-        $access = \Drupal::accessManager()->checkNamedRoute($links[$id]['route_name'], $parameters);
+        $links[$id]['route_parameters'] += ['collection' => $links[$id]['metadata']['collection']];
+        $access = \Drupal::accessManager()->checkNamedRoute($links[$id]['route_name'], $links[$id]['route_parameters']);
 
-        if ($access) {
-          continue;
+        if (!$access) {
+          unset($links[$id]);
         }
       }
-      unset($links[$id]);
     }
   }
 }

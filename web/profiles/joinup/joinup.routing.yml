@@ -120,7 +120,7 @@ joinup.pin_entity:
     collection: null
   requirements:
     _custom_access: '\Drupal\joinup\Controller\PinEntityController::pinAccess'
-    _csrf_token: 'FALSE'
+    _csrf_token: 'TRUE'
   options:
     parameters:
       entity:
