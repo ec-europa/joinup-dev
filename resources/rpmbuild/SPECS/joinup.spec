@@ -74,6 +74,9 @@ if [ $IS_USER ]; then
   chown $IS_USER:apache %{name}-%{version} -R
 fi
 
+cd current
+mkdir -p config/sync
+
 %files
 %{_prefix}/%{name}-%{version}/*
 
