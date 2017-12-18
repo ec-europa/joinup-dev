@@ -11,7 +11,7 @@ dependencies:
 id: contentbundle
 theme: joinup_theme
 region: filters
-weight: -10
+weight: -11
 provider: null
 plugin: 'facet_block:content_bundle'
 settings:

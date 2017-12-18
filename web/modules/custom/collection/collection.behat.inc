@@ -18,6 +18,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
@@ -189,6 +190,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   protected static function collectionFieldAliases() {
     // Mapping alias - field name.
     return [
+      'author' => 'uid',
       'uri' => 'id',
       'title' => 'label',
       'abstract' => 'field_ar_abstract',
@@ -314,14 +316,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     // with this collection will be indexed in Solr.
     if (!$collection->get('field_ar_affiliates')->isEmpty()) {
       foreach ($collection->get('field_ar_affiliates')->referencedEntities() as $solution) {
-        // Reset the cached entity in the storage, so the "collection" computed
-        // field will be populated correctly when the solution gets loaded.
-        \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache([$solution->id()]);
-        // In order to avoid copying code from search_api_entity_update(), we
-        // need to fake an update event. Said function requires the "original"
-        // property to be populated, so just fill it with the entity itself.
-        $solution->original = $solution;
-        search_api_entity_update($solution);
+        // Reindex the solution, so that the value of the "collection" computed
+        // field will be populated and indexed correctly.
+        $this->forceSearchApiReindex($solution);
       }
     }
 
@@ -689,19 +686,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Asserts that the string "x days ago" is present on the page.
-   *
-   * @Then I see the days passed since :date
-   */
-  public function assertDaysPassedSince($date) {
-    $timestamp = strtotime($date);
-    $seconds_since = time() - $timestamp;
-    $days_since = floor($seconds_since / 86400);
-    $text = sprintf("%s days ago", $days_since);
-    $this->assertSession()->pageTextContains($text);
-  }
-
-  /**
    * Navigates to the collection leave confirmation form.
    *
    * @Given I am about to leave( the) :label( collection)
@@ -757,6 +741,31 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
     ]);
+  }
+
+  /**
+   * Checks if the given node belongs to the given collection.
+   *
+   * If there are multiple nodes or collections with the same name, then only
+   * the first one is checked.
+   *
+   * @param string $title
+   *   The title of the node to check.
+   * @param string $collection
+   *   The name of the collection to check.
+   *
+   * @throws \Exception
+   *   Thrown when a node with the given title doesn't exist.
+   *
+   * @Then the :collection collection should have a custom page titled :title
+   * @Then the :collection collection should have a community content titled :title
+   */
+  public function assertNodeOgMembership($title, $collection) {
+    $collection = $this->getRdfEntityByLabel($collection, 'collection');
+    $node = $this->getNodeByTitle($title);
+    if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $collection->id()) {
+      throw new \Exception("The node '$title' is not associated with collection '{$collection->label()}'.");
+    }
   }
 
 }

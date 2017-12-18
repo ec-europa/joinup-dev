@@ -19,5 +19,5 @@ form_settings:
   node_news_form: false
   node_newsletter_form: false
   node_video_form: false
-  comment_comment_form: false
-  comment_reply_form: false
+  comment_comment_form: true
+  comment_reply_form: true

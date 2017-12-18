@@ -5,6 +5,7 @@ dependencies:
     - facets.facet.content_my_content
   module:
     - facets
+    - joinup_core
   theme:
     - joinup_theme
 id: mycontent

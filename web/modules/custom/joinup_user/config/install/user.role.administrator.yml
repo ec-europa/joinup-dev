@@ -6,8 +6,9 @@ label: Administrator
 weight: 4
 is_admin: false
 permissions:
-  - 'access dashboard'
+  - 'access uri converter'
   - 'administer account settings'
-  - 'administer group'
-  - 'administer nodes'
+  - 'administer redirects'
+  - 'administer solution ownership'
   - 'edit collection rdf entity'
+  - 'view the administration theme'

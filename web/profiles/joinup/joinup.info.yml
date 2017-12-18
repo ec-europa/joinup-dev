@@ -25,6 +25,7 @@ dependencies:
   - dynamic_page_cache
   - editor
   - editor_file
+  - email_registration
   - field_group
   - file
   - help
@@ -77,14 +78,16 @@ dependencies:
   - solution
   - state_machine
   - state_machine_revisions
+  - subpathauto
   - swiftmailer
   - text
   - toolbar
   - tour
   - trr
   - user
-  - view_unpublished
   - views
+  - views_bulk_operations
+  - view_unpublished
 
 themes:
   - seven
@@ -92,6 +95,7 @@ themes:
 
 config_devel:
   - block.block.entity_bundle_facet
+  - block.block.eventdate
   - block.block.exposed_form_search_page
   - block.block.contentbundle
   - block.block.footer_menu
@@ -106,6 +110,7 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
+  - block.block.mycontentcollection
   - block.block.mycontent
   - block.block.mycontentsolution
   - block.block.navigation
@@ -164,7 +169,10 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - email_registration.settings
+  - facets.facet.event_date
   - facets.facet.solution_my_content
+  - facets.facet.collection_my_content
   - facets.facet.content_my_content
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
@@ -195,6 +203,7 @@ config_devel:
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
   - r4032login.settings
+  - subpathauto.settings
   - swiftmailer.message
   - swiftmailer.transport
   - system.date
@@ -205,6 +214,7 @@ config_devel:
   - views.view.collection_content
   - views.view.collections
   - views.view.content_overview
+  - views.view.group_content_management
   - views.view.members_overview
   - views.view.solutions
   - views.view.user_admin_people
