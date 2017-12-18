@@ -446,8 +446,8 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 /**
  * Implements hook_search_api_solr_query_alter().
  *
- * Alters the Solr query for the collection content on the collection homepage
- * by setting the sorts as follows:
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
  * - Top level: Pinned content of the collection goes on top but not pinned
  *   content of other collections shared in this collection.
  * - 2nd level: The content score (relevancy) in the Solr index. The most
@@ -455,7 +455,11 @@ function collection_search_api_query_search_api_field_field_collection_content_a
  * - Last level: In case the score/relevancy is the same, the newest goes first.
  */
 function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
-  if ($query->hasTag('search_api_field_field_collection_content')) {
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if ($query->hasTag('search_api_field_field_collection_content') && !_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     if ($entity = $query->getOption('search_api_field entity')) {
       // As the 1st level cannot be stored in the Solr index, because it depends

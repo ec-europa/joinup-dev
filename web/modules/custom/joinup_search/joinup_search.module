@@ -54,7 +54,7 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
 function joinup_search_search_api_query_alter(QueryInterface &$query) {
   if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
     // In case the user has filtered by event, first sort by the event date.
-    // @todo: This will be generic when the event calendar will be implemented for
+    // @todo: This will be generic when event calendar will be implemented for
     // the rdf_entity.field_is_content and the node.field_cp_content_listing
     // instances of the search api field listing.
     if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
@@ -79,7 +79,7 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
 }
 
 /**
- * Checks if the query has a filter to event bundle.
+ * Checks if the query has a filter.
  *
  * @param \Drupal\search_api\Query\ConditionGroupInterface|\Drupal\search_api\Query\ConditionInterface $conditions
  *   A condition group or a condition interface.
