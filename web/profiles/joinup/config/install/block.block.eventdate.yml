@@ -2,21 +2,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.content_bundle
+    - facets.facet.event_date
   module:
     - facets
     - joinup_core
   theme:
     - joinup_theme
-id: contentbundle
+id: eventdate
 theme: joinup_theme
 region: filters
-weight: -11
+weight: -9
 provider: null
-plugin: 'facet_block:content_bundle'
+plugin: 'facet_block:event_date'
 settings:
-  id: 'facet_block:content_bundle'
-  label: 'Content bundle'
+  id: 'facet_block:event_date'
+  label: 'Event date'
   provider: facets
   label_display: '0'
 visibility:

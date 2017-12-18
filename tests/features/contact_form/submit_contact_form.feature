@@ -35,6 +35,7 @@ Feature: Submit the contact form
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
       | template           | Contact form submission          |
+      | from               | digit-joinup@ec.europa.eu        |
       | recipient          | digit-joinup@ec.europa.eu        |
       | subject            | Joinup - Contact form submission |
       | body               | Dear sir, madam, ...             |
