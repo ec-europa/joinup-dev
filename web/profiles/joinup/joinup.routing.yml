@@ -129,10 +129,11 @@ joinup.pin_entity:
         type: entity:rdf_entity
 
 joinup.unpin_entity:
-  path: '/pin/group/{entity_type}/{entity}/remove'
+  path: '/pin/group/{entity_type}/{entity}/remove/{collection}'
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
     _title: 'Unpin'
+    collection: null
   requirements:
     _custom_access: '\Drupal\joinup\Controller\PinEntityController::unpinAccess'
     _csrf_token: 'TRUE'
@@ -140,3 +141,5 @@ joinup.unpin_entity:
     parameters:
       entity:
         type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity

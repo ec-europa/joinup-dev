@@ -103,18 +103,20 @@ class PinEntityController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being unpinned.
+   * @param \Drupal\rdf_entity\RdfInterface|null $collection
+   *   The collection where to unpin the content. Defaults to null.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function unpin(ContentEntityInterface $entity) {
-    $collections = $this->getCollections($entity);
-
-    if (count($collections) > 1) {
-      // @todo Show a form to choose where to unpin.
+  public function unpin(ContentEntityInterface $entity, RdfInterface $collection = NULL) {
+    if (empty($collection)) {
+      $collections = $this->getCollections($entity);
+      if (count($collections) > 1) {
+        // @todo Show a form to choose where to pin.
+      }
+      $collection = reset($collections);
     }
-
-    $collection = reset($collections);
     $this->pinService->setEntityPinned($entity, $collection, FALSE);
 
     drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
@@ -180,13 +182,22 @@ class PinEntityController extends ControllerBase {
    *   The content entity being unpinned.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to check access for.
+   * @param \Drupal\rdf_entity\RdfInterface|null $collection
+   *   The collection where to pin the content. Defaults to null.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account) {
+  public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $collection = NULL) {
     if (!JoinupHelper::isSolution($entity) && !JoinupHelper::isCommunityContent($entity)) {
       return AccessResult::forbidden();
+    }
+
+    if (!empty($collection)) {
+      if (!$this->pinService->isEntityPinned($entity, $collection)) {
+        return AccessResult::forbidden();
+      }
+      return $this->ogAccess->userAccess($collection, 'unpin group content', $account);
     }
 
     $collections = $this->getCollections($entity);
