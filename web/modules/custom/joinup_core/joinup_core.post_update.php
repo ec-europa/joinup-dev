@@ -25,3 +25,10 @@ function joinup_core_post_update_install_vbo() {
 function joinup_core_post_update_install_joinup_invite() {
   \Drupal::service('module_installer')->install(['joinup_invite']);
 }
+
+/**
+ * Enable the Email Registration module.
+ */
+function joinup_core_post_update_install_email_registration() {
+  \Drupal::service('module_installer')->install(['email_registration']);
+}

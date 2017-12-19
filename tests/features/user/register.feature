@@ -14,10 +14,10 @@ Feature: User registration
   Scenario: User can register with minimal required fields
     Given all e-mails have been sent
     And the following user registration at "/user/register":
-      | Email address | Test-User@Example.com |
-      | Username      | TeStUSer              |
-      | First name    | Test                  |
-      | Family name   | User                  |
+      | E-mail      | Test-User@Example.com |
+      | Username    | TeStUSer              |
+      | First name  | Test                  |
+      | Family name | User                  |
     Then I should see the success message "A welcome message with further instructions has been sent to your email address."
     And the following system email should have been sent:
       | recipient | TeStUSer                                                                                                                                                                                       |
@@ -35,7 +35,7 @@ Feature: User registration
     Then I click "Add user"
     Then I am at "admin/people/create"
     Given the following user registration at "admin/people/create":
-      | Email address              | superuser@example.org |
+      | E-mail                     | superuser@example.org |
       | Username                   | SuperUser             |
       | First name                 | Super                 |
       | Family name                | User                  |

@@ -13,7 +13,7 @@ Feature: User login
     When I go to the homepage
     And I click "Sign in"
     Then I should not see the text "Log in"
-    And I fill in "Username" with "Garnett Tyrell"
+    And I fill in "E-mail or username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
     And I press "Sign in"
     Then I should see the heading "Garnett Tyrell"
@@ -23,7 +23,7 @@ Feature: User login
 
     # Login keeping the session open.
     When I click "Sign in"
-    And I fill in "Username" with "Garnett Tyrell"
+    And I fill in "E-mail or username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
     And I check the box "Remember me"
     And I press "Sign in"
@@ -33,3 +33,12 @@ Feature: User login
     Then I should not see the link "Sign in"
     But I should see the link "My account"
 
+    # Login using an e-mail for username.
+    When I am not logged in
+    And I go to the homepage
+    And I click "Sign in"
+    Then I should not see the text "Log in"
+    And I fill in "E-mail or username" with "garnett.tyrell@example.com"
+    And I fill in "Password" with "tyrellg"
+    And I press "Sign in"
+    Then I should see the heading "Garnett Tyrell"

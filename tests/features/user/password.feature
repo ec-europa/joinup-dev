@@ -52,7 +52,7 @@ Feature: Password management
     And I am on the homepage
     And I click "Sign in"
     And I click "Reset your password"
-    And I fill in "Username or email address" with "Charlie Change"
+    And I fill in "E-mail" with "charlie.change@example.com"
     And I press the "Submit" button
     Then I should see the success message "Further instructions have been sent to your email address."
     And the following system email should have been sent:
