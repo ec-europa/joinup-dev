@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "68ba49435f73bd187bfc1816e95067af",
+    "content-hash": "57cebdc65994db132710fcaea84fb559",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.0",
+            "version": "3.48.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f5aef5671cd7f6e3b9ede0a3ff17c131cc05f4d3"
+                "reference": "a9468ab045ae43eac19850c82858074f211b269b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f5aef5671cd7f6e3b9ede0a3ff17c131cc05f4d3",
-                "reference": "f5aef5671cd7f6e3b9ede0a3ff17c131cc05f4d3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a9468ab045ae43eac19850c82858074f211b269b",
+                "reference": "a9468ab045ae43eac19850c82858074f211b269b",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-12-15T19:49:31+00:00"
+            "time": "2017-12-19T05:46:02+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -734,28 +734,29 @@
         },
         {
             "name": "consolidation/config",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/config.git",
-                "reference": "b59a3b9ea750c21397f26a68fd2e04d9580af42e"
+                "reference": "ad5598d1b37be30e0a2e2a46c939bcedca3180dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/config/zipball/b59a3b9ea750c21397f26a68fd2e04d9580af42e",
-                "reference": "b59a3b9ea750c21397f26a68fd2e04d9580af42e",
+                "url": "https://api.github.com/repos/consolidation/config/zipball/ad5598d1b37be30e0a2e2a46c939bcedca3180dd",
+                "reference": "ad5598d1b37be30e0a2e2a46c939bcedca3180dd",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-data": "^1.1.0",
-                "grasmash/yaml-expander": "^1.1",
+                "grasmash/yaml-expander": "^1.4",
                 "php": ">=5.4.0"
             },
             "require-dev": {
+                "greg-1-anderson/composer-test-scenarios": "^1",
                 "phpunit/phpunit": "^4",
                 "satooshi/php-coveralls": "^1.0",
                 "squizlabs/php_codesniffer": "2.*",
-                "symfony/console": "^2.5|^3"
+                "symfony/console": "^2.5|^3|^4"
             },
             "type": "library",
             "extra": {
@@ -779,7 +780,7 @@
                 }
             ],
             "description": "Provide configuration services for a commandline tool.",
-            "time": "2017-10-25T05:50:10+00:00"
+            "time": "2017-12-16T17:14:19+00:00"
         },
         {
             "name": "consolidation/log",
@@ -2018,7 +2019,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
+                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch",
+                    "Config changes table is not printed anymore @see https://www.drupal.org/project/config_sync/issues/2931084": "https://www.drupal.org/files/issues/2931084-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4417,7 +4419,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/redirect.git",
-                "reference": "5b2d1e3aa0c676935111832bdc9ceea7d93b206d"
+                "reference": "14ce0a76c0787dc8a28506ac0bc478bc38295752"
             },
             "require": {
                 "drupal/core": "~8"
@@ -4432,7 +4434,7 @@
                 "GPL-2.0+"
             ],
             "description": "Allows users to redirect from old URLs to new URLs.",
-            "time": "2017-12-16T15:41:51+00:00"
+            "time": "2017-12-18T22:14:03+00:00"
         },
         {
             "name": "drupal/redis",
@@ -8756,16 +8758,16 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "b2098405d8644f6dc4c36febcee6a77c0fdecdff"
+                "reference": "c2b757934f2d9681a287e662efbc27c41fe8ef86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/b2098405d8644f6dc4c36febcee6a77c0fdecdff",
-                "reference": "b2098405d8644f6dc4c36febcee6a77c0fdecdff",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/c2b757934f2d9681a287e662efbc27c41fe8ef86",
+                "reference": "c2b757934f2d9681a287e662efbc27c41fe8ef86",
                 "shasum": ""
             },
             "require": {
@@ -8812,7 +8814,7 @@
                 "http-message",
                 "psr-7"
             ],
-            "time": "2017-07-23T09:13:43+00:00"
+            "time": "2017-12-19T00:31:44+00:00"
         },
         {
             "name": "symfony/routing",
