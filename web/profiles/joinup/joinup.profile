@@ -351,12 +351,12 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   }
 
   if (JoinupHelper::isSolution($entity)) {
+    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
     $collection = \Drupal::service('og.context')->getGroup();
-    if (JoinupHelper::isCollection($collection)) {
+    if ($collection && JoinupHelper::isCollection($collection)) {
       $build['#contextual_links']['entity']['metadata']['collection'] = $collection->id();
       $build['#contextual_links']['entity']['route_parameters']['collection'] = $collection->id();
-      $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
     }
   }
 }
