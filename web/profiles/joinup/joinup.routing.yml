@@ -117,7 +117,6 @@ joinup.pin_entity:
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
     _title: 'Pin'
-    collection: null
   requirements:
     _custom_access: '\Drupal\joinup\Controller\PinEntityController::pinAccess'
     _csrf_token: 'TRUE'
@@ -133,7 +132,6 @@ joinup.unpin_entity:
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
     _title: 'Unpin'
-    collection: null
   requirements:
     _custom_access: '\Drupal\joinup\Controller\PinEntityController::unpinAccess'
     _csrf_token: 'TRUE'

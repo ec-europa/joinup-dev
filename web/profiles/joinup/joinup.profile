@@ -341,6 +341,7 @@ function joinup_preprocess_menu__main(&$variables) {
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    // Add the "entity" contextual links group.
     $build['#contextual_links']['entity'] = [
       'route_parameters' => [
         'entity_type' => $entity->getEntityTypeId(),
@@ -350,13 +351,29 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ];
   }
 
-  if (JoinupHelper::isSolution($entity)) {
+  // Add the "collection_context" contextual links group on community content
+  // and solutions.
+  if (JoinupHelper::isSolution($entity) || JoinupHelper::isCommunityContent($entity)) {
+    // The rendered entity needs to vary by og group context.
     $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
+    $build['#contextual_links']['collection_context'] = [
+      'route_parameters' => [
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity' => $entity->id(),
+        // The collection parameter is a required parameter in the pin/unpin
+        // routes. If the parameter is left empty, a critical exception will
+        // occur and the contextual links generation will break. By passing an
+        // empty value, an upcast exception will be catched and the access
+        // checks will correctly return an access denied.
+        'collection' => NULL,
+      ],
+      'metadata' => ['changed' => $entity->getChangedTime()],
+    ];
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
     $collection = \Drupal::service('og.context')->getGroup();
     if ($collection && JoinupHelper::isCollection($collection)) {
-      $build['#contextual_links']['entity']['metadata']['collection'] = $collection->id();
-      $build['#contextual_links']['entity']['route_parameters']['collection'] = $collection->id();
+      $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $collection->id();
+      $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $collection->getChangedTime();
     }
   }
 }
@@ -408,30 +425,6 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
         $collection_ids[] = $collection->id();
       }
       $variables['attributes']['data-drupal-pinned-in'] = implode(',', $collection_ids);
-    }
-  }
-}
-
-/**
- * Implements hook_contextual_links_alter().
- */
-function joinup_contextual_links_alter(array &$links, $group, array $route_parameters) {
-  if ($group !== 'entity') {
-    return;
-  }
-
-  $link_ids = ['joinup.unpin_entity', 'joinup.pin_entity'];
-  foreach ($link_ids as $id) {
-    if (isset($links[$id])) {
-      $links[$id]['route_parameters'] += ['collection' => NULL];
-      if (isset($links[$id]['metadata']['collection'])) {
-        $links[$id]['route_parameters'] += ['collection' => $links[$id]['metadata']['collection']];
-        $access = \Drupal::accessManager()->checkNamedRoute($links[$id]['route_name'], $links[$id]['route_parameters']);
-
-        if (!$access) {
-          unset($links[$id]);
-        }
-      }
     }
   }
 }
