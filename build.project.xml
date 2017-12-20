@@ -63,7 +63,7 @@
         <phingcall target="writable-settings-folder" />
         <phingcall target="writable-settings-php" />
 
-        <!-- Set the transaction type to READ-COMMITTED -->
+        <!-- Avoid duplicates in settings.php, if the file exists. -->
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.php" />
@@ -71,13 +71,19 @@
             <filterchain>
                 <replaceregexp>
                     <regexp
-                            pattern="^\$databases\['default'\]\['default'\]\['init_commands'\].*$\n"
+                            pattern="^(\$databases\['default'\]\['default'\]\['init_commands'\]|\$settings\['file_private_path'\]).*$\n"
                             replace=""
                             modifiers="m" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
+
+        <!-- Set the transaction type to READ-COMMITTED. -->
         <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
+
+        <!-- Ensure the Drupal private files directory. -->
+        <mkdir dir="${project.basedir}/${drupal.private_files.dir}"/>
+        <append destFile="${website.settings.php}" text="$settings['file_private_path'] = '${project.basedir}/${drupal.private_files.dir}';${line.separator}" />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
