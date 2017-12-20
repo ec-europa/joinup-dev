@@ -63,7 +63,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
     }
     elseif (JoinupHelper::isCommunityContent($entity)) {
       // Nodes have only one possible parent, so the sticky boolean field
-      // reflects the sticky status.
+      // reflects the pinned status.
       /** @var \Drupal\node\NodeInterface $entity */
       return $entity->isSticky();
     }
@@ -89,7 +89,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
     }
     elseif (JoinupHelper::isCommunityContent($entity)) {
       // Nodes have only one possible parent, so the sticky boolean field
-      // reflects the sticky status.
+      // reflects the pinned status.
       /** @var \Drupal\node\NodeInterface $entity */
       $entity->setSticky($pinned);
     }
