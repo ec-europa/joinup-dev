@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a61177e00f7b974724fe82a4ae849d6",
+    "content-hash": "096cd2ad1df08405388c6a667c97cc42",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1061,7 +1061,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "BSD-2-Clause"
             ],
             "authors": [
                 {
@@ -1971,7 +1971,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
+                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch",
+                    "Config changes table is not printed anymore @see https://www.drupal.org/project/config_sync/issues/2931084": "https://www.drupal.org/files/issues/2931084-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5062,8 +5063,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+1-dev",
-                    "datestamp": "1510132085",
+                    "version": "8.x-1.0-beta2+0-dev",
+                    "datestamp": "1509967685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."

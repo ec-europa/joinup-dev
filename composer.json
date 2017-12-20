@@ -169,7 +169,8 @@
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2927109-4.patch"
 	    },
             "drupal/config_sync": {
-                "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch"
+                "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch",
+                "Config changes table is not printed anymore @see https://www.drupal.org/project/config_sync/issues/2931084": "https://www.drupal.org/files/issues/2931084-2.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
