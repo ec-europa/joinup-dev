@@ -9,8 +9,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\changed_fields\NodeSubject;
-use Drupal\joinup_discussion\DiscussionEvents;
 use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\node\NodeInterface;
 
 /**
@@ -85,5 +85,5 @@ function joinup_discussion_node_predelete(EntityInterface $entity) : void {
 
   // Send a message to subscribed users to inform that the discussion was
   // deleted.
-  joinup_notification_dispatch_notification('delete', DiscussionEvents::DISCUSSION_DELETED, $entity);
+  joinup_notification_dispatch_notification('delete', DiscussionEvents::DELETE, $entity);
 }

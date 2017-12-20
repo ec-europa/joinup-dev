@@ -151,13 +151,22 @@ Feature: Subscribing to discussions
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
 
+    # Make sure the content is in published state again.
+    # Todo: reorder the test to avoid this juggling of states.
+    # Todo: test that deleting unpublished content doesn't send out notifications.
+    When I go to the discussion content "Rare Butter" edit screen
+    And I press "Propose"
+    When I go to the discussion content "Rare Butter" edit screen
+    And I press "Publish"
+
     # Delete the discussion and check that the notifications are sent.
     # Promote one of the subscribers to be a moderator so they can delete the
     # discussion.
-    And the following collection user membership:
+    Given the following collection user membership:
       | collection     | user    | roles       |
       | Dairy products | debater | facilitator |
-    Given I am logged in as debater
+    And I am logged in as debater
+
     When I go to the "Rare butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"

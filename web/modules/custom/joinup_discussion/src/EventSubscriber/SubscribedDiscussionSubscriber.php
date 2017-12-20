@@ -4,15 +4,21 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion\EventSubscriber;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_discussion\Event\DiscussionEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
+use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\UserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -77,6 +83,13 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs a new event subscriber object.
    *
    * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscribe_service
@@ -87,12 +100,15 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The current user.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger) {
     $this->subscribeService = $subscribe_service;
     $this->messageDelivery = $message_delivery;
     $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger;
   }
 
   /**
@@ -100,8 +116,8 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     return [
-      DiscussionEvents::UPDATE => 'onDiscussionUpdate',
-      DiscussionEvents::DISCUSSION_DELETED => 'notifyOnDiscussionDeletion',
+      DiscussionEvents::UPDATE => 'notifyOnDiscussionUpdate',
+      DiscussionEvents::DELETE => 'notifyOnDiscussionDeletion',
     ];
   }
 
@@ -111,7 +127,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_discussion\Event\DiscussionEvent $event
    *   The event object.
    */
-  public function onDiscussionUpdate(DiscussionEvent $event): void {
+  public function notifyOnDiscussionUpdate(DiscussionEvent $event): void {
     $this->discussion = $event->getNode();
 
     // Don't handle inconsistent discussions, without a parent group.
@@ -126,7 +142,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
 
     $this->messageDelivery
       ->createMessage('discussion_updated')
-      ->setArguments($this->getArguments())
+      ->setArguments($this->getArguments($this->discussion))
       ->setRecipients($this->getRecipients())
       ->sendMail();
   }
@@ -140,7 +156,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   public function notifyOnDiscussionDeletion(NotificationEvent $event) : void {
     /** @var \Drupal\node\NodeInterface $discussion */
     $discussion = $event->getEntity();
-    $this->sendMessage($discussion);
+    $this->sendMessage($discussion, 'discussion_delete');
   }
 
   /**
@@ -188,20 +204,6 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Builds the message arguments.
-   */
-  protected function getArguments(): array {
-    return [
-      '@entity:title' => $this->discussion->label(),
-      '@group:label' => $this->group->label(),
-      '@group:bundle' => $this->group->bundle(),
-      '@entity:url' => $this->discussion->toUrl('canonical', [
-        'absolute' => TRUE,
-      ])->toString(),
-    ];
-  }
-
-  /**
    * Returns the message arguments.
    *
    * @param \Drupal\node\NodeInterface $discussion
@@ -209,21 +211,39 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *
    * @return array
    *   An associative array of message arguments, keyed by argument ID.
+   *
+   * @throws \Exception
+   *   Thrown if one of the arguments could not be generated.
    */
   protected function getArguments(NodeInterface $discussion) : array {
     $arguments = [];
 
     $arguments['@entity:title'] = $discussion->label();
+    try {
+      $entity_url = $discussion->toUrl('canonical', ['absolute' => TRUE])->toString();
+    }
+    catch (EntityMalformedException | UndefinedLinkTemplateException $e) {
+      // Retrieval of the URL might fail if the link template is not defined, or
+      // if the entity doesn't have an ID.
+      throw new \Exception('Could not retrieve URL for discussion.', NULL, $e);
+    }
+    $arguments['@entity:url'] = $entity_url;
 
     $actor = $this->getCurrentUser();
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
+    $actor_first_name = !empty($actor->get('field_user_first_name')->value) ? $actor->get('field_user_first_name')->value : '';
+    $actor_family_name = !empty($actor->get('field_user_family_name')->value) ? $actor->get('field_user_family_name')->value : '';
 
     if ($actor->hasRole('moderator')) {
       $arguments['@actor:full_name'] = 'The Joinup Support Team';
     }
     else {
       $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ? $actor_first_name . ' ' . $actor_family_name : $actor->get('full_name')->value;
+    }
+
+    $group = $this->getDiscussionGroup($discussion);
+    if ($group) {
+      $arguments['@group:label'] = $group->label();
+      $arguments['@group:bundle'] = $group->bundle();
     }
 
     return $arguments;
@@ -235,8 +255,15 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @return \Drupal\user\UserInterface
    *   The current user.
    */
-  protected function getCurrentUser() : UserInterface {
-    return $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+  protected function getCurrentUser(): UserInterface {
+    try {
+      /** @var \Drupal\user\UserInterface $user */
+      $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
+      return $user;
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      // The storage for the 'user' entity type should exist. Ignore this.
+    }
   }
 
   /**
@@ -244,16 +271,41 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\node\NodeInterface $discussion
    *   The discussion for which to send the notification.
+   * @param string $message_template
+   *   The ID of the message template to use.
    *
    * @return bool
    *   Whether or not the sending of the e-mails has succeeded.
    */
-  protected function sendMessage(NodeInterface $discussion) : bool {
-    return $this->messageDelivery
-      ->createMessage('discussion_delete')
-      ->setArguments($this->getArguments($discussion))
-      ->setRecipients($this->getSubscribers($discussion))
-      ->sendMail();
+  protected function sendMessage(NodeInterface $discussion, string $message_template): bool {
+    try {
+      return $this->messageDelivery
+        ->createMessage($message_template)
+        ->setArguments($this->getArguments($discussion))
+        ->setRecipients($this->getSubscribers($discussion))
+        ->sendMail();
+    }
+    catch (\Exception $e) {
+      $this->logger->critical('Unexpected exception thrown when sending a message for a discussion.',
+        [
+          'exception' => $e,
+        ]);
+      return FALSE;
+    }
+  }
+
+  /**
+   * Returns the group the discussion belongs to.
+   *
+   * @param \Drupal\node\NodeInterface $discussion
+   *   The discussion for which to return the group.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *   The group (which is an RDF entity of type 'collection' or 'solution'),
+   *   or NULL if no group is found.
+   */
+  protected function getDiscussionGroup(NodeInterface $discussion) : ?RdfInterface {
+    return $discussion->get('og_audience')->entity;
   }
 
 }
