@@ -41,34 +41,6 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   protected $messageDelivery;
 
   /**
-   * The comment entity.
-   *
-   * @var \Drupal\comment\CommentInterface
-   */
-  protected $comment;
-
-  /**
-   * The community content discussion node.
-   *
-   * @var \Drupal\node\NodeInterface
-   */
-  protected $discussion;
-
-  /**
-   * The discussion parent group.
-   *
-   * @var \Drupal\rdf_entity\RdfInterface
-   */
-  protected $group;
-
-  /**
-   * The list of recipients as user accounts.
-   *
-   * @var \Drupal\user\UserInterface[]
-   */
-  protected $recipients;
-
-  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
@@ -128,23 +100,15 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The event object.
    */
   public function notifyOnDiscussionUpdate(DiscussionEvent $event): void {
-    $this->discussion = $event->getNode();
+    $discussion = $event->getNode();
 
     // Don't handle inconsistent discussions, without a parent group.
-    if (!$this->group = $this->discussion->get('og_audience')->entity) {
+    $group = $this->getDiscussionGroup($discussion);
+    if (empty($group)) {
       return;
     }
 
-    // No recipients, no reaction.
-    if (!$this->getRecipients()) {
-      return;
-    }
-
-    $this->messageDelivery
-      ->createMessage('discussion_updated')
-      ->setArguments($this->getArguments($this->discussion))
-      ->setRecipients($this->getRecipients())
-      ->sendMail();
+    $this->sendMessage($discussion, 'discussion_updated');
   }
 
   /**
@@ -157,24 +121,6 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     /** @var \Drupal\node\NodeInterface $discussion */
     $discussion = $event->getEntity();
     $this->sendMessage($discussion, 'discussion_delete');
-  }
-
-  /**
-   * Returns the list of recipients.
-   *
-   * @return \Drupal\user\UserInterface[]
-   *   The list of recipients as an array of user accounts, keyed by user ID.
-   */
-  protected function getRecipients(): array {
-    if (!isset($this->recipients)) {
-      $this->recipients = $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
-      // The author of the discussion update should not be notified, if
-      // eventually he/she is in the subscribers list.
-      if (!$this->discussion->getRevisionUser()->isAnonymous()) {
-        unset($this->recipients[$this->discussion->getRevisionUserId()]);
-      }
-    }
-    return $this->recipients;
   }
 
   /**
