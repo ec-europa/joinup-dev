@@ -62,6 +62,21 @@
         <setmysqlautoincrement />
         <phingcall target="writable-settings-folder" />
         <phingcall target="writable-settings-php" />
+
+        <!-- Set the transaction type to READ-COMMITTED -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$databases\['default'\]\['default'\]\['init_commands'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
         <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
 
         <!-- Make sure persistent session cookies are disabled. -->
