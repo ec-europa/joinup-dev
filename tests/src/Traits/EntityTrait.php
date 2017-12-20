@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
@@ -24,13 +25,18 @@ trait EntityTrait {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The requested entity.
    *
-   * @throws \Exception
+   * @throws \RuntimeException
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
   protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
     $entity_manager = \Drupal::entityTypeManager();
-    $storage = $entity_manager->getStorage($entity_type);
+    try {
+      $storage = $entity_manager->getStorage($entity_type);
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      throw new \RuntimeException('Storage not found', NULL, $e);
+    }
     $entity = $entity_manager->getDefinition($entity_type);
 
     $query = $storage->getQuery()
@@ -49,7 +55,37 @@ trait EntityTrait {
       return $storage->load($result);
     }
 
-    throw new \Exception("The entity with label '$label' was not found.");
+    throw new \RuntimeException("The entity with label '$label' was not found.");
+  }
+
+  /**
+   * Mapping of human readable entity type names to machine names.
+   *
+   * @return array
+   *   The entity type mapping.
+   */
+  protected static function entityTypeAliases() {
+    return [
+      'content' => 'node',
+    ];
+  }
+
+  /**
+   * Translates human readable entity types to machine names.
+   *
+   * @param string $entity_type
+   *   The human readable entity type. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the entity type.
+   */
+  protected static function translateEntityTypeAlias($entity_type) {
+    $entity_type = strtolower($entity_type);
+    $aliases = self::entityTypeAliases();
+    if (array_key_exists($entity_type, $aliases)) {
+      $entity_type = $aliases[$entity_type];
+    }
+    return $entity_type;
   }
 
   /**

@@ -40,18 +40,18 @@ Feature: Subscribing to discussions
     And the "Rare butter" discussion should have 0 subscribers
 
   @email
-  Scenario: Receive an E-mail notification when a comment is added or a
-    discussion is updated.
-
+  Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
-      | Username | E-mail            | First name | Family name |
-      | follower | dale@example.com  | Dale       | Arden       |
-      | debater  | flash@example.com | Flash      | Gordon      |
-
-    # Subscribe the 'follower' user to the discussion.
-    Given I am logged in as follower
-    And I go to the "Rare Butter" discussion
-    Then I click "Subscribe"
+      | Username    | E-mail            | First name | Family name |
+      | follower    | dale@example.com  | Dale       | Arden       |
+      | debater     | flash@example.com | Flash      | Gordon      |
+      | facilitator | ming@example.com  | Ming       | Merciless   |
+    And the following collection user membership:
+      | collection     | user        | roles       |
+      | Dairy products | facilitator | facilitator |
+    And the following discussion content subscriptions:
+      | username | title       |
+      | follower | Rare Butter |
 
     # Notifications are only sent for anonymous users when the comment is
     # approved.
@@ -77,6 +77,11 @@ Feature: Subscribing to discussions
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient | hans@example.com                                                                                    |
+      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    # Flash Gordon is not subscribed yet. He should not retrieve the message.
+    But the following email should not have been sent:
+      | recipient | flash@example.com                                                                                   |
       | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
       | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
@@ -151,38 +156,58 @@ Feature: Subscribing to discussions
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
 
-    # Make sure the content is in published state again.
-    # Todo: reorder the test to avoid this juggling of states.
-    # Todo: test that deleting unpublished content doesn't send out notifications.
-    When I go to the discussion content "Rare Butter" edit screen
-    And I press "Propose"
-    When I go to the discussion content "Rare Butter" edit screen
-    And I press "Publish"
-
-    # Delete the discussion and check that the notifications are sent.
-    # Promote one of the subscribers to be a moderator so they can delete the
-    # discussion.
-    Given the following collection user membership:
-      | collection     | user    | roles       |
-      | Dairy products | debater | facilitator |
-    And I am logged in as debater
-
+    # Delete the discussion and check that no notifications are sent. Since the
+    # discussion is not published nobody should be notified.
     When I go to the "Rare butter" discussion
+    And I click "Delete" in the "Entity actions" region
+    And I press "Delete"
+
+    Then the following email should not have been sent:
+      | recipient | dale@example.com                                                                                                      |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+    And the following email should not have been sent:
+      | recipient | flash@example.com                                                                                                     |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+    And the following email should not have been sent:
+      | recipient | hans@example.com                                                                                                      |
+      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
+      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+
+    # Now try to delete a published discussion. The notifications should be sent
+    # in this case.
+    Given discussion content:
+      | title     | body                                                   | collection     | state     | author          |
+      | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
+    And discussion content subscriptions:
+      | username    | title     |
+      | follower    | Rare feta |
+      | facilitator | Rare feta |
+    And I am logged in as facilitator
+
+    When I go to the "Rare feta" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
     Then the following email should have been sent:
       | recipient | dale@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
-    # The user 'debater' is also a discussion subscriber but because he's the
-    # person who has deleted the comment, he will not receive the notification.
-    But the following email should not have been sent:
-      | recipient | flash@example.com                                                                                                     |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
+      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
       | recipient | hans@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
+      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+    # The user 'facilitator' is also a discussion subscriber but because she's
+    # the person who has deleted the comment, she will not receive the
+    # notification.
+    But the following email should not have been sent:
+      | recipient | ming@example.com                                                                                                      |
+      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
+      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+    # Flash Gordon is not subscribed. He should not retrieve the message.
+    And the following email should not have been sent:
+      | recipient | flash@example.com                                                                                                     |
+      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
+      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
