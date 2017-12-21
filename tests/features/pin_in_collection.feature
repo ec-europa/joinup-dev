@@ -90,6 +90,11 @@ Feature: Pinning content entities inside collections
     And I should see the contextual link "Unpin" in the "Useful information" tile
     But I should not see the contextual link "Pin" in the "Useful information" tile
 
+    # When we are not in a collection page, the pin/unpin links should not be visible.
+    When I am at "/search"
+    Then I should not see the contextual links "Pin, Unpin" in the "Useful information" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Very important" tile
+
     Examples:
       | content type | label      |
       | event        | Event      |
@@ -166,6 +171,11 @@ Feature: Pinning content entities inside collections
       | Wrench catalogue              |
     And I should see the contextual link "Unpin" in the "Orange estimator" tile
     But I should not see the contextual link "Pin" in the "Orange estimator" tile
+
+    # When we are not in a collection page, the pin/unpin links should not be visible.
+    When I am at "/search"
+    Then I should not see the contextual links "Pin, Unpin" in the "Wrench catalogue" tile
+    And I should not see the contextual links "Pin, Unpin" in the "Orange estimator" tile
 
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
