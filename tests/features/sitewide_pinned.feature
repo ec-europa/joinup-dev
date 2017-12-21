@@ -6,13 +6,13 @@ Feature: Pinning content site-wide
 
   Background:
     Given the following collections:
-      | title       | state     | pinned site-wide |
-      | Risky Sound | validated | yes              |
-      | Tuna Moving | validated | no               |
+      | title       | state     | pinned site-wide | creation date |
+      | Risky Sound | validated | yes              | 2017-12-21    |
+      | Tuna Moving | validated | no               | 2018-02-28    |
     And the following solutions:
-      | title            | collection  | state     | pinned site-wide |
-      | D minor          | Risky Sound | validated | yes              |
-      | Migration routes | Tuna Moving | validated | no               |
+      | title            | collection  | state     | pinned site-wide | creation date |
+      | D minor          | Risky Sound | validated | yes              | 2017-12-22    |
+      | Migration routes | Tuna Moving | validated | no               | 2018-01-31    |
     And users:
       | Username      | E-mail                    |
       | Burke Abraham | burke.abraham@example.com |
@@ -27,16 +27,17 @@ Feature: Pinning content site-wide
 
   Scenario Outline: Moderators can pin and unpin content site-wide.
     Given <content type> content:
-      | title               | collection  | state     | pinned site-wide | visits |
-      | Loudest instruments | Risky Sound | validated | no               | 4390   |
-      | Handmade oboes      | Risky Sound | validated | yes              | 948    |
+      | title               | collection  | state     | pinned site-wide | visits | created    |
+      | Loudest instruments | Risky Sound | validated | no               | 4390   | 2017-03-29 |
+      | Handmade oboes      | Risky Sound | validated | yes              | 948    | 2017-04-25 |
 
     When I am an anonymous user
     And I go to the homepage
+    # The pinned entities are always shown first.
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
       | Loudest instruments |
     And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
     And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
@@ -46,9 +47,9 @@ Feature: Pinning content site-wide
     When I am logged in as an "authenticated user"
     And I go to the homepage
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
       | Loudest instruments |
     And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
     And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
@@ -59,9 +60,9 @@ Feature: Pinning content site-wide
     When I am logged in as "Burke Abraham"
     And I go to the homepage
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
       | Loudest instruments |
     And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
     And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
@@ -75,9 +76,9 @@ Feature: Pinning content site-wide
     # links with CSRF tokens won't be valid anymore.
     When I go to the homepage
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
       | Loudest instruments |
     And I should see the contextual link "Pin site-wide" in the "Loudest instruments" tile
     And I should see the contextual link "Unpin site-wide" in the "Handmade oboes" tile
@@ -87,20 +88,20 @@ Feature: Pinning content site-wide
     When I click the contextual link "Pin site-wide" in the "Loudest instruments" tile
     Then I should see the success message "<label> Loudest instruments has been set as pinned content."
     When I go to the homepage
-    # Content in the homepage is order by site-wide pinned and then number of visits.
+    # Pinned entities are sorted by creation date.
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
-      | Loudest instruments |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
+      | Loudest instruments |
 
     When I click the contextual link "Unpin site-wide" in the "Loudest instruments" tile
     Then I should see the success message "<label> Loudest instruments has been removed from the pinned contents."
     When I go to the homepage
     Then I should see the following tiles in the correct order:
-      | Handmade oboes      |
       | D minor             |
       | Risky Sound         |
+      | Handmade oboes      |
       | Loudest instruments |
 
     When I click the contextual link "Unpin site-wide" in the "Handmade oboes" tile
@@ -122,6 +123,7 @@ Feature: Pinning content site-wide
 
   Scenario Outline: Moderators can pin and unpin collections and solutions site-wide.
     When I am an anonymous user
+    And I am on the homepage
     And I click "<header link>" in the "Header" region
     Then I should see the following tiles in the correct order:
       | <pinned>   |

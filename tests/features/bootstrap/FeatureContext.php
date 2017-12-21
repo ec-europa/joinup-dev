@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ResponseTextException;
@@ -47,7 +48,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present.
@@ -78,7 +79,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are not present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -100,7 +101,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present and visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
@@ -142,7 +143,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present but not visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
@@ -183,7 +184,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found.
@@ -210,7 +211,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is not visible.
@@ -246,7 +247,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is visible.
@@ -430,6 +431,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that the radio button option should be selected.
+   *
    * @Then the :radio radio button should not be selected
    */
   public function assertRadioButtonNotChecked($radio) {
@@ -1036,6 +1039,104 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertPageNotCached() {
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
+  }
+
+  /**
+   * Attempts to check a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I select/check the :row_text row
+   */
+  public function assertSelectRow($text) {
+    $page = $this->getSession()->getPage();
+    $rows = $page->findAll('css', 'tr');
+    if (empty($rows)) {
+      throw new \Exception(sprintf('No rows found on the page %s', $this->getSession()->getCurrentUrl()));
+    }
+    $found = FALSE;
+    /** @var \Behat\Mink\Element\NodeElement $row */
+    foreach ($rows as $row) {
+      if (strpos($row->getText(), $text) !== FALSE) {
+        $found = TRUE;
+        break;
+      }
+    }
+    if (!$found) {
+      throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
+    }
+    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
+      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    }
+    $checkbox->check();
+  }
+
+  /**
+   * Runs a batch operations process.
+   *
+   * @Given I wait for the batch process to finish
+   */
+  public function waitForBatchProcess() {
+    while ($refresh = $this->getSession()
+      ->getPage()
+      ->find('css', 'meta[http-equiv="Refresh"]')) {
+      $content = $refresh->getAttribute('content');
+      $url = str_replace('0; URL=', '', $content);
+      $this->getSession()->visit($url);
+    }
+  }
+
+  /**
+   * Clears the static cache of DatabaseCacheTagsChecksum.
+   *
+   * Static caches are typically cleared at the end of the request since a
+   * typical web request is short lived and the process disappears when the page
+   * is delivered. But if a Behat test is using DrupalContext then Drupal will
+   * be bootstrapped early on (in the BeforeSuiteScope step). This starts a
+   * request which is not short lived, but can live for several minutes while
+   * the tests run. During the lifetime of this request there will be steps
+   * executed that do requests of their own, changing the state of the Drupal
+   * site. This does not however update any of the statically cached data of the
+   * parent request, so this is totally unaware of the changes. This causes
+   * unexpected behaviour like the failure to invalidate some caches because
+   * DatabaseCacheTagsChecksum::invalidateTags() keeps a local storage of which
+   * cache tags were invalidated, and this is not reset in time.
+   *
+   * For this reason, in such limited cases, where we need to clear the cache
+   * tags cache, we tag the Behat feature with @clearStaticCache. This ensures
+   * that static cache is cleared after each step.
+   *
+   * CAUTION: Use the @clearStaticCache tag only in scenarios where you have
+   * trouble with the static caching being preserved across step requests,
+   * because clearing the static cache too often might affect performance.
+   *
+   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
+   * @see https://github.com/jhedstrom/drupalextension/issues/133
+   *
+   * @AfterStep
+   */
+  public function clearCacheTagsStaticCache(AfterStepScope $event) {
+    $feature = $event->getFeature();
+    if ($feature->hasTag('clearStaticCache')) {
+      parent::clearStaticCaches();
+    }
+  }
+
+  /**
+   * Waits until a text is dynamically added to the page.
+   *
+   * @Given I wait until the page contains the text :text
+   */
+  public function iWaitUntilPageContains($text) {
+    $text = addslashes($text);
+    $this->getSession()->wait(60000,
+      "jQuery(':contains(\"$text\")').length > 0"
+    );
   }
 
 }

@@ -102,7 +102,7 @@ abstract class AwsS3Base extends \Task {
    * Sets the version of the AWS web service to utilize.
    *
    * @param string $version
-   *   The version of the file to download. Defaults to 'latest'.
+   *   The version of the AWS web service. Defaults to 'latest'.
    */
   public function setVersion(string $version = 'latest') {
     $this->version = $version;

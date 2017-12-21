@@ -1,11 +1,6 @@
 langcode: en
 status: true
-dependencies:
-  config:
-    - search_api.index.published
-    - views.view.content_overview
-  module:
-    - search_api
+dependencies: {  }
 id: content_my_content
 name: 'My content'
 url_alias: content_my_content
@@ -52,7 +47,7 @@ processor_configs:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -9
     settings: {  }
 empty_behavior:
   behavior: none

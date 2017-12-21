@@ -33,6 +33,25 @@ targetEntityType: rdf_entity
 bundle: asset_release
 mode: view_mode_tile
 content:
+  created:
+    type: timestamp
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      date_format: date_only
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_isr_affiliations_requests:
     weight: 22
     label: above
@@ -233,7 +252,6 @@ content:
     region: content
 hidden:
   changed: true
-  created: true
   field_isr_banner: true
   field_isr_contact_information: true
   field_isr_description: true

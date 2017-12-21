@@ -30,7 +30,6 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
-    - rdf_entity
     - text
 third_party_settings:
   field_group:
@@ -235,6 +234,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  created: true
   current_workflow_state: true
   field_ar_affiliates: true
   field_collection_content: true
