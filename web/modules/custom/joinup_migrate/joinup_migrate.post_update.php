@@ -10,9 +10,9 @@ use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
