@@ -123,6 +123,7 @@ Feature: Pinning content site-wide
 
   Scenario Outline: Moderators can pin and unpin collections and solutions site-wide.
     When I am an anonymous user
+    And I am on the homepage
     And I click "<header link>" in the "Header" region
     Then I should see the following tiles in the correct order:
       | <pinned>   |
