@@ -19,8 +19,8 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
-      | Username | Cecil Clapman |
-      | Password | claps         |
+      | E-mail or username | Cecil Clapman |
+      | Password           | claps         |
     And I press "Sign in"
     Then I should see the heading "Propose collection"
 
@@ -74,7 +74,7 @@ Feature: Proposing a collection
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
     When I fill in the following:
-      | Title | About                                                        |
+      | Title | About                                                          |
       | Body  | <p>Some more<em>information</em><br />about the collection.<p> |
     And I press "Save"
     Then I should see the success message "Custom page About has been created."

@@ -108,6 +108,29 @@
                     password="${migration.db.password}">
             <transaction src="${migration.db.import_path}"/>
         </pdosqlexec>
+        <if>
+            <available file="${migration.db.views_import_path}" type="file" property="migrate.views_file_exists" value="true"/>
+            <then>
+                <pdosqlexec url="${migration.db.type}:host=${migration.db.host};dbname=${migration.db.name}"
+                            userid="${migration.db.user}"
+                            password="${migration.db.password}">
+                    <transaction src="${migration.db.views_import_path}"/>
+                </pdosqlexec>
+            </then>
+        </if>
+        <!--
+            The 'd8_solution' MySQL view has been fixed in post update script
+            joinup_migrate_post_update_more_redirects() but on UAT, we use a
+            not-fixed legacy D6 database. Because this 'post update' was already
+            executed on the current PRODUCTION snapshot, it will not be executed
+            again, meaning the view is still not fixed, so we have to fix it.
+            @see joinup_migrate_post_update_more_redirects()
+        -->
+        <pdosqlexec url="${migration.db.type}:host=${migration.db.host};dbname=${migration.db.name}"
+                    userid="${migration.db.user}"
+                    password="${migration.db.password}">
+            <transaction src="web/modules/custom/joinup_migrate/fixture/0.solution.sql"/>
+        </pdosqlexec>
     </target>
 
     <!-- Add migration settings to Drupal settings file. -->

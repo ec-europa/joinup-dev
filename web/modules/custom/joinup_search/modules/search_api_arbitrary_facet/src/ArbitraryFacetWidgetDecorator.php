@@ -58,12 +58,12 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getQueryType(array $query_types) {
+  public function getQueryType() {
     $config = $this->original->getConfiguration();
     if (isset($config['arbitrary_facet_plugin']) && $config['arbitrary_facet_plugin'] != '_none') {
       return 'facet_query';
     }
-    return $this->original->getQueryType($query_types);
+    return $this->original->getQueryType();
   }
 
   /**
@@ -127,6 +127,13 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
    */
   public function calculateDependencies() {
     return $this->original->calculateDependencies();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function supportsFacet(FacetInterface $facet) {
+    return $this->original->supportsFacet($facet);
   }
 
   /**
