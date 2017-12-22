@@ -17,10 +17,8 @@ Feature: As a user of the website
       | Melted Hairdresser        | Fairy Tail | now -1 day   | now +1 day          | now -3 day | validated | katerpillar    |
       | Hot Air                   | Fairy Tail | now +2 day   | now +4 day          | now -2 day | validated | katerpillar    |
       | Walking Unofficial Humans | Fairy Tail | now -3 day   | now -1 day          | now        | validated | trustysidekick |
-    # Technical: use a separate step to create an event associated to the anonymous user.
-    And event content:
-      | title           | collection | start date  | end date    | created    | state     |
-      | Spring Freezing | Fairy Tail | now +1 week | now +1 week | now -5 day | validated |
+      # The "Spring Freezing" event is associated with the anonymous user.
+      | Spring Freezing           | Fairy Tail | now +1 week  | now +1 week         | now -5 day | validated |                |
     And discussion content:
       | title       | collection | state     | created   |
       | Yellow Zeus | Fairy Tail | validated | yesterday |
