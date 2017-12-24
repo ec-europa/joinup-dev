@@ -11,7 +11,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
  */
 class EtlProcessStepManager extends DefaultPluginManager {
 
-
   /**
    * Constructs a new EtlProcessStepManager object.
    *

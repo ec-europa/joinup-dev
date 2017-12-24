@@ -1,0 +1,5 @@
+
+run etl pipeline:
+  title: 'Execute a etl data pipeline'
+  description: 'Allow to execute etl data pipelines'
+  restrict access: true

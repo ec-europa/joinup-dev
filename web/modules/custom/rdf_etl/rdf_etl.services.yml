@@ -1,4 +1,7 @@
 services:
+  rdf_etl.state:
+    class: Drupal\rdf_etl\EtlStateManager
+    arguments: ['@state']
   plugin.manager.etl_data_pipeline:
     class: Drupal\rdf_etl\Plugin\EtlDataPipelineManager
     parent: default_plugin_manager
@@ -7,4 +10,4 @@ services:
     parent: default_plugin_manager
   rdf_etl.orchestrator:
     class: Drupal\rdf_etl\EtlOrchestrator
-    arguments: ['@plugin.manager.etl_data_pipeline', '@plugin.manager.etl_process_step']
+    arguments: ['@plugin.manager.etl_data_pipeline', '@plugin.manager.etl_process_step', '@rdf_etl.state', '@form_builder']
