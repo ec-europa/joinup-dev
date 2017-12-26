@@ -12,6 +12,7 @@ use Drupal\migrate_run\MigrateExecutable;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
 
@@ -309,4 +310,50 @@ function joinup_migrate_post_update_srits_change_owner() {
   $collection->setOwner($new_owner);
   $collection->skip_notification = TRUE;
   $collection->save();
+}
+
+/**
+ * Copy the about text to distributions for CTT Spain [ISAICP-4057].
+ */
+function joinup_migrate_post_update_copy_about_text_ctt_spain() {
+  $solution_labels = [];
+  $collection = Rdf::load('http://administracionelectronica.gob.es/ctt');
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $solutions */
+  $solutions = $collection->get('field_ar_affiliates');
+  // Iterate over affiliated solutions for the CTT Spain collection.
+  foreach ($solutions->referencedEntities() as $affiliate) {
+    /** @var \Drupal\rdf_entity\RdfInterface $affiliate */
+    if ($affiliate->bundle() === 'solution') {
+      // Retrieve the description from the solution in all available languages.
+      $descriptions = [];
+      foreach (array_keys($affiliate->getTranslationLanguages()) as $langcode) {
+        $translated_entity = $affiliate->getTranslation($langcode);
+        $descriptions[$langcode] = $translated_entity->get('field_is_description')
+          ->getValue();
+      }
+
+      if (empty($descriptions)) {
+        continue;
+      }
+
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $distributions */
+      $distributions = $affiliate->get('field_is_distribution');
+      if (!$distributions->isEmpty()) {
+        $solution_labels[] = "- {$affiliate->label()}";
+      }
+      // Iterate over distributions that are associated with this solution.
+      foreach ($distributions->referencedEntities() as $distribution) {
+        /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+        foreach ($descriptions as $langcode => $description) {
+          if (!$translated_entity = $distribution->getTranslation($langcode)) {
+            $translated_entity = $distribution->addTranslation($langcode, $distribution->toArray());
+          }
+          $translated_entity->set('field_ad_description', $description);
+        }
+        $distribution->skip_notification = TRUE;
+        $distribution->save();
+      }
+    }
+  }
+  return $solution_labels ? t('Description of following solutions were copied to their child distributions:') . "\n" . implode("\n", $solution_labels) : t('No description copied.');
 }
