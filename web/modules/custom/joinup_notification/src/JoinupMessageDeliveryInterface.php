@@ -51,6 +51,22 @@ use Drupal\message\MessageInterface;
 interface JoinupMessageDeliveryInterface {
 
   /**
+   * Sends the given Message entity to the given e-mail addresses.
+   *
+   * If the message entity is not saved, the service will take care to save it
+   * prior to delivery.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to be delivered.
+   * @param string[] $mails
+   *   A list of e-mail addresses to send the message to.
+   *
+   * @return bool
+   *   Whether or not the messages were sent successfully.
+   */
+  public function sendMessageToEmailAddresses(MessageInterface $message, array $mails): bool;
+
+  /**
    * Sets a message entity to be delivered.
    *
    * If the message entity is not saved, the service will take care to save it
@@ -119,24 +135,6 @@ interface JoinupMessageDeliveryInterface {
    * @see self::setRecipientsAsEmails()
    */
   public function setRecipients(array $accounts): self;
-
-  /**
-   * Sets recipients directly as E-mail addresses.
-   *
-   * This is an alternative but also complementary method of ::setRecipients().
-   * Instead of passing a list of recipients as user accounts, you can pass
-   * directly the E-mail addresses. Note that if both methods are used, the
-   * E-mail addresses passed here will be appended to the list of the addresses
-   * extracted from the user accounts passed in ::setRecipients().
-   *
-   * @param string[] $mails
-   *   A list of recipient E-mail addresses.
-   *
-   * @return $this
-   *
-   * @see self::setRecipients()
-   */
-  public function setRecipientsAsEmails(array $mails): self;
 
   /**
    * Sends the message to the recipients.

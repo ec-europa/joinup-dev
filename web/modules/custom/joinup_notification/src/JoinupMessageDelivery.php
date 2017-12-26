@@ -37,13 +37,6 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   protected $accounts = [];
 
   /**
-   * E-mail recipients.
-   *
-   * @var string[]
-   */
-  protected $mails = [];
-
-  /**
    * The message notifier service.
    *
    * @var \Drupal\message_notify\MessageNotifier
@@ -65,6 +58,26 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    */
   public function __construct(MessageNotifier $message_notifier) {
     $this->messageNotifier = $message_notifier;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sendMessageToEmailAddresses(MessageInterface $message, array $mails): bool {
+    // If the message is not saved, do this right now.
+    if ($message->isNew()) {
+      $message->save();
+    }
+
+    // Ensure uniqueness so that the message is not delivered multiple times to
+    // the same address.
+    $mails = array_unique($mails);
+
+    // Send E-mail messages.
+    return array_reduce($mails, function (bool $success, string $mail) use ($message): bool {
+      $options = ['save on success' => FALSE, 'mail' => $mail];
+      return $this->messageNotifier->send($message, $options) && $success;
+    }, TRUE);
   }
 
   /**
@@ -104,14 +117,6 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function setRecipientsAsEmails(array $mails): JoinupMessageDeliveryInterface {
-    $this->mails = $mails;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function sendMail(): bool {
     if (empty($this->message) || !$this->message instanceof MessageInterface) {
       throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");
@@ -137,9 +142,9 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
       return !$account->isAnonymous() ? $account->getEmail() : NULL;
     }, $this->accounts));
 
-    // Merge E-mail addresses extracted from passed from user accounts with
-    // those passed directly as recipient E-mail addresses. Ensure uniqueness.
-    $mails = array_unique(array_merge($mails, $this->mails));
+    // Ensure uniqueness so that the message is not delivered multiple times to
+    // the same address.
+    $mails = array_unique($mails);
 
     // Send E-mail messages.
     return array_reduce($mails, function (bool $success, string $mail): bool {

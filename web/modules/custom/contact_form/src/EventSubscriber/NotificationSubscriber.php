@@ -46,10 +46,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $this->messageDelivery
-      ->setMessage($message)
-      ->setRecipientsAsEmails([$recipient])
-      ->sendMail();
+    $this->messageDelivery->sendMessageToEmailAddresses($message, [$recipient]);
   }
 
   /**
