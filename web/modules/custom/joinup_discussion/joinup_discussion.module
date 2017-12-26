@@ -2,5 +2,88 @@
 
 /**
  * @file
- * Contains functions relative to the discussion entity.
+ * Hook implementations for the Joinup Discussion module.
  */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+use Drupal\changed_fields\NodeSubject;
+use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\joinup_discussion\Event\DiscussionEvents;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * We use an observer to detect changes to the relevant fields of the discussion
+ * nodes. Then we call the observer update method to take action.
+ */
+function joinup_discussion_node_presave(NodeInterface $discussion) {
+  if ($discussion->bundle() === 'discussion') {
+    // Create a node subject object, add the observer and notify about changes.
+    $node_subject = new NodeSubject($discussion, 'default_field_comparator');
+    $node_subject->attach(new DiscussionObserver(\Drupal::service('event_dispatcher')));
+    $node_subject->notify();
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_discussion_entity_extra_field_info() {
+  $fields = [];
+
+  $fields['node']['discussion']['display']['invite_link'] = [
+    'label' => t('Invite'),
+    'description' => t('A link to invite users to the discussion.'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Adds an invite link to discussions.
+ */
+function joinup_discussion_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$display->getComponent('invite_link')) {
+    return;
+  }
+
+  $url = Url::fromRoute('joinup_discussion.invite_form', [
+    'node' => $entity->id(),
+  ]);
+
+  $build['invite_link'] = [
+    '#theme' => 'link_icon',
+    '#title' => t('Invite'),
+    '#icon' => 'user',
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['action-link'],
+    ],
+    '#access' => $url->access(),
+    '#cache' => [
+      'contexts' => [
+        // Using our custom context.
+        'can_invite_to_discussion',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_discussion_node_predelete(EntityInterface $entity) : void {
+  if ($entity->bundle() !== 'discussion') {
+    return;
+  }
+
+  // Send a message to subscribed users to inform that the discussion was
+  // deleted.
+  joinup_notification_dispatch_notification('delete', DiscussionEvents::DELETE, $entity);
+}
