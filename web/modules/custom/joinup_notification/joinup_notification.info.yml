@@ -6,6 +6,7 @@ package: Joinup
 dependencies:
   - joinup_core
   - message
+  - message_digest
   - message_notify
   - solution
   - state_machine_revisions
