@@ -320,7 +320,7 @@ class JoinupMigrateTest extends BrowserTestBase implements MigrateMessageInterfa
   protected function assertRedirects(array $expected_sources, ContentEntityInterface $entity) {
     /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
     $redirect_repository = \Drupal::service('redirect.repository');
-    $redirects = $redirect_repository->findByDestinationUri('internal:/' . $entity->toUrl()->getInternalPath());
+    $redirects = $redirect_repository->findByDestinationUri(['internal:/' . $entity->toUrl()->getInternalPath()]);
     $actual_sources = array_map(function (Redirect $redirect) {
       return $redirect->get('redirect_source')->path;
     }, $redirects);
