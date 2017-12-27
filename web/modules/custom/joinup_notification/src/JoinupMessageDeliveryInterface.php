@@ -9,35 +9,11 @@ use Drupal\message\MessageInterface;
 /**
  * Interface for the message delivery service.
  *
- * This service allows easy sending of message entities as emails. If the
- * message entity is already available, the following snippet is sending the
- * message by E-mail:
- * @code
- * $message = Message::load(...);
- * $accounts = User::loadMultiple(...);
- * \Drupal::service('joinup_notification.message_delivery')
- *   ->setMessage($message)
- *   // Some arguments can be overridden or new arguments can be added.
- *   ->addArguments(['@name' => 'Joe', '@gender' => 'M'])
- *   ->setRecipients($accounts)
- *   ->sendMail();
- * @endcode
- * Alternatively, when the message doesn't exist yet, the service knows how to
- * create it:@code
- * \Drupal::service('joinup_notification.message_delivery')
- *   ->createMessage('discussion_invite', [
- *     'field_invitation' => $invitation_id,
- *   ])
- *   ->addArguments(['@name' => 'Joe', '@gender' => 'M'])
- *   ->setRecipients($accounts)
- *   // Add some additional E-mail addresses not belonging to user accounts.
- *   ->setRecipientsAsEmails(['abc@example.com', 'jane@example.com'])
- *   ->sendMail();
- * @endcode
  * Note: A message passed or created with this service will not vary on
  * recipient as the arguments are the same for all passed recipients. As an
  * effect, recipient-based customisation of messages is not possible (i.e. it
- * isn't possible to use such recipient tokens/arguments:@code
+ * isn't possible to use such recipient tokens/arguments:
+ * @code
  * Attn: @recipient:first_name @recipient:last_name
  * @endcode
  * This is because passed arguments are message-based. The reason behind this
@@ -51,10 +27,36 @@ use Drupal\message\MessageInterface;
 interface JoinupMessageDeliveryInterface {
 
   /**
+   * Sends the given Message entity to the given users.
+   *
+   * If the message entity is not saved, the service will take care to save it
+   * prior to delivery.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to be delivered.
+   * @param \Drupal\user\UserInterface[] $accounts
+   *   A list of user accounts as recipients.
+   * @param bool $digest
+   *   Whether or not to include the message in the user's periodic notification
+   *   digest. If set to TRUE the message will be sent according to the users'
+   *   chosen notification frequency: immediately, daily, weekly or monthly. If
+   *   set to FALSE the message will be sent immediately. Defaults to FALSE.
+   *
+   * @return bool
+   *   Whether or not the messages were sent successfully.
+   */
+  public function sendMessageToUsers(MessageInterface $message, array $accounts, bool $digest = FALSE): bool;
+
+  /**
    * Sends the given Message entity to the given e-mail addresses.
    *
    * If the message entity is not saved, the service will take care to save it
    * prior to delivery.
+   *
+   * This is intended to be used only when sending messages to recipients which
+   * are not registered users of the website. If the recipient is a registered
+   * user, use ::sendMessageToUsers() instead, which honors the user's chosen
+   * message delivery frequency.
    *
    * @param \Drupal\message\MessageInterface $message
    *   The message to be delivered.
@@ -65,24 +67,6 @@ interface JoinupMessageDeliveryInterface {
    *   Whether or not the messages were sent successfully.
    */
   public function sendMessageToEmailAddresses(MessageInterface $message, array $mails): bool;
-
-  /**
-   * Sets a message entity to be delivered.
-   *
-   * If the message entity is not saved, the service will take care to save it
-   * prior to delivery. Alternatively, ::createMessage() method can be used in
-   * order to allow the service handle the creation of the message entity. Use
-   * this method if the message entity is already available when using this
-   * service.
-   *
-   * @param \Drupal\message\MessageInterface $message
-   *   The saved message to be delivered.
-   *
-   * @return $this
-   *
-   * @see self::createMessage()
-   */
-  public function setMessage(MessageInterface $message): self;
 
   /**
    * Creates the message entity to be delivered.
