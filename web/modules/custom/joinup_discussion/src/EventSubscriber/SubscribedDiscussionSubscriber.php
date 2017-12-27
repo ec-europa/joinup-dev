@@ -225,11 +225,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   protected function sendMessage(NodeInterface $discussion, string $message_template): bool {
     try {
-      return $this->messageDelivery
-        ->createMessage($message_template)
-        ->setArguments($this->getArguments($discussion))
-        ->setRecipients($this->getSubscribers($discussion))
-        ->sendMail();
+      return $this->messageDelivery->sendMessageTemplateToUsers($message_template, $this->getArguments($discussion), $this->getSubscribers($discussion));
     }
     catch (\Exception $e) {
       $this->logger->critical('Unexpected exception thrown when sending a message for a discussion.',

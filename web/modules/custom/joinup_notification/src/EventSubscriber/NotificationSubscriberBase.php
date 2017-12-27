@@ -332,11 +332,7 @@ abstract class NotificationSubscriberBase {
 
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToUsers($template_id, $arguments, User::loadMultiple($user_ids)) && $success;
     }
     return $success;
   }

@@ -11,14 +11,6 @@ use Drupal\user\UserInterface;
 
 /**
  * Provides a service class for creating and delivering messages.
- *
- * @todo Since this class is a service it acts as a singleton and all data that
- *   is stored in properties will be persisted and be present the next time the
- *   service is called. This will cause problems if this is used more than once,
- *   especially because if different calls store data on both the `$accounts`
- *   and `$mails` properties.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4169
  */
 class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
 
@@ -34,32 +26,11 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   ];
 
   /**
-   * The message to be delivered.
-   *
-   * @var \Drupal\message\MessageInterface
-   */
-  protected $message;
-
-  /**
-   * A list of user accounts acting as recipients for the message.
-   *
-   * @var \Drupal\user\UserInterface[]
-   */
-  protected $accounts = [];
-
-  /**
    * The message notifier service.
    *
    * @var \Drupal\message_notify\MessageNotifier
    */
   protected $messageNotifier;
-
-  /**
-   * Additional arguments.
-   *
-   * @var array
-   */
-  protected $arguments = [];
 
   /**
    * Constructs a new Joinup deliver service object.
@@ -114,6 +85,22 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function sendMessageTemplateToUsers(string $message_template, array $arguments, array $accounts, bool $digest = FALSE): bool {
+    $message = $this->createMessage($message_template, $arguments);
+    return $this->sendMessageToUsers($message, $accounts, $digest);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails): bool {
+    $message = $this->createMessage($message_template, $arguments);
+    return $this->sendMessageToEmailAddresses($message, $mails);
+  }
+
+  /**
    * Returns the message digest notifier plugin ID for the given user.
    *
    * Users may configure the frequency they wish to receive a message digest.
@@ -165,68 +152,20 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Returns a new Message entity from the given template and arguments.
+   *
+   * @param string $message_template
+   *   The message template to use for creating the message.
+   * @param array $arguments
+   *   The arguments array to set on the message.
+   *
+   * @return \Drupal\message\MessageInterface
+   *   The message.
    */
-  public function createMessage(string $message_template, array $values = []): JoinupMessageDeliveryInterface {
-    // If the template was passed in $values, $message_template take precedence.
-    $values = ['template' => $message_template] + $values;
-    $this->message = Message::create($values);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setArguments(array $arguments): JoinupMessageDeliveryInterface {
-    $this->arguments = $arguments;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setRecipients(array $accounts): JoinupMessageDeliveryInterface {
-    $this->accounts = $accounts;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function sendMail(): bool {
-    if (empty($this->message) || !$this->message instanceof MessageInterface) {
-      throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");
-    }
-
-    $message_arguments = (array) $this->message->getArguments();
-    ksort($message_arguments);
-    ksort($this->arguments);
-    if ($this->arguments !== $message_arguments) {
-      $message_needs_save = TRUE;
-      // Arguments set with ::addArguments() are taking precedence.
-      $arguments = $this->arguments + $message_arguments;
-      $this->message->setArguments($arguments);
-    }
-
-    // If the arguments were altered or message is not saved, do this right now.
-    if (!empty($message_needs_save) || $this->message->isNew()) {
-      $this->message->save();
-    }
-
-    $mails = array_filter(array_map(function (UserInterface $account): ?string {
-      // Anonymous accounts are filtered out.
-      return !$account->isAnonymous() ? $account->getEmail() : NULL;
-    }, $this->accounts));
-
-    // Ensure uniqueness so that the message is not delivered multiple times to
-    // the same address.
-    $mails = array_unique($mails);
-
-    // Send E-mail messages.
-    return array_reduce($mails, function (bool $success, string $mail): bool {
-      $options = ['save on success' => FALSE, 'mail' => $mail];
-      return $success && $this->messageNotifier->send($this->message, $options);
-    }, TRUE);
+  protected function createMessage(string $message_template, array $arguments): MessageInterface {
+    $message = Message::create(['template' => $message_template]);
+    $message->setArguments($arguments);
+    return $message;
   }
 
 }
