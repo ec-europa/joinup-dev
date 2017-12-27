@@ -91,6 +91,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   The notification event object.
    */
   public function commentCrudProxy(NotificationEvent $event): void {
+    // @todo We shouldn't rely on data stored in local properties. This service
+    //   persists on the dependency injection container and might contain stale
+    //   data. Instead the Comment entity should be passed to any other methods
+    //   that require it.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4253
     $this->comment = $event->getEntity();
 
     // Discussion comments are 'reply' comment types.
