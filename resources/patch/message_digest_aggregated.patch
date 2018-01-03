@@ -1,0 +1,623 @@
+diff --git a/message_digest.behat.inc b/message_digest.behat.inc
+new file mode 100644
+index 0000000..f5482ed
+--- /dev/null
++++ b/message_digest.behat.inc
+@@ -0,0 +1,181 @@
++<?php
++
++/**
++ * @file
++ * Contains \MessageDigestSubContext.
++ */
++
++use Behat\Gherkin\Node\TableNode;
++use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
++use Drupal\DrupalExtension\Context\DrupalSubContextBase;
++use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
++use Drupal\message_digest\Traits\MessageDigestTrait;
++
++/**
++ * Behat step definitions for the Message Digest module.
++ */
++class MessageDigestSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
++
++  use MessageDigestTrait;
++
++  /**
++   * Checks that the digest for a user contains a certain message.
++   *
++   * @param \Behat\Gherkin\Node\TableNode $table
++   *   A table containing the expected content of the different view modes for
++   *   the message. Example:
++   *   | mail_subject | The content titled "My content" has been deleted       |
++   *   | mail_body    | The "My content" page was deleted by an administrator. |
++   * @param string $interval
++   *   The digest interval, e.g. 'daily' or 'weekly'.
++   * @param string $username
++   *   The name of the user for which the message is intended.
++   * @param string $label
++   *   Optional label of an entity that is related to the message.
++   * @param string $entity_type
++   *   Optional entity type of an entity that is related to the message.
++   *
++   * @Then the :interval digest for :username should contain the following message for the :label :entity_type:
++   * @Then the :interval digest for :username should contain the following message:
++   */
++  public function assertDigestContains(TableNode $table, $interval, $username, $label = NULL, $entity_type = NULL) {
++    // Check that the passed table contains valid view modes.
++    $rows = $table->getRowsHash();
++    $view_modes = array_keys($rows);
++    $notifier = $this->getMessageDigestNotifierForInterval($interval);
++    $this->assertNotifierViewModes($notifier, $view_modes);
++
++    $user = user_load_by_name($username);
++    $messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
++    if (empty($messages)) {
++      throw new \RuntimeException("The $interval digest for $username does not contain any messages related to the '$label' $entity_type.");
++    }
++
++    foreach ($messages as $message) {
++      $found_view_modes = [];
++      foreach ($rows as $view_mode => $expected_content) {
++        $actual_content = $this->getRenderedMessage($message, $view_mode);
++        if (strpos($actual_content, $expected_content) !== FALSE) {
++          $found_view_modes[] = $view_mode;
++        }
++      }
++      if (empty(array_diff($view_modes, $found_view_modes))) {
++        // We found the message.
++        return;
++      }
++    }
++    $exception_message = !empty($entity_type) && !empty($label) ? "The expected message for the '$label' $entity_type was not found in the $interval digest for $username." : "The expected message was not found in the $interval digest for $username.";
++    throw new \RuntimeException($exception_message);
++  }
++
++  /**
++   * Checks that the digest for a user does not contain a certain message.
++   *
++   * @param \Behat\Gherkin\Node\TableNode $table
++   *   A table containing the expected content of the different view modes for
++   *   the message that should not be present. Example:
++   *   | mail_subject | The content titled "My content" has been deleted       |
++   *   | mail_body    | The "My content" page was deleted by an administrator. |
++   * @param string $interval
++   *   The digest interval, e.g. 'daily' or 'weekly'.
++   * @param string $username
++   *   The name of the user for which the message is intended.
++   * @param string $label
++   *   Optional label of an entity that is related to the message.
++   * @param string $entity_type
++   *   Optional entity type of an entity that is related to the message.
++   *
++   * @Then the :interval digest for :username should not contain the following message for the :label :entity_type:
++   * @Then the :interval digest for :username should not contain the following message:
++   */
++  public function assertDigestNotContains(TableNode $table, $interval, $username, $label = NULL, $entity_type = NULL) {
++    // Check that the passed table contains valid view modes.
++    $rows = $table->getRowsHash();
++    $view_modes = array_keys($rows);
++    $notifier = $this->getMessageDigestNotifierForInterval($interval);
++    $this->assertNotifierViewModes($notifier, $view_modes);
++
++    $user = user_load_by_name($username);
++    $messages = $this->getUserMessagesByNotifier($notifier, $user->id(), $entity_type, $label);
++    foreach ($messages as $message) {
++      $found_view_modes = [];
++      foreach ($rows as $view_mode => $expected_content) {
++        $actual_content = $this->getRenderedMessage($message, $view_mode);
++        if (strpos($actual_content, $expected_content) !== FALSE) {
++          $found_view_modes[] = $view_mode;
++        }
++      }
++      if (empty(array_diff($view_modes, $found_view_modes))) {
++        // We found the message.
++        $exception_message = !empty($entity_type) && !empty($label) ? "The message for the '$label' $entity_type was unexpectedly found in the $interval digest for $username." : "The message was unexpectedly found in the $interval digest for $username.";
++        throw new \RuntimeException($exception_message);
++      }
++    }
++  }
++
++  /**
++   * Delivers all message digests.
++   *
++   * @Given all message digests have been delivered
++   *
++   * @throws \Exception
++   *   Thrown in case an error occurred while running the cron job.
++   */
++  public function deliverAllDigests() {
++    $this->expireDigestMessages();
++    do {
++      $this->expireMessageDigestNotifiers();
++      $this->getDriver()->runCron();
++    }
++    while ($this->countAllUndeliveredDigestMessages());
++  }
++
++  /**
++   * Returns the entity with the given type, bundle and label.
++   *
++   * If multiple entities have the same label then the first one is returned.
++   *
++   * @param string $entity_type
++   *   The entity type to check.
++   * @param string $label
++   *   The label to check.
++   * @param string $bundle
++   *   Optional bundle to check. If omitted, the entity can be of any bundle.
++   *
++   * @return \Drupal\Core\Entity\EntityInterface
++   *   The requested entity.
++   *
++   * @throws \RuntimeException
++   *   Thrown when an entity with the given type, label and bundle does not
++   *   exist.
++   */
++  protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
++    $entity_manager = \Drupal::entityTypeManager();
++    try {
++      $storage = $entity_manager->getStorage($entity_type);
++    }
++    catch (InvalidPluginDefinitionException $e) {
++      throw new \RuntimeException("Storage for entity type '$entity_type' not found", NULL, $e);
++    }
++    $entity = $entity_manager->getDefinition($entity_type);
++
++    $query = $storage->getQuery()
++      ->condition($entity->getKey('label'), $label)
++      ->range(0, 1);
++
++    // Optionally filter by bundle.
++    if ($bundle) {
++      $query->condition($entity->getKey('bundle'), $bundle);
++    }
++
++    $result = $query->execute();
++
++    if ($result) {
++      $result = reset($result);
++      return $storage->load($result);
++    }
++
++    throw new \RuntimeException("The entity with label '$label' was not found.");
++  }
++
++}
+diff --git a/src/DigestManager.php b/src/DigestManager.php
+index fdc48a8..d9d8d08 100644
+--- a/src/DigestManager.php
++++ b/src/DigestManager.php
+@@ -119,6 +119,20 @@ class DigestManager implements DigestManagerInterface {
+         ->condition('sent', TRUE)
+         ->execute();
+     }
++
++    // Similarly, remove any message entries if the corresponding user has been
++    // deleted. In this case we should also remove unsent messages since we can
++    // no longer retrieve the e-mail address for sending them.
++    $query = $this->database->select('message_digest', 'md');
++    $query->leftJoin('users', 'u', 'md.receiver = u.uid');
++    $query->isNull('u.uid');
++    $query->fields('md', ['id']);
++    $ids = $query->execute()->fetchCol();
++    if (!empty($ids)) {
++      $this->database->delete('message_digest')
++        ->condition('id', $ids, 'IN')
++        ->execute();
++    }
+   }
+ 
+   /**
+@@ -151,13 +165,7 @@ class DigestManager implements DigestManagerInterface {
+    * {@inheritdoc}
+    */
+   public function processDigests() {
+-    foreach ($this->notifierManager->getDefinitions() as $plugin_id => $plugin_definition) {
+-      $notifier = $this->notifierManager->createInstance($plugin_id, []);
+-      if (!$notifier instanceof DigestInterface) {
+-        // Only load the "Digest" notifiers and skip the rest.
+-        continue;
+-      }
+-
++    foreach ($this->getNotifiers() as $notifier) {
+       if ($notifier->processDigest()) {
+         // Gather up all the messages into neat little digests and send 'em out.
+         // It is up to each digest plugin to manage last sent time, etc.
+@@ -168,7 +176,7 @@ class DigestManager implements DigestManagerInterface {
+           // Queue each recipient digest for processing and sending.
+           $data = [
+             'uid' => $uid,
+-            'notifier_id' => $plugin_id,
++            'notifier_id' => $notifier->getPluginId(),
+             'end_time' => $end_time,
+           ];
+           $this->queue->createItem($data);
+@@ -178,12 +186,36 @@ class DigestManager implements DigestManagerInterface {
+     }
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getNotifiers() {
++    $notifiers = [];
++
++    foreach ($this->notifierManager->getDefinitions() as $plugin_id => $plugin_definition) {
++      $notifier = $this->notifierManager->createInstance($plugin_id, []);
++      if (!$notifier instanceof DigestInterface) {
++        // Only load the "Digest" notifiers and skip the rest.
++        continue;
++      }
++      $notifiers[$notifier->getPluginId()] = $notifier;
++    }
++
++    return $notifiers;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+   public function processSingleUserDigest($account_id, $notifier_id, $end_time) {
++    /** @var \Drupal\user\UserInterface $account */
+     $account = $this->entityTypeManager->getStorage('user')->load($account_id);
+ 
++    // If the user has been deleted, do not attempt to send any messages.
++    if (empty($account)) {
++      return;
++    }
++
+     /** @var \Drupal\message_digest\Plugin\Notifier\DigestInterface $notifier */
+     $notifier = $this->notifierManager->createInstance($notifier_id);
+     assert($notifier instanceof DigestInterface, 'Notifier ID ' . $notifier_id . ' is not an instance of DigestInterface.');
+@@ -192,8 +224,8 @@ class DigestManager implements DigestManagerInterface {
+     $view_modes = array_combine($plugin_definition['viewModes'], $plugin_definition['viewModes']);
+     $digests = $notifier->aggregate($account_id, $end_time);
+     $max_mid = 0;
+-    foreach ($digests as $entity_type) {
+-      foreach ($entity_type as $entity_id => $message_ids) {
++    foreach ($digests as $entity_type => $entity_ids) {
++      foreach ($entity_ids as $entity_id => $message_ids) {
+         $last_mid = max($message_ids);
+         $max_mid = ($last_mid > $max_mid) ? $last_mid : $max_mid;
+         // Load up the messages.
+diff --git a/src/DigestManagerInterface.php b/src/DigestManagerInterface.php
+index 7f4be23..09ca17b 100644
+--- a/src/DigestManagerInterface.php
++++ b/src/DigestManagerInterface.php
+@@ -31,4 +31,12 @@ interface DigestManagerInterface {
+    */
+   public function processSingleUserDigest($account_id, $notifier_id, $end_time);
+ 
++  /**
++   * Returns the Digest notifier plugins.
++   *
++   * @return \Drupal\message_digest\Plugin\Notifier\DigestInterface[]
++   *   An associative array of Digest notifier plugins, keyed by plugin ID.
++   */
++  public function getNotifiers();
++
+ }
+diff --git a/src/Plugin/Notifier/DigestBase.php b/src/Plugin/Notifier/DigestBase.php
+index 67fceac..7054f7a 100644
+--- a/src/Plugin/Notifier/DigestBase.php
++++ b/src/Plugin/Notifier/DigestBase.php
+@@ -4,6 +4,7 @@ namespace Drupal\message_digest\Plugin\Notifier;
+ 
+ use Drupal\Component\Datetime\TimeInterface;
+ use Drupal\Core\Database\Connection;
++use Drupal\Core\Database\Database;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Logger\LoggerChannelInterface;
+ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -18,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
+ /**
+  * Message Digest notifier.
+  */
+-abstract class DigestBase extends MessageNotifierBase implements ContainerFactoryPluginInterface, DigestInterface {
++abstract class DigestBase extends MessageNotifierBase implements ContainerFactoryPluginInterface, DigestInterface, \Serializable {
+ 
+   /**
+    * Database connection.
+@@ -144,12 +145,9 @@ abstract class DigestBase extends MessageNotifierBase implements ContainerFactor
+   }
+ 
+   /**
+-   * The interval to compile digests for.
+-   *
+-   * @return string
+-   *   The interval. This should be compatible with `strtotime()`.
++   * {@inheritdoc}
+    */
+-  protected function getInterval() {
++  public function getInterval() {
+     return $this->digestInterval;
+   }
+ 
+@@ -237,4 +235,46 @@ abstract class DigestBase extends MessageNotifierBase implements ContainerFactor
+     $this->state->set($this->getPluginId() . '_last_run', $this->time->getRequestTime());
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function serialize() {
++    // Only serialize the local properties, ignoring all dependencies from the
++    // container. The database connection cannot be serialized and neither can
++    // other services like the state service and the entity type manager since
++    // they in turn also depend on an active database connection.
++    $properties = [
++      'configuration',
++      'pluginId',
++      'pluginDefinition',
++      'message',
++      'digestInterval',
++    ];
++    $vars = array_intersect_key(get_object_vars($this), array_flip($properties));
++
++    return serialize($vars);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function unserialize($serialized) {
++    $vars = unserialize($serialized);
++
++    // Restore the database connection.
++    $vars['connection'] = Database::getConnection();
++
++    // Restore the dependencies from the container.
++    $container = \Drupal::getContainer();
++    $vars['entityTypeManager'] = $container->get('entity_type.manager');
++    $vars['logger'] = $container->get('logger.channel.message_notify');
++    $vars['renderer'] = $container->get('renderer');
++    $vars['state'] = $container->get('state');
++    $vars['time'] = $container->get('datetime.time');
++
++    foreach ($vars as $key => $value) {
++      $this->{$key} = $value;
++    }
++  }
++
+ }
+diff --git a/src/Plugin/Notifier/DigestInterface.php b/src/Plugin/Notifier/DigestInterface.php
+index 70969fb..0725d0c 100644
+--- a/src/Plugin/Notifier/DigestInterface.php
++++ b/src/Plugin/Notifier/DigestInterface.php
+@@ -80,4 +80,12 @@ interface DigestInterface extends PluginInspectionInterface, DerivativeInspectio
+    */
+   public function setLastSent();
+ 
++  /**
++   * The interval to compile digests for.
++   *
++   * @return string
++   *   The interval. This should be compatible with `strtotime()`.
++   */
++  public function getInterval();
++
+ }
+diff --git a/src/Traits/MessageDigestTrait.php b/src/Traits/MessageDigestTrait.php
+new file mode 100644
+index 0000000..15eaa22
+--- /dev/null
++++ b/src/Traits/MessageDigestTrait.php
+@@ -0,0 +1,216 @@
++<?php
++
++namespace Drupal\message_digest\Traits;
++
++use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
++use Drupal\message\MessageInterface;
++use Drupal\message_digest\Plugin\Notifier\DigestInterface;
++
++/**
++ * Methods useful for testing and integrating the Message Digest module.
++ */
++trait MessageDigestTrait {
++
++  /**
++   * Returns the total number of undelivered digest messages.
++   *
++   * @return int
++   *   The number of undelivered messages.
++   */
++  protected function countAllUndeliveredDigestMessages() {
++    $count = 0;
++    foreach ($this->getMessageDigestManager()->getNotifiers() as $notifier) {
++      foreach ($notifier->getRecipients() as $uid) {
++        $count += count($this->getUserMessagesByNotifier($notifier, $uid));
++      }
++    }
++    return $count;
++  }
++
++  /**
++   * Makes sure all notifiers will process messages at the next cron run.
++   */
++  protected function expireMessageDigestNotifiers() {
++    /** @var \Drupal\Core\State\StateInterface $state */
++    $state = \Drupal::service('state');
++    foreach ($this->getMessageDigestManager()->getNotifiers() as $notifier) {
++      $key = $notifier->getPluginId() . '_last_run';
++      $state->set($key, 0);
++    }
++  }
++
++  /**
++   * Makes sure all digest messages will be sent out at the next cron run.
++   */
++  protected function expireDigestMessages() {
++    // Make sure all unsent messages have a timestamp 1 day in the past. Any
++    // messages that are created during the test have a newer timestamp than the
++    // request of the bootstrapped Drupal instance, causing them to be ignored
++    // during sending.
++    /** @var \Drupal\Core\Database\Connection $database */
++    $database = \Drupal::service('database');
++    $database->update('message_digest')
++      ->fields(['timestamp' => time() - 24 * 60 * 60])
++      ->condition('sent', 0)
++      ->execute();
++  }
++
++  /**
++   * Returns the message rendered in the given view mode.
++   *
++   * @param \Drupal\message\MessageInterface $message
++   *   The message to render.
++   * @param string $view_mode
++   *   The view mode to use.
++   *
++   * @return string
++   *   The rendered message.
++   */
++  protected function getRenderedMessage(MessageInterface $message, $view_mode) {
++    $content = \Drupal::entityTypeManager()->getViewBuilder('message')->view($message, $view_mode);
++    return (string) \Drupal::service('renderer')->renderPlain($content);
++  }
++
++  /**
++   * Returns the messages that will be includes in the user's next digest.
++   *
++   * @param \Drupal\message_digest\Plugin\Notifier\DigestInterface $notifier
++   *   The digest notifier that is responsible for sending out the messages.
++   * @param int $uid
++   *   The ID of the user for which to return the messages.
++   * @param string $entity_type
++   *   Optional entity type. If supplied along with the $label property this can
++   *   be used to return only messages that refer to the given entity.
++   * @param string $label
++   *   Optional entity label. If supplied along with the $entity_type property
++   *   this can be used to return only messages that refer to the given entity.
++   *
++   * @return \Drupal\message\MessageInterface[]
++   *   The messages.
++   */
++  protected function getUserMessagesByNotifier(DigestInterface $notifier, $uid, $entity_type = NULL, $label = NULL) {
++    // We can't use `$notifier->getEndTime()` since the Behat request has been
++    // started earlier than the Drupal requests that created the digests.
++    $digests = $notifier->aggregate($uid, time());
++
++    // Optionally filter by entity.
++    if (!empty($entity_type) && !empty($label)) {
++      $entity = $this->getEntityByLabel($entity_type, $label);
++      $message_ids = !empty($digests[$entity_type][$entity->id()]) ? $digests[$entity_type][$entity->id()] : [];
++    }
++    else {
++      $message_ids = [];
++      foreach ($digests as $entity_type => $entities) {
++        foreach ($entities as $entity_id => $messages) {
++          $message_ids = array_merge($message_ids, $messages);
++        }
++      }
++    }
++    return $this->getMessages($message_ids);
++  }
++
++  /**
++   * Checks that the given view modes are supported by the given notifier.
++   *
++   * @param \Drupal\message_digest\Plugin\Notifier\DigestInterface $notifier
++   *   The message digest notifier to check.
++   * @param array $expected_view_modes
++   *   An array of view mode IDs to check.
++   *
++   * @throws \RuntimeException
++   *   Thrown when one or more of the given view mode IDs are not supported by
++   *   the given notifier.
++   */
++  protected function assertNotifierViewModes(DigestInterface $notifier, $expected_view_modes) {
++    $plugin_definition = $notifier->getPluginDefinition();
++    $actual_view_modes =  array_combine($plugin_definition['viewModes'], $plugin_definition['viewModes']);
++    if (!empty($diff = array_diff_key(array_flip($expected_view_modes), $actual_view_modes))) {
++      $missing_view_modes = implode(', ', array_keys($diff));
++      $id = $notifier->getPluginId();
++      throw new \RuntimeException("The following view modes are not supported by the '$id' digest notifier: '$missing_view_modes'.");
++    }
++  }
++
++  /**
++   * Returns the Message entities for the given IDs.
++   *
++   * @param int[] $message_ids
++   *   The message IDs.
++   *
++   * @return \Drupal\message\MessageInterface[]
++   *   The Message entities.
++   */
++  protected function getMessages(array $message_ids) {
++    $messages = [];
++    try {
++      $storage = \Drupal::entityTypeManager()->getStorage('message');
++      /** @var \Drupal\message\MessageInterface[] $messages */
++      $messages = $storage->loadMultiple($message_ids);
++    }
++    catch (InvalidPluginDefinitionException $e) {
++      // The Message module is a dependency of Message Digest, so this storage
++      // handler should exist.
++    }
++    return $messages;
++  }
++
++  /**
++   * Returns the message digest notifier for the given interval.
++   *
++   * @param string $interval_id
++   *   The ID of a message digest interval. Examples of predefined intervals are
++   *   'daily' and 'weekly'.
++   *
++   * @return \Drupal\message_digest\Plugin\Notifier\DigestInterface
++   *   The notifier.
++   *
++   * @throws \RuntimeException
++   *   Thrown when the requested notifier does not exist.
++   */
++  protected function getMessageDigestNotifierForInterval($interval_id) {
++    $digest_interval = $this->getMessageDigestInterval($interval_id)->getInterval();
++    $notifiers = $this->getMessageDigestManager()->getNotifiers();
++    foreach ($notifiers as $notifier) {
++      if ($notifier->getInterval() === $digest_interval) {
++        return $notifier;
++      }
++    }
++
++    throw new \RuntimeException("No digest notifier found for interval '$interval_id'.");
++  }
++
++  /**
++   * Returns the digest manager service.
++   *
++   * @return \Drupal\message_digest\DigestManagerInterface
++   *   The digest manager service.
++   */
++  protected function getMessageDigestManager() {
++    return \Drupal::service('message_digest.manager');
++  }
++
++  /**
++   * Returns the requested digest interval.
++   *
++   * @param string $id
++   *   The digest interval ID.
++   *
++   * @return \Drupal\message_digest\Entity\MessageDigestIntervalInterface
++   *   The digest interval entity.
++   */
++  protected function getMessageDigestInterval($id) {
++    try {
++      /** @var \Drupal\message_digest\Entity\MessageDigestIntervalInterface $entity */
++      $entity = \Drupal::entityTypeManager()
++        ->getStorage('message_digest_interval')
++        ->load($id);
++      return $entity;
++    }
++    catch (InvalidPluginDefinitionException $e) {
++      // When the Message Digest module is enabled the 'message_digest_interval'
++      // entity type should be available and this exception should not be
++      // thrown.
++    }
++  }
++
++}
