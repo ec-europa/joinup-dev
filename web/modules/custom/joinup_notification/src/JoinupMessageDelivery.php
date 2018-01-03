@@ -106,10 +106,12 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool {
     $message = $this->createMessage($message_template, $arguments);
     $message->setOwner($account);
-    $recipients_metadata = [[
-      'options' => $notifier_options,
-      'notifier' => $digest ? $this->getNotifierId($account) : 'email',
-    ]];
+    $recipients_metadata = [
+      [
+        'options' => $notifier_options,
+        'notifier' => $digest ? $this->getNotifierId($account) : 'email',
+      ],
+    ];
     return $this->sendMessage($message, $recipients_metadata);
   }
 
