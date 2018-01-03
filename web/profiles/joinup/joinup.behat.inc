@@ -1126,7 +1126,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Asserts the presence of contextual links in a specific tile.
+   * Asserts the absence of contextual links in a specific tile.
    *
    * @param string $links
    *   A comma separated list of link texts.
