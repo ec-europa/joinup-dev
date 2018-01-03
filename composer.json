@@ -185,6 +185,9 @@
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
+            "drupal/message_digest": {
+                "Aggregated patch for issues #2933039 #2285947 #2933896 #2933931 #2881263 #2934111 @see https://www.drupal.org/project/issues/message_digest": "resources/patch/message_digest_aggregated.patch"
+            },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
