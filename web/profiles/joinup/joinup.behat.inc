@@ -955,10 +955,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the page should show( only) the tiles :headings
    */
   public function assertUnorderedTilesPresent($headings) {
-    $tiles_in_page = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
-      return $element->getText();
-    }, $this->getTiles());
+    $tiles_in_page = array_keys($this->getTiles());
     $headings = $this->explodeCommaSeparatedStepArgument($headings);
 
     sort($headings);
@@ -978,10 +975,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the :region region:
    */
   public function assertTilesInBlock(TableNode $titles_table, $region) {
-    $results = $this->getTiles($region);
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles($region));
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
@@ -999,14 +993,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     try {
       // This will fail if the region does not exist. The region does not exist
       // if there is no content rendered inside.
-      $results = $this->getTiles($region);
+      $headings_in_page = array_keys($this->getTiles($region));
     }
     catch (Exception $e) {
       return;
     }
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+
     $headings_not_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
   }
@@ -1051,10 +1043,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the correct order:
    */
   public function assertOrderedTilesPresent(TableNode $titles_table) {
-    $results = $this->getTiles();
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
