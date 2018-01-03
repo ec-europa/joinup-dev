@@ -21,6 +21,7 @@ Feature: Pinning content entities inside collections
     And the following collection user memberships:
       | collection    | user            | roles       |
       | Orange Wrench | Rozanne Minett  | facilitator |
+      | Cloudy Beam   | Rozanne Minett  | facilitator |
       | Orange Wrench | Tyron Ingram    |             |
       | Cloudy Beam   | Andy Cross      | facilitator |
       | Cloudy Beam   | Xanthia Gilbert |             |
@@ -107,11 +108,11 @@ Feature: Pinning content entities inside collections
       | title                         | collection    | state     | pinned | created    |
       | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |
       | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |
+      | Multi stratus beaming         | Cloudy Beam   | validated | no     | 2017-11-05 |
     And solutions:
       | title            | collection                 | state     | pinned in     | creation date |
       | Wrench catalogue | Orange Wrench              | validated | Orange Wrench | 2017-10-12    |
       | Orange estimator | Orange Wrench, Cloudy Beam | validated |               | 2017-10-02    |
-      | Beam analyser    | Cloudy Beam                | validated |               | 2017-11-21    |
 
     When I am an anonymous user
     And I go to the homepage of the "Orange Wrench" collection
@@ -152,6 +153,14 @@ Feature: Pinning content entities inside collections
     But I should not see the contextual link "Unpin" in the "Orange estimator" tile
     And I should not see the contextual link "Pin" in the "Wrench catalogue" tile
 
+    When I go to the homepage of the "Cloudy Beam" collection
+    Then I should see the following tiles in the correct order:
+      | Multi stratus beaming |
+      | Orange estimator      |
+    And I should see the contextual link "Pin" in the "Orange estimator" tile
+    And I should not see the contextual link "Unpin" in the "Orange estimator" tile
+
+    When I go to the homepage of the "Orange Wrench" collection
     When I click the contextual link "Unpin" in the "Wrench catalogue" tile
     Then I should see the success message "Solution Wrench catalogue has been unpinned in the collection Orange Wrench."
     And I should see the following tiles in the correct order:
@@ -171,6 +180,22 @@ Feature: Pinning content entities inside collections
       | Wrench catalogue              |
     And I should see the contextual link "Unpin" in the "Orange estimator" tile
     But I should not see the contextual link "Pin" in the "Orange estimator" tile
+
+    # Pinning a solution in a collection shouldn't affect the other collections it is affiliated with.
+    When I go to the homepage of the "Cloudy Beam" collection
+    Then I should see the following tiles in the correct order:
+      | Multi stratus beaming |
+      | Orange estimator      |
+    And I should see the contextual link "Pin" in the "Orange estimator" tile
+    And I should not see the contextual link "Unpin" in the "Orange estimator" tile
+
+    When I click the contextual link "Pin" in the "Orange estimator" tile
+    Then I should see the success message "Solution Orange estimator has been pinned in the collection Cloudy Beam."
+    And I should see the following tiles in the correct order:
+      | Orange estimator      |
+      | Multi stratus beaming |
+    And I should see the contextual link "Unpin" in the "Orange estimator" tile
+    And I should not see the contextual link "Pin" in the "Orange estimator" tile
 
     # When we are not in a collection page, the pin/unpin links should not be visible.
     When I am at "/search"
