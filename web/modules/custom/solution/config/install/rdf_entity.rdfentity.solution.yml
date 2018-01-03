@@ -70,4 +70,5 @@ rid: solution
 description: ''
 label_singular: solution
 label_plural: solutions
-label_count: "Solution\x03Solutions"
+label_count:
+  no_count_capitalize: "Solution\x03Solutions"

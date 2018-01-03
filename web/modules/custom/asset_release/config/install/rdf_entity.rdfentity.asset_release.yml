@@ -70,4 +70,5 @@ rid: asset_release
 description: ''
 label_singular: release
 label_plural: releases
-label_count: "Release\x03Releases"
+label_count:
+  no_count_capitalize: "Release\x03Releases"

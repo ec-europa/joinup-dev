@@ -38,7 +38,9 @@ processor_configs:
     weights:
       build: 0
     settings:
-      use_plural_label: true
+      plural_count_label:
+        enabled: true
+        context: no_count_capitalize
   count_limit:
     processor_id: count_limit
     weights:

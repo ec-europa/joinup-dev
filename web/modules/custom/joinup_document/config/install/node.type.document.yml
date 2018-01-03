@@ -16,4 +16,5 @@ preview_mode: 0
 display_submitted: false
 label_singular: document
 label_plural: documents
-label_count: "Document\x03Documents"
+label_count:
+  no_count_capitalize: "Document\x03Documents"

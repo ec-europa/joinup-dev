@@ -34,4 +34,5 @@ rid: file_url
 description: ''
 label_singular: 'file url entry'
 label_plural: 'file url entries'
-label_count: "1 file url entry\x03@count file url entries"
+label_count:
+  no_count_capitalize: "1 file url entry\x03@count file url entries"

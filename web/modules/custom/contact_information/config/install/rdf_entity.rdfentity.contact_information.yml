@@ -34,4 +34,5 @@ rid: contact_information
 description: ''
 label_singular: 'contact information entry'
 label_plural: 'contact information entries'
-label_count: "Contact information entry\x03Contact information entries"
+label_count:
+  no_count_capitalize: "Contact information entry\x03Contact information entries"

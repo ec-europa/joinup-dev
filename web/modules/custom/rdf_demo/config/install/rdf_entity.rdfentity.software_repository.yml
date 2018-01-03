@@ -7,4 +7,5 @@ description: ''
 rdftype: 'admssw:SoftwareRepository'
 label_singular: 'software repository'
 label_plural: 'software repositories'
-label_count: "1 software repository\x03@count software repositories"
+label_count:
+  - "1 software repository\x03@count software repositories"

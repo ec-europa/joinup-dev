@@ -70,4 +70,5 @@ rid: asset_distribution
 description: ''
 label_singular: distribution
 label_plural: distributions
-label_count: "Distribution\x03Distributions"
+label_count:
+  no_count_capitalize: "Distribution\x03Distributions"

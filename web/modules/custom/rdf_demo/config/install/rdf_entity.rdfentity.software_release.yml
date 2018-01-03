@@ -7,4 +7,5 @@ description: ''
 rdftype: 'admssw:SoftwareRelease'
 label_singular: 'software release'
 label_plural: 'software releases'
-label_count: "1 software release\x03@count software releases"
+label_count:
+  - "1 software release\x03@count software releases"

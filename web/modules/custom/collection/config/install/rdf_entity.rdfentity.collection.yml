@@ -74,4 +74,5 @@ rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 label_singular: collection
 label_plural: collections
-label_count: "Collection\x03Collections"
+label_count:
+  no_count_capitalize: "Collection\x03Collections"

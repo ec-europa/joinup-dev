@@ -16,4 +16,5 @@ preview_mode: 0
 display_submitted: false
 label_singular: video
 label_plural: videos
-label_count: "Video\x03Videos"
+label_count:
+  no_count_capitalize: "Video\x03Videos"

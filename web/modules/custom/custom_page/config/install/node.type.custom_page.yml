@@ -16,4 +16,5 @@ preview_mode: 0
 display_submitted: false
 label_singular: 'custom page'
 label_plural: 'custom pages'
-label_count: "Custom page\x03Custom pages"
+label_count:
+  no_count_capitalize: "Custom page\x03Custom pages"

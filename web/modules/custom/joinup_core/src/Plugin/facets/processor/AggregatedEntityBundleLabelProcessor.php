@@ -70,7 +70,10 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    */
   public function defaultConfiguration(): array {
     return [
-      'use_plural_label' => FALSE,
+      'plural_count_label' => [
+        'enabled' => FALSE,
+        'context' => NULL,
+      ],
     ] + parent::defaultConfiguration();
   }
 
@@ -79,11 +82,24 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state, FacetInterface $facet): array {
     return [
-      'use_plural_label' => [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Show the bundle label as plural count variant'),
-        '#description' => $this->t('If checked, the plural count variant of the bundle label will be used, instead of the normal bundle entity label. This label will show the singular variant if the number of count equals 1, or the appropriate plural variant if the count is greater than 1.'),
-        '#default_value' => $this->getConfiguration()['use_plural_label'],
+      'plural_count_label' => [
+        'enabled' => [
+          '#type' => 'checkbox',
+          '#title' => $this->t('Show the bundle label as plural count variant'),
+          '#description' => $this->t('If checked, the plural count variant of the bundle label will be used, instead of the normal bundle entity label. This label will show the singular variant if the number of count equals 1, or the appropriate plural variant if the count is greater than 1.'),
+          '#default_value' => $this->getConfiguration()['plural_count_label']['enabled'],
+        ],
+        'context' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Plural count label context to be used'),
+          '#description' => $this->t('Multiple plural count labels could be defined on the system. Specify the context to identify a particular version, or leave empty to use the default variant.'),
+          '#default_value' => $this->getConfiguration()['plural_count_label']['context'],
+          '#states' => [
+            'visible' => [
+              ':input[name="facet_settings[' . $this->getPluginId() . '][settings][plural_count_label][enabled]"]' => ['checked' => TRUE],
+            ],
+          ],
+        ],
       ],
     ] + parent::buildConfigurationForm($form, $form_state, $facet);
   }
@@ -122,6 +138,7 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
       $bundles += $this->getBundlesWithLabelPluralCount($datasource->getEntityTypeId()) + $datasource->getBundles();
     }
 
+    $plural_count_label_context = $this->getConfiguration()['plural_count_label']['context'];
     foreach ($results as $delta => $result) {
       $bundle_id = $result->getRawValue();
       if (!isset($bundles[$bundle_id])) {
@@ -129,7 +146,7 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
       }
 
       if ($bundles[$bundle_id] instanceof EntityBundleWithPluralLabelsInterface) {
-        $result->setDisplayValue($bundles[$bundle_id]->getCountLabel($result->getCount()));
+        $result->setDisplayValue($bundles[$bundle_id]->getCountLabel($result->getCount(), $plural_count_label_context));
       }
       else {
         $result->setDisplayValue($bundles[$bundle_id]);
@@ -153,7 +170,7 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
    */
   protected function getBundlesWithLabelPluralCount(string $entity_type_id): array {
     // Are plural labels requested by plugin configuration?
-    if ($this->getConfiguration()['use_plural_label']) {
+    if ($this->getConfiguration()['plural_count_label']['enabled']) {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
       // Not all bundles are defined as config entities.
       if ($bundle_entity_type_id = $entity_type->getBundleEntityType()) {
@@ -166,10 +183,12 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
             if ($bundle_entity_storage = $this->entityTypeManager->getStorage($bundle_entity_type_id)) {
               // Get all the bundle config entities of this entity type.
               $bundles = $bundle_entity_storage->loadMultiple();
+              $plural_count_label_context = $this->getConfiguration()['plural_count_label']['context'];
+
               // Filter out bundles with count label returning an empty value.
-              return array_filter($bundles, function (EntityBundleWithPluralLabelsInterface $bundle): bool {
+              return array_filter($bundles, function (EntityBundleWithPluralLabelsInterface $bundle) use ($plural_count_label_context): bool {
                 // Ensure at least the singular and one plural.
-                return !empty($bundle->getCountLabel(1)) && !empty($bundle->getCountLabel(2));
+                return !empty($bundle->getCountLabel(1, $plural_count_label_context)) && !empty($bundle->getCountLabel(2, $plural_count_label_context));
               });
             }
           }

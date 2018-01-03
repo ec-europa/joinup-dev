@@ -16,4 +16,5 @@ preview_mode: 0
 display_submitted: false
 label_singular: news
 label_plural: news
-label_count: "News\x03News"
+label_count:
+  no_count_capitalize: "News\x03News"
