@@ -45,8 +45,8 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageToUsers(MessageInterface $message, array $accounts, bool $digest = FALSE): bool {
-    $recipients = [];
+  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool {
+    $recipients_metadata = [];
     /** @var \Drupal\user\UserInterface $account */
     foreach ($accounts as $account) {
       // Don't send mails to anonymous users or users that for some reason do
@@ -57,47 +57,60 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
       }
       // By keying on the user ID we can avoid that a user might get the message
       // more than once.
-      $recipients[$account->id()] = [
-        'mail' => $mail,
-        'notifier' => $digest ? $this->getNotifierId($account) : 'email',
-      ];
-    }
-
-    return $this->sendMessage($message, $recipients);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function sendMessageToEmailAddresses(MessageInterface $message, array $mails): bool {
-    $recipients = [];
-
-    // Ensure uniqueness so that the message is not delivered multiple times to
-    // the same address.
-    foreach (array_unique($mails) as $mail) {
-      $recipients[] = [
-        'mail' => $mail,
+      $recipients_metadata[$account->id()] = [
+        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
         'notifier' => 'email',
       ];
     }
 
-    return $this->sendMessage($message, $recipients);
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToUsers(string $message_template, array $arguments, array $accounts, bool $digest = FALSE): bool {
-    $message = $this->createMessage($message_template, $arguments);
-    return $this->sendMessageToUsers($message, $accounts, $digest);
+  public function sendMessageToEmailAddresses(MessageInterface $message, array $mails, array $notifier_options = []): bool {
+    $recipients_metadata = [];
+
+    // Ensure uniqueness so that the message is not delivered multiple times to
+    // the same address.
+    foreach (array_unique($mails) as $mail) {
+      $recipients_metadata[] = [
+        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
+        'notifier' => 'email',
+      ];
+    }
+
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails): bool {
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = []): bool {
     $message = $this->createMessage($message_template, $arguments);
-    return $this->sendMessageToEmailAddresses($message, $mails);
+    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = []): bool {
+    $message = $this->createMessage($message_template, $arguments);
+    return $this->sendMessageToEmailAddresses($message, $mails, $notifier_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool {
+    $message = $this->createMessage($message_template, $arguments);
+    $message->setOwner($account);
+    $recipients_metadata = [[
+      'options' => $notifier_options,
+      'notifier' => $digest ? $this->getNotifierId($account) : 'email',
+    ]];
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
@@ -127,10 +140,10 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    *
    * @param \Drupal\message\MessageInterface $message
    *   The message to send.
-   * @param array $recipients
+   * @param array $recipients_metadata
    *   An array of recipient data, each item an associative array with the
    *   following keys:
-   *   - mail: The e-mail address the message should be sent to.
+   *   - options: An associative array of options for the message notifier.
    *   - notifier: The plugin ID of the message notifier to use.
    *
    * @return bool
@@ -139,15 +152,14 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when a message could not be saved.
    */
-  protected function sendMessage(MessageInterface $message, array $recipients): bool {
+  protected function sendMessage(MessageInterface $message, array $recipients_metadata): bool {
     // If the message is not saved, do this right now.
     if ($message->isNew()) {
       $message->save();
     }
 
-    return array_reduce($recipients, function (bool $success, array $recipient) use ($message): bool {
-      $options = ['save on success' => FALSE, 'mail' => $recipient['mail']];
-      return $this->messageNotifier->send($message, $options, $recipient['notifier']) && $success;
+    return array_reduce($recipients_metadata, function (bool $success, array $recipient_metadata) use ($message): bool {
+      return $this->messageNotifier->send($message, $recipient_metadata['options'], $recipient_metadata['notifier']) && $success;
     }, TRUE);
   }
 

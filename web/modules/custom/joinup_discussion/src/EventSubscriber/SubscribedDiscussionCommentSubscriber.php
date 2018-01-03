@@ -205,7 +205,17 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   Whether or not the sending of the e-mails has succeeded.
    */
   protected function sendMessage(): bool {
-    return $this->messageDelivery->sendMessageTemplateToUsers('discussion_comment_new', $this->getArguments(), $this->getRecipients());
+    $success = TRUE;
+    // Create individual messages for each subscriber so that we can honor the
+    // user's chosen digest frequency.
+    foreach ($this->getRecipients() as $recipient) {
+      $notifier_options = [
+        'entity_type' => $this->discussion->getEntityTypeId(),
+        'entity_id' => $this->discussion->id(),
+      ];
+      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options, TRUE) && $success;
+    }
+    return $success;
   }
 
 }

@@ -85,7 +85,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
     if (!$message = $this->getMessage($invitation, $template)) {
       return FALSE;
     }
-    return $this->messageDelivery->sendMessageToUsers($message, [$invitation->getRecipient()]);
+    return $this->messageDelivery->sendMessageToMultipleUsers($message, [$invitation->getRecipient()]);
   }
 
   /**
