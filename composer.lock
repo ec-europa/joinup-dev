@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2994280128d78bdf85eb5ccdbf4abe95",
+    "content-hash": "fd845f20f35496fa0e3b786024cbf8ba",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1745,11 +1745,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3941,11 +3937,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1488538684"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3964,6 +3956,10 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -5080,7 +5076,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/views_bulk_operations",
-                "reference": "6106b1c7a172d273e0407c49a4c4a8186c929573"
+                "reference": "eb4ce8605ef20c543c5ceed3dcc6e03fdee10395"
             },
             "require": {
                 "drupal/core": "*"
@@ -5091,8 +5087,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+0-dev",
-                    "datestamp": "1509967685",
+                    "version": "8.x-1.0-rc1+2-dev",
+                    "datestamp": "1513075985",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5130,7 +5126,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/views_bulk_operations"
             },
-            "time": "2017-10-10T13:43:17+00:00"
+            "time": "2017-12-12T10:49:42+00:00"
         },
         {
             "name": "drush/drush",
@@ -6630,7 +6626,6 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -6641,6 +6636,10 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
+            "support": {
+                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
+                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
+            },
             "time": "2017-07-17T09:33:42+00:00"
         },
         {
@@ -10154,11 +10153,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1511190785",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1505199844"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10169,14 +10164,6 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
-                },
-                {
-                    "name": "adriancid",
-                    "homepage": "https://www.drupal.org/user/1962106"
-                },
-                {
-                    "name": "bolbol",
-                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
