@@ -289,12 +289,12 @@
     <!-- Create the private files directory -->
     <target name="create-private-files-directory"
             description="Create Drupal private files directory."
-            depends="writable-settings-folder, writable-settings-local-php">
+            depends="enable-dev-settings, writable-settings-folder, writable-settings-local-php">
 
         <!-- Create the directory if doesn't already exist. -->
         <mkdir dir="${drupal.private_files.dir}"/>
 
-        <!-- Avoid duplicates in settings.php, if the file already exists. -->
+        <!-- Avoid duplicates in settings.local.php, if the file already exists. -->
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.local.php" />
