@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\changed_fields\NodeSubject;
 use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\node\NodeInterface;
 
@@ -79,11 +80,20 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
  * Implements hook_ENTITY_TYPE_predelete().
  */
 function joinup_discussion_node_predelete(EntityInterface $entity) : void {
-  if ($entity->bundle() !== 'discussion') {
+  if (!$entity instanceof NodeInterface || $entity->bundle() !== 'discussion') {
+    return;
+  }
+
+  // @todo Replace this direct access of a custom entity property with the
+  //   temporary entity data API once it lands in core.
+  // @see https://www.drupal.org/node/2896474
+  if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
 
   // Send a message to subscribed users to inform that the discussion was
   // deleted.
-  joinup_notification_dispatch_notification('delete', DiscussionEvents::DELETE, $entity);
+  $event = new DiscussionDeleteEvent($entity);
+  $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+  $event_dispatcher->dispatch(DiscussionEvents::DELETE, $event);
 }

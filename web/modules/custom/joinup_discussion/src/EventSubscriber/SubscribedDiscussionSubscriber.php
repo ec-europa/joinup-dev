@@ -11,9 +11,9 @@ use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\joinup_discussion\Event\DiscussionEvent;
+use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
+use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
-use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
@@ -97,10 +97,10 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   /**
    * Reacts when a discussion is updated.
    *
-   * @param \Drupal\joinup_discussion\Event\DiscussionEvent $event
+   * @param \Drupal\joinup_discussion\Event\DiscussionUpdateEvent $event
    *   The event object.
    */
-  public function notifyOnDiscussionUpdate(DiscussionEvent $event): void {
+  public function notifyOnDiscussionUpdate(DiscussionUpdateEvent $event): void {
     $discussion = $event->getNode();
 
     // Don't handle inconsistent discussions, without a parent group.
@@ -115,12 +115,11 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   /**
    * Sends notification to subscribed users when a discussion is deleted.
    *
-   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
-   *   The notification event object.
+   * @param \Drupal\joinup_discussion\Event\DiscussionDeleteEvent $event
+   *   The event object.
    */
-  public function notifyOnDiscussionDeletion(NotificationEvent $event): void {
-    /** @var \Drupal\node\NodeInterface $discussion */
-    $discussion = $event->getEntity();
+  public function notifyOnDiscussionDeletion(DiscussionDeleteEvent $event): void {
+    $discussion = $event->getNode();
     $this->sendMessage($discussion, 'discussion_delete');
   }
 
