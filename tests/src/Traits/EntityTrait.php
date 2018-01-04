@@ -15,7 +15,7 @@ trait EntityTrait {
    *
    * If multiple entities have the same label then the first one is returned.
    *
-   * @param string $entity_type
+   * @param string $entity_type_id
    *   The entity type to check.
    * @param string $label
    *   The label to check.
@@ -29,7 +29,7 @@ trait EntityTrait {
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
+  protected function getEntityByLabel($entity_type_id, $label, $bundle = NULL) {
     $entity_manager = \Drupal::entityTypeManager();
     try {
       $storage = $entity_manager->getStorage($entity_type);
