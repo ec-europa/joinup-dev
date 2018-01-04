@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Helper methods to deal with entities.
@@ -29,15 +32,15 @@ trait EntityTrait {
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected function getEntityByLabel($entity_type_id, $label, $bundle = NULL) {
+  protected function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
     $entity_manager = \Drupal::entityTypeManager();
     try {
-      $storage = $entity_manager->getStorage($entity_type);
+      $storage = $entity_manager->getStorage($entity_type_id);
     }
     catch (InvalidPluginDefinitionException $e) {
       throw new \RuntimeException('Storage not found', NULL, $e);
     }
-    $entity = $entity_manager->getDefinition($entity_type);
+    $entity = $entity_manager->getDefinition($entity_type_id);
 
     $query = $storage->getQuery()
       ->condition($entity->getKey('label'), $label)
@@ -64,7 +67,7 @@ trait EntityTrait {
    * @return array
    *   The entity type mapping.
    */
-  protected static function entityTypeAliases() {
+  protected static function entityTypeAliases(): array {
     return [
       'content' => 'node',
     ];
@@ -79,7 +82,7 @@ trait EntityTrait {
    * @return string
    *   The machine name of the entity type.
    */
-  protected static function translateEntityTypeAlias($entity_type) {
+  protected static function translateEntityTypeAlias(string $entity_type): string {
     $entity_type = strtolower($entity_type);
     $aliases = self::entityTypeAliases();
     if (array_key_exists($entity_type, $aliases)) {
@@ -103,7 +106,7 @@ trait EntityTrait {
    * @throws \Exception
    *    Thrown when the menu item is not found.
    */
-  public function getMenuLinkByTitle($title) {
+  public function getMenuLinkByTitle(string $title): MenuLinkContentInterface {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = \Drupal::service('entity_type.manager');
     $menu_links = $entity_type_manager->getStorage('menu_link_content')->loadByProperties(
@@ -122,8 +125,11 @@ trait EntityTrait {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to reindex.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown when an entity with a non-existing storage is passed.
    */
-  protected function forceSearchApiReindex(EntityInterface $entity) {
+  protected function forceSearchApiReindex(EntityInterface $entity): void {
     // Invalidate any static cache, so that all computed fields are calculated
     // with updated values.
     // For example, the "collection" computed field of solutions.
