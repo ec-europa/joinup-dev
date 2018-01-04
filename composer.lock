@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd845f20f35496fa0e3b786024cbf8ba",
+    "content-hash": "f654c7f55c7a43e658883adc1d17f959",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5072,11 +5072,17 @@
         },
         {
             "name": "drupal/views_bulk_operations",
-            "version": "dev-1.x",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/views_bulk_operations",
-                "reference": "eb4ce8605ef20c543c5ceed3dcc6e03fdee10395"
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "41c7774e3b2c42ea9d9a2ceec51986baa842f99c"
             },
             "require": {
                 "drupal/core": "*"
@@ -5087,11 +5093,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1+2-dev",
-                    "datestamp": "1513075985",
+                    "version": "8.x-1.0",
+                    "datestamp": "1513587185",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -5125,8 +5131,7 @@
             "homepage": "https://www.drupal.org/project/views_bulk_operations",
             "support": {
                 "source": "http://cgit.drupalcode.org/views_bulk_operations"
-            },
-            "time": "2017-12-12T10:49:42+00:00"
+            }
         },
         {
             "name": "drush/drush",
@@ -12212,7 +12217,6 @@
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
-        "drupal/views_bulk_operations": 20,
         "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
