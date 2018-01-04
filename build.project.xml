@@ -58,32 +58,15 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+
         <!-- Set the auto-increment default values for some tables. -->
         <setmysqlautoincrement />
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-settings-php" />
-
-        <!-- Avoid duplicates in settings.php, if the file exists. -->
-        <reflexive>
-            <fileset dir="${website.settings.dir}">
-                <include pattern="settings.php" />
-            </fileset>
-            <filterchain>
-                <replaceregexp>
-                    <regexp
-                            pattern="^(\$databases\['default'\]\['default'\]\['init_commands'\]|\$settings\['file_private_path'\]).*$\n"
-                            replace=""
-                            modifiers="m" />
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
 
         <!-- Set the transaction type to READ-COMMITTED. -->
-        <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
+        <phingcall target="set-mysql-transaction-type" />
 
-        <!-- Ensure the Drupal private files directory. -->
-        <mkdir dir="${project.basedir}/${drupal.private_files.dir}"/>
-        <append destFile="${website.settings.php}" text="$settings['file_private_path'] = '${project.basedir}/${drupal.private_files.dir}';${line.separator}" />
+        <!-- Create the private files directory -->
+        <phingcall target="create-private-files-directory" />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
@@ -280,11 +263,62 @@
             output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
+    <!-- Set the transaction type to READ-COMMITTED. -->
+    <target name="set-mysql-transaction-type"
+            description="Sets the MySQL transaction to READ-COMMITTED"
+            depends="writable-settings-folder, writable-settings-php">
+
+        <!-- Avoid duplicates in settings.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$databases\['default'\]\['default'\]\['init_commands'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <append destFile="${website.settings.php}" text="$databases['default']['default']['init_commands'] = ['isolation' => &quot;SET SESSION tx_isolation='READ-COMMITTED'&quot;];${line.separator}" />
+    </target>
+
+    <!-- Create the private files directory -->
+    <target name="create-private-files-directory"
+            description="Create Drupal private files directory."
+            depends="writable-settings-folder, writable-settings-local-php">
+
+        <!-- Create the directory if doesn't already exist. -->
+        <mkdir dir="${drupal.private_files.dir}"/>
+
+        <!-- Avoid duplicates in settings.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['file_private_path'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <!-- Add the settings.local.php setting. -->
+        <append destFile="${website.settings.local.php}" text="$settings['file_private_path'] = '${drupal.private_files.dir}';${line.separator}" />
+    </target>
+
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
-    <target name="disable-persistent-session-cookies">
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-services-yml" />
+    <target name="disable-persistent-session-cookies"
+        description="Disable persistent session cookies"
+        depends="writable-settings-folder, writable-services-yml">
+
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="services.yml" />
