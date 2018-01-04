@@ -76,19 +76,19 @@ trait EntityTrait {
   /**
    * Translates human readable entity types to machine names.
    *
-   * @param string $entity_type
+   * @param string $entity_type_label
    *   The human readable entity type. Case insensitive.
    *
    * @return string
    *   The machine name of the entity type.
    */
-  protected static function translateEntityTypeAlias(string $entity_type): string {
-    $entity_type = strtolower($entity_type);
+  protected static function translateEntityTypeAlias(string $entity_type_label): string {
+    $entity_type_label = strtolower($entity_type_label);
     $aliases = self::entityTypeAliases();
-    if (array_key_exists($entity_type, $aliases)) {
-      $entity_type = $aliases[$entity_type];
+    if (array_key_exists($entity_type_label, $aliases)) {
+      $entity_type_label = $aliases[$entity_type_label];
     }
-    return $entity_type;
+    return $entity_type_label;
   }
 
   /**
