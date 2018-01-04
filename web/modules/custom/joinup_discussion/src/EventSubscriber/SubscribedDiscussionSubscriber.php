@@ -117,7 +117,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The notification event object.
    */
-  public function notifyOnDiscussionDeletion(NotificationEvent $event) : void {
+  public function notifyOnDiscussionDeletion(NotificationEvent $event): void {
     /** @var \Drupal\node\NodeInterface $discussion */
     $discussion = $event->getEntity();
     $this->sendMessage($discussion, 'discussion_delete');
@@ -132,7 +132,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @return \Drupal\user\UserInterface[]
    *   The list of subscribers as an array of user accounts, keyed by user ID.
    */
-  protected function getSubscribers(NodeInterface $discussion) : array {
+  protected function getSubscribers(NodeInterface $discussion): array {
     $subscribers = [];
 
     // The discussion owner is added to the list of subscribers.
@@ -161,7 +161,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @throws \Exception
    *   Thrown if one of the arguments could not be generated.
    */
-  protected function getArguments(NodeInterface $discussion) : array {
+  protected function getArguments(NodeInterface $discussion): array {
     $arguments = [];
 
     $arguments['@entity:title'] = $discussion->label();
@@ -250,7 +250,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The group (which is an RDF entity of type 'collection' or 'solution'),
    *   or NULL if no group is found.
    */
-  protected function getDiscussionGroup(NodeInterface $discussion) : ?RdfInterface {
+  protected function getDiscussionGroup(NodeInterface $discussion): ?RdfInterface {
     return $discussion->get('og_audience')->entity;
   }
 
