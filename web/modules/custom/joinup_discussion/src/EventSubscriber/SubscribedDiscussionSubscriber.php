@@ -8,6 +8,7 @@ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_discussion\Event\DiscussionEvent;
@@ -19,7 +20,6 @@ use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -56,11 +56,11 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
-   * The logger.
+   * The logger channel factory.
    *
-   * @var \Psr\Log\LoggerInterface
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
-  protected $logger;
+  protected $loggerFactory;
 
   /**
    * Constructs a new event subscriber object.
@@ -73,15 +73,15 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    *   The current user.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger channel factory.
    */
-  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger) {
+  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory) {
     $this->subscribeService = $subscribe_service;
     $this->messageDelivery = $message_delivery;
     $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
-    $this->logger = $logger;
+    $this->loggerFactory = $logger_factory;
   }
 
   /**
@@ -237,10 +237,8 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
         ->sendMail();
     }
     catch (\Exception $e) {
-      $this->logger->critical('Unexpected exception thrown when sending a message for a discussion.',
-        [
-          'exception' => $e,
-        ]);
+      $context = ['exception' => $e];
+      $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a message for a discussion.', $context);
       return FALSE;
     }
   }
