@@ -8,6 +8,8 @@ use Drupal\Core\Url;
 
 /**
  * A simple page that presents a TCA form for the collection creation.
+ *
+ * @package Drupal\joinup\Form
  */
 class TcaForm extends FormBase {
 

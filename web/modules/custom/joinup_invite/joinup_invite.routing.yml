@@ -1,20 +1,7 @@
-joinup_invite.update_invitation:
-  path: 'invitation/{invitation}/{action}/{hash}'
-  defaults:
-    _controller: '\Drupal\joinup_invite\Controller\InvitationController::updateInvitation'
-  requirements:
-    invitation: \d+
-    action: '^accept|reject$'
-    _custom_access: '\Drupal\joinup_invite\Controller\InvitationController::access'
-  options:
-    parameters:
-      invitation:
-        type: entity:invitation
-
-entity.rdf_entity.facilitators.invite:
+entity.rdf_entity.members.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
   defaults:
-    _form: '\Drupal\joinup_invite\Form\InviteFacilitatorsForm'
+    _form: '\Drupal\joinup_invite\Form\InviteForm'
     _title: 'Add facilitators'
   requirements:
     _og_user_access_group: 'manage members'

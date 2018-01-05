@@ -5,10 +5,5 @@ core: 8.x
 package: Joinup
 dependencies:
   - joinup_core
-  - joinup_notification
-  - joinup_subscription
   - og
   - rdf_entity
-
-config_devel:
-  - field.storage.message.field_invitation

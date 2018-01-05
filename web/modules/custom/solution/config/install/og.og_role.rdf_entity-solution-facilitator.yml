@@ -31,7 +31,6 @@ permissions:
   - 'edit own event content'
   - 'edit own news content'
   - 'invite facilitators'
-  - 'invite users to discussions'
   - 'manage members'
   - 'update any asset_distribution rdf_entity'
   - 'update any asset_release rdf_entity'

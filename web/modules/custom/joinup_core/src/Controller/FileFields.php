@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * List file field instances.
+ *
+ * @package Drupal\joinup_core\Controller
  */
 class FileFields extends ControllerBase {
 

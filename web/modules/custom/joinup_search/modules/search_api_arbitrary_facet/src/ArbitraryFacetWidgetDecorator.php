@@ -10,6 +10,8 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Class ArbitraryFacetWidgetDecorator.
+ *
+ * @package Drupal\search_api_arbitrary_facet
  */
 class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
   use StringTranslationTrait;

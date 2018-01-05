@@ -46,7 +46,6 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_visit_count: true
-  invite_link: true
   langcode: true
   links: true
   og_audience: true

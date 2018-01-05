@@ -50,10 +50,6 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
           'title' => t('Invite users to become collection facilitators'),
         ]),
         new GroupPermission([
-          'name' => 'invite users to discussions',
-          'title' => t('Invite users to participate in discussions'),
-        ]),
-        new GroupPermission([
           'name' => 'accept facilitator invitation',
           'title' => t('Accept invitation to become collection facilitator'),
         ]),

@@ -3,7 +3,9 @@
 namespace Drupal\joinup_invite\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Session\AccountProxy;
+use Drupal\og\MembershipManager;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,17 +17,33 @@ use Symfony\Component\HttpFoundation\Request;
 class UserAutoCompleteController extends ControllerBase {
 
   /**
+   * Drupal\Core\Session\AccountProxy definition.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
    * Drupal\Core\Entity\EntityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
+   * Drupal\og\MembershipManager definition.
+   *
+   * @var \Drupal\og\MembershipManager
+   */
+  protected $membershipManager;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(AccountProxy $current_user, EntityTypeManager $entity_type_manager, MembershipManager $og_membership_manager) {
+    $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
+    $this->membershipManager = $og_membership_manager;
   }
 
   /**
@@ -33,7 +51,9 @@ class UserAutoCompleteController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('current_user'),
+      $container->get('entity_type.manager'),
+      $container->get('og.membership_manager')
     );
   }
 
@@ -54,9 +74,6 @@ class UserAutoCompleteController extends ControllerBase {
         ->condition('mail', $param, 'CONTAINS')
         ->condition('field_user_first_name', $param, 'CONTAINS')
         ->condition('field_user_family_name', $param, 'CONTAINS')
-        ->sort('field_user_first_name')
-        ->sort('field_user_family_name')
-        ->range(0, 10)
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);

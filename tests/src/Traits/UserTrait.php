@@ -107,14 +107,14 @@ trait UserTrait {
    * @return \Drupal\user\UserInterface
    *   The loaded user entity.
    *
-   * @throws \RuntimeException
+   * @throws \Exception
    *   Thrown when a user with the provided name is not found.
    */
   protected function getUserByName($name) {
     $user = user_load_by_name($name);
 
     if (!$user) {
-      throw new \RuntimeException("The user with name '$name' was not found.");
+      throw new \Exception("The user with name '$name' was not found.");
     }
 
     /** @var \Drupal\user\Entity\User $user */

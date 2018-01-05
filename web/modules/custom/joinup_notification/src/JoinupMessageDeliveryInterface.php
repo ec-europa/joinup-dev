@@ -15,7 +15,7 @@ use Drupal\message\MessageInterface;
  * @code
  * $message = Message::load(...);
  * $accounts = User::loadMultiple(...);
- * \Drupal::service('joinup_notification.message_delivery')
+ * \Drupal::service('joinup.message_delivery')
  *   ->setMessage($message)
  *   // Some arguments can be overridden or new arguments can be added.
  *   ->addArguments(['@name' => 'Joe', '@gender' => 'M'])
@@ -24,7 +24,7 @@ use Drupal\message\MessageInterface;
  * @endcode
  * Alternatively, when the message doesn't exist yet, the service knows how to
  * create it:@code
- * \Drupal::service('joinup_notification.message_delivery')
+ * \Drupal::service('joinup.message_delivery')
  *   ->createMessage('discussion_invite', [
  *     'field_invitation' => $invitation_id,
  *   ])

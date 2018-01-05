@@ -2,39 +2,5 @@
 
 /**
  * @file
- * Hook implementations for the Joinup Invite module.
+ * Contains joinup_invite.module.
  */
-
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
-
-/**
- * Implements hook_user_cancel().
- *
- * A user account cancellation removes all its invitations.
- */
-function joinup_invite_user_cancel($edit, $account, $method) {
-  $storage = \Drupal::entityTypeManager()->getStorage('invitation');
-  /** @var \Drupal\user\UserInterface $account */
-  if ($ids = $storage->getQuery()->condition('uid', $account->id())->execute()) {
-    $storage->delete($storage->loadMultiple($ids));
-  }
-}
-
-/**
- * Implements hook_entity_delete().
- *
- * A content entity deletion should cleanup the related invitations.
- */
-function joinup_invite_entity_delete(EntityInterface $entity) {
-  if ($entity instanceof ContentEntityInterface) {
-    $storage = \Drupal::entityTypeManager()->getStorage('invitation');
-    $ids = $storage->getQuery()
-      ->condition('entity_type', $entity->getEntityTypeId())
-      ->condition('entity_id', $entity->id())
-      ->execute();
-    if ($ids) {
-      $storage->delete($storage->loadMultiple($ids));
-    }
-  }
-}

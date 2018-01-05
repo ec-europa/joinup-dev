@@ -10,16 +10,3 @@ joinup_discussion.rdf_entity_discussion.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
-
-joinup_discussion.invite_form:
-  path: 'node/{node}/invite-to-discussion'
-  defaults:
-    _form: '\Drupal\joinup_discussion\Form\InviteToDiscussionForm'
-    _title: 'Invite to discussion'
-  requirements:
-    node: \d+
-    _custom_access: '\Drupal\joinup_discussion\Form\InviteToDiscussionForm::access'
-  options:
-    parameters:
-      node:
-        type: entity:node

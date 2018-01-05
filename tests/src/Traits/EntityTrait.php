@@ -1,12 +1,8 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Drupal\joinup\Traits;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Helper methods to deal with entities.
@@ -18,7 +14,7 @@ trait EntityTrait {
    *
    * If multiple entities have the same label then the first one is returned.
    *
-   * @param string $entity_type_id
+   * @param string $entity_type
    *   The entity type to check.
    * @param string $label
    *   The label to check.
@@ -28,19 +24,14 @@ trait EntityTrait {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The requested entity.
    *
-   * @throws \RuntimeException
+   * @throws \Exception
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
+  protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
     $entity_manager = \Drupal::entityTypeManager();
-    try {
-      $storage = $entity_manager->getStorage($entity_type_id);
-    }
-    catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('Storage not found', NULL, $e);
-    }
-    $entity = $entity_manager->getDefinition($entity_type_id);
+    $storage = $entity_manager->getStorage($entity_type);
+    $entity = $entity_manager->getDefinition($entity_type);
 
     $query = $storage->getQuery()
       ->condition($entity->getKey('label'), $label)
@@ -58,37 +49,7 @@ trait EntityTrait {
       return $storage->load($result);
     }
 
-    throw new \RuntimeException("The entity with label '$label' was not found.");
-  }
-
-  /**
-   * Mapping of human readable entity type names to machine names.
-   *
-   * @return array
-   *   The entity type mapping.
-   */
-  protected static function entityTypeAliases(): array {
-    return [
-      'content' => 'node',
-    ];
-  }
-
-  /**
-   * Translates human readable entity types to machine names.
-   *
-   * @param string $entity_type_label
-   *   The human readable entity type. Case insensitive.
-   *
-   * @return string
-   *   The machine name of the entity type.
-   */
-  protected static function translateEntityTypeAlias(string $entity_type_label): string {
-    $entity_type_label = strtolower($entity_type_label);
-    $aliases = self::entityTypeAliases();
-    if (array_key_exists($entity_type_label, $aliases)) {
-      $entity_type_label = $aliases[$entity_type_label];
-    }
-    return $entity_type_label;
+    throw new \Exception("The entity with label '$label' was not found.");
   }
 
   /**
@@ -106,7 +67,7 @@ trait EntityTrait {
    * @throws \Exception
    *    Thrown when the menu item is not found.
    */
-  public function getMenuLinkByTitle(string $title): MenuLinkContentInterface {
+  public function getMenuLinkByTitle($title) {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = \Drupal::service('entity_type.manager');
     $menu_links = $entity_type_manager->getStorage('menu_link_content')->loadByProperties(
@@ -125,11 +86,8 @@ trait EntityTrait {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to reindex.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   *   Thrown when an entity with a non-existing storage is passed.
    */
-  protected function forceSearchApiReindex(EntityInterface $entity): void {
+  protected function forceSearchApiReindex(EntityInterface $entity) {
     // Invalidate any static cache, so that all computed fields are calculated
     // with updated values.
     // For example, the "collection" computed field of solutions.

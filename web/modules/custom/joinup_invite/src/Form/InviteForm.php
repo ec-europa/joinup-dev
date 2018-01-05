@@ -1,36 +1,68 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Drupal\joinup_invite\Form;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Routing\CurrentRouteMatch;
+use Drupal\og\MembershipManager;
+use Drupal\og\OgAccessInterface;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_entity\UriEncoder;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Base class for forms that allow to search for users to invite.
+ * Form to add a user as facilitator of a rdf entity group.
  */
-abstract class InviteFormBase extends FormBase {
+class InviteForm extends FormBase {
+
+  /**
+   * The current route match service.
+   *
+   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   */
+  protected $currentRouteMatch;
 
   /**
    * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
-   * Constructs a new InviteFormBase object.
+   * The og membership manager service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
+   * @var \Drupal\og\MembershipManager
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->entityTypeManager = $entityTypeManager;
+  protected $ogMembershipManager;
+
+  /**
+   * The OG access service.
+   *
+   * @var \Drupal\og\OgAccessInterface
+   */
+  protected $ogAccess;
+
+  /**
+   * Constructs a new InviteForm object.
+   *
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $current_route_match
+   *   The current route match service.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\og\MembershipManager $og_membership_manager
+   *   The og membership manager service.
+   * @param \Drupal\og\OgAccessInterface $og_access
+   *   The OG access service.
+   */
+  public function __construct(CurrentRouteMatch $current_route_match, EntityTypeManager $entity_type_manager, MembershipManager $og_membership_manager, OgAccessInterface $og_access) {
+    $this->currentRouteMatch = $current_route_match;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->ogMembershipManager = $og_membership_manager;
+    $this->ogAccess = $og_access;
   }
 
   /**
@@ -38,14 +70,26 @@ abstract class InviteFormBase extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager'),
+      $container->get('og.membership_manager'),
+      $container->get('og.access')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build(array $form, FormStateInterface $form_state) {
+  public function getFormId() {
+    return 'invite_form';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+    $form_state->set('group', $rdf_entity);
+
     $form['filter_container'] = [
       '#type' => 'container',
       '#title' => $this->t('Search Users'),
@@ -56,6 +100,10 @@ abstract class InviteFormBase extends FormBase {
       '#title' => $this->t('Email or name'),
       '#default_value' => $form_state->getValue('email') ?: '',
       '#autocomplete_route_name' => 'joinup_invite.user_auto_complete',
+      '#autocomplete_route_parameters' => [
+        '_og_entity_type_id' => $rdf_entity->getEntityTypeId(),
+        $rdf_entity->getEntityTypeId() => UriEncoder::encodeUrl($rdf_entity->id()),
+      ],
     ];
 
     $form['filter_container']['filter_submit'] = [
@@ -88,7 +136,7 @@ abstract class InviteFormBase extends FormBase {
       if (!empty($rows)) {
         $form['results_container']['submit'] = [
           '#type' => 'submit',
-          '#value' => $this->getSubmitButtonText(),
+          '#value' => $this->t('Add facilitators'),
         ];
       }
     }
@@ -102,16 +150,16 @@ abstract class InviteFormBase extends FormBase {
    * @return array
    *   The header.
    */
-  protected function getHeader() : array {
+  protected function getHeader() {
     return [
       'name' => [
-        'data' => $this->t('User'),
+        'data' => $this->t('Personal Info'),
       ],
     ];
   }
 
   /**
-   * Returns the rows.
+   * Return the rows.
    *
    * @param string $filter
    *   The filter.
@@ -119,7 +167,7 @@ abstract class InviteFormBase extends FormBase {
    * @return array
    *   The rows of the tableselect.
    */
-  protected function getRows(string $filter) : array {
+  protected function getRows($filter) {
     if ($user = user_load_by_mail($filter)) {
       $users = [$user];
     }
@@ -128,9 +176,6 @@ abstract class InviteFormBase extends FormBase {
         ->condition('mail', $filter, 'CONTAINS')
         ->condition('field_user_first_name', $filter, 'CONTAINS')
         ->condition('field_user_family_name', $filter, 'CONTAINS')
-        ->sort('field_user_first_name')
-        ->sort('field_user_family_name')
-        ->range(0, 50)
         ->execute();
       /** @var \Drupal\user\UserInterface[] $users */
       $users = $this->entityTypeManager->getStorage('user')->loadMultiple($results);
@@ -172,6 +217,31 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $users = array_filter($form_state->getValue('users'));
+    $group = $form_state->get('group');
+    $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
+    $facilitator_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
+
+    foreach ($users as $uid) {
+      $user = $this->entityTypeManager->getStorage('user')->load($uid);
+      $membership = $this->ogMembershipManager->getMembership($group, $user);
+      if (empty($membership)) {
+        $membership = $this->ogMembershipManager->createMembership($group, $user);
+      }
+      $membership->addRole($facilitator_role);
+      $membership->save();
+    }
+
+    drupal_set_message($this->t('Your settings have been saved.'), 'status', TRUE);
+    $form_state->setRedirect('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $group->id(),
+    ]);
+  }
+
+  /**
    * Returns a full name of the user with his email as suffix in parenthesis.
    *
    * @param \Drupal\user\UserInterface $user
@@ -180,19 +250,11 @@ abstract class InviteFormBase extends FormBase {
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   A string version of user's full name.
    */
-  protected function getAccountName(UserInterface $user) : TranslatableMarkup {
+  protected function getAccountName(UserInterface $user) {
     return $this->t('@name (@email)', [
       '@name' => $user->get('full_name')->value,
       '@email' => $user->getEmail(),
     ]);
   }
-
-  /**
-   * Returns the text for the form submit button.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The button text.
-   */
-  abstract protected function getSubmitButtonText() : TranslatableMarkup;
 
 }
