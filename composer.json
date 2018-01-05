@@ -13,6 +13,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
+        "drupal/changed_fields": "^2.0",
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha6",
         "drupal/config_update": "~1.4",
