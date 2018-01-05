@@ -366,16 +366,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "9445e12fb3b3db0c4aaeb8e492dd90c2a42b493c"
+                "reference": "db191abd24b0be110c98ba2271ca992e1c70962f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/9445e12fb3b3db0c4aaeb8e492dd90c2a42b493c",
-                "reference": "9445e12fb3b3db0c4aaeb8e492dd90c2a42b493c",
+                "url": "https://api.github.com/repos/composer/composer/zipball/db191abd24b0be110c98ba2271ca992e1c70962f",
+                "reference": "db191abd24b0be110c98ba2271ca992e1c70962f",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2018-01-04T13:45:25+00:00"
+            "time": "2018-01-05T14:28:42+00:00"
         },
         {
             "name": "composer/installers",
