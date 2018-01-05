@@ -59,6 +59,7 @@ website.modules.dir = ${website.drupal.dir}/modules
 website.profiles.dir = ${website.drupal.dir}/profiles
 website.themes.dir = ${website.drupal.dir}/themes
 
+drupal.private_files.dir = ${project.basedir}/private
 
 # Behat configuration
 # -------------------
