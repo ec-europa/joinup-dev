@@ -42,6 +42,9 @@ Feature: Solution membership administration
 
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
+    # @todo The 'Add facilitators' link is not appearing to due a caching issue.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4258
+    And the cache has been cleared
     And I click "Members" in the "Left sidebar"
     Then I should see the link "Add facilitators"
 
