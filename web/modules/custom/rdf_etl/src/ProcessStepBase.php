@@ -16,8 +16,10 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
  *  label = @Translation("Pipeline selection"),
  * )
  */
-abstract class PipelineSelectionBase extends PluginBase implements EtlProcessStepInterface, PluginFormInterface {
+abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInterface {
   use StringTranslationTrait;
+
+  protected $result;
   /**
    * {@inheritdoc}
    */
@@ -59,6 +61,13 @@ abstract class PipelineSelectionBase extends PluginBase implements EtlProcessSte
    */
   public function calculateDependencies() {
     return [];
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getResult() {
+    return $this->result;
   }
 
 }

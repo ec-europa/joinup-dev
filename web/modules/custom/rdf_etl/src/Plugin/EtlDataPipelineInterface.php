@@ -9,7 +9,7 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
  */
 interface EtlDataPipelineInterface extends PluginInspectionInterface {
 
-
+  function getStepDefinitions();
   // Add get/set methods for your plugin type here.
 
 }

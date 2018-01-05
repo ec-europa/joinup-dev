@@ -3,7 +3,8 @@
 namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_etl\PipelineSelectionBase;
+use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\rdf_etl\ProcessStepBase;
 
 /**
  * Defines a manual data upload step.
@@ -13,19 +14,20 @@ use Drupal\rdf_etl\PipelineSelectionBase;
  *  label = @Translation("Pipeline selection"),
  * )
  */
-class PipelineSelectionStep extends PipelineSelectionBase {
+class PipelineSelectionStep extends ProcessStepBase implements PluginFormInterface {
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $options = array_map(function ($pipeline) {
-      return $pipeline['label'];
-    }, $this->configuration['orchestrator']->getPipelines());
+    $data = $form_state->getBuildInfo()['data'];
+    if (!isset($data['options'])) {
+      throw new \Exception('This plugin requires the available pipeline options to be passed as a data attribute.');
+    }
     $form['data_pipeline'] = [
       '#type' => 'select',
       '#title' => $this->t('Data pipeline'),
-      '#options' => $options,
+      '#options' => $data['options'],
     ];
 
     return $form;
@@ -35,8 +37,10 @@ class PipelineSelectionStep extends PipelineSelectionBase {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    // TODO: Implement submitConfigurationForm() method.
-    $a = 1;
+    $build_info = $form_state->getBuildInfo();
+    $data = &$build_info['data'];
+    $data['result'] = $form_state->getValue('data_pipeline');
+    $form_state->setBuildInfo($build_info);
   }
 
 }

@@ -30,4 +30,18 @@ class EtlDataPipelineManager extends DefaultPluginManager {
     $this->setCacheBackend($cache_backend, 'rdf_etl_etl_data_pipeline_plugins');
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * @throws \Exception
+   *   Plugin does not adhere to interface.
+   */
+  public function createInstance($plugin_id, array $configuration = []) : EtlDataPipelineInterface {
+    $data_pipeline = parent::createInstance($plugin_id, $configuration);
+    if (!$data_pipeline instanceof EtlDataPipelineInterface) {
+      throw new \Exception('Incorrect plugin: ' . $plugin_id);
+    }
+    return $data_pipeline;
+  }
+
 }

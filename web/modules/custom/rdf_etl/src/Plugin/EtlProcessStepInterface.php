@@ -9,5 +9,10 @@ use Drupal\Component\Plugin\ConfigurablePluginInterface;
  * Defines an interface for Process step plugins.
  */
 interface EtlProcessStepInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
-  // Add get/set methods for your plugin type here.
+  /**
+   * Getter for the process plugin results.
+   * @return mixed
+   */
+  public function getResult();
+
 }

@@ -23,26 +23,39 @@ class EtlStateManager implements EtlStateManagerInterface {
   public function __construct(StateInterface $state) {
     $this->state = $state;
     $this->activeStep = $this->state->get('rdf_etl.active_step');
-    $this->pipeline = $this->state->get('rdf_etl.active_step');
+    $this->pipeline = $this->state->get('rdf_etl.active_pipeline');
+  }
+
+  public function isInitialized() {
+    return isset($this->state) && isset($this->activeStep);
   }
 
   public function setActiveStep(String $step) {
     $this->activeStep = $step;
     $this->state->set('rdf_etl.active_step', $step);
-    return $this->getImmutable();
+    return $this;
   }
 
   public function setActivePipeline(String $pipeline) {
-    $this->activeStep = $pipeline;
+    $this->pipeline = $pipeline;
     $this->state->set('rdf_etl.active_pipeline', $pipeline);
-    return $this->getImmutable();
+    return $this;
   }
 
-  public function getImmutable() {
-    return new EtlState(
-      $this->activeStep,
-      $this->pipeline
-    );
+  public function getActiveStep() {
+    return $this->activeStep;
+  }
+
+  public function getActivePipeline() {
+    return $this->pipeline;
+  }
+
+  public function reset() {
+    $this->state->delete('rdf_etl.active_step');
+    $this->state->delete('rdf_etl.active_pipeline');
+    $this->pipeline = NULL;
+    $this->activeStep = NULL;
+    return $this;
   }
 
 }

@@ -4,6 +4,7 @@ namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
+use Drupal\rdf_etl\ProcessStepBase;
 
 /**
  * Defines a manual data upload step.
@@ -13,7 +14,7 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
  *  label = @Translation("Manual upload"),
  * )
  */
-class ManualUploadStep extends PluginBase implements EtlProcessStepInterface {
+class ManualUploadStep extends ProcessStepBase {
 
   /**
    * {@inheritdoc}

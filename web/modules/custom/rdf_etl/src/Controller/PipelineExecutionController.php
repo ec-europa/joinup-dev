@@ -44,4 +44,8 @@ class PipelineExecutionController extends ControllerBase {
     return $this->rdfEtlOrchestrator->run();
   }
 
+  public function reset() {
+    return $this->rdfEtlOrchestrator->reset();
+  }
+
 }

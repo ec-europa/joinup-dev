@@ -10,6 +10,4 @@ use Drupal\Component\Plugin\PluginBase;
 abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipelineInterface {
 
 
-  // Add common methods and abstract methods for your plugin type here.
-
 }
