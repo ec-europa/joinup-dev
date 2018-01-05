@@ -210,7 +210,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     catch (InvalidPluginDefinitionException $e) {
       // The storage for the 'user' entity type should exist. If it didn't
       // Drupal would be completely broken. This code should never run but we
-      // are returning an anonymos user entity for completeness and to satisfy
+      // are returning an anonymous user entity for completeness and to satisfy
       // the inspections of the IDE.
       return new User([], 'user');
     }
