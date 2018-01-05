@@ -34,7 +34,7 @@ class DiscussionObserver implements ObserverInterface {
   /**
    * {@inheritdoc}
    */
-  public function getInfo() {
+  public function getInfo(): array {
     return [
       'discussion' => [
         'title',
