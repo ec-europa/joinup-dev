@@ -94,6 +94,6 @@ function joinup_discussion_node_predelete(EntityInterface $entity) : void {
   // Send a message to subscribed users to inform that the discussion was
   // deleted.
   $event = new DiscussionDeleteEvent($entity);
-  $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+  $event_dispatcher = \Drupal::service('event_dispatcher');
   $event_dispatcher->dispatch(DiscussionEvents::DELETE, $event);
 }
