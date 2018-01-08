@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c0cdd834981247d25c472647160549e",
+    "content-hash": "461f74904eaf63336bbe8c339e0734eb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4256,75 +4256,36 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha3",
+            "version": "dev-graph-refactor",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha3"
+                "url": "https://github.com/ec-europa/rdf_entity.git",
+                "reference": "26ea02a3a1408abe4136211207156b81511e9f63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "8d39089aad9d5526795abf39a83fe4f940c17c68"
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/26ea02a3a1408abe4136211207156b81511e9f63",
+                "reference": "26ea02a3a1408abe4136211207156b81511e9f63",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*",
-                "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2"
+                "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1504697043",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "dublutz",
-                    "homepage": "https://www.drupal.org/user/980246"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sandervd",
-                    "homepage": "https://www.drupal.org/user/346775"
-                },
-                {
-                    "name": "sardara",
-                    "homepage": "https://www.drupal.org/user/2353864"
-                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "source": "https://cgit.drupalcode.org/rdf_entity",
-                "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+                "issues": "https://drupal.org/project/issues/rdf_entity",
+                "source": "https://cgit.drupalcode.org/rdf_entity"
+            },
+            "time": "2018-01-08T11:21:13+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -12305,6 +12266,7 @@
         "drupal/persistent_login": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
+        "drupal/rdf_entity": 20,
         "drupal/redis": 5,
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
