@@ -15,4 +15,6 @@ interface EtlProcessStepInterface extends PluginInspectionInterface, Configurabl
    */
   public function getResult();
 
+  public function execute();
+
 }

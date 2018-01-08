@@ -2,11 +2,10 @@
 
 namespace Drupal\rdf_etl\Plugin\EtlDataPipeline;
 
+use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
-
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\rdf_etl\EtlOrchestrator;
 
@@ -60,23 +59,11 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
     );
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function build() {
-    $build = [];
-
-    // Implement your logic.
-    return $build;
-  }
-
-  public function getStepDefinitions() {
-    return [
-      'pipeline_selection_step' => [
-        'pre_execute' => [$this, 'setAvailablePipelines'],
-        'post_execute' => [$this, 'selectPipeline'],
-      ],
-    ];
+  protected function initStepDefinition() {
+    $this->steps = new PipelineStepDefinitionList();
+    $this->steps->add('pipeline_selection_step')
+      ->setPreExecute([$this, 'setAvailablePipelines'])
+      ->setPostExecute([$this, 'selectPipeline']);
   }
 
   public function setAvailablePipelines($data) {
@@ -93,24 +80,6 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
       throw new \Exception('No pipeline selected, but a pipeline is expected.');
     }
     $this->rdfEtlOrchestrator->setActivePipeline($data['result']);
-  }
-
-  public function executePipeline() {
-
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPluginId() {
-    // Gets the plugin_id of the plugin instance.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPluginDefinition() {
-    // Gets the definition of the plugin implementation.
   }
 
 }

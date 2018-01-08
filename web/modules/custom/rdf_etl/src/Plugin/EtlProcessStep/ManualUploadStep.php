@@ -16,14 +16,8 @@ use Drupal\rdf_etl\ProcessStepBase;
  */
 class ManualUploadStep extends ProcessStepBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function build() {
-    $build = [];
-
-    // Implement your logic.
-    return $build;
+  public function execute() {
+    // TODO: Implement execute() method.
   }
 
 }

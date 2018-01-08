@@ -2,8 +2,8 @@
 
 namespace Drupal\spain_ctt\Plugin\EtlDataPipeline;
 
-use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
-
+use Drupal\rdf_etl\PipelineStepDefinitionList;
+use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 
 /**
  * @EtlDataPipeline(
@@ -11,38 +11,14 @@ use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
  *  label = @Translation("Spain - Center for Technology Transfer"),
  * )
  */
-class SpainCttDataPipeline implements EtlDataPipelineInterface {
+class SpainCttDataPipeline extends EtlDataPipelineBase {
 
   /**
    * {@inheritdoc}
    */
-  public function build() {
-    $build = [];
-
-    // Implement your logic.
-
-    return $build;
+  protected function initStepDefinition() {
+    $this->steps = new PipelineStepDefinitionList();
+    $this->steps->add('manual_upload_step');
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPluginId() {
-    // Gets the plugin_id of the plugin instance.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPluginDefinition() {
-    // Gets the definition of the plugin implementation.
-  }
-
-  function getStepDefinitions() {
-    return [
-      'manual_upload_step'
-    ];
-  }
-
 
 }
