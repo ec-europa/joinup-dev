@@ -66,6 +66,18 @@ class InviteToGroupForm extends InviteFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
     $form_state->set('group', $rdf_entity);
+
+    $form['role'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Role'),
+      '#required' => TRUE,
+      '#options' => [
+        'member' => $this->t('Member'),
+        'facilitator' => $this->t('Facilitator'),
+      ],
+      '#default_value' => 'member',
+    ];
+
     return parent::build($form, $form_state);
   }
 
@@ -75,15 +87,19 @@ class InviteToGroupForm extends InviteFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $users = $this->getUserList($form_state);
     $group = $form_state->get('group');
-    $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
-    $facilitator_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
+    $role_id = implode('-', [
+      $group->getEntityTypeId(),
+      $group->bundle(),
+      $form_state->getValue('role'),
+    ]);
+    $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
     foreach ($users as $user) {
       $membership = $this->ogMembershipManager->getMembership($group, $user);
       if (empty($membership)) {
         $membership = $this->ogMembershipManager->createMembership($group, $user);
       }
-      $membership->addRole($facilitator_role);
+      $membership->addRole($role);
       $membership->save();
     }
 
