@@ -42,11 +42,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
   foreach ($message_storage->loadMultiple($ids) as $message) {
     /** @var \Drupal\file\FileInterface $attachment */
     if ($attachment = $message->field_contact_attachment->entity) {
-      if (empty($attachment)) {
-        continue;
-      }
-      $realpath = \Drupal::service('file_system')->realpath($attachment->getFileUri());
-      if (empty($realpath) || !is_file($realpath)) {
+      if (!$attachment || ($file_system->realpath($attachment->getFileUri()) === FALSE)) {
         continue;
       }
       $target = file_uri_target($attachment->getFileUri());
