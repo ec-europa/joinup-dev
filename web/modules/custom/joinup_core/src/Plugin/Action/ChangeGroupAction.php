@@ -11,7 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
@@ -268,8 +267,8 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $uri = 'internal:/' . trim($form_state->get('views_bulk_operations')['redirect_uri']['destination'], '/');
-    $url = Url::fromUri($uri);
+    /** @var \Drupal\Core\Url $url */
+    $url = $form_state->get('views_bulk_operations')['redirect_url'];
     if ($url->isRouted() && ($parameters = $url->getRouteParameters()) && !empty($parameters['rdf_entity'])) {
       /** @var \Drupal\rdf_entity\RdfInterface $source_entity */
       $source_entity = Rdf::load(UriEncoder::decodeUrl($parameters['rdf_entity']));
