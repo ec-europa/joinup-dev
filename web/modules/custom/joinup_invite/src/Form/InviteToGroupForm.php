@@ -12,9 +12,9 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form to add a user as facilitator of a rdf entity group.
+ * Form to add a member with a certain role in a rdf entity group.
  */
-class InviteFacilitatorsForm extends InviteFormBase {
+class InviteToGroupForm extends InviteFormBase {
 
   /**
    * The og membership manager service.
@@ -24,7 +24,7 @@ class InviteFacilitatorsForm extends InviteFormBase {
   protected $ogMembershipManager;
 
   /**
-   * Constructs a new InviteFacilitatorsForm object.
+   * Constructs a new InviteToGroupForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
@@ -51,14 +51,14 @@ class InviteFacilitatorsForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'invite_facilitators_form';
+    return 'invite_to_group_form';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getSubmitButtonText() : TranslatableMarkup {
-    return $this->t('Add facilitators');
+    return $this->t('Add members');
   }
 
   /**
