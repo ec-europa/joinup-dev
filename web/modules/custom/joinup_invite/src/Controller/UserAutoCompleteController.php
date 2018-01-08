@@ -52,6 +52,7 @@ class UserAutoCompleteController extends ControllerBase {
     if ($param) {
       $results = $this->entityTypeManager->getStorage('user')->getQuery('OR')
         ->condition('mail', $param, 'CONTAINS')
+        ->condition('name', $param, 'CONTAINS')
         ->condition('field_user_first_name', $param, 'CONTAINS')
         ->condition('field_user_family_name', $param, 'CONTAINS')
         ->sort('field_user_first_name')
