@@ -10,7 +10,11 @@ use Drupal\rdf_etl\PipelineStepDefinitionList;
  */
 abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipelineInterface {
 
-  /** @var \Drupal\rdf_etl\PipelineStepDefinitionList */
+  /**
+   * The execution order of the pipeline.
+   *
+   * @var \Drupal\rdf_etl\PipelineStepDefinitionList
+   */
   public $steps;
 
   /**
@@ -19,7 +23,7 @@ abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipeline
    * @return \Drupal\rdf_etl\PipelineStepDefinitionList
    *   The step definition.
    */
-  public function getSteps() : PipelineStepDefinitionList {
+  public function stepDefinitionList() : PipelineStepDefinitionList {
     if (!isset($this->steps)) {
       $this->initStepDefinition();
     }

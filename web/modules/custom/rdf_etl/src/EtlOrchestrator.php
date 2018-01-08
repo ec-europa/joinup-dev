@@ -51,11 +51,19 @@ class EtlOrchestrator {
 
   protected $form = [];
 
-  /** @var  \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface */
+  /**
+   * The active pipeline.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface
+   */
   protected $pipeline;
 
-  /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepInterface */
-  protected $active_step;
+  /**
+   * The data pipeline sequence.
+   *
+   * @var int
+   */
+  protected $activePipelineSequence;
 
   /**
    * Constructs a new EtlOrchestrator object.
@@ -68,74 +76,29 @@ class EtlOrchestrator {
   }
 
   /**
-   * Blaat.
-   *
-   * @return array|mixed[]|null
-   *   The defined data pipelines.
-   */
-  public function getPipelines() {
-    return $this->pluginManagerEtlDataPipeline->getDefinitions();
-  }
-
-  public function reset() {
-    $this->stateManager->reset();
-    return ['#markup' => 'Orchestrator reset.'];
-  }
-
-  /**
-   * Gets the active data pipeline.
-   *
-   * @return \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface
-   *   The active data pipeline.
-   */
-  protected function getActivePipeline(): EtlDataPipelineInterface {
-    $active_pipeline = $this->stateManager->getPersistedPipeline();
-    return $this->pluginManagerEtlDataPipeline->createInstance($active_pipeline);
-  }
-
-  public function setActivePipeline($pipeline_id = NULL) {
-    if (!$pipeline_id) {
-      $pipeline_id = self::DEFAULT_PIPELINE;
-    }
-    $this->stateManager->setState($pipeline_id, 0);
-    $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($pipeline_id);
-  }
-
-  /**
    * Execute the orchestrator.
    *
    * @return array
    *   Render array.
    */
   public function run() {
-    $this->initializePipelineFromPersistenState();
+    $this->initializePipelineFromPersistentState();
 
     $active_step = $this->getActiveStep();
 
-    $next_step_id = $this->executeStep($active_step);
-    $this->persistState($next_step_id);
-
+    $next_pipeline_sequence = $this->executeStep($active_step);
+    $this->persistState($next_pipeline_sequence);
 
     return $this->form;
   }
 
-  protected function persistState($step) {
-    if (empty($this->pipeline->getPluginId())) {
-      throw new \Exception('Pipeline not set');
-    }
-    $this->stateManager->setState($this->pipeline->getPluginId(), $step);
-  }
-
-  protected function initializePipelineFromPersistenState() {
-    if (!$this->stateManager->isPersisted()) {
-      // Initialize to default pipeline.
-      $this->setActivePipeline();
-      return;
-    }
-    // Restore the active pipeline from the persistent store.
-    $this->setActivePipeline($this->stateManager->getPersistedPipeline());
-    $this->active_step = $this->stateManager->getPersistedStep();
-    $this->pipeline->getSteps()->seek($this->active_step);
+  /**
+   * Controller callback: Reset the state machine.
+   *
+   * Should not be used, unless something went really bad.
+   */
+  public function reset() {
+    $this->stateManager->reset();
   }
 
   /**
@@ -145,12 +108,63 @@ class EtlOrchestrator {
    *   The active process step.
    */
   public function getActiveStep(): EtlProcessStepInterface {
-    $plugin_id = $this->pipeline->getSteps()->get($this->active_step)->getPluginId();
+    $plugin_id = $this->pipeline->stepDefinitionList()->get($this->activePipelineSequence)->getPluginId();
     return $this->pluginManagerEtlProcessStep->createInstance($plugin_id);
   }
 
-  protected function getActiveStepDefinition() : PipelineStepDefinition {
-    return $this->pipeline->getSteps()->get($this->active_step);
+  /**
+   * Gets the active data pipeline.
+   *
+   * @return \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface
+   *   The active data pipeline.
+   */
+  protected function getActivePipeline(): EtlDataPipelineInterface {
+    $active_pipeline = $this->stateManager->getPersistedPipelineId();
+    return $this->pluginManagerEtlDataPipeline->createInstance($active_pipeline);
+  }
+
+  /**
+   * Persist the the active pipeline and step across requests.
+   *
+   * @param int $sequence
+   *   The position of the pipeline.
+   *
+   * @throws \Exception
+   */
+  protected function persistState(int $sequence) {
+    if (empty($this->pipeline->getPluginId())) {
+      throw new \Exception('Pipeline not set');
+    }
+    $this->stateManager->setState($this->pipeline->getPluginId(), $sequence);
+  }
+
+  /**
+   * Initialize the state machine from the persisted state.
+   */
+  protected function initializePipelineFromPersistentState() {
+    if (!$this->stateManager->isPersisted()) {
+      // Initialize to default pipeline.
+      $this->setActivePipeline();
+      return;
+    }
+    // Restore the active pipeline from the persistent store.
+    $this->setActivePipeline($this->stateManager->getPersistedPipelineId());
+    $this->activePipelineSequence = $this->stateManager->getPersistedPipelineSequence();
+    $this->pipeline->stepDefinitionList()->seek($this->activePipelineSequence);
+  }
+
+  /**
+   * Sets the pipeline to use for execution.
+   *
+   * @param string $pipeline_id
+   *   The plugin id of the pipeline.
+   */
+  public function setActivePipeline(string $pipeline_id = NULL) {
+    if (!$pipeline_id) {
+      $pipeline_id = self::DEFAULT_PIPELINE;
+    }
+    $this->stateManager->setState($pipeline_id, 0);
+    $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($pipeline_id);
   }
 
   /**
@@ -162,10 +176,12 @@ class EtlOrchestrator {
    *   The data array.
    *
    * @return array|mixed
+   *   The data array.
+   *
    * @throws \Exception
    */
-  protected function callPipelineHook(string $hook, array $data) {
-    $definition = $this->getActiveStepDefinition();
+  protected function callPipelineHook(string $hook, array $data) : array {
+    $definition = $this->pipeline->stepDefinitionList()->get($this->activePipelineSequence);
     switch ($hook) {
       case 'pre_execute':
         $callback = $definition->getPreExecute();
@@ -189,12 +205,6 @@ class EtlOrchestrator {
     return call_user_func_array($callback, [$data]);
   }
 
-  protected function getPipelineStepDefinitions() {
-    return $this->getActivePipeline()->getSteps();
-
-
-  }
-
   /**
    * Execute a step.
    *
@@ -204,7 +214,7 @@ class EtlOrchestrator {
    * @return string
    *   The id of the next data step to execute.
    */
-  protected function executeStep(EtlProcessStepInterface $active_process_step) {
+  protected function executeStep(EtlProcessStepInterface $active_process_step) : string {
     $form_state = new FormState();
 
     $data = [];
@@ -215,11 +225,11 @@ class EtlOrchestrator {
       $this->form = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
       $data = $form_state->getBuildInfo()['data'];
     }
-    $data['next_step'] = $this->pipeline->getSteps()->current()->getPluginId();
+    $data['next_step'] = $this->pipeline->stepDefinitionList()->current()->getPluginId();
     if ($form_state->isExecuted()) {
-      $this->pipeline->getSteps()->next();
-      if ($this->pipeline->getSteps()->valid()) {
-        $data['next_step'] = $this->pipeline->getSteps()->current()->getPluginId();
+      $this->pipeline->stepDefinitionList()->next();
+      if ($this->pipeline->stepDefinitionList()->valid()) {
+        $data['next_step'] = $this->pipeline->stepDefinitionList()->current()->getPluginId();
       }
       else {
         $data['next_step'] = 'finished';

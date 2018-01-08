@@ -10,6 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\rdf_etl\EtlOrchestrator;
 
 /**
+ * A pseudo data pipeline.
+ *
+ * Used to provide a selection mechanism for the actual pipeline.
+ *
  * @EtlDataPipeline(
  *  id = "pipeline_selection_pipe",
  *  label = @Translation("The default data pipeline, allows selecting a data
@@ -59,6 +63,9 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function initStepDefinition() {
     $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('pipeline_selection_step')
@@ -66,6 +73,9 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
       ->setPostExecute([$this, 'selectPipeline']);
   }
 
+  /**
+   * Pre-execute callback: Sets the available pipelines as options in the form.
+   */
   public function setAvailablePipelines($data) {
     $data['options'] = array_map(function ($pipeline) {
       return $pipeline['label'];
@@ -75,7 +85,17 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
     return $data;
   }
 
-  public function selectPipeline($data) {
+  /**
+   * Post-execute callback: Sets the active pipeline to the one selected.
+   *
+   * @param array $data
+   *   The data array from the form.
+   *
+   * @see \Drupal\rdf_etl\Plugin\EtlProcessStep\PipelineSelectionStep
+   *
+   * @throws \Exception
+   */
+  public function selectPipeline(array $data) {
     if (!isset($data['result'])) {
       throw new \Exception('No pipeline selected, but a pipeline is expected.');
     }

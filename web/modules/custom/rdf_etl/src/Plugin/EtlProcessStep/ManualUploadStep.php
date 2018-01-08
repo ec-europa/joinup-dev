@@ -2,8 +2,6 @@
 
 namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 use Drupal\rdf_etl\ProcessStepBase;
 
 /**
@@ -16,6 +14,9 @@ use Drupal\rdf_etl\ProcessStepBase;
  */
 class ManualUploadStep extends ProcessStepBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
     // TODO: Implement execute() method.
   }

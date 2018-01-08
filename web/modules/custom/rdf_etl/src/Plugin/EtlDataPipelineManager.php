@@ -11,7 +11,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
  */
 class EtlDataPipelineManager extends DefaultPluginManager {
 
-
   /**
    * Constructs a new EtlDataPipelineManager object.
    *

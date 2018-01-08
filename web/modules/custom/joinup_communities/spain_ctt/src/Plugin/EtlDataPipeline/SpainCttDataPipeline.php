@@ -6,6 +6,8 @@ use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 
 /**
+ * The data pipeline of Spanish repository.
+ *
  * @EtlDataPipeline(
  *  id = "pipeline_spain",
  *  label = @Translation("Spain - Center for Technology Transfer"),

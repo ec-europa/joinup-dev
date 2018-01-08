@@ -27,9 +27,20 @@ class EtlOrchestratorForm extends FormBase {
     return 'etl_orchestrator_form';
   }
 
+  /**
+   * Builds an instance of the ProcessStep plugin.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
+   *   An instance of the current step plugin.
+   *
+   * @throws \Exception
+   */
   protected function activeProcessStep(FormStateInterface $form_state) : EtlProcessStepInterface {
     if (!isset($form_state->getBuildInfo()['active_process_step'])) {
-      $b = 1;
+      throw new \Exception('No active process step.');
     }
     $plugin_id = $form_state->getBuildInfo()['active_process_step'];
     $plugin = \Drupal::getContainer()->get('plugin.manager.etl_process_step')->createInstance($plugin_id);
@@ -72,7 +83,15 @@ class EtlOrchestratorForm extends FormBase {
     $form_state->setRebuild();
   }
 
-  function __sleep() {
+  /**
+   * Make sure we don't have dependencies when we're serialised out.
+   *
+   * @todo Can be removed?
+   *
+   * @return array
+   *   Empty array.
+   */
+  public function __sleep() {
     return [];
   }
 

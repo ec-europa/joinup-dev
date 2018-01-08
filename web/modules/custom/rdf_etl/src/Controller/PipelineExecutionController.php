@@ -44,8 +44,17 @@ class PipelineExecutionController extends ControllerBase {
     return $this->rdfEtlOrchestrator->run();
   }
 
+  /**
+   * Controller callback: Reset the state machine.
+   *
+   * Should not be used, unless something went really bad.
+   *
+   * @return array
+   *   The render array.
+   */
   public function reset() {
-    return $this->rdfEtlOrchestrator->reset();
+    $this->rdfEtlOrchestrator->reset();
+    return ['#markup' => 'Orchestrator reset.'];
   }
 
 }

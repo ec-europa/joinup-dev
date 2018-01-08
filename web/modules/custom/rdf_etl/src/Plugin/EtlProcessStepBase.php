@@ -9,7 +9,4 @@ use Drupal\Component\Plugin\PluginBase;
  */
 abstract class EtlProcessStepBase extends PluginBase implements EtlProcessStepInterface {
 
-
-  // Add common methods and abstract methods for your plugin type here.
-
 }

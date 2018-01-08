@@ -2,60 +2,75 @@
 
 namespace Drupal\rdf_etl;
 
+/**
+ * Class PipelineStepDefinition.
+ *
+ * @package Drupal\rdf_etl
+ */
 class PipelineStepDefinition {
-  protected $plugin_id;
+  protected $pluginId;
 
   protected $preExecute;
 
   protected $postExecute;
 
-  protected $order;
-
-  function __construct($plugin_id, $order) {
-    $this->plugin_id = $plugin_id;
-    $this->order = $order;
+  /**
+   * PipelineStepDefinition constructor.
+   *
+   * @param string $plugin_id
+   *   The plugin id of the process step associated with this step.
+   */
+  public function __construct(string $plugin_id) {
+    $this->pluginId = $plugin_id;
   }
 
   /**
-   * @param array $callback
+   * Set the post-execute hook.
    *
-   * $return $this
+   * @param array $callback
+   *   The callback to invoke.
    */
-  public function setPostExecute(array $callback) {
+  public function setPostExecute(array $callback) : PipelineStepDefinition {
     $this->postExecute = $callback;
     return $this;
   }
 
   /**
+   * Get the post-execute hook for this step.
+   *
    * @return array
+   *   The callback to invoke.
    */
   public function getPostExecute() {
     return $this->postExecute;
   }
 
   /**
-   * @param array $callback
+   * Set the pre-execute hook.
    *
-   * @return $this
+   * @param array $callback
+   *   The callback to invoke.
    */
-  public function setPreExecute(array $callback) {
+  public function setPreExecute(array $callback) : PipelineStepDefinition {
     $this->preExecute = $callback;
     return $this;
   }
 
   /**
+   * Get the pre-execute hook for this step.
+   *
    * @return array
+   *   The callback to invoke.
    */
   public function getPreExecute() {
     return $this->preExecute;
   }
 
-  public function getPluginId() {
-    return $this->plugin_id;
-  }
-
-  public function getOrder() {
-    return $this->order;
+  /**
+   * Return the plugin id of the process step plugin to use for this step.
+   */
+  public function getPluginId() : string {
+    return $this->pluginId;
   }
 
 }

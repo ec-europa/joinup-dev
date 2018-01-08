@@ -4,7 +4,6 @@ namespace Drupal\rdf_etl;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 
@@ -19,7 +18,6 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInterface {
   use StringTranslationTrait;
 
-  protected $result;
   /**
    * {@inheritdoc}
    */
@@ -61,13 +59,6 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
    */
   public function calculateDependencies() {
     return [];
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getResult() {
-    return $this->result;
   }
 
 }
