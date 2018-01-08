@@ -73,13 +73,12 @@ class InviteFacilitatorsForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $users = array_filter($form_state->getValue('users'));
+    $users = $this->getUserList($form_state);
     $group = $form_state->get('group');
     $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
     $facilitator_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
-    foreach ($users as $uid) {
-      $user = $this->entityTypeManager->getStorage('user')->load($uid);
+    foreach ($users as $user) {
       $membership = $this->ogMembershipManager->getMembership($group, $user);
       if (empty($membership)) {
         $membership = $this->ogMembershipManager->createMembership($group, $user);
