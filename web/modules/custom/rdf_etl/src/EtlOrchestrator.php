@@ -222,6 +222,7 @@ class EtlOrchestrator {
       $data['state'] = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->key());
     }
     $data = $this->callPipelineHook('post_execute', $data);
+    $active_process_step->execute($data);
     $this->redirectForm($form_state);
     return $data['state'];
   }
