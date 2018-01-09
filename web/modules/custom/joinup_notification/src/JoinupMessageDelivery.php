@@ -104,6 +104,11 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * {@inheritdoc}
    */
   public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool {
+    // Don't send messages to the anonymous user.
+    if ($account->isAnonymous()) {
+      return TRUE;
+    }
+
     $message = $this->createMessage($message_template, $arguments);
     $message->setOwner($account);
     $recipients_metadata = [
