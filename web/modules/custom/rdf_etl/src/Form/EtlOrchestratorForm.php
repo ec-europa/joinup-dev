@@ -51,18 +51,66 @@ class EtlOrchestratorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    if (!$this->activeProcessStep($form_state) instanceof PluginFormInterface) {
-      return $form;
-    }
 
+    if (!$this->activeProcessStep($form_state) instanceof PluginFormInterface) {
+      return $this->selfSubmittingForm($form, $form_state);
+    }
+    return $this->buildSubForm($form, $form_state);
+  }
+
+  /**
+   * Attaches the plugin form.
+   *
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array
+   *   The form array.
+   */
+  protected function buildSubForm(array $form, FormStateInterface $form_state): array {
     $form['data'] = [];
     $subform_state = SubformState::createForSubform($form['data'], $form, $form_state);
-    $form['data'] = $this->activeProcessStep($form_state)->buildConfigurationForm($form['data'], $subform_state);
+    $form['data'] = $this->activeProcessStep($form_state)
+      ->buildConfigurationForm($form['data'], $subform_state);
     $form['data']['#tree'] = TRUE;
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
     ];
+    return $form;
+  }
+
+  /**
+   * Attaches the self-submit button to the form.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @return array
+   *   The form array.
+   */
+  protected function selfSubmittingForm(array $form, FormStateInterface $form_state) {
+    // @todo Implement this.
+    return $form;
+  }
+
+  /**
+   * Attaches the progress indicator to the form.
+   *
+   * @param array $form
+   *   Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @return array
+   *   The form array.
+   */
+  protected function buildProgressIndicator(array $form, FormStateInterface $form_state) {
+    // @todo Implement this.
     return $form;
   }
 

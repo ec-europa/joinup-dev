@@ -206,13 +206,11 @@ class EtlOrchestrator {
     $current_state = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->current()->getPluginId());
     $data['state'] = $current_state;
     $data = $this->callPipelineHook('pre_execute', $data);
-    if ($active_process_step instanceof PluginFormInterface) {
-      $form_state->addBuildInfo('active_process_step', $active_process_step->getPluginId());
-      $form_state->addBuildInfo('data', $data);
-      $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
-      $data = $form_state->getBuildInfo()['data'];
+    $form_state->addBuildInfo('active_process_step', $active_process_step->getPluginId());
+    $form_state->addBuildInfo('data', $data);
+    $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
+    $data = $form_state->getBuildInfo()['data'];
 
-    }
     // In case of validation errors, or a rebuild (e.g. multi step), bail out.
     if (!$form_state->isExecuted()) {
       return $current_state;
