@@ -28,8 +28,8 @@ class EtlStateManager implements EtlStateManagerInterface {
    */
   public function __construct(StateInterface $state) {
     $this->state = $state;
-    $this->sequence = $this->state->get('rdf_etl.active_sequence');
-    $this->pipeline = $this->state->get('rdf_etl.active_pipeline_sequence');
+    $this->pipeline = $this->state->get('rdf_etl.active_pipeline');
+    $this->sequence = $this->state->get('rdf_etl.active_pipeline_sequence');
   }
 
   /**
@@ -39,45 +39,33 @@ class EtlStateManager implements EtlStateManagerInterface {
    *   The persistence state.
    */
   public function isPersisted() {
-    return isset($this->state) && isset($this->sequence);
+    return isset($this->pipeline) && isset($this->sequence);
   }
 
   /**
    * Persists the pipeline state for a following request.
    *
-   * @param string $pipeline_id
-   *   The plugin id of the pipeline.
-   * @param int $sequence
-   *   The position of where we are in the execution process.
+   * @param \Drupal\rdf_etl\EtlState $state
+   *   The state object to persist.
    *
    * @return $this
    */
-  public function setState(string $pipeline_id, int $sequence) : EtlStateManager {
-    $this->pipeline = $pipeline_id;
-    $this->state->set('rdf_etl.active_pipeline', $pipeline_id);
-    $this->sequence = $sequence;
-    $this->state->set('rdf_etl.active_pipeline_sequence', $sequence);
+  public function setState(EtlState $state) : EtlStateManager {
+    $this->pipeline = $state->pipelineId();
+    $this->state->set('rdf_etl.active_pipeline', $this->pipeline);
+    $this->sequence = $state->sequence();
+    $this->state->set('rdf_etl.active_pipeline_sequence', $this->sequence);
     return $this;
   }
 
   /**
-   * Get the persisted position within the pipeline.
+   * Returns the current state.
    *
-   * @return int
-   *   The current position of within the pipeline.
+   * @return \Drupal\rdf_etl\EtlState
+   *   The state value object.
    */
-  public function getPersistedPipelineSequence() : int {
-    return (int) $this->sequence;
-  }
-
-  /**
-   * Get the persisted pipeline id.
-   *
-   * @return string
-   *   The plugin id of the pipeline.
-   */
-  public function getPersistedPipelineId() : String {
-    return $this->pipeline;
+  public function state() {
+    return new EtlState($this->pipeline, $this->sequence);
   }
 
   /**

@@ -2,10 +2,12 @@
 
 namespace Drupal\rdf_etl\Plugin\EtlDataPipeline;
 
+use Drupal\rdf_etl\EtlState;
 use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\rdf_etl\Plugin\EtlDataPipelineManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\rdf_etl\EtlOrchestrator;
 
@@ -30,6 +32,13 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
   protected $rdfEtlOrchestrator;
 
   /**
+   * The pipeline plugin manager service.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+   */
+  protected $pipelineManager;
+
+  /**
    * Constructs a new DefaultEtlDataPipeline object.
    *
    * @param array $configuration
@@ -45,10 +54,12 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    EtlOrchestrator $rdf_etl_orchestrator
+    EtlOrchestrator $rdf_etl_orchestrator,
+    EtlDataPipelineManager $pipeline_manager
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->rdfEtlOrchestrator = $rdf_etl_orchestrator;
+    $this->pipelineManager = $pipeline_manager;
   }
 
   /**
@@ -59,7 +70,8 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('rdf_etl.orchestrator')
+      $container->get('rdf_etl.orchestrator'),
+      $container->get('plugin.manager.etl_data_pipeline')
     );
   }
 
@@ -79,7 +91,7 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
   public function setAvailablePipelines($data) {
     $data['options'] = array_map(function ($pipeline) {
       return $pipeline['label'];
-    }, $this->rdfEtlOrchestrator->getPipelines());
+    }, $this->pipelineManager->getDefinitions());
     // Exclude ourselves to be selected.
     unset($data['options']['pipeline_selection_pipe']);
     return $data;
@@ -99,7 +111,8 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
     if (!isset($data['result'])) {
       throw new \Exception('No pipeline selected, but a pipeline is expected.');
     }
-    $this->rdfEtlOrchestrator->setActivePipeline($data['result']);
+    $data['state'] = new EtlState($data['result'], EtlOrchestrator::FIRST_STEP);
+    return $data;
   }
 
 }

@@ -78,9 +78,9 @@ class EtlOrchestratorForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->cleanValues();
+    //$form_state->cleanValues();
     $this->activeProcessStep($form_state)->submitConfigurationForm($form['data'], SubformState::createForSubform($form['data'], $form, $form_state));
-    $form_state->setRebuild();
+    $form_state->disableRedirect();
   }
 
   /**
