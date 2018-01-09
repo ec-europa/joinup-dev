@@ -144,6 +144,9 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": 1,
         "patches": {
+            "behat/mink-extension": {
+                "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311" : "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
+            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",

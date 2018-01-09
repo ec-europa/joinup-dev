@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "17889cf2151a340150d40401faefb909",
+    "content-hash": "9d856766a25d7224c0381a0b41335f1f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1069,7 +1069,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "BSD-2-Clause"
             ],
             "authors": [
                 {
@@ -9950,6 +9950,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1.x-dev"
+                },
+                "patches_applied": {
+                    "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311": "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
                 }
             },
             "autoload": {
