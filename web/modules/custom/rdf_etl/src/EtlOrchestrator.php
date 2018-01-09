@@ -203,24 +203,28 @@ class EtlOrchestrator {
     $form_state = new FormState();
 
     $data = [];
-    $data['state'] = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->current()->getPluginId());
+    $current_state = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->current()->getPluginId());
+    $data['state'] = $current_state;
     $data = $this->callPipelineHook('pre_execute', $data);
     if ($active_process_step instanceof PluginFormInterface) {
       $form_state->addBuildInfo('active_process_step', $active_process_step->getPluginId());
       $form_state->addBuildInfo('data', $data);
       $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
       $data = $form_state->getBuildInfo()['data'];
+
+    }
+    // In case of validation errors, or a rebuild (e.g. multi step), bail out.
+    if (!$form_state->isExecuted()) {
+      return $current_state;
     }
 
-    if ($form_state->isExecuted()) {
-      $this->pipeline->stepDefinitionList()->next();
-      $data['state'] = new EtlState($this->pipeline->getPluginId(), self::FINAL_STEP);
-      if ($this->pipeline->stepDefinitionList()->valid()) {
-        $data['state'] = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->key());
-      }
-      $data = $this->callPipelineHook('post_execute', $data);
-      $this->redirectForm($form_state);
+    $this->pipeline->stepDefinitionList()->next();
+    $data['state'] = new EtlState($this->pipeline->getPluginId(), self::FINAL_STEP);
+    if ($this->pipeline->stepDefinitionList()->valid()) {
+      $data['state'] = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->key());
     }
+    $data = $this->callPipelineHook('post_execute', $data);
+    $this->redirectForm($form_state);
     return $data['state'];
   }
 

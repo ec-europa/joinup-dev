@@ -1,5 +1,5 @@
 rdf_etl.pipeline_execution_controller_execution:
-  path: '/rdf_entity/etl'
+  path: '/admin/content/etl'
   defaults:
     _controller: '\Drupal\rdf_etl\Controller\PipelineExecutionController::execution'
     _title: 'Execute data pipeline'
@@ -8,7 +8,7 @@ rdf_etl.pipeline_execution_controller_execution:
 
 
 rdf_etl.pipeline_execution_reset:
-  path: '/rdf_entity/etl/reset'
+  path: '/admin/content/etl/reset'
   defaults:
     _controller: '\Drupal\rdf_etl\Controller\PipelineExecutionController::reset'
     _title: 'Execute data pipeline'

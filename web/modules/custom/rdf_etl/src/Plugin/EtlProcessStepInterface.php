@@ -13,6 +13,6 @@ interface EtlProcessStepInterface extends PluginInspectionInterface, Configurabl
   /**
    * Execute the business logic of the process step (the actual ETL action).
    */
-  public function execute();
+  public function execute(array $data);
 
 }

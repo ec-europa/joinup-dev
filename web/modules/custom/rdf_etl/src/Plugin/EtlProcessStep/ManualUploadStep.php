@@ -19,7 +19,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
   /**
    * {@inheritdoc}
    */
-  public function execute() {
+  public function execute(array $data) {
     // TODO: Implement execute() method.
   }
 
@@ -38,6 +38,14 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::validateConfigurationForm($form, $form_state);
+    $form_state->setError($form['adms_file'], $this->t('Invalid file'));
   }
 
   /**
