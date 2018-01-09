@@ -11,7 +11,7 @@ joinup_invite.update_invitation:
       invitation:
         type: entity:invitation
 
-entity.rdf_entity.facilitators.invite:
+entity.rdf_entity.members.invite:
   path: 'rdf_entity/{rdf_entity}/members/invite'
   defaults:
     _form: '\Drupal\joinup_invite\Form\InviteToGroupForm'
