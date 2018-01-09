@@ -1,0 +1,5 @@
+langcode: en
+status: true
+id: default
+name: Published
+description: 'Default graph. This is available for all entity types and bundles.'
