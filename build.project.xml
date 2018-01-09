@@ -190,6 +190,7 @@
     </target>
 
     <target name="truncate-cache-tables">
+        <echo message="Truncating cache tables." />
         <truncatecachetables
                 url="${drupal.db.dsn}"
                 userId="${drupal.db.user}"
