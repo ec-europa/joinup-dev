@@ -125,41 +125,90 @@ Feature: Collection membership administration
     Then I go to the "Medical diagnosis" collection edit form
     Then I should not see the heading "Access denied"
 
-  Scenario: Only privileged members should be able to add facilitators
+  Scenario: Privileged members should be allowed to add users to a collection.
+    Given users:
+      | Username  | E-mail                 | First name | Family name |
+      | jbelanger | j.belanger@example.com | Jeannette  | Belanger    |
+      | dwightone | dwight1@example.com    | Christian  | Dwight      |
+
     When I am not logged in
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as an authenticated
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
-    When I am logged in as "Gregory House"
+    When I am logged in as "dwightone"
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as "Lisa Cuddy"
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
+    Then I should see the link "Add members"
+    When I click "Add members"
+    Then I should see the heading "Add members"
+
+    When I fill in "Name/username/email" with "gregory_house@example.com"
+    And I press "Add"
+    Then I should see the text "Gregory House (gregory_house@example.com)"
+    # Verify that an error message is shown when trying to add a mail not
+    # present in the system.
+    When I fill in "Name/username/email" with "donald@example.com"
+    And I press "Add"
+    Then I should see the error message "No user found with mail donald@example.com."
+    # Verify that an error message is shown when trying to add the same
+    # user twice.
+    When I fill in "Name/username/email" with "gregory_house@example.com"
+    And I press "Add"
+    Then I should see the error message "The user with mail gregory_house@example.com has been already added to the list."
+    # Add some other users.
+    When I fill in "Name/username/email" with "j.belanger@example.com"
+    And I press "Add"
+    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
+    And I should see the text "Gregory House (gregory_house@example.com)"
+    When I fill in "Name/username/email" with "donald_duck@example.com"
+    And I press "Add"
+    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
+    And I should see the text "Gregory House (gregory_house@example.com)"
+    And I should see the text "Donald Duck (donald_duck@example.com)"
+    # Remove a user.
+    When I remove the user "Donald Duck" from the invitation list
+    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
+    And I should see the text "Gregory House (gregory_house@example.com)"
+    But I should not see the text "Donald Duck (donald_duck@example.com)"
+
+    # Add the users as members.
+    Given the option with text "Member" from select "Role" is selected
+    When I press "Add members"
+    Then I should see the success message "Your settings have been saved."
+    And I should see the link "Jeannette Belanger"
+    And I should see the link "Gregory House"
+    But I should not see the link "Donald Duck"
 
     # Add a facilitator.
-    When I click "Add facilitators"
-    And I fill in "Email or name" with "gregory_house@example.com"
-    And I press "Filter"
-    Then I should see the text "Gregory House (gregory_house@example.com)"
-    When I check "Gregory House (gregory_house@example.com)"
-    And I press "Add facilitators"
-    # Submitting the form takes us back to the "Members" page.
-    Then I should see the heading "Members"
+    When I click "Add members"
+    When I fill in "Name/username/email" with "dwight1@example.com"
+    And I press "Add"
+    Then I should see the text "Christian Dwight (dwight1@example.com)"
+    When I select "Facilitator" from "Role"
+    And I press "Add members"
+    Then I should see the success message "Your settings have been saved."
+    And I should see the link "Christian Dwight"
 
     # Try new privileges.
-    When I am logged in as "Gregory House"
+    When I am logged in as "dwightone"
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
-    When I click "Add facilitators"
-    Then I should see the heading "Add facilitators"
+    Then I should see the link "Add members"
+    When I click "Add members"
+    Then I should see the heading "Add members"
+
+    When I am logged in as "jbelanger"
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should not see the link "Add members"
