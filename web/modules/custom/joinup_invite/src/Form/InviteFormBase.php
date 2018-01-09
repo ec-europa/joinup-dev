@@ -71,13 +71,20 @@ abstract class InviteFormBase extends FormBase {
       '#type' => 'container',
       '#tree' => TRUE,
       '#weight' => -98,
+      '#attributes' => [
+        'class' => ['users-list'],
+      ],
     ];
     $user_list = $form_state->get('user_list');
     foreach ($user_list as $delta => $mail) {
       $form['users'][$delta] = [
         '#type' => 'container',
         'label' => [
-          '#markup' => $this->getAccountName($this->loadUserByMail($mail)),
+          '#type' => 'inline_template',
+          '#template' => '<span class="users-list__label">{{ name }}</span>',
+          '#context' => [
+            'name' => $this->getAccountName($this->loadUserByMail($mail)),
+          ],
         ],
         'remove' => [
           '#type' => 'submit',
