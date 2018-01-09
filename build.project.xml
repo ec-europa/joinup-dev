@@ -38,8 +38,8 @@
     <echo msg="Loading Amazon S3 list task." />
     <taskdef name="s3list" classname="\DrupalProject\Phing\AwsS3ListTask" />
 
-    <echo msg="Loading Drop Cache Tables task." />
-    <taskdef name="dropcachetables" classname="\DrupalProject\Phing\DropCacheTablesTask" />
+    <echo msg="Loading Truncate Cache Tables task." />
+    <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
@@ -183,14 +183,14 @@
                 verbose="${drush.verbose}">
             <option name="file" value="${exports.sql.destination}" />
         </drush>
-        <!-- Make sure to drop the cache tables immediately after importing. The
-             dump might contain stale data since we use Redis on production for
-             caching. -->
-        <phingcall target="drop-cache-tables" />
+        <!-- Make sure to truncate the cache tables immediately after importing.
+             The dump might contain stale data since we use Redis on production
+             for caching. -->
+        <phingcall target="truncate-cache-tables" />
     </target>
 
-    <target name="drop-cache-tables">
-        <dropcachetables
+    <target name="truncate-cache-tables">
+        <truncatecachetables
                 url="${drupal.db.dsn}"
                 userId="${drupal.db.user}"
                 password="${drupal.db.password}" />

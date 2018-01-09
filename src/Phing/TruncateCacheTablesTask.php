@@ -7,9 +7,9 @@ namespace DrupalProject\Phing;
 require_once 'phing/tasks/ext/pdo/PDOTask.php';
 
 /**
- * Phing task to drop Drupal's cache tables from the database.
+ * Phing task to truncate Drupal's cache tables.
  */
-class DropCacheTablesTask extends \PDOTask {
+class TruncateCacheTablesTask extends \PDOTask {
 
   /**
    * The PDO connection.
