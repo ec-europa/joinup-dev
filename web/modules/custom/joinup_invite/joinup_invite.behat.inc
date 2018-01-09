@@ -55,6 +55,31 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
+   * Removes a user from the list of users to invite.
+   *
+   * @param string $username
+   *   The name of the user to remove.
+   *
+   * @throws \Exception
+   *   When the button to remove the user is not found.
+   *
+   * @When I remove the user :username from the invitation list
+   */
+  public function removeUserFromInvitationList($username): void {
+    // Find the element that contains the user name.
+    $xpath = "//span[contains(concat(' ', normalize-space(@class), ' '), ' users-list__label ')][contains(text(), '$username')]"
+      // Find the related button.
+      . "/following-sibling::input[@type='submit'][@value='Remove']";
+    $button = $this->getSession()->getPage()->find('xpath', $xpath);
+
+    if (!$button) {
+      throw new \Exception("Couldn't find the button to remove the user '$username'.");
+    }
+
+    $button->press();
+  }
+
+  /**
    * Returns information about the invitations related to the given entity type.
    *
    * @param string $entity_type
