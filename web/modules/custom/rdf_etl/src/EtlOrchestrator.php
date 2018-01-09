@@ -5,7 +5,6 @@ namespace Drupal\rdf_etl;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_etl\Form\EtlOrchestratorForm;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;

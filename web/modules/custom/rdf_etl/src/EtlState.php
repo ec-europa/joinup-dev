@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sander
- * Date: 09.01.18
- * Time: 08:43
- */
 
 namespace Drupal\rdf_etl;
 

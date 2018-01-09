@@ -49,6 +49,8 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
    *   The plugin implementation definition.
    * @param \Drupal\rdf_etl\EtlOrchestrator $rdf_etl_orchestrator
    *   The orchestrator.
+   * @param \Drupal\rdf_etl\Plugin\EtlDataPipelineManager $pipeline_manager
+   *   The data pipeline manager service.
    */
   public function __construct(
     array $configuration,
