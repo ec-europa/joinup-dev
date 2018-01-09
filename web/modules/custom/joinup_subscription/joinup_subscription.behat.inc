@@ -53,7 +53,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @return \Drupal\joinup_subscription\JoinupSubscriptionInterface
    *   The subscription service.
    */
-  protected function getSubscriptionService() : JoinupSubscriptionInterface {
+  protected function getSubscriptionService(): JoinupSubscriptionInterface {
     return \Drupal::service('joinup_subscription.subscription');
   }
 
