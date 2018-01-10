@@ -209,7 +209,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
     $rdf_storage->setRequestGraphs($entity_id, ['draft']);
     /** @var \Drupal\rdf_entity\RdfInterface $draft */
     $draft = $rdf_storage->load($entity_id);
-    $rdf_storage->getGraphHandler()->resetRequestGraphs([$entity_id]);
+    $rdf_storage->getGraphHandler()->resetRequestGraphs('rdf_entity', [$entity_id]);
     return $draft;
   }
 

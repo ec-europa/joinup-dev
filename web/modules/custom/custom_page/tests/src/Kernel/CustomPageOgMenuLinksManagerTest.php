@@ -50,7 +50,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     parent::setUp();
 
     $this->setUpSparql();
-    $this->installConfig(['language', 'og', 'og_menu']);
+    $this->installConfig(['language', 'og', 'og_menu', 'rdf_entity']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('ogmenu');

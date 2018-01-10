@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.policy_domain
 third_party_settings: {  }
 id: taxonomy_term.policy_domain
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: policy_domain
 rdf_type: 'http://joinup.eu/policy-domain'
 graph:
   default: 'http://policy_domain'
-  draft: 'http://policy_domain'
 entity_id_plugin: policy_domain
 base_fields_mapping:
   uuid:

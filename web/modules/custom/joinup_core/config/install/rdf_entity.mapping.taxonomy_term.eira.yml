@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.eira
 third_party_settings: {  }
 id: taxonomy_term.eira
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: eira
 rdf_type: 'http://data.europa.eu/eira'
 graph:
   default: 'http://eira_skos'
-  draft: 'http://eira_skos'
 base_fields_mapping:
   uuid:
     value:

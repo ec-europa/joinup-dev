@@ -1,6 +1,10 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - rdf_entity.graph.draft
+    - rdf_entity.rdfentity.asset_release
 third_party_settings: {  }
 id: rdf_entity.asset_release
 entity_type_id: rdf_entity

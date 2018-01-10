@@ -58,7 +58,6 @@ config_devel:
   - image.style.wysiwyg_half_width
   - image.style.wysiwyg_one_third_width
   - joinup_core.piwik_settings
-  - rdf_draft.settings
   - rdf_entity.mapping.taxonomy_term.actor
   - rdf_entity.mapping.taxonomy_term.business_process
   - rdf_entity.mapping.taxonomy_term.eira

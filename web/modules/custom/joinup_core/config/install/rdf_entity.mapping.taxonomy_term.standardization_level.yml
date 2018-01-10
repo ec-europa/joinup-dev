@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.standardization_level
 third_party_settings: {  }
 id: taxonomy_term.standardization_level
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: standardization_level
 rdf_type: 'http://joinup.eu/taxonomy/standardizationLevel#'
 graph:
   default: 'http://standardization_level'
-  draft: 'http://standardization_level'
 base_fields_mapping:
   uuid:
     value:

@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.licence_type
 third_party_settings: {  }
 id: taxonomy_term.licence_type
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: licence_type
 rdf_type: 'http://purl.org/adms/licencetype/1.1'
 graph:
   default: 'http://adms-sw-v1.00'
-  draft: 'http://adms-sw-v1.00'
 base_fields_mapping:
   uuid:
     value:

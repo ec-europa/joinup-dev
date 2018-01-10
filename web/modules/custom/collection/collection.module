@@ -231,8 +231,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     }
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
@@ -263,8 +262,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 

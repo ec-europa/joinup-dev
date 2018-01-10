@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.solution_category
 third_party_settings: {  }
 id: taxonomy_term.solution_category
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: solution_category
 rdf_type: 'http://joinup.eu/taxonomy/solutionCategory#'
 graph:
   default: 'http://solution_category'
-  draft: 'http://solution_category'
 base_fields_mapping:
   uuid:
     value:

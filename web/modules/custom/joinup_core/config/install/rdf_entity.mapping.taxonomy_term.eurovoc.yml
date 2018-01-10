@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.eurovoc
 third_party_settings: {  }
 id: taxonomy_term.eurovoc
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: eurovoc
 rdf_type: 'http://eurovoc.europa.eu/100141'
 graph:
   default: 'http://joinup.eu/license_type/published'
-  draft: 'http://joinup.eu/collection/draft'
 base_fields_mapping:
   uuid:
     value:

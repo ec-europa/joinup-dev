@@ -18,6 +18,7 @@ class JoinupRdfListBuilder extends RdfListBuilder {
    */
   protected function getEntityIds() {
     $request = \Drupal::request();
+    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
     $rdf_storage = $this->getStorage();
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
@@ -34,7 +35,7 @@ class JoinupRdfListBuilder extends RdfListBuilder {
       }
     }
     else {
-      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeEnabledGraphs());
+      $query->setGraphType($rdf_storage->getGraphHandler()->getGraphIds($rdf_storage->getEntityTypeId()));
     }
 
     if ($rid = $request->get('rid')) {

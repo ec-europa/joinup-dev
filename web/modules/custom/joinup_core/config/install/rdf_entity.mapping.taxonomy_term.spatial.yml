@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.spatial
 third_party_settings: {  }
 id: taxonomy_term.spatial
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: spatial
 rdf_type: 'http://publications.europa.eu/resource/authority/country'
 graph:
   default: 'http://countries-skos'
-  draft: 'http://countries-skos'
 base_fields_mapping:
   uuid:
     value:

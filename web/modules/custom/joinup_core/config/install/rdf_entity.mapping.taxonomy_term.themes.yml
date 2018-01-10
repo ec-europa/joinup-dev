@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.themes
 third_party_settings: {  }
 id: taxonomy_term.themes
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: themes
 rdf_type: 'http://publications.europa.eu/resource/authority/data-theme'
 graph:
   default: 'http://data-theme-skos'
-  draft: 'http://data-theme-skos'
 base_fields_mapping:
   uuid:
     value:

@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.business_process
 third_party_settings: {  }
 id: taxonomy_term.business_process
 entity_type_id: taxonomy_term
@@ -9,7 +12,6 @@ rdf_type: 'http://joinup.eu/business-process'
 entity_id_plugin: default
 graph:
   default: 'http://business-process'
-  draft: 'http://business-process'
 base_fields_mapping:
   uuid:
     value:

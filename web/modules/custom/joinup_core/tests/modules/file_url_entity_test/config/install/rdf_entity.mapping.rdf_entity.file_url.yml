@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - rdf_entity.rdfentity.file_url
 third_party_settings: {  }
 id: rdf_entity.file_url
 entity_type_id: rdf_entity
@@ -29,5 +32,4 @@ base_fields_mapping:
       format: literal
 graph:
   default: 'http://example.com/file_url/published'
-  draft: 'http://example.com/file_url/draft'
 entity_id_plugin: joinup_po_namespace

@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.owner_type
 third_party_settings: {  }
 id: taxonomy_term.owner_type
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: owner_type
 rdf_type: 'http://purl.org/adms/publishertype/1.0'
 graph:
   default: 'http://adms_skos_v1.00'
-  draft: 'http://adms_skos_v1.00'
 base_fields_mapping:
   uuid:
     value:

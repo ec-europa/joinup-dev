@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.language
 third_party_settings: {  }
 id: taxonomy_term.language
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: language
 rdf_type: 'http://publications.europa.eu/resource/authority/language'
 graph:
   default: 'http://languages-skos'
-  draft: 'http://languages-skos'
 base_fields_mapping:
   uuid:
     value:

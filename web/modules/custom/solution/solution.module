@@ -222,7 +222,7 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
   foreach (['default', 'draft'] as $graph) {
     $storage->setRequestGraphs($collection_id, [$graph]);
     $collection = $storage->load($collection_id);
-    $storage->getGraphHandler()->resetRequestGraphs([$collection_id]);
+    $storage->getGraphHandler()->resetRequestGraphs('rdf_entity', [$collection_id]);
     if (empty($collection)) {
       continue;
     }
@@ -496,8 +496,7 @@ function solution_build_related_solutions_list(array $ids) {
  * Default graph is published. Draft graph is draft.
  */
 function solution_rdf_entity_presave(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
@@ -590,8 +589,7 @@ function solution_get_collection_ids(RdfInterface $solution) {
  * (the entity becomes unpublished).
  */
 function solution_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 

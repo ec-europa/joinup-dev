@@ -1,0 +1,7 @@
+langcode: en
+status: true
+id: draft
+name: Draft
+description: 'Draft graph.'
+entity_types:
+  - rdf_entity

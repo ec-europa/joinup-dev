@@ -203,8 +203,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution($entity);
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
     return;
   }
 
@@ -231,12 +230,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
  */
 function asset_release_entity_update(EntityInterface $entity) {
   // Quick escape check to avoid unnecessary loadings.
-  if ($entity->bundle() != 'asset_release') {
-    return;
-  }
-
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'asset_release' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
     return;
   }
 

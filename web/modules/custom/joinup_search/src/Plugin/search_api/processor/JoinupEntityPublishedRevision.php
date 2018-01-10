@@ -96,7 +96,7 @@ class JoinupEntityPublishedRevision extends ProcessorPluginBase {
           $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
           $rdf_storage->setRequestGraphs($object->id(), ['default']);
           $published = $rdf_storage->load($object->id());
-          $rdf_storage->getGraphHandler()->resetRequestGraphs([$object->id()]);
+          $rdf_storage->getGraphHandler()->resetRequestGraphs('rdf_entity', [$object->id()]);
           if (!empty($published)) {
             $original_object->setValue($published);
             $item->setOriginalObject($original_object);

@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.product_type
 third_party_settings: {  }
 id: taxonomy_term.product_type
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: product_type
 rdf_type: 'http://joinup.eu/product-type#'
 graph:
   default: 'http://product_type'
-  draft: 'http://product_type'
 base_fields_mapping:
   uuid:
     value:

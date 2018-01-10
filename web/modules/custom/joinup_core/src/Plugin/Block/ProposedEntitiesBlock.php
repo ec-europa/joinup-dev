@@ -100,7 +100,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
     $data = array_fill_keys($results, ['draft']);
     $storage->setRequestGraphsMultiple($data);
     $entities = $storage->loadMultiple($results);
-    $storage->getGraphHandler()->resetRequestGraphs($results);
+    $storage->getGraphHandler()->resetRequestGraphs('rdf_entity', $results);
     $rows = [];
 
     foreach ($entities as $entity) {

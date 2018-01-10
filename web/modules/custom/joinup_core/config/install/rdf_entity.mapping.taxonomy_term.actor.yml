@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rdf_entity.graph.default
+    - taxonomy.vocabulary.actor
 third_party_settings: {  }
 id: taxonomy_term.actor
 entity_type_id: taxonomy_term
@@ -8,7 +11,6 @@ bundle: actor
 rdf_type: 'http://joinup.eu/taxonomy/actor'
 graph:
   default: 'http://actor'
-  draft: 'http://actor'
 base_fields_mapping:
   uuid:
     value:
