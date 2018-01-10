@@ -9,7 +9,6 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_etl\Form\EtlOrchestratorForm;
-use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineManager;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
@@ -82,7 +81,6 @@ class EtlOrchestrator {
    */
   public function run() {
     $current_state = $this->initializeActiveState();
-
     $new_state = $this->executeStep($current_state);
     $this->stateManager->setState($new_state);
 
@@ -104,20 +102,9 @@ class EtlOrchestrator {
    * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
    *   The active process step.
    */
-  public function getStepInstance(EtlState $state): EtlProcessStepInterface {
+  protected function getStepInstance(EtlState $state): EtlProcessStepInterface {
     $plugin_id = $this->pipeline->stepDefinitionList()->get($state->sequence())->getPluginId();
     return $this->pluginManagerEtlProcessStep->createInstance($plugin_id);
-  }
-
-  /**
-   * Gets the active data pipeline.
-   *
-   * @return \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface
-   *   The active data pipeline.
-   */
-  protected function getActivePipeline(): EtlDataPipelineInterface {
-    $active_pipeline = $this->stateManager->state()->pipelineId();
-    return $this->pluginManagerEtlDataPipeline->createInstance($active_pipeline);
   }
 
   /**
