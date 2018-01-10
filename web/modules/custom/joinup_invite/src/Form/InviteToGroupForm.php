@@ -7,6 +7,7 @@ namespace Drupal\joinup_invite\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,6 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Form to add a member with a certain role in a rdf entity group.
  */
 class InviteToGroupForm extends InviteFormBase {
+
+  /**
+   * The group where to invite users.
+   *
+   * @var \Drupal\rdf_entity\RdfInterface
+   */
+  protected $rdfEntity;
 
   /**
    * The og membership manager service.
@@ -57,15 +65,24 @@ class InviteToGroupForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getSubmitButtonText() : TranslatableMarkup {
+  protected function getSubmitButtonText(): TranslatableMarkup {
     return $this->t('Add members');
   }
 
   /**
    * {@inheritdoc}
    */
+  protected function getCancelButtonUrl(): Url {
+    return new Url('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $this->rdfEntity->id(),
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
-    $form_state->set('group', $rdf_entity);
+    $this->rdfEntity = $rdf_entity;
 
     $form['role'] = [
       '#type' => 'select',
@@ -86,18 +103,17 @@ class InviteToGroupForm extends InviteFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $users = $this->getUserList($form_state);
-    $group = $form_state->get('group');
     $role_id = implode('-', [
-      $group->getEntityTypeId(),
-      $group->bundle(),
+      $this->rdfEntity->getEntityTypeId(),
+      $this->rdfEntity->bundle(),
       $form_state->getValue('role'),
     ]);
     $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
     foreach ($users as $user) {
-      $membership = $this->ogMembershipManager->getMembership($group, $user);
+      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user);
       if (empty($membership)) {
-        $membership = $this->ogMembershipManager->createMembership($group, $user);
+        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user);
       }
       $membership->addRole($role);
       $membership->save();
@@ -105,7 +121,7 @@ class InviteToGroupForm extends InviteFormBase {
 
     drupal_set_message($this->t('Your settings have been saved.'), 'status', TRUE);
     $form_state->setRedirect('entity.rdf_entity.member_overview', [
-      'rdf_entity' => $group->id(),
+      'rdf_entity' => $this->rdfEntity->id(),
     ]);
   }
 

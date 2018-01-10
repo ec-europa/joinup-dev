@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -115,6 +116,12 @@ abstract class InviteFormBase extends FormBase {
     }
 
     $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['cancel'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Cancel'),
+      '#attributes' => ['class' => ['button']],
+      '#url' => $this->getCancelButtonUrl(),
+    ];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->getSubmitButtonText(),
@@ -272,5 +279,13 @@ abstract class InviteFormBase extends FormBase {
    *   The button text.
    */
   abstract protected function getSubmitButtonText(): TranslatableMarkup;
+
+  /**
+   * Returns the route to go to if the user clicks the cancel button.
+   *
+   * @return \Drupal\Core\Url
+   *   A URL object.
+   */
+  abstract protected function getCancelButtonUrl(): Url;
 
 }
