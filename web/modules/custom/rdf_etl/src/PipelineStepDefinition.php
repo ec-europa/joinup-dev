@@ -16,6 +16,13 @@ class PipelineStepDefinition {
 
   protected $postExecute;
 
+  protected $hooks;
+
+  const VALID_HOOKS = [
+    'pre_form_execution',
+    'post_form_execution',
+  ];
+
   /**
    * PipelineStepDefinition constructor.
    *
@@ -27,45 +34,57 @@ class PipelineStepDefinition {
   }
 
   /**
-   * Set the post-execute hook.
+   * Register a callback.
    *
+   * @param string $hook_name
+   *   The hook name.
    * @param array $callback
-   *   The callback to invoke.
+   *   The callback definition.
+   *
+   * @return \Drupal\rdf_etl\PipelineStepDefinition
+   *   Return $this for a fluent interface.
+   *
+   * @throws \Exception
    */
-  public function setPostExecute(array $callback): PipelineStepDefinition {
-    $this->postExecute = $callback;
+  public function registerHook(string $hook_name, array $callback): PipelineStepDefinition {
+    if (!in_array($hook_name, self::VALID_HOOKS)) {
+      throw new \Exception('Attempt to register non-existing hook.');
+    }
+    $this->hooks[$hook_name] = $callback;
     return $this;
   }
 
   /**
-   * Get the post-execute hook for this step.
+   * Invokes a callback on a pipeline.
    *
-   * @return array
-   *   The callback to invoke.
+   * @param string $hook_name
+   *   The hook name.
+   * @param array $argument
+   *   A container passed to the hook.
+   *
+   * @return mixed
+   *   The argument, altered by the hook.
+   *
+   * @throws \Exception
    */
-  public function getPostExecute(): ?array {
-    return $this->postExecute;
-  }
+  public function invokeHook(string $hook_name, array $argument): array {
+    if (!in_array($hook_name, self::VALID_HOOKS)) {
+      throw new \Exception('Attempt to invoke non-existing hook.');
+    }
+    if (empty($this->hooks[$hook_name])) {
+      // The pipeline does not implement this method.
+      return $argument;
+    }
+    $callback = $this->hooks[$hook_name];
 
-  /**
-   * Set the pre-execute hook.
-   *
-   * @param array $callback
-   *   The callback to invoke.
-   */
-  public function setPreExecute(array $callback): PipelineStepDefinition {
-    $this->preExecute = $callback;
-    return $this;
-  }
-
-  /**
-   * Get the pre-execute hook for this step.
-   *
-   * @return array
-   *   The callback to invoke.
-   */
-  public function getPreExecute(): ?array {
-    return $this->preExecute;
+    if (!is_callable($callback)) {
+      throw new \Exception('Pipeline defines a callback for but does not implement it.');
+    }
+    $return = call_user_func_array($callback, [$argument]);
+    if (empty($return)) {
+      throw new \Exception("Callback should return the data array.");
+    }
+    return $return;
   }
 
   /**

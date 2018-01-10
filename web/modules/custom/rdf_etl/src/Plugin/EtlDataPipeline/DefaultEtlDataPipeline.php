@@ -85,8 +85,8 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
   protected function initStepDefinition(): void {
     $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('pipeline_selection_step')
-      ->setPreExecute([$this, 'setAvailablePipelines'])
-      ->setPostExecute([$this, 'selectPipeline']);
+      ->registerHook('pre_form_execution', [$this, 'setAvailablePipelines'])
+      ->registerHook('post_form_execution', [$this, 'selectPipeline']);
   }
 
   /**

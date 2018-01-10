@@ -65,13 +65,6 @@ class EtlOrchestrator {
   protected $pipeline;
 
   /**
-   * The current state of the state machine.
-   *
-   * @var \Drupal\rdf_etl\EtlState
-   */
-  protected $activeState;
-
-  /**
    * Constructs a new EtlOrchestrator object.
    */
   public function __construct(EtlDataPipelineManager $plugin_manager_etl_data_pipeline, EtlProcessStepManager $plugin_manager_etl_process_step, EtlStateManager $state_manager, FormBuilderInterface $form_builder) {
@@ -133,61 +126,18 @@ class EtlOrchestrator {
   protected function initializeActiveState(): EtlState {
     if (!$this->stateManager->isPersisted()) {
       // Initialize to default pipeline.
-      $this->activeState = new EtlState(
+      $active_state = new EtlState(
         self::DEFAULT_PIPELINE,
         self::FIRST_STEP
       );
     }
     else {
-      $this->activeState = $this->stateManager->state();
+      $active_state = $this->stateManager->state();
     }
-    $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($this->activeState->pipelineId());
+    $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($active_state->pipelineId());
     // Restore the active pipeline from the persistent store.
-    $this->pipeline->stepDefinitionList()->seek($this->activeState->sequence());
-    return $this->activeState;
-  }
-
-  /**
-   * Invoke a hook on the data pipeline.
-   *
-   * @param string $hook
-   *   The hook name.
-   * @param array $data
-   *   The data array.
-   *
-   * @return array|mixed
-   *   The data array.
-   *
-   * @throws \Exception
-   */
-  protected function callPipelineHook(string $hook, array $data): array {
-    $definition = $this->pipeline->stepDefinitionList()->get($this->activeState->sequence());
-    switch ($hook) {
-      case 'pre_execute':
-        $callback = $definition->getPreExecute();
-        break;
-
-      case 'post_execute':
-        $callback = $definition->getPostExecute();
-        break;
-
-      default:
-        throw new \Exception('Unsupported hook.');
-    }
-    if (empty($callback)) {
-      // The pipeline does not implement this method.
-      return $data;
-    }
-
-    if (!is_callable($callback)) {
-      throw new \Exception($this->t('Pipeline defines a callback for but does not implement it.'));
-    }
-    $return = call_user_func_array($callback, [$data]);
-    if (empty($return)) {
-      $callback_name = get_class(current($callback)) . '::' . end($callback) . '()';
-      throw new \Exception("Callback $callback_name should return the data array.");
-    }
-    return $return;
+    $this->pipeline->stepDefinitionList()->seek($active_state->sequence());
+    return $active_state;
   }
 
   /**
@@ -202,7 +152,8 @@ class EtlOrchestrator {
   protected function executeStep(EtlState $current_state): EtlState {
     $data = [];
     $data['state'] = $current_state;
-    $data = $this->callPipelineHook('pre_execute', $data);
+
+    $data = $this->stepDefinition($current_state)->invokeHook('pre_form_execution', $data);
     $form_state = new FormState();
     $data = $this->buildForm($current_state, $form_state, $data);
 
@@ -212,7 +163,7 @@ class EtlOrchestrator {
     }
 
     $data['state'] = $this->getNextState($current_state);
-    $data = $this->callPipelineHook('post_execute', $data);
+    $data = $this->stepDefinition($current_state)->invokeHook('post_form_execution', $data);
     $this->getStepInstance($current_state)->execute($data);
     $this->redirectForm($form_state);
     return $data['state'];
@@ -234,6 +185,19 @@ class EtlOrchestrator {
     if ($redirect) {
       $this->response = $redirect;
     }
+  }
+
+  /**
+   * Gets the a step definition from the list by the offset given in the state.
+   *
+   * @param \Drupal\rdf_etl\EtlState $state
+   *   The state for which to get the step definition.
+   *
+   * @return \Drupal\rdf_etl\PipelineStepDefinition
+   *   The step definition.
+   */
+  protected function stepDefinition(EtlState $state): PipelineStepDefinition {
+    return $this->pipeline->stepDefinitionList()->get($state->sequence());
   }
 
   /**
