@@ -25,7 +25,7 @@ class EtlOrchestratorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'etl_orchestrator_form';
   }
 
@@ -52,7 +52,7 @@ class EtlOrchestratorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
 
     if (!$this->activeProcessStep($form_state) instanceof PluginFormInterface) {
       return $this->selfSubmittingForm($form, $form_state);
@@ -95,7 +95,7 @@ class EtlOrchestratorForm extends FormBase {
    * @return array
    *   The form array.
    */
-  protected function selfSubmittingForm(array $form, FormStateInterface $form_state) {
+  protected function selfSubmittingForm(array $form, FormStateInterface $form_state): array {
     // @todo Implement this.
     return $form;
   }
@@ -111,7 +111,7 @@ class EtlOrchestratorForm extends FormBase {
    * @return array
    *   The form array.
    */
-  protected function buildProgressIndicator(array $form, FormStateInterface $form_state) {
+  protected function buildProgressIndicator(array $form, FormStateInterface $form_state): array {
     // @todo Implement this.
     return $form;
   }
@@ -119,7 +119,7 @@ class EtlOrchestratorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
     $this->activeProcessStep($form_state)->defaultConfiguration();
     $this->activeProcessStep($form_state)->validateConfigurationForm($form['data'], SubformState::createForSubform($form['data'], $form, $form_state));
   }
@@ -127,7 +127,7 @@ class EtlOrchestratorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $this->activeProcessStep($form_state)->submitConfigurationForm($form['data'], SubformState::createForSubform($form['data'], $form, $form_state));
     $form_state->disableRedirect();
   }

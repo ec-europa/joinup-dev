@@ -21,7 +21,7 @@ class PipelineSelectionStep extends ProcessStepBase implements PluginFormInterfa
   /**
    * {@inheritdoc}
    */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $data = $form_state->getBuildInfo()['data'];
     if (!isset($data['options'])) {
       throw new \Exception('This plugin requires the available pipeline options to be passed as a data attribute.');
@@ -38,7 +38,7 @@ class PipelineSelectionStep extends ProcessStepBase implements PluginFormInterfa
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
     $build_info = $form_state->getBuildInfo();
     $data = &$build_info['data'];
     $data['result'] = $form_state->getValue('data_pipeline');
@@ -48,7 +48,7 @@ class PipelineSelectionStep extends ProcessStepBase implements PluginFormInterfa
   /**
    * {@inheritdoc}
    */
-  public function execute(array $data) {
+  public function execute(array $data): void {
     // TODO: Implement execute() method.
   }
 

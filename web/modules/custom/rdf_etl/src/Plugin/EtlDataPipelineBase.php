@@ -35,6 +35,6 @@ abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipeline
   /**
    * Initializes steps to a PipelineStepDefinitionList.
    */
-  abstract protected function initStepDefinition();
+  abstract protected function initStepDefinition(): void;
 
 }

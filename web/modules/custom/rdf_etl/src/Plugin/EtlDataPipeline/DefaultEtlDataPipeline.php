@@ -82,7 +82,7 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
   /**
    * {@inheritdoc}
    */
-  protected function initStepDefinition() {
+  protected function initStepDefinition(): void {
     $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('pipeline_selection_step')
       ->setPreExecute([$this, 'setAvailablePipelines'])

@@ -69,35 +69,35 @@ class PipelineStepDefinitionList implements \Iterator {
   /**
    * {@inheritdoc}
    */
-  public function next() {
+  public function next(): void {
     ++$this->position;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function key() {
+  public function key(): int {
     return $this->position;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function valid() {
+  public function valid(): bool {
     return isset($this->list[$this->position]);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function rewind() {
+  public function rewind(): void {
     $this->position = 0;
   }
 
   /**
-   * Set the position to a difined location.
+   * Set the position to a defined location.
    */
-  public function seek($position) {
+  public function seek($position): PipelineStepDefinition {
     $this->position = $position;
     return $this->current();
   }

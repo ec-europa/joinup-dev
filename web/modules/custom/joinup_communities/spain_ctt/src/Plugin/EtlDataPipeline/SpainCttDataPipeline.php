@@ -18,7 +18,7 @@ class SpainCttDataPipeline extends EtlDataPipelineBase {
   /**
    * {@inheritdoc}
    */
-  protected function initStepDefinition() {
+  protected function initStepDefinition(): void {
     $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('manual_upload_step');
   }

@@ -103,7 +103,7 @@ class EtlOrchestrator {
    *
    * Should not be used, unless something went really bad.
    */
-  public function reset() {
+  public function reset(): void {
     $this->stateManager->reset();
   }
 
@@ -132,7 +132,7 @@ class EtlOrchestrator {
   /**
    * Initialize the state machine from the persisted state.
    */
-  protected function initializeActiveState() {
+  protected function initializeActiveState(): void {
     if (!$this->stateManager->isPersisted()) {
       // Initialize to default pipeline.
       $this->activeState = new EtlState(

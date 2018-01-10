@@ -43,7 +43,7 @@ class PipelineStepDefinition {
    * @return array
    *   The callback to invoke.
    */
-  public function getPostExecute() {
+  public function getPostExecute(): ?array {
     return $this->postExecute;
   }
 
@@ -64,7 +64,7 @@ class PipelineStepDefinition {
    * @return array
    *   The callback to invoke.
    */
-  public function getPreExecute() {
+  public function getPreExecute(): ?array {
     return $this->preExecute;
   }
 

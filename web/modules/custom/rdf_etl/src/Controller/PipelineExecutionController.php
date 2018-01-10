@@ -54,7 +54,7 @@ class PipelineExecutionController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function reset() {
+  public function reset(): array {
     $this->rdfEtlOrchestrator->reset();
     return ['#markup' => 'Orchestrator reset.'];
   }

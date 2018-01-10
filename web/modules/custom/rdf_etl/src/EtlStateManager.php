@@ -40,7 +40,7 @@ class EtlStateManager implements EtlStateManagerInterface {
    * @return bool
    *   The persistence state.
    */
-  public function isPersisted() {
+  public function isPersisted(): bool {
     return isset($this->pipeline) && isset($this->sequence);
   }
 
@@ -66,7 +66,7 @@ class EtlStateManager implements EtlStateManagerInterface {
    * @return \Drupal\rdf_etl\EtlState
    *   The state value object.
    */
-  public function state() {
+  public function state(): EtlState {
     return new EtlState($this->pipeline, $this->sequence);
   }
 
@@ -75,7 +75,7 @@ class EtlStateManager implements EtlStateManagerInterface {
    *
    * @return $this
    */
-  public function reset() {
+  public function reset(): EtlStateManager {
     $this->state->delete('rdf_etl.active_pipeline_sequence');
     $this->state->delete('rdf_etl.active_pipeline');
     $this->pipeline = NULL;
