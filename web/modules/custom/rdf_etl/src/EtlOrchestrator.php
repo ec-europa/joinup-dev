@@ -88,12 +88,10 @@ class EtlOrchestrator {
    *   Render array.
    */
   public function run() {
-    $this->initializeActiveState();
+    $current_state = $this->initializeActiveState();
 
-    $active_step = $this->getActiveStep();
-
-    $state = $this->executeStep($active_step);
-    $this->stateManager->setState($state);
+    $new_state = $this->executeStep($current_state);
+    $this->stateManager->setState($new_state);
 
     return $this->response;
   }
@@ -113,8 +111,8 @@ class EtlOrchestrator {
    * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
    *   The active process step.
    */
-  public function getActiveStep(): EtlProcessStepInterface {
-    $plugin_id = $this->pipeline->stepDefinitionList()->get($this->activeState->sequence())->getPluginId();
+  public function getStepInstance(EtlState $state): EtlProcessStepInterface {
+    $plugin_id = $this->pipeline->stepDefinitionList()->get($state->sequence())->getPluginId();
     return $this->pluginManagerEtlProcessStep->createInstance($plugin_id);
   }
 
@@ -132,7 +130,7 @@ class EtlOrchestrator {
   /**
    * Initialize the state machine from the persisted state.
    */
-  protected function initializeActiveState(): void {
+  protected function initializeActiveState(): EtlState {
     if (!$this->stateManager->isPersisted()) {
       // Initialize to default pipeline.
       $this->activeState = new EtlState(
@@ -146,6 +144,7 @@ class EtlOrchestrator {
     $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($this->activeState->pipelineId());
     // Restore the active pipeline from the persistent store.
     $this->pipeline->stepDefinitionList()->seek($this->activeState->sequence());
+    return $this->activeState;
   }
 
   /**
@@ -192,38 +191,29 @@ class EtlOrchestrator {
   }
 
   /**
-   * Execute a step.
+   * Progress the state machine with one step.
    *
-   * @param \Drupal\rdf_etl\Plugin\EtlProcessStepInterface $active_process_step
-   *   The current step.
+   * @param \Drupal\rdf_etl\EtlState $current_state
+   *   The current state.
    *
-   * @return string
-   *   The id of the next data step to execute.
+   * @return \Drupal\rdf_etl\EtlState
+   *   The next state.
    */
-  protected function executeStep(EtlProcessStepInterface $active_process_step): EtlState {
-    $form_state = new FormState();
-
+  protected function executeStep(EtlState $current_state): EtlState {
     $data = [];
-    $current_state = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->current()->getPluginId());
     $data['state'] = $current_state;
     $data = $this->callPipelineHook('pre_execute', $data);
-    $form_state->addBuildInfo('active_process_step', $active_process_step->getPluginId());
-    $form_state->addBuildInfo('data', $data);
-    $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
-    $data = $form_state->getBuildInfo()['data'];
+    $form_state = new FormState();
+    $data = $this->buildForm($current_state, $form_state, $data);
 
     // In case of validation errors, or a rebuild (e.g. multi step), bail out.
     if (!$form_state->isExecuted()) {
       return $current_state;
     }
 
-    $this->pipeline->stepDefinitionList()->next();
-    $data['state'] = new EtlState($this->pipeline->getPluginId(), self::FINAL_STEP);
-    if ($this->pipeline->stepDefinitionList()->valid()) {
-      $data['state'] = new EtlState($this->pipeline->getPluginId(), $this->pipeline->stepDefinitionList()->key());
-    }
+    $data['state'] = $this->getNextState($current_state);
     $data = $this->callPipelineHook('post_execute', $data);
-    $active_process_step->execute($data);
+    $this->getStepInstance($current_state)->execute($data);
     $this->redirectForm($form_state);
     return $data['state'];
   }
@@ -244,6 +234,43 @@ class EtlOrchestrator {
     if ($redirect) {
       $this->response = $redirect;
     }
+  }
+
+  /**
+   * Build the state object that points to the next step in the pipeline.
+   *
+   * @return \Drupal\rdf_etl\EtlState
+   *   The next State.
+   */
+  protected function getNextState(EtlState $state): EtlState {
+    $this->pipeline->stepDefinitionList()->seek($state->sequence());
+    $this->pipeline->stepDefinitionList()->next();
+    $next_state = new EtlState($state->pipelineId(), self::FINAL_STEP);
+    if ($this->pipeline->stepDefinitionList()->valid()) {
+      $next_state = new EtlState($state->pipelineId(), $this->pipeline->stepDefinitionList()->key());
+    }
+    return $next_state;
+  }
+
+  /**
+   * Builds the form.
+   *
+   * @param \Drupal\rdf_etl\EtlState $current_state
+   *   The current state.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array $data
+   *   The data array.
+   *
+   * @return array
+   *   The data array.
+   */
+  protected function buildForm(EtlState $current_state, FormStateInterface &$form_state, array $data): array {
+    $active_step_plugin_id = $this->pipeline->stepDefinitionList()->get($current_state->sequence())->getPluginId();
+    $form_state->addBuildInfo('active_process_step', $active_step_plugin_id);
+    $form_state->addBuildInfo('data', $data);
+    $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
+    return $form_state->getBuildInfo()['data'];
   }
 
 }
