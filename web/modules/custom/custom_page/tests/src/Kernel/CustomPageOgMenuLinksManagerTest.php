@@ -11,6 +11,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenu;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
@@ -80,11 +81,11 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     // @see og_ui_entity_type_save().
     $mocked_collection_type->og_is_group = TRUE;
     $mocked_collection_type->og_group_content_bundle = FALSE;
-    $rdf_entity_3rd_party = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.rdfentity.collection.yml'))['third_party_settings']['rdf_entity'];
-    foreach ($rdf_entity_3rd_party as $key => $value) {
-      $mocked_collection_type->setThirdPartySetting('rdf_entity', $key, $value);
-    }
     $mocked_collection_type->save();
+
+    // Create the corresponding mapping config entity.
+    $mapping_values = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
+    RdfEntityMapping::create($mapping_values)->save();
 
     $mocked_custom_page_type = NodeType::create([
       'type' => 'custom_page',
