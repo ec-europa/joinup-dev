@@ -65,10 +65,12 @@ abstract class InviteFormBase extends FormBase {
     $form['add'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add'),
+      '#name' => 'add_user',
       '#validate' => ['::validateAddUser'],
       '#submit' => ['::submitAddUser'],
       '#ajax' => [
         // Replace the whole form when adding a user.
+        'callback' => '::ajaxUpdateForm',
         'wrapper' => $form['#id'],
       ],
       '#weight' => -99,
@@ -116,7 +118,6 @@ abstract class InviteFormBase extends FormBase {
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->getSubmitButtonText(),
-      '#disabled' => empty($user_list),
     ];
 
     return $form;
@@ -197,6 +198,21 @@ abstract class InviteFormBase extends FormBase {
    */
   public function ajaxUpdateUserList(array $form, FormStateInterface $form_state) {
     return $form['users'];
+  }
+
+  /**
+   * Ajax callback that returns the updated form.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   A render array.
+   */
+  public function ajaxUpdateForm(array $form, FormStateInterface $form_state) {
+    return $form;
   }
 
   /**
