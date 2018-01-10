@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
@@ -52,6 +53,8 @@ abstract class InviteFormBase extends FormBase {
       $form_state->set('user_list', []);
     }
 
+    $form['#id'] = Html::getUniqueId($this->getFormId());
+
     $form['autocomplete'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name/username/email'),
@@ -64,6 +67,10 @@ abstract class InviteFormBase extends FormBase {
       '#value' => $this->t('Add'),
       '#validate' => ['::validateAddUser'],
       '#submit' => ['::submitAddUser'],
+      '#ajax' => [
+        // Replace the whole form when adding a user.
+        'wrapper' => $form['#id'],
+      ],
       '#weight' => -99,
     ];
 
