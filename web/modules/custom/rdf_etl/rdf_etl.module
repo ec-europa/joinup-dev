@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * @file
  * Contains rdf_etl.module.
  */
+
+declare(strict_types = 1);
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
