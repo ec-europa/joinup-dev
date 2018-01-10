@@ -35,7 +35,7 @@ class EtlDataPipelineManager extends DefaultPluginManager {
    * @throws \Exception
    *   Plugin does not adhere to interface.
    */
-  public function createInstance($plugin_id, array $configuration = []) : EtlDataPipelineInterface {
+  public function createInstance($plugin_id, array $configuration = []): EtlDataPipelineInterface {
     $data_pipeline = parent::createInstance($plugin_id, $configuration);
     if (!$data_pipeline instanceof EtlDataPipelineInterface) {
       throw new \Exception('Incorrect plugin: ' . $plugin_id);

@@ -50,7 +50,7 @@ class EtlStateManager implements EtlStateManagerInterface {
    *
    * @return $this
    */
-  public function setState(EtlState $state) : EtlStateManager {
+  public function setState(EtlState $state): EtlStateManager {
     $this->pipeline = $state->pipelineId();
     $this->state->set('rdf_etl.active_pipeline', $this->pipeline);
     $this->sequence = $state->sequence();

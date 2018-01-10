@@ -90,7 +90,7 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
   /**
    * Pre-execute callback: Sets the available pipelines as options in the form.
    */
-  public function setAvailablePipelines($data) {
+  public function setAvailablePipelines($data): array {
     $data['options'] = array_map(function ($pipeline) {
       return $pipeline['label'];
     }, $this->pipelineManager->getDefinitions());
@@ -109,7 +109,7 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
    *
    * @throws \Exception
    */
-  public function selectPipeline(array $data) {
+  public function selectPipeline(array $data): array {
     if (!isset($data['result'])) {
       throw new \Exception('No pipeline selected, but a pipeline is expected.');
     }

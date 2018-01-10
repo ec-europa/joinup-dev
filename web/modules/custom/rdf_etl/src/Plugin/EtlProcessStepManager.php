@@ -35,7 +35,7 @@ class EtlProcessStepManager extends DefaultPluginManager {
    * @throws \Exception
    *   Plugin does not adhere to interface.
    */
-  public function createInstance($plugin_id, array $configuration = []) : EtlProcessStepInterface {
+  public function createInstance($plugin_id, array $configuration = []): EtlProcessStepInterface {
     $data_pipeline = parent::createInstance($plugin_id, $configuration);
     if (!$data_pipeline instanceof EtlProcessStepInterface) {
       throw new \Exception('Incorrect plugin: ' . $plugin_id);

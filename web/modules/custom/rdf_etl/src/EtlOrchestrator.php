@@ -159,7 +159,7 @@ class EtlOrchestrator {
    *
    * @throws \Exception
    */
-  protected function callPipelineHook(string $hook, array $data) : array {
+  protected function callPipelineHook(string $hook, array $data): array {
     $definition = $this->pipeline->stepDefinitionList()->get($this->activeState->sequence());
     switch ($hook) {
       case 'pre_execute':
@@ -198,7 +198,7 @@ class EtlOrchestrator {
    * @return string
    *   The id of the next data step to execute.
    */
-  protected function executeStep(EtlProcessStepInterface $active_process_step) : EtlState {
+  protected function executeStep(EtlProcessStepInterface $active_process_step): EtlState {
     $form_state = new FormState();
 
     $data = [];

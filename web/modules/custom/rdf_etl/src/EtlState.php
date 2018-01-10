@@ -30,7 +30,7 @@ class EtlState {
    * @return int
    *   The current position of within the pipeline.
    */
-  public function sequence() : int {
+  public function sequence(): int {
     return (int) $this->sequence;
   }
 
@@ -40,7 +40,7 @@ class EtlState {
    * @return string
    *   The plugin id of the pipeline.
    */
-  public function pipelineId() : String {
+  public function pipelineId(): String {
     return $this->pipeline;
   }
 

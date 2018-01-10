@@ -16,6 +16,6 @@ interface EtlDataPipelineInterface extends PluginInspectionInterface {
    * @return \Drupal\rdf_etl\PipelineStepDefinitionList
    *   The sequence definition.
    */
-  public function stepDefinitionList() : PipelineStepDefinitionList;
+  public function stepDefinitionList(): PipelineStepDefinitionList;
 
 }

@@ -20,7 +20,7 @@ class PipelineStepDefinitionList implements \Iterator {
    * @return \Drupal\rdf_etl\PipelineStepDefinition
    *   The pipeline step definition.
    */
-  public function add(string $plugin_id) : PipelineStepDefinition {
+  public function add(string $plugin_id): PipelineStepDefinition {
     $this->list[] = new PipelineStepDefinition($plugin_id);
     $this->position = key($this->list);
     return $this->list[$this->position];
@@ -32,14 +32,14 @@ class PipelineStepDefinitionList implements \Iterator {
    * @return \Drupal\rdf_etl\PipelineStepDefinition
    *   The pipeline step definition.
    */
-  public function first() : PipelineStepDefinition {
+  public function first(): PipelineStepDefinition {
     return $this->list[0];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function current() : PipelineStepDefinition {
+  public function current(): PipelineStepDefinition {
     if (!$this->valid()) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }
@@ -57,7 +57,7 @@ class PipelineStepDefinitionList implements \Iterator {
    *
    * @throws \Exception
    */
-  public function get($position) : PipelineStepDefinition {
+  public function get($position): PipelineStepDefinition {
     if (!isset($this->list[$position])) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }

@@ -30,7 +30,7 @@ class PipelineStepDefinition {
    * @param array $callback
    *   The callback to invoke.
    */
-  public function setPostExecute(array $callback) : PipelineStepDefinition {
+  public function setPostExecute(array $callback): PipelineStepDefinition {
     $this->postExecute = $callback;
     return $this;
   }
@@ -51,7 +51,7 @@ class PipelineStepDefinition {
    * @param array $callback
    *   The callback to invoke.
    */
-  public function setPreExecute(array $callback) : PipelineStepDefinition {
+  public function setPreExecute(array $callback): PipelineStepDefinition {
     $this->preExecute = $callback;
     return $this;
   }
@@ -69,7 +69,7 @@ class PipelineStepDefinition {
   /**
    * Return the plugin id of the process step plugin to use for this step.
    */
-  public function getPluginId() : string {
+  public function getPluginId(): string {
     return $this->pluginId;
   }
 

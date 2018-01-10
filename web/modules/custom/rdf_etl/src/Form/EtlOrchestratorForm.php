@@ -38,7 +38,7 @@ class EtlOrchestratorForm extends FormBase {
    *
    * @throws \Exception
    */
-  protected function activeProcessStep(FormStateInterface $form_state) : EtlProcessStepInterface {
+  protected function activeProcessStep(FormStateInterface $form_state): EtlProcessStepInterface {
     if (!isset($form_state->getBuildInfo()['active_process_step'])) {
       throw new \Exception('No active process step.');
     }
