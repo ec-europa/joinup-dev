@@ -72,6 +72,7 @@ abstract class InviteFormBase extends FormBase {
       '#tree' => TRUE,
       '#weight' => -98,
       '#attributes' => [
+        'id' => 'users-list',
         'class' => ['users-list'],
       ],
     ];
@@ -89,12 +90,17 @@ abstract class InviteFormBase extends FormBase {
         'remove' => [
           '#type' => 'submit',
           '#value' => $this->t('Remove'),
+          '#name' => 'remove_' . $delta,
           // Store the mail that this button will remove, to simplify the
           // operation.
           '#mail' => $mail,
           // No need to run validations when removing a line.
           '#limit_validation_errors' => [],
           '#submit' => ['::submitRemoveUser'],
+          '#ajax' => [
+            'callback' => '::ajaxUpdateUserList',
+            'wrapper' => 'users-list',
+          ],
         ],
       ];
     }
@@ -169,6 +175,21 @@ abstract class InviteFormBase extends FormBase {
     $form_state->set('user_list', $list);
 
     $form_state->setRebuild();
+  }
+
+  /**
+   * Ajax callback that returns the updated users list.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   A render array.
+   */
+  public function ajaxUpdateUserList(array $form, FormStateInterface $form_state) {
+    return $form['users'];
   }
 
   /**
