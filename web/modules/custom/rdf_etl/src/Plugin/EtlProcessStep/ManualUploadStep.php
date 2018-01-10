@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 
 use Drupal\Core\Form\FormStateInterface;
