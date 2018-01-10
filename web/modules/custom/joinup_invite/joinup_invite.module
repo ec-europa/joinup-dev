@@ -4,3 +4,24 @@
  * @file
  * Contains joinup_invite.module.
  */
+
+use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\Cache;
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ * Set the og_role cache contexts to the local tasks block.
+ */
+function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $block) {
+  if ($build['#id'] === 'primaryadminactions') {
+    // The primaryadminactions contains the 'Add facilitator' link which is
+    // accessible only to facilitators. The members page though is accessible
+    // by members as well. If a normal member visits the page first, the block
+    // is build without the og_role context and the form does not vary per group
+    // role.
+    // Make sure that the primaryadminactions block varies per og role.
+    $cache_contexts = $build['#cache']['contexts'] ?? [];
+    $build['#cache']['contexts'] = Cache::mergeContexts($cache_contexts, ['og_role']);
+  }
+}
