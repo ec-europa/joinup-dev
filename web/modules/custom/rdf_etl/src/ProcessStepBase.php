@@ -10,12 +10,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 
 /**
- * Defines a manual data upload step.
- *
- * @EtlProcessStep(
- *  id = "pipeline_selection_step",
- *  label = @Translation("Pipeline selection"),
- * )
+ * Base class for the for process step plugins supporting forms.
  */
 abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInterface {
   use StringTranslationTrait;
