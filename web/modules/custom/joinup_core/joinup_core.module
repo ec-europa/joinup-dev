@@ -64,6 +64,9 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'front' => [],
       ],
     ],
+    'chip' => [
+      'render element' => 'element',
+    ],
     'input__chip_button' => [
       'render element' => 'element',
     ],
@@ -100,6 +103,19 @@ function template_preprocess_facet_widget_links_inline(array &$variables) {
     'id' => Html::getUniqueId('filter-button'),
     'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
   ]);
+}
+
+/**
+ * Prepares variables for the "chip" template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #text.
+ */
+function template_preprocess_chip(array &$variables) {
+  $element = $variables['element'];
+  $variables['text'] = $element['#text'];
 }
 
 /**
