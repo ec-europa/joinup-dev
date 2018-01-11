@@ -43,15 +43,15 @@ Feature: Solution membership administration
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
+    Then I should see the link "Add members"
 
     # Add a facilitator.
-    When I click "Add facilitators"
-    And I fill in "Email or name" with "marcia_garcia@example.com"
-    And I press "Filter"
+    When I click "Add members"
+    And I fill in "Name/username/email" with "marcia_garcia@example.com"
+    And I press "Add"
     Then I should see the text "Marcia Garcia (marcia_garcia@example.com)"
-    When I check "Marcia Garcia (marcia_garcia@example.com)"
-    And I press "Add facilitators"
+    When I select "Facilitator" from "Role"
+    And I press "Add members"
     # Submitting the form takes us back to the "Members" page.
     Then I should see the heading "Members"
 
@@ -59,9 +59,9 @@ Feature: Solution membership administration
     When I am logged in as "Marcia Garcia"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
-    When I click "Add facilitators"
-    Then I should see the heading "Add facilitators"
+    Then I should see the link "Add members"
+    When I click "Add members"
+    Then I should see the heading "Add members"
 
   @email
   Scenario: Assign and remove new role to a member
