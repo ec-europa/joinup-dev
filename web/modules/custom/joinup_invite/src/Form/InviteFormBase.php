@@ -89,28 +89,17 @@ abstract class InviteFormBase extends FormBase {
     $user_list = $form_state->get('user_list');
     foreach ($user_list as $delta => $mail) {
       $form['users'][$delta] = [
-        '#type' => 'container',
-        'label' => [
-          '#type' => 'inline_template',
-          '#template' => '<span class="users-list__label">{{ name }}</span>',
-          '#context' => [
-            'name' => $this->getAccountName($this->loadUserByMail($mail)),
-          ],
-        ],
-        'remove' => [
-          '#type' => 'submit',
-          '#value' => $this->t('Remove'),
-          '#name' => 'remove_' . $delta,
-          // Store the mail that this button will remove, to simplify the
-          // operation.
-          '#mail' => $mail,
-          // No need to run validations when removing a line.
-          '#limit_validation_errors' => [],
-          '#submit' => ['::submitRemoveUser'],
-          '#ajax' => [
-            'callback' => '::ajaxUpdateUserList',
-            'wrapper' => 'users-list',
-          ],
+        '#type' => 'chip',
+        '#text' => $this->getAccountName($this->loadUserByMail($mail)),
+        // Store the mail that this button will remove, to simplify the
+        // operation.
+        '#mail' => $mail,
+        // No need to run validations when removing a line.
+        '#limit_validation_errors' => [],
+        '#submit' => ['::submitRemoveUser'],
+        '#ajax' => [
+          'callback' => '::ajaxUpdateUserList',
+          'wrapper' => 'users-list',
         ],
       ];
     }
@@ -184,7 +173,7 @@ abstract class InviteFormBase extends FormBase {
    */
   public function submitRemoveUser(array $form, FormStateInterface $form_state) {
     $button = $form_state->getTriggeringElement();
-    $element = NestedArray::getValue($form, $button['#array_parents']);
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
     $list = $form_state->get('user_list');
     unset($list[array_search($element['#mail'], $list)]);
     $form_state->set('user_list', $list);
