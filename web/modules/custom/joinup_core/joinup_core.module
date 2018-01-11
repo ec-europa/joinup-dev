@@ -64,6 +64,9 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'front' => [],
       ],
     ],
+    'input__chip_button' => [
+      'render element' => 'element',
+    ],
   ];
 }
 
