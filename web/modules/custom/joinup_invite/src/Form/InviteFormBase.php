@@ -83,7 +83,7 @@ abstract class InviteFormBase extends FormBase {
       '#weight' => -98,
       '#attributes' => [
         'id' => 'users-list',
-        'class' => ['users-list'],
+        'class' => ['invitation-list'],
       ],
     ];
     $user_list = $form_state->get('user_list');
