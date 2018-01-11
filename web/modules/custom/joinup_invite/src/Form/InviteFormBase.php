@@ -175,7 +175,7 @@ abstract class InviteFormBase extends FormBase {
     $button = $form_state->getTriggeringElement();
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
     $list = $form_state->get('user_list');
-    unset($list[array_search($element['#mail'], $list)]);
+    $list = array_diff($list, [$element['#mail']]);
     $form_state->set('user_list', $list);
 
     $form_state->setRebuild();
