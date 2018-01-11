@@ -23,10 +23,7 @@ class EtlStateManager implements EtlStateManagerInterface {
   protected $pipeline;
 
   /**
-   * EtlStateManager constructor.
-   *
-   * @param \Drupal\Core\State\StateInterface $state
-   *   The Drupal state service.
+   * {@inheritdoc}
    */
   public function __construct(StateInterface $state) {
     $this->state = $state;
@@ -35,24 +32,16 @@ class EtlStateManager implements EtlStateManagerInterface {
   }
 
   /**
-   * Whether a persisted state is available.
-   *
-   * @return bool
-   *   The persistence state.
+   * {@inheritdoc}
    */
   public function isPersisted(): bool {
     return isset($this->pipeline) && isset($this->sequence);
   }
 
   /**
-   * Persists the pipeline state for a following request.
-   *
-   * @param \Drupal\rdf_etl\EtlState $state
-   *   The state object to persist.
-   *
-   * @return $this
+   * {@inheritdoc}
    */
-  public function setState(EtlState $state): EtlStateManager {
+  public function setState(EtlState $state): EtlStateManagerInterface {
     $this->pipeline = $state->pipelineId();
     $this->state->set('rdf_etl.active_pipeline', $this->pipeline);
     $this->sequence = $state->sequence();
@@ -61,21 +50,16 @@ class EtlStateManager implements EtlStateManagerInterface {
   }
 
   /**
-   * Returns the current state.
-   *
-   * @return \Drupal\rdf_etl\EtlState
-   *   The state value object.
+   * {@inheritdoc}
    */
   public function state(): EtlState {
     return new EtlState($this->pipeline, $this->sequence);
   }
 
   /**
-   * Delete the persisted state.
-   *
-   * @return $this
+   * {@inheritdoc}
    */
-  public function reset(): EtlStateManager {
+  public function reset(): EtlStateManagerInterface {
     $this->state->delete('rdf_etl.active_pipeline_sequence');
     $this->state->delete('rdf_etl.active_pipeline');
     $this->pipeline = NULL;
