@@ -57,7 +57,9 @@ class Chip extends FormElement {
     $element['remove'] = [
       '#type' => 'submit',
       '#value' => t('Remove'),
-      '#name' => 'remove_' . $element['#name'],
+      // Generate a unique name for the button, so that the form API can set it
+      // as triggering element.
+      '#name' => implode('_', $element['#parents']) . '_remove',
       // Render the submit as a <button> element.
       '#theme_wrappers' => ['input__chip_button'],
     ];
