@@ -54,7 +54,7 @@ abstract class InviteFormBase extends FormBase {
       $form_state->set('user_list', []);
     }
 
-    $form['#id'] = Html::getUniqueId($this->getFormId());
+    $form['#id'] = Html::getId($this->getFormId());
 
     $form['autocomplete'] = [
       '#type' => 'textfield',
