@@ -5,43 +5,32 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl;
 
 /**
- * Class PipelineStepDefinitionList.
- *
- * @package Drupal\rdf_etl
+ * {@inheritdoc}
  */
-class PipelineStepDefinitionList implements \Iterator {
+class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface {
   protected $list = [];
   protected $position = 0;
 
   /**
-   * Adds a new step to the pipeline.
-   *
-   * @param string $plugin_id
-   *   The plugin id of the data plugin to add to the pipeline.
-   *
-   * @return \Drupal\rdf_etl\PipelineStepDefinition
-   *   The pipeline step definition.
+   * {@inheritdoc}
    */
-  public function add(string $plugin_id): PipelineStepDefinition {
+  public function add(string $plugin_id): PipelineStepDefinitionInterface {
     $this->list[] = new PipelineStepDefinition($plugin_id);
     $this->position = key($this->list);
     return $this->list[$this->position];
   }
 
   /**
-   * Fetches the first item from the list.
-   *
-   * @return \Drupal\rdf_etl\PipelineStepDefinition
-   *   The pipeline step definition.
+   * {@inheritdoc}
    */
-  public function first(): PipelineStepDefinition {
+  public function first(): PipelineStepDefinitionInterface {
     return $this->list[0];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function current(): PipelineStepDefinition {
+  public function current(): PipelineStepDefinitionInterface {
     if (!$this->valid()) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }
@@ -49,17 +38,9 @@ class PipelineStepDefinitionList implements \Iterator {
   }
 
   /**
-   * Returns a specified item from the list.
-   *
-   * @param int $position
-   *   The index.
-   *
-   * @return \Drupal\rdf_etl\PipelineStepDefinition
-   *   The pipeline step definition.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
-  public function get($position): PipelineStepDefinition {
+  public function get($position): PipelineStepDefinitionInterface {
     if (!isset($this->list[$position])) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }
@@ -95,9 +76,9 @@ class PipelineStepDefinitionList implements \Iterator {
   }
 
   /**
-   * Set the position to a defined location.
+   * {@inheritdoc}
    */
-  public function seek($position): PipelineStepDefinition {
+  public function seek($position): PipelineStepDefinitionInterface {
     $this->position = $position;
     return $this->current();
   }

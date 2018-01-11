@@ -9,7 +9,7 @@ namespace Drupal\rdf_etl;
  *
  * @package Drupal\rdf_etl
  */
-class PipelineStepDefinition {
+class PipelineStepDefinition implements PipelineStepDefinitionInterface {
   protected $pluginId;
 
   protected $preExecute;
@@ -34,19 +34,9 @@ class PipelineStepDefinition {
   }
 
   /**
-   * Register a callback.
-   *
-   * @param string $hook_name
-   *   The hook name.
-   * @param array $callback
-   *   The callback definition.
-   *
-   * @return \Drupal\rdf_etl\PipelineStepDefinition
-   *   Return $this for a fluent interface.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
-  public function registerHook(string $hook_name, array $callback): PipelineStepDefinition {
+  public function registerHook(string $hook_name, array $callback): PipelineStepDefinitionInterface {
     if (!in_array($hook_name, self::VALID_HOOKS)) {
       throw new \Exception('Attempt to register non-existing hook.');
     }
@@ -55,17 +45,7 @@ class PipelineStepDefinition {
   }
 
   /**
-   * Invokes a callback on a pipeline.
-   *
-   * @param string $hook_name
-   *   The hook name.
-   * @param array $argument
-   *   A container passed to the hook.
-   *
-   * @return mixed
-   *   The argument, altered by the hook.
-   *
-   * @throws \Exception
+   * {@inheritdoc}
    */
   public function invokeHook(string $hook_name, array $argument): array {
     if (!in_array($hook_name, self::VALID_HOOKS)) {
@@ -88,7 +68,7 @@ class PipelineStepDefinition {
   }
 
   /**
-   * Return the plugin id of the process step plugin to use for this step.
+   * {@inheritdoc}
    */
   public function getPluginId(): string {
     return $this->pluginId;

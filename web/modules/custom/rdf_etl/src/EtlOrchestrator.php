@@ -180,10 +180,10 @@ class EtlOrchestrator {
    * @param \Drupal\rdf_etl\EtlState $state
    *   The state for which to get the step definition.
    *
-   * @return \Drupal\rdf_etl\PipelineStepDefinition
+   * @return PipelineStepDefinitionInterface
    *   The step definition.
    */
-  protected function stepDefinition(EtlState $state): PipelineStepDefinition {
+  protected function stepDefinition(EtlState $state): PipelineStepDefinitionInterface {
     return $this->pipeline->stepDefinitionList()->get($state->sequence());
   }
 
