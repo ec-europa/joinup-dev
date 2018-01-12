@@ -162,7 +162,7 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getSubmitButtonText() : TranslatableMarkup {
+  protected function getSubmitButtonText(): TranslatableMarkup {
     return $this->t('Invite to discussion');
   }
 
@@ -188,11 +188,8 @@ class InviteToDiscussionForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $user_ids = array_filter($form_state->getValue('users'));
     /** @var \Drupal\user\UserInterface[] $users */
-    $users = $this->entityTypeManager->getStorage('user')->loadMultiple($user_ids);
-    $this->discussion = $form_state->get('discussion');
-
+    $users = $this->getUserList($form_state);
     $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
 
     foreach ($users as $user) {

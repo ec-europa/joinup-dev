@@ -81,42 +81,12 @@ Feature: Invite members to subscribe to discussions
     When I click "Invite"
     Then I should see the heading "Invite to discussion"
 
-    # Try to filter by first name.
-    When I fill in "Email or name" with "Vik"
-    And I press "Filter"
-    Then I should see the text "Viktor Bhattacharya (whackybhatta@example.com)"
-    And I should see the text "Vikentiy Rozovsky (v.rozovsky@example.com)"
-    But I should not see the text "Roxanne Stavros (whackyroxy@example.com)"
-    And I should not see the text "Rodrigo Villanueva (r.villanueva@example.com)"
-
-    # Try to filter by last name.
-    When I fill in "Email or name" with "attac"
-    And I press "Filter"
-    Then I should see the text "Viktor Bhattacharya (whackybhatta@example.com)"
-    But I should not see the text "Vikentiy Rozovsky (v.rozovsky@example.com)"
-    And I should not see the text "Roxanne Stavros (whackyroxy@example.com)"
-    And I should not see the text "Rodrigo Villanueva (r.villanueva@example.com)"
-
-    # Try to filter by e-mail address.
-    When I fill in "Email or name" with "whacky"
-    And I press "Filter"
-    Then I should see the text "Viktor Bhattacharya (whackybhatta@example.com)"
-    And I should see the text "Roxanne Stavros (whackyroxy@example.com)"
-    But I should not see the text "Vikentiy Rozovsky (v.rozovsky@example.com)"
-    And I should not see the text "Rodrigo Villanueva (r.villanueva@example.com)"
-
-    # Try to filter on a combination of first name and last name.
-    When I fill in "Email or name" with "Ro"
-    And I press "Filter"
-    Then I should see the text "Vikentiy Rozovsky (v.rozovsky@example.com)"
-    And I should see the text "Roxanne Stavros (whackyroxy@example.com)"
-    And I should see the text "Rodrigo Villanueva (r.villanueva@example.com)"
-    But I should not see the text "Viktor Bhattacharya (whackybhatta@example.com)"
-
     # Invite some users.
     Given the mail collector cache is empty
-    When I check "Vikentiy Rozovsky (v.rozovsky@example.com)"
-    And I check "Roxanne Stavros (whackyroxy@example.com)"
+    When I fill in "Name/username/email" with "v.rozovsky@example.com"
+    And I press "Add"
+    When I fill in "Name/username/email" with "whackyroxy@example.com"
+    And I press "Add"
     And I press "Invite to discussion"
     Then I should see the success message "2 user(s) have been invited to this discussion."
     And the following email should have been sent:
@@ -131,9 +101,8 @@ Feature: Invite members to subscribe to discussions
 
     # Try if it is possible to resend an invitation.
     Given the mail collector cache is empty
-    When I fill in "Email or name" with "Rozovsky"
-    And I press "Filter"
-    And I check "Vikentiy Rozovsky (v.rozovsky@example.com)"
+    When I fill in "Name/username/email" with "v.rozovsky@example.com"
+    And I press "Add"
     And I press "Invite to discussion"
     Then I should see the success message "The invitation was resent to 1 user(s) that were already invited previously but haven't yet accepted the invitation."
     And the following email should have been sent:
@@ -156,9 +125,8 @@ Feature: Invite members to subscribe to discussions
     And I am logged in as "Viktor Bhattacharya"
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"
-    And I fill in "Email or name" with "Vikentiy"
-    And I press "Filter"
-    And I check "Vikentiy Rozovsky (v.rozovsky@example.com)"
+    And I fill in "Name/username/email" with "v.rozovsky@example.com"
+    And I press "Add"
     And I press "Invite to discussion"
     Then I should see the success message "1 user(s) were already subscribed to the discussion. No new invitation was sent."
     And 0 e-mails should have been sent
