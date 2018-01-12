@@ -60,6 +60,14 @@ abstract class InviteFormBase extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Name/username/email'),
       '#autocomplete_route_name' => 'joinup_invite.user_auto_complete',
+      '#attributes' => [
+        'class' => ['invite-autocomplete'],
+      ],
+      '#attached' => [
+        'library' => [
+          'joinup_invite/invite_autocomplete',
+        ],
+      ],
       '#weight' => -100,
     ];
 
