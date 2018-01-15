@@ -58,7 +58,7 @@ class PipelineStepDefinition implements PipelineStepDefinitionInterface {
     $callback = $this->hooks[$hook_name];
 
     if (!is_callable($callback)) {
-      throw new \Exception('Pipeline defines a callback for but does not implement it.');
+      throw new \Exception("Pipeline defines a callback for $hook_name but does not implement it.");
     }
     $return = call_user_func_array($callback, [$argument]);
     if (empty($return)) {

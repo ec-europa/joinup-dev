@@ -53,7 +53,7 @@ class EtlOrchestratorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-
+    $form = $this->buildProgressIndicator($form, $form_state);
     if (!$this->activeProcessStep($form_state) instanceof PluginFormInterface) {
       return $this->selfSubmittingForm($form, $form_state);
     }

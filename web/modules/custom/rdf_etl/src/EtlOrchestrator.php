@@ -82,7 +82,9 @@ class EtlOrchestrator {
   public function run() {
     $current_state = $this->initializeActiveState();
     $new_state = $this->executeStep($current_state);
-    $this->stateManager->setState($new_state);
+    if ($new_state) {
+      $this->stateManager->setState($new_state);
+    }
 
     return $this->response;
   }
@@ -103,8 +105,8 @@ class EtlOrchestrator {
    *   The active process step.
    */
   protected function getStepInstance(EtlState $state): EtlProcessStepInterface {
-    $plugin_id = $this->pipeline->stepDefinitionList()->get($state->sequence())->getPluginId();
-    return $this->pluginManagerEtlProcessStep->createInstance($plugin_id);
+    $step_definition = $this->pipeline->getStepDefinition($state->sequence());
+    return $this->pluginManagerEtlProcessStep->createInstance($step_definition->getPluginId());
   }
 
   /**
@@ -123,7 +125,7 @@ class EtlOrchestrator {
     }
     $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($active_state->pipelineId());
     // Restore the active pipeline from the persistent store.
-    $this->pipeline->stepDefinitionList()->seek($active_state->sequence());
+    $this->pipeline->setActiveStepDefinition($active_state->sequence());
     return $active_state;
   }
 
@@ -136,7 +138,7 @@ class EtlOrchestrator {
    * @return \Drupal\rdf_etl\EtlState
    *   The next state.
    */
-  protected function executeStep(EtlState $current_state): EtlState {
+  protected function executeStep(EtlState $current_state): ?EtlState {
     $data = [];
     $data['state'] = $current_state;
 
@@ -144,14 +146,15 @@ class EtlOrchestrator {
     $form_state = new FormState();
     $data = $this->buildForm($current_state, $form_state, $data);
 
-    // In case of validation errors, or a rebuild (e.g. multi step), bail out.
+    // In case of validation errors, or a (re)build (e.g. multi step), bail out.
     if (!$form_state->isExecuted()) {
-      return $current_state;
+      return NULL;
     }
 
     $data['state'] = $this->getNextState($current_state);
     $data = $this->stepDefinition($current_state)->invokeHook('post_form_execution', $data);
     $this->getStepInstance($current_state)->execute($data);
+
     $this->redirectForm($form_state);
     return $data['state'];
   }
@@ -184,7 +187,7 @@ class EtlOrchestrator {
    *   The step definition.
    */
   protected function stepDefinition(EtlState $state): PipelineStepDefinitionInterface {
-    return $this->pipeline->stepDefinitionList()->get($state->sequence());
+    return $this->pipeline->getStepDefinition($state->sequence());
   }
 
   /**
