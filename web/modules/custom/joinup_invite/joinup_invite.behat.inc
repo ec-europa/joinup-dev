@@ -66,7 +66,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When I remove the user :username from the invitation list
    */
   public function removeUserFromInvitationList($username): void {
-    $container = $this->getSession()->getPage()->find('css', '.invitation-list');
+    $container = $this->getSession()->getPage()->find('css', '.invite-form__list');
     if (!$container) {
       throw new \Exception('Cannot find the user invitation list.');
     }

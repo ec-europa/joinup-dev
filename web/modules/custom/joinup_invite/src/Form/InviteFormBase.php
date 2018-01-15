@@ -55,6 +55,7 @@ abstract class InviteFormBase extends FormBase {
     }
 
     $form['#id'] = Html::getId($this->getFormId());
+    $form['#attributes']['class'][] = 'invite-form';
 
     $form['autocomplete'] = [
       '#type' => 'textfield',
@@ -84,6 +85,7 @@ abstract class InviteFormBase extends FormBase {
       ],
       // Disable refocus of element after ajax callbacks.
       '#attributes' => [
+        'class' => ['invite-form__add'],
         'data-disable-refocus' => 1,
       ],
       '#weight' => -99,
@@ -95,7 +97,7 @@ abstract class InviteFormBase extends FormBase {
       '#weight' => -98,
       '#attributes' => [
         'id' => 'users-list',
-        'class' => ['invitation-list'],
+        'class' => ['invite-form__list'],
       ],
     ];
     $user_list = $form_state->get('user_list');
