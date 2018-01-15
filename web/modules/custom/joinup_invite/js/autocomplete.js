@@ -28,9 +28,6 @@
           }
         });
       });
-    },
-    detach: function (context) {
-      $('.invite-autocomplete', context).removeOnce('invite-autocomplete').off('keydown.invite');
     }
   };
 
