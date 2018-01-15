@@ -213,7 +213,6 @@
                 "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
             },
             "drush/drush": {
-                "Allow updating modules with new service dependencies @see https://github.com/drush-ops/drush/pull/3206": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3206.patch",
                 "Add logging if an error occurs during an update. @see https://github.com/drush-ops/drush/pull/3266": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3266.patch"
             }
         }
