@@ -35,7 +35,7 @@ class JoinupRdfListBuilder extends RdfListBuilder {
       }
     }
     else {
-      $query->setGraphType($rdf_storage->getGraphHandler()->getGraphIds($rdf_storage->getEntityTypeId()));
+      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeGraphIds($rdf_storage->getEntityTypeId()));
     }
 
     if ($rid = $request->get('rid')) {

@@ -97,12 +97,9 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
     $query->condition($collection_sub_condition);
     $results = $query->execute();
 
-    $data = array_fill_keys($results, ['draft']);
-    $storage->setRequestGraphsMultiple($data);
-    $entities = $storage->loadMultiple($results);
-    $storage->getGraphHandler()->resetRequestGraphs('rdf_entity', $results);
-    $rows = [];
+    $entities = $storage->loadMultiple($results, ['draft']);
 
+    $rows = [];
     foreach ($entities as $entity) {
       $view = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId())->view($entity, 'view_mode_tile');
       $rows[] = [

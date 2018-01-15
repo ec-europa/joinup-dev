@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "461f74904eaf63336bbe8c339e0734eb",
+    "content-hash": "e985e6e712f33521926b818fbe065572",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1753,7 +1753,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3943,7 +3947,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684"
+                    "datestamp": "1488538684",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3962,10 +3970,6 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
-                },
-                {
-                    "name": "moshe weitzman",
-                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -4260,12 +4264,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "5835fddbdc03d500dbeaacc5d06ffe4e5b5a0a96"
+                "reference": "2f7a793f46caf7daa82ab1527e4c18bdf8d3bf2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/5835fddbdc03d500dbeaacc5d06ffe4e5b5a0a96",
-                "reference": "5835fddbdc03d500dbeaacc5d06ffe4e5b5a0a96",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/2f7a793f46caf7daa82ab1527e4c18bdf8d3bf2f",
+                "reference": "2f7a793f46caf7daa82ab1527e4c18bdf8d3bf2f",
                 "shasum": ""
             },
             "require": {
@@ -4285,7 +4289,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-01-14T14:57:09+00:00"
+            "time": "2018-01-18T17:58:05+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5140,23 +5144,23 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-updb-use-updatekernel",
+            "version": "dev-update-message-out-of-order",
             "source": {
                 "type": "git",
-                "url": "https://github.com/claudiu-cristea/drush.git",
-                "reference": "db668b12e0e62f5b2541c12f8cea7cbe4767fd09"
+                "url": "https://github.com/pfrenssen/drush.git",
+                "reference": "a8d58e8582a613e04ce62d7667ca5649a8269dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claudiu-cristea/drush/zipball/db668b12e0e62f5b2541c12f8cea7cbe4767fd09",
-                "reference": "db668b12e0e62f5b2541c12f8cea7cbe4767fd09",
+                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/a8d58e8582a613e04ce62d7667ca5649a8269dce",
+                "reference": "a8d58e8582a613e04ce62d7667ca5649a8269dce",
                 "shasum": ""
             },
             "require": {
                 "chi-teck/drupal-code-generator": "^1.21.0",
                 "composer/semver": "^1.4",
                 "consolidation/annotated-command": "^2.8.1",
-                "consolidation/config": "^1.0.7",
+                "consolidation/config": "^1.0.9",
                 "consolidation/output-formatters": "^3.1.12",
                 "consolidation/robo": "^1.1.5",
                 "ext-dom": "*",
@@ -5193,15 +5197,16 @@
             "autoload": {
                 "psr-4": {
                     "Drush\\": "src/",
+                    "Drush\\Internal\\": "internal-copy/",
                     "Unish\\": "tests/"
                 }
             },
             "scripts": {
                 "cs": [
-                    "phpcs -n src tests"
+                    "phpcs -n --standard=PSR2 src tests"
                 ],
                 "cbf": [
-                    "phpcbf -n src tests"
+                    "phpcbf -n --standard=PSR2 src tests"
                 ],
                 "lint": [
                     "find includes -name '*.inc' -print0 | xargs -0 -n1 php -l",
@@ -5264,9 +5269,9 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/claudiu-cristea/drush/tree/updb-use-updatekernel"
+                "source": "https://github.com/pfrenssen/drush/tree/update-message-out-of-order"
             },
-            "time": "2017-12-11T15:48:33+00:00"
+            "time": "2018-01-15T10:13:48+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -6683,6 +6688,7 @@
                     "Piwik\\ReportingApi\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -6693,10 +6699,6 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "support": {
-                "source": "https://github.com/pfrenssen/piwik-reporting-api/tree/1.0.1",
-                "issues": "https://github.com/pfrenssen/piwik-reporting-api/issues"
-            },
             "time": "2017-07-17T09:33:42+00:00"
         },
         {
@@ -10213,7 +10215,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1505199844"
+                    "datestamp": "1511190785",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10224,6 +10230,14 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
+                },
+                {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "bolbol",
+                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
@@ -12245,7 +12259,7 @@
         {
             "alias": "9.0.0-rc1",
             "alias_normalized": "9.0.0.0-RC1",
-            "version": "dev-updb-use-updatekernel",
+            "version": "dev-update-message-out-of-order",
             "package": "drush/drush"
         },
         {
