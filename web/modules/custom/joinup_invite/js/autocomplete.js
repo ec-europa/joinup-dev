@@ -20,6 +20,8 @@
       $('.invite-autocomplete', context).once('invite-autocomplete').each(function () {
         var $element = $(this);
 
+        // Give focus to the autocomplete element to allow typing straight away.
+        $element.trigger('focus');
         $element.on('keydown.invite', function (event) {
           if (event.which === 13) {
             $element.closest('form').find('input[name="add_user"]').trigger('mousedown');

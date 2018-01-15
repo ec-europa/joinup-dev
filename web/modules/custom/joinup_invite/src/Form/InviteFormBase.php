@@ -82,6 +82,10 @@ abstract class InviteFormBase extends FormBase {
         'callback' => '::ajaxUpdateForm',
         'wrapper' => $form['#id'],
       ],
+      // Disable refocus of element after ajax callbacks.
+      '#attributes' => [
+        'data-disable-refocus' => 1,
+      ],
       '#weight' => -99,
     ];
 
