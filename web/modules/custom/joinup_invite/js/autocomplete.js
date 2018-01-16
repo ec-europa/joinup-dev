@@ -22,10 +22,14 @@
 
         // Give focus to the autocomplete element to allow typing straight away.
         $element.trigger('focus');
-        $element.on('keydown.invite', function (event) {
-          if (event.which === 13) {
-            $element.closest('form').find('input[name="add_user"]').trigger('mousedown');
-          }
+
+        // Replace the select handler with a custom one that drops the supports
+        // for multi-value selections and automatically presses the add button.
+        $element.autocomplete('option', 'select', function (event, ui) {
+          event.target.value = ui.item.value;
+          $element.closest('form').find('input[name="add_user"]').trigger('mousedown');
+
+          return false;
         });
       });
     }
