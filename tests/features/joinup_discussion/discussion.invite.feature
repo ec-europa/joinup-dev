@@ -4,35 +4,35 @@ Feature: Invite members to subscribe to discussions
   As a discussion author or moderator
   I need to be able to invite users to discussions
 
-  @email
+  @email @javascript
   Scenario: Invite members to a discussion
     Given users:
-      | Username            | E-mail                   | First name | Family name  |
-      | Viktor Bhattacharya | whackybhatta@example.com | Viktor     | Bhattacharya |
-      | Vikentiy Rozovsky   | v.rozovsky@example.com   | Vikentiy   | Rozovsky     |
-      | Roxanne Stavros     | whackyroxy@example.com   | Roxanne    | Stavros      |
-      | Rodrigo Villanueva  | r.villanueva@example.com | Rodrigo    | Villanueva   |
+      | Username         | E-mail                           | First name | Family name |
+      | Lynwood Crawford | lcrawford@example.com            | Lynwood    | Crawford    |
+      | Glory Ruskin     | gloruskin.hr@example.com         | Glory      | Ruskin      |
+      | paternoster      | shaquila.paternoster@example.com | Shaquila   | Paternoster |
+      | theacuteone      | hargrave.hr@example.com          | Shannon    | Hargrave    |
     And the following solution:
       | title       | Stainless Steel Siphons |
       | description | Will last forever       |
       | state       | validated               |
     And the following solution user membership:
-      | solution                | user               | roles       |
-      | Stainless Steel Siphons | Rodrigo Villanueva | member      |
-      | Stainless Steel Siphons | Vikentiy Rozovsky  | facilitator |
+      | solution                | user         | roles       |
+      | Stainless Steel Siphons | theacuteone  | member      |
+      | Stainless Steel Siphons | Glory Ruskin | facilitator |
     And the following collection:
-      | title             | The Siphon Community |
-      | description       | We just love siphons |
-      | state             | validated            |
+      | title       | The Siphon Community |
+      | description | We just love siphons |
+      | state       | validated            |
     And the following collection user membership:
-      | collection           | user                | roles       |
-      | The Siphon Community | Viktor Bhattacharya | member      |
-      | The Siphon Community | Rodrigo Villanueva  | member      |
-      | The Siphon Community | Vikentiy Rozovsky   | facilitator |
+      | collection           | user             | roles       |
+      | The Siphon Community | Lynwood Crawford | member      |
+      | The Siphon Community | theacuteone      | member      |
+      | The Siphon Community | Glory Ruskin     | facilitator |
     And discussion content:
-      | title                            | content                            | author              | state     | collection           | solution                |
-      | For your lifetime                | Are you kidding?                   | Viktor Bhattacharya | validated |                      | Stainless Steel Siphons |
-      | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Viktor Bhattacharya | validated | The Siphon Community |                         |
+      | title                            | content                            | author           | state     | collection           | solution                |
+      | For your lifetime                | Are you kidding?                   | Lynwood Crawford | validated |                      | Stainless Steel Siphons |
+      | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Lynwood Crawford | validated | The Siphon Community |                         |
 
     # Check that only moderators and the discussion owner can invite members.
     # Anonymous users cannot invite users.
@@ -43,21 +43,21 @@ Feature: Invite members to subscribe to discussions
     Then I should not see the link "Invite"
 
     # Users not a members of the collection/solution cannot invite other users.
-    Given I am logged in as "Roxanne Stavros"
+    Given I am logged in as "paternoster"
     And I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should not see the link "Invite"
 
     # Regular members of the collection/solution cannot invite other users.
-    Given I am logged in as "Rodrigo Villanueva"
+    Given I am logged in as "theacuteone"
     And I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
     Then I should not see the link "Invite"
 
     # Facilitators can invite users.
-    Given I am logged in as "Vikentiy Rozovsky"
+    Given I am logged in as "Glory Ruskin"
     And I go to the "For your lifetime" discussion
     Then I should see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
@@ -71,7 +71,7 @@ Feature: Invite members to subscribe to discussions
     Then I should see the link "Invite"
 
     # The discussion owner can invite users.
-    Given I am logged in as "Viktor Bhattacharya"
+    Given I am logged in as "Lynwood Crawford"
     And I go to the "For your lifetime" discussion
     Then I should see the link "Invite"
     And I go to the "Concerned about dissolved gases?" discussion
@@ -81,39 +81,99 @@ Feature: Invite members to subscribe to discussions
     When I click "Invite"
     Then I should see the heading "Invite to discussion"
 
+    # Try to filter by first name.
+    When I fill in "Name/username/email" with "sha"
+    Then I wait until the page contains the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+    And I should see the text "Shannon Hargrave (hargrave.hr@example.com)"
+    But I should not see the text "Lynwood Crawford (lcrawford@example.com)"
+    And I should not see the text "Glory Ruskin (gloruskin.hr@example.com)"
+
+    ## Try to filter by last name.
+    When I fill in "Name/username/email" with "raw"
+    Then I wait until the page contains the text "Lynwood Crawford (lcrawford@example.com)"
+    But I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+    And I should not see the text "Shannon Hargrave (hargrave.hr@example.com)"
+    And I should not see the text "Glory Ruskin (gloruskin.hr@example.com)"
+
+    ## Try to filter by e-mail address.
+    When I fill in "Name/username/email" with "hr"
+    Then I wait until the page contains the text "Glory Ruskin (gloruskin.hr@example.com)"
+    And I should see the text "Shannon Hargrave (hargrave.hr@example.com)"
+    But I should not see the text "Lynwood Crawford (lcrawford@example.com)"
+    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+
+    ## Try fo filter by username.
+    When I fill in "Name/username/email" with "acute"
+    Then I wait until the page contains the text "Shannon Hargrave (hargrave.hr@example.com)"
+    But I should see the text "Glory Ruskin (gloruskin.hr@example.com)"
+    And I should not see the text "Lynwood Crawford (lcrawford@example.com)"
+    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+
+    ## Try to filter on a combination of first name and last name.
+    When I fill in "Name/username/email" with "or"
+    Then I wait until the page contains the text "Lynwood Crawford (lcrawford@example.com)"
+    And I should see the text "Glory Ruskin (gloruskin.hr@example.com)"
+    But I should not see the text "Shannon Hargrave (hargrave.hr@example.com)"
+    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+
+    When I fill in "Name/username/email" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "Name/username/email"
+    And I wait for AJAX to finish
+    Then the page should show only the chips:
+      | Glory Ruskin (gloruskin.hr@example.com) |
+    When I fill in "Name/username/email" with "lcrawford@example.com"
+    And I hit enter in the keyboard on the field "Name/username/email"
+    And I wait for AJAX to finish
+    Then the page should show the chips:
+      | Lynwood Crawford (lcrawford@example.com) |
+      | Glory Ruskin (gloruskin.hr@example.com)  |
+
+    # Delete a chip.
+    When I press the remove button on the chip "Lynwood Crawford"
+    And I wait for AJAX to finish
+    Then the page should show only the chips:
+      | Glory Ruskin (gloruskin.hr@example.com) |
+
+    # Add another one.
+    When I fill in "Name/username/email" with "shaquila.paternoster@example.com"
+    And I hit enter in the keyboard on the field "Name/username/email"
+    And I wait for AJAX to finish
+    Then the page should show the chips:
+      | Shaquila Paternoster (shaquila.paternoster@example.com) |
+      | Glory Ruskin (gloruskin.hr@example.com)                 |
+
     # Invite some users.
     Given the mail collector cache is empty
-    When I fill in "Name/username/email" with "v.rozovsky@example.com"
-    And I press "Add"
-    When I fill in "Name/username/email" with "whackyroxy@example.com"
-    And I press "Add"
     And I press "Invite to discussion"
     Then I should see the success message "2 user(s) have been invited to this discussion."
     And the following email should have been sent:
-      | recipient | Vikentiy Rozovsky                                                                                  |
-      | subject   | You are invited to subscribe to a discussion.                                                      |
-      | body      | Viktor Bhattacharya invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | Glory Ruskin                                                                                    |
+      | subject   | You are invited to subscribe to a discussion.                                                   |
+      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
     And the following email should have been sent:
-      | recipient | Roxanne Stavros                                                                                    |
-      | subject   | You are invited to subscribe to a discussion.                                                      |
-      | body      | Viktor Bhattacharya invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | paternoster                                                                                     |
+      | subject   | You are invited to subscribe to a discussion.                                                   |
+      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
     And 2 e-mails should have been sent
 
     # Try if it is possible to resend an invitation.
     Given the mail collector cache is empty
-    When I fill in "Name/username/email" with "v.rozovsky@example.com"
-    And I press "Add"
-    And I press "Invite to discussion"
+    When I fill in "Name/username/email" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "Name/username/email"
+    And I wait for AJAX to finish
+    Then the page should show only the chips:
+      | Glory Ruskin (gloruskin.hr@example.com) |
+    When I press "Invite to discussion"
     Then I should see the success message "The invitation was resent to 1 user(s) that were already invited previously but haven't yet accepted the invitation."
     And the following email should have been sent:
-      | recipient | Vikentiy Rozovsky                                                                                  |
-      | subject   | You are invited to subscribe to a discussion.                                                      |
-      | body      | Viktor Bhattacharya invites you to participate in the discussion Concerned about dissolved gases?. |
+      | recipient | Glory Ruskin                                                                                    |
+      | subject   | You are invited to subscribe to a discussion.                                                   |
+      | body      | Lynwood Crawford invites you to participate in the discussion Concerned about dissolved gases?. |
 
     # Accept an invitation by clicking on the link in the e-mail.
     # Initially there should not be any subscriptions.
     And the "Concerned about dissolved gases?" discussion should have 0 subscribers
-    Given I am logged in as "Vikentiy Rozovsky"
+    Given I am logged in as "Glory Ruskin"
     When I accept the invitation for the "Concerned about dissolved gases?" discussion
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You have been subscribed to this discussion."
@@ -122,12 +182,15 @@ Feature: Invite members to subscribe to discussions
     # Try to invite the user again. This should not send an invitation since the
     # user is already subscribed.
     Given the mail collector cache is empty
-    And I am logged in as "Viktor Bhattacharya"
+    And I am logged in as "Lynwood Crawford"
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"
-    And I fill in "Name/username/email" with "v.rozovsky@example.com"
-    And I press "Add"
-    And I press "Invite to discussion"
+    And I fill in "Name/username/email" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "Name/username/email"
+    And I wait for AJAX to finish
+    Then the page should show only the chips:
+      | Glory Ruskin (gloruskin.hr@example.com) |
+    When I press "Invite to discussion"
     Then I should see the success message "1 user(s) were already subscribed to the discussion. No new invitation was sent."
     And 0 e-mails should have been sent
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
