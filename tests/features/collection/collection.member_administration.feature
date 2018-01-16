@@ -177,7 +177,7 @@ Feature: Collection membership administration
     And I should see the text "Gregory House (gregory_house@example.com)"
     And I should see the text "Donald Duck (donald_duck@example.com)"
     # Remove a user.
-    When I remove the user "Donald Duck" from the invitation list
+    When I press the remove button on the chip "Donald Duck"
     Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
     And I should see the text "Gregory House (gregory_house@example.com)"
     But I should not see the text "Donald Duck (donald_duck@example.com)"
