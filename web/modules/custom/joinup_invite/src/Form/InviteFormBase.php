@@ -196,6 +196,15 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if (empty($form_state->get('user_list'))) {
+      $form_state->setError($form, $this->t('Please add at least one user.'));
+    }
+  }
+
+  /**
    * Ajax callback that returns the updated users list.
    *
    * @param array $form

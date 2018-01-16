@@ -81,6 +81,10 @@ Feature: Invite members to subscribe to discussions
     When I click "Invite"
     Then I should see the heading "Invite to discussion"
 
+    # Verify that a message is shown when no users are selected and we try to submit the form.
+    When I press "Invite to discussion"
+    Then I should see the error message "Please add at least one user."
+
     # Try to filter by first name.
     When I fill in "Name/username/email" with "sha"
     Then I wait until the page contains the text "Shaquila Paternoster (shaquila.paternoster@example.com)"

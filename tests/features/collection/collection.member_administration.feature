@@ -153,6 +153,10 @@ Feature: Collection membership administration
     When I click "Add members"
     Then I should see the heading "Add members"
 
+    # Verify that a message is shown when no users are selected and we try to submit the form.
+    When I press "Add members"
+    Then I should see the error message "Please add at least one user."
+
     When I fill in "Name/username/email" with "gregory_house@example.com"
     And I press "Add"
     Then the page should show the chips:
