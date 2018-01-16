@@ -155,7 +155,8 @@ Feature: Collection membership administration
 
     When I fill in "Name/username/email" with "gregory_house@example.com"
     And I press "Add"
-    Then I should see the text "Gregory House (gregory_house@example.com)"
+    Then the page should show the chips:
+      | Gregory House (gregory_house@example.com) |
     # Verify that an error message is shown when trying to add a mail not
     # present in the system.
     When I fill in "Name/username/email" with "donald@example.com"
@@ -169,18 +170,21 @@ Feature: Collection membership administration
     # Add some other users.
     When I fill in "Name/username/email" with "j.belanger@example.com"
     And I press "Add"
-    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
-    And I should see the text "Gregory House (gregory_house@example.com)"
+    Then the page should show the chips:
+      | Jeannette Belanger (j.belanger@example.com) |
+      | Gregory House (gregory_house@example.com)   |
     When I fill in "Name/username/email" with "donald_duck@example.com"
     And I press "Add"
-    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
-    And I should see the text "Gregory House (gregory_house@example.com)"
-    And I should see the text "Donald Duck (donald_duck@example.com)"
+    Then the page should show the chips:
+      | Jeannette Belanger (j.belanger@example.com) |
+      | Gregory House (gregory_house@example.com)   |
+      | Donald Duck (donald_duck@example.com)       |
     # Remove a user.
     When I press the remove button on the chip "Donald Duck"
-    Then I should see the text "Jeannette Belanger (j.belanger@example.com)"
-    And I should see the text "Gregory House (gregory_house@example.com)"
-    But I should not see the text "Donald Duck (donald_duck@example.com)"
+    Then the page should show only the chips:
+      | Jeannette Belanger (j.belanger@example.com) |
+      | Gregory House (gregory_house@example.com)   |
+    And I should not see the text "Donald Duck (donald_duck@example.com)"
 
     # Add the users as members.
     Given the option with text "Member" from select "Role" is selected
@@ -194,7 +198,8 @@ Feature: Collection membership administration
     When I click "Add members"
     When I fill in "Name/username/email" with "dwight1@example.com"
     And I press "Add"
-    Then I should see the text "Christian Dwight (dwight1@example.com)"
+    Then the page should show the chips:
+      | Christian Dwight (dwight1@example.com) |
     When I select "Facilitator" from "Role"
     And I press "Add members"
     Then I should see the success message "Your settings have been saved."
