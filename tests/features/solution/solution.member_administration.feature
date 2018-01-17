@@ -49,7 +49,8 @@ Feature: Solution membership administration
     When I click "Add members"
     And I fill in "Name/username/email" with "marcia_garcia@example.com"
     And I press "Add"
-    Then I should see the text "Marcia Garcia (marcia_garcia@example.com)"
+    Then the page should show only the chips:
+      | Marcia Garcia |
     When I select "Facilitator" from "Role"
     And I press "Add members"
     # Submitting the form takes us back to the "Members" page.

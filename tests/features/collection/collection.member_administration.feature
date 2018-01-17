@@ -193,7 +193,7 @@ Feature: Collection membership administration
     # Add the users as members.
     Given the option with text "Member" from select "Role" is selected
     When I press "Add members"
-    Then I should see the success message "Your settings have been saved."
+    Then I should see the success message "Successfully added the role Member to the selected users."
     And I should see the link "Jeannette Belanger"
     And I should see the link "Gregory House"
     But I should not see the link "Donald Duck"
@@ -206,7 +206,7 @@ Feature: Collection membership administration
       | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"
-    Then I should see the success message "Your settings have been saved."
+    Then I should see the success message "Successfully added the role Collection facilitator to the selected users."
     And I should see the link "Christian Dwight"
 
     # Try new privileges.
