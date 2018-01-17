@@ -79,9 +79,9 @@ class UserAutoCompleteController extends ControllerBase {
    *   A string version of user's full name.
    */
   protected function getAccountName(UserInterface $user) {
-    return $this->t('@name (@email)', [
+    return $this->t('@name (@username)', [
       '@name' => $user->get('full_name')->value,
-      '@email' => $user->getEmail(),
+      '@username' => $user->getAccountName(),
     ]);
   }
 

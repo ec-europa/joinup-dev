@@ -274,14 +274,11 @@ abstract class InviteFormBase extends FormBase {
    * @param \Drupal\user\UserInterface $user
    *   The user object.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   A string version of user's full name.
    */
-  protected function getAccountName(UserInterface $user): TranslatableMarkup {
-    return $this->t('@name (@email)', [
-      '@name' => $user->get('full_name')->value,
-      '@email' => $user->getEmail(),
-    ]);
+  protected function getAccountName(UserInterface $user): string {
+    return $user->get('full_name')->value;
   }
 
   /**

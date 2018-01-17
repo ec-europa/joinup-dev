@@ -160,7 +160,7 @@ Feature: Collection membership administration
     When I fill in "Name/username/email" with "gregory_house@example.com"
     And I press "Add"
     Then the page should show the chips:
-      | Gregory House (gregory_house@example.com) |
+      | Gregory House |
     # Verify that an error message is shown when trying to add a mail not
     # present in the system.
     When I fill in "Name/username/email" with "donald@example.com"
@@ -175,20 +175,20 @@ Feature: Collection membership administration
     When I fill in "Name/username/email" with "j.belanger@example.com"
     And I press "Add"
     Then the page should show the chips:
-      | Jeannette Belanger (j.belanger@example.com) |
-      | Gregory House (gregory_house@example.com)   |
+      | Jeannette Belanger |
+      | Gregory House      |
     When I fill in "Name/username/email" with "donald_duck@example.com"
     And I press "Add"
     Then the page should show the chips:
-      | Jeannette Belanger (j.belanger@example.com) |
-      | Gregory House (gregory_house@example.com)   |
-      | Donald Duck (donald_duck@example.com)       |
+      | Jeannette Belanger |
+      | Gregory House      |
+      | Donald Duck        |
     # Remove a user.
     When I press the remove button on the chip "Donald Duck"
     Then the page should show only the chips:
-      | Jeannette Belanger (j.belanger@example.com) |
-      | Gregory House (gregory_house@example.com)   |
-    And I should not see the text "Donald Duck (donald_duck@example.com)"
+      | Jeannette Belanger |
+      | Gregory House      |
+    And I should not see the text "Donald Duck"
 
     # Add the users as members.
     Given the option with text "Member" from select "Role" is selected
@@ -203,7 +203,7 @@ Feature: Collection membership administration
     When I fill in "Name/username/email" with "dwight1@example.com"
     And I press "Add"
     Then the page should show the chips:
-      | Christian Dwight (dwight1@example.com) |
+      | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"
     Then I should see the success message "Your settings have been saved."

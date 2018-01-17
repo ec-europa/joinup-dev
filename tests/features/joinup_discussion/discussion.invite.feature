@@ -87,64 +87,64 @@ Feature: Invite members to subscribe to discussions
 
     # Try to filter by first name.
     When I fill in "Name/username/email" with "sha"
-    Then I wait until the page contains the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
-    And I should see the text "Shannon Hargrave (hargrave.hr@example.com)"
-    But I should not see the text "Lynwood Crawford (lcrawford@example.com)"
-    And I should not see the text "Glory Ruskin (gloruskin.hr@example.com)"
+    Then I wait until the page contains the text "Shaquila Paternoster (paternoster)"
+    And I should see the text "Shannon Hargrave (theacuteone)"
+    But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
+    And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by last name.
     When I fill in "Name/username/email" with "raw"
-    Then I wait until the page contains the text "Lynwood Crawford (lcrawford@example.com)"
-    But I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
-    And I should not see the text "Shannon Hargrave (hargrave.hr@example.com)"
-    And I should not see the text "Glory Ruskin (gloruskin.hr@example.com)"
+    Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
+    But I should not see the text "Shaquila Paternoster (paternoster)"
+    And I should not see the text "Shannon Hargrave (theacuteone)"
+    And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by e-mail address.
     When I fill in "Name/username/email" with "hr"
-    Then I wait until the page contains the text "Glory Ruskin (gloruskin.hr@example.com)"
-    And I should see the text "Shannon Hargrave (hargrave.hr@example.com)"
-    But I should not see the text "Lynwood Crawford (lcrawford@example.com)"
-    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+    Then I wait until the page contains the text "Glory Ruskin (Glory Ruskin)"
+    And I should see the text "Shannon Hargrave (theacuteone)"
+    But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
+    And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try fo filter by username.
     When I fill in "Name/username/email" with "acute"
-    Then I wait until the page contains the text "Shannon Hargrave (hargrave.hr@example.com)"
-    But I should see the text "Glory Ruskin (gloruskin.hr@example.com)"
-    And I should not see the text "Lynwood Crawford (lcrawford@example.com)"
-    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+    Then I wait until the page contains the text "Shannon Hargrave (theacuteone)"
+    But I should see the text "Glory Ruskin (Glory Ruskin)"
+    And I should not see the text "Lynwood Crawford (Lynwood Crawford)"
+    And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try to filter on a combination of first name and last name.
     When I fill in "Name/username/email" with "or"
-    Then I wait until the page contains the text "Lynwood Crawford (lcrawford@example.com)"
-    And I should see the text "Glory Ruskin (gloruskin.hr@example.com)"
-    But I should not see the text "Shannon Hargrave (hargrave.hr@example.com)"
-    And I should not see the text "Shaquila Paternoster (shaquila.paternoster@example.com)"
+    Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
+    And I should see the text "Glory Ruskin (Glory Ruskin)"
+    But I should not see the text "Shannon Hargrave (theacuteone)"
+    And I should not see the text "Shaquila Paternoster (paternoster)"
 
     When I fill in "Name/username/email" with "gloruskin.hr@example.com"
     And I hit enter in the keyboard on the field "Name/username/email"
     And I wait for AJAX to finish
     Then the page should show only the chips:
-      | Glory Ruskin (gloruskin.hr@example.com) |
+      | Glory Ruskin |
     When I fill in "Name/username/email" with "lcrawford@example.com"
     And I hit enter in the keyboard on the field "Name/username/email"
     And I wait for AJAX to finish
     Then the page should show the chips:
-      | Lynwood Crawford (lcrawford@example.com) |
-      | Glory Ruskin (gloruskin.hr@example.com)  |
+      | Lynwood Crawford |
+      | Glory Ruskin     |
 
     # Delete a chip.
     When I press the remove button on the chip "Lynwood Crawford"
     And I wait for AJAX to finish
     Then the page should show only the chips:
-      | Glory Ruskin (gloruskin.hr@example.com) |
+      | Glory Ruskin |
 
     # Add another one.
     When I fill in "Name/username/email" with "shaquila.paternoster@example.com"
     And I hit enter in the keyboard on the field "Name/username/email"
     And I wait for AJAX to finish
     Then the page should show the chips:
-      | Shaquila Paternoster (shaquila.paternoster@example.com) |
-      | Glory Ruskin (gloruskin.hr@example.com)                 |
+      | Shaquila Paternoster |
+      | Glory Ruskin         |
 
     # Invite some users.
     Given the mail collector cache is empty
@@ -166,7 +166,7 @@ Feature: Invite members to subscribe to discussions
     And I hit enter in the keyboard on the field "Name/username/email"
     And I wait for AJAX to finish
     Then the page should show only the chips:
-      | Glory Ruskin (gloruskin.hr@example.com) |
+      | Glory Ruskin |
     When I press "Invite to discussion"
     Then I should see the success message "The invitation was resent to 1 user(s) that were already invited previously but haven't yet accepted the invitation."
     And the following email should have been sent:
@@ -193,7 +193,7 @@ Feature: Invite members to subscribe to discussions
     And I hit enter in the keyboard on the field "Name/username/email"
     And I wait for AJAX to finish
     Then the page should show only the chips:
-      | Glory Ruskin (gloruskin.hr@example.com) |
+      | Glory Ruskin |
     When I press "Invite to discussion"
     Then I should see the success message "1 user(s) were already subscribed to the discussion. No new invitation was sent."
     And 0 e-mails should have been sent
