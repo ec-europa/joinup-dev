@@ -60,6 +60,7 @@ abstract class InviteFormBase extends FormBase {
     $form['autocomplete'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name/username/email'),
+      '#description' => $this->t('Start typing to search an existing Joinup user and select it with the mouse or the keyboard.'),
       '#autocomplete_route_name' => 'joinup_invite.user_auto_complete',
       '#attributes' => [
         'class' => ['invite-autocomplete'],
