@@ -90,9 +90,8 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
     // Visit counts of community content are used to determine the results of
     // the 'Recommended content' block.
     $form['visit_counts'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => $this->t('Visit counts'),
+      '#type' => 'container',
+      '#title' => $this->t('Visit counts'),
       '#tree' => TRUE,
     ];
     foreach ($this->getBundlesHavingField('field_visit_count') as $entity_type_id => $bundles) {
@@ -127,9 +126,8 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
 
     // Download counts of distributions are shown on solutions.
     $form['download_counts'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => $this->t('Download counts'),
+      '#type' => 'container',
+      '#title' => $this->t('Download counts'),
       '#tree' => TRUE,
     ];
     foreach ($this->getBundlesHavingField('field_download_count') as $entity_type_id => $bundles) {
