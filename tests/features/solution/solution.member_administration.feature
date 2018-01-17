@@ -47,7 +47,7 @@ Feature: Solution membership administration
 
     # Add a facilitator.
     When I click "Add members"
-    And I fill in "Name/username/email" with "marcia_garcia@example.com"
+    And I fill in "E-mail" with "marcia_garcia@example.com"
     And I press "Add"
     Then the page should show only the chips:
       | Marcia Garcia |

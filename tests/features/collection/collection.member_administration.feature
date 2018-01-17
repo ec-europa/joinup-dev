@@ -157,27 +157,27 @@ Feature: Collection membership administration
     When I press "Add members"
     Then I should see the error message "Please add at least one user."
 
-    When I fill in "Name/username/email" with "gregory_house@example.com"
+    When I fill in "E-mail" with "gregory_house@example.com"
     And I press "Add"
     Then the page should show the chips:
       | Gregory House |
     # Verify that an error message is shown when trying to add a mail not
     # present in the system.
-    When I fill in "Name/username/email" with "donald@example.com"
+    When I fill in "E-mail" with "donald@example.com"
     And I press "Add"
     Then I should see the error message "No user found with mail donald@example.com."
     # Verify that an error message is shown when trying to add the same
     # user twice.
-    When I fill in "Name/username/email" with "gregory_house@example.com"
+    When I fill in "E-mail" with "gregory_house@example.com"
     And I press "Add"
     Then I should see the error message "The user with mail gregory_house@example.com has been already added to the list."
     # Add some other users.
-    When I fill in "Name/username/email" with "j.belanger@example.com"
+    When I fill in "E-mail" with "j.belanger@example.com"
     And I press "Add"
     Then the page should show the chips:
       | Jeannette Belanger |
       | Gregory House      |
-    When I fill in "Name/username/email" with "donald_duck@example.com"
+    When I fill in "E-mail" with "donald_duck@example.com"
     And I press "Add"
     Then the page should show the chips:
       | Jeannette Belanger |
@@ -200,7 +200,7 @@ Feature: Collection membership administration
 
     # Add a facilitator.
     When I click "Add members"
-    When I fill in "Name/username/email" with "dwight1@example.com"
+    When I fill in "E-mail" with "dwight1@example.com"
     And I press "Add"
     Then the page should show the chips:
       | Christian Dwight |

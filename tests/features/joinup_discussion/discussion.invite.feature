@@ -86,47 +86,47 @@ Feature: Invite members to subscribe to discussions
     Then I should see the error message "Please add at least one user."
 
     # Try to filter by first name.
-    When I fill in "Name/username/email" with "sha"
+    When I fill in "E-mail" with "sha"
     Then I wait until the page contains the text "Shaquila Paternoster (paternoster)"
     And I should see the text "Shannon Hargrave (theacuteone)"
     But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by last name.
-    When I fill in "Name/username/email" with "raw"
+    When I fill in "E-mail" with "raw"
     Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
     But I should not see the text "Shaquila Paternoster (paternoster)"
     And I should not see the text "Shannon Hargrave (theacuteone)"
     And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by e-mail address.
-    When I fill in "Name/username/email" with "hr"
+    When I fill in "E-mail" with "hr"
     Then I wait until the page contains the text "Glory Ruskin (Glory Ruskin)"
     And I should see the text "Shannon Hargrave (theacuteone)"
     But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try fo filter by username.
-    When I fill in "Name/username/email" with "acute"
+    When I fill in "E-mail" with "acute"
     Then I wait until the page contains the text "Shannon Hargrave (theacuteone)"
     But I should see the text "Glory Ruskin (Glory Ruskin)"
     And I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try to filter on a combination of first name and last name.
-    When I fill in "Name/username/email" with "or"
+    When I fill in "E-mail" with "or"
     Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
     And I should see the text "Glory Ruskin (Glory Ruskin)"
     But I should not see the text "Shannon Hargrave (theacuteone)"
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
-    When I fill in "Name/username/email" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "Name/username/email"
+    When I fill in "E-mail" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
-    When I fill in "Name/username/email" with "lcrawford@example.com"
-    And I hit enter in the keyboard on the field "Name/username/email"
+    When I fill in "E-mail" with "lcrawford@example.com"
+    And I hit enter in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Lynwood Crawford |
@@ -139,8 +139,8 @@ Feature: Invite members to subscribe to discussions
       | Glory Ruskin |
 
     # Add another one.
-    When I fill in "Name/username/email" with "shaquila.paternoster@example.com"
-    And I hit enter in the keyboard on the field "Name/username/email"
+    When I fill in "E-mail" with "shaquila.paternoster@example.com"
+    And I hit enter in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Shaquila Paternoster |
@@ -162,8 +162,8 @@ Feature: Invite members to subscribe to discussions
 
     # Try if it is possible to resend an invitation.
     Given the mail collector cache is empty
-    When I fill in "Name/username/email" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "Name/username/email"
+    When I fill in "E-mail" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
@@ -189,8 +189,8 @@ Feature: Invite members to subscribe to discussions
     And I am logged in as "Lynwood Crawford"
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"
-    And I fill in "Name/username/email" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "Name/username/email"
+    And I fill in "E-mail" with "gloruskin.hr@example.com"
+    And I hit enter in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
