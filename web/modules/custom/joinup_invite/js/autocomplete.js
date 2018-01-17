@@ -27,12 +27,30 @@
         // for multi-value selections and automatically presses the add button.
         $element.autocomplete('option', 'select', function (event, ui) {
           event.target.value = ui.item.value;
-          $element.closest('form').find('input[name="add_user"]').trigger('mousedown');
+          clickAddButton($element);
 
           return false;
         });
+        $element.off('keydown.invite').on('keydown.invite', function (event) {
+          if (event.which === 13) {
+            clickAddButton($element);
+          }
+        });
       });
+    },
+    detach: function (context) {
+      $('.invite-autocomplete', context).removeOnce('invite-autocomplete').off('keydown.invite');
     }
   };
+
+  /**
+   * Triggers the click on the add user button for the autocomplete.
+   *
+   * @param {jQuery} $element
+   *   The jQuery collection representing the autocomplete field.
+   */
+  function clickAddButton($element) {
+    $element.closest('form').find('input[name="add_user"]').trigger('mousedown');
+  }
 
 }(jQuery, Drupal));
