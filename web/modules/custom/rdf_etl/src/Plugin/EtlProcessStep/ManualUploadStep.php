@@ -29,11 +29,10 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
-    // $data = $form_state->getBuildInfo()['data'];
     $form['adms_file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
-      '#description' => $this->t('An RDF file you want to test for compliance.'),
+      '#description' => $this->t('Please upload a file to use for federation.'),
       '#upload_validators'  => [
         'file_validate_extensions' => ['rdf ttl'],
       ],
