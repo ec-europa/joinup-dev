@@ -316,8 +316,6 @@ function joinup_migrate_post_update_srits_change_owner() {
  * Copy the about text to distributions for CTT Spain [ISAICP-4057].
  */
 function joinup_migrate_post_update_copy_about_text_ctt_spain() {
-  \Drupal::moduleHandler()->loadAll();
-
   $solution_labels = [];
   $collection = Rdf::load('http://administracionelectronica.gob.es/ctt');
   /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $solutions */

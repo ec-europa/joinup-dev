@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e985e6e712f33521926b818fbe065572",
+    "content-hash": "8d1ffb5482bb51ac2ff26fe8fc17515b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5144,16 +5144,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-update-message-out-of-order",
+            "version": "dev-post-update-modules-loaded",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drush.git",
-                "reference": "a8d58e8582a613e04ce62d7667ca5649a8269dce"
+                "reference": "f2c786010c4545b0852f5fd4a3a755399d6d33d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/a8d58e8582a613e04ce62d7667ca5649a8269dce",
-                "reference": "a8d58e8582a613e04ce62d7667ca5649a8269dce",
+                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/f2c786010c4545b0852f5fd4a3a755399d6d33d5",
+                "reference": "f2c786010c4545b0852f5fd4a3a755399d6d33d5",
                 "shasum": ""
             },
             "require": {
@@ -5269,9 +5269,9 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/pfrenssen/drush/tree/update-message-out-of-order"
+                "source": "https://github.com/pfrenssen/drush/tree/post-update-modules-loaded"
             },
-            "time": "2018-01-15T10:13:48+00:00"
+            "time": "2018-01-18T16:23:26+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -12259,7 +12259,7 @@
         {
             "alias": "9.0.0-rc1",
             "alias_normalized": "9.0.0.0-RC1",
-            "version": "dev-update-message-out-of-order",
+            "version": "dev-post-update-modules-loaded",
             "package": "drush/drush"
         },
         {
