@@ -5,11 +5,17 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl;
 
 /**
- * Class EtlState.
+ * Class representing a state of a pipeline.
  *
  * @package Drupal\rdf_etl
  */
 class EtlState {
+
+  /**
+   * The pipeline plugin id.
+   *
+   * @var string
+   */
   protected $pipeline;
   protected $sequence;
 
@@ -21,7 +27,7 @@ class EtlState {
    * @param int $sequence
    *   The sequence of the pipeline.
    */
-  public function __construct($pipeline, $sequence) {
+  public function __construct(string $pipeline, int $sequence) {
     $this->pipeline = $pipeline;
     $this->sequence = $sequence;
   }

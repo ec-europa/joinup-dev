@@ -16,7 +16,6 @@ use Drupal\Component\Annotation\Plugin;
  */
 class EtlDataPipeline extends Plugin {
 
-
   /**
    * The plugin ID.
    *

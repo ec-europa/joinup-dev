@@ -16,7 +16,6 @@ use Drupal\Component\Annotation\Plugin;
  */
 class EtlProcessStep extends Plugin {
 
-
   /**
    * The plugin ID.
    *

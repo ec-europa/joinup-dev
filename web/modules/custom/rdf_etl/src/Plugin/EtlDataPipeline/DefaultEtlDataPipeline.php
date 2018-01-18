@@ -107,9 +107,13 @@ class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipel
    * @param array $data
    *   The data array from the form.
    *
+   * @return array
+   *   The data array.
+   *
    * @see \Drupal\rdf_etl\Plugin\EtlProcessStep\PipelineSelectionStep
    *
    * @throws \Exception
+   *   Thrown when no pipeline is specified.
    */
   public function selectPipeline(array $data): array {
     if (!isset($data['result'])) {

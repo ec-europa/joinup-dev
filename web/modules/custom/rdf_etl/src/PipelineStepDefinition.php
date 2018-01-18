@@ -10,14 +10,24 @@ namespace Drupal\rdf_etl;
  * @package Drupal\rdf_etl
  */
 class PipelineStepDefinition implements PipelineStepDefinitionInterface {
+
+  /**
+   * The plugin id of the process step associated with this step.
+   *
+   * @var string
+   */
   protected $pluginId;
 
-  protected $preExecute;
-
-  protected $postExecute;
-
+  /**
+   * An array of hook callbacks, keyed by name.
+   *
+   * @var array
+   */
   protected $hooks;
 
+  /**
+   * A list of valid hook types.
+   */
   const VALID_HOOKS = [
     'pre_form_execution',
     'post_form_execution',

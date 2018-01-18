@@ -22,6 +22,9 @@ class PipelineExecutionController extends ControllerBase {
 
   /**
    * Constructs a new PipelineExecutionController object.
+   *
+   * @param \Drupal\rdf_etl\EtlOrchestrator $rdf_etl_orchestrator
+   *   The Etl orchestrator.
    */
   public function __construct(EtlOrchestrator $rdf_etl_orchestrator) {
     $this->rdfEtlOrchestrator = $rdf_etl_orchestrator;

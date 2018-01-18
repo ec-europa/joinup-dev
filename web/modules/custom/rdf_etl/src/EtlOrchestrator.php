@@ -18,34 +18,22 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
  */
 class EtlOrchestrator {
 
-  const DEFAULT_PIPELINE = 'pipeline_selection_pipe';
-
-  const FIRST_STEP = 0;
-
-  const FINAL_STEP = -1;
-
   use StringTranslationTrait;
 
   /**
-   * Drupal\rdf_etl\Plugin\EtlDataPipelineManager definition.
-   *
-   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+   * The default pipeline id.
    */
-  protected $pluginManagerEtlDataPipeline;
+  const DEFAULT_PIPELINE = 'pipeline_selection_pipe';
 
   /**
-   * Drupal\rdf_etl\Plugin\EtlProcessStepManager definition.
-   *
-   * @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager
+   * The first step id.
    */
-  protected $pluginManagerEtlProcessStep;
+  const FIRST_STEP = 0;
 
   /**
-   * The persistent state of the importer.
-   *
-   * @var \Drupal\rdf_etl\EtlStateManager
+   * The last step id.
    */
-  protected $stateManager;
+  const FINAL_STEP = -1;
 
   /**
    * The form builder service.
@@ -53,8 +41,6 @@ class EtlOrchestrator {
    * @var \Drupal\Core\Form\FormBuilderInterface
    */
   protected $formBuilder;
-
-  protected $response = [];
 
   /**
    * The active pipeline.
@@ -64,7 +50,44 @@ class EtlOrchestrator {
   protected $pipeline;
 
   /**
+   * The EtlDataPipelineManager plugin manager.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+   */
+  protected $pluginManagerEtlDataPipeline;
+
+  /**
+   * The EtlProcessStepManager plugin manager.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager
+   */
+  protected $pluginManagerEtlProcessStep;
+
+  /**
+   * The response value.
+   *
+   * @var mixed
+   */
+  protected $response = [];
+
+  /**
+   * The persistent state of the importer.
+   *
+   * @var \Drupal\rdf_etl\EtlStateManager
+   */
+  protected $stateManager;
+
+  /**
    * Constructs a new EtlOrchestrator object.
+   *
+   * @param \Drupal\rdf_etl\Plugin\EtlDataPipelineManager $plugin_manager_etl_data_pipeline
+   *   The EtlDataPipelineManager plugin manager.
+   * @param \Drupal\rdf_etl\Plugin\EtlProcessStepManager $plugin_manager_etl_process_step
+   *   The EtlProcessStepManager plugin manager.
+   * @param \Drupal\rdf_etl\EtlStateManager $state_manager
+   *   The persistent state of the importer.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   The form builder service.
    */
   public function __construct(EtlDataPipelineManager $plugin_manager_etl_data_pipeline, EtlProcessStepManager $plugin_manager_etl_process_step, EtlStateManager $state_manager, FormBuilderInterface $form_builder) {
     $this->pluginManagerEtlDataPipeline = $plugin_manager_etl_data_pipeline;
@@ -76,8 +99,8 @@ class EtlOrchestrator {
   /**
    * Execute the orchestrator.
    *
-   * @return array
-   *   Render array.
+   * @return mixed
+   *   The response.
    */
   public function run() {
     $current_state = $this->initializeActiveState();
@@ -101,6 +124,9 @@ class EtlOrchestrator {
   /**
    * Gets the active process step.
    *
+   * @param \Drupal\rdf_etl\EtlState $state
+   *   The pipeline state.
+   *
    * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
    *   The active process step.
    */
@@ -111,6 +137,9 @@ class EtlOrchestrator {
 
   /**
    * Initialize the state machine from the persisted state.
+   *
+   * @return \Drupal\rdf_etl\EtlState
+   *   The current active state.
    */
   protected function initializeActiveState(): EtlState {
     if (!$this->stateManager->isPersisted()) {
@@ -193,8 +222,11 @@ class EtlOrchestrator {
   /**
    * Build the state object that points to the next step in the pipeline.
    *
+   * @param \Drupal\rdf_etl\EtlState $state
+   *   The current state.
+   *
    * @return \Drupal\rdf_etl\EtlState
-   *   The next State.
+   *   The next state.
    */
   protected function getNextState(EtlState $state): EtlState {
     $this->pipeline->stepDefinitionList()->seek($state->sequence());

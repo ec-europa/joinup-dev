@@ -18,8 +18,18 @@ class EtlStateManager implements EtlStateManagerInterface {
    */
   protected $state;
 
+  /**
+   * The offset of the active step.
+   *
+   * @var string
+   */
   protected $sequence;
 
+  /**
+   * The pipeline plugin id.
+   *
+   * @var string
+   */
   protected $pipeline;
 
   /**

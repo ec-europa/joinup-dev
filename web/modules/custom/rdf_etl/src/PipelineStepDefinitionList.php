@@ -8,7 +8,19 @@ namespace Drupal\rdf_etl;
  * {@inheritdoc}
  */
 class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface {
+
+  /**
+   * An array of pipeline step definition.
+   *
+   * @var array
+   */
   protected $list = [];
+
+  /**
+   * The current position in the list.
+   *
+   * @var int
+   */
   protected $position = 0;
 
   /**
@@ -78,7 +90,7 @@ class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface 
   /**
    * {@inheritdoc}
    */
-  public function seek($position): PipelineStepDefinitionInterface {
+  public function seek(int $position): PipelineStepDefinitionInterface {
     $this->position = $position;
     return $this->current();
   }

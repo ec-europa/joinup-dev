@@ -6,7 +6,6 @@ rdf_etl.pipeline_execution_controller_execution:
   requirements:
     _permission: 'run etl pipeline'
 
-
 rdf_etl.pipeline_execution_reset:
   path: '/admin/content/etl/reset'
   defaults:

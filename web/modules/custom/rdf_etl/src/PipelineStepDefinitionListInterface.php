@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl;
 
 /**
- * A collection of steps the define the order of execution of the pipeline.
+ * A collection of steps to define the order of execution of a pipeline.
  *
  * @package Drupal\rdf_etl
  */
@@ -70,7 +70,13 @@ interface PipelineStepDefinitionListInterface extends \Iterator {
 
   /**
    * Set the Iterator to the given position.
+   *
+   * @param int $position
+   *   The position.
+   *
+   * @return \Drupal\rdf_etl\PipelineStepDefinitionInterface
+   *   The pipeline step definition for the specified position.
    */
-  public function seek($position): PipelineStepDefinitionInterface;
+  public function seek(int $position): PipelineStepDefinitionInterface;
 
 }
