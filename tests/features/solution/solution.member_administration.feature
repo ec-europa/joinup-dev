@@ -24,21 +24,21 @@ Feature: Solution membership administration
       | The Missing Sons | Guadalupe Norman | facilitator |
       | The Missing Sons | Marcia Garcia    |             |
 
-  Scenario: Only privileged members should be able to add facilitators
+  Scenario: Only privileged members should be able to add members
     When I am not logged in
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as an authenticated
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as "Marcia Garcia"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
@@ -69,7 +69,7 @@ Feature: Solution membership administration
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
+    Then I should see the link "Add members"
     Then I check the box "Update the member Marcia Garcia"
     Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
