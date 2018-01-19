@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d1ffb5482bb51ac2ff26fe8fc17515b",
+    "content-hash": "a0c22b41d6a65223b15d6100ebfce004",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.11",
+            "version": "3.48.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4159562ee5c2b2d322cfcccd2401d90bfaceaf1d"
+                "reference": "22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4159562ee5c2b2d322cfcccd2401d90bfaceaf1d",
-                "reference": "4159562ee5c2b2d322cfcccd2401d90bfaceaf1d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5",
+                "reference": "22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-09T22:01:13+00:00"
+            "time": "2018-01-15T23:32:14+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2076,16 +2076,16 @@
         },
         {
             "name": "drupal/console",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console.git",
-                "reference": "3fda33caa0fb8cb4a56f82d1b3006d4ae5a4c249"
+                "reference": "e468cbefc4f157644e4affcfae1a8198a30c87a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/3fda33caa0fb8cb4a56f82d1b3006d4ae5a4c249",
-                "reference": "3fda33caa0fb8cb4a56f82d1b3006d4ae5a4c249",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/e468cbefc4f157644e4affcfae1a8198a30c87a1",
+                "reference": "e468cbefc4f157644e4affcfae1a8198a30c87a1",
                 "shasum": ""
             },
             "require": {
@@ -2093,7 +2093,7 @@
                 "composer/installers": "~1.0",
                 "doctrine/annotations": "^1.2",
                 "doctrine/collections": "^1.3",
-                "drupal/console-core": "1.4.0",
+                "drupal/console-core": "1.5.0",
                 "drupal/console-dotenv": "~0",
                 "drupal/console-extend-plugin": "~0",
                 "gabordemooij/redbean": "~4.3",
@@ -2151,25 +2151,25 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2018-01-08T19:12:50+00:00"
+            "time": "2018-01-11T19:47:57+00:00"
         },
         {
             "name": "drupal/console-core",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-core.git",
-                "reference": "d88f4e2ecef0cfcb488909ef3d1ee2e84b232499"
+                "reference": "968b76e00011c3c0162e2df70ddc023b0daaa69b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/d88f4e2ecef0cfcb488909ef3d1ee2e84b232499",
-                "reference": "d88f4e2ecef0cfcb488909ef3d1ee2e84b232499",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/968b76e00011c3c0162e2df70ddc023b0daaa69b",
+                "reference": "968b76e00011c3c0162e2df70ddc023b0daaa69b",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-configuration": "^1.0",
-                "drupal/console-en": "1.4.0",
+                "drupal/console-en": "1.5.0",
                 "php": "^5.5.9 || ^7.0",
                 "stecman/symfony-console-completion": "~0.7",
                 "symfony/config": "~2.8|~3.0",
@@ -2232,7 +2232,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2018-01-08T18:50:15+00:00"
+            "time": "2018-01-11T19:30:16+00:00"
         },
         {
             "name": "drupal/console-dotenv",
@@ -2275,16 +2275,16 @@
         },
         {
             "name": "drupal/console-en",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-en.git",
-                "reference": "9dd8e8043aea0cabb3a44e5f3634bf629da5a018"
+                "reference": "85317ff8319b58c3a0295b4cb74221b7c3c7ddf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/9dd8e8043aea0cabb3a44e5f3634bf629da5a018",
-                "reference": "9dd8e8043aea0cabb3a44e5f3634bf629da5a018",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-en/zipball/85317ff8319b58c3a0295b4cb74221b7c3c7ddf4",
+                "reference": "85317ff8319b58c3a0295b4cb74221b7c3c7ddf4",
                 "shasum": ""
             },
             "type": "drupal-console-language",
@@ -2325,7 +2325,7 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2018-01-08T18:19:41+00:00"
+            "time": "2018-01-11T18:09:24+00:00"
         },
         {
             "name": "drupal/console-extend-plugin",
@@ -5144,16 +5144,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-post-update-modules-loaded",
+            "version": "dev-post-update-logging",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drush.git",
-                "reference": "f2c786010c4545b0852f5fd4a3a755399d6d33d5"
+                "reference": "effa137ecf07647c2782c05ce839cbacb129983c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/f2c786010c4545b0852f5fd4a3a755399d6d33d5",
-                "reference": "f2c786010c4545b0852f5fd4a3a755399d6d33d5",
+                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/effa137ecf07647c2782c05ce839cbacb129983c",
+                "reference": "effa137ecf07647c2782c05ce839cbacb129983c",
                 "shasum": ""
             },
             "require": {
@@ -5269,9 +5269,9 @@
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/pfrenssen/drush/tree/post-update-modules-loaded"
+                "source": "https://github.com/pfrenssen/drush/tree/post-update-logging"
             },
-            "time": "2018-01-18T16:23:26+00:00"
+            "time": "2018-01-18T21:05:14+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -12257,9 +12257,9 @@
             "package": "drupal/og"
         },
         {
-            "alias": "9.0.0-rc1",
-            "alias_normalized": "9.0.0.0-RC1",
-            "version": "dev-post-update-modules-loaded",
+            "alias": "9.0.0",
+            "alias_normalized": "9.0.0.0",
+            "version": "dev-post-update-logging",
             "package": "drush/drush"
         },
         {
