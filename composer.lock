@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0c22b41d6a65223b15d6100ebfce004",
+    "content-hash": "eae81320be4b6298eb5ae1108865f13a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -135,16 +135,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.14",
+            "version": "3.50.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5"
+                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5",
-                "reference": "22f5faa06b5ca1a9f375ba02f5164b64fd4f37f5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
+                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-15T23:32:14+00:00"
+            "time": "2018-01-18T01:08:26+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1069,7 +1069,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -1947,17 +1947,17 @@
         },
         {
             "name": "drupal/config_sync",
-            "version": "1.0.0-alpha6",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_sync",
-                "reference": "8.x-1.0-alpha6"
+                "reference": "8.x-1.0-alpha7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha6.zip",
-                "reference": "8.x-1.0-alpha6",
-                "shasum": "1c4d716b74c920a3b2e3a9e569c75369d91ce92c"
+                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "fb0ac9d658ac0ccc93ad31630a843e50e4c49f4d"
             },
             "require": {
                 "drupal/config_provider": "*",
@@ -1971,16 +1971,17 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6",
-                    "datestamp": "1510870684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1516246084",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
-                "patches_applied": {
-                    "Error after last Drush refactoring @see https://www.drupal.org/project/config_sync/issues/2929952": "https://www.drupal.org/files/issues/2929952-2.patch",
-                    "Config changes table is not printed anymore @see https://www.drupal.org/project/config_sync/issues/2931084": "https://www.drupal.org/files/issues/2931084-2.patch"
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2992,17 +2993,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "3bd5e8f22f7f4077d666b1eca27a176d96342814"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "3dfeb0a353039ee8a6554bad9f6d02ec7cadee24"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3016,8 +3017,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1512228488",
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1516303685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5144,16 +5145,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-post-update-logging",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/drush.git",
-                "reference": "effa137ecf07647c2782c05ce839cbacb129983c"
+                "url": "https://github.com/drush-ops/drush.git",
+                "reference": "9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/effa137ecf07647c2782c05ce839cbacb129983c",
-                "reference": "effa137ecf07647c2782c05ce839cbacb129983c",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788",
+                "reference": "9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788",
                 "shasum": ""
             },
             "require": {
@@ -5201,31 +5202,7 @@
                     "Unish\\": "tests/"
                 }
             },
-            "scripts": {
-                "cs": [
-                    "phpcs -n --standard=PSR2 src tests"
-                ],
-                "cbf": [
-                    "phpcbf -n --standard=PSR2 src tests"
-                ],
-                "lint": [
-                    "find includes -name '*.inc' -print0 | xargs -0 -n1 php -l",
-                    "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
-                    "find tests -name '*.php' -print0 | xargs -0 -n1 php -l"
-                ],
-                "api": [
-                    "PATH=$HOME/bin:$PATH sami.phar --ansi update sami-config.php"
-                ],
-                "sami-install": [
-                    "mkdir -p $HOME/bin && curl --output $HOME/bin/sami.phar http://get.sensiolabs.org/sami.phar && chmod +x $HOME/bin/sami.phar"
-                ],
-                "isolation": [
-                    "cd isolation && vendor/bin/phpunit --colors=always"
-                ],
-                "post-update-cmd": [
-                    "cd isolation && composer update"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
@@ -5265,13 +5242,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "support": {
-                "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
-                "irc": "irc://irc.freenode.org/drush",
-                "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/pfrenssen/drush/tree/post-update-logging"
-            },
-            "time": "2018-01-18T21:05:14+00:00"
+            "time": "2018-01-19T04:36:08+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -10503,8 +10474,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-10-19T21:26:16+00:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -10672,6 +10642,8 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
+                "drupal/coder": "^8.2",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -10696,6 +10668,14 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
+                },
+                {
+                    "name": "Melissa Anderson",
+                    "homepage": "https://github.com/eliza411"
+                },
+                {
+                    "name": "Pieter Frenssen",
+                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
@@ -12255,12 +12235,6 @@
             "alias_normalized": "1.0.0.0",
             "version": "dev-8.x-1.x",
             "package": "drupal/og"
-        },
-        {
-            "alias": "9.0.0",
-            "alias_normalized": "9.0.0.0",
-            "version": "dev-post-update-logging",
-            "package": "drush/drush"
         },
         {
             "alias": "0.9.2",
