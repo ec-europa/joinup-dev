@@ -1069,7 +1069,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "BSD-2-Clause"
             ],
             "authors": [
                 {
@@ -5153,12 +5153,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/drush.git",
-                "reference": "3bdec72f646f2e67b8332de9f9f9489c3efcd8ec"
+                "reference": "effa137ecf07647c2782c05ce839cbacb129983c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/3bdec72f646f2e67b8332de9f9f9489c3efcd8ec",
-                "reference": "3bdec72f646f2e67b8332de9f9f9489c3efcd8ec",
+                "url": "https://api.github.com/repos/pfrenssen/drush/zipball/effa137ecf07647c2782c05ce839cbacb129983c",
+                "reference": "effa137ecf07647c2782c05ce839cbacb129983c",
                 "shasum": ""
             },
             "require": {
@@ -5276,7 +5276,7 @@
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
                 "source": "https://github.com/pfrenssen/drush/tree/post-update-logging"
             },
-            "time": "2018-01-15T12:04:50+00:00"
+            "time": "2018-01-18T21:05:14+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -10508,7 +10508,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
@@ -10676,8 +10677,6 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
-                "drupal/coder": "^8.2",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -10702,14 +10701,6 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
-                },
-                {
-                    "name": "Melissa Anderson",
-                    "homepage": "https://github.com/eliza411"
-                },
-                {
-                    "name": "Pieter Frenssen",
-                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
