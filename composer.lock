@@ -9921,6 +9921,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1.x-dev"
+                },
+                "patches_applied": {
+                    "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311": "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
                 }
             },
             "autoload": {
