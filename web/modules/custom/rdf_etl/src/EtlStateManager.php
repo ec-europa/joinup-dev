@@ -21,7 +21,7 @@ class EtlStateManager implements EtlStateManagerInterface {
   /**
    * The offset of the active step.
    *
-   * @var string
+   * @var int
    */
   protected $sequence;
 
