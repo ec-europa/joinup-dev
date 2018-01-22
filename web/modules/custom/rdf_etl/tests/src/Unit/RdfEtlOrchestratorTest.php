@@ -17,12 +17,34 @@ use Drupal\Tests\UnitTestCase;
  * @coversDefaultClass \Drupal\rdf_etl\EtlOrchestrator
  */
 class RdfEtlOrchestratorTest extends UnitTestCase {
-  protected $etlDataPipelineManager;
-  protected $etlProcessStepManager;
-  protected $etlStateManager;
-  protected $formBuilder;
 
-  protected $orchestrator;
+  /**
+   * The data pipeline plugin manager.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $etlDataPipelineManager;
+
+  /**
+   * The process step plugin manager.
+   *
+   * @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $etlProcessStepManager;
+
+  /**
+   * The ETL state manager.
+   *
+   * @var \Drupal\rdf_etl\EtlStateManager|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $etlStateManager;
+
+  /**
+   * The form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilder|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $formBuilder;
 
   /**
    * {@inheritdoc}
