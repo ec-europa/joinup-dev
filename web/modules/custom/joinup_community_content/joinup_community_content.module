@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the community content module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -55,6 +57,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       ]),
     ],
     '#access' => $url->access(),
+    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
   ];
   $build['#cache'] = [
     'contexts' => [
@@ -166,7 +169,12 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
       'variables' => ['entity' => NULL],
     ],
     'link_icon' => [
-      'variables' => ['icon' => NULL, 'title' => NULL, 'url' => NULL],
+      'variables' => [
+        'attributes' => [],
+        'icon' => NULL,
+        'title' => NULL,
+        'url' => NULL,
+      ],
     ],
     'social_share' => [
       'variables' => ['entity' => NULL],
@@ -180,6 +188,9 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
  * @param array $variables
  *   An associative array containing:
  *   - entity: the entity being shared.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ *   Thrown when the entity being shared does not support generating a URL.
  */
 function template_preprocess_social_share(array &$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
