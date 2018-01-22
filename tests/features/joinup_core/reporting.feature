@@ -15,3 +15,9 @@ Feature: As a site moderator/administrator
       | authenticated | 403  |
       | administrator | 200  |
       | moderator     | 200  |
+
+  Scenario: Solutions by type
+    Given I am logged in as a moderator
+    When I am on "/admin/reporting"
+    Then I click "Solutions by solution type"
+    Then I should get a 200 HTTP response
