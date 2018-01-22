@@ -252,7 +252,7 @@ class EtlOrchestrator {
    *   The data array.
    */
   protected function buildForm(EtlState $current_state, FormStateInterface &$form_state, array $data): array {
-    $active_step_plugin_id = $this->pipeline->stepDefinitionList()->get($current_state->sequence())->getPluginId();
+    $active_step_plugin_id = $this->stepDefinition($current_state)->getPluginId();
     $form_state->addBuildInfo('active_process_step', $active_step_plugin_id);
     $form_state->addBuildInfo('data', $data);
     $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
