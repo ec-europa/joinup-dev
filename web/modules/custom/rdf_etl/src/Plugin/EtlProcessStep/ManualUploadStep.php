@@ -32,7 +32,9 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
     $form['adms_file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
-      '#description' => $this->t('Please upload a file to use for federation.'),
+      '#description' => $this->t('Please upload a file to use for federation. Allowed types: @extensions.', [
+        '@extensions' => 'rdf ttl',
+      ]),
       '#upload_validators'  => [
         'file_validate_extensions' => ['rdf ttl'],
       ],
