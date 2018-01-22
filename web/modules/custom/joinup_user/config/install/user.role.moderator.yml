@@ -7,7 +7,7 @@ weight: 3
 is_admin: false
 permissions:
   - 'access dashboard'
-  - 'access site reports'
+  - 'access joinup reports'
   - 'access release create field'
   - 'access toolbar'
   - 'access uri converter'
