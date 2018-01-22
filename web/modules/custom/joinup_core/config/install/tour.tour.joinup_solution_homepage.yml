@@ -1,0 +1,26 @@
+id: joinup_solution_homepage
+module: joinup_core
+label: Joinup solution homepage tour
+langcode: en
+status: true
+dependencies: { }
+routes:
+  - route_name: 'entity.rdf_entity.canonical'
+tips:
+  some-text-about-releases:
+    id: some-text-about-releases
+    plugin: text
+    body: 'Once you''ve created a solution you may create its first release...'
+    weight: 1
+  click-the-plus-button:
+    id: click-the-plus-button
+    plugin: text
+    body: '...by clicking on the orange "Plus" button...'
+    weight: 2
+    attributes:
+      data-class: 'circle-menu__button'
+  select-release:
+    id: select-release
+    plugin: text
+    body: '...and select <a href="[site:url]release/core-criterion-and-core-evidence-vocabulary-v100">release</a>.'
+    weight: 3
