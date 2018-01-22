@@ -26,7 +26,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'administer users'
+          perm: 'access joinup reports'
       cache:
         type: tag
         options: {  }
@@ -455,13 +455,13 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/reports/solutions-by-type
+      path: admin/reporting/solutions-by-type
       menu:
         type: normal
         title: 'Solutions by solution type'
         description: ''
         expanded: false
-        parent: system.admin_reports
+        parent: joinup_core.admin_reporting
         weight: 0
         context: '0'
         menu_name: admin
@@ -469,6 +469,7 @@ display:
         type: none
       defaults:
         cache: false
+      always_use_admin_theme: false
     cache_metadata:
       max-age: 0
       contexts:
