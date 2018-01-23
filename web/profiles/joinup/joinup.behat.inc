@@ -2236,4 +2236,52 @@ JS;
     }
   }
 
+  /**
+   * Asserts that a user is subscribed to specific bundles in a collection.
+   *
+   * @param string $user
+   *   The user name.
+   * @param string $bundles
+   *   A list of bundles separated by commas.
+   * @param string $type
+   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
+   *   entity types respectively.
+   * @param string $group_label
+   *   The group name.
+   * @param string $group_bundle
+   *   The group bundle.
+   *
+   * @throws \Exception
+   *   Throws exception if invalid data passed as arguments or if the subscribed
+   *   bundles for the given type do not match the expected ones.
+   *
+   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
+   */
+  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
+    if ($type === 'content') {
+      $type = 'node';
+    }
+    elseif ($type === 'rdf') {
+      $type = 'rdf_entity';
+    }
+    else {
+      throw new Exception("Unsupported type {$type}.");
+    }
+
+    $user = $this->getUserByName($user);
+    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
+    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
+
+    $bundles = explode(',', $bundles);
+    $bundles = array_map('trim', $bundles);
+
+    // This can also be accessed with:
+    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
+    $og_bundles = $og_membership->get('subscription_bundles')->first()->getValue()[$type];
+
+    sort($bundles);
+    sort($og_bundles);
+    PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
+  }
+
 }
