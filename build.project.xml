@@ -206,7 +206,7 @@
 
     <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
 
-    <target name="rebuild-environment" depends="restore-databases, import-rdf-fixtures, execute-updates" />
+    <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
