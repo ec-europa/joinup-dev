@@ -69,4 +69,5 @@ config_devel:
   - og.og_role.rdf_entity-collection-facilitator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
+  - rdf_entity.mapping.rdf_entity.collection
   - rdf_entity.rdfentity.collection
