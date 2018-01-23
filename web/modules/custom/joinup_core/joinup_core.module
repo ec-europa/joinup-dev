@@ -232,6 +232,10 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
  * - Provides a 'path' field only for the 'rdf_entity' entities.
+ * - Provides the 'subscription_bundles' property for the 'og_membership' entity
+ *   type. The property is a serialized field and stores an array of bundles
+ *   keyed by entity type. These bundles represent the content that the user is
+ *   subscribed to within the group of the membership.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
@@ -272,6 +276,19 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
       ->setLabel(t('URL alias'))
       ->setTranslatable(TRUE)
       ->setComputed(TRUE);
+  }
+
+  // Add the 'subscription_bundles' property to the 'og_membership' entity.
+  if (($entity_type->id() === 'og_membership')) {
+    $fields['subscription_bundles'] = BaseFieldDefinition::create('map')
+      ->setLabel(t('Subscribed bundles'))
+      ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
+      ->setCardinality(1)
+      // By default, the new member gets subscribed to all community content of
+      // the group.
+      ->setDefaultValue([
+        'node' => ['discussion', 'document', 'event', 'news'],
+      ]);
   }
 
   return $fields;
