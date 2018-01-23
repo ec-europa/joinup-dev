@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Site\Settings;
+use Drupal\og\Entity\OgMembership;
 use Drupal\user\Entity\User;
 
 /**
@@ -59,4 +60,31 @@ function joinup_core_requirements($phase) {
  */
 function joinup_core_update_8100(&$sandbox) {
   \Drupal::service('module_installer')->install(['config_sync']);
+}
+
+/**
+ * Update all og memberships with being subscribed to community content.
+ */
+function joinup_core_update_8101(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $mids = \Drupal::entityQuery('og_membership')
+      ->execute();
+    $sandbox['total'] = count($mids);
+    $sandbox['current'] = 0;
+  }
+
+  $memberships_per_batch = 1000;
+  $mids = \Drupal::entityQuery('og_membership')
+    ->range($sandbox['current'], $memberships_per_batch)
+    ->execute();
+
+  foreach (OgMembership::loadMultiple($mids) as $membership) {
+    $membership->set('subscription_bundles', [
+      'node' => ['discussion', 'document', 'event', 'news'],
+    ])->save();
+  }
+
+  $sandbox['current'] += $memberships_per_batch;
+  drush_print($sandbox['current'] . ' memberships updated.');
+  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
 }
