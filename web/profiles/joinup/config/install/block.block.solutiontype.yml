@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: solutiontype
 theme: joinup_theme
-region: filters
-weight: 0
+region: sidebar_left
+weight: -14
 provider: null
 plugin: 'facet_block:solution_type'
 settings:

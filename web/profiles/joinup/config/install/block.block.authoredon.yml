@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: authoredon
 theme: joinup_theme
-region: filters
-weight: 0
+region: sidebar_left
+weight: -16
 provider: null
 plugin: 'facet_block:authoredon'
 settings:

@@ -9,8 +9,8 @@ dependencies:
     - joinup_theme
 id: changed
 theme: joinup_theme
-region: filters
-weight: 0
+region: sidebar_left
+weight: -15
 provider: null
 plugin: 'facet_block:aggregated_changed'
 settings:
