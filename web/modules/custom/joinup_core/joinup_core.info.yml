@@ -1,9 +1,8 @@
-name: Joinup core
+name: 'Joinup core'
 type: module
-description: Contains field storage configuration.
+description: 'Contains field storage configuration.'
 core: 8.x
 package: Joinup
-
 dependencies:
   - allowed_formats
   - cached_computed_field
@@ -61,7 +60,23 @@ config_devel:
   - image.style.wysiwyg_half_width
   - image.style.wysiwyg_one_third_width
   - joinup_core.piwik_settings
-  - rdf_draft.settings
+  - rdf_entity.mapping.taxonomy_term.actor
+  - rdf_entity.mapping.taxonomy_term.business_process
+  - rdf_entity.mapping.taxonomy_term.eira
+  - rdf_entity.mapping.taxonomy_term.eurovoc
+  - rdf_entity.mapping.taxonomy_term.file_type
+  - rdf_entity.mapping.taxonomy_term.language
+  - rdf_entity.mapping.taxonomy_term.licence_type
+  - rdf_entity.mapping.taxonomy_term.owner_type
+  - rdf_entity.mapping.taxonomy_term.policy_domain
+  - rdf_entity.mapping.taxonomy_term.product_type
+  - rdf_entity.mapping.taxonomy_term.representation_technique
+  - rdf_entity.mapping.taxonomy_term.solution_category
+  - rdf_entity.mapping.taxonomy_term.spatial
+  - rdf_entity.mapping.taxonomy_term.standardization_level
+  - rdf_entity.mapping.taxonomy_term.status
+  - rdf_entity.mapping.taxonomy_term.test_resource_type
+  - rdf_entity.mapping.taxonomy_term.themes
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
   - taxonomy.vocabulary.eurovoc
