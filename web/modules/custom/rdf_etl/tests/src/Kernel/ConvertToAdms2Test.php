@@ -5,32 +5,26 @@ declare(strict_types = 1);
 namespace Drupal\Tests\rdf_etl\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 
 /**
- * Tests the 'update_adms_to_v2' process step plugin.
+ * Tests the 'convert_to_adms2' process step plugin.
  *
  * @group rdf_etl
  */
-class UpdateAdmsToV2Test extends KernelTestBase {
+class ConvertToAdms2Test extends KernelTestBase {
 
   use RdfDatabaseConnectionTrait;
 
   /**
-   * Testing graph.
+   * The  ADMS v1 to v2 transformation plugin manager.
    *
-   * @var string
+   * @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
    */
-  protected $graph = 'http://example.com/graph/sync_test';
-
-  /**
-   * The directory containing fixtures and assertions for each ADMS v2 change.
-   *
-   * @var string
-   */
-  protected $admsV2ChangelogDir;
+  protected $adms2ConverPassPluginManager;
 
   /**
    * {@inheritdoc}
@@ -51,17 +45,19 @@ class UpdateAdmsToV2Test extends KernelTestBase {
     $options = $this->sparql->getConnectionOptions();
     $connection_uri = "http://{$options['host']}:{$options['port']}/sparql-graph-crud";
 
-    $this->admsV2ChangelogDir = realpath(__DIR__ . '/../../adms_v2_changelog');
+    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_step');
+    $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
 
-    // Collect and import fixtures used for testing.
-    foreach (file_scan_directory($this->admsV2ChangelogDir, '/\.rdf$/') as $file) {
-      if ($data = $this->prepareRdfData($file->uri)) {
+    foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
+      /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */
+      $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
+      if ($rdf_data = $this->prepareRdfData($plugin->getTestingRdfData())) {
         $graph_store = new GraphStore($connection_uri);
         $graph = new Graph();
-        $graph->parse($data);
-        $out = $graph_store->replace($graph, $this->graph);
+        $graph->parse($rdf_data);
+        $out = $graph_store->replace($graph, $graph_uri);
         if (!$out->isSuccessful()) {
-          throw new \Exception("Cannot import file '{$file->uri}' in graph '{$this->graph}'.");
+          throw new \Exception("Cannot import RDF data from plugin '$plugin_id' in graph '$graph_uri'.");
         }
       }
     }
@@ -74,14 +70,16 @@ class UpdateAdmsToV2Test extends KernelTestBase {
     /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
     $manager = $this->container->get('plugin.manager.etl_process_step');
     /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepInterface $plugin */
-    $plugin = $manager->createInstance('update_adms_to_v2', ['sync_graph' => $this->graph]);
+    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sync_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
 
     // Run updates.
-    $plugin->execute([]);
+    $convert_plugin->execute([]);
 
     // Execute assertions.
-    foreach (file_scan_directory($this->admsV2ChangelogDir, '/\.php$/') as $file) {
-      require $file->uri;
+    foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
+      /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */
+      $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
+      $plugin->performAssertions($this);
     }
   }
 
@@ -89,22 +87,21 @@ class UpdateAdmsToV2Test extends KernelTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    $this->sparql->query("CLEAR GRAPH <{$this->graph}>;");
+    $this->sparql->query("CLEAR GRAPH <" . EtlAdms2ConvertPassInterface::TEST_GRAPH . ">;");
     parent::tearDown();
   }
 
   /**
-   * Prepares the RDF data given a .rdf file.
+   * Prepares the RDF data.
    *
-   * @param string $uri
-   *   The file URI.
+   * @param string|null $data
+   *   RDF data.
    *
    * @return string|null
    *   The RDF data markup.
    */
-  protected function prepareRdfData(string $uri): ?string {
-    $content = trim(file_get_contents($uri));
-    if ($content) {
+  protected function prepareRdfData(?string $data): ?string {
+    if ($data && $data = trim($data)) {
       return <<<DATA
 <?xml version="1.0" encoding="UTF-8" ?>
 <rdf:RDF
@@ -128,7 +125,7 @@ class UpdateAdmsToV2Test extends KernelTestBase {
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:dc="http://purl.org/dc/elements/1.1/">
-$content
+$data
 </rdf:RDF>
 DATA;
     }

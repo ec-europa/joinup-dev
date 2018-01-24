@@ -1,8 +1,0 @@
-<rdf:Description rdf:about="http://example.com/rdf_entity/collection/45">
-    <rdf:type rdf:resource="http://www.w3.org/ns/adms#AssetRepository"/>
-    <dcat:accessURL rdf:resource="http://example.com/rdf_entity/collection/45"/>
-    <dct:title xml:lang="en">Repository 45</dct:title>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/1"/>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/2"/>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/3"/>
-</rdf:Description>
