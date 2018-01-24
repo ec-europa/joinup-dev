@@ -28,7 +28,9 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
    * {@inheritdoc}
    */
   public function defaultConfiguration(): array {
-    return [];
+    return [
+      'sync_graph' => 'http://example.com/sync',
+    ];
   }
 
   /**
