@@ -73,7 +73,8 @@
         "webmozart/path-util": "~2.3"
     },
     "require-dev": {
-        "behat/behat": "3.3.1",
+        "behat/behat": "~3.4",
+        "behat/gherkin": "^4.5.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
@@ -144,6 +145,9 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": 1,
         "patches": {
+            "behat/gherkin": {
+                "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
             "behat/mink-extension": {
                 "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311" : "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
             },
