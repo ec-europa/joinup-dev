@@ -25,7 +25,7 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
 
   // Add the 'subscription_bundles' property to the 'og_membership' entity.
   if (($entity_type->id() === 'og_membership')) {
-    $fields['subscription_bundles'] = BaseFieldDefinition::create('subscription_bundle')
+    $fields['subscription_bundles'] = BaseFieldDefinition::create('entity_bundle')
       ->setLabel(t('Subscribed bundles'))
       ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
       ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)

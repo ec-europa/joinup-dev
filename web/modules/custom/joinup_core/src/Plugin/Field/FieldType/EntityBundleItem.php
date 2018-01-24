@@ -2,20 +2,25 @@
 
 namespace Drupal\joinup_subscription\Plugin\Field\FieldType;
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
- * Plugin implementation of the 'subscription_bundle' field type.
+ * Plugin implementation of the 'entity_bundle' field type.
+ *
+ * This is a pseudo reference field that references bundles by storing the
+ * entity type and the bundle machine name.
  *
  * @FieldType(
- *   id = "subscription_bundle",
- *   label = @Translation("Subscription bundle"),
- *   description = @Translation("Bundles the user is subscribed to") * )
+ *   id = "entity_bundle",
+ *   label = @Translation("Entity bundle"),
+ *   description = @Translation("A simple field referencing to bundles")
+ * )
  */
-class SubscriptionBundle extends FieldItemBase {
+class EntityBundleItem extends FieldItemBase {
 
   /**
    * {@inheritdoc}
@@ -40,11 +45,11 @@ class SubscriptionBundle extends FieldItemBase {
       'columns' => [
         'entity_type' => [
           'type' => 'varchar',
-          'length' => 50,
+          'length' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
         ],
         'bundle' => [
           'type' => 'varchar',
-          'length' => 50,
+          'length' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
         ],
       ],
     ];
@@ -59,6 +64,10 @@ class SubscriptionBundle extends FieldItemBase {
     $entity_type = $this->get('entity_type')->getValue();
     $bundle = $this->get('bundle')->getValue();
     return empty($entity_type) || empty($bundle);
+  }
+
+  public static function mainPropertyName() {
+    return 'bundle';
   }
 
 }
