@@ -2273,11 +2273,16 @@ JS;
     $og_membership = $this->getMembershipByGroupAndUser($group, $user);
 
     $bundles = explode(',', $bundles);
-    $bundles = array_map('trim', $bundles);
+    $bundles = array_map(function($bundle) use ($type) {
+      return $type . ':' . trim($bundle);
+    }, $bundles);
 
     // This can also be accessed with:
     // $og_membership->get('subscription_bundles')->getValue()[0][$type];
-    $og_bundles = $og_membership->get('subscription_bundles')->first()->getValue()[$type];
+    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
+    $og_bundles = array_map(function($row) {
+      return $row['entity_type'] . ':' . $row['bundle'];
+    }, $og_bundles);
 
     sort($bundles);
     sort($og_bundles);

@@ -278,19 +278,6 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
       ->setComputed(TRUE);
   }
 
-  // Add the 'subscription_bundles' property to the 'og_membership' entity.
-  if (($entity_type->id() === 'og_membership')) {
-    $fields['subscription_bundles'] = BaseFieldDefinition::create('map')
-      ->setLabel(t('Subscribed bundles'))
-      ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
-      ->setCardinality(1)
-      // By default, the new member gets subscribed to all community content of
-      // the group.
-      ->setDefaultValue([
-        'node' => ['discussion', 'document', 'event', 'news'],
-      ]);
-  }
-
   return $fields;
 }
 

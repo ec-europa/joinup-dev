@@ -5,10 +5,39 @@
  * Contains joinup_subscription.module..
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
 /**
  * Implements hook_entity_type_build().
  */
 function joinup_subscription_entity_type_build(array &$entity_types) {
   /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
   $entity_types['user']->setFormClass('subscription_settings', 'Drupal\user\ProfileForm');
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  // Add the 'subscription_bundles' property to the 'og_membership' entity.
+  if (($entity_type->id() === 'og_membership')) {
+    $fields['subscription_bundles'] = BaseFieldDefinition::create('subscription_bundle')
+      ->setLabel(t('Subscribed bundles'))
+      ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
+      ->setCardinality(\Drupal\field\FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
+      ->setRequired(FALSE)
+      // By default, the new member gets subscribed to all community content of
+      // the group.
+      ->setDefaultValue([
+        ['entity_type' => 'node', 'bundle' => 'discussion'],
+        ['entity_type' => 'node', 'bundle' => 'document'],
+        ['entity_type' => 'node', 'bundle' => 'event'],
+        ['entity_type' => 'node', 'bundle' => 'news'],
+      ]);
+  }
+
+  return $fields;
 }
