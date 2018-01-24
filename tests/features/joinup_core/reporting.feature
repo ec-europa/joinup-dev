@@ -55,7 +55,7 @@ Feature:
     # Note: the link is rendered as icon in a real browser.
     And I should see the link "Subscribe to Moderator: Solutions by type"
     When I click "Subscribe to Moderator: Solutions by type"
-    Then I should get a 200 HTTP response
+    Then I should get a valid web page
 
     # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.
     When I am an anonymous user
