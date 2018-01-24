@@ -29,7 +29,7 @@ Feature:
       | Beta Frozen     | Restless Burst      | validated | 2017-10-15T14:54 | 2017-11-24T12:43  | [ABB55] e-Signature Creation Service                                 |
 
     Given I am logged in as a moderator
-    When I am on "/admin/reporting"
+    And I click "Reporting" in the "Administration toolbar" region
     And I click "Solutions by solution type"
     Then I should see the heading "Moderator: Solutions by type"
     And I should see the link "Worthy Puppet"
