@@ -43,7 +43,7 @@
         "drupal/piwik": "~1.0",
         "drupal/piwik_reporting_api": "^1.0-beta2",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "dev-pathauto-support",
+        "drupal/rdf_entity": "dev-8.x-1.x",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.0@RC",
         "drupal/search_api": "~1.5",
@@ -205,9 +205,6 @@
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
-            },
-            "drupal/rdf_entity": {
-                "Allow created date to be visible in the form. @see https://github.com/ec-europa/rdf_entity/pull/10": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/10.patch"
             }
         }
     },
