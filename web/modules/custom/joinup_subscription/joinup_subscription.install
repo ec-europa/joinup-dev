@@ -32,7 +32,7 @@ function joinup_subscription_update_8100(&$sandbox) {
     ])->save();
   }
 
-  drush_print(($sandbox['current'] + count($mids)). ' memberships updated.');
+  drush_print(($sandbox['current'] + count($mids)) . ' memberships updated.');
   $sandbox['current'] += $memberships_per_batch;
   $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
 }

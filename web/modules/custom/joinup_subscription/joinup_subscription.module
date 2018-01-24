@@ -5,6 +5,7 @@
  * Contains joinup_subscription.module..
  */
 
+use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -27,7 +28,7 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
     $fields['subscription_bundles'] = BaseFieldDefinition::create('subscription_bundle')
       ->setLabel(t('Subscribed bundles'))
       ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
-      ->setCardinality(\Drupal\field\FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
+      ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
       ->setRequired(FALSE)
       // By default, the new member gets subscribed to all community content of
       // the group.
