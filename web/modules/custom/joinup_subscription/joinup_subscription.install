@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Update hooks for joinup_subscription module.
+ */
+
+use Drupal\og\Entity\OgMembership;
+
+/**
+ * Update all og memberships with being subscribed to community content.
+ */
+function joinup_subscription_update_8100(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $mids = \Drupal::entityQuery('og_membership')
+      ->execute();
+    $sandbox['total'] = count($mids);
+    $sandbox['current'] = 0;
+  }
+
+  $memberships_per_batch = 1000;
+  $mids = \Drupal::entityQuery('og_membership')
+    ->range($sandbox['current'], $memberships_per_batch)
+    ->execute();
+
+  foreach (OgMembership::loadMultiple($mids) as $membership) {
+    $membership->set('subscription_bundles', [
+      ['entity_type' => 'node', 'bundle' => 'discussion'],
+      ['entity_type' => 'node', 'bundle' => 'document'],
+      ['entity_type' => 'node', 'bundle' => 'event'],
+      ['entity_type' => 'node', 'bundle' => 'news'],
+    ])->save();
+  }
+
+  drush_print(($sandbox['current'] + count($mids)). ' memberships updated.');
+  $sandbox['current'] += $memberships_per_batch;
+  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+}
