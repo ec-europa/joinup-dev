@@ -1,10 +1,10 @@
 @api
-Feature: As a site moderator/administrator
+Feature:
+  As a site moderator/administrator
   When I'm logged in
   I want to be able to access the Joinup reporting section.
 
   Scenario Outline: Test the general access to Reporting section.
-
     Given I am logged in as a <role>
     And I am on the homepage
     When I am on "/admin/reporting"
@@ -15,3 +15,39 @@ Feature: As a site moderator/administrator
       | authenticated | 403  |
       | administrator | 200  |
       | moderator     | 200  |
+
+  # This scenario is a light test to avoid regressions.
+  Scenario: Moderators can access the list of published solutions and filter them by dates and type.
+    Given the following collections:
+      | title               | state     |
+      | Monday's Artificial | validated |
+      | Restless Burst      | validated |
+    And solutions:
+      | title           | collection          | state     | creation date    | modification date | solution type                                                        |
+      | Worthy Puppet   | Monday's Artificial | validated | 2003-01-31T23:00 | 2015-12-07T13:57  | [ABB162] Interoperability Specification, [ABB150] Networking Service |
+      | Long Artificial | Restless Burst      | validated | 2012-09-14T00:00 | 2012-12-04T16:19  | [ABB24] Data Set Catalogue                                           |
+      | Beta Frozen     | Restless Burst      | validated | 2017-10-15T14:54 | 2017-11-24T12:43  | [ABB55] e-Signature Creation Service                                 |
+
+    Given I am logged in as a moderator
+    When I am on "/admin/reporting"
+    And I click "Solutions by solution type"
+    Then I should see the heading "Moderator: Solutions by type"
+    And I should see the link "Worthy Puppet"
+    And I should see the link "Long Artificial"
+    And I should see the link "Beta Frozen"
+    # Verify that the "Authored on" facet is in place.
+    And I should see the link "January 2003"
+    And I should see the link "September 2012"
+    And I should see the link "October 2017"
+    # Same for the "Changed" facet.
+    And I should see the link "December 2012"
+    And I should see the link "December 2015"
+    And I should see the link "November 2017"
+    # Same for the "Solution type" facet.
+    And I should see the link "[ABB162] Interoperability Specification" in the "Left sidebar" region
+    And I should see the link "[ABB150] Networking Service" in the "Left sidebar" region
+    And I should see the link "[ABB24] Data Set Catalogue" in the "Left sidebar" region
+    And I should see the link "[ABB55] e-Signature Creation Service" in the "Left sidebar" region
+    # Verify that only solutions are shown.
+    But I should not see the text "Monday's Artificial"
+    And I should not see the text "Restless Burst"
