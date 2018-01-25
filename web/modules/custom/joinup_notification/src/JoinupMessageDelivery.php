@@ -49,12 +49,16 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $recipients_metadata = [];
     /** @var \Drupal\user\UserInterface $account */
     foreach ($accounts as $account) {
-      // Don't send mails to anonymous users or users that for some reason do
-      // not have an e-mail address set.
-      $mail = $account->getEmail();
-      if ($account->isAnonymous() || empty($mail)) {
-        continue;
+      // Throw an exception when attempting to send mails to anonymous users or
+      // users that for some reason do not have an e-mail address set.
+      if ($account->isAnonymous()) {
+        throw new \LogicException('Cannot send mail to an anonymous user.');
       }
+      $mail = $account->getEmail();
+      if (empty($mail)) {
+        throw new \LogicException('Cannot send mail to a user that does not have an e-mail address.');
+      }
+
       // By keying on the user ID we can avoid that a user might get the message
       // more than once.
       $recipients_metadata[$account->id()] = [
@@ -104,9 +108,8 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * {@inheritdoc}
    */
   public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool {
-    // Don't send messages to the anonymous user.
     if ($account->isAnonymous()) {
-      return TRUE;
+      throw new \LogicException('Cannot send mail to an anonymous user.');
     }
 
     $message = $this->createMessage($message_template, $arguments);

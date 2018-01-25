@@ -51,6 +51,10 @@ interface JoinupMessageDeliveryInterface {
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
+   *
+   * @throws \LogicException
+   *   Thrown when a message is attempted to be sent to a user which doesn't
+   *   have an e-mail address.
    */
   public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool;
 
@@ -97,6 +101,10 @@ interface JoinupMessageDeliveryInterface {
    *
    * @return bool
    *   Whether or not the message was sent successfully.
+   *
+   * @throws \LogicException
+   *   Thrown when a message is attempted to be sent to a user which doesn't
+   *   have an e-mail address.
    */
   public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool;
 
