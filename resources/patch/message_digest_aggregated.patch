@@ -185,32 +185,117 @@ index 0000000..f5482ed
 +  }
 +
 +}
+diff --git a/message_digest.module b/message_digest.module
+index 301e412..cf1f56f 100644
+--- a/message_digest.module
++++ b/message_digest.module
+@@ -5,6 +5,8 @@
+  * Hook implementations for the Message Digest module.
+  */
+ 
++use Drupal\Core\Database\Database;
++use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Render\Element;
+ 
+ /**
+@@ -13,6 +15,7 @@ use Drupal\Core\Render\Element;
+  * Aggregate, format and and queue digests for sending.
+  */
+ function message_digest_cron() {
++  /** @var \Drupal\message_digest\DigestManagerInterface $digest_manager */
+   $digest_manager = \Drupal::service('message_digest.manager');
+ 
+   // Process message digests.
+@@ -81,3 +84,26 @@ function template_preprocess_message_digest(array &$variables) {
+     $variables['messages'][$key] = $elements[$key];
+   }
+ }
++
++/**
++ * Implements hook_entity_predelete().
++ *
++ * Cleans up any references to the entity that is being deleted.
++ */
++function message_digest_entity_predelete(EntityInterface $entity) {
++  switch ($entity->getEntityTypeId()) {
++    case 'message':
++      Database::getConnection()
++        ->delete('message_digest')
++        ->condition('mid', $entity->id())
++        ->execute();
++      break;
++
++    case 'user':
++      Database::getConnection()
++        ->delete('message_digest')
++        ->condition('receiver', $entity->id())
++        ->execute();
++      break;
++  }
++}
+diff --git a/message_digest.post_update.php b/message_digest.post_update.php
+new file mode 100644
+index 0000000..9230636
+--- /dev/null
++++ b/message_digest.post_update.php
+@@ -0,0 +1,52 @@
++<?php
++
++/**
++ * @file
++ * Post update functions for Message Digest.
++ */
++
++use Drupal\Core\Database\Database;
++
++/**
++ * Delete orphaned messages.
++ */
++function message_digest_post_update_delete_orphaned_messages() {
++  $connection = Database::getConnection();
++
++  // Retrieve a list of all references to messages.
++  $query = $connection->select('message_digest', 'md');
++  $query->fields('md', ['mid']);
++  $query->distinct();
++  $referenced_message_ids = $query->execute()->fetchCol();
++
++  // Retrieve a list of actual messages.
++  $query = \Drupal::entityQuery('message');
++  $existing_message_ids = $query->execute();
++
++  // Delete references to messages that no longer exist.
++  $orphaned_message_ids = array_diff($referenced_message_ids, $existing_message_ids);
++  if (!empty($orphaned_message_ids)) {
++    $connection->delete('message_digest')
++      ->condition('mid', $orphaned_message_ids, 'IN')
++      ->execute();
++  }
++
++  // Retrieve a list of all references to users.
++  $query = $connection->select('message_digest', 'md');
++  $query->fields('md', ['receiver']);
++  $query->distinct();
++  $referenced_user_ids = $query->execute()->fetchCol();
++
++  // Retrieve a list of actual users.
++  $query = \Drupal::entityQuery('user');
++  $existing_user_ids = $query->execute();
++
++  // Delete references to users that no longer exist.
++  $orphaned_user_ids = array_diff($referenced_user_ids, $existing_user_ids);
++  if (!empty($orphaned_user_ids)) {
++    $connection->delete('message_digest')
++      ->condition('receiver', $orphaned_user_ids, 'IN')
++      ->execute();
++  }
++
++}
 diff --git a/src/DigestManager.php b/src/DigestManager.php
-index fdc48a8..d9d8d08 100644
+index fdc48a8..0421b25 100644
 --- a/src/DigestManager.php
 +++ b/src/DigestManager.php
-@@ -119,6 +119,20 @@ class DigestManager implements DigestManagerInterface {
-         ->condition('sent', TRUE)
-         ->execute();
-     }
-+
-+    // Similarly, remove any message entries if the corresponding user has been
-+    // deleted. In this case we should also remove unsent messages since we can
-+    // no longer retrieve the e-mail address for sending them.
-+    $query = $this->database->select('message_digest', 'md');
-+    $query->leftJoin('users', 'u', 'md.receiver = u.uid');
-+    $query->isNull('u.uid');
-+    $query->fields('md', ['id']);
-+    $ids = $query->execute()->fetchCol();
-+    if (!empty($ids)) {
-+      $this->database->delete('message_digest')
-+        ->condition('id', $ids, 'IN')
-+        ->execute();
-+    }
-   }
- 
-   /**
-@@ -151,13 +165,7 @@ class DigestManager implements DigestManagerInterface {
+@@ -151,13 +151,7 @@ class DigestManager implements DigestManagerInterface {
     * {@inheritdoc}
     */
    public function processDigests() {
@@ -225,7 +310,7 @@ index fdc48a8..d9d8d08 100644
        if ($notifier->processDigest()) {
          // Gather up all the messages into neat little digests and send 'em out.
          // It is up to each digest plugin to manage last sent time, etc.
-@@ -168,7 +176,7 @@ class DigestManager implements DigestManagerInterface {
+@@ -168,7 +162,7 @@ class DigestManager implements DigestManagerInterface {
            // Queue each recipient digest for processing and sending.
            $data = [
              'uid' => $uid,
@@ -234,7 +319,7 @@ index fdc48a8..d9d8d08 100644
              'end_time' => $end_time,
            ];
            $this->queue->createItem($data);
-@@ -178,12 +186,36 @@ class DigestManager implements DigestManagerInterface {
+@@ -178,12 +172,36 @@ class DigestManager implements DigestManagerInterface {
      }
    }
  
@@ -271,7 +356,7 @@ index fdc48a8..d9d8d08 100644
      /** @var \Drupal\message_digest\Plugin\Notifier\DigestInterface $notifier */
      $notifier = $this->notifierManager->createInstance($notifier_id);
      assert($notifier instanceof DigestInterface, 'Notifier ID ' . $notifier_id . ' is not an instance of DigestInterface.');
-@@ -192,8 +224,8 @@ class DigestManager implements DigestManagerInterface {
+@@ -192,8 +210,8 @@ class DigestManager implements DigestManagerInterface {
      $view_modes = array_combine($plugin_definition['viewModes'], $plugin_definition['viewModes']);
      $digests = $notifier->aggregate($account_id, $end_time);
      $max_mid = 0;
@@ -283,10 +368,23 @@ index fdc48a8..d9d8d08 100644
          $max_mid = ($last_mid > $max_mid) ? $last_mid : $max_mid;
          // Load up the messages.
 diff --git a/src/DigestManagerInterface.php b/src/DigestManagerInterface.php
-index 7f4be23..09ca17b 100644
+index 7f4be23..3c0450f 100644
 --- a/src/DigestManagerInterface.php
 +++ b/src/DigestManagerInterface.php
-@@ -31,4 +31,12 @@ interface DigestManagerInterface {
+@@ -9,6 +9,12 @@ interface DigestManagerInterface {
+ 
+   /**
+    * Cleanup old messages from the message_digest table.
++   *
++   * @deprecated
++   *   This method is deprecated and will be removed before Message Digest 8.2.0
++   *   is released. Entries in the message_digest table are cleaned up
++   *   automatically when messages or users are deleted so this is no longer
++   *   needed.
+    */
+   public function cleanupOldMessages();
+ 
+@@ -31,4 +37,12 @@ interface DigestManagerInterface {
     */
    public function processSingleUserDigest($account_id, $notifier_id, $end_time);
  
@@ -300,7 +398,7 @@ index 7f4be23..09ca17b 100644
 +
  }
 diff --git a/src/Plugin/Notifier/DigestBase.php b/src/Plugin/Notifier/DigestBase.php
-index 67fceac..7054f7a 100644
+index 67fceac..b9a0468 100644
 --- a/src/Plugin/Notifier/DigestBase.php
 +++ b/src/Plugin/Notifier/DigestBase.php
 @@ -4,6 +4,7 @@ namespace Drupal\message_digest\Plugin\Notifier;
@@ -311,15 +409,6 @@ index 67fceac..7054f7a 100644
  use Drupal\Core\Entity\EntityTypeManagerInterface;
  use Drupal\Core\Logger\LoggerChannelInterface;
  use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-@@ -18,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
- /**
-  * Message Digest notifier.
-  */
--abstract class DigestBase extends MessageNotifierBase implements ContainerFactoryPluginInterface, DigestInterface {
-+abstract class DigestBase extends MessageNotifierBase implements ContainerFactoryPluginInterface, DigestInterface, \Serializable {
- 
-   /**
-    * Database connection.
 @@ -144,12 +145,9 @@ abstract class DigestBase extends MessageNotifierBase implements ContainerFactor
    }
  
@@ -335,50 +424,41 @@ index 67fceac..7054f7a 100644
      return $this->digestInterval;
    }
  
-@@ -237,4 +235,46 @@ abstract class DigestBase extends MessageNotifierBase implements ContainerFactor
+@@ -237,4 +235,37 @@ abstract class DigestBase extends MessageNotifierBase implements ContainerFactor
      $this->state->set($this->getPluginId() . '_last_run', $this->time->getRequestTime());
    }
  
 +  /**
-+   * {@inheritdoc}
++   * Implements the magic __sleep() method.
 +   */
-+  public function serialize() {
++  public function __sleep() {
 +    // Only serialize the local properties, ignoring all dependencies from the
 +    // container. The database connection cannot be serialized and neither can
 +    // other services like the state service and the entity type manager since
 +    // they in turn also depend on an active database connection.
-+    $properties = [
++    return [
 +      'configuration',
 +      'pluginId',
 +      'pluginDefinition',
 +      'message',
 +      'digestInterval',
 +    ];
-+    $vars = array_intersect_key(get_object_vars($this), array_flip($properties));
-+
-+    return serialize($vars);
 +  }
 +
 +  /**
-+   * {@inheritdoc}
++   * Implements the magic __wakeup() method.
 +   */
-+  public function unserialize($serialized) {
-+    $vars = unserialize($serialized);
-+
++  public function __wakeup() {
 +    // Restore the database connection.
-+    $vars['connection'] = Database::getConnection();
++    $this->connection = Database::getConnection();
 +
 +    // Restore the dependencies from the container.
 +    $container = \Drupal::getContainer();
-+    $vars['entityTypeManager'] = $container->get('entity_type.manager');
-+    $vars['logger'] = $container->get('logger.channel.message_notify');
-+    $vars['renderer'] = $container->get('renderer');
-+    $vars['state'] = $container->get('state');
-+    $vars['time'] = $container->get('datetime.time');
-+
-+    foreach ($vars as $key => $value) {
-+      $this->{$key} = $value;
-+    }
++    $this->entityTypeManager = $container->get('entity_type.manager');
++    $this->logger = $container->get('logger.channel.message_notify');
++    $this->renderer = $container->get('renderer');
++    $this->state = $container->get('state');
++    $this->time = $container->get('datetime.time');
 +  }
 +
  }
@@ -401,10 +481,10 @@ index 70969fb..0725d0c 100644
  }
 diff --git a/src/Traits/MessageDigestTrait.php b/src/Traits/MessageDigestTrait.php
 new file mode 100644
-index 0000000..15eaa22
+index 0000000..f53a8df
 --- /dev/null
 +++ b/src/Traits/MessageDigestTrait.php
-@@ -0,0 +1,216 @@
+@@ -0,0 +1,214 @@
 +<?php
 +
 +namespace Drupal\message_digest\Traits;
@@ -555,8 +635,8 @@ index 0000000..15eaa22
 +      $messages = $storage->loadMultiple($message_ids);
 +    }
 +    catch (InvalidPluginDefinitionException $e) {
-+      // The Message module is a dependency of Message Digest, so this storage
-+      // handler should exist.
++      // If the 'message' entity type does not exist for some reason then there
++      // are no messages.
 +    }
 +    return $messages;
 +  }
@@ -614,10 +694,517 @@ index 0000000..15eaa22
 +      return $entity;
 +    }
 +    catch (InvalidPluginDefinitionException $e) {
-+      // When the Message Digest module is enabled the 'message_digest_interval'
-+      // entity type should be available and this exception should not be
-+      // thrown.
++      throw new \RuntimeException("Could not retrieve message digest interval '$id'.", 0, $e);
 +    }
 +  }
 +
 +}
+diff --git a/tests/fixtures/update/message-digest-post-update-delete-orphaned-messages.php b/tests/fixtures/update/message-digest-post-update-delete-orphaned-messages.php
+new file mode 100644
+index 0000000..ef8be58
+--- /dev/null
++++ b/tests/fixtures/update/message-digest-post-update-delete-orphaned-messages.php
+@@ -0,0 +1,163 @@
++<?php
++
++/**
++ * @file
++ * Upgrade data for message_digest_post_update_delete_orphaned_messages().
++ *
++ * Contains database additions to drupal-8.bare.standard.php.gz for testing the
++ * upgrade path of message_digest_post_update_delete_orphaned_messages().
++ */
++
++use Drupal\Core\Database\Database;
++
++$connection = Database::getConnection();
++
++// User data.
++$connection->insert('users')
++  ->fields([
++    'uid',
++    'uuid',
++    'langcode',
++  ])
++  ->values([
++    'uid' => '3',
++    'uuid' => 'be49deb0-4b51-47b4-b5f3-355b473370a5',
++    'langcode' => 'en',
++  ])
++  ->execute();
++
++$connection->insert('users_field_data')
++  ->fields([
++    'uid',
++    'langcode',
++    'preferred_langcode',
++    'preferred_admin_langcode',
++    'name',
++    'pass',
++    'mail',
++    'timezone',
++    'status',
++    'created',
++    'changed',
++    'access',
++    'login',
++    'init',
++    'default_langcode',
++  ])
++  ->values([
++    'uid' => '3',
++    'langcode' => 'en',
++    'preferred_langcode' => 'en',
++    'preferred_admin_langcode' => NULL,
++    'name' => 'user-3',
++    'pass' => '$S$E4a4O.NdAXjqlYYciUSWTPJTsa2qODJPlosxyPHa4zG0BmcIPH.U',
++    'mail' => 'user-3@example.com',
++    'timezone' => 'Europe/Sofia',
++    'status' => '1',
++    'created' => '1456053421',
++    'changed' => '1457342212',
++    'access' => '1457552303',
++    'login' => '1457342212',
++    'init' => 'user-3@example.com',
++    'default_langcode' => '1',
++  ])
++  ->execute();
++
++// Messages.
++$connection->insert('message')
++  ->fields([
++    'mid',
++    'template',
++    'uuid',
++    'langcode',
++  ])
++  ->values([
++    'mid' => '2',
++    'template' => 'test_template',
++    'uuid' => '98660bfa-4d7c-4361-8880-5d40e74ce419',
++    'langcode' => 'en',
++  ])
++  ->values([
++    'mid' => '3',
++    'template' => 'test_template',
++    'uuid' => '46c4c879-08c0-4e23-b83b-aac56f6f4647',
++    'langcode' => 'en',
++  ])
++  ->execute();
++
++$connection->insert('message_field_data')
++  ->fields([
++    'mid',
++    'template',
++    'langcode',
++    'uid',
++    'created',
++    'arguments',
++    'default_langcode',
++  ])
++  ->values([
++    'mid' => '2',
++    'template' => 'test_template',
++    'langcode' => 'en',
++    'uid' => '700005',
++    'created' => '1516794322',
++    'arguments' => '',
++    'default_langcode' => '1',
++  ])
++  ->values([
++    'mid' => '3',
++    'template' => 'test_template',
++    'langcode' => 'en',
++    'uid' => '700006',
++    'created' => '1516794353',
++    'arguments' => '',
++    'default_langcode' => '1',
++  ])
++  ->execute();
++
++// Message digest data.
++$connection->insert('message_digest')
++  ->fields([
++    'id',
++    'mid',
++    'entity_type',
++    'entity_id',
++    'receiver',
++    'notifier',
++    'sent',
++    'timestamp',
++  ])
++  // An entry referencing an orphaned message.
++  ->values([
++    'id' => '1',
++    'mid' => '1',
++    'entity_type' => 'node',
++    'entity_id' => '1',
++    'receiver' => '1',
++    'notifier' => 'message_digest:daily',
++    'sent' => '0',
++    'timestamp' => '1516794322',
++  ])
++  // An entry referencing an orphaned user account.
++  ->values([
++    'id' => '2',
++    'mid' => '2',
++    'entity_type' => 'node',
++    'entity_id' => '2',
++    'receiver' => '2',
++    'notifier' => 'message_digest:daily',
++    'sent' => '0',
++    'timestamp' => '1516794322',
++  ])
++  // An entry referencing an existing message and user account.
++  ->values([
++    'id' => '3',
++    'mid' => '3',
++    'entity_type' => 'node',
++    'entity_id' => '3',
++    'receiver' => '3',
++    'notifier' => 'message_digest:daily',
++    'sent' => '0',
++    'timestamp' => '1516794322',
++  ])
++  ->execute();
+diff --git a/tests/fixtures/update/message-digest-update-common.php b/tests/fixtures/update/message-digest-update-common.php
+new file mode 100644
+index 0000000..b5c0a0b
+Binary files /dev/null and b/tests/fixtures/update/message-digest-update-common.php differ
+diff --git a/tests/src/Functional/Update/ConfigEntityUpdateTest.php b/tests/src/Functional/Update/ConfigEntityUpdateTest.php
+index 8e30ae0..a4a9da4 100644
+--- a/tests/src/Functional/Update/ConfigEntityUpdateTest.php
++++ b/tests/src/Functional/Update/ConfigEntityUpdateTest.php
+@@ -19,6 +19,7 @@ class ConfigEntityUpdateTest extends UpdatePathTestBase {
+   protected function setDatabaseDumpFiles() {
+     $this->databaseDumpFiles = [
+       $this->root . '/core/modules/system/tests/fixtures/update/drupal-8.bare.standard.php.gz',
++      __DIR__ . '/../../../fixtures/update/message-digest-update-common.php',
+       __DIR__ . '/../../../fixtures/update/message-digest-update-8101.php',
+     ];
+   }
+diff --git a/tests/src/Functional/Update/DeleteOrphanedMessagesUpdateTest.php b/tests/src/Functional/Update/DeleteOrphanedMessagesUpdateTest.php
+new file mode 100644
+index 0000000..fe147d2
+--- /dev/null
++++ b/tests/src/Functional/Update/DeleteOrphanedMessagesUpdateTest.php
+@@ -0,0 +1,64 @@
++<?php
++
++namespace Drupal\Tests\message_digest\Functional\Update;
++
++use Drupal\FunctionalTests\Update\UpdatePathTestBase;
++
++/**
++ * Tests the post-update hook that cleans up orphaned messages.
++ *
++ * @see message_digest_post_update_delete_orphaned_messages()
++ *
++ * @group message_digest
++ */
++class DeleteOrphanedMessagesUpdateTest extends UpdatePathTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setDatabaseDumpFiles() {
++    $this->databaseDumpFiles = [
++      $this->root . '/core/modules/system/tests/fixtures/update/drupal-8.bare.standard.php.gz',
++      __DIR__ . '/../../../fixtures/update/message-digest-update-common.php',
++      __DIR__ . '/../../../fixtures/update/message-digest-post-update-delete-orphaned-messages.php',
++    ];
++  }
++
++  /**
++   * Tests the post-update hook.
++   */
++  public function testUpdate() {
++    // There should be three rows in the message_digest table before executing
++    // the update.
++    $this->assertRowCount(3);
++
++    // One of the rows contains an orphaned reference to a deleted user, and
++    // another row an orphaned reference to a deleted message, so 1 row should
++    // remain after running the updates.
++    $this->runUpdates();
++    $this->assertRowCount(1);
++
++    // Check that the correct row remains. The correct row has the ID '3'.
++    $ids = \Drupal::database()->select('message_digest', 'md')
++      ->fields('md', ['id'])
++      ->execute()
++      ->fetchCol();
++    $id = reset($ids);
++    $this->assertEquals(3, $id);
++  }
++
++  /**
++   * Checks that the message_digest table contains the expected number of rows.
++   *
++   * @param int $expected_count
++   *   The expected number of rows.
++   */
++  protected function assertRowCount($expected_count) {
++    $actual_count = \Drupal::database()->select('message_digest', 'md')
++      ->countQuery()
++      ->execute()
++      ->fetchField();
++    $this->assertEquals($expected_count, $actual_count);
++  }
++
++}
+diff --git a/tests/src/Kernel/DigestManagerTest.php b/tests/src/Kernel/DigestManagerTest.php
+index 78fe7b2..7cce0db 100644
+--- a/tests/src/Kernel/DigestManagerTest.php
++++ b/tests/src/Kernel/DigestManagerTest.php
+@@ -17,9 +17,6 @@ class DigestManagerTest extends DigestTestBase {
+    * @covers ::processDigests
+    */
+   public function testProcessDigests() {
+-    /** @var \Drupal\message_digest\DigestManagerInterface $manager */
+-    $manager = \Drupal::service('message_digest.manager');
+-
+     // Verify last sent time is not set.
+     $this->assertEquals(0, $this->container->get('state')->get('message_digest:weekly_last_run', 0));
+ 
+diff --git a/tests/src/Kernel/DigestTestBase.php b/tests/src/Kernel/DigestTestBase.php
+index bd4b3be..9e2a426 100644
+--- a/tests/src/Kernel/DigestTestBase.php
++++ b/tests/src/Kernel/DigestTestBase.php
+@@ -44,6 +44,13 @@ abstract class DigestTestBase extends KernelTestBase {
+    */
+   protected $notifierSender;
+ 
++  /**
++   * The message digest manager.
++   *
++   * @var \Drupal\message_digest\DigestManagerInterface
++   */
++  protected $digestManager;
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -51,10 +58,12 @@ abstract class DigestTestBase extends KernelTestBase {
+     parent::setUp();
+     $this->notifierManager = $this->container->get('plugin.message_notify.notifier.manager');
+     $this->notifierSender = $this->container->get('message_notify.sender');
++    $this->digestManager = $this->container->get('message_digest.manager');
+     $this->installEntitySchema('message');
+     $this->installEntitySchema('user');
+     $this->installSchema('message_digest', ['message_digest']);
+     $this->installSchema('system', ['sequences']);
++    $this->installSchema('user', ['users_data']);
+     $this->installConfig([
+       'filter',
+       'filter_test',
+@@ -72,7 +81,7 @@ abstract class DigestTestBase extends KernelTestBase {
+    */
+   protected function sendDigests() {
+     // Queue digests.
+-    $this->container->get('message_digest.manager')->processDigests();
++    $this->digestManager->processDigests();
+     // Run queue.
+     $this->container->get('cron')->run();
+   }
+diff --git a/tests/src/Kernel/MessageDigestTest.php b/tests/src/Kernel/MessageDigestTest.php
+index 30ba8c8..99a562a 100644
+--- a/tests/src/Kernel/MessageDigestTest.php
++++ b/tests/src/Kernel/MessageDigestTest.php
+@@ -31,21 +31,41 @@ class MessageDigestTest extends DigestTestBase {
+ 
+   /**
+    * Tests the notifier sending and delivery.
++   *
++   * @param bool $reference_entity
++   *   Whether or not an entity should be referenced in the message digest that
++   *   is being sent.
++   * @param string $expected_subject
++   *   The expected subject for the email that is being sent.
++   *
++   * @dataProvider providerTestNotifierDelivery
+    */
+-  public function testNotifierDelivery() {
++  public function testNotifierDelivery($reference_entity, $expected_subject) {
+     // Set the site name, so we can check that it is used in the subject of the
+     // digest e-mail.
+     $this->config('system.site')->set('name', 'Test site')->save();
+ 
+-    $template = $this->createMessageTemplate('foo', 'Foo', 'Foo, foo', []);
++    $template = $this->createMessageTemplate('foo', 'Foo', 'Foo, foo', ['Test message']);
+     $dummy = Message::create(['template' => $template->id()]);
+     /** @var \Drupal\message_digest\Plugin\Notifier\DigestInterface $digest_notifier */
+     $digest_notifier = $this->notifierManager->createInstance('message_digest:daily', [], $dummy);
+ 
++    $configuration = [];
++    // If we are referencing an entity, create a test user and reference it in
++    // the message digest.
++    if ($reference_entity) {
++      $referenced_user = $this->createUser([], 'Test user');
++      $configuration = [
++        'entity_type' => 'user',
++        'entity_id' => $referenced_user->id(),
++      ];
++    }
++
++    // Create a recipient and send the message.
+     $account = $this->createUser();
+     $dummy->setOwner($account);
+     $dummy->save();
+-    $this->notifierSender->send($dummy, [], $digest_notifier->getPluginId());
++    $this->notifierSender->send($dummy, $configuration, $digest_notifier->getPluginId());
+     $result = $this->container->get('database')
+       ->select('message_digest', 'm')
+       ->fields('m')
+@@ -60,10 +80,8 @@ class MessageDigestTest extends DigestTestBase {
+     // Now deliver the message.
+     $this->sendDigests();
+ 
+-    $this->assertMail('subject', 'Test site message digest', 'Expected email subject is set.');
+-    // @todo Fix the rendering of the message body.
+-    // @see https://www.drupal.org/node/2813383
+-    // $this->assertMail('body', "foo bar\n", 'Expected email body is set.');
++    $this->assertMail('subject', $expected_subject, 'Expected email subject is set.');
++    $this->assertMail('body', "Test message\n\n", 'Expected email body is set.');
+     $this->assertMail('id', 'message_digest_digest', 'Expected email key is set.');
+     $this->assertMail('to', $account->getEmail(), 'Expected email recipient is set.');
+ 
+@@ -76,6 +94,32 @@ class MessageDigestTest extends DigestTestBase {
+     $this->assertTrue($this->container->get('state')->get('message_digest_test_message_digest_view_mode_alter', FALSE));
+   }
+ 
++  /**
++   * Data provider for ::testNotifierDelivery().
++   *
++   * @return array
++   *   An array of test data, each test case an array with two elements:
++   *   - A boolean indicating whether or not an entity should be referenced.
++   *   - The expected subject of the message digest e-mail that is sent.
++   */
++  public function providerTestNotifierDelivery() {
++    return [
++      // Test case that does not reference an entity. In this case the site name
++      // should be mentioned in the message subject.
++      [
++        FALSE,
++        'Test site message digest',
++      ],
++      // Test case that references an entity. In this case the name of the
++      // entity should be mentioned in the message subject. We are using a user
++      // entity to test this case.
++      [
++        TRUE,
++        'Test user message digest',
++      ],
++    ];
++  }
++
+   /**
+    * Tests message aggregation.
+    */
+@@ -264,7 +308,7 @@ class MessageDigestTest extends DigestTestBase {
+     foreach (range(1, 5) as $i) {
+       $messages[$i]->delete();
+     }
+-    $this->container->get('message_digest.manager')->cleanupOldMessages();
++    $this->digestManager->cleanupOldMessages();
+     $result = $this->container->get('database')->select('message_digest', 'md')
+       ->fields('md')
+       ->execute()
+@@ -275,11 +319,59 @@ class MessageDigestTest extends DigestTestBase {
+     }
+   }
+ 
++  /**
++   * Tests that the message_digest table is cleaned up when deleting entities.
++   */
++  public function testOrphanedEntityReferences() {
++    $template = $this->createMessageTemplate('foo', 'Foo', 'Foo, foo', []);
++
++    // Create 3 test users and send 3 messages, one to each user.
++    $users = $messages = [];
++    for ($i = 0; $i < 3; $i++) {
++      $user = $this->createUser();
++
++      $message = Message::create(['template' => $template->id()]);
++      $message->setOwner($user);
++      $message->save();
++
++      $digest_notifier = $this->notifierManager->createInstance('message_digest:weekly', [], $message);
++      $this->notifierSender->send($message, [], $digest_notifier->getPluginId());
++
++      $users[$i] = $user;
++      $messages[$i] = $message;
++    }
++
++    // There should be 3 message digests.
++    $this->assertRowCount(3);
++
++    // Delete one of the messages and verify that the corresponding message
++    // digest is cleaned up.
++    $orphaned_message_id = $messages[0]->id();
++    $messages[0]->delete();
++    $this->assertRowCount(2);
++    foreach ($this->getAllMessageDigests() as $digest) {
++      if ($digest->mid == $orphaned_message_id) {
++        $this->fail('When a message is deleted its corresponding message digest is cleaned up.');
++      }
++    }
++
++    // Delete one of the users and verify that the corresponding message digest
++    // is cleaned up.
++    $orphaned_user_id = $users[1]->id();
++    $users[1]->delete();
++    $this->assertRowCount(1);
++    foreach ($this->getAllMessageDigests() as $digest) {
++      if ($digest->receiver == $orphaned_user_id) {
++        $this->fail('When a user is deleted its corresponding message digest is cleaned up.');
++      }
++    }
++  }
++
+   /**
+    * Tests the message digest manager processing.
+    */
+   public function testManagerProcessing() {
+-    $this->container->get('message_digest.manager')->processDigests();
++    $this->digestManager->processDigests();
+     $request_time = $this->container->get('datetime.time')->getRequestTime();
+     $this->assertEquals($request_time, $this->container->get('state')->get('message_digest:daily_last_run'));
+     $this->assertEquals($request_time, $this->container->get('state')->get('message_digest:weekly_last_run'));
+@@ -433,4 +525,34 @@ class MessageDigestTest extends DigestTestBase {
+     $this->assertEquals($expected, $email['body']);
+   }
+ 
++  /**
++   * Returns all rows from the message_digest table.
++   *
++   * @return array
++   *   An array of all table rows, keyed by ID.
++   *
++   * @throws \Exception
++   *   Thrown when the database connection is not available on the container.
++   */
++  protected function getAllMessageDigests() {
++    return $this->container->get('database')
++      ->select('message_digest', 'm')
++      ->fields('m')
++      ->execute()
++      ->fetchAllAssoc('id');
++  }
++
++  /**
++   * Checks that the message_digest table contains the expected number of rows.
++   *
++   * @param int $expected_count
++   *   The expected number of rows.
++   *
++   * @throws \Exception
++   *   Thrown when the database connection is not available on the container.
++   */
++  protected function assertRowCount($expected_count) {
++    $this->assertEquals($expected_count, count($this->getAllMessageDigests()));
++  }
++
+ }
