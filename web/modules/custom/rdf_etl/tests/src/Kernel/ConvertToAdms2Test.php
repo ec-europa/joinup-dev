@@ -45,7 +45,7 @@ class ConvertToAdms2Test extends KernelTestBase {
     $options = $this->sparql->getConnectionOptions();
     $connection_uri = "http://{$options['host']}:{$options['port']}/sparql-graph-crud";
 
-    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_step');
+    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_pass');
     $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
 
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {

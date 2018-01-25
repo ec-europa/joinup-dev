@@ -8,7 +8,7 @@ services:
   plugin.manager.etl_process_step:
     class: Drupal\rdf_etl\Plugin\EtlProcessStepManager
     parent: default_plugin_manager
-  plugin.manager.etl_adms2_convert_step:
+  plugin.manager.etl_adms2_convert_pass:
     class: Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
     parent: default_plugin_manager
   rdf_etl.orchestrator:
