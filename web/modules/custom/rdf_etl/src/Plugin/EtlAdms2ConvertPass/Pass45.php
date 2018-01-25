@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin\EtlAdms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
 
 /**
@@ -17,7 +18,9 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  * - Updated: Cardinality: 1..n -> 1..1,
  * - Updated the definition: the publisher is the Agent that publishes the asset
  *   or solutions, not the Agent that publishes the metadata about it.
- * Change requests: CR2, CR35.
+ *
+ * @see https://joinup.ec.europa.eu/discussion/cr2-repository-change-cardinality-dctpublisher-11
+ * @see https://joinup.ec.europa.eu/discussion/cr35-clarify-meaning-publisher-context-interoperability-solutions-and-repository
  *
  * @Adms2ConvertPass(
  *   id = "pass_45",
@@ -29,42 +32,29 @@ class Pass45 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $graph = $data['sync_graph'];
-    $query = <<<QUERY
-SELECT ?graph ?entity_id ?predicate ?value
-FROM NAMED <$graph>
-WHERE {
-  GRAPH ?graph {
-    ?entity_id ?predicate ?value .
-  }
-}
-ORDER BY ?entity_id
-QUERY;
-
-    $results = $this->sparql->query($query);
-    $last_entity_id = NULL;
-    $entity = [];
+    $triples = [];
+    $last_subject = NULL;
+    $results = $this->getTriplesFromGraph($data['sync_graph']);
     foreach ($results as $delta => $result) {
-      $entity_id = (string) $result->entity_id;
-      // Cursor moved to a new entity?
-      if ($entity_id !== $last_entity_id) {
-        $this->deleteAdditionalPublishers($graph, $entity_id, $entity);
-        $entity = [];
+      // Cursor moved to a new set of triples?
+      if ($result['subject'] !== $last_subject) {
+        $this->deleteAdditionalPublishers($data['sync_graph'], $last_subject, $triples);
+        $triples = [];
       }
 
-      $predicate = (string) $result->predicate;
-      $value = (string) $result->value;
-      if ($predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
-        $entity['type'] = $value;
+      if ($result['predicate'] === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
+        $triples['type'] = $result['object'];
       }
-      if ($predicate === 'http://purl.org/dc/terms/publisher') {
-        $entity['publisher'][$value] = $value;
+      if ($result['predicate'] === 'http://purl.org/dc/terms/publisher') {
+        $triples['publisher'][] = $result['object'];
       }
-      $last_entity_id = $entity_id;
+
+      // Store the last ID so we can check on the next iteration.
+      $last_subject = $result['subject'];
 
       // Just before finishing, call the deletion method for the last entity.
       if ($delta === count($results) - 1) {
-        $this->deleteAdditionalPublishers($graph, $entity_id, $entity);
+        $this->deleteAdditionalPublishers($data['sync_graph'], $result['subject'], $triples);
       }
     }
   }
@@ -73,27 +63,16 @@ QUERY;
    * {@inheritdoc}
    */
   public function performAssertions(KernelTestBase $test): void {
-    $query = <<<QUERY
-SELECT ?graph ?entity_id ?predicate ?value
-FROM NAMED <%s>
-WHERE {
-  GRAPH ?graph {
-    ?entity_id ?predicate ?value .
-    VALUES ?entity_id { <http://example.com/rdf_entity/collection/45> } .
-  }
-}
-QUERY;
-
-    $results = $this->sparql->query(sprintf($query, static::TEST_GRAPH));
-    $results = array_filter($results->getArrayCopy(), function (\stdClass $result) {
-      return (string) $result->predicate === 'http://purl.org/dc/terms/publisher';
+    $results = $this->getTriplesFromGraph(static::TEST_GRAPH, 'http://example.com/rdf_entity/collection/45');
+    $results = array_filter($results, function (array $triple) {
+      return $triple['predicate'] === 'http://purl.org/dc/terms/publisher';
     });
 
     // Check that publisher cardinality is 1..1.
     $test->assertCount(1, $results);
     // Check that the first publisher has been picked-up.
     $result = reset($results);
-    $test->assertEquals('http://example.com/rdf_entity/owner/45/1', (string) $result->value);
+    $test->assertEquals('http://example.com/rdf_entity/owner/45/1', $result['object']);
   }
 
   /**
@@ -117,24 +96,20 @@ RDF;
    *
    * @param string $graph
    *   The graph URI.
-   * @param string $entity_id
-   *   The ID of the entity.
-   * @param array $entity
-   *   The entity data.
+   * @param string|null $subject
+   *   The subject of the entity set.
+   * @param array $triples
+   *   The triples data.
    */
-  protected function deleteAdditionalPublishers(string $graph, string $entity_id, array $entity): void {
+  protected function deleteAdditionalPublishers(string $graph, ?string $subject, array $triples): void {
     // Deal only with asset repositories...
-    if ($entity && $entity['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
+    if ($subject && $triples && $triples['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
       // ...that have more than one publisher.
-      if (isset($entity['publisher']) && count($entity['publisher']) > 1) {
+      if (isset($triples['publisher']) && count($triples['publisher']) > 1) {
+        $publishers_to_delete = $triples['publisher'];
         // Extract only the additional publishers and build the query condition.
-        array_shift($entity['publisher']);
-        $values = array_map(function (string $value) use ($entity_id): string {
-          return "  <$entity_id> <http://purl.org/dc/terms/publisher> <$value> .";
-        }, $entity['publisher']);
-        $values = implode("\n", $values);
-
-        $this->sparql->query("DELETE DATA FROM <$graph> { $values }");
+        array_shift($publishers_to_delete);
+        $this->deleteTriples($graph, $subject, 'http://purl.org/dc/terms/publisher', SparqlArg::toResourceUris($publishers_to_delete));
       }
     }
   }
