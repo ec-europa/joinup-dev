@@ -5,11 +5,14 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\file\FileInterface;
-use Drupal\rdf_etl\EtlUtility;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_etl\ProcessStepBase;
 use EasyRdf\Graph;
+use EasyRdf\GraphStore;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a manual data upload step.
@@ -19,13 +22,54 @@ use EasyRdf\Graph;
  *  label = @Translation("Manual upload"),
  * )
  */
-class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
+class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, ContainerFactoryPluginInterface {
+
+  const SINK_GRAPH = 'http://etl-sink/';
+
+  protected $graphStore;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('sparql_endpoint')
+    );
+  }
+
+  /**
+   * ManualUploadStep constructor.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_connection
+   *   The SPARQL database connection.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql_connection) {
+    $this->sparqlConnection = $sparql_connection;
+    $connection_options = $sparql_connection->getConnectionOptions();
+    $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
+    // Use a local SPARQL 1.1 Graph Store.
+    $this->graphStore = new GraphStore($connect_string);
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
 
   /**
    * {@inheritdoc}
    */
   public function execute(array $data): void {
-    // TODO: Implement execute() method.
+    /** @var \EasyRdf\Http\Response $response */
+    $response = $this->graphStore->replace($data['graph'], self::SINK_GRAPH);
+    if (!$response->isSuccessful()) {
+      $data['error'] = 'Could not store triples in triple store.';
+    }
   }
 
   /**
@@ -51,33 +95,23 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface {
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::validateConfigurationForm($form, $form_state);
+    $build_info = $form_state->getBuildInfo();
+    $data = &$build_info['data'];
     $file = $this->uploadedFile();
     if (!$file) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
     try {
-      $graph = $this->fileToGraph($file);
+      $data['graph'] = $this->fileToGraph($file);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
-      $file->delete();
-      return;
     }
     // Delete the uploaded file from disk.
     $file->delete();
-    try {
-      // @todo This introduces a dependency on the ADMS-AP validator here.
-      // Look into splitting off a service in to rdf_entity.
-      /** @var \Drupal\adms_validator\AdmsValidator $validator */
-      $validator = \Drupal::service('adms_validator.validator');
-      $validator->setGraphUri(EtlUtility::SINK_GRAPH);
-      $validator->storeGraph($graph);
-    }
-    catch (\Exception $e) {
-      $form_state->setError($form['adms_file'], $e->getMessage());
-      return;
-    }
+
+    $form_state->setBuildInfo($build_info);
   }
 
   /**
