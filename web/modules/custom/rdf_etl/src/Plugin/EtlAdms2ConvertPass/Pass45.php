@@ -46,7 +46,6 @@ QUERY;
     $entity = [];
     foreach ($results as $delta => $result) {
       $entity_id = (string) $result->entity_id;
-
       // Cursor moved to a new entity?
       if ($entity_id !== $last_entity_id) {
         $this->deleteAdditionalPublishers($graph, $entity_id, $entity);
@@ -63,7 +62,7 @@ QUERY;
       }
       $last_entity_id = $entity_id;
 
-      // Just before finishing call thde deletion method for the last entity.
+      // Just before finishing, call the deletion method for the last entity.
       if ($delta === count($results) - 1) {
         $this->deleteAdditionalPublishers($graph, $entity_id, $entity);
       }
