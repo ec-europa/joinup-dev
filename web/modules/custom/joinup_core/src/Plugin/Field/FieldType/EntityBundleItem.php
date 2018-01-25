@@ -66,6 +66,9 @@ class EntityBundleItem extends FieldItemBase {
     return empty($entity_type) || empty($bundle);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function mainPropertyName() {
     return 'bundle';
   }
