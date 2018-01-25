@@ -52,4 +52,68 @@ abstract class EtlAdms2ConvertPassPluginBase extends PluginBase implements EtlAd
     return NULL;
   }
 
+  /**
+   * Gets all the triples from a given graph, ordered by subject.
+   *
+   * @param string $graph_uri
+   *   The graph URI.
+   * @param string|null $subject
+   *   (optional) If passed, the results will be limited to this subject.
+   *
+   * @return array[]
+   *   The query results as array.
+   */
+  protected function getTriplesFromGraph(string $graph_uri, ?string $subject = NULL): array {
+    $filter = $subject ? "VALUES ?subject { <$subject> } ." : '';
+    $query = <<<QUERY
+SELECT ?graph ?subject ?predicate ?object
+FROM NAMED <$graph_uri>
+WHERE {
+  GRAPH ?graph {
+    ?subject ?predicate ?object .
+    $filter
+  }
+}
+ORDER BY ?subject
+QUERY;
+
+    $return = [];
+    /** @var \EasyRdf\Sparql\Result $results */
+    $results = $this->sparql->query($query);
+    foreach ($results as $result) {
+      $return[] = [
+        'subject' => (string) $result->subject,
+        'predicate' => (string) $result->predicate,
+        'object' => (string) $result->object,
+      ];
+    }
+
+    return $return;
+  }
+
+  /**
+   * Deletes a set of triples having the same graph, subject and predicate.
+   *
+   * @param string $graph_uri
+   *   The graph URI.
+   * @param string $subject
+   *   The subject.
+   * @param string $predicate
+   *   The predicate.
+   * @param string[]|null $objects
+   *   (optional) If passed, restrict the deletion to this set of objects.
+   */
+  protected function deleteTriples(string $graph_uri, string $subject, string $predicate, ?array $objects = NULL): void {
+    if ($objects) {
+      $values = array_map(function (string $object) use ($subject, $predicate): string {
+        return "<$subject> <$predicate> $object .";
+      }, $objects);
+      $values = implode("\n", $values);
+    }
+    else {
+      $values = "<$subject> <$predicate> ?object .";
+    }
+    $this->sparql->query("DELETE DATA FROM <$graph_uri> { $values }");
+  }
+
 }

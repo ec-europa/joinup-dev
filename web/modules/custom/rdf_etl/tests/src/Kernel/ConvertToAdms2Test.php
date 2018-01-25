@@ -48,17 +48,23 @@ class ConvertToAdms2Test extends KernelTestBase {
     $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_pass');
     $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
 
+    $rdf_data = [];
+    // Collect RDF testing data from plugins.
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
       /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */
       $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
-      if ($rdf_data = $this->prepareRdfData($plugin->getTestingRdfData())) {
-        $graph_store = new GraphStore($connection_uri);
-        $graph = new Graph();
-        $graph->parse($rdf_data);
-        $out = $graph_store->replace($graph, $graph_uri);
-        if (!$out->isSuccessful()) {
-          throw new \Exception("Cannot import RDF data from plugin '$plugin_id' in graph '$graph_uri'.");
-        }
+      if ($plugin_rdf_data = $plugin->getTestingRdfData()) {
+        $rdf_data[] = $plugin_rdf_data;
+      }
+    }
+
+    if ($rdf_data = $this->prepareRdfData(implode("\n", $rdf_data))) {
+      $graph_store = new GraphStore($connection_uri);
+      $graph = new Graph();
+      $graph->parse($rdf_data);
+      $out = $graph_store->replace($graph, $graph_uri);
+      if (!$out->isSuccessful()) {
+        throw new \Exception("Cannot import RDF data from plugin '$plugin_id' in graph '$graph_uri'.");
       }
     }
   }

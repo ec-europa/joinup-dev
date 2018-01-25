@@ -16,7 +16,8 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  * Description:
  * - Updated: A catalogue of assets was declared as dcat:Catalog and not
  *   adms:AssetRepository. Removed statement about backwards compatibility.
- * Change requests: CR42
+ *
+ * @see https://joinup.ec.europa.eu/discussion/cr42-make-adms-ap-dcat-ap
  *
  * @Adms2ConvertPass(
  *   id = "pass_3",
