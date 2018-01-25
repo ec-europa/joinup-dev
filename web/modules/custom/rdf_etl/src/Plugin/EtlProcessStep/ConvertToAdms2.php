@@ -49,7 +49,7 @@ class ConvertToAdms2 extends ProcessStepBase implements ContainerFactoryPluginIn
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('plugin.manager.etl_adms2_convert_step')
+      $container->get('plugin.manager.etl_adms2_convert_pass')
     );
   }
 
