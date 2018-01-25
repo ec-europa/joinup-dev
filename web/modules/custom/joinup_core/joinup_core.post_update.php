@@ -25,10 +25,3 @@ function joinup_core_post_update_install_vbo() {
 function joinup_core_post_update_install_email_registration() {
   \Drupal::service('module_installer')->install(['email_registration']);
 }
-
-/**
- * Enable the "Views data export" module.
- */
-function joinup_core_post_update_install_views_data_export() {
-  \Drupal::service('module_installer')->install(['views_data_export']);
-}
