@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a6ee91fd220b638fe366d50072b6e87",
+    "content-hash": "ce042fb3eea7f0ed2b15f24b6b49810d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5193,17 +5193,11 @@
         },
         {
             "name": "drupal/views_data_export",
-            "version": "1.0.0-alpha4",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/views_data_export",
-                "reference": "8.x-1.0-alpha4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "d279137d6de1f8514c7ca69725b305ab58e30ed7"
+                "reference": "124b526d65c48661587cb19b37674cda6573c7bd"
             },
             "require": {
                 "drupal/core": "*",
@@ -5215,12 +5209,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1482169083",
+                    "version": "8.x-1.0-alpha4+1-dev",
+                    "datestamp": "1486397282",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5257,7 +5254,8 @@
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
                 "source": "http://cgit.drupalcode.org/views_data_export"
-            }
+            },
+            "time": "2017-02-06T16:06:03+00:00"
         },
         {
             "name": "drush/drush",
@@ -12436,7 +12434,7 @@
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
-        "drupal/views_data_export": 15,
+        "drupal/views_data_export": 20,
         "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
