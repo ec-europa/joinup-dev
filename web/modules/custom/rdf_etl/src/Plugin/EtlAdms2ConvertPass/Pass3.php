@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\rdf_etl\Plugin\EtlAdms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -26,7 +28,7 @@ class Pass3 extends EtlAdms2ConvertPassPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function convert(): void {
+  public function convert(array $data): void {
     // Implement here the transformation needed to fix the change #3.
   }
 
