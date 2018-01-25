@@ -23,8 +23,11 @@ interface EtlAdms2ConvertPassInterface {
 
   /**
    * Transforms the triples in the backend.
+   *
+   * @param array $data
+   *   Data received from the process step plugin.
    */
-  public function convert(): void;
+  public function convert(array $data): void;
 
   /**
    * Performs testing assertions.

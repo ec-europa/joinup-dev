@@ -38,7 +38,7 @@ abstract class EtlAdms2ConvertPassPluginBase extends PluginBase implements EtlAd
   /**
    * {@inheritdoc}
    */
-  public function convert(): void {}
+  public function convert(array $data): void {}
 
   /**
    * {@inheritdoc}
