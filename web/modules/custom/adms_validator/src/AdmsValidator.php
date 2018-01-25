@@ -71,7 +71,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function setValidationGraphUri(string $uri) : void {
+  public function setGraphUri(string $uri) : void {
     $this->validationGraphURI = $uri;
   }
 

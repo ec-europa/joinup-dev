@@ -33,6 +33,6 @@ interface AdmsValidatorInterface {
    * @param string $uri
    *   The URI of the graph to use while storing and querying.
    */
-  public function setValidationGraphUri(string $uri) : void;
+  public function setGraphUri(string $uri) : void;
 
 }
