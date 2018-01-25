@@ -14,10 +14,10 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  * Type: Mandatory property (Asset Repository)
  * Action: Updated
  * Description:
- * - Updated: An asset distribution was declared as dcat:Distribution rather
- *   than adms:AssetDistribution.
- * - Removed statement about backwards compatibility.
- * Change requests: CR42
+ * - Updated: Cardinality: 1..n -> 1..1,
+ * - Updated the definition: the publisher is the Agent that publishes the asset
+ *   or solutions, not the Agent that publishes the metadata about it.
+ * Change requests: CR2, CR35.
  *
  * @Adms2ConvertPass(
  *   id = "pass_45",
