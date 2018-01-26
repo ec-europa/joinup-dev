@@ -40,3 +40,21 @@ function joinup_subscription_update_8100(&$sandbox) {
   $sandbox['current'] += $memberships_per_batch;
   $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
 }
+
+/**
+ * Implements hook_update_dependencies().
+ *
+ * Rdf entity has gone through a major API upgrade. Its upgrade path provides
+ * some new config entities that have the highest priority.
+ *
+ * Set the rdf_entity and rdf_draft updates as a dependency to the
+ * joinup_subscription update.
+ */
+function joinup_subscription_update_dependencies() {
+  $dependencies['joinup_subscription'][8100] = [
+    'rdf_entity' => 8001,
+    'rdf_draft' => 8001,
+  ];
+
+  return $dependencies;
+}
