@@ -102,9 +102,9 @@ RDF;
   protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
     // Deal only with asset distributions...
     if ($subject && $entity && $entity['type'] === static::ASSET_DISTRIBUTION) {
-      // ...that have one or more than one publisher.
+      // ...that have one or more than one download URLs.
       if (isset($entity[$predicate])) {
-        // Deletes the additional publishers from an asset repository.
+        // Deletes the download URLs from the asset distribution.
         $download_urls_to_delete = SparqlArg::toResourceUris($entity[$predicate]);
         $this->deleteTriples($graph, $subject, $predicate, $download_urls_to_delete);
 
