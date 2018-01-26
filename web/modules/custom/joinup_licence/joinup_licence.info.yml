@@ -13,4 +13,5 @@ config_devel:
   - field.field.rdf_entity.licence.field_licence_type
   - field.storage.rdf_entity.field_licence_description
   - field.storage.rdf_entity.field_licence_type
+  - rdf_entity.mapping.rdf_entity.licence
   - rdf_entity.rdfentity.licence
