@@ -11,6 +11,10 @@ use Drupal\og\Entity\OgMembership;
  * Update all og memberships with being subscribed to community content.
  */
 function joinup_subscription_update_8100(&$sandbox) {
+  // Update the entity definitions so that the subscription_bundles field is
+  // installed.
+  \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+
   if (!isset($sandbox['total'])) {
     $mids = \Drupal::entityQuery('og_membership')
       ->execute();
