@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "afcbc281a6cf1dfdf36f929146bc0789",
+    "content-hash": "8feaacd6e9172073e871f073947289ca",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4261,16 +4261,16 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-8.x-1.x",
+            "version": "dev-ISAICP-4215",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "cf357d48dfb92449c4756f82876ee466ff613ad2"
+                "reference": "611ace63a318f80b9166c6156c237e5279454be2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/cf357d48dfb92449c4756f82876ee466ff613ad2",
-                "reference": "cf357d48dfb92449c4756f82876ee466ff613ad2",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/611ace63a318f80b9166c6156c237e5279454be2",
+                "reference": "611ace63a318f80b9166c6156c237e5279454be2",
                 "shasum": ""
             },
             "require": {
@@ -4290,7 +4290,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-01-23T14:38:08+00:00"
+            "time": "2018-01-26T10:09:09+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5204,7 +5204,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -9743,6 +9743,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
+                },
+                "patches_applied": {
+                    "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
                 }
             },
             "autoload": {
@@ -10475,8 +10478,7 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-10-19T21:26:16+00:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -10644,6 +10646,8 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
+                "drupal/coder": "^8.2",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -10668,6 +10672,14 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
+                },
+                {
+                    "name": "Melissa Anderson",
+                    "homepage": "https://github.com/eliza411"
+                },
+                {
+                    "name": "Pieter Frenssen",
+                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
