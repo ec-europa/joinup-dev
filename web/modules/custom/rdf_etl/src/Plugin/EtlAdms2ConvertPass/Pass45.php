@@ -32,42 +32,14 @@ class Pass45 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $triples = [];
-    $last_subject = NULL;
-    $results = $this->getTriplesFromGraph($data['sync_graph']);
-    foreach ($results as $delta => $result) {
-      // Cursor moved to a new set of triples?
-      if ($result['subject'] !== $last_subject) {
-        $this->deleteAdditionalPublishers($data['sync_graph'], $last_subject, $triples);
-        $triples = [];
-      }
-
-      if ($result['predicate'] === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
-        $triples['type'] = $result['object'];
-      }
-      if ($result['predicate'] === 'http://purl.org/dc/terms/publisher') {
-        $triples['publisher'][] = $result['object'];
-      }
-
-      // Store the last ID so we can check on the next iteration.
-      $last_subject = $result['subject'];
-
-      // Just before finishing, call the deletion method for the last entity.
-      if ($delta === count($results) - 1) {
-        $this->deleteAdditionalPublishers($data['sync_graph'], $result['subject'], $triples);
-      }
-    }
+    $this->processGraph($data['sync_graph'], 'http://purl.org/dc/terms/publisher');
   }
 
   /**
    * {@inheritdoc}
    */
   public function performAssertions(KernelTestBase $test): void {
-    $results = $this->getTriplesFromGraph(static::TEST_GRAPH, 'http://example.com/rdf_entity/collection/45');
-    $results = array_filter($results, function (array $triple) {
-      return $triple['predicate'] === 'http://purl.org/dc/terms/publisher';
-    });
-
+    $results = $this->getTriplesFromGraph(static::TEST_GRAPH, 'http://example.com/rdf_entity/collection/45', 'http://purl.org/dc/terms/publisher');
     // Check that publisher cardinality is 1..1.
     $test->assertCount(1, $results);
     // Check that the first publisher has been picked-up.
@@ -92,24 +64,18 @@ RDF;
   }
 
   /**
-   * Deletes the additional publishers from an asset repository.
-   *
-   * @param string $graph
-   *   The graph URI.
-   * @param string|null $subject
-   *   The subject of the entity set.
-   * @param array $triples
-   *   The triples data.
+   * {@inheritdoc}
    */
-  protected function deleteAdditionalPublishers(string $graph, ?string $subject, array $triples): void {
+  protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
     // Deal only with asset repositories...
-    if ($subject && $triples && $triples['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
+    if ($subject && $entity && $entity['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
       // ...that have more than one publisher.
-      if (isset($triples['publisher']) && count($triples['publisher']) > 1) {
-        $publishers_to_delete = $triples['publisher'];
+      if (isset($entity[$predicate]) && count($entity[$predicate]) > 1) {
+        // Deletes the additional publishers from an asset repository.
+        $publishers_to_delete = $entity[$predicate];
         // Extract only the additional publishers and build the query condition.
         array_shift($publishers_to_delete);
-        $this->deleteTriples($graph, $subject, 'http://purl.org/dc/terms/publisher', SparqlArg::toResourceUris($publishers_to_delete));
+        $this->deleteTriples($graph, $subject, $predicate, SparqlArg::toResourceUris($publishers_to_delete));
       }
     }
   }
