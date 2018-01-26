@@ -9,8 +9,8 @@ Feature: Asset release moderation
       | name        | type                  |
       | Kenny Logan | Private Individual(s) |
     And the following contact:
-      | name  | SheriMoore              |
-      | email | SheriMoore @example.com |
+      | name  | SheriMoore             |
+      | email | SheriMoore@example.com |
     And users:
       | Username        | E-mail                      | First name | Family name | Roles     |
       | Bonnie Holloway | bonnie.holloway@example.com | Bonnie     | Holloway    |           |
