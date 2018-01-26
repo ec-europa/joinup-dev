@@ -167,15 +167,15 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | recipient | dale@example.com                                                                                     |
+      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the daily digest for "debater" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | mail_body    | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the daily digest for "Dr. Hans Zarkov" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | mail_body    | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
@@ -193,20 +193,20 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should have been sent:
-      | recipient | dale@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+      | recipient | dale@example.com                                                                                   |
+      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the daily digest for "Dr. Hans Zarkov" should contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | mail_body    | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
     But the weekly digest for "facilitator" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | mail_body    | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Flash Gordon is not subscribed. He should not retrieve the message.
     And the daily digest for "debater" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | mail_body    | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
