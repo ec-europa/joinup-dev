@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_subscription\Plugin\Field\FieldType;
+namespace Drupal\joinup_core\Plugin\Field\FieldType;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldItemBase;
@@ -15,12 +15,12 @@ use Drupal\Core\TypedData\DataDefinition;
  * entity type and the bundle machine name.
  *
  * @FieldType(
- *   id = "entity_bundle",
- *   label = @Translation("Entity bundle"),
+ *   id = "entity_bundle_pair",
+ *   label = @Translation("Entity bundle pair"),
  *   description = @Translation("A simple field referencing to bundles")
  * )
  */
-class EntityBundleItem extends FieldItemBase {
+class EntityBundlePairItem extends FieldItemBase {
 
   /**
    * {@inheritdoc}
@@ -45,7 +45,7 @@ class EntityBundleItem extends FieldItemBase {
       'columns' => [
         'entity_type' => [
           'type' => 'varchar',
-          'length' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
+          'length' => 255,
         ],
         'bundle' => [
           'type' => 'varchar',

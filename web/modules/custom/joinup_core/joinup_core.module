@@ -232,10 +232,6 @@ function joinup_core_node_access(EntityInterface $entity, $operation, AccountInt
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
  * - Provides a 'path' field only for the 'rdf_entity' entities.
- * - Provides the 'subscription_bundles' property for the 'og_membership' entity
- *   type. The property is a serialized field and stores an array of bundles
- *   keyed by entity type. These bundles represent the content that the user is
- *   subscribed to within the group of the membership.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
