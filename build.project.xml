@@ -106,13 +106,6 @@
     <!-- Execute Drupal updates. -->
     <target name="execute-updates">
         <drush
-                command="entity:updates"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
-        <drush
                 command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
