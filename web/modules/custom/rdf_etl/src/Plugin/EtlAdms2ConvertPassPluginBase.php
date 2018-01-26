@@ -162,8 +162,7 @@ QUERY;
     }
     if ($expanded_triples) {
       $values = implode("\n", $expanded_triples);
-      $query = "INSERT DATA INTO <$graph_uri> { $values }";
-      $this->sparql->update($query);
+      $this->sparql->update("INSERT DATA INTO <$graph_uri> { $values }");
     }
   }
 
