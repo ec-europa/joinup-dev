@@ -45,7 +45,7 @@ class EntityBundlePairItem extends FieldItemBase {
       'columns' => [
         'entity_type' => [
           'type' => 'varchar',
-          'length' => 255,
+          'length' => EntityTypeInterface::ID_MAX_LENGTH,
         ],
         'bundle' => [
           'type' => 'varchar',
