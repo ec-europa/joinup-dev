@@ -62,6 +62,7 @@ class Pass1To3 extends EtlAdms2ConvertPassPluginBase {
     }
 
     do {
+      // Avoid building huge queries.
       $processing_results = array_splice($results, 0, 100);
       $triples = [];
       foreach ($processing_results as $triple) {
@@ -77,20 +78,29 @@ class Pass1To3 extends EtlAdms2ConvertPassPluginBase {
    */
   public function performAssertions(KernelTestBase $test): void {
     $entities = [
-      'http://www.w3.org/ns/adms#Asset' => 'http://example.com/asset/1_2_3',
-      'http://www.w3.org/ns/adms#AssetRepository' => 'http://example.com/repository/1_2_3',
-      'http://www.w3.org/ns/adms#AssetDistribution' => 'http://example.com/distribution/1_2_3',
+      static::ASSET => 'http://example.com/asset/1_2_3',
+      static::ASSET_CATALOG => 'http://example.com/repository/1_2_3',
+      static::ASSET_DISTRIBUTION => 'http://example.com/distribution/1_2_3',
     ];
 
     foreach (static::getAdms1To2TypeConversionMap() as $adms1_uri => $adms2_uri) {
       $results = $this->getTriplesFromGraph(
         static::TEST_GRAPH,
-        $entities[$adms1_uri],
+        $entities[$adms2_uri],
         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         "<$adms2_uri>"
       );
       // Check that the type has been changed.
       $test->assertCount(1, $results);
+
+      $results = $this->getTriplesFromGraph(
+        static::TEST_GRAPH,
+        $entities[$adms2_uri],
+        'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+        "<$adms1_uri>"
+      );
+      // Check that the old type triple has been removed.
+      $test->assertEmpty($results);
     }
   }
 
