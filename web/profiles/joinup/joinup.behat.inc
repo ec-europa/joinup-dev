@@ -2272,7 +2272,7 @@ JS;
     $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
     $og_membership = $this->getMembershipByGroupAndUser($group, $user);
 
-    $bundles = explode(',', $bundles);
+    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
     $bundles = array_map(function ($bundle) use ($type) {
       return $type . ':' . trim($bundle);
     }, $bundles);
@@ -2286,7 +2286,7 @@ JS;
 
     sort($bundles);
     sort($og_bundles);
-    PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
+    \PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
   }
 
 }

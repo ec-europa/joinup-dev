@@ -19,13 +19,17 @@ function joinup_subscription_entity_type_build(array &$entity_types) {
 
 /**
  * Implements hook_entity_base_field_info().
+ *
+ * Provides the 'entity_bundle' field for the 'og_membership' entity type. The
+ * field stores a reference to an entity bundle by storing the machine names of
+ * the entity type and the bundle that is to be referenced.
  */
 function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
 
   // Add the 'subscription_bundles' property to the 'og_membership' entity.
   if (($entity_type->id() === 'og_membership')) {
-    $fields['subscription_bundles'] = BaseFieldDefinition::create('entity_bundle')
+    $fields['subscription_bundles'] = BaseFieldDefinition::create('entity_bundle_pair')
       ->setLabel(t('Subscribed bundles'))
       ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
       ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
