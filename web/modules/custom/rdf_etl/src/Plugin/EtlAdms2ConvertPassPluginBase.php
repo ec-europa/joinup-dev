@@ -119,11 +119,21 @@ QUERY;
         return "<$subject> <$predicate> $object .";
       }, $objects);
       $values = implode("\n", $values);
+      $this->sparql->query("DELETE DATA FROM <$graph_uri> { $values }");
     }
     else {
-      $values = "<$subject> <$predicate> ?object .";
+      $query = <<<QUERY
+DELETE FROM <$graph_uri> {
+  ?subject ?predicate ?object .
+}
+WHERE {
+ ?subject ?predicate ?object .
+ FILTER(?subject = <$subject>) .
+ FILTER(?predicate = <$predicate>) .
+}
+QUERY;
+      $this->sparql->update($query);
     }
-    $this->sparql->query("DELETE DATA FROM <$graph_uri> { $values }");
   }
 
   /**
