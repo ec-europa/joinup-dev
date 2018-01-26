@@ -39,12 +39,16 @@ class Pass45 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function performAssertions(KernelTestBase $test): void {
-    $results = $this->getTriplesFromGraph(static::TEST_GRAPH, 'http://example.com/rdf_entity/collection/45', 'http://purl.org/dc/terms/publisher');
+    $results = $this->getTriplesFromGraph(
+      static::TEST_GRAPH,
+      'http://example.com/repository/45',
+      'http://purl.org/dc/terms/publisher'
+    );
     // Check that publisher cardinality is 1..1.
     $test->assertCount(1, $results);
     // Check that the first publisher has been picked-up.
     $result = reset($results);
-    $test->assertEquals('http://example.com/rdf_entity/owner/45/1', $result['object']);
+    $test->assertEquals('http://example.com/publisher/45/1', $result['object']);
   }
 
   /**
@@ -52,13 +56,13 @@ class Pass45 extends EtlAdms2ConvertPassPluginBase {
    */
   public function getTestingRdfData(): ?string {
     return <<<RDF
-<rdf:Description rdf:about="http://example.com/rdf_entity/collection/45">
-    <rdf:type rdf:resource="http://www.w3.org/ns/adms#AssetRepository"/>
-    <dcat:accessURL rdf:resource="http://example.com/rdf_entity/collection/45"/>
+<rdf:Description rdf:about="http://example.com/repository/45">
+    <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
+    <dcat:accessURL rdf:resource="http://example.com/repository/45"/>
     <dct:title xml:lang="en">Repository 45</dct:title>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/1"/>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/2"/>
-    <dct:publisher rdf:resource="http://example.com/rdf_entity/owner/45/3"/>
+    <dct:publisher rdf:resource="http://example.com/publisher/45/1"/>
+    <dct:publisher rdf:resource="http://example.com/publisher/45/2"/>
+    <dct:publisher rdf:resource="http://example.com/publisher/45/3"/>
 </rdf:Description>
 RDF;
   }
@@ -68,7 +72,7 @@ RDF;
    */
   protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
     // Deal only with asset repositories...
-    if ($subject && $entity && $entity['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
+    if ($subject && $entity && $entity['type'] === static::ASSET_CATALOG) {
       // ...that have more than one publisher.
       if (isset($entity[$predicate]) && count($entity[$predicate]) > 1) {
         // Deletes the additional publishers from an asset repository.

@@ -22,6 +22,26 @@ interface EtlAdms2ConvertPassInterface {
   const TEST_GRAPH = 'http://example.com/graph/sync_test';
 
   /**
+   * The ADMS v2 asset type.
+   *
+   * @var string
+   */
+  const ASSET = 'https://www.w3.org/ns/dcat#Dataset';
+
+  /**
+   * The ADMS v2 catalog of assets type.
+   *
+   * @var string
+   */
+  const ASSET_CATALOG = 'https://www.w3.org/ns/dcat#Catalog';
+  /**
+   * The ADMS v2 asset distribution type.
+   *
+   * @var string
+   */
+  const ASSET_DISTRIBUTION = 'https://www.w3.org/ns/dcat#Distribution';
+
+  /**
    * Transforms the triples in the backend.
    *
    * @param array $data

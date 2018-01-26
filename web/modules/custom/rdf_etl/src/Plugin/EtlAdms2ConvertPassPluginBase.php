@@ -61,14 +61,18 @@ abstract class EtlAdms2ConvertPassPluginBase extends PluginBase implements EtlAd
    *   (optional) If passed, the results will be limited to this subject.
    * @param string|null $predicate
    *   (optional) If passed, the results will be limited to this predicate.
+   * @param string|null $objects
+   *   (optional) A serialized list of objects (delimited by space). If passed,
+   *   the results will be limited to this list objects.
    *
    * @return array[]
    *   The query results as array.
    */
-  protected function getTriplesFromGraph(string $graph_uri, ?string $subject = NULL, ?string $predicate = NULL): array {
+  protected function getTriplesFromGraph(string $graph_uri, ?string $subject = NULL, ?string $predicate = NULL, ?string $objects = NULL): array {
     $filter = [];
     $filter[] = $subject ? "VALUES ?subject { <$subject> } ." : '';
     $filter[] = $predicate ? "VALUES ?predicate { <$predicate> } ." : '';
+    $filter[] = $objects ? "VALUES ?object { $objects } ." : '';
     $filter = implode("\n", $filter);
 
     $query = <<<QUERY

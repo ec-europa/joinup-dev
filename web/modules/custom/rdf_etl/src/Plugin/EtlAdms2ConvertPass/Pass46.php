@@ -41,7 +41,7 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
   public function performAssertions(KernelTestBase $test): void {
     $results = $this->getTriplesFromGraph(
       static::TEST_GRAPH,
-      'http://example.com/rdf_entity/collection/46',
+      'http://example.com/repository/46',
       'http://xmlns.com/foaf/spec/#term_homepage'
     );
 
@@ -49,7 +49,7 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
     $test->assertCount(1, $results);
     // Check that the first URL has been picked-up.
     $result = reset($results);
-    $test->assertEquals('http://example.com/rdf_entity/collection/46/1', $result['object']);
+    $test->assertEquals('http://example.com/repository/46/1', $result['object']);
   }
 
   /**
@@ -57,12 +57,12 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
    */
   public function getTestingRdfData(): ?string {
     return <<<RDF
-<rdf:Description rdf:about="http://example.com/rdf_entity/collection/46">
-   <rdf:type rdf:resource="http://www.w3.org/ns/adms#AssetRepository"/>
-   <dcat:accessURL rdf:resource="http://example.com/rdf_entity/collection/46/1"/>
-   <dcat:accessURL rdf:resource="http://example.com/rdf_entity/collection/46/2"/>
-   <dcat:accessURL rdf:resource="http://example.com/rdf_entity/collection/46/3"/>
-   <dct:title xml:lang="en">Collection 46</dct:title>
+<rdf:Description rdf:about="http://example.com/repository/46">
+   <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
+   <dcat:accessURL rdf:resource="http://example.com/repository/46/1"/>
+   <dcat:accessURL rdf:resource="http://example.com/repository/46/2"/>
+   <dcat:accessURL rdf:resource="http://example.com/repository/46/3"/>
+   <dct:title xml:lang="en">Repository 46</dct:title>
 </rdf:Description>
 RDF;
   }
@@ -72,7 +72,7 @@ RDF;
    */
   protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
     // Deal only with asset repositories...
-    if ($subject && $entity && $entity['type'] === 'http://www.w3.org/ns/adms#AssetRepository') {
+    if ($subject && $entity && $entity['type'] === static::ASSET_CATALOG) {
       // ...that have more than one publisher.
       if (isset($entity[$predicate])) {
         $uris_to_delete = $entity[$predicate];
