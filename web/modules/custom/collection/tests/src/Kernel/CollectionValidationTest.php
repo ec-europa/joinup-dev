@@ -17,24 +17,24 @@ class CollectionValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'allowed_formats',
+    'cached_computed_field',
+    'facets',
+    'field_group',
     'file',
     'image',
-    'options',
-    'link',
-    'og',
+    'inline_entity_form',
     'joinup_core',
-    'piwik_reporting_api',
-    'cached_computed_field',
+    'link',
     'node',
-    'taxonomy',
+    'og',
+    'options',
+    'piwik_reporting_api',
     'rdf_taxonomy',
-    'allowed_formats',
+    'search_api',
     'search_api_field',
     'state_machine',
-    'inline_entity_form',
-    'field_group',
-    'search_api',
-    'facets',
+    'taxonomy',
   ];
 
   /**
