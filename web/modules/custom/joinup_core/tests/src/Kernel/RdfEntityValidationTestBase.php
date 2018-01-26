@@ -13,8 +13,8 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
    * Tests that the required fields throw a validation error when left empty.
    */
   public function testRequiredFields(): void {
-    $collection = $this->createEntity();
-    $violations = $collection->validate();
+    $entity = $this->createEntity();
+    $violations = $entity->validate();
 
     $required_fields = $this->getRequiredFields();
     $this->assertSameSize($required_fields, $violations);
