@@ -49,7 +49,7 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
     $test->assertCount(1, $results);
     // Check that the first URL has been picked-up.
     $result = reset($results);
-    $test->assertEquals('http://example.com/repository/46/1', $result['object']);
+    $test->assertEquals('http://example.com/access-url/46/1', $result['object']);
   }
 
   /**
@@ -59,9 +59,9 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/repository/46">
    <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
-   <dcat:accessURL rdf:resource="http://example.com/repository/46/1"/>
-   <dcat:accessURL rdf:resource="http://example.com/repository/46/2"/>
-   <dcat:accessURL rdf:resource="http://example.com/repository/46/3"/>
+   <dcat:accessURL rdf:resource="http://example.com/access-url/46/1"/>
+   <dcat:accessURL rdf:resource="http://example.com/access-url/46/2"/>
+   <dcat:accessURL rdf:resource="http://example.com/access-url/46/3"/>
    <dct:title xml:lang="en">Repository 46</dct:title>
 </rdf:Description>
 RDF;
@@ -73,7 +73,7 @@ RDF;
   protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
     // Deal only with asset repositories...
     if ($subject && $entity && $entity['type'] === static::ASSET_CATALOG) {
-      // ...that have more than one publisher.
+      // ...that have one or more than one access URLs.
       if (isset($entity[$predicate])) {
         $uris_to_delete = $entity[$predicate];
         // Deletes the additional access URIs as the news field is 0..1.

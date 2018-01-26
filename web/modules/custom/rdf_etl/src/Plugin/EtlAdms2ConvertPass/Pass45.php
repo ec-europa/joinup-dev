@@ -58,7 +58,7 @@ class Pass45 extends EtlAdms2ConvertPassPluginBase {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/repository/45">
     <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
-    <dcat:accessURL rdf:resource="http://example.com/repository/45"/>
+    <dcat:accessURL rdf:resource="http://example.com/access-url/45"/>
     <dct:title xml:lang="en">Repository 45</dct:title>
     <dct:publisher rdf:resource="http://example.com/publisher/45/1"/>
     <dct:publisher rdf:resource="http://example.com/publisher/45/2"/>
