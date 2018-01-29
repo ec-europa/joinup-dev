@@ -37,6 +37,7 @@ Feature: User subscription settings
       | Weekly       | weekly    |
       | Monthly      | monthly   |
 
+  @email
   Scenario: Choose to receive notifications immediately
     Given user:
       | Username   | Auric Goldfinger  |
