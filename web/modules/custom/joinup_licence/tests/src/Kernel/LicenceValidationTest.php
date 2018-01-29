@@ -9,7 +9,7 @@ use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 /**
  * Tests the validation on the licence bundle entity.
  *
- * @group entity
+ * @group entity_validation
  */
 class LicenceValidationTest extends RdfEntityValidationTestBase {
 

@@ -9,7 +9,7 @@ use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 /**
  * Tests the validation on the asset distribution bundle entity.
  *
- * @group entity
+ * @group entity_validation
  */
 class AssetDistributionValidationTest extends RdfEntityValidationTestBase {
 

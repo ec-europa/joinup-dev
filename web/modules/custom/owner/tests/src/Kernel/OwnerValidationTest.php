@@ -9,7 +9,7 @@ use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 /**
  * Tests the validation on the owner bundle entity.
  *
- * @group entity
+ * @group entity_validation
  */
 class OwnerValidationTest extends RdfEntityValidationTestBase {
 
