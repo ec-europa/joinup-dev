@@ -17,24 +17,13 @@ class CollectionValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'allowed_formats',
-    'cached_computed_field',
     'facets',
     'field_group',
     'file',
-    'image',
     'inline_entity_form',
-    'joinup_core',
-    'link',
-    'node',
-    'og',
     'options',
-    'piwik_reporting_api',
-    'rdf_taxonomy',
     'search_api',
     'search_api_field',
-    'state_machine',
-    'taxonomy',
   ];
 
   /**
@@ -43,9 +32,8 @@ class CollectionValidationTest extends RdfEntityValidationTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installConfig('joinup_core');
     $this->installModule('collection');
-    $this->installConfig(['collection']);
+    $this->installConfig('collection');
   }
 
   /**

@@ -17,16 +17,7 @@ class OwnerValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'allowed_formats',
-    'cached_computed_field',
-    'image',
-    'joinup_core',
-    'node',
-    'og',
-    'piwik_reporting_api',
-    'rdf_taxonomy',
-    'state_machine',
-    'taxonomy',
+    'owner',
   ];
 
   /**
@@ -35,9 +26,7 @@ class OwnerValidationTest extends RdfEntityValidationTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->installConfig('joinup_core');
-    $this->installModule('owner');
-    $this->installConfig(['owner']);
+    $this->installConfig('owner');
   }
 
   /**

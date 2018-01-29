@@ -10,6 +10,32 @@ use Drupal\rdf_entity\Entity\Rdf;
 abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  public static $modules = [
+    'allowed_formats',
+    'cached_computed_field',
+    'image',
+    'joinup_core',
+    'link',
+    'node',
+    'og',
+    'piwik_reporting_api',
+    'rdf_taxonomy',
+    'state_machine',
+    'taxonomy',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    $this->installConfig('joinup_core');
+  }
+
+  /**
    * Tests that the required fields throw a validation error when left empty.
    */
   public function testRequiredFields(): void {
