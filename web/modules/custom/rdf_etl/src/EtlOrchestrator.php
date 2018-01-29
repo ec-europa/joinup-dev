@@ -8,15 +8,21 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_etl\Form\EtlOrchestratorForm;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineManager;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
 
 /**
- * Class EtlOrchestrator.
+ * The ETL Orchestrator.
+ *
+ * The orchestrator uses a simple state machine to keep track of progress,
+ * and coordinates the work. The actual work is performed by plugins.
+ *
+ * @package Drupal\rdf_etl
  */
-class EtlOrchestrator {
+class EtlOrchestrator implements EtlOrchestratorInterface {
 
   use StringTranslationTrait;
 
@@ -97,10 +103,7 @@ class EtlOrchestrator {
   }
 
   /**
-   * Execute the orchestrator.
-   *
-   * @return mixed
-   *   The response.
+   * {@inheritdoc}
    */
   public function run() {
     $current_state = $this->initializeActiveState();
@@ -113,9 +116,7 @@ class EtlOrchestrator {
   }
 
   /**
-   * Controller callback: Reset the state machine.
-   *
-   * Should not be used, unless something went really bad.
+   * {@inheritdoc}
    */
   public function reset(): void {
     $this->stateManager->reset();
@@ -257,6 +258,22 @@ class EtlOrchestrator {
     $form_state->addBuildInfo('data', $data);
     $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
     return $form_state->getBuildInfo()['data'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getActivePipelineLabel() : TranslatableMarkup {
+    $this->initializeActiveState();
+    return $this->pipeline->getPluginDefinition()['label'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getActiveStepLabel() : TranslatableMarkup {
+    $current_state = $this->initializeActiveState();
+    return $this->getStepInstance($current_state)->getPluginDefinition()['label'];
   }
 
 }

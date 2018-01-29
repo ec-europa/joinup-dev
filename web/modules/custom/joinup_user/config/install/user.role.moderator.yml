@@ -36,6 +36,7 @@ permissions:
   - 'feature entity'
   - 'moderate entity parents'
   - 'pin entity'
+  - 'run etl pipeline'
   - 'unfeature entity'
   - 'unpin entity'
   - 'view any unpublished content'
@@ -44,3 +45,4 @@ permissions:
   - 'view rdf entity overview'
   - 'view the administration theme'
   - 'view unpublished rdf entity'
+
