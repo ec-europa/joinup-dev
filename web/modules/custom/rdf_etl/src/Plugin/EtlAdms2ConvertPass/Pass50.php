@@ -52,7 +52,7 @@ class Pass50 extends EtlAdms2ConvertPassPluginBase {
   public function getTestingRdfData(): ?string {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/repository/50">
-    <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Catalog"/>
     <dct:title xml:lang="en">Repository 50</dct:title>
     <adms:supportedSchema xml:lang="en">1.01</adms:supportedSchema>
     <adms:supportedSchema xml:lang="en">1.02</adms:supportedSchema>

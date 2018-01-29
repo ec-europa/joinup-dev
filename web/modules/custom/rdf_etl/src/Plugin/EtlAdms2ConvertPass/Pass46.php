@@ -58,7 +58,7 @@ class Pass46 extends EtlAdms2ConvertPassPluginBase {
   public function getTestingRdfData(): ?string {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/repository/46">
-   <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Catalog"/>
+   <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Catalog"/>
    <dcat:accessURL rdf:resource="http://example.com/access-url/46/1"/>
    <dcat:accessURL rdf:resource="http://example.com/access-url/46/2"/>
    <dcat:accessURL rdf:resource="http://example.com/access-url/46/3"/>

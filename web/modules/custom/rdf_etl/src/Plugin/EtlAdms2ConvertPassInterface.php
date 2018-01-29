@@ -26,20 +26,20 @@ interface EtlAdms2ConvertPassInterface {
    *
    * @var string
    */
-  const ASSET = 'https://www.w3.org/ns/dcat#Dataset';
+  const ASSET = 'http://www.w3.org/ns/dcat#Dataset';
 
   /**
    * The ADMS v2 catalog of assets type.
    *
    * @var string
    */
-  const ASSET_CATALOG = 'https://www.w3.org/ns/dcat#Catalog';
+  const ASSET_CATALOG = 'http://www.w3.org/ns/dcat#Catalog';
   /**
    * The ADMS v2 asset distribution type.
    *
    * @var string
    */
-  const ASSET_DISTRIBUTION = 'https://www.w3.org/ns/dcat#Distribution';
+  const ASSET_DISTRIBUTION = 'http://www.w3.org/ns/dcat#Distribution';
 
   /**
    * Transforms the triples in the backend.

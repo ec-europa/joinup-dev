@@ -81,14 +81,14 @@ class Pass37 extends EtlAdms2ConvertPassPluginBase {
   public function getTestingRdfData(): ?string {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/distribution/37/1">
-    <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Distribution"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
     <dcat:accessURL rdf:resource="http://example.com/access-url/37/1"/>
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/1"/>
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/2"/>
     <dct:title xml:lang="en">Distribution 37/1</dct:title>
 </rdf:Description>
 <rdf:Description rdf:about="http://example.com/distribution/37/2">
-    <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Distribution"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/2/1"/>
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/2/2"/>
     <dct:title xml:lang="en">Distribution 37/2</dct:title>

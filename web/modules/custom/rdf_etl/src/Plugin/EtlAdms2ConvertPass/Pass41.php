@@ -53,7 +53,7 @@ class Pass41 extends EtlAdms2ConvertPassPluginBase {
   public function getTestingRdfData(): ?string {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/distribution/41">
-   <rdf:type rdf:resource="https://www.w3.org/ns/dcat#Distribution"/>
+   <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
    <dcat:accessURL rdf:resource="http://example.com/access-url/41"/>
    <dct:title xml:lang="en">Distribution 41</dct:title>
    <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2016-12-30T00:47:01+01:00</dct:issued>
