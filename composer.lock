@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8feaacd6e9172073e871f073947289ca",
+    "content-hash": "479cbd92c67c54ba4c360841c8a476af",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5145,16 +5145,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-master",
+            "version": "9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788"
+                "reference": "bfc720746b19673f840df261e86e34ca5542c91d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788",
-                "reference": "9e0ec0a9ab3a5157df9c3ff3ffb42b102b122788",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/bfc720746b19673f840df261e86e34ca5542c91d",
+                "reference": "bfc720746b19673f840df261e86e34ca5542c91d",
                 "shasum": ""
             },
             "require": {
@@ -5204,7 +5204,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5242,7 +5242,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2018-01-19T04:36:08+00:00"
+            "time": "2018-01-24T19:52:15+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -12263,7 +12263,6 @@
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
-        "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "ec-europa/virtuoso": 20,
