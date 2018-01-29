@@ -22,7 +22,7 @@ class AdmsValidatorForm extends FormBase {
    *
    * @var \Drupal\adms_validator\AdmsValidatorInterface
    */
-  protected $validator;
+  protected $admsValidator;
 
   /**
    * {@inheritdoc}
@@ -36,11 +36,11 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\adms_validator\AdmsValidatorInterface $validator
+   * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The Sparql endpoint.
    */
-  public function __construct(AdmsValidatorInterface $validator) {
-    $this->validator = $validator;
+  public function __construct(AdmsValidatorInterface $adms_validator) {
+    $this->admsValidator = $adms_validator;
   }
 
   /**
@@ -53,7 +53,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) : array {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['adms_file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
@@ -75,6 +75,8 @@ class AdmsValidatorForm extends FormBase {
       // The form was submitted, and validation errors have been set.
       $form['table'] = $this->buildErrorTable($validation_errors);
     }
+
+    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
 
     return $form;
   }
@@ -105,24 +107,23 @@ class AdmsValidatorForm extends FormBase {
     // Delete the uploaded file from disk.
     $file->delete();
     try {
-      $this->validator->storeGraph($graph);
-      $schema_errors = $this->validator->validateGraph();
+      $schema_errors = $this->admsValidator->validate($graph);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
       return;
     }
-    if ($schema_errors->errorCount()) {
-      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
+    if ($schema_errors->isSuccessful()) {
+      drupal_set_message($this->t('No errors found during validation.'));
     }
     else {
-      drupal_set_message($this->t('No errors found during validation.'));
+      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
   }
 
   /**
-   * Render the table with validation errors.
+   * Renders the table with validation errors.
    *
    * @param \Drupal\adms_validator\SchemaErrorList $errors
    *   The validation errors.
@@ -130,18 +131,18 @@ class AdmsValidatorForm extends FormBase {
    * @return array
    *   The error table as render array.
    */
-  protected function buildErrorTable(SchemaErrorList $errors) : array {
+  protected function buildErrorTable(SchemaErrorList $errors): array {
     return [
       '#theme' => 'table',
       '#header' => [
-        ['data' => t('Class name')],
-        ['data' => t('Message')],
-        ['data' => t('Object')],
-        ['data' => t('Predicate')],
-        ['data' => t('Rule description')],
-        ['data' => t('Rule ID')],
-        ['data' => t('Rule severity')],
-        ['data' => t('Subject')],
+        t('Class name'),
+        t('Message'),
+        t('Object'),
+        t('Predicate'),
+        t('Rule description'),
+        t('Rule ID'),
+        t('Rule severity'),
+        t('Subject'),
       ],
       '#rows' => $errors->toRows(),
     ];
@@ -153,7 +154,7 @@ class AdmsValidatorForm extends FormBase {
    * @return \Drupal\file\FileInterface|null
    *   File object, if one is uploaded.
    */
-  protected function uploadedFile() : ?FileInterface {
+  protected function uploadedFile(): ?FileInterface {
     $files = file_save_upload('adms_file', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
     /** @var \Drupal\file\FileInterface $file */
     $file = $files[0];
@@ -169,7 +170,7 @@ class AdmsValidatorForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {}
 
   /**
-   * Build a RDF graph from a file object.
+   * Builds a RDF graph from a file object.
    *
    * @param \Drupal\file\FileInterface $file
    *   The to be validated file.
@@ -177,7 +178,7 @@ class AdmsValidatorForm extends FormBase {
    * @return \EasyRdf\Graph
    *   A collection of triples.
    */
-  protected function fileToGraph(FileInterface $file) : Graph {
+  protected function fileToGraph(FileInterface $file): Graph {
     $graph = new Graph();
     $graph->parseFile($file->getFileUri());
     return $graph;

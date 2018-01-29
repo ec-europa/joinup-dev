@@ -8,10 +8,9 @@ use EasyRdf\Sparql\Result;
 
 /**
  * A collection of Schema Errors.
- *
- * @package Drupal\adms_validator
  */
 class SchemaErrorList {
+
   protected $errors = [];
 
   /**
@@ -24,7 +23,6 @@ class SchemaErrorList {
     foreach ($result as $error) {
       $this->errors[] = new SchemaError($error);
     }
-    return $this;
   }
 
   /**
@@ -47,6 +45,16 @@ class SchemaErrorList {
    */
   public function errorCount() : int {
     return count($this->errors);
+  }
+
+  /**
+   * Returns TRUE if the validation is successful.
+   *
+   * @return bool
+   *   TRUE if the validation is successful.
+   */
+  public function isSuccessful(): bool {
+    return $this->errorCount() === 0;
   }
 
 }

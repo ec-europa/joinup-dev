@@ -6,8 +6,6 @@ namespace Drupal\adms_validator;
 
 /**
  * A value object containing an individual schema violation.
- *
- * @package Drupal\adms_validator
  */
 class SchemaError {
 
@@ -58,7 +56,6 @@ class SchemaError {
     if (!empty($record->Subject)) {
       $this->subject = strval($record->Subject);
     }
-
   }
 
 }
