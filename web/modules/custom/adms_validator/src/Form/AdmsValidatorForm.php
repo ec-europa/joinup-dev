@@ -76,6 +76,8 @@ class AdmsValidatorForm extends FormBase {
       $form['table'] = $this->buildErrorTable($validation_errors);
     }
 
+    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
+
     return $form;
   }
 
@@ -111,11 +113,11 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], $e->getMessage());
       return;
     }
-    if ($schema_errors->errorCount()) {
-      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
+    if ($schema_errors->isSuccessful()) {
+      drupal_set_message($this->t('No errors found during validation.'));
     }
     else {
-      drupal_set_message($this->t('No errors found during validation.'));
+      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
   }

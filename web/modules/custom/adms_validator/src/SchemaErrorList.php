@@ -47,4 +47,14 @@ class SchemaErrorList {
     return count($this->errors);
   }
 
+  /**
+   * Returns TRUE if the validation is successful.
+   *
+   * @return bool
+   *   TRUE if the validation is successful.
+   */
+  public function isSuccessful(): bool {
+    return $this->errorCount() === 0;
+  }
+
 }
