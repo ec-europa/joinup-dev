@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\adms_validator\Form;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
-use Drupal\adms_validator\SchemaErrorList;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;

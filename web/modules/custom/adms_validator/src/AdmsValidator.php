@@ -5,13 +5,15 @@ declare(strict_types = 1);
 namespace Drupal\adms_validator;
 
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
-use EasyRdf\GraphStore;
 
 /**
  * The ADMSv2 validator service.
  */
 class AdmsValidator implements AdmsValidatorInterface {
+
+  use RdfEntityGraphStoreTrait;
 
   /**
    * The connection to the SPARQL backend.
@@ -21,30 +23,18 @@ class AdmsValidator implements AdmsValidatorInterface {
   protected $sparqlEndpoint;
 
   /**
-   * The graph store connect string.
-   *
-   * @var string
-   */
-  protected $connectString;
-
-  /**
    * Constructs a new AdmsValidator object.
    */
   public function __construct(Connection $sparql_endpoint) {
     $this->sparqlEndpoint = $sparql_endpoint;
-    $connection_options = $this->sparqlEndpoint->getConnectionOptions();
-    $this->connectString = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
   }
 
   /**
    * {@inheritdoc}
    */
   public function validate(Graph $graph, string $uri = self::DEFAULT_VALIDATION_GRAPH): SchemaErrorList {
-    // Use a local SPARQL 1.1 Graph Store.
-    $graph_store = new GraphStore($this->connectString);
-
     // Store the graph in the graph store.
-    $output = $graph_store->replace($graph, $uri);
+    $output = $this->createGraphStore()->replace($graph, $uri);
     if (!$output->isSuccessful()) {
       throw new \Exception('Could not store triples in triple store.');
     }
