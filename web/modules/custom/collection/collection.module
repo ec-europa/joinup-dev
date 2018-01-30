@@ -22,6 +22,7 @@ use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Solarium\QueryType\Select\Query\Query;
@@ -231,14 +232,13 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     }
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
   $state = $entity->field_ar_state->value;
   if (in_array($state, ['draft', 'proposed'])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, [
     'validated',
@@ -246,7 +246,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     'deletion_request',
     'archived',
   ])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -263,8 +263,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
