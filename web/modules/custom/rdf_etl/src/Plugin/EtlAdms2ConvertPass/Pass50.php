@@ -30,7 +30,7 @@ class Pass50 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $this->processGraph($data['sync_graph'], 'http://www.w3.org/ns/adms#supportedSchema');
+    $this->processGraph($data['sink_graph'], 'http://www.w3.org/ns/adms#supportedSchema');
   }
 
   /**

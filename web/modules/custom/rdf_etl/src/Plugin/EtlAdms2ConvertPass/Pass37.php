@@ -29,7 +29,7 @@ class Pass37 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $this->processGraph($data['sync_graph'], 'http://www.w3.org/ns/dcat#downloadURL');
+    $this->processGraph($data['sink_graph'], 'http://www.w3.org/ns/dcat#downloadURL');
   }
 
   /**

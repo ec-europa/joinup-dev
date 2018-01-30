@@ -49,7 +49,7 @@ class Pass1To3 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $graph = $data['sync_graph'];
+    $graph = $data['sink_graph'];
     $objects = SparqlArg::serializeUris(array_keys(static::getAdms1To2TypeConversionMap()), ' ');
     $results = $this->getTriplesFromGraph(
       $graph,

@@ -19,7 +19,7 @@ interface EtlAdms2ConvertPassInterface {
    *
    * @var string
    */
-  const TEST_GRAPH = 'http://example.com/graph/sync_test';
+  const TEST_GRAPH = 'http://example.com/graph/test/sink';
 
   /**
    * The ADMS v2 asset type.

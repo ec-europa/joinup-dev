@@ -57,7 +57,7 @@ class ConvertToAdms2 extends ProcessStepBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function execute(array $data): void {
-    $data += ['sync_graph' => $this->getConfiguration()['sync_graph']];
+    $data += ['sink_graph' => $this->getConfiguration()['sink_graph']];
     // @todo There are ~75 passes, need to use batch processing?
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
       /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */

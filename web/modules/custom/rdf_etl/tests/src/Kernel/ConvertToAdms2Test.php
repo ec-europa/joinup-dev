@@ -76,7 +76,7 @@ class ConvertToAdms2Test extends KernelTestBase {
     /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
     $manager = $this->container->get('plugin.manager.etl_process_step');
     /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepInterface $plugin */
-    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sync_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
+    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
 
     // Run updates.
     $convert_plugin->execute([]);

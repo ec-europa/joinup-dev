@@ -28,7 +28,7 @@ class Pass41 extends EtlAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $this->processGraph($data['sync_graph'], 'http://purl.org/dc/terms/issued');
+    $this->processGraph($data['sink_graph'], 'http://purl.org/dc/terms/issued');
   }
 
   /**
