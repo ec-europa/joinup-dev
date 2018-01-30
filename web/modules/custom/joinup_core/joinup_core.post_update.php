@@ -60,3 +60,10 @@ function joinup_core_post_update_move_contact_form_attachments() {
   // Finally, remove the empty public://contact_form directory.
   file_unmanaged_delete_recursive('public://contact_form');
 }
+
+/**
+ * Enable the Smart Trim module.
+ */
+function joinup_core_post_update_install_smart_trim() {
+  \Drupal::service('module_installer')->install(['smart_trim']);
+}

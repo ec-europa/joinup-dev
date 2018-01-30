@@ -246,6 +246,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  created: true
   field_ar_affiliates: true
   field_site_featured: true
   field_site_pinned: true

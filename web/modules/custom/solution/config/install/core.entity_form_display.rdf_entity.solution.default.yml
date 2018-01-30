@@ -340,6 +340,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  created: true
   field_is_affiliations_requests: true
   field_is_content: true
   field_is_distribution: true
