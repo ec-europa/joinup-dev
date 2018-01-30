@@ -12,6 +12,7 @@ dependencies:
   - og
   - path
   - search_api_field
+  - smart_trim
   - user
 
 config_devel:

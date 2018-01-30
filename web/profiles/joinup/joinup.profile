@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -16,6 +17,7 @@ use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupCustomInstallTasks;
+use Drupal\joinup\JoinupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
@@ -339,6 +341,7 @@ function joinup_preprocess_menu__main(&$variables) {
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    // Add the "entity" contextual links group.
     $build['#contextual_links']['entity'] = [
       'route_parameters' => [
         'entity_type' => $entity->getEntityTypeId(),
@@ -346,6 +349,32 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
       ],
       'metadata' => ['changed' => $entity->getChangedTime()],
     ];
+  }
+
+  // Add the "collection_context" contextual links group on community content
+  // and solutions.
+  if (JoinupHelper::isSolution($entity) || JoinupHelper::isCommunityContent($entity)) {
+    // The rendered entity needs to vary by og group context.
+    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
+    $build['#contextual_links']['collection_context'] = [
+      'route_parameters' => [
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity' => $entity->id(),
+        // The collection parameter is a required parameter in the pin/unpin
+        // routes. If the parameter is left empty, a critical exception will
+        // occur and the contextual links generation will break. By passing an
+        // empty value, an upcast exception will be catched and the access
+        // checks will correctly return an access denied.
+        'collection' => NULL,
+      ],
+      'metadata' => ['changed' => $entity->getChangedTime()],
+    ];
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    $collection = \Drupal::service('og.context')->getGroup();
+    if ($collection && JoinupHelper::isCollection($collection)) {
+      $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $collection->id();
+      $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $collection->getChangedTime();
+    }
   }
 }
 
@@ -382,6 +411,21 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
   if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
+  }
+
+  /** @var \Drupal\joinup\PinServiceInterface $pin_service */
+  $pin_service = \Drupal::service('joinup.pin_service');
+  if ($pin_service->isEntityPinned($entity)) {
+    $variables['attributes']['class'][] = 'is-pinned';
+    $variables['#attached']['library'][] = 'joinup/pinned_entities';
+
+    if (JoinupHelper::isSolution($entity)) {
+      $collection_ids = [];
+      foreach ($pin_service->getCollectionsWherePinned($entity) as $collection) {
+        $collection_ids[] = $collection->id();
+      }
+      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $collection_ids);
+    }
   }
 }
 

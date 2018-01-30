@@ -32,13 +32,14 @@
         return;
       }
 
-      $(context).find('[data-drupal-parent-id].is-sticky').once('pinned-cue').each(function () {
+      $(context).find('.is-pinned').once('pinned-cue').each(function () {
         var $this = $(this);
         var parent = $this.data('drupal-parent-id');
+        var affiliated = $this.data('drupal-pinned-in') || '';
 
         // Show the cue only when the global collection context is the same
         // as the parent of the tile.
-        if (parent !== collection) {
+        if (parent !== collection && affiliated.split(',').indexOf(collection) === -1) {
           return;
         }
 

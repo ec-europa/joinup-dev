@@ -123,17 +123,20 @@ trait ContextualLinksTrait {
       return [];
     }
 
-    // Open the contextual links dropdown.
-    /** @var \Behat\Mink\Element\NodeElement $contextual_button */
-    $contextual_button->click();
-
+    // Open the contextual links dropdown if it is not yet open.
     $link_list = $element->find('css', '.contextual ul.contextual-links');
-    $visible = $this->waitUntil(function () use ($link_list) {
-      return $link_list->isVisible();
-    });
+    if (!$link_list->isVisible()) {
+      /** @var \Behat\Mink\Element\NodeElement $contextual_button */
+      $contextual_button->focus();
+      $contextual_button->click();
 
-    if (!$visible) {
-      throw new \Exception('The contextual links did not open properly within the expected time frame.');
+      $visible = $this->waitUntil(function () use ($link_list) {
+        return $link_list->isVisible();
+      });
+
+      if (!$visible) {
+        throw new \Exception('The contextual links did not open properly within the expected time frame.');
+      }
     }
 
     $links = [];
