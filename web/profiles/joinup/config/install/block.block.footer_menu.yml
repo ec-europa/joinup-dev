@@ -10,7 +10,7 @@ dependencies:
 id: footer_menu
 theme: joinup_theme
 region: footer
-weight: 0
+weight: -16
 provider: null
 plugin: 'system_menu_block:footer'
 settings:

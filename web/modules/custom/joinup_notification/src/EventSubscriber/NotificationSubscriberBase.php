@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
@@ -91,7 +91,7 @@ abstract class NotificationSubscriberBase {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -117,12 +117,12 @@ abstract class NotificationSubscriberBase {
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $joinup_core_relations_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
    *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;

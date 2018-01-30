@@ -445,35 +445,75 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 /**
  * Implements hook_search_api_solr_query_alter().
  *
- * Alters the Solr query for the collection content on the collection homepage
- * by setting the sorts as follows:
- * - Top level: Pinned content of the collection goes on top but not pinned
- *   content of other collections shared in this collection.
- * - 2nd level: The content score (relevancy) in the Solr index. The most
- *   relevant are on top.
- * - Last level: In case the score/relevancy is the same, the newest goes first.
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
+ * to sort the results with the following cascade of criteria:
+ * - entities pinned in the context of the collection;
+ * - the score (relevancy) in the Solr index. The most relevant are on top.
+ * - newer entities go first.
  */
 function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
-  if ($query->hasTag('search_api_field_field_collection_content')) {
-    /** @var \Drupal\Core\Entity\EntityInterface $entity */
-    if ($entity = $query->getOption('search_api_field entity')) {
-      // As the 1st level cannot be stored in the Solr index, because it depends
-      // on the collection homepage context, we create a "sort by function"
-      // computed sort. The values that are used for sort are evaluated at
-      // runtime instead of being retrieved from the index. The value returned
-      // by the computed sort is TRUE if the content item is pinned and belongs
-      // to the current displayed collection and FALSE otherwise.
-      // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
-      $computed_sort_pattern = "and(bs_sticky,query({!v='sm_entity_groups:%s'}))";
-      $computed_sort_argument = '"' . $entity->id() . '"';
-      $computed_sort = sprintf($computed_sort_pattern, $computed_sort_argument);
-      $solarium_query->setSorts([
-        $computed_sort => 'desc',
-        'score' => 'desc',
-        'ds_entity_created' => 'desc',
-      ]);
-    }
+  if (!$query->hasTag('search_api_field_field_collection_content')) {
+    return;
   }
+
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  if (!$entity = $query->getOption('search_api_field entity')) {
+    return;
+  }
+
+  // In order to sort by the pinned status of the entity, we need to create a
+  // sort function query. The values that are used for sort are evaluated at
+  // runtime instead of being retrieved from the index.
+  // An entity is pinned when:
+  // - for nodes, when they are belong to the current collection and the sticky
+  //   field is set to true;
+  // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function query is a good candidate for doing custom sorts,
+  // but it will return the score of the subquery. The score can be different
+  // between single results and can range from a small fraction above zero to
+  // infinite.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // @codingStandardsIgnoreEnd
+  // The and() operator will return false when the subquery score is lower than
+  // 1, so both of the above will fail the sorting.
+  // Solr 6.x has the gt(x,y) function, that will return true if x is greater
+  // than y. By using gt(), any positive score can be transformed to true.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // @codingStandardsIgnoreEnd
+  // Unfortunately, Solr 5.x doesn't support the gt() function.
+  // Both Solr versions support the termfreq() function, which will return the
+  // number of occurrences of a term in a field of the document.
+  // Alternatively, also the exists() function could be used in conjunction with
+  // the query() function, but it looks more expensive.
+  // Example:
+  // @codingStandardsIgnoreLine
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
+  // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
+  $computed_sort = sprintf(
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    $solarium_query->getHelper()->escapePhrase($entity->id())
+  );
+  $solarium_query->setSorts([
+    $computed_sort => 'desc',
+    'score' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
 }
 
 /**

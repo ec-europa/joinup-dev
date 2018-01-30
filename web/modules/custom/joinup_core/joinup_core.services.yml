@@ -18,6 +18,7 @@ services:
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
+    lazy: true
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
     arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager']
