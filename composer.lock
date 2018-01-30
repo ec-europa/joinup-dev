@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "16480d3c3b6d3e67ad1dcae4ca7a07a3",
+    "content-hash": "2b80bd5d49e2aea6179bc0499ec625af",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2545,6 +2545,7 @@
                     "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-52-8.4.x.patch",
+                    "Bundle label plural variants @see https://www.drupal.org/node/2765065": "resources/patch/2765065-87-8.4.x.patch",
                     "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/2821988-37.patch",
                     "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
                     "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
@@ -4284,6 +4285,11 @@
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
