@@ -87,6 +87,7 @@ dependencies:
   - user
   - views
   - views_bulk_operations
+  - views_data_export
   - view_unpublished
 
 themes:
@@ -172,13 +173,16 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - email_registration.settings
   - facets.facet.aggregated_changed
   - facets.facet.authoredon
-  - email_registration.settings
-  - facets.facet.event_date
-  - facets.facet.solution_my_content
   - facets.facet.collection_my_content
   - facets.facet.content_my_content
+  - facets.facet.csv_authoredon
+  - facets.facet.csv_changed
+  - facets.facet.csv_solution_type
+  - facets.facet.event_date
+  - facets.facet.solution_my_content
   - facets.facet.solution_type
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body

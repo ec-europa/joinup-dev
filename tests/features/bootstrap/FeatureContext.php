@@ -36,6 +36,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   const KEY_RIGHT = 39;
 
   /**
+   * Checks that a 200 OK response occurred.
+   *
+   * @Then I should get a valid web page
+   */
+  public function assertSuccessfulResponse() {
+    $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
    * Checks that a 403 Access Denied error occurred.
    *
    * @Then I should get an access denied error

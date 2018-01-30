@@ -29,7 +29,7 @@ Feature:
       | Beta Frozen     | Restless Burst      | validated | 2017-10-15T14:54 | 2017-11-24T12:43  | [ABB55] e-Signature Creation Service                                 |
 
     Given I am logged in as a moderator
-    When I am on "/admin/reporting"
+    And I click "Reporting" in the "Administration toolbar" region
     And I click "Solutions by solution type"
     Then I should see the heading "Moderator: Solutions by type"
     And I should see the link "Worthy Puppet"
@@ -51,3 +51,16 @@ Feature:
     # Verify that only solutions are shown.
     But I should not see the text "Monday's Artificial"
     And I should not see the text "Restless Burst"
+    # Verify that the CSV link is present.
+    # Note: the link is rendered as icon in a real browser.
+    And I should see the link "Subscribe to Moderator: Solutions by type"
+    When I click "Subscribe to Moderator: Solutions by type"
+    Then I should get a valid web page
+
+    # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.
+    When I am an anonymous user
+    And I am on "/admin/reporting/solutions-by-type/csv"
+    Then I should see the error message "Access denied. You must sign in to view this page."
+    When I am logged in as an "authenticated user"
+    And I am on "/admin/reporting/solutions-by-type/csv"
+    Then I should get an access denied error
