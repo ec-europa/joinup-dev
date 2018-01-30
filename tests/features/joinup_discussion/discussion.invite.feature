@@ -150,6 +150,13 @@ Feature: Invite members to subscribe to discussions
     And I should see the success message "You have been subscribed to this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
+    # Try to accept the invitation a second time. An appropriate message should
+    # be shown.
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    Then I should see the heading "Concerned about dissolved gases?"
+    And I should see the success message "You were already subscribed to this discussion. Enjoy your day!"
+    And the "Concerned about dissolved gases?" discussion should have 1 subscriber
+
     # Try to invite the user again. This should not send an invitation since the
     # user is already subscribed.
     Given the mail collector cache is empty
