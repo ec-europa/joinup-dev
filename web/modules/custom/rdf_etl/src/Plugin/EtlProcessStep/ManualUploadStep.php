@@ -15,7 +15,7 @@ use EasyRdf\GraphStore;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a manual data upload step.
+ * Defines a manual data upload step plugin.
  *
  * @EtlProcessStep(
  *  id = "manual_upload_step",
@@ -24,8 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, ContainerFactoryPluginInterface {
 
-  const SINK_GRAPH = 'http://etl-sink/';
-
+  /**
+   * The graph store.
+   *
+   * @var \EasyRdf\GraphStore
+   */
   protected $graphStore;
 
   /**
@@ -41,7 +44,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
   }
 
   /**
-   * ManualUploadStep constructor.
+   * Creates a new 'manual_upload_step' process step plugin.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -53,12 +56,13 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    *   The SPARQL database connection.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql_connection) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
     $this->sparqlConnection = $sparql_connection;
     $connection_options = $sparql_connection->getConnectionOptions();
     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
     // Use a local SPARQL 1.1 Graph Store.
     $this->graphStore = new GraphStore($connect_string);
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
@@ -66,7 +70,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    */
   public function execute(array $data): void {
     /** @var \EasyRdf\Http\Response $response */
-    $response = $this->graphStore->replace($data['graph'], self::SINK_GRAPH);
+    $response = $this->graphStore->replace($data['graph'], $this->getConfiguration()['sink_graph']);
     if (!$response->isSuccessful()) {
       $data['error'] = 'Could not store triples in triple store.';
     }
@@ -130,7 +134,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    * @return \Drupal\file\FileInterface|null
    *   File object, if one is uploaded.
    */
-  protected function uploadedFile() : ?FileInterface {
+  protected function uploadedFile(): ?FileInterface {
     $files = file_save_upload('data', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
     /** @var \Drupal\file\FileInterface $file */
     $file = $files[0];
@@ -141,7 +145,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
   }
 
   /**
-   * Build a RDF graph from a file object.
+   * Builds a RDF graph from a file object.
    *
    * @param \Drupal\file\FileInterface $file
    *   The to be validated file.
@@ -149,7 +153,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    * @return \EasyRdf\Graph
    *   A collection of triples.
    */
-  protected function fileToGraph(FileInterface $file) : Graph {
+  protected function fileToGraph(FileInterface $file): Graph {
     $graph = new Graph();
     $graph->parseFile($file->getFileUri());
     return $graph;

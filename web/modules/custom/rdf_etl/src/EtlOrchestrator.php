@@ -19,8 +19,6 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
  *
  * The orchestrator uses a simple state machine to keep track of progress,
  * and coordinates the work. The actual work is performed by plugins.
- *
- * @package Drupal\rdf_etl
  */
 class EtlOrchestrator implements EtlOrchestratorInterface {
 
@@ -263,7 +261,7 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getActivePipelineLabel() : TranslatableMarkup {
+  public function getActivePipelineLabel(): TranslatableMarkup {
     $this->initializeActiveState();
     return $this->pipeline->getPluginDefinition()['label'];
   }
@@ -271,7 +269,7 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getActiveStepLabel() : TranslatableMarkup {
+  public function getActiveStepLabel(): TranslatableMarkup {
     $current_state = $this->initializeActiveState();
     return $this->getStepInstance($current_state)->getPluginDefinition()['label'];
   }

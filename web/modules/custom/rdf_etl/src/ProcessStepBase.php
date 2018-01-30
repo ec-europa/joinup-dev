@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
@@ -20,15 +21,16 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->configuration += $this->defaultConfiguration();
+    $this->setConfiguration($configuration);
   }
 
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration(): array {
-    return [];
+    return [
+      'sink_graph' => static::SINK_GRAPH,
+    ];
   }
 
   /**
@@ -42,7 +44,10 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
    * {@inheritdoc}
    */
   public function setConfiguration(array $configuration): void {
-    $this->configuration = $configuration;
+    $this->configuration = NestedArray::mergeDeep(
+      $this->defaultConfiguration(),
+      $configuration
+    );
   }
 
   /**
