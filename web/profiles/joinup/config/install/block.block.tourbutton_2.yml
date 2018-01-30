@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - tour
+  theme:
+    - joinup_theme
+id: tourbutton_2
+theme: joinup_theme
+region: content_top
+weight: 0
+provider: null
+plugin: tour_button_block
+settings:
+  id: tour_button_block
+  label: 'Tour button (homepage)'
+  provider: tour
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
