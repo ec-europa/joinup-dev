@@ -955,10 +955,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the page should show( only) the tiles :headings
    */
   public function assertUnorderedTilesPresent($headings) {
-    $tiles_in_page = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
-      return $element->getText();
-    }, $this->getTiles());
+    $tiles_in_page = array_keys($this->getTiles());
     $headings = $this->explodeCommaSeparatedStepArgument($headings);
 
     sort($headings);
@@ -978,10 +975,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the :region region:
    */
   public function assertTilesInBlock(TableNode $titles_table, $region) {
-    $results = $this->getTiles($region);
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles($region));
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
@@ -999,14 +993,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     try {
       // This will fail if the region does not exist. The region does not exist
       // if there is no content rendered inside.
-      $results = $this->getTiles($region);
+      $headings_in_page = array_keys($this->getTiles($region));
     }
     catch (Exception $e) {
       return;
     }
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+
     $headings_not_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
   }
@@ -1051,10 +1043,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the correct order:
    */
   public function assertOrderedTilesPresent(TableNode $titles_table) {
-    $results = $this->getTiles();
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
     \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
@@ -1102,46 +1091,50 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the presence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I (should )see the contextual link :link in the :heading tile
+   * @Then I (should )see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkPresentInTile($link, $heading) {
+  public function assertContextualLinkPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinksInElement($element));
 
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    $not_found = array_diff($links, $found_links);
+    if (!empty($not_found)) {
+      throw new \Exception(sprintf("Contextual links '%s' not found in the tile '%s'", implode(', ', $not_found), $heading));
     }
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the absence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I should not see the contextual link :link in the :heading tile
+   * @Then I should not see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkNotPresentInTile($link, $heading) {
+  public function assertContextualLinkNotPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinksInElement($element));
 
-    if (isset($links[$link])) {
-      throw new \Exception("Unexpected contextual link '$link' found in the tile '$heading'.");
+    $found = array_intersect($found_links, $links);
+    if (!empty($found)) {
+      throw new \Exception(sprintf("Unexpected contextual link '%s' found in the tile '%s'", implode(', ', $found), $heading));
     }
   }
 
@@ -2262,6 +2255,97 @@ JS;
 
     $element->keyDown("\r");
     $element->keyUp("\r");
+  }
+
+  /**
+   * Asserts that a tile is marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as pinned.
+   *
+   * @Then the :tile tile should be marked as pinned
+   */
+  public function assertTileMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is not marked as pinned, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as pinned.
+   *
+   * @Then the :tile tile should not be marked as pinned
+   */
+  public function assertTileNotMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
+    }
+  }
+
+  /**
+   * Asserts that a user is subscribed to specific bundles in a collection.
+   *
+   * @param string $user
+   *   The user name.
+   * @param string $bundles
+   *   A list of bundles separated by commas.
+   * @param string $type
+   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
+   *   entity types respectively.
+   * @param string $group_label
+   *   The group name.
+   * @param string $group_bundle
+   *   The group bundle.
+   *
+   * @throws \Exception
+   *   Throws exception if invalid data passed as arguments or if the subscribed
+   *   bundles for the given type do not match the expected ones.
+   *
+   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
+   */
+  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
+    if ($type === 'content') {
+      $type = 'node';
+    }
+    elseif ($type === 'rdf') {
+      $type = 'rdf_entity';
+    }
+    else {
+      throw new Exception("Unsupported type {$type}.");
+    }
+
+    $user = $this->getUserByName($user);
+    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
+    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
+
+    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
+    $bundles = array_map(function ($bundle) use ($type) {
+      return $type . ':' . trim($bundle);
+    }, $bundles);
+
+    // This can also be accessed with:
+    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
+    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
+    $og_bundles = array_map(function ($row) {
+      return $row['entity_type'] . ':' . $row['bundle'];
+    }, $og_bundles);
+
+    sort($bundles);
+    sort($og_bundles);
+    \PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
   }
 
 }

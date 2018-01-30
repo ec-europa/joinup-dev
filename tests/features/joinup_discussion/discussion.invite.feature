@@ -33,48 +33,64 @@ Feature: Invite members to subscribe to discussions
       | title                            | content                            | author           | state     | collection           | solution                |
       | For your lifetime                | Are you kidding?                   | Lynwood Crawford | validated |                      | Stainless Steel Siphons |
       | Concerned about dissolved gases? | Gas might get trapped in a siphon. | Lynwood Crawford | validated | The Siphon Community |                         |
+      | The flying droplet siphon        | Liquid tensile strength.           | Lynwood Crawford | draft     | The Siphon Community |                         |
 
     # Check that only moderators and the discussion owner can invite members.
     # Anonymous users cannot invite users.
     Given I am not logged in
-    And I go to the "For your lifetime" discussion
+    When I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
+    Then I should not see the link "Invite"
+    When I go to the "The flying droplet siphon" discussion
     Then I should not see the link "Invite"
 
-    # Users not a members of the collection/solution cannot invite other users.
+    # Users not a member of the collection/solution cannot invite other users.
     Given I am logged in as "paternoster"
-    And I go to the "For your lifetime" discussion
+    When I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
+    Then I should not see the link "Invite"
+    When I go to the "The flying droplet siphon" discussion
     Then I should not see the link "Invite"
 
     # Regular members of the collection/solution cannot invite other users.
     Given I am logged in as "theacuteone"
-    And I go to the "For your lifetime" discussion
+    When I go to the "For your lifetime" discussion
     Then I should not see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
+    Then I should not see the link "Invite"
+    When I go to the "The flying droplet siphon" discussion
     Then I should not see the link "Invite"
 
     # Facilitators can invite users.
     Given I am logged in as "Glory Ruskin"
-    And I go to the "For your lifetime" discussion
+    When I go to the "For your lifetime" discussion
     Then I should see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
+    # But not if the discussion is in draft.
+    When I go to the "The flying droplet siphon" discussion
+    Then I should not see the link "Invite"
 
     # Moderators can invite users.
     Given I am logged in as a "moderator"
-    And I go to the "For your lifetime" discussion
+    When I go to the "For your lifetime" discussion
     Then I should see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
+    # But not if the discussion is in draft.
+    When I go to the "The flying droplet siphon" discussion
+    Then I should not see the link "Invite"
 
-    # The discussion owner can invite users.
+    # The discussion owner can invite users, except when the discussion is in
+    # draft state.
     Given I am logged in as "Lynwood Crawford"
-    And I go to the "For your lifetime" discussion
+    When I go to the "The flying droplet siphon" discussion
+    Then I should not see the link "Invite"
+    When I go to the "For your lifetime" discussion
     Then I should see the link "Invite"
-    And I go to the "Concerned about dissolved gases?" discussion
+    When I go to the "Concerned about dissolved gases?" discussion
     Then I should see the link "Invite"
 
     # Navigate to the form.
@@ -181,6 +197,13 @@ Feature: Invite members to subscribe to discussions
     When I accept the invitation for the "Concerned about dissolved gases?" discussion
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You have been subscribed to this discussion."
+    And the "Concerned about dissolved gases?" discussion should have 1 subscriber
+
+    # Try to accept the invitation a second time. An appropriate message should
+    # be shown.
+    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    Then I should see the heading "Concerned about dissolved gases?"
+    And I should see the success message "You were already subscribed to this discussion. Enjoy your day!"
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to invite the user again. This should not send an invitation since the

@@ -217,7 +217,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // As each given step is executed in the same request
     // we need to reset the mapping.
     $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -495,6 +494,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'collection' => 'field_ar_affiliates',
       'featured' => 'field_site_featured',
       'pinned site-wide' => 'field_site_pinned',
+      'pinned in' => 'field_is_pinned_in',
     ];
   }
 

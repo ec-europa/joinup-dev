@@ -6,3 +6,6 @@ rid: asset_distribution
 description: ''
 rdftype: 'http://www.w3.org/ns/adms#AssetDistribution'
 rdf_label: 'http://purl.org/dc/terms/title'
+label_singular: 'asset distribution'
+label_plural: 'asset distributions'
+label_count: "1 asset distribution\x03@count asset distributions"

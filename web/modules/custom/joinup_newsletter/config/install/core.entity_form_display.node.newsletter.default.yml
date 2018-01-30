@@ -3,8 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.node.newsletter.body
-    - field.field.node.newsletter.simplenews_issue
     - field.field.node.newsletter.og_audience
+    - field.field.node.newsletter.simplenews_issue
     - node.type.newsletter
   module:
     - allowed_formats

@@ -78,7 +78,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The discussions relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -110,7 +110,7 @@ class NodeWorkflowAccessControlHandler {
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The relation manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
@@ -119,7 +119,7 @@ class NodeWorkflowAccessControlHandler {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManager $relation_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManagerInterface $relation_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationManager = $relation_manager;
