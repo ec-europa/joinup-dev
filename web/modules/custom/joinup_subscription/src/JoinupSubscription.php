@@ -10,6 +10,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\flag\Entity\Flag;
 use Drupal\flag\Entity\Flagging;
 use Drupal\flag\FlagServiceInterface;
+use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
 use Drupal\user\Entity\User;
 
 /**
@@ -83,7 +84,17 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
    */
   public function subscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id): bool {
     $flag = $this->flagService->getFlagById($flag_id);
-    $flagging = $this->flagService->flag($flag, $entity, $account);
+    // Throw an exception when the user is already subscribed, so the calling
+    // code can generate an appropriate response.
+    if ($flag->isFlagged($entity, $account)) {
+      $account_name = $account->getAccountName();
+      $entity_type = $entity->getEntityTypeId();
+      $entity_label = $entity->label();
+      throw new UserAlreadySubscribedException("The user '$account_name' is already subscribed to the $entity_type entity with label '$entity_label'.");
+    }
+    else {
+      $flagging = $this->flagService->flag($flag, $entity, $account);
+    }
 
     return !empty($flagging);
   }
