@@ -4,7 +4,7 @@ dependencies: {  }
 id: collection_policy_domain
 name: 'Policy Domain'
 url_alias: collection_policy_domain
-weight: 0
+weight: -1
 min_count: 1
 show_only_one_result: true
 field_identifier: policy_domain

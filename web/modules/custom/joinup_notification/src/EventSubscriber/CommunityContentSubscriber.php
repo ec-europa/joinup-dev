@@ -6,7 +6,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
@@ -79,14 +79,14 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $joinup_core_relations_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
    *   The relation manager service.
    * @param \Drupal\message_notify\MessageNotifier $message_notifier
    *   The message notifier service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier, RevisionManagerInterface $revision_manager) {
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, MessageNotifier $message_notifier, RevisionManagerInterface $revision_manager) {
     parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_notifier);
     $this->revisionManager = $revision_manager;
   }
