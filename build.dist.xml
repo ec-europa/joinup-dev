@@ -35,6 +35,16 @@
         </if>
     </target>
 
+    <!-- Make settings.local.php writable. -->
+    <target name="writable-settings-local-php">
+        <if>
+            <available file="${website.settings.local.php}" type="file" property="website.settings.local.php.available" />
+            <then>
+                <chmod mode="0644" failonerror="false" verbose="true" quiet="false" file="${website.settings.local.php}" />
+            </then>
+        </if>
+    </target>
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php">
         <drush

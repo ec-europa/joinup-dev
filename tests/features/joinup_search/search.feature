@@ -61,7 +61,7 @@ Feature: Global search
     Given I am at "/search"
 
     # Select link in the 'type' facet.
-    When I click the Solution content tab
+    When I click the Solutions content tab
     Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
     And I should not see the "Molecular cooking collection" tile

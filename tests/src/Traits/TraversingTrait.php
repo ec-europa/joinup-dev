@@ -126,18 +126,30 @@ trait TraversingTrait {
    *   The region label. If no region is provided, the search will be on the
    *    whole page.
    *
-   * @return \Behat\Mink\Element\NodeElement[]|null
-   *   An array of node elements matching the search.
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   An array of tiles elements, keyed by tile title.
    */
   protected function getTiles($region = NULL) {
+    /** @var \Behat\Mink\Element\DocumentElement $regionObj */
     if ($region === NULL) {
-      /** @var \Behat\Mink\Element\DocumentElement $regionObj */
       $regionObj = $this->getSession()->getPage();
     }
     else {
       $regionObj = $this->getRegion($region);
     }
-    return $regionObj->findAll('css', '.listing__item--tile .listing__title');
+
+    $result = [];
+    foreach ($regionObj->findAll('css', '.listing__item--tile') as $element) {
+      $title_element = $element->find('css', ' .listing__title');
+      // Some tiles don't have a title, like the one to create a new collection
+      // in the collections page.
+      if ($title_element) {
+        $title = $title_element->getText();
+        $result[$title] = $element;
+      }
+    }
+
+    return $result;
   }
 
   /**
@@ -219,6 +231,7 @@ trait TraversingTrait {
       'My collections content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
+      'Collection event date' => 'collection_event_type',
     ];
 
     if (!isset($mappings[$alias])) {
