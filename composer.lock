@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd3fcf6f57b3cdea6207da23b132775",
+    "content-hash": "ca3884ec7fbf91ddcd38d7ee938fbd4a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4261,16 +4261,16 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-8.x-1.x",
+            "version": "dev-graph-store-trait",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "cf357d48dfb92449c4756f82876ee466ff613ad2"
+                "reference": "5d3874f91645abc58e4e5b7d7cbff87d07b03e61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/cf357d48dfb92449c4756f82876ee466ff613ad2",
-                "reference": "cf357d48dfb92449c4756f82876ee466ff613ad2",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/5d3874f91645abc58e4e5b7d7cbff87d07b03e61",
+                "reference": "5d3874f91645abc58e4e5b7d7cbff87d07b03e61",
                 "shasum": ""
             },
             "require": {
@@ -4290,7 +4290,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-01-23T14:38:08+00:00"
+            "time": "2018-01-30T13:27:24+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -10478,7 +10478,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
@@ -10646,8 +10647,6 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
-                "drupal/coder": "^8.2",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -10672,14 +10671,6 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
-                },
-                {
-                    "name": "Melissa Anderson",
-                    "homepage": "https://github.com/eliza411"
-                },
-                {
-                    "name": "Pieter Frenssen",
-                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
