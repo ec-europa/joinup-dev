@@ -6,3 +6,7 @@ rid: license
 description: ''
 rdftype: 'http://purl.org/dc/terms/LicenseDocument'
 rdf_label: 'http://www.w3.org/2000/01/rdf-schema#label'
+label_singular: license
+label_plural: licenses
+label_count:
+  - "1 license\x03@count licenses"

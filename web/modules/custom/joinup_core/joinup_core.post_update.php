@@ -32,3 +32,45 @@ function joinup_core_post_update_install_email_registration() {
 function joinup_core_post_update_install_joinup_invite() {
   \Drupal::service('module_installer')->install(['joinup_invite']);
 }
+
+/**
+ * Move the contact form attachments under the private scheme.
+ */
+function joinup_core_post_update_move_contact_form_attachments() {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = Drupal::service('file_system');
+
+  $message_storage = \Drupal::entityTypeManager()->getStorage('message');
+  $ids = $message_storage->getQuery()
+    ->condition('template', 'contact_form_submission')
+    ->exists('field_contact_attachment')
+    ->execute();
+
+  foreach ($message_storage->loadMultiple($ids) as $message) {
+    /** @var \Drupal\file\FileInterface $attachment */
+    if ($attachment = $message->field_contact_attachment->entity) {
+      if (!$attachment || ($file_system->realpath($attachment->getFileUri()) === FALSE)) {
+        continue;
+      }
+      $target = file_uri_target($attachment->getFileUri());
+      $uri = "private://$target";
+      $destination_dir = $file_system->dirname($uri);
+      if (!file_prepare_directory($destination_dir, FILE_CREATE_DIRECTORY)) {
+        throw new \RuntimeException("Cannot create directory '$destination_dir'.");
+      }
+      if (!file_move($attachment, $uri)) {
+        throw new \RuntimeException("Cannot move '{$attachment->getFileUri()}' to '$uri'.");
+      }
+    }
+  }
+
+  // Finally, remove the empty public://contact_form directory.
+  file_unmanaged_delete_recursive('public://contact_form');
+}
+
+/**
+ * Enable the Smart Trim module.
+ */
+function joinup_core_post_update_install_smart_trim() {
+  \Drupal::service('module_installer')->install(['smart_trim']);
+}

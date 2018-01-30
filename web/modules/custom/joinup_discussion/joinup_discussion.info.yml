@@ -16,6 +16,7 @@ dependencies:
   - joinup_user
   - language
   - message
+  - smart_trim
 
 config_devel:
   - comment.type.reply
