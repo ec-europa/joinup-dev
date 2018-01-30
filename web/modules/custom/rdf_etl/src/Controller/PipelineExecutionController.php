@@ -62,4 +62,16 @@ class PipelineExecutionController extends ControllerBase {
     return ['#markup' => 'Orchestrator reset.'];
   }
 
+  /**
+   * Build the page title for the orchestrator.
+   *
+   * @return string
+   *   The orchestrator title.
+   */
+  public function getTitle() {
+    $pipeline = $this->rdfEtlOrchestrator->getActivePipelineLabel();
+    $step = $this->rdfEtlOrchestrator->getActiveStepLabel();
+    return $pipeline->render() . ' - ' . $step->render();
+  }
+
 }

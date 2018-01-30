@@ -20,8 +20,7 @@ use Drupal\rdf_etl\EtlOrchestrator;
  *
  * @EtlDataPipeline(
  *  id = "pipeline_selection_pipe",
- *  label = @Translation("The default data pipeline, allows selecting a data
- *   pipeline."),
+ *  label = @Translation("Pipeline selection"),
  * )
  */
 class DefaultEtlDataPipeline extends EtlDataPipelineBase implements EtlDataPipelineInterface, ContainerFactoryPluginInterface {
