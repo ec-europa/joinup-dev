@@ -111,3 +111,33 @@ joinup.site_unpin:
     parameters:
       entity:
         type: entity:{entity_type}
+
+joinup.pin_entity:
+  path: '/pin/group/{entity_type}/{entity}/add/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::pinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity
+
+joinup.unpin_entity:
+  path: '/pin/group/{entity_type}/{entity}/remove/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::unpinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity
