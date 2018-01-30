@@ -36,6 +36,7 @@ Feature: Joining and leaving collections through the web interface
     When I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 1 active member
+    And "Madame Sharn" should be subscribed to "document, discussion, news, event" content bundles in the "Überwaldean Land Eels" collection
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
     And I should not see the link "Edit"
