@@ -45,5 +45,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  created: true
   current_workflow_state: true
   uid: true

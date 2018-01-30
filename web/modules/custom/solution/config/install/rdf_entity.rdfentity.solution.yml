@@ -5,3 +5,7 @@ third_party_settings: {  }
 name: Solution
 rid: solution
 description: ''
+label_singular: solution
+label_plural: solutions
+label_count:
+  no_count_capitalize: "Solution\x03Solutions"
