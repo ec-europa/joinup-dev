@@ -231,6 +231,7 @@ trait TraversingTrait {
       'My collections content' => 'collection_my_content',
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
+      'Collection event date' => 'collection_event_type',
     ];
 
     if (!isset($mappings[$alias])) {

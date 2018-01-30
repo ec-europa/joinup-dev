@@ -1,21 +1,22 @@
 langcode: en
 status: true
 dependencies: {  }
-id: collection_policy_domain
-name: 'Policy Domain'
-url_alias: collection_policy_domain
-weight: -1
+id: collection_event_type
+name: 'Event date'
+url_alias: event_type
+weight: -2
 min_count: 1
 show_only_one_result: true
-field_identifier: policy_domain
+field_identifier: field_event_date
 facet_source_id: 'search_api_field:rdf_entity.field_collection_content'
 widget:
   type: links_inline
   config:
     show_numbers: true
-    all_text: 'all policy domains'
-    prefix_text: 'About:'
+    all_text: 'All events'
+    prefix_text: ''
     suffix_text: ''
+    arbitrary_facet_plugin: events_arbitrary
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -27,38 +28,41 @@ processor_configs:
   active_widget_order:
     processor_id: active_widget_order
     weights:
-      sort: -2
+      sort: -10
     settings:
       sort: DESC
-  aggregated_entity_reference_label:
-    processor_id: aggregated_entity_reference_label
-    weights:
-      build: 0
-    settings: {  }
-  count_limit:
-    processor_id: count_limit
-    weights:
-      build: -2
-    settings:
-      minimum_items: 1
-      maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
-      sort: -1
+      sort: -9
     settings:
       sort: DESC
+  dependent_processor:
+    processor_id: dependent_processor
+    weights:
+      build: -10
+    settings:
+      collection_policy_domain:
+        enable: false
+        condition: null
+        values: ''
+        negate: false
+      collection_type:
+        enable: true
+        condition: values
+        values: event
+        negate: false
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:
-      sort: 0
+      sort: -8
     settings:
       sort: ASC
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -1
+      build: -9
     settings: {  }
 empty_behavior:
   behavior: none

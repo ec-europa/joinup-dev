@@ -445,7 +445,8 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 /**
  * Implements hook_search_api_solr_query_alter().
  *
- * Alters the Solr query for the collection content on the collection homepage
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
  * to sort the results with the following cascade of criteria:
  * - entities pinned in the context of the collection;
  * - the score (relevancy) in the Solr index. The most relevant are on top.
@@ -453,6 +454,14 @@ function collection_search_api_query_search_api_field_field_collection_content_a
  */
 function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
   if (!$query->hasTag('search_api_field_field_collection_content')) {
+    return;
+  }
+
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
     return;
   }
 
