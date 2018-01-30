@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxy;
 
 /**
- * Class SubscriptionSettings.
+ * Controller that shows the subscription settings form.
  */
 class SubscriptionSettings extends ControllerBase {
 
