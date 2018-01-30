@@ -258,4 +258,31 @@ trait OgTrait {
     $this->subscribeUserToGroup($member, $group, $roles, $state);
   }
 
+  /**
+   * Returns the group membership for a given user and group.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group to get the membership for.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user to get the membership for.
+   * @param array $states
+   *   (optional) Array with the state to return. Defaults to active.
+   *
+   * @return \Drupal\og\OgMembershipInterface
+   *   The OgMembership entity.
+   *
+   * @throws \Exception
+   *   Thrown if a membership with the given criteria is not found.
+   */
+  protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]) {
+    /** @var \Drupal\og\MembershipManager $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $membership = $membership_manager->getMembership($group, $user, $states);
+    if (empty($membership)) {
+      throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
+    }
+
+    return $membership;
+  }
+
 }
