@@ -67,7 +67,7 @@
     ],
     "field_user_frequency": [
         {
-            "value": "next_cron"
+            "value": "immediately"
         }
     ],
     "field_user_subscription_events": [

@@ -46,10 +46,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $this->messageDelivery
-      ->setMessage($message)
-      ->setRecipientsAsEmails([$recipient])
-      ->sendMail();
+    $this->messageDelivery->sendMessageToEmailAddresses($message, [$recipient]);
   }
 
   /**
@@ -127,11 +124,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids)) && $success;
     }
     return $success;
   }

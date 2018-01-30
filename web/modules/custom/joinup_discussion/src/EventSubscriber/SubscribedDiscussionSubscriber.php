@@ -210,7 +210,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
     catch (InvalidPluginDefinitionException $e) {
       // The storage for the 'user' entity type should exist. If it didn't
       // Drupal would be completely broken. This code should never run but we
-      // are returning an anonymos user entity for completeness and to satisfy
+      // are returning an anonymous user entity for completeness and to satisfy
       // the inspections of the IDE.
       return new User([], 'user');
     }
@@ -229,11 +229,17 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   protected function sendMessage(NodeInterface $discussion, string $message_template): bool {
     try {
-      return $this->messageDelivery
-        ->createMessage($message_template)
-        ->setArguments($this->getArguments($discussion))
-        ->setRecipients($this->getSubscribers($discussion))
-        ->sendMail();
+      $success = TRUE;
+      // Create individual messages for each subscriber so that we can honor the
+      // user's chosen digest frequency.
+      foreach ($this->getSubscribers($discussion) as $subscriber) {
+        $notifier_options = [
+          'entity_type' => $discussion->getEntityTypeId(),
+          'entity_id' => $discussion->id(),
+        ];
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, $this->getArguments($discussion), $subscriber, $notifier_options, TRUE) && $success;
+      }
+      return $success;
     }
     catch (\Exception $e) {
       $context = ['exception' => $e];

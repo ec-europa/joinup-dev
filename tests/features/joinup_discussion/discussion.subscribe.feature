@@ -42,10 +42,10 @@ Feature: Subscribing to discussions
   @email
   Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
-      | Username    | E-mail            | First name | Family name |
-      | follower    | dale@example.com  | Dale       | Arden       |
-      | debater     | flash@example.com | Flash      | Gordon      |
-      | facilitator | ming@example.com  | Ming       | Merciless   |
+      | Username    | E-mail            | First name | Family name | Notification frequency |
+      | follower    | dale@example.com  | Dale       | Arden       | immediate              |
+      | debater     | flash@example.com | Flash      | Gordon      | daily                  |
+      | facilitator | ming@example.com  | Ming       | Merciless   | weekly                 |
     And the following collection user membership:
       | collection     | user        | roles       |
       | Dairy products | facilitator | facilitator |
@@ -75,15 +75,13 @@ Feature: Subscribing to discussions
       | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
       | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the following email should have been sent:
-      | recipient | hans@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the daily digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | mail_body    | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Flash Gordon is not subscribed yet. He should not retrieve the message.
-    But the following email should not have been sent:
-      | recipient | flash@example.com                                                                                   |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | mail_body    | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
     # Authenticated users comments are sent on comment creation.
     Given I am logged in as debater
@@ -101,19 +99,18 @@ Feature: Subscribing to discussions
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
-    But the following email should not have been sent:
-      | recipient | flash@example.com                                                                             |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the following email should have been sent:
-      | recipient | hans@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the daily digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    Given the mail collector cache is empty
+    Given all message digests have been delivered
+    And the mail collector cache is empty
     And I am logged in as "Dr. Hans Zarkov"
     When I go to the discussion content "Rare Butter" edit screen
     And I press "Update"
@@ -128,15 +125,23 @@ Feature: Subscribing to discussions
       | recipient | dale@example.com                                                                  |
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should have been sent:
-      | recipient | flash@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the daily digest for "debater" should contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # Let's also check that the actual digest mail is successfully delivered.
+    When all message digests have been delivered
+    # @todo Send the mail as HTML and provide a signature.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4254
+    Then the following email should have been sent:
+      | recipient          | flash@example.com                                                            |
+      | subject            | Rare Butter message digest                                                   |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
+      | html               | no                                                                           |
+      | signature_required | no                                                                           |
     # The author of the discussion update doesn't receive any notification.
-    But the following email should not have been sent:
-      | recipient | hans@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    But the daily digest for "Dr. Hans Zarkov" should not contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     Then 2 e-mails should have been sent
 
     # If the discussion is moved from 'validated' to any other state, no
@@ -151,10 +156,9 @@ Feature: Subscribing to discussions
       | recipient | dale@example.com                                                                  |
       | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should not have been sent:
-      | recipient | flash@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
 
     # Delete the discussion and check that no notifications are sent. Since the
     # discussion is not published nobody should be notified.
@@ -163,17 +167,15 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
-    And the following email should not have been sent:
-      | recipient | flash@example.com                                                                                                     |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
-    And the following email should not have been sent:
-      | recipient | hans@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare Butter" has been deleted.                                                                |
-      | body      | Flash Gordon has deleted the discussion "Rare Butter". The discussion content and comments can no longer be accessed. |
+      | recipient | dale@example.com                                                                                     |
+      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+    And the daily digest for "debater" should not contain the following message:
+      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+    And the daily digest for "Dr. Hans Zarkov" should not contain the following message:
+      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
@@ -191,23 +193,20 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should have been sent:
-      | recipient | dale@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+      | recipient | dale@example.com                                                                                   |
+      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the following email should have been sent:
-      | recipient | hans@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+    And the daily digest for "Dr. Hans Zarkov" should contain the following message:
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
-    But the following email should not have been sent:
-      | recipient | ming@example.com                                                                                                      |
-      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+    But the weekly digest for "facilitator" should not contain the following message:
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Flash Gordon is not subscribed. He should not retrieve the message.
-    And the following email should not have been sent:
-      | recipient | flash@example.com                                                                                                     |
-      | subject   | Joinup: The discussion "Rare feta" has been deleted.                                                                  |
-      | body      | Ming Merciless has deleted the discussion "Rare feta". The discussion content and comments can no longer be accessed. |
+    And the daily digest for "debater" should not contain the following message:
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
