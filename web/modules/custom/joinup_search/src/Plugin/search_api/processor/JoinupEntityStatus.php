@@ -4,7 +4,7 @@ namespace Drupal\joinup_search\Plugin\search_api\processor;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\IndexInterface;
@@ -32,7 +32,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -45,10 +45,10 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The relation manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManager $relation_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->relationManager = $relation_manager;
   }

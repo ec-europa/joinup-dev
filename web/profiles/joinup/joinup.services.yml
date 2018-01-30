@@ -9,3 +9,7 @@ services:
     arguments: ['@entity.manager']
     tags:
      - { name: event_subscriber }
+  joinup.pin_service:
+    class: Drupal\joinup\PinService
+    arguments: ['@joinup_core.relations_manager']
+    lazy: true
