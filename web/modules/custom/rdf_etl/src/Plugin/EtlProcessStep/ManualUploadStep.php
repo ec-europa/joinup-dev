@@ -66,7 +66,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
   /**
    * {@inheritdoc}
    */
-  public function execute(array $data): void {
+  public function execute(array &$data): void {
     $this->clearExistingData();
     $response = $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
     if (!$response->isSuccessful()) {
