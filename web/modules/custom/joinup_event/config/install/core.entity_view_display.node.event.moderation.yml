@@ -22,13 +22,15 @@ dependencies:
     - field.field.node.event.field_shared_in
     - field.field.node.event.field_short_title
     - field.field.node.event.field_site_featured
+    - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
     - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - node.type.event
   module:
+    - ds
     - options
-    - text
+    - smart_trim
     - user
 id: node.event.moderation
 targetEntityType: node
@@ -37,11 +39,28 @@ mode: moderation
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: smart_trim
     weight: 2
     settings:
       trim_length: 600
-    third_party_settings: {  }
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     region: content
   field_state:
     type: list_default
@@ -69,6 +88,7 @@ hidden:
   field_shared_in: true
   field_short_title: true
   field_site_featured: true
+  field_site_pinned: true
   field_visit_count: true
   langcode: true
   links: true

@@ -5,3 +5,7 @@ name: VCard
 rid: vcard
 description: ''
 rdftype: 'vcard:VCard'
+label_singular: vcard
+label_plural: vcards
+label_count:
+  - "1 vcard\x03@count vcards"

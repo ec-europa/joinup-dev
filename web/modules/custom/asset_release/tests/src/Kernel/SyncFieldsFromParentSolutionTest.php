@@ -47,6 +47,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'rdf_taxonomy',
     'search_api',
     'search_api_field',
+    'smart_trim',
     'solution',
     'state_machine',
     'system',

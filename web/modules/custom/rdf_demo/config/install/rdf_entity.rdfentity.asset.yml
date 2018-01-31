@@ -6,3 +6,7 @@ rid: asset
 description: 'Abstract entity that reflects the intellectual content of an Asset'
 rdftype: 'http://www.w3.org/ns/adms#Asset'
 rdf_label: 'http://purl.org/dc/terms/title'
+label_singular: asset
+label_plural: assets
+label_count:
+  - "1 asset\x03@count assets"

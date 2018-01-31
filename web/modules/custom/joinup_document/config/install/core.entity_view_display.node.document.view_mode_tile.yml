@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.document.field_shared_in
     - field.field.node.document.field_short_title
     - field.field.node.document.field_site_featured
+    - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
     - field.field.node.document.field_visit_count
@@ -23,7 +24,7 @@ dependencies:
     - ds
     - file_url
     - options
-    - text
+    - smart_trim
     - user
 id: node.document.view_mode_tile
 targetEntityType: node
@@ -31,12 +32,20 @@ bundle: document
 mode: view_mode_tile
 content:
   body:
-    type: text_trimmed
+    type: smart_trim
     weight: 0
     region: content
     label: hidden
     settings:
       trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
     third_party_settings:
       ds:
         ft:
@@ -98,6 +107,7 @@ hidden:
   field_shared_in: true
   field_short_title: true
   field_site_featured: true
+  field_site_pinned: true
   field_state: true
   field_visit_count: true
   langcode: true
