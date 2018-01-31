@@ -10,12 +10,12 @@ dependencies:
 id: mycontentcollection
 theme: joinup_theme
 region: filters
-weight: 0
+weight: -8
 provider: null
 plugin: 'facet_block:collection_my_content'
 settings:
   id: 'facet_block:collection_my_content'
-  label: 'Collections - My content'
+  label: 'Collections content - My content'
   provider: facets
   label_display: '0'
 visibility: {  }
