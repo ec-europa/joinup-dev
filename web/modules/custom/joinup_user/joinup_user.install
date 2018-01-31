@@ -29,6 +29,7 @@ function joinup_user_install() {
     'edit own owner rdf entity',
     'export rdf metadata',
     'flag subscribe_discussions',
+    'manage own subscriptions',
     'post comments',
     'propose collection rdf entity',
     'skip comment approval',

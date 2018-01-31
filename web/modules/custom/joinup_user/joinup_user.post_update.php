@@ -16,3 +16,12 @@ function joinup_user_post_update_add_subscribe_discussion_permissions() {
     'unflag subscribe_discussions',
   ]);
 }
+
+/**
+ * Allow authenticated users to manage their subscriptions.
+ */
+function joinup_user_post_update_access_dashboard() {
+  user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, [
+    'manage own subscriptions',
+  ]);
+}

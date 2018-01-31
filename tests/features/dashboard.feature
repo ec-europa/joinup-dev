@@ -10,4 +10,3 @@ Feature: Dashboard
     Then I should see the link "Dashboard"
     When I click "Dashboard"
     Then I should see the heading "Dashboard"
-    And I should not see the link "My subscriptions"
