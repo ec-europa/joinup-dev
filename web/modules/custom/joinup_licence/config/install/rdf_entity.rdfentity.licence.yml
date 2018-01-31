@@ -5,3 +5,7 @@ third_party_settings: {  }
 name: Licence
 rid: licence
 description: ''
+label_singular: licence
+label_plural: licences
+label_count:
+  no_count_capitalize: "Licence\x03Licences"

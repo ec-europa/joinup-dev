@@ -8,7 +8,7 @@ dependencies:
     - rdf_entity.rdfentity.licence
   module:
     - ds
-    - text
+    - smart_trim
     - user
 id: rdf_entity.licence.view_mode_tile
 targetEntityType: rdf_entity
@@ -20,6 +20,14 @@ content:
     label: hidden
     settings:
       trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      trim_options:
+        text: false
+      more_class: more-link
+      summary_handler: full
     third_party_settings:
       ds:
         ft:
@@ -30,7 +38,7 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
-    type: text_trimmed
+    type: smart_trim
     region: content
   label:
     label: hidden
@@ -50,5 +58,7 @@ content:
         template_suggestion: ''
     region: content
 hidden:
+  changed: true
+  created: true
   field_licence_type: true
   langcode: true

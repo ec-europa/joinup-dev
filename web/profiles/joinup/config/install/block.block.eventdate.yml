@@ -16,7 +16,7 @@ provider: null
 plugin: 'facet_block:event_date'
 settings:
   id: 'facet_block:event_date'
-  label: 'Event date'
+  label: 'Content overview - Event date'
   provider: facets
   label_display: '0'
 visibility:

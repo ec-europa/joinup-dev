@@ -6,7 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -49,7 +49,7 @@ class NodeGuard implements GuardInterface {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -82,7 +82,7 @@ class NodeGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relationManager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The relation manager service.
    * @param \Drupal\og\MembershipManagerInterface $ogMembershipManager
    *   The OG membership manager service.
@@ -93,7 +93,7 @@ class NodeGuard implements GuardInterface {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManager $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManagerInterface $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entityTypeManager;
     $this->relationManager = $relationManager;
     $this->ogMembershipManager = $ogMembershipManager;
