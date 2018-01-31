@@ -69,10 +69,11 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
+    /** @var \Drupal\adms_validator\SchemaErrorList $validation_errors */
     $validation_errors = $form_state->get('validation_errors');
     if (!empty($validation_errors)) {
       // The form was submitted, and validation errors have been set.
-      $form['table'] = $this->buildErrorTable($validation_errors);
+      $form['table'] = $validation_errors->toTable();
     }
 
     honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
@@ -119,32 +120,6 @@ class AdmsValidatorForm extends FormBase {
       drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
-  }
-
-  /**
-   * Renders the table with validation errors.
-   *
-   * @param \Drupal\adms_validator\SchemaErrorList $errors
-   *   The validation errors.
-   *
-   * @return array
-   *   The error table as render array.
-   */
-  protected function buildErrorTable(SchemaErrorList $errors): array {
-    return [
-      '#theme' => 'table',
-      '#header' => [
-        t('Class name'),
-        t('Message'),
-        t('Object'),
-        t('Predicate'),
-        t('Rule description'),
-        t('Rule ID'),
-        t('Rule severity'),
-        t('Subject'),
-      ],
-      '#rows' => $errors->toRows(),
-    ];
   }
 
   /**

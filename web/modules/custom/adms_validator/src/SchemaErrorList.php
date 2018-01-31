@@ -57,4 +57,28 @@ class SchemaErrorList {
     return $this->errorCount() === 0;
   }
 
+  /**
+   * Returns the errors in a table as a render array.
+   *
+   * @return array
+   *   A table render array containing the list of errors.
+   */
+  public function toTable(): array {
+    return [
+      '#theme' => 'table',
+      '#header' => [
+        t('Class name'),
+        t('Message'),
+        t('Object'),
+        t('Predicate'),
+        t('Rule description'),
+        t('Rule ID'),
+        t('Rule severity'),
+        t('Subject'),
+      ],
+      '#rows' => $this->toRows(),
+      '#empty' => t('No errors.'),
+    ];
+  }
+
 }
