@@ -2,7 +2,7 @@ rdf_etl.pipeline_execution_controller_execution:
   path: '/admin/content/etl'
   defaults:
     _controller: '\Drupal\rdf_etl\Controller\PipelineExecutionController::execution'
-    _title: 'Execute data pipeline'
+    _title_callback: '\Drupal\rdf_etl\Controller\PipelineExecutionController::getTitle'
   requirements:
     _permission: 'run etl pipeline'
 

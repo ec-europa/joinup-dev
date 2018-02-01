@@ -13,6 +13,13 @@ use Drupal\Component\Plugin\ConfigurablePluginInterface;
 interface EtlProcessStepInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
 
   /**
+   * The graph where the triples are stored during the import process.
+   *
+   * @var string
+   */
+  const SINK_GRAPH = 'http://etl-sink/';
+
+  /**
    * Execute the business logic of the process step (the actual ETL action).
    *
    * @param array $data
