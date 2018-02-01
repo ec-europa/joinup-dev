@@ -9,7 +9,7 @@ use EasyRdf\Sparql\Result;
 /**
  * A collection of Schema Errors.
  */
-class SchemaErrorList {
+class AdmsValidationResult {
 
   protected $errors = [];
 

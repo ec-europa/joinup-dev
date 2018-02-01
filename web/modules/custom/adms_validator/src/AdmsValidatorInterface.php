@@ -28,11 +28,11 @@ interface AdmsValidatorInterface {
    *
    * @param \EasyRdf\Graph $graph
    *   The graph to verify.
-   * @return \Drupal\adms_validator\SchemaErrorList
-   *   A list of schema validation errors.
    *
+   * @return \Drupal\adms_validator\AdmsValidationResult
+   *   A list of schema validation errors.
    */
-  public function validateGraph(Graph $graph): SchemaErrorList;
+  public function validateGraph(Graph $graph): AdmsValidationResult;
 
   /**
    * Validates the triples from a blob of RDF content.
@@ -42,11 +42,10 @@ interface AdmsValidatorInterface {
    * @param string $graph_uri
    *   The graph URI.
    *
-   * @return \Drupal\adms_validator\SchemaErrorList
+   * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
-   *
    */
-  public function validateBlob(string $content, string $graph_uri): SchemaErrorList;
+  public function validateBlob(string $content, string $graph_uri): AdmsValidationResult;
 
   /**
    * Validates the triples from a file.
@@ -56,10 +55,9 @@ interface AdmsValidatorInterface {
    * @param string $graph_uri
    *   The graph URI.
    *
-   * @return \Drupal\adms_validator\SchemaErrorList
+   * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
-   *
    */
-  public function validateFile(string $file_uri_or_path, string $graph_uri): SchemaErrorList;
+  public function validateFile(string $file_uri_or_path, string $graph_uri): AdmsValidationResult;
 
 }

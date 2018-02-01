@@ -32,7 +32,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateGraph(Graph $graph): SchemaErrorList {
+  public function validateGraph(Graph $graph): AdmsValidationResult {
     if (!$uri = $graph->getUri()) {
       throw new \InvalidArgumentException("The graph has been instantiated without an URI. Should be instantiated in this way: <?php new Graph('http://example.com/graph-uri'); ?>.");
     }
@@ -46,13 +46,13 @@ class AdmsValidator implements AdmsValidatorInterface {
     // Perform the validation.
     $query_result = $this->sparqlEndpoint->query(self::validationQuery($graph->getUri()));
 
-    return new SchemaErrorList($query_result);
+    return new AdmsValidationResult($query_result);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateBlob(string $file_uri_or_path, string $graph_uri): SchemaErrorList {
+  public function validateBlob(string $file_uri_or_path, string $graph_uri): AdmsValidationResult {
     $graph = new Graph($graph_uri);
     $graph->parse($file_uri_or_path);
     return $this->validateGraph($graph);
@@ -61,7 +61,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateFile(string $file_uri_or_path, string $graph_uri): SchemaErrorList {
+  public function validateFile(string $file_uri_or_path, string $graph_uri): AdmsValidationResult {
     return $this->validateBlob(file_get_contents($file_uri_or_path), $graph_uri);
   }
 

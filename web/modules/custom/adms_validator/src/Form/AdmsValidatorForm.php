@@ -8,7 +8,6 @@ use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -69,7 +68,7 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
-    /** @var \Drupal\adms_validator\SchemaErrorList $validation_errors */
+    /** @var \Drupal\adms_validator\AdmsValidationResult $validation_errors */
     $validation_errors = $form_state->get('validation_errors');
     if (!empty($validation_errors)) {
       // The form was submitted, and validation errors have been set.
