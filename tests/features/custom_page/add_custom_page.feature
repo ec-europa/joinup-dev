@@ -47,9 +47,9 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a facilitator.
     Given collections:
-      | title           | logo      | state     |
-      | Open Collective | logo.png  | validated |
-      | Code Camp       | logo.png  | validated |
+      | title           | logo     | state     |
+      | Open Collective | logo.png | validated |
+      | Code Camp       | logo.png | validated |
     And I am logged in as a facilitator of the "Open Collective" collection
 
     # Initially there are no custom pages. A help text should inform the user
@@ -66,7 +66,7 @@ Feature: "Add custom page" visibility options.
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
 
     When I fill in the following:
-      | Title | About us                      |
+      | Title | About us |
     And I enter "We are open about everything!" in the "Body" wysiwyg editor
     And I attach the file "test.zip" to "Add a new file"
     And I press "Upload"
@@ -95,9 +95,9 @@ Feature: "Add custom page" visibility options.
       | Username | Roles     |
       | Falstad  | moderator |
     And collections:
-      | title           | logo      | state     |
-      | Open Collective | logo.png  | validated |
-      | Code Camp       | logo.png  | validated |
+      | title           | logo     | state     |
+      | Open Collective | logo.png | validated |
+      | Code Camp       | logo.png | validated |
     And collection user memberships:
       | collection      | user    | roles  |
       | Open Collective | Falstad | member |
