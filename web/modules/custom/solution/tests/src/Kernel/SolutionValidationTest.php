@@ -26,6 +26,7 @@ class SolutionValidationTest extends RdfEntityValidationTestBase {
     'options',
     'search_api',
     'search_api_field',
+    'smart_trim',
     'solution',
   ];
 

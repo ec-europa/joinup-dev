@@ -18,6 +18,7 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
    */
   public static $modules = [
     'joinup_licence',
+    'smart_trim',
   ];
 
   /**
