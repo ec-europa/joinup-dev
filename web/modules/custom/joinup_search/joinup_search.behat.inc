@@ -42,21 +42,32 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I click the :type content tab
    */
   public function clickContentTypeFacet($type) {
-    // Find the span that contains the content type text and than traverse back
-    // to the link wrapping it.
-    $xpath = "//div[@class='tab__container']//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
-      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";
+    $this->assertContentTabDisplayed($type)->click();
+  }
 
-    $xp = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
-    "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
+  /**
+   * Checks if a specific tab facet is displayed on the page.
+   *
+   * @param string $type
+   *   The text of the content tab.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The link as node element.
+   *
+   * @throws \Exception
+   *   Thrown when the tab is not found in the page.
+   *
+   * @Given the :type content tab is displayed
+   */
+  public function assertContentTabDisplayed($type) {
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
+      "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
 
-    $link = $this->getSession()->getPage()->find('xpath', $xp);
-
-    if (!$link) {
+    if (!$link = $this->getSession()->getPage()->find('xpath', $xpath)) {
       throw new \Exception("The tab $type was not found in the page.");
     }
 
-    $link->click();
+    return $link;
   }
 
   /**
