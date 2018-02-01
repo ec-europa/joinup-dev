@@ -65,4 +65,20 @@ class MinkContext extends DrupalExtensionMinkContext {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * The parent method already waits for animations to finish. We want to add
+   * a friendlier name to explain in the tests that we are waiting for
+   * animations and not for AJAX operations in that step.
+   *
+   * @Given I wait for animations to finish
+   */
+  public function iWaitForAjaxToFinish() {
+    // We're just adding a step definition, not changing the actual code. Trick
+    // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    $tricksy = TRUE;
+    parent::iWaitForAjaxToFinish();
+  }
+
 }
