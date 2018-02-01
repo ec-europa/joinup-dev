@@ -63,9 +63,8 @@ class AdmsValidation extends ProcessStepBase implements ContainerFactoryPluginIn
    */
   public function execute(array &$data): void {
     $graph_uri = $this->getConfiguration()['sink_graph'];
-    $store = $this->createGraphStore();
-    $graph = $store->get($graph_uri);
-    $validation = $this->admsValidator->validate($graph, $graph_uri);
+    $graph = $this->createGraphStore()->get($graph_uri);
+    $validation = $this->admsValidator->validateGraph($graph);
     if (!$validation->isSuccessful()) {
       $data['error'] = [
         [

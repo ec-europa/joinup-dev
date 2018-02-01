@@ -97,22 +97,14 @@ class AdmsValidatorForm extends FormBase {
       return;
     }
     try {
-      $graph = $this->fileToGraph($file);
-    }
-    catch (\Exception $e) {
-      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
-      $file->delete();
-      return;
-    }
-    // Delete the uploaded file from disk.
-    $file->delete();
-    try {
-      $schema_errors = $this->admsValidator->validate($graph);
+      $schema_errors = $this->admsValidator->validateFile($file->getFileUri(), AdmsValidatorInterface::DEFAULT_VALIDATION_GRAPH);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
       return;
     }
+    // Delete the uploaded file from disk.
+    $file->delete();
     if ($schema_errors->isSuccessful()) {
       drupal_set_message($this->t('No errors found during validation.'));
     }
@@ -142,20 +134,5 @@ class AdmsValidatorForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {}
-
-  /**
-   * Builds a RDF graph from a file object.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The to be validated file.
-   *
-   * @return \EasyRdf\Graph
-   *   A collection of triples.
-   */
-  protected function fileToGraph(FileInterface $file): Graph {
-    $graph = new Graph();
-    $graph->parseFile($file->getFileUri());
-    return $graph;
-  }
 
 }
