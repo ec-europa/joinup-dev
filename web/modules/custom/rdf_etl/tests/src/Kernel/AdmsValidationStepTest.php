@@ -51,6 +51,9 @@ class AdmsValidationStepTest extends KernelTestBase {
    * @param bool $valid
    *   Expectancy: The file is a valid ADMS v2 file.
    *
+   * @throws \Exception
+   *   If the plugin is invalid.
+   *
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $valid): void {
@@ -62,6 +65,8 @@ class AdmsValidationStepTest extends KernelTestBase {
     $graph = new Graph();
     $graph->parseFile(__DIR__ . "/../../fixtures/$rdf_file");
     $this->createGraphStore()->replace($graph, static::TEST_GRAPH);
+
+    // Execute the validation step.
     $plugin->execute($data);
 
     if ($valid) {

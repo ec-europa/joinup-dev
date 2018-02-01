@@ -1,26 +1,36 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:v="http://www.w3.org/2006/vcard/ns#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
          xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+    <rdf:Description rdf:about="http://asset">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Asset</dct:title>
+        <dct:description>This is an Asset.</dct:description>
+        <dct:publisher rdf:resource="http://publisher"/>
+        <!-- This asset breaks the validation because is missing the
+            'dcat:contactPoint' property -->
+        <dct:type rdf:resource="http://vocabulary/term"/>
+    </rdf:Description>
 
-    <skos:ConceptScheme rdf:about="http://joinup.eu/taxonomy/standardizationLevel#">
-    </skos:ConceptScheme>
+    <rdf:Description rdf:about="http://publisher">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <dct:type rdf:resource="http://purl.org/adms/publishertype/Company"/>
+        <foaf:name>The Publisher</foaf:name>
+    </rdf:Description>
 
-    <skos:Concept rdf:about="http://joinup.eu/taxonomy/standardizationLevel#1">
-        <skos:prefLabel xml:lang="en">Level 1</skos:prefLabel>
-        <skos:definition xml:lang="en">Standardization of a general wrapper or header to the artifact (meta-data standardization)</skos:definition>
-        <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/standardizationLevel#"/>
-    </skos:Concept>
+    <rdf:Description rdf:about="http://contact">
+        <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Kind"/>
+        <v:fn>Contact</v:fn>
+        <v:hasEmail rdf:datatype="v:Email">contact@hexample.com</v:hasEmail>
+    </rdf:Description>
 
-    <skos:Concept rdf:about="http://joinup.eu/taxonomy/standardizationLevel#2">
-        <skos:prefLabel xml:lang="en">Level 2</skos:prefLabel>
-        <skos:definition xml:lang="en">Level 1 plus standardization of external references or interfaces to other artifacts.</skos:definition>
-        <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/standardizationLevel#"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://joinup.eu/taxonomy/standardizationLevel#3">
-        <skos:prefLabel xml:lang="en">Level 3</skos:prefLabel>
-        <skos:definition xml:lang="en">Level 1 plus Level 2 plus whole content standardization (e-g- detailed XML schema reflecting the entire structure of the artifact).</skos:definition>
-        <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/standardizationLevel#"/>
-    </skos:Concept>
+    <rdf:Description rdf:about="http://vocabulary/term">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:label>Term</skos:label>
+        <skos:inScheme rdf:resource="http://vocabulary"/>
+    </rdf:Description>
 
 </rdf:RDF>

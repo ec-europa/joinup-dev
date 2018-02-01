@@ -3,25 +3,33 @@
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns:v="http://www.w3.org/2006/vcard/ns#"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-         xmlns:dcat="http://www.w3.org/ns/dcat#">
-    <rdf:Description rdf:about="http://joinup.ec.europa.eu/unique_identifier">
-        <rdf:type rdf:resource="dcat:Dataset"/>
-        <dct:title xml:lang="en">Asset</dct:title>
-        <dct:description xml:lang="en">This Asset...</dct:description>
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+    <rdf:Description rdf:about="http://asset">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Asset</dct:title>
+        <dct:description>This is an Asset.</dct:description>
         <dct:publisher rdf:resource="http://publisher"/>
         <dcat:contactPoint rdf:resource="http://contact"/>
-        <dct:type rdf:resource="http://data.europa.eu/eira/PublicPolicy"/>
+        <dct:type rdf:resource="http://vocabulary/term"/>
     </rdf:Description>
 
     <rdf:Description rdf:about="http://publisher">
-        <rdf:type rdf:resource="foaf:Agent"/>
-        <foaf:name>Some publisher</foaf:name>
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <dct:type rdf:resource="http://purl.org/adms/publishertype/Company"/>
+        <foaf:name>The Publisher</foaf:name>
     </rdf:Description>
 
     <rdf:Description rdf:about="http://contact">
-        <rdf:type rdf:resource="v:Kind"/>
-        <v:fn>Mr X</v:fn>
-        <v:hasEmail>mrx@hexample.com</v:hasEmail>
+        <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Kind"/>
+        <v:fn>Contact</v:fn>
+        <v:hasEmail rdf:datatype="v:Email">contact@hexample.com</v:hasEmail>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://vocabulary/term">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:label>Term</skos:label>
+        <skos:inScheme rdf:resource="http://vocabulary"/>
     </rdf:Description>
 
 </rdf:RDF>
