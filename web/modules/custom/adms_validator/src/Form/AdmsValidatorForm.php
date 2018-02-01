@@ -8,7 +8,9 @@ use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Form to validate the ADMS compliance of a RDF or TTL file.
@@ -23,11 +25,27 @@ class AdmsValidatorForm extends FormBase {
   protected $admsValidator;
 
   /**
+   * Current user session ID.
+   *
+   * @var string
+   */
+  protected $sessionId;
+
+  /**
+   * The SPARQL endpoint.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $sparql;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('adms_validator.validator')
+      $container->get('adms_validator.validator'),
+      $container->get('session'),
+      $container->get('sparql_endpoint')
     );
   }
 
@@ -36,9 +54,15 @@ class AdmsValidatorForm extends FormBase {
    *
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The Sparql endpoint.
+   * @param \Symfony\Component\HttpFoundation\Session\Session $session
+   *   The current user session.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL endpoint.
    */
-  public function __construct(AdmsValidatorInterface $adms_validator) {
+  public function __construct(AdmsValidatorInterface $adms_validator, Session $session, Connection $sparql) {
     $this->admsValidator = $adms_validator;
+    $this->sessionId = $session->getId();
+    $this->sparql = $sparql;
   }
 
   /**
@@ -95,15 +119,21 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
+
     try {
-      $schema_errors = $this->admsValidator->validateFile($file->getFileUri(), AdmsValidatorInterface::DEFAULT_VALIDATION_GRAPH);
+      $uri = AdmsValidatorInterface::DEFAULT_VALIDATION_GRAPH . "/{$this->sessionId}";
+      $schema_errors = $this->admsValidator->validateFile($file->getFileUri(), $uri);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
       return;
     }
+
     // Delete the uploaded file from disk.
     $file->delete();
+    // Clear the graph.
+    $this->sparql->query("CLEAR GRAPH <$uri>");
+
     if ($schema_errors->isSuccessful()) {
       drupal_set_message($this->t('No errors found during validation.'));
     }

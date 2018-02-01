@@ -14,7 +14,7 @@ interface AdmsValidatorInterface {
    *
    * @var string
    */
-  const DEFAULT_VALIDATION_GRAPH = 'http://adms-validator/';
+  const DEFAULT_VALIDATION_GRAPH = 'http://adms-validator';
 
   /**
    * The path of the file that contains the validation rules.

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -18,11 +19,23 @@ class AdmsValidationResult {
    *
    * @param \EasyRdf\Sparql\Result $result
    *   The result of the validation query.
+   * @param string $graph_uri
+   *   The graph URI.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL endpoint.
+   *
+   * @todo Remove $graph_uri, $sparql params in ISAICP-4296.
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
-  public function __construct(Result $result) {
+  public function __construct(Result $result, $graph_uri, Connection $sparql) {
     foreach ($result as $error) {
-      $this->errors[] = new SchemaError($error);
+      // @todo Remove this hack in ISAICP-4296.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+      if (!in_array($error->Rule_ID->getValue(), range(100, 103))) {
+        $this->errors[] = new SchemaError($error);
+      }
     }
+    $this->applyRules100To103($graph_uri, $sparql);
   }
 
   /**
@@ -79,6 +92,54 @@ class AdmsValidationResult {
       '#rows' => $this->toRows(),
       '#empty' => t('No errors.'),
     ];
+  }
+
+  /**
+   * Fix rules 100, 101, 102, 103.
+   *
+   * @param string $graph_uri
+   *   The graph URI.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL endpoint.
+   *
+   * @todo Remove this hack in ISAICP-4296.
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
+   */
+  protected function applyRules100To103($graph_uri, Connection $sparql) {
+    $rules = [
+      100 => [
+        'prefix' => 'dcat:Dataset',
+        'uri' => 'http://www.w3.org/ns/dcat#Dataset',
+      ],
+      101 => [
+        'prefix' => 'skos:Concept',
+        'uri' => 'http://www.w3.org/2004/02/skos/core#Concept',
+      ],
+      102 => [
+        'prefix' => 'v:Kind',
+        'uri' => 'http://www.w3.org/2006/vcard/ns#Kind',
+      ],
+      103 => [
+        'prefix' => 'foaf:Agent',
+        'uri' => 'http://xmlns.com/foaf/0.1/Agent',
+      ],
+    ];
+
+    foreach ($rules as $rule_id => $rule) {
+
+      $query = "ASK WHERE { GRAPH <$graph_uri> { ?s a <{$rule['uri']}> } }";
+      if (!$sparql->query($query)->isTrue()) {
+
+        $error = (object) [
+          'Class_Name' => $rule['prefix'],
+          'Message' => "The mandatory class {$rule['prefix']} does not exist.",
+          'Rule_Description' => "{$rule['prefix']} does not exist.",
+          'Rule_ID' => $rule_id,
+          'Rule_Severity' => 'error',
+        ];
+        $this->errors[] = new SchemaError($error);
+      }
+    }
   }
 
 }

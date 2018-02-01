@@ -34,11 +34,11 @@ class AdmsValidator implements AdmsValidatorInterface {
    */
   public function validateGraph(Graph $graph): AdmsValidationResult {
     if (!$uri = $graph->getUri()) {
-      throw new \InvalidArgumentException("The graph has been instantiated without an URI. Should be instantiated in this way: <?php new Graph('http://example.com/graph-uri'); ?>.");
+      throw new \InvalidArgumentException("The graph has been instantiated without an URI. Should be instantiated in this way: new Graph('http://example.com/graph-uri');");
     }
 
     // Store the graph in the graph store.
-    $result = $this->createGraphStore()->replace($graph, $graph->getUri());
+    $result = $this->createGraphStore()->replace($graph);
     if (!$result->isSuccessful()) {
       throw new \Exception('Could not store triples in triple store.');
     }
@@ -46,15 +46,15 @@ class AdmsValidator implements AdmsValidatorInterface {
     // Perform the validation.
     $query_result = $this->sparqlEndpoint->query(self::validationQuery($graph->getUri()));
 
-    return new AdmsValidationResult($query_result);
+    return new AdmsValidationResult($query_result, $uri, $this->sparqlEndpoint);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateBlob(string $file_uri_or_path, string $graph_uri): AdmsValidationResult {
+  public function validateBlob(string $content, string $graph_uri): AdmsValidationResult {
     $graph = new Graph($graph_uri);
-    $graph->parse($file_uri_or_path);
+    $graph->parse($content);
     return $this->validateGraph($graph);
   }
 

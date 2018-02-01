@@ -10,8 +10,7 @@
         <dct:title>Asset</dct:title>
         <dct:description>This is an Asset.</dct:description>
         <dct:publisher rdf:resource="http://publisher"/>
-        <!-- This asset breaks the validation because is missing the
-            'dcat:contactPoint' property -->
+        <dcat:contactPoint rdf:resource="http://contact"/>
         <dct:type rdf:resource="http://vocabulary/term"/>
     </rdf:Description>
 
