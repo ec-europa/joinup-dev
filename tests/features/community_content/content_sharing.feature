@@ -202,7 +202,7 @@ Feature: Sharing content between collections
       | discussion   |
       | news         |
 
-  Scenario: Shared sticky content is erroneously shown first.
+  Scenario: Shared pinned content is erroneously shown first.
     Given collections:
       | title         | state     |
       | Milky Way     | validated |

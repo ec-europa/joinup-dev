@@ -5,3 +5,11 @@ site_wide_featured:
     - core/jquery
     - core/jquery.once
     - core/drupal
+
+pinned_entities:
+  js:
+    js/pinned_entities.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
