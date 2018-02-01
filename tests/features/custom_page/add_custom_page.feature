@@ -109,3 +109,46 @@ Feature: "Add custom page" visibility options.
 
     When I go to the homepage of the "Code Camp" collection
     Then I should see the link "Add custom page" in the "Plus button menu"
+
+  @javascript
+  Scenario: Long list of attachments should be collapsed.
+    Given the following collection:
+      | title | Aggressive Rubber |
+      | state | validated         |
+    # Create custom pages with 5 and 6 attachments.
+    # 5 is the limit before adding the "Show more" functionality.
+    And custom_page content:
+      | title          | body                 | collection        | attachments                                                          |
+      | Rubber bands   | The aggressive ones. | Aggressive Rubber | empty.rdf, empty_pdf.pdf, invalid_adms.rdf, test.zip, text.pdf       |
+      | Elastic rubber | Also aggressive.     | Aggressive Rubber | ada.png, alan.jpg, blaise.jpg, charles.jpg, leonardo.jpg, linus.jpeg |
+
+    When I go to the "Rubber bands" custom page
+    Then the "empty.rdf" link in the Content region should be visible
+    And the "empty_pdf.pdf" link in the Content region should be visible
+    And the "invalid_adms.rdf" link in the Content region should be visible
+    And the "test.zip" link in the Content region should be visible
+    And the "text.pdf" link in the Content region should be visible
+    But I should not see the link "Show more" in the Content region
+
+    When I go to the "Elastic rubber" custom page
+    Then the "ada.png" link in the Content region should be visible
+    And the "alan.jpg" link in the Content region should be visible
+    And the "blaise.jpg" link in the Content region should be visible
+    And the "charles.jpg" link in the Content region should be visible
+    And the "leonardo.jpg" link in the Content region should be visible
+    And the "Show more" link in the Content region should be visible
+    # The sixth element should be hidden.
+    But the "linus.jpeg" link in the Content region should not be visible
+
+    # Expand the list. The sixth element should become visible.
+    When I click "Show more"
+    Then the "linus.jpeg" link in the Content region should be visible
+    And the "Show less" link in the Content region should be visible
+    But I should not see the link "Show more" in the Content region
+
+    # Collapse again the list.
+    When I click "Show less"
+    And I wait for animations to finish
+    Then the "linus.jpeg" link in the Content region should not be visible
+    And the "Show more" link in the Content region should be visible
+    But I should not see the link "Show less" in the Content region
