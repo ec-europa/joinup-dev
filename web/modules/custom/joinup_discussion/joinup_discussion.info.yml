@@ -28,6 +28,8 @@ config_devel:
   - core.entity_view_display.comment.reply.default
   - core.entity_view_display.message.discussion_comment_new.mail_body
   - core.entity_view_display.message.discussion_comment_new.mail_subject
+  - core.entity_view_display.message.discussion_delete.mail_body
+  - core.entity_view_display.message.discussion_delete.mail_subject
   - core.entity_view_display.message.discussion_invite.default
   - core.entity_view_display.message.discussion_invite.mail_body
   - core.entity_view_display.message.discussion_invite.mail_subject
