@@ -69,6 +69,10 @@ class JoinupSubscription implements JoinupSubscriptionInterface {
       }
       if ($uids) {
         $subscribers = User::loadMultiple($uids);
+
+        // Flaggings may be orphaned if the user has been deleted. Filter out
+        // any non-existing users.
+        $subscribers = array_filter($subscribers);
       }
     }
 
