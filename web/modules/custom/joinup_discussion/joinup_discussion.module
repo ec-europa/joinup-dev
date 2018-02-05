@@ -8,6 +8,24 @@
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
+use Drupal\changed_fields\NodeSubject;
+use Drupal\joinup_discussion\DiscussionObserver;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * We use an observer to detect changes to the relevant fields of the discussion
+ * nodes. Then we call the observer update method to take action.
+ */
+function joinup_discussion_node_presave(NodeInterface $discussion) {
+  if ($discussion->bundle() === 'discussion') {
+    // Create a node subject object, add the observer and notify about changes.
+    $node_subject = new NodeSubject($discussion, 'default_field_comparator');
+    $node_subject->attach(new DiscussionObserver(\Drupal::service('event_dispatcher')));
+    $node_subject->notify();
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -26,6 +44,8 @@ function joinup_discussion_entity_extra_field_info() {
 
 /**
  * Implements hook_ENTITY_TYPE_view().
+ *
+ * Adds an invite link to discussions.
  */
 function joinup_discussion_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if (!$display->getComponent('invite_link')) {

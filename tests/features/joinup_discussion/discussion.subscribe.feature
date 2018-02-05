@@ -51,16 +51,18 @@ Feature: Subscribing to discussions
     And the "Rare butter" discussion should have 0 subscribers
 
   @email
-  Scenario: Receive an E-mail notification when a comment is added.
+  Scenario: Receive an E-mail notification when a comment is added or a
+    discussion is updated.
+
     Given users:
       | Username | E-mail            | First name | Family name |
       | follower | dale@example.com  | Dale       | Arden       |
       | debater  | flash@example.com | Flash      | Gordon      |
 
     # Subscribe the 'follower' user to the discussion.
-    And I am logged in as follower
+    Given I am logged in as follower
     And I go to the "Rare Butter" discussion
-    And I click "Subscribe"
+    Then I click "Subscribe"
 
     # Notifications are only sent for anonymous users when the comment is
     # approved.
@@ -114,3 +116,48 @@ Feature: Subscribing to discussions
       | recipient | hans@example.com                                                                              |
       | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+
+    # No E-mail notification is sent when the discussion is updated but no
+    # relevant fields are changed.
+    Given the mail collector cache is empty
+    And I am logged in as "Dr. Hans Zarkov"
+    When I go to the discussion content "Rare Butter" edit screen
+    And I press "Update"
+    Then 0 e-mails should have been sent
+
+    # When relevant fields of a discussion are changed, the subscribers are
+    # receiving a notifications.
+    Given I go to the discussion content "Rare Butter" edit screen
+    And I fill in "Content" with "The old content was wrong."
+    And I press "Update"
+    And the following email should have been sent:
+      | recipient | dale@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should have been sent:
+      | recipient | flash@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # The author of the discussion update doesn't receive any notification.
+    But the following email should not have been sent:
+      | recipient | hans@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    Then 2 e-mails should have been sent
+
+    # If the discussion is moved from 'validated' to any other state, no
+    # notification will be send, regardless if a relevant field is changed.
+    Given the mail collector cache is empty
+    And I am logged in as a moderator
+    When I go to the discussion content "Rare Butter" edit screen
+    And I fill in "Content" with "Is this change triggering notifications?"
+    And I fill in "Motivation" with "Reporting this content..."
+    And I press "Report"
+    Then the following email should not have been sent:
+      | recipient | dale@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should not have been sent:
+      | recipient | flash@example.com                                                                  |
+      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
