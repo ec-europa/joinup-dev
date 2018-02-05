@@ -5,6 +5,16 @@ services:
       - { name: event_subscriber }
   joinup_discussion.subscribed_discussion_comment:
     class: Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionCommentSubscriber
-    arguments: ['@joinup_subscription', '@joinup.message_delivery']
+    arguments: ['@joinup_subscription.subscription', '@joinup_notification.message_delivery']
     tags:
       - { name: event_subscriber }
+  joinup_discussion.invitation_subscriber:
+    class: Drupal\joinup_discussion\EventSubscriber\InvitationSubscriber
+    arguments: ['@joinup_subscription.subscription']
+    tags:
+      - { name: event_subscriber }
+  cache_context.can_invite_to_discussion:
+    class: Drupal\joinup_discussion\Cache\CanInviteToDiscussionCacheContext
+    arguments: ['@current_user', '@current_route_match']
+    tags:
+      - { name: cache.context }

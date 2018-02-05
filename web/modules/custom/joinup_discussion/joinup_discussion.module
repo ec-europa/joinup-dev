@@ -2,5 +2,54 @@
 
 /**
  * @file
- * Contains functions relative to the discussion entity.
+ * Hook implementations for the Joinup Discussion module.
  */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_discussion_entity_extra_field_info() {
+  $fields = [];
+
+  $fields['node']['discussion']['display']['invite_link'] = [
+    'label' => t('Invite'),
+    'description' => t('A link to invite users to the discussion.'),
+    'visible' => FALSE,
+  ];
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function joinup_discussion_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$display->getComponent('invite_link')) {
+    return;
+  }
+
+  $url = Url::fromRoute('joinup_discussion.invite_form', [
+    'node' => $entity->id(),
+  ]);
+
+  $build['invite_link'] = [
+    '#theme' => 'link_icon',
+    '#title' => t('Invite'),
+    '#icon' => 'user',
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['action-link'],
+    ],
+    '#access' => $url->access(),
+    '#cache' => [
+      'contexts' => [
+        // Using our custom context.
+        'can_invite_to_discussion',
+      ],
+    ],
+  ];
+}

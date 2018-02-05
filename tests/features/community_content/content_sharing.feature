@@ -215,3 +215,28 @@ Feature: Sharing content between collections
     Then I should see the following tiles in the correct order:
       | Chocolate Way content |
       | Milky Way content     |
+
+  @javascript
+  Scenario Outline: The sharing options should be shown in a modal window.
+    Given collection:
+      | title | Secrets   |
+      | state | validated |
+    Given <content type> content:
+      | title                 | collection | state     |
+      | An unshareable secret | Secrets    | validated |
+    And I am an anonymous user
+    When I go to the content page of the type "<content type>" with the title "An unshareable secret"
+    And I click "Share"
+    Then a modal should open
+    And I should see the following lines of text:
+      | Facebook |
+      | Twitter  |
+      | Google + |
+      | Linkedin |
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
