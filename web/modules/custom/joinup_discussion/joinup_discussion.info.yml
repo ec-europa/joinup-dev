@@ -11,6 +11,7 @@ dependencies:
   - joinup_community_content
   - joinup_core
   - joinup_invite
+  - joinup_notification
   - joinup_subscription
   - joinup_user
   - language
@@ -27,6 +28,8 @@ config_devel:
   - core.entity_view_display.comment.reply.default
   - core.entity_view_display.message.discussion_comment_new.mail_body
   - core.entity_view_display.message.discussion_comment_new.mail_subject
+  - core.entity_view_display.message.discussion_delete.mail_body
+  - core.entity_view_display.message.discussion_delete.mail_subject
   - core.entity_view_display.message.discussion_invite.default
   - core.entity_view_display.message.discussion_invite.mail_body
   - core.entity_view_display.message.discussion_invite.mail_subject
@@ -53,6 +56,7 @@ config_devel:
   - field.storage.node.field_replies
   - joinup_invite.invitation_type.discussion
   - message.template.discussion_comment_new
+  - message.template.discussion_delete
   - message.template.discussion_invite
   - message.template.discussion_updated
   - node.type.discussion
