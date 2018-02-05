@@ -71,7 +71,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
       }
     }
     catch (UserAlreadySubscribedException $e) {
-      drupal_set_message($this->t('You were already subscribed to this discussion. Enjoy your day!'));
+      drupal_set_message($this->t('You were already subscribed to this discussion.'));
     }
   }
 

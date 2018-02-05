@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "74dad427a8237046985aa746bfd8bd5b",
+    "content-hash": "e12217d68cce519a7579be2b88ec64e5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1825,6 +1825,53 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cached_computed_field",
                 "issues": "https://www.drupal.org/project/issues/cached_computed_field"
+            }
+        },
+        {
+            "name": "drupal/changed_fields",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/changed_fields",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "bc8c910698ca0cc6938a49716fdac7893790ea91"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0",
+                    "datestamp": "1501324743",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Loparev",
+                    "homepage": "https://www.drupal.org/user/3158841"
+                }
+            ],
+            "description": "Allows developers to react on changed node fields",
+            "homepage": "https://www.drupal.org/project/changed_fields",
+            "support": {
+                "source": "http://cgit.drupalcode.org/changed_fields"
             }
         },
         {
