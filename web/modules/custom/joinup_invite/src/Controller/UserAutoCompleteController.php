@@ -52,6 +52,7 @@ class UserAutoCompleteController extends ControllerBase {
     if ($param) {
       $results = $this->entityTypeManager->getStorage('user')->getQuery('OR')
         ->condition('mail', $param, 'CONTAINS')
+        ->condition('name', $param, 'CONTAINS')
         ->condition('field_user_first_name', $param, 'CONTAINS')
         ->condition('field_user_family_name', $param, 'CONTAINS')
         ->sort('field_user_first_name')
@@ -78,9 +79,9 @@ class UserAutoCompleteController extends ControllerBase {
    *   A string version of user's full name.
    */
   protected function getAccountName(UserInterface $user) {
-    return $this->t('@name (@email)', [
+    return $this->t('@name (@username)', [
       '@name' => $user->get('full_name')->value,
-      '@email' => $user->getEmail(),
+      '@username' => $user->getAccountName(),
     ]);
   }
 

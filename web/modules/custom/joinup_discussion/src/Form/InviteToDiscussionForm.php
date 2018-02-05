@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
@@ -79,6 +80,13 @@ class InviteToDiscussionForm extends InviteFormBase {
     self::RESULT_ACCEPTED => 'status',
     self::RESULT_REJECTED => 'status',
   ];
+
+  /**
+   * The discussion node where to invite users.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $discussion;
 
   /**
    * The event dispatcher.
@@ -154,15 +162,25 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getSubmitButtonText() : TranslatableMarkup {
+  protected function getSubmitButtonText(): TranslatableMarkup {
     return $this->t('Invite to discussion');
   }
 
   /**
    * {@inheritdoc}
    */
+  protected function getCancelButtonUrl(): Url {
+    return new Url('entity.node.canonical', [
+      'node' => $this->discussion->id(),
+    ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $form_state->set('discussion', $node);
+    $this->discussion = $node;
+
     return parent::build($form, $form_state);
   }
 
@@ -170,23 +188,20 @@ class InviteToDiscussionForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $user_ids = array_filter($form_state->getValue('users'));
     /** @var \Drupal\user\UserInterface[] $users */
-    $users = $this->entityTypeManager->getStorage('user')->loadMultiple($user_ids);
-    $discussion = $form_state->get('discussion');
-
+    $users = $this->getUserList($form_state);
     $results = array_fill_keys(array_keys(self::INVITATION_MESSAGE_TYPES), 0);
 
     foreach ($users as $user) {
       // Check if the user is already subscribed to the discussion. In this case
       // no invitation needs to be sent.
-      if ($this->subscription->isSubscribed($user, $discussion, 'subscribe_discussions')) {
+      if ($this->subscription->isSubscribed($user, $this->discussion, 'subscribe_discussions')) {
         $results[self::RESULT_ACCEPTED]++;
         continue;
       }
 
       // Check if a previous invitation already exists.
-      $invitation = Invitation::loadByEntityAndUser($discussion, $user, 'discussion');
+      $invitation = Invitation::loadByEntityAndUser($this->discussion, $user, 'discussion');
       if (!empty($invitation)) {
         switch ($invitation->getStatus()) {
           // If the invitation was already accepted, don't send an invitation.
@@ -217,7 +232,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       $invitation = $this->entityTypeManager->getStorage('invitation')->create(['bundle' => 'discussion']);
       $invitation
         ->setRecipient($user)
-        ->setEntity($discussion)
+        ->setEntity($this->discussion)
         ->save();
 
       // Send the notification message for the invitation.
@@ -252,7 +267,7 @@ class InviteToDiscussionForm extends InviteFormBase {
           break;
 
         default:
-          throw new \Exception("Unknown resukt type '$result'.");
+          throw new \Exception("Unknown result type '$result'.");
       }
       drupal_set_message($message, $type);
     }

@@ -39,7 +39,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I :action the invitation for the :title :type
    */
-  public function acceptInvitation(string $action, string $title, string $type) : void {
+  public function acceptInvitation(string $action, string $title, string $type): void {
     if (!in_array($action, ['accept', 'reject'])) {
       throw new \InvalidArgumentException("Unknown action '$action'. Valid actions are 'accept' and 'reject'.");
     }
@@ -68,7 +68,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *     invitation notifications when people are invited to content of the
    *     given entity type.
    */
-  protected function getInvitationInfo(string $entity_type) : array {
+  protected function getInvitationInfo(string $entity_type): array {
     $mapping = [
       'discussion' => [
         'invitation_bundle' => 'discussion',
@@ -85,7 +85,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @return \Drupal\joinup_invite\InvitationMessageHelperInterface
    *   The service.
    */
-  protected function getInvitationMessageHelper() : InvitationMessageHelperInterface {
+  protected function getInvitationMessageHelper(): InvitationMessageHelperInterface {
     return \Drupal::service('joinup_invite.invitation_message_helper');
   }
 
