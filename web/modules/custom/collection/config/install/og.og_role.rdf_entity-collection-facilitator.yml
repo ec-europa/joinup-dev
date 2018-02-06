@@ -41,6 +41,7 @@ permissions:
   - 'edit own news content'
   - 'highlight collections'
   - 'invite facilitators'
+  - 'invite users to discussions'
   - 'manage members'
   - 'pin group content'
   - 'request collection archival'
