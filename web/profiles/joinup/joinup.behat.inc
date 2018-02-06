@@ -2230,6 +2230,34 @@ JS;
   }
 
   /**
+   * Press the enter key in the keyboard.
+   *
+   * Works only in Javascript-enabled browsers.
+   *
+   * @param string $field
+   *   The field where to press the enter key.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   not found.
+   *
+   * @When I hit enter( in the keyboard) on the field :field
+   */
+  public function hitEnterKeyboard($field) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires Javascript to run.');
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("Could not find field '$field'");
+    }
+
+    $element->keyDown("\r");
+    $element->keyUp("\r");
+  }
+
+  /**
    * Asserts that a tile is marked as pinned.
    *
    * @param string $heading

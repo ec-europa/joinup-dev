@@ -93,6 +93,7 @@ hidden:
   field_site_pinned: true
   field_state: true
   field_visit_count: true
+  invite_link: true
   langcode: true
   links: true
   og_audience: true
