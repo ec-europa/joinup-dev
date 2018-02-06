@@ -12,7 +12,7 @@
         "cweagans/composer-patches": "1.x-dev#462e65061606dc6149349535d4322241515d1b16",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/cached_computed_field": "^1.0-beta2",
+        "drupal/cached_computed_field": "1.x-dev",
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
@@ -152,6 +152,9 @@
             "behat/mink-extension": {
                 "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311" : "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
             },
+            "drupal/cached_computed_field": {
+                "Expired items never updated @see https://www.drupal.org/project/cached_computed_field/issues/2936736" : "https://www.drupal.org/files/issues/2936736-25.patch"
+            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-293-8.4.x-version-of-291.patch",
@@ -192,7 +195,8 @@
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
+                "Support id string comparison. @see https://github.com/ec-europa/rdf_entity/pull/20": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/20.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
