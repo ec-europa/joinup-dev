@@ -27,6 +27,13 @@ function joinup_core_post_update_install_email_registration() {
 }
 
 /**
+ * Enable the Joinup Invite module.
+ */
+function joinup_core_post_update_install_joinup_invite() {
+  \Drupal::service('module_installer')->install(['joinup_invite']);
+}
+
+/**
  * Move the contact form attachments under the private scheme.
  */
 function joinup_core_post_update_move_contact_form_attachments() {

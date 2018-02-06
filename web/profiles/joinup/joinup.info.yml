@@ -11,6 +11,7 @@ dependencies:
   - asset_distribution
   - asset_release
   - block
+  - changed_fields
   - ckeditor
   - collection
   - config_readonly
@@ -28,6 +29,7 @@ dependencies:
   - email_registration
   - field_group
   - file
+  - flag
   - help
   - honeypot
   - image
@@ -152,6 +154,7 @@ config_devel:
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default

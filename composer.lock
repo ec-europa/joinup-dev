@@ -1822,6 +1822,53 @@
             "time": "2017-07-04T17:07:54+00:00"
         },
         {
+            "name": "drupal/changed_fields",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/changed_fields",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "bc8c910698ca0cc6938a49716fdac7893790ea91"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0",
+                    "datestamp": "1501324743",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Loparev",
+                    "homepage": "https://www.drupal.org/user/3158841"
+                }
+            ],
+            "description": "Allows developers to react on changed node fields",
+            "homepage": "https://www.drupal.org/project/changed_fields",
+            "support": {
+                "source": "http://cgit.drupalcode.org/changed_fields"
+            }
+        },
+        {
             "name": "drupal/config_provider",
             "version": "1.0.0-beta4",
             "source": {
@@ -3178,6 +3225,81 @@
                 "source": "http://cgit.drupalcode.org/file_uri",
                 "issues": "http://drupal.org/project/file_uri",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/flag",
+            "version": "4.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/flag",
+                "reference": "8.x-4.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/flag-8.x-4.0-alpha2.zip",
+                "reference": "8.x-4.0-alpha2",
+                "shasum": "e9ead06aadc9d26364b9ad1225354b0c47d5ce02"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-4.0-alpha2",
+                    "datestamp": "1494517385",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "fubhy",
+                    "homepage": "https://www.drupal.org/user/761344"
+                },
+                {
+                    "name": "joachim",
+                    "homepage": "https://www.drupal.org/user/107701"
+                },
+                {
+                    "name": "merlinofchaos",
+                    "homepage": "https://www.drupal.org/user/26979"
+                },
+                {
+                    "name": "mooffie",
+                    "homepage": "https://www.drupal.org/user/78454"
+                },
+                {
+                    "name": "quicksketch",
+                    "homepage": "https://www.drupal.org/user/35821"
+                },
+                {
+                    "name": "shabana.navas",
+                    "homepage": "https://www.drupal.org/user/1311398"
+                },
+                {
+                    "name": "socketwench",
+                    "homepage": "https://www.drupal.org/user/65793"
+                }
+            ],
+            "description": "Create customized flags that users can set on entities.",
+            "homepage": "https://www.drupal.org/project/flag",
+            "support": {
+                "source": "http://cgit.drupalcode.org/flag"
             }
         },
         {
@@ -12311,6 +12433,7 @@
         "cweagans/composer-patches": 20,
         "drupal/cached_computed_field": 20,
         "drupal/diff": 5,
+        "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/pathauto": 20,
