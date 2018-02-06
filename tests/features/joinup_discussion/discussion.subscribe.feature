@@ -17,6 +17,7 @@ Feature: Subscribing to discussions
       | Rare Whey   | Whey is the liquid remaining after milk has been curdled.        | Dairy products | draft     | Dr. Hans Zarkov |
     Then the "Rare butter" discussion should have 0 subscribers
 
+  @javascript
   Scenario: Subscribe to a discussion.
     When I am an anonymous user
     And I go to the "Rare Butter" discussion
@@ -44,8 +45,9 @@ Feature: Subscribing to discussions
     And the "Rare butter" discussion should have 1 subscriber
 
     When I click "Unsubscribe"
-    Then I should see the heading "Unsubscribe from this discussion?"
-    When I press "Unsubscribe"
+    Then a modal should open
+    And I should see "Unsubscribe from this discussion?" in the "Modal title" region
+    When I press "Unsubscribe" in the "Modal buttons" region
     Then I should see the heading "Rare Butter"
     And I should see the link "Subscribe"
     And the "Rare butter" discussion should have 0 subscribers
