@@ -24,6 +24,13 @@ class RequiredIfOtherFieldHasValueConstraint extends Constraint {
   public $message = 'The field %field is required when %dependent_field is set to %dependent_value.';
 
   /**
+   * The violation message to show when the dependent field has multiple values.
+   *
+   * @var string
+   */
+  public $multipleValuesMessage = 'The field %field is required when %dependent_field is set to any of the values %dependent_value.';
+
+  /**
    * The field name to check for values.
    *
    * @var string

@@ -47,7 +47,8 @@ class RequiredIfOtherFieldHasValueConstraintValidator extends ConstraintValidato
         return $this->getFieldItemDisplayValue($item);
       }, iterator_to_array($dependent_field));
 
-      $this->context->addViolation($constraint->message, [
+      $message = count($labels) > 1 ? $constraint->multipleValuesMessage : $constraint->message;
+      $this->context->addViolation($message, [
         '%field' => $items->getFieldDefinition()->getLabel(),
         '%dependent_field' => $dependent_field->getFieldDefinition()->getLabel(),
         '%dependent_value' => implode(', ', $labels),
