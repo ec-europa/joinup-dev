@@ -5,7 +5,34 @@
  * The TRR module.
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function trr_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'solution') {
+    $required_taxonomy_fields = [
+      'field_is_actor',
+      'field_is_business_process',
+      'field_is_product_type',
+      'field_is_standardization_level',
+    ];
+    foreach ($required_taxonomy_fields as $field) {
+      if (isset($fields[$field])) {
+        $fields[$field]->addConstraint('RequiredIfOtherFieldHasValue', [
+          'field' => 'field_is_solution_type',
+          'values' => [
+            'http://data.europa.eu/dr8/TestComponent',
+            'http://data.europa.eu/dr8/TestService',
+            'http://data.europa.eu/dr8/TestScenario',
+          ],
+        ]);
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -34,9 +61,6 @@ function trr_form_rdf_entity_solution_form_alter_validate(&$form, FormStateInter
   trr_form__required_test_resource__test_scenario($form, $form_state);
   // Require 'test resource type' when solution is a test component or service.
   trr_form__required_test_resource__component_service($form, $form_state);
-
-  // Sets some taxonomy fields as required when submitting a trr solution.
-  trr_form__required_taxonomies($form, $form_state);
 }
 
 /**
@@ -94,33 +118,6 @@ function trr_form__required_test_resource__component_service(&$form, FormStateIn
   }
   elseif (!in_array($test_resource_type, $required_test_resource_type)) {
     $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."));
-  }
-}
-
-/**
- * Sets some taxonomy fields as required when submitting a trr solution.
- */
-function trr_form__required_taxonomies(&$form, FormStateInterface $form_state) {
-  $solution_type = trr_form_get_active_solution_type($form_state);
-  // Require these fields when the solution type is set to a trr value.
-  if (!array_intersect($solution_type, [
-    'http://data.europa.eu/dr8/TestComponent',
-    'http://data.europa.eu/dr8/TestService',
-    'http://data.europa.eu/dr8/TestScenario',
-  ])) {
-    return;
-  }
-  // These fields are required when submitting a trr solution.
-  $fields = [
-    'field_is_actor',
-    'field_is_business_process',
-    'field_is_product_type',
-    'field_is_standardization_level',
-  ];
-  foreach ($fields as $field) {
-    if (empty($form_state->getValue([$field, 0, 'target_id']))) {
-      $form_state->setError($form[$field], t('Field %field is required for the given solution type.', ['%field' => $form[$field]['widget']['#title']]));
-    }
   }
 }
 
