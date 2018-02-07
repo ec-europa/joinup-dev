@@ -5,19 +5,38 @@
  * Update hooks for joinup_subscription module.
  */
 
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\field\FieldStorageConfigInterface;
 use Drupal\og\Entity\OgMembership;
 
 /**
  * Update all og memberships with being subscribed to community content.
  */
 function joinup_subscription_update_8100(&$sandbox) {
+  $default_values = [
+    ['entity_type' => 'node', 'bundle' => 'discussion'],
+    ['entity_type' => 'node', 'bundle' => 'document'],
+    ['entity_type' => 'node', 'bundle' => 'event'],
+    ['entity_type' => 'node', 'bundle' => 'news'],
+  ];
+
   // Update the entity definitions so that the subscription_bundles field is
   // installed.
-  \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+  if (!$storage_definition = $update_manager->getFieldStorageDefinition('subscription_bundles', 'og_membership')) {
+    $storage_definition = BaseFieldDefinition::create('entity_bundle_pair')
+      ->setLabel(t('Subscribed bundles'))
+      ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
+      ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
+      ->setRequired(FALSE)
+      // By default, the new member gets subscribed to all community content of
+      // the group.
+      ->setDefaultValue($default_values);
+    $update_manager->installFieldStorageDefinition('subscription_bundles', 'og_membership', 'og_membership', $storage_definition);
+  }
 
   if (!isset($sandbox['total'])) {
-    $mids = \Drupal::entityQuery('og_membership')
-      ->execute();
+    $mids = \Drupal::entityQuery('og_membership')->execute();
     $sandbox['total'] = count($mids);
     $sandbox['current'] = 0;
   }
@@ -28,12 +47,7 @@ function joinup_subscription_update_8100(&$sandbox) {
     ->execute();
 
   foreach (OgMembership::loadMultiple($mids) as $membership) {
-    $membership->set('subscription_bundles', [
-      ['entity_type' => 'node', 'bundle' => 'discussion'],
-      ['entity_type' => 'node', 'bundle' => 'document'],
-      ['entity_type' => 'node', 'bundle' => 'event'],
-      ['entity_type' => 'node', 'bundle' => 'news'],
-    ])->save();
+    $membership->set('subscription_bundles', $default_values)->save();
   }
 
   drush_print(($sandbox['current'] + count($mids)) . ' memberships updated.');
