@@ -18,6 +18,7 @@ function trr_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entit
       'field_is_business_process',
       'field_is_product_type',
       'field_is_standardization_level',
+      'field_is_test_resource_type',
     ];
     foreach ($required_taxonomy_fields as $field) {
       if (isset($fields[$field])) {
@@ -83,10 +84,7 @@ function trr_form__required_test_resource__test_scenario(&$form, FormStateInterf
     // Document Assertion Set.
     'http://joinup.eu/test-resource-type#5937f06162c71',
   ];
-  if (!$test_resource_type) {
-    $form_state->setError($form['field_is_test_resource_type'], t("Test resource type is required when the solution type is 'Test Scenario'."));
-  }
-  elseif (!in_array($test_resource_type, $required_test_resource_type)) {
+  if ($test_resource_type && !in_array($test_resource_type, $required_test_resource_type)) {
     $form_state->setError($form['field_is_test_resource_type'], t("Test resource type should be either 'Test Suite', 'Test Case', 'Test Assertion' or 'Document Assertion Set' for the given solution type."));
   }
 }
