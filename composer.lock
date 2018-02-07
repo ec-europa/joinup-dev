@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6a678ccc8b6de49012e28ec570037ac",
+    "content-hash": "08cf97c8b13f838afcc7720df1c06484",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2552,7 +2552,8 @@
                     "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
+                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                    "Widget validation crashes on ItemList violations for widgets with a custom errorElement() implementation @see https://www.drupal.org/project/drupal/issues/2784015": "https://www.drupal.org/files/issues/2784015-22.patch"
                 }
             },
             "autoload": {
