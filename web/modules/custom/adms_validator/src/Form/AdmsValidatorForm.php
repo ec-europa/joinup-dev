@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\adms_validator\Form;
 
+use Drupal\adms_validator\AdmsValidatorInterface;
+use Drupal\adms_validator\SchemaErrorList;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use EasyRdf\Graph;
-use EasyRdf\GraphStore;
-use EasyRdf\Sparql\Result;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,43 +18,29 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AdmsValidatorForm extends FormBase {
 
   /**
-   * The name of the graph used for validation.
+   * The ADMS validator service.
    *
-   * @var string
+   * @var \Drupal\adms_validator\AdmsValidatorInterface
    */
-  const VALIDATION_GRAPH = 'http://adms-validator/';
-
-  /**
-   * The path of the file that contains the validation rules.
-   *
-   * @var string
-   */
-  const SEMIC_VALIDATION_QUERY_PATH = "SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
-
-  /**
-   * The Sparql endpoint.
-   *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
-   */
-  protected $sparqlEndpoint;
+  protected $admsValidator;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('sparql_endpoint')
+      $container->get('adms_validator.validator')
     );
   }
 
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint
+   * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The Sparql endpoint.
    */
-  public function __construct(Connection $sparql_endpoint) {
-    $this->sparqlEndpoint = $sparql_endpoint;
+  public function __construct(AdmsValidatorInterface $adms_validator) {
+    $this->admsValidator = $adms_validator;
   }
 
   /**
@@ -66,7 +53,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['adms_file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
@@ -89,6 +76,8 @@ class AdmsValidatorForm extends FormBase {
       $form['table'] = $this->buildErrorTable($validation_errors);
     }
 
+    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
+
     return $form;
   }
 
@@ -107,117 +96,56 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
-    $count = FALSE;
     try {
-      $count = $this->storeInGraph($file);
+      $graph = $this->fileToGraph($file);
+    }
+    catch (\Exception $e) {
+      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
+      $file->delete();
+      return;
+    }
+    // Delete the uploaded file from disk.
+    $file->delete();
+    try {
+      $schema_errors = $this->admsValidator->validate($graph);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
-    }
-
-    // Delete the uploaded file from disk.
-    $file->delete();
-    if (!$count) {
-      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
       return;
     }
-    drupal_set_message($this->t('Checking %count triples for schema errors.', ['%count' => $count]));
-    $form_state->set('validation_errors', $this->getValidationErrors());
+    if ($schema_errors->isSuccessful()) {
+      drupal_set_message($this->t('No errors found during validation.'));
+    }
+    else {
+      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
+    }
+    $form_state->set('validation_errors', $schema_errors);
   }
 
   /**
-   * Render the table with validation errors.
+   * Renders the table with validation errors.
    *
-   * @param \EasyRdf\Sparql\Result $errors
+   * @param \Drupal\adms_validator\SchemaErrorList $errors
    *   The validation errors.
    *
    * @return array
    *   The error table as render array.
    */
-  protected function buildErrorTable(Result $errors) {
-    $rows = [];
-    foreach ($errors as $error) {
-      $properties = [
-        'Class_Name',
-        'Message',
-        'Object',
-        'Predicate',
-        'Rule_Description',
-        'Rule_ID',
-        'Rule_Severity',
-        'Subject',
-      ];
-      $row = [];
-      foreach ($properties as $property) {
-        $row[$property] = '';
-        if (!empty($error->{$property})) {
-          $row[$property] = $error->{$property};
-        }
-      }
-      $row = array_map('strval', $row);
-      $rows[] = $row;
-    }
+  protected function buildErrorTable(SchemaErrorList $errors): array {
     return [
       '#theme' => 'table',
       '#header' => [
-        ['data' => t('Class name')],
-        ['data' => t('Message')],
-        ['data' => t('Object')],
-        ['data' => t('Predicate')],
-        ['data' => t('Rule description')],
-        ['data' => t('Rule ID')],
-        ['data' => t('Rule severity')],
-        ['data' => t('Subject')],
+        t('Class name'),
+        t('Message'),
+        t('Object'),
+        t('Predicate'),
+        t('Rule description'),
+        t('Rule ID'),
+        t('Rule severity'),
+        t('Subject'),
       ],
-      '#rows' => $rows,
+      '#rows' => $errors->toRows(),
     ];
-  }
-
-  /**
-   * Build the list of validation errors.
-   *
-   * @return \EasyRdf\Sparql\Result
-   *   The validation errors.
-   */
-  protected function getValidationErrors() {
-    $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
-    $query = file_get_contents($adms_ap_rules);
-    // Fill in our validation graph in the query.
-    $query = str_replace('GRAPH <@@@TOKEN-GRAPH@@@> {
-
-UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
-    // @todo Workaround for bug in validations query.
-    // See https://github.com/SEMICeu/adms-ap_validator/issues/1
-    $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
-    return $this->sparqlEndpoint->query($query);
-  }
-
-  /**
-   * Store the triples in the temporary graph.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The file being processed.
-   *
-   * @return bool
-   *   True if the store operation was successful, false otherwise.
-   */
-  protected function storeInGraph(FileInterface $file) {
-    $connection_options = $this->sparqlEndpoint->getConnectionOptions();
-    $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
-    // Use a local SPARQL 1.1 Graph Store.
-    $gs = new GraphStore($connect_string);
-    $graph = new Graph();
-    try {
-      $graph->parseFile($file->getFileUri());
-    }
-    catch (\Exception $e) {
-      throw $e;
-    }
-    $out = $gs->replace($graph, self::VALIDATION_GRAPH);
-    if (!$out->isSuccessful()) {
-      return FALSE;
-    }
-    return $graph->countTriples();
   }
 
   /**
@@ -226,7 +154,7 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
    * @return \Drupal\file\FileInterface|null
    *   File object, if one is uploaded.
    */
-  protected function uploadedFile() {
+  protected function uploadedFile(): ?FileInterface {
     $files = file_save_upload('adms_file', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
     /** @var \Drupal\file\FileInterface $file */
     $file = $files[0];
@@ -240,5 +168,20 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {}
+
+  /**
+   * Builds a RDF graph from a file object.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The to be validated file.
+   *
+   * @return \EasyRdf\Graph
+   *   A collection of triples.
+   */
+  protected function fileToGraph(FileInterface $file): Graph {
+    $graph = new Graph();
+    $graph->parseFile($file->getFileUri());
+    return $graph;
+  }
 
 }

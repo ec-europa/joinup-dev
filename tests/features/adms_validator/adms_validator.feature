@@ -13,6 +13,7 @@ Feature: Validate an ADMS-AP file through the UI
       Then I should see the heading "ADMS-AP Validator"
 
       When I attach the file "invalid_adms.rdf" to "File"
+      And I wait for the honeypot validation to pass
       And I press "Upload"
 
       # Check validations.
@@ -20,6 +21,7 @@ Feature: Validate an ADMS-AP file through the UI
 
       # Check incorrect file.
       When I attach the file "empty.rdf" to "File"
+      And I wait for the honeypot validation to pass
       And I press "Upload"
       Then I should see the following warning messages:
         | The provided file is not a valid RDF file. |
