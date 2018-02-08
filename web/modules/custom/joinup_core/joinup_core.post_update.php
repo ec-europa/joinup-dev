@@ -49,7 +49,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
   foreach ($message_storage->loadMultiple($ids) as $message) {
     /** @var \Drupal\file\FileInterface $attachment */
     if ($attachment = $message->field_contact_attachment->entity) {
-      if (!$attachment || ($file_system->realpath($attachment->getFileUri()) === FALSE)) {
+      if (!file_exists($attachment->getFileUri())) {
         continue;
       }
       $target = file_uri_target($attachment->getFileUri());
