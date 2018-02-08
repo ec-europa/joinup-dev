@@ -249,13 +249,11 @@ function _joinup_core_get_entity_count($graph_uri, $type_uri) {
   $query = Database::getConnection('default', 'sparql_default');
   $count_query = <<<QUERY
   SELECT COUNT(?entity) AS ?count
-  FROM <:graph:>
+  FROM <{$graph_uri}>
   WHERE {
-    ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <:object:>
+    ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <{$type_uri}>
   }
 QUERY;
-  $variables = [':graph:', ':object:'];
-  $query_str = str_replace($variables, [$graph_uri, $type_uri], $count_query);
-  $results = $query->query($query_str);
+  $results = $query->query($count_query);
   return reset($results)->count->getValue();
 }
