@@ -65,14 +65,10 @@ function joinup_core_update_8100(&$sandbox) {
 
 /**
  * Update the type of collections, solutions, releases and distributions.
- *
- * Two things will happen here.
- * The first is that all related field mappings will be updated.
- * The second is that all entities in the database will be updated.
  */
 function joinup_core_update_8102() {
   $entity_type_id = 'rdf_entity';
-  $query = Database::getConnection('default', 'sparql_default');
+  $connection = Database::getConnection('default', 'sparql_default');
   $bundles = [
     'collection' => [
       'old_uri' => 'http://www.w3.org/ns/adms#AssetRepository',
@@ -97,57 +93,20 @@ function joinup_core_update_8102() {
     $rdf_entity_mapping = RdfEntityMapping::loadByName($entity_type_id, $bundle);
 
     // Update the mappings.
-    $rdf_entity_mapping->setRdfType($properties['new_uri']);
-    $rdf_entity_mapping->save();
+    $rdf_entity_mapping->setRdfType($properties['new_uri'])->save();
 
-    // Update the entities.
+    // Update the existing entities.
     $graphs = $rdf_entity_mapping->getGraphs();
     foreach ($graphs as $graph_uri) {
-      // Keep counters in order to verify the results.
-      $init_old = _joinup_core_get_entity_count($graph_uri, $properties['old_uri']);
-      $init_new = _joinup_core_get_entity_count($graph_uri, $properties['new_uri']);
-
+      // In SPARQL, there is no UPDATE query. For updates, one has to first
+      // delete and then re insert.
       $query_string = <<<QUERY
 WITH <{$graph_uri}>
 DELETE { ?entity <{$bundle_predicate}> <{$properties['old_uri']}> }
 INSERT { ?entity <{$bundle_predicate}> <{$properties['new_uri']}> }
 WHERE { ?entity <{$bundle_predicate}> <{$properties['old_uri']}> }
 QUERY;
-      $query->query($query_string);
-
-      // Generate the new counters for comparison.
-      $final_old = _joinup_core_get_entity_count($graph_uri, $properties['old_uri']);
-      $final_new = _joinup_core_get_entity_count($graph_uri, $properties['new_uri']);
-
-      if ($init_old !== $final_new || !empty($init_new) || !empty($final_old)) {
-        throw new Exception("Results are not matching.");
-      }
+      $connection->query($query_string);
     }
   }
-}
-
-/**
- * Counts the amount of entities of a given type uri in a given graph.
- *
- * The method uses a direct query.
- *
- * @param string $graph_uri
- *   The graph uri.
- * @param string $type_uri
- *   The type uri.
- *
- * @return int
- *   The amount of entities.
- */
-function _joinup_core_get_entity_count($graph_uri, $type_uri) {
-  $query = Database::getConnection('default', 'sparql_default');
-  $count_query = <<<QUERY
-  SELECT COUNT(?entity) AS ?count
-  FROM <{$graph_uri}>
-  WHERE {
-    ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <{$type_uri}>
-  }
-QUERY;
-  $results = $query->query($count_query);
-  return reset($results)->count->getValue();
 }
