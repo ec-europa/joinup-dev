@@ -20,10 +20,16 @@ function joinup_subscription_update_8100(&$sandbox) {
     ['entity_type' => 'node', 'bundle' => 'news'],
   ];
 
-  // Update the entity definitions so that the subscription_bundles field is
-  // installed.
+  // Check if we already have added the subscription field. Since this is a
+  // batched operation this update hook may run more than once.
   $update_manager = \Drupal::entityDefinitionUpdateManager();
   if (!$storage_definition = $update_manager->getFieldStorageDefinition('subscription_bundles', 'og_membership')) {
+    // Clear the field type cache to make sure the new EntityBundlePairItem
+    // field type will be available for use.
+    \Drupal::service('plugin.manager.field.field_type')->clearCachedDefinitions();
+
+    // Update the entity definitions so that the subscription_bundles field is
+    // installed.
     $storage_definition = BaseFieldDefinition::create('entity_bundle_pair')
       ->setLabel(t('Subscribed bundles'))
       ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
