@@ -40,6 +40,7 @@ default:
         Header menu: '#block-joinup-theme-main-menu'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
+        Modal title: '.ui-dialog-title'
         Modal content: '#drupal-modal'
         Modal buttons: '.ui-dialog-buttonpane'
         Navigation menu block: '#block-navigation'

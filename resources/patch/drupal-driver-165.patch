@@ -1,0 +1,15 @@
+diff --git a/src/Drupal/Driver/Fields/Drupal8/DaterangeHandler.php b/src/Drupal/Driver/Fields/Drupal8/DaterangeHandler.php
+index 8285d2a..6920fa3 100644
+--- a/src/Drupal/Driver/Fields/Drupal8/DaterangeHandler.php
++++ b/src/Drupal/Driver/Fields/Drupal8/DaterangeHandler.php
+@@ -13,8 +13,8 @@ class DaterangeHandler extends AbstractHandler {
+   public function expand($values) {
+     $return = [];
+     foreach ($values as $value) {
+-      $start = str_replace(' ', 'T', $value[0]);
+-      $end = str_replace(' ', 'T', $value[1]);
++      $start = str_replace(' ', 'T', $value['value']);
++      $end = str_replace(' ', 'T', $value['end_value']);
+       $return[] = [
+         'value' => $start,
+         'end_value' => $end,

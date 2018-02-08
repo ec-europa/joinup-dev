@@ -13,11 +13,12 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta2",
+        "drupal/changed_fields": "^2.0",
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
         "drupal/console": "^1.0.1",
-        "drupal/core": "^8.4.4",
+        "drupal/core": "^8.4.4@stable",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -26,6 +27,7 @@
         "drupal/facets": "^1.0-beta1",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
+        "drupal/flag": "^4.0@alpha",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "^5.0-beta6",
@@ -85,6 +87,7 @@
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "^1.0-alpha7",
         "drupal/devel": "~1.0@alpha",
+        "drupal/drupal-driver": "dev-master",
         "drupal/drupal-extension": "^4.0.0@alpha",
         "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
         "jcalderonzumba/gastonjs": "^1.1@dev",
@@ -174,6 +177,9 @@
             "drupal/email_registration": {
                 "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2927109-4.patch"
+            },
+            "drupal/drupal-driver": {
+                "New DaterangeHandler breaks compound fields @see https://github.com/jhedstrom/DrupalDriver/issues/165": "resources/patch/drupal-driver-165.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
