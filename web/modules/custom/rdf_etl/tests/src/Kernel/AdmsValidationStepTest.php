@@ -48,7 +48,7 @@ class AdmsValidationStepTest extends KernelTestBase {
    *
    * @param string $rdf_file
    *   The RDF file to be tested.
-   * @param bool $valid
+   * @param bool $expected_valid
    *   Expectancy: The file is a valid ADMS v2 file.
    *
    * @throws \Exception
@@ -56,7 +56,7 @@ class AdmsValidationStepTest extends KernelTestBase {
    *
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
-  public function testAdmsValidationStepPlugin(string $rdf_file, bool $valid): void {
+  public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
     /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
     $manager = \Drupal::service('plugin.manager.etl_process_step');
     $data = ['sink_graph' => static::TEST_GRAPH];
@@ -69,7 +69,7 @@ class AdmsValidationStepTest extends KernelTestBase {
     // Execute the validation step.
     $plugin->execute($data);
 
-    if ($valid) {
+    if ($expected_valid) {
       // Check that no error was detected during validation.
       $this->assertArrayNotHasKey('error', $data);
     }
