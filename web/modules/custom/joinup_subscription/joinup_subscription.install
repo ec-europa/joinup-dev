@@ -42,8 +42,7 @@ function joinup_subscription_update_8100(&$sandbox) {
   }
 
   if (!isset($sandbox['total'])) {
-    $mids = \Drupal::entityQuery('og_membership')->execute();
-    $sandbox['total'] = count($mids);
+    $sandbox['total'] = \Drupal::entityQuery('og_membership')->count()->execute();
     $sandbox['current'] = 0;
   }
 
@@ -56,9 +55,11 @@ function joinup_subscription_update_8100(&$sandbox) {
     $membership->set('subscription_bundles', $default_values)->save();
   }
 
-  drush_print(($sandbox['current'] + count($mids)) . ' memberships updated.');
-  $sandbox['current'] += $memberships_per_batch;
-  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  $count = count($mids);
+  $sandbox['current'] += $count;
+  $sandbox['#finished'] = $count < 1000 ? 1 : $sandbox['current'] / $sandbox['total'];
+
+  return $sandbox['current'] . ' memberships updated.';
 }
 
 /**
