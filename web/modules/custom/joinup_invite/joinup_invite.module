@@ -9,6 +9,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Implements hook_user_cancel().
@@ -56,5 +57,26 @@ function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $blo
     // Make sure that the primaryadminactions block varies per og role.
     $cache_contexts = $build['#cache']['contexts'] ?? [];
     $build['#cache']['contexts'] = Cache::mergeContexts($cache_contexts, ['og_role']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * If a membership is deleted and an invitation exists for the same group and
+ * user, delete the invitation as well.
+ */
+function joinup_invite_og_membership_delete(OgMembershipInterface $entity) {
+  $invitations = \Drupal::entityTypeManager()->getStorage('invitation')->loadByProperties([
+    'entity_type' => $entity->getGroupEntityType(),
+    'entity_id' => $entity->getGroupId(),
+    'recipient_id' => $entity->getOwnerId(),
+    'bundle' => 'group',
+  ]);
+
+  // Normally, only one invitation should exist per entity and user, but iterate
+  // nonetheless.
+  foreach ($invitations as $invitation) {
+    $invitation->delete();
   }
 }
