@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_invitation
+    - joinup_invite.invitation_type.group
+    - message.template.group_invite
+id: message.group_invite.field_invitation
+field_name: field_invitation
+entity_type: message
+bundle: group_invite
+label: Invitation
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:invitation'
+  handler_settings:
+    target_bundles:
+      invitation: invitation
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
