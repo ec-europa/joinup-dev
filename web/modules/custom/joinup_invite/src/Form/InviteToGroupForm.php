@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -18,9 +19,16 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form to add a member with a certain role in a rdf entity group.
+ * Form to invite a member with a certain role in a rdf entity group.
  */
 class InviteToGroupForm extends InviteFormBase {
+
+  /**
+   * The message template to use for the notification mail.
+   *
+   * @var string
+   */
+  const TEMPLATE_GROUP_INVITE = 'group_invite';
 
   /**
    * The group where to invite users.
@@ -92,7 +100,7 @@ class InviteToGroupForm extends InviteFormBase {
    * {@inheritdoc}
    */
   protected function getSubmitButtonText(): TranslatableMarkup {
-    return $this->t('Add members');
+    return $this->t('Invite members');
   }
 
   /**
@@ -145,7 +153,7 @@ class InviteToGroupForm extends InviteFormBase {
       $membership_states = [
         OgMembershipInterface::STATE_ACTIVE,
         OgMembershipInterface::STATE_BLOCKED,
-        OgMembershipInterface::STATE_PENDING
+        OgMembershipInterface::STATE_PENDING,
       ];
       $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states);
 
@@ -155,7 +163,7 @@ class InviteToGroupForm extends InviteFormBase {
     }
 
     if (!empty($invalid_users)) {
-      $error = t('The following users are already invited or members of the :group: :users', [
+      $error = t('The following users are already invited or members of the :group: :users.', [
         ':group' => $this->rdfEntity->bundle(),
         ':users' => implode(', ', $invalid_users),
       ]);
@@ -169,18 +177,20 @@ class InviteToGroupForm extends InviteFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $users = $this->getUserList($form_state);
-    $role_id = implode('-', [
-      $this->rdfEntity->getEntityTypeId(),
-      $this->rdfEntity->bundle(),
-      $form_state->getValue('role'),
-    ]);
+    $role_option = $form_state->getValue('role');
+    $role_id = $this->getRoleId($role_option);
     $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
-    $role_argument = $form_state->getValue('role') === 'facilitator' ? 'facilitator' : 'a member';
-    /** @var \Drupal\user\UserInterface $current_user */
     $current_user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
 
     foreach ($users as $user) {
       if ($this->rdfEntity->bundle() === 'collection') {
+        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user)
+          ->addRole($role)
+          ->setState(OgMembershipInterface::STATE_PENDING);
+        // Skip notifications related to memberships.
+        $membership->skip_notification = TRUE;
+        $membership->save();
+
         /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
         $invitation = $this->entityTypeManager->getStorage('invitation')
           ->create(['bundle' => 'group'])
@@ -190,17 +200,7 @@ class InviteToGroupForm extends InviteFormBase {
           ->setStatus(InvitationInterface::STATUS_PENDING);
         $invitation->save();
 
-        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user);
-        $membership->addRole($role);
-        $membership->setState(OgMembershipInterface::STATE_PENDING)->save();
-
-        $arguments = $this->generateArguments($this->rdfEntity);
-        $arguments += ['@invitation:target_role' => $role_argument];
-
-        $message = $this->messageHelper->createMessage($invitation, 'group_invite', $arguments);
-        $message->save();
-        $this->messageHelper->sendMessage($invitation, 'group_invite');
-
+        $this->sendMessage($invitation, $role_option);
         drupal_set_message($this->t('An invitation has been sent to the selected users. Their membership is pending.'));
       }
       // @todo: Remove this when the invitations for solutions are implemented.
@@ -221,6 +221,44 @@ class InviteToGroupForm extends InviteFormBase {
     $form_state->setRedirect('entity.rdf_entity.member_overview', [
       'rdf_entity' => $this->rdfEntity->id(),
     ]);
+  }
+
+  /**
+   * Returns the og role id of the current group.
+   *
+   * @param string $role_option
+   *   The role machine name.
+   *
+   * @return string
+   *   The role id.
+   */
+  protected function getRoleId($role_option): string {
+    return implode('-', [
+      $this->rdfEntity->getEntityTypeId(),
+      $this->rdfEntity->bundle(),
+      $role_option,
+    ]);
+  }
+
+  /**
+   * Sends a new message to invite the given user to the given discussion.
+   *
+   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
+   *   The invitation object.
+   * @param string $role
+   *   The role option from the role list.
+   *
+   * @return bool
+   *   Whether or not the message was successfully delivered.
+   */
+  protected function sendMessage(InvitationInterface $invitation, $role): bool {
+    $role_argument = $role === 'facilitator' ? 'facilitator' : 'member';
+    $arguments = $this->generateArguments($this->rdfEntity);
+    $arguments += ['@invitation:target_role' => $role_argument];
+
+    $message = $this->messageHelper->createMessage($invitation, self::TEMPLATE_GROUP_INVITE, $arguments);
+    $message->save();
+    return $this->messageHelper->sendMessage($invitation, self::TEMPLATE_GROUP_INVITE);
   }
 
   /**
