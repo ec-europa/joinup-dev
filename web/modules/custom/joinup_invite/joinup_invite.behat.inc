@@ -159,7 +159,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param \Drupal\Core\Session\AccountInterface $recipient
    *   The recipient related to the invitation.
    * @param string $bundle
-   *   The bundle of the invitation
+   *   The bundle of the invitation.
    *
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The invitation object.

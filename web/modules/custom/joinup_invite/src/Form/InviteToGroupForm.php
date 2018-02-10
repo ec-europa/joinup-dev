@@ -10,7 +10,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\og\MembershipManagerInterface;
