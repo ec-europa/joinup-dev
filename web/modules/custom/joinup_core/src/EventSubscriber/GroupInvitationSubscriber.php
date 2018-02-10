@@ -7,8 +7,6 @@ namespace Drupal\joinup_core\EventSubscriber;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
-use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -114,4 +112,5 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
       drupal_set_message($this->t('Your decision has been recorded. Thank you for your feedback.'));
     }
   }
+
 }
