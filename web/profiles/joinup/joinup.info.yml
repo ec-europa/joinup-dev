@@ -180,6 +180,7 @@ config_devel:
   - facets.facet.solution_my_content
   - facets.facet.collection_my_content
   - facets.facet.content_my_content
+  - field.field.message.group_invite.field_invitation
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
