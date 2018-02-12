@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d5197c1b1ce028e184d949b8b1cdcde",
+    "content-hash": "02f703e14434069700b537ca29ea4396",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1038,7 +1038,7 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.x-dev",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweagans/composer-patches.git",
@@ -12445,7 +12445,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
-        "cweagans/composer-patches": 20,
         "drupal/core": 0,
         "drupal/diff": 5,
         "drupal/flag": 15,
