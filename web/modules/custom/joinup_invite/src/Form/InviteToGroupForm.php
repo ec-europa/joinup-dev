@@ -99,7 +99,7 @@ class InviteToGroupForm extends InviteFormBase {
    * {@inheritdoc}
    */
   protected function getSubmitButtonText(): TranslatableMarkup {
-    return $this->t('Invite members');
+    return $this->rdfEntity->bundle() === 'collection' ? $this->t('Invite members') : $this->t('Add members');
   }
 
   /**
