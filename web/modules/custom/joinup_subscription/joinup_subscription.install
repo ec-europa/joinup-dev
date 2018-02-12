@@ -5,40 +5,35 @@
  * Update hooks for joinup_subscription module.
  */
 
-use Drupal\og\Entity\OgMembership;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\field\FieldStorageConfigInterface;
 
 /**
- * Update all og memberships with being subscribed to community content.
+ * Install the field storage definition for 'subscription_bundles' field.
  */
-function joinup_subscription_update_8100(&$sandbox) {
+function joinup_subscription_update_8100() {
+  // Clear the field type cache to make sure the new EntityBundlePairItem
+  // field type will be available for use.
+  \Drupal::service('plugin.manager.field.field_type')->clearCachedDefinitions();
+
   // Update the entity definitions so that the subscription_bundles field is
   // installed.
-  \Drupal::entityDefinitionUpdateManager()->applyUpdates();
-
-  if (!isset($sandbox['total'])) {
-    $mids = \Drupal::entityQuery('og_membership')
-      ->execute();
-    $sandbox['total'] = count($mids);
-    $sandbox['current'] = 0;
-  }
-
-  $memberships_per_batch = 1000;
-  $mids = \Drupal::entityQuery('og_membership')
-    ->range($sandbox['current'], $memberships_per_batch)
-    ->execute();
-
-  foreach (OgMembership::loadMultiple($mids) as $membership) {
-    $membership->set('subscription_bundles', [
+  $storage_definition = BaseFieldDefinition::create('entity_bundle_pair')
+    ->setLabel(t('Subscribed bundles'))
+    ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
+    ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
+    ->setRequired(FALSE)
+    // By default, the new member gets subscribed to all community content of
+    // the group.
+    ->setDefaultValue([
       ['entity_type' => 'node', 'bundle' => 'discussion'],
       ['entity_type' => 'node', 'bundle' => 'document'],
       ['entity_type' => 'node', 'bundle' => 'event'],
       ['entity_type' => 'node', 'bundle' => 'news'],
-    ])->save();
-  }
+    ]);
 
-  drush_print(($sandbox['current'] + count($mids)) . ' memberships updated.');
-  $sandbox['current'] += $memberships_per_batch;
-  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('subscription_bundles', 'og_membership', 'og_membership', $storage_definition);
 }
 
 /**
