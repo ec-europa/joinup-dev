@@ -137,6 +137,10 @@ class InviteToGroupForm extends InviteFormBase {
    * Ensure that users are not already invited or members of the group.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    if ($this->rdfEntity->bundle() !== 'collection') {
+      return;
+    }
+
     $users = $this->getUserList($form_state);
     $invalid_users = [];
 
