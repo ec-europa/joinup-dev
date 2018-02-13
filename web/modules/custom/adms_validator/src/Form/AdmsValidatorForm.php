@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\adms_validator\Form;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
-use Drupal\adms_validator\SchemaErrorList;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use EasyRdf\Graph;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Form to validate the ADMS compliance of a RDF or TTL file.
@@ -25,11 +25,27 @@ class AdmsValidatorForm extends FormBase {
   protected $admsValidator;
 
   /**
+   * Current user session ID.
+   *
+   * @var string
+   */
+  protected $sessionId;
+
+  /**
+   * The SPARQL endpoint.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $sparql;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('adms_validator.validator')
+      $container->get('adms_validator.validator'),
+      $container->get('session'),
+      $container->get('sparql_endpoint')
     );
   }
 
@@ -38,9 +54,15 @@ class AdmsValidatorForm extends FormBase {
    *
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The Sparql endpoint.
+   * @param \Symfony\Component\HttpFoundation\Session\Session $session
+   *   The current user session.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL endpoint.
    */
-  public function __construct(AdmsValidatorInterface $adms_validator) {
+  public function __construct(AdmsValidatorInterface $adms_validator, Session $session, Connection $sparql) {
     $this->admsValidator = $adms_validator;
+    $this->sessionId = $session->getId();
+    $this->sparql = $sparql;
   }
 
   /**
@@ -70,10 +92,11 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
+    /** @var \Drupal\adms_validator\AdmsValidationResult $validation_errors */
     $validation_errors = $form_state->get('validation_errors');
     if (!empty($validation_errors)) {
       // The form was submitted, and validation errors have been set.
-      $form['table'] = $this->buildErrorTable($validation_errors);
+      $form['table'] = $validation_errors->toTable();
     }
 
     honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
@@ -96,23 +119,21 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
+
     try {
-      $graph = $this->fileToGraph($file);
-    }
-    catch (\Exception $e) {
-      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
-      $file->delete();
-      return;
-    }
-    // Delete the uploaded file from disk.
-    $file->delete();
-    try {
-      $schema_errors = $this->admsValidator->validate($graph);
+      $uri = AdmsValidatorInterface::DEFAULT_VALIDATION_GRAPH . "/{$this->sessionId}";
+      $schema_errors = $this->admsValidator->validateFile($file->getFileUri(), $uri);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
       return;
     }
+
+    // Delete the uploaded file from disk.
+    $file->delete();
+    // Clear the graph.
+    $this->sparql->query("CLEAR GRAPH <$uri>");
+
     if ($schema_errors->isSuccessful()) {
       drupal_set_message($this->t('No errors found during validation.'));
     }
@@ -120,32 +141,6 @@ class AdmsValidatorForm extends FormBase {
       drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
-  }
-
-  /**
-   * Renders the table with validation errors.
-   *
-   * @param \Drupal\adms_validator\SchemaErrorList $errors
-   *   The validation errors.
-   *
-   * @return array
-   *   The error table as render array.
-   */
-  protected function buildErrorTable(SchemaErrorList $errors): array {
-    return [
-      '#theme' => 'table',
-      '#header' => [
-        t('Class name'),
-        t('Message'),
-        t('Object'),
-        t('Predicate'),
-        t('Rule description'),
-        t('Rule ID'),
-        t('Rule severity'),
-        t('Subject'),
-      ],
-      '#rows' => $errors->toRows(),
-    ];
   }
 
   /**
@@ -168,20 +163,5 @@ class AdmsValidatorForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {}
-
-  /**
-   * Builds a RDF graph from a file object.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The to be validated file.
-   *
-   * @return \EasyRdf\Graph
-   *   A collection of triples.
-   */
-  protected function fileToGraph(FileInterface $file): Graph {
-    $graph = new Graph();
-    $graph->parseFile($file->getFileUri());
-    return $graph;
-  }
 
 }
