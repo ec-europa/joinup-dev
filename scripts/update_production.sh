@@ -8,11 +8,9 @@ PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/..)
 
 # Perform the necessary steps for the update
 cd ${PROJECT_ROOT}
-./vendor/bin/drush pm:uninstall config_readonly --yes &&
 ./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush cs-update --discard-overrides --yes &&
 ./vendor/bin/drush cache-rebuild --yes &&
-./vendor/bin/drush pm:enable config_readonly --yes
 
 # Check if any of the steps returned an error.
 STATUS=$?
