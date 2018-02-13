@@ -2,7 +2,7 @@
 
 namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
-use Drupal\joinup_core\Traits\FieldItemDisplayValueTrait;
+use Drupal\joinup_core\Traits\FieldItemsTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueFieldValueConstraintValidator extends ConstraintValidator {
 
-  use FieldItemDisplayValueTrait;
+  use FieldItemsTrait;
 
   /**
    * {@inheritdoc}

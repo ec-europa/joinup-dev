@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
-use Drupal\joinup_core\Traits\FieldItemDisplayValueTrait;
+use Drupal\joinup_core\Traits\FieldItemsTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class RequiredIfOtherFieldHasValueConstraintValidator extends ConstraintValidator {
 
-  use FieldItemDisplayValueTrait;
+  use FieldItemsTrait;
 
   /**
    * {@inheritdoc}
@@ -36,24 +36,23 @@ class RequiredIfOtherFieldHasValueConstraintValidator extends ConstraintValidato
       return;
     }
 
-    $values = [];
-    foreach ($dependent_field as $item) {
-      /** @var \Drupal\Core\Field\FieldItemInterface $item */
-      $values[] = $item->get($item::mainPropertyName())->getValue();
+    $dependent_values = $this->getFieldItemListMainPropertyValues($dependent_field);
+    $matched_values = array_intersect($dependent_values, $constraint->values);
+    if (!$matched_values) {
+      return;
     }
 
-    if (array_intersect($constraint->values, $values)) {
-      $labels = array_map(function ($item) {
-        return $this->getFieldItemDisplayValue($item);
-      }, iterator_to_array($dependent_field));
-
-      $message = count($labels) > 1 ? $constraint->multipleValuesMessage : $constraint->message;
-      $this->context->addViolation($message, [
-        '%field' => $items->getFieldDefinition()->getLabel(),
-        '%dependent_field' => $dependent_field->getFieldDefinition()->getLabel(),
-        '%dependent_value' => implode(', ', $labels),
-      ]);
+    $labels = [];
+    foreach (array_keys($matched_values) as $delta) {
+      $labels[] = $this->getFieldItemDisplayValue($dependent_field->get($delta));
     }
+
+    $message = count($labels) > 1 ? $constraint->multipleValuesMessage : $constraint->message;
+    $this->context->addViolation($message, [
+      '%field' => $items->getFieldDefinition()->getLabel(),
+      '%dependent_field' => $dependent_field->getFieldDefinition()->getLabel(),
+      '%dependent_value' => implode(', ', $labels),
+    ]);
   }
 
 }
