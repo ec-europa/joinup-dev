@@ -9,7 +9,7 @@ third_party_settings:
   rdf_ff:
     graph: 'http://adms-definition'
     property_predicates:
-      - 'http://www.w3.org/2000/01/rdf-schema#domain'rdf
+      - 'http://www.w3.org/2000/01/rdf-schema#domain'
 id: rdf_entity.solution
 entity_type_id: rdf_entity
 bundle: solution
