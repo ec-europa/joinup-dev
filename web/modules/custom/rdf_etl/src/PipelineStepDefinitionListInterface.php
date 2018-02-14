@@ -6,8 +6,6 @@ namespace Drupal\rdf_etl;
 
 /**
  * A collection of steps to define the order of execution of a pipeline.
- *
- * @package Drupal\rdf_etl
  */
 interface PipelineStepDefinitionListInterface extends \Iterator {
 

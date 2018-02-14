@@ -6,8 +6,6 @@ namespace Drupal\rdf_etl;
 
 /**
  * Class representing a state of a pipeline.
- *
- * @package Drupal\rdf_etl
  */
 class EtlState {
 

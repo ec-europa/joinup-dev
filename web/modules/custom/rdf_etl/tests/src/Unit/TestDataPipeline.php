@@ -6,8 +6,6 @@ use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 
 /**
  * Class TestDataPipeline.
- *
- * @package Drupal\Tests\rdf_etl
  */
 class TestDataPipeline extends EtlDataPipelineBase {
 

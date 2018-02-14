@@ -6,8 +6,6 @@ namespace Drupal\rdf_etl;
 
 /**
  * Class PipelineStepDefinition.
- *
- * @package Drupal\rdf_etl
  */
 interface PipelineStepDefinitionInterface {
 
