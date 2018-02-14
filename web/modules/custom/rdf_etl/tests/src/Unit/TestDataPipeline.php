@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\rdf_etl\Unit;
 
-use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 
 /**

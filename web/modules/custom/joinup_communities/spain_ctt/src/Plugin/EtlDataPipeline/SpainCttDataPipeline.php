@@ -2,7 +2,6 @@
 
 namespace Drupal\spain_ctt\Plugin\EtlDataPipeline;
 
-use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 
 /**

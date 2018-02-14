@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin\EtlDataPipeline;
 
 use Drupal\rdf_etl\EtlState;
-use Drupal\rdf_etl\PipelineStepDefinitionList;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineBase;
 use Drupal\rdf_etl\Plugin\EtlDataPipelineInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
