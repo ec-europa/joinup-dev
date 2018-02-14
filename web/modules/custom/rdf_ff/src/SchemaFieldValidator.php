@@ -83,7 +83,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    */
   protected function getEntityMapping($entity_type_id, $bundle): ?RdfEntityMappingInterface {
     $id = "{$entity_type_id}.{$bundle}";
-    /** @var RdfEntityMappingInterface $mapping */
+    /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
     $mapping = $this->entityTypeManager->getStorage('rdf_entity_mapping')->load($id);
     return $mapping;
   }
@@ -104,7 +104,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    * @return string
    *   The query string.
    */
-  protected function getQuery($graph, $property_predicates, $rdf_type, $field_iri): string {
+  protected function getQuery($graph, array $property_predicates, $rdf_type, $field_iri): string {
     $search = ['@graph', '@property_predicates', '@rdf_type', '@field_iri'];
     $replace = [
       SparqlArg::uri($graph),

@@ -14,15 +14,17 @@ class.
 The module needs that the ontology definition is stored in a graph
 and this graph is stored in the third party settings of the
 corresponding `rdf_entity_mapping` entity of the entity type in question.
-The rdf property that defines relationships for example, is `<http://www.w3.org/2000/01/rdf-schema#domain>`.
+The rdf property that defines relationships for example, is 
+`<http://www.w3.org/2000/01/rdf-schema#domain>`.
 
 ## Usage
-```php
+```
 $entity_type_id = 'entity_test';
 $bundle = 'bunlde';
 $field_name = 'field_text';
 $field_column = 'value';
  
 $validator = \Drupal::service('rdf_ff.schema_field_validator');
-$is_defined = $validator->isDefinedInSchema($entity_type_id, $bundle, $field_name, $field_column);
+$is_defined = $validator
+    ->isDefinedInSchema($entity_type_id, $bundle, $field_name, $field_column);
 ```

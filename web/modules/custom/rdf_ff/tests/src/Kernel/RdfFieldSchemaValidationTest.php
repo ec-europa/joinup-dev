@@ -6,12 +6,15 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 use EasyRdf\Graph;
 
+/**
+ * Suite that tests the rdf field schema validation service.
+ */
 class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
 
   /**
    * The SPARQL connection.
    *
-   * @var  \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
   protected $spaqlEndpoint;
 
@@ -105,6 +108,5 @@ EndOfQuery;
     $this->sparql->query($query);
     parent::tearDown();
   }
-
 
 }

@@ -6,6 +6,7 @@ namespace Drupal\rdf_ff;
  * Interface SchemaFieldValidatorInterface.
  */
 interface SchemaFieldValidatorInterface {
+
   /**
    * Checks if a field is defined in the ontology of it's class.
    *
@@ -15,7 +16,7 @@ interface SchemaFieldValidatorInterface {
    *   The bundle of the class defined in the ontology.
    * @param string $field_name
    *   The field name.
-   * @param $column
+   * @param string $column
    *   The column name.
    *
    * @return bool

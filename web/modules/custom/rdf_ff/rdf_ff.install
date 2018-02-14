@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains install and update hooks of the rdf_ff module.
+ */
+
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -29,7 +34,7 @@ function rdf_ff_update_8102() {
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
-    $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity',$bundle);
+    $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', $bundle);
     $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
     $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'graph', $graph_uri);
     $rdf_entity_mapping->save();
