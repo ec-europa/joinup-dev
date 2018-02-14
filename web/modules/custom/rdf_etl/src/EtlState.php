@@ -15,6 +15,12 @@ class EtlState {
    * @var string
    */
   protected $pipeline;
+
+  /**
+   * The state sequence.
+   *
+   * @var int
+   */
   protected $sequence;
 
   /**
