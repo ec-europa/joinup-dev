@@ -15,7 +15,6 @@ class TestDataPipeline extends EtlDataPipelineBase {
    * {@inheritdoc}
    */
   protected function initStepDefinition(): void {
-    $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('test_step')
       ->registerHook('pre_form_execution', [$this, 'testPreFormExecution'])
       ->registerHook('post_form_execution', [$this, 'testPostFormExecution']);
