@@ -16,6 +16,7 @@ dependencies:
   - options
   - owner
   - rdf_entity
+  - rdf_ff
   - smart_trim
   - state_machine
   - text

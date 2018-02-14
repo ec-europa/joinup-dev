@@ -13,6 +13,7 @@ dependencies:
   - language
   - link
   - rdf_entity
+  - rdf_ff
   - text
   - views
 
