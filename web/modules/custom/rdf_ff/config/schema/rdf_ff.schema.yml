@@ -1,0 +1,13 @@
+rdf_entity.mapping.*.third_party.rdf_ff:
+  type: mapping
+  label: 'Settings related to the fields defined in a schema.'
+  mapping:
+    property_predicates:
+      type: sequence
+      label: 'The property predicates that define the relationship.'
+      sequence:
+        type: string
+        label: 'A property predicate'
+    graph:
+      type: string
+      label: 'The graph that stores the schema definition.'

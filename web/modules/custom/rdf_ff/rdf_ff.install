@@ -1,0 +1,37 @@
+<?php
+
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use EasyRdf\Graph;
+use EasyRdf\GraphStore;
+
+/**
+ * Implements hook_update_N().
+ */
+function rdf_ff_update_8102() {
+  $graph_uri = 'http://adms-definition';
+
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $connection_options = $sparql_endpoint->getConnectionOptions();
+  $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
+  // Use a local SPARQL 1.1 Graph Store.
+  $gs = new GraphStore($connect_string);
+  $graph = new Graph();
+  try {
+    $graph->parseFile(DRUPAL_ROOT . '/../resources/fixtures/adms-definition.rdf');
+  }
+  catch (\Exception $e) {
+    throw $e;
+  }
+  $out = $gs->replace($graph, $graph_uri);
+  if (!$out->isSuccessful()) {
+    throw new \Exception("Something went wrong.");
+  }
+
+  $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
+  foreach ($data as $bundle) {
+    $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity',$bundle);
+    $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
+    $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'graph', $graph_uri);
+    $rdf_entity_mapping->save();
+  }
+}
