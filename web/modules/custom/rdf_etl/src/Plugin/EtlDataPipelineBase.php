@@ -30,10 +30,7 @@ abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipeline
   }
 
   /**
-   * Get steps.
-   *
-   * @return \Drupal\rdf_etl\PipelineStepDefinitionList
-   *   The step definition.
+   * {@inheritdoc}
    */
   public function stepDefinitionList(): PipelineStepDefinitionList {
     return $this->steps;
