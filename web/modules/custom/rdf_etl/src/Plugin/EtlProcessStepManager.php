@@ -7,6 +7,7 @@ namespace Drupal\rdf_etl\Plugin;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\rdf_etl\Annotation\EtlProcessStep;
 
 /**
  * Provides the Process step plugin manager.
@@ -25,24 +26,9 @@ class EtlProcessStepManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/EtlProcessStep', $namespaces, $module_handler, 'Drupal\rdf_etl\Plugin\EtlProcessStepInterface', 'Drupal\rdf_etl\Annotation\EtlProcessStep');
-
+    parent::__construct('Plugin/EtlProcessStep', $namespaces, $module_handler, EtlProcessStepInterface::class, EtlProcessStep::class);
     $this->alterInfo('rdf_etl_etl_process_step_info');
     $this->setCacheBackend($cache_backend, 'rdf_etl_etl_process_step_plugins');
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @throws \Exception
-   *   Plugin does not adhere to interface.
-   */
-  public function createInstance($plugin_id, array $configuration = []): EtlProcessStepInterface {
-    $data_pipeline = parent::createInstance($plugin_id, $configuration);
-    if (!$data_pipeline instanceof EtlProcessStepInterface) {
-      throw new \Exception('Incorrect plugin: ' . $plugin_id);
-    }
-    return $data_pipeline;
   }
 
 }
