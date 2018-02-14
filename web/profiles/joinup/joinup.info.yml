@@ -71,6 +71,7 @@ dependencies:
   - rdf_draft
   - rdf_entity
   - rdf_export
+  - rdf_ff
   - rdf_taxonomy
   - search_api
   - search_api_arbitrary_facet

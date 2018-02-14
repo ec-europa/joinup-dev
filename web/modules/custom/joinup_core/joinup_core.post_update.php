@@ -74,3 +74,10 @@ function joinup_core_post_update_move_contact_form_attachments() {
 function joinup_core_post_update_install_smart_trim() {
   \Drupal::service('module_installer')->install(['smart_trim']);
 }
+
+/**
+ * Enable the Rdf Federated Fields module.
+ */
+function joinup_core_post_update_install_rdf_ff() {
+  \Drupal::service('module_installer')->install(['rdf_ff']);
+}

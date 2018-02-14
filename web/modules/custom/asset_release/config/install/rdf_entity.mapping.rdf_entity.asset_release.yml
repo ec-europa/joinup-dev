@@ -5,7 +5,11 @@ dependencies:
     - rdf_entity.graph.default
     - rdf_entity.graph.draft
     - rdf_entity.rdfentity.asset_release
-third_party_settings: {  }
+third_party_settings:
+  rdf_ff:
+    graph: 'http://adms-definition'
+    property_predicates:
+      - 'http://www.w3.org/2000/01/rdf-schema#domain'
 id: rdf_entity.asset_release
 entity_type_id: rdf_entity
 bundle: asset_release
