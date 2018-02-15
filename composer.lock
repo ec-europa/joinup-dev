@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "517761223ee6787f6829bf612557ac89",
+    "content-hash": "183a0ac1832f4fd3bd848a30bbca48f4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4387,12 +4387,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "b01b08f7e42acaa4c5b5f1a129d4ca59231b1566"
+                "reference": "f42d565dc7fcbd7ca60a2526e893f7b19bf8122f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/b01b08f7e42acaa4c5b5f1a129d4ca59231b1566",
-                "reference": "b01b08f7e42acaa4c5b5f1a129d4ca59231b1566",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/f42d565dc7fcbd7ca60a2526e893f7b19bf8122f",
+                "reference": "f42d565dc7fcbd7ca60a2526e893f7b19bf8122f",
                 "shasum": ""
             },
             "require": {
@@ -4405,8 +4405,7 @@
             "type": "drupal-module",
             "extra": {
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "Support id string comparison. @see https://github.com/ec-europa/rdf_entity/pull/20": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/20.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
                 }
             },
             "license": [
@@ -4418,7 +4417,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-02-12T20:49:18+00:00"
+            "time": "2018-02-15T16:25:25+00:00"
         },
         {
             "name": "drupal/redirect",
