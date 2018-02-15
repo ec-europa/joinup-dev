@@ -14,6 +14,7 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
  * Base class for the for process step plugins supporting forms.
  */
 abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInterface {
+
   use StringTranslationTrait;
 
   /**
@@ -44,6 +45,7 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
    * {@inheritdoc}
    */
   public function setConfiguration(array $configuration): void {
+    // Ensure sane defaults.
     $this->configuration = NestedArray::mergeDeep(
       $this->defaultConfiguration(),
       $configuration
