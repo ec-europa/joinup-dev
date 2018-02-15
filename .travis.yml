@@ -4,6 +4,7 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
 
 sudo: false
 
@@ -23,6 +24,13 @@ matrix:
       env: TEST=PHP_CodeSniffer
     - php: 7.0
       env: TEST=PHP_CodeSniffer
+
+matrix:
+  exclude:
+    - php: 7.2
+      env: RELEASE=stable COMPOSER_CHANNEL=stable
+    - php: 7.2
+      env: RELEASE=stable COMPOSER_CHANNEL=snapshot
 
 before_install:
   # Remove Xdebug as we don't need it and it causes "PHP Fatal error: Maximum
