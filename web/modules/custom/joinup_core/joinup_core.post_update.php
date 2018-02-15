@@ -76,6 +76,13 @@ function joinup_core_post_update_install_smart_trim() {
 }
 
 /**
+ * Enable 'rdf_etl' and 'spain_ctt' modules.
+ */
+function joinup_core_post_update_install_rdf_etl_and_spain_ctt() {
+  \Drupal::service('module_installer')->install(['rdf_etl', 'spain_ctt']);
+}
+
+/**
  * Enable the Rdf Federated Fields module.
  */
 function joinup_core_post_update_install_rdf_ff() {

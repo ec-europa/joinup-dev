@@ -70,6 +70,7 @@ dependencies:
   - r4032login
   - rdf_draft
   - rdf_entity
+  - rdf_etl
   - rdf_export
   - rdf_ff
   - rdf_taxonomy
@@ -79,6 +80,7 @@ dependencies:
   - semic
   - social_media_links_field
   - solution
+  - spain_ctt
   - state_machine
   - state_machine_revisions
   - subpathauto
