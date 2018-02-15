@@ -133,21 +133,22 @@ class InviteToGroupForm extends InviteFormBase {
 
   /**
    * {@inheritdoc}
-   *
-   * Ensure that users are not already invited or members of the group.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     if ($this->rdfEntity->bundle() !== 'collection') {
       return;
     }
 
+    // Ensure that users are not already invited or members of the group.
     $users = $this->getUserList($form_state);
     $invalid_users = [];
-
+    $invitation_storage = $this->entityTypeManager->getStorage('invitation');
+    $entity_type_id = $this->rdfEntity->getEntityTypeId();
+    $entity_id = $this->rdfEntity->id();
     foreach ($users as $user) {
-      $invitations = $this->entityTypeManager->getStorage('invitation')->loadByProperties([
-        'entity_type' => $this->rdfEntity->getEntityTypeId(),
-        'entity_id' => $this->rdfEntity->id(),
+      $invitations = $invitation_storage->loadByProperties([
+        'entity_type' => $entity_type_id,
+        'entity_id' => $entity_id,
         'recipient_id' => $user->id(),
         'bundle' => 'group',
       ]);
@@ -166,9 +167,9 @@ class InviteToGroupForm extends InviteFormBase {
     }
 
     if (!empty($invalid_users)) {
-      $error = t('The following users are already invited or members of the :group: :users.', [
-        ':group' => $this->rdfEntity->bundle(),
-        ':users' => implode(', ', $invalid_users),
+      $error = $this->t('The following users are already invited or members of the @group: @users.', [
+        '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
+        '@users' => implode(', ', $invalid_users),
       ]);
       $form_state->setError($form['users'], $error);
     }
@@ -215,8 +216,8 @@ class InviteToGroupForm extends InviteFormBase {
         $membership->addRole($role);
         $membership->save();
 
-        drupal_set_message($this->t('Successfully added the role %role to the selected users.', [
-          '%role' => $role->label(),
+        drupal_set_message($this->t('Successfully added the role @role to the selected users.', [
+          '@role' => $role->label(),
         ]));
       }
     }
@@ -255,9 +256,8 @@ class InviteToGroupForm extends InviteFormBase {
    *   Whether or not the message was successfully delivered.
    */
   protected function sendMessage(InvitationInterface $invitation, $role): bool {
-    $role_argument = $role === 'facilitator' ? 'facilitator' : 'member';
     $arguments = $this->generateArguments($this->rdfEntity);
-    $arguments += ['@invitation:target_role' => $role_argument];
+    $arguments += ['@invitation:target_role' => $role];
 
     $message = $this->messageHelper->createMessage($invitation, self::TEMPLATE_GROUP_INVITE, $arguments);
     $message->save();
@@ -267,19 +267,19 @@ class InviteToGroupForm extends InviteFormBase {
   /**
    * Returns the arguments for an invitation message.
    *
-   * @todo This was copied from NotificationSubscriberBase::generateArguments()
-   *   but we cannot call that code directly since it is contained in an
-   *   abstract class. Remove this once ISAICP-4152 is in.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
-   *
    * @param \Drupal\Core\Entity\EntityInterface $rdf_entity
    *   The group for which to generate the message arguments.
    *
    * @return array
    *   The message arguments.
+   *
+   * @todo This was copied from NotificationSubscriberBase::generateArguments()
+   *   but we cannot call that code directly since it is contained in an
+   *   abstract class. Remove this once ISAICP-4152 is in.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
    */
-  protected function generateArguments(EntityInterface $rdf_entity) : array {
+  protected function generateArguments(EntityInterface $rdf_entity): array {
     $arguments = [];
     /** @var \Drupal\user\UserInterface $actor */
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser()->id());
@@ -287,8 +287,7 @@ class InviteToGroupForm extends InviteFormBase {
     $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $rdf_entity->label();
-    $arguments['@entity:bundle'] = $rdf_entity->bundle();
-    $arguments['@entity:url'] = $rdf_entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments['@entity:bundle'] = $rdf_entity->get('rid')->entity->getSingularLabel();
     $arguments['@actor:field_user_first_name'] = $actor_first_name;
     $arguments['@actor:field_user_family_name'] = $actor_family_name;
 

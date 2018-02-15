@@ -38,7 +38,7 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() : array {
+  public static function getSubscribedEvents(): array {
     $events[InvitationEvents::ACCEPT_INVITATION_EVENT] = ['acceptInvitation'];
     $events[InvitationEvents::REJECT_INVITATION_EVENT] = ['rejectInvitation'];
 
@@ -51,7 +51,7 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function acceptInvitation(InvitationEventInterface $event) : void {
+  public function acceptInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.
@@ -72,11 +72,11 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
       $membership->skip_notification = TRUE;
       $membership->setState(OgMembershipInterface::STATE_ACTIVE)->save();
       $facilitator_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
-      $role_argument = $membership->hasRole($facilitator_id) ? 'facilitator' : 'member';
-      drupal_set_message($this->t('You are now a :role of the ":title" :bundle.', [
-        ':role' => $role_argument,
-        ':title' => $group->label(),
-        ':bundle' => $group->bundle(),
+      $role_argument = $membership->hasRole($facilitator_id) ? $this->t('facilitator') : $this->t('member');
+      drupal_set_message($this->t('You are now a @role of the "@title" @bundle.', [
+        '@role' => $role_argument,
+        '@title' => $group->label(),
+        '@bundle' => $group->get('rid')->entity->getSingularLabel(),
       ]));
     }
   }
@@ -87,7 +87,7 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function rejectInvitation(InvitationEventInterface $event) : void {
+  public function rejectInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.
@@ -98,18 +98,15 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     $user = $invitation->getRecipient();
     $group = $invitation->getEntity();
 
-    // We don't need to act if another action has been taken on the membership.
+    // If the status is not pending, some other action has been taken and the
+    // invitation has not been updated.
     $membership = $this->membershipManager->getMembership($group, $user, [OgMembershipInterface::STATE_PENDING]);
-    if (empty($membership)) {
-      drupal_set_message($this->t('There is no action pending for this user.'));
-    }
-    else {
-      // Disable notifications related to memberships.
-      $membership->skip_notification = TRUE;
-      // Deleting the membership will clear the invitation as well.
-      // @see: joinup_invite_og_membership_delete.
-      $membership->delete();
-      drupal_set_message($this->t('Your decision has been recorded. Thank you for your feedback.'));
+    if (!empty($membership)) {
+      drupal_set_message($this->t('The invitation has been rejected. Thank you for your feedback.'));
+
+      // We do not delete the membership as it will happen automatically.
+      // @see: joinup_invite_invitation_delete().
+      $invitation->delete();
     }
   }
 

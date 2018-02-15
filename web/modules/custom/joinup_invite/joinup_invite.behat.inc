@@ -47,18 +47,18 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then :user should have a(n) :status invitation in the :label :type
    */
-  public function userShouldBeInvitedToGroup($user, $status, $label, $type) {
+  public function userShouldBeInvitedToGroup($user, $status, $label, $type): void {
     $statuses = [
       'accepted' => InvitationInterface::STATUS_ACCEPTED,
       'pending' => InvitationInterface::STATUS_PENDING,
     ];
-    if (!in_array($status, array_keys($statuses))) {
+    if (!isset($statuses[$status])) {
       throw new Exception('Only the following statuses are allowed: ' . implode(', ', array_keys($statuses)));
     }
     $user = $this->getUserByName($user);
     $group = $this->getRdfEntityByLabel($label, $type);
     $invitation_info = $this->getInvitationInfo($type);
-    $invitation = $this->loadByEntityAndUserUnchanged($group, $user, $invitation_info['invitation_bundle']);
+    $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     if (empty($invitation)) {
       throw new Exception("No invitation was found for {$user->getAccountName()} in the \"{$group->label()}\" {$group->bundle()}");
     }
@@ -81,7 +81,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then no invitation should exist for the user :user in the :label :type
    */
-  public function assertNoInvitation($user, $label, $type) {
+  public function assertNoInvitation($user, $label, $type): void {
     $user = $this->getUserByName($user);
     $group = $this->getRdfEntityByLabel($label, $type);
     $invitation_info = $this->getInvitationInfo($type);
@@ -109,14 +109,14 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function acceptInvitation(string $action, string $title, string $type): void {
     if (!in_array($action, ['accept', 'reject'])) {
-      throw new \InvalidArgumentException("Unknown action '$action'. Valid actions are 'accept' and 'reject'.");
+      throw new \InvalidArgumentException("Unknown action '{$action}'. Valid actions are 'accept' and 'reject'.");
     }
     $group = $this->getNodeByTitle($title, $type);
     $user = $this->userManager->getCurrentUser();
     $user = $this->getUserByName($user->name);
 
     $invitation_info = $this->getInvitationInfo($type);
-    $invitation = $this->loadByEntityAndUserUnchanged($group, $user, $invitation_info['invitation_bundle']);
+    $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, $invitation_info['message_template'])->getArguments();
 
     $this->visitPath($arguments["@invitation:${action}_url"]);
@@ -167,7 +167,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when an invitation is not found.
    */
-  protected function loadByEntityAndUserUnchanged(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = ''): ?InvitationInterface {
+  protected function loadInvitationUnchangedByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = ''): ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $query = $storage->getQuery();
     $query->condition('entity_type', $entity->getEntityTypeId())
@@ -176,7 +176,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
       ->condition('bundle', $bundle);
     $results = $query->execute();
     if (empty($results)) {
-      throw new Exception("No invitation was found.");
+      throw new Exception('No invitation was found.');
     }
 
     $iid = reset($results);
@@ -198,7 +198,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I click the :action invitation link from the last email sent to :user
    */
-  public function clickDeleteConfirmationLink($action, $user) {
+  public function clickDeleteConfirmationLink($action, $user): void {
     $user = $this->getUserByName($user);
     $user_email = $user->getEmail();
 

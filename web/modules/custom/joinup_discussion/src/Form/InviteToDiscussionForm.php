@@ -327,17 +327,17 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * Returns the arguments for an invitation message.
    *
-   * @todo This was copied from NotificationSubscriberBase::generateArguments()
-   *   but we cannot call that code directly since it is contained in an
-   *   abstract class. Remove this once ISAICP-4152 is in.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
-   *
    * @param \Drupal\Core\Entity\EntityInterface $discussion
    *   The discussion for which to generate the message arguments.
    *
    * @return array
    *   The message arguments.
+   *
+   * @todo This was copied from NotificationSubscriberBase::generateArguments()
+   *   but we cannot call that code directly since it is contained in an
+   *   abstract class. Remove this once ISAICP-4152 is in.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
    */
   protected function generateArguments(EntityInterface $discussion) : array {
     $arguments = [];
