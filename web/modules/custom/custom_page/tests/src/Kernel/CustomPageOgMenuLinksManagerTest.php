@@ -39,6 +39,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     'og_menu',
     'og_ui',
     'rdf_entity',
+    'rdf_ff',
     'system',
     'user',
   ];
