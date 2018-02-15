@@ -154,9 +154,6 @@
             "behat/mink-extension": {
                 "Firefox starts instead of Chrome @see https://github.com/Behat/MinkExtension/pull/311" : "https://patch-diff.githubusercontent.com/raw/Behat/MinkExtension/pull/311.patch"
             },
-            "drupal/cached_computed_field": {
-                "Expired items never updated @see https://www.drupal.org/project/cached_computed_field/issues/2936736" : "https://www.drupal.org/files/issues/2936736-25.patch"
-            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-293-8.4.x-version-of-291.patch",
