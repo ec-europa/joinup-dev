@@ -41,7 +41,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The entity.
    */
-  public function getEntity(): ContentEntityInterface;
+  public function getEntity(): ?ContentEntityInterface;
 
   /**
    * Sets the entity the user will be invited to.
