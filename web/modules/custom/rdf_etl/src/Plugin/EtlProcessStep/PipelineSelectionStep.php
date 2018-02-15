@@ -48,7 +48,7 @@ class PipelineSelectionStep extends ProcessStepBase implements PluginFormInterfa
   /**
    * {@inheritdoc}
    */
-  public function execute(array $data): void {
+  public function execute(array &$data): void {
     // This step does not require processing.
   }
 
