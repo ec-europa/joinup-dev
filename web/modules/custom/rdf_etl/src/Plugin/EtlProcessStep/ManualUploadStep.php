@@ -7,11 +7,12 @@ namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Drupal\rdf_etl\ProcessStepBase;
 use EasyRdf\Graph;
-use EasyRdf\GraphStore;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,12 +25,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, ContainerFactoryPluginInterface {
 
+  use RdfEntityGraphStoreTrait;
+
   /**
-   * The graph store.
+   * The SPARQL connection.
    *
-   * @var \EasyRdf\GraphStore
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
-  protected $graphStore;
+  protected $sparqlConnection;
 
   /**
    * {@inheritdoc}
@@ -57,20 +60,15 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql_connection) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
     $this->sparqlConnection = $sparql_connection;
-    $connection_options = $sparql_connection->getConnectionOptions();
-    $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
-    // Use a local SPARQL 1.1 Graph Store.
-    $this->graphStore = new GraphStore($connect_string);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function execute(array $data): void {
-    /** @var \EasyRdf\Http\Response $response */
-    $response = $this->graphStore->replace($data['graph'], $this->getConfiguration()['sink_graph']);
+  public function execute(array &$data): void {
+    $this->clearExistingData();
+    $response = $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
     if (!$response->isSuccessful()) {
       $data['error'] = 'Could not store triples in triple store.';
     }
@@ -81,10 +79,10 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     $form['adms_file'] = [
-      '#type' => 'file',
+      '#type' => 'managed_file',
       '#title' => $this->t('File'),
       '#description' => $this->t('Please upload a file to use for federation. Allowed types: @extensions.', [
-        '@extensions' => 'rdf ttl',
+        '@extensions' => '*.rdf, *.ttl',
       ]),
       '#upload_validators'  => [
         'file_validate_extensions' => ['rdf ttl'],
@@ -99,10 +97,11 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::validateConfigurationForm($form, $form_state);
+
     $build_info = $form_state->getBuildInfo();
     $data = &$build_info['data'];
-    $file = $this->uploadedFile();
-    if (!$file) {
+
+    if (!$file = File::load($form_state->getValue('adms_file')[0])) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
@@ -112,8 +111,6 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
     }
-    // Delete the uploaded file from disk.
-    $file->delete();
 
     $form_state->setBuildInfo($build_info);
   }
@@ -126,22 +123,9 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
     $data = &$build_info['data'];
     $data['result'] = $form_state->getValue('adms_file');
     $form_state->setBuildInfo($build_info);
-  }
-
-  /**
-   * Retrieves the uploaded file.
-   *
-   * @return \Drupal\file\FileInterface|null
-   *   File object, if one is uploaded.
-   */
-  protected function uploadedFile(): ?FileInterface {
-    $files = file_save_upload('data', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
-    /** @var \Drupal\file\FileInterface $file */
-    $file = $files[0];
-    if (!is_object($file)) {
-      return NULL;
+    if ($file = File::load($form_state->getValue('adms_file')[0])) {
+      $file->delete();
     }
-    return $file;
   }
 
   /**
@@ -157,6 +141,17 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
     $graph = new Graph();
     $graph->parseFile($file->getFileUri());
     return $graph;
+  }
+
+  /**
+   * Checks the backend for existing data in the sink graph.
+   *
+   * @throws \Exception
+   *   If the SPARQL query is failing.
+   */
+  protected function clearExistingData(): void {
+    $graph_uri = $this->getConfiguration()['sink_graph'];
+    $this->sparqlConnection->update("CLEAR GRAPH <$graph_uri>");
   }
 
 }

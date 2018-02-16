@@ -14,30 +14,50 @@ interface AdmsValidatorInterface {
    *
    * @var string
    */
-  const DEFAULT_VALIDATION_GRAPH = 'http://adms-validator/';
+  const DEFAULT_VALIDATION_GRAPH = 'http://adms-validator';
 
   /**
    * The path of the file that contains the validation rules.
    *
    * @var string
    */
-  const SEMIC_VALIDATION_QUERY_PATH = "SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
+  const SEMIC_VALIDATION_QUERY_PATH = 'SEMICeu/adms-ap_validator/pages/adms-ap.txt';
 
   /**
-   * Validates the triples.
+   * Validates the triples from a graph.
    *
    * @param \EasyRdf\Graph $graph
    *   The graph to verify.
-   * @param string $uri
-   *   (optional) The URI of the graph to use while storing and querying. If is
-   *   missed, the default graph URI will be used.
    *
-   * @return \Drupal\adms_validator\SchemaErrorList
+   * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
-   *
-   * @throws \Exception
-   *   If the triples cannot be stored in the graph store.
    */
-  public function validate(Graph $graph, string $uri = self::DEFAULT_VALIDATION_GRAPH): SchemaErrorList;
+  public function validateGraph(Graph $graph): AdmsValidationResult;
+
+  /**
+   * Validates the triples from a blob of RDF content.
+   *
+   * @param string $content
+   *   The RDF content to be validated.
+   * @param string $graph_uri
+   *   The graph URI.
+   *
+   * @return \Drupal\adms_validator\AdmsValidationResult
+   *   A list of schema validation errors.
+   */
+  public function validateBlob(string $content, string $graph_uri): AdmsValidationResult;
+
+  /**
+   * Validates the triples from a file.
+   *
+   * @param string $file_uri_or_path
+   *   The RDF file URI or path.
+   * @param string $graph_uri
+   *   The graph URI.
+   *
+   * @return \Drupal\adms_validator\AdmsValidationResult
+   *   A list of schema validation errors.
+   */
+  public function validateFile(string $file_uri_or_path, string $graph_uri): AdmsValidationResult;
 
 }

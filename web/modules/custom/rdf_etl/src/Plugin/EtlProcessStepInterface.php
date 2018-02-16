@@ -25,6 +25,6 @@ interface EtlProcessStepInterface extends PluginInspectionInterface, Configurabl
    * @param array $data
    *   The data array.
    */
-  public function execute(array $data): void;
+  public function execute(array &$data): void;
 
 }
