@@ -65,7 +65,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
 
     $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);
     $rdf_type = $mapping->getRdfType();
-    $query = $this->getQuery($properties['graph'], $properties['property_predicates'], $rdf_type, $predicate[$bundle]);
+    $query = $this->getQuery($properties['graph'], $properties['class'], $properties['property_predicates'], $rdf_type, $predicate[$bundle]);
 
     return $this->sparqlEndpoint->query($query)->isTrue();
   }
@@ -93,6 +93,8 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    *
    * @param string $graph
    *   The graph uri.
+   * @param string $class
+   *   The Uri that defines a class object.
    * @param array $property_predicates
    *   A list of predicates that can be used to declare that a field belongs to
    *   a class.
@@ -104,10 +106,11 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    * @return string
    *   The query string.
    */
-  protected function getQuery($graph, array $property_predicates, $rdf_type, $field_iri): string {
-    $search = ['@graph', '@property_predicates', '@rdf_type', '@field_iri'];
+  protected function getQuery($graph, $class, array $property_predicates, $rdf_type, $field_iri): string {
+    $search = ['@graph', '@class', '@property_predicates', '@rdf_type', '@field_iri'];
     $replace = [
       SparqlArg::uri($graph),
+      SparqlArg::uri($class),
       SparqlArg::serializeUris($property_predicates, ' '),
       SparqlArg::uri($rdf_type),
       SparqlArg::uri($field_iri),
@@ -116,8 +119,8 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
     $query = <<<QUERY
 ASK { 
   GRAPH @graph { 
-    ?entity_id a @rdf_type .
-    @field_iri ?property_predicates ?entity_id .
+    @rdf_type a @class .
+    @field_iri ?property_predicates @rdf_type .
     VALUES ?property_predicates { @property_predicates } .  
   } 
 }

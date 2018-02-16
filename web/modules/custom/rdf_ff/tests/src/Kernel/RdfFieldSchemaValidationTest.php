@@ -64,6 +64,7 @@ class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
     $dummy_mapping = $this->entityTypeManger->getStorage('rdf_entity_mapping')->load("rdf_entity.dummy");
     $dummy_mapping->setThirdPartySetting('rdf_ff', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
     $dummy_mapping->setThirdPartySetting('rdf_ff', 'graph', $this->definitionUri);
+    $dummy_mapping->setThirdPartySetting('rdf_ff', 'class', 'http://www.w3.org/2000/01/rdf-schema#Class');
     $dummy_mapping->save();
 
     $filename = __DIR__ . '/../../fixtures/dummy_definition.rdf';

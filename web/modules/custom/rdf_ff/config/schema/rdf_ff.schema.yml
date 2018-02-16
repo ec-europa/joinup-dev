@@ -11,3 +11,6 @@ rdf_entity.mapping.*.third_party.rdf_ff:
     graph:
       type: string
       label: 'The graph that stores the schema definition.'
+    class:
+      type: string
+      label: 'The SPARQL Uri that defines a class object.'

@@ -8,6 +8,7 @@ dependencies:
 third_party_settings:
   rdf_ff:
     graph: 'http://adms-definition'
+    class: 'http://www.w3.org/2000/01/rdf-schema#Class'
     property_predicates:
       - 'http://www.w3.org/2000/01/rdf-schema#domain'
 id: rdf_entity.solution

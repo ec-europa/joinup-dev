@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dc="http://purl.org/dc/terms/"
-         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-         xmlns:example="http://example.com/">
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
-    <example:dummy rdf:about="http://example.com/dummy">
+    <rdfs:Class rdf:about="http://example.com/dummy">
         <rdfs:comment xml:lang="en">An example class definition.</rdfs:comment>
         <rdfs:label xml:lang="en">Dummy</rdfs:label>
-    </example:dummy>
+    </rdfs:Class>
 
     <rdf:Property rdf:about="http://purl.org/dc/terms/description">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>

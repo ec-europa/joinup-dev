@@ -14,6 +14,7 @@ use EasyRdf\GraphStore;
  */
 function rdf_ff_update_8102() {
   $graph_uri = 'http://adms-definition';
+  $class_definition = 'http://www.w3.org/2000/01/rdf-schema#Class';
 
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $connection_options = $sparql_endpoint->getConnectionOptions();
@@ -37,6 +38,7 @@ function rdf_ff_update_8102() {
     $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', $bundle);
     $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
     $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'graph', $graph_uri);
+    $rdf_entity_mapping->setThirdPartySetting('rdf_ff', 'class', $class_definition);
     $rdf_entity_mapping->save();
   }
 }
