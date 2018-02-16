@@ -1,4 +1,4 @@
-# Rdf federated fields
+# Rdf schema field validation
 
 This simple module provides a service that validates that a field
 belongs to an ontology.
@@ -24,7 +24,8 @@ $bundle = 'bunlde';
 $field_name = 'field_text';
 $field_column = 'value';
  
-$validator = \Drupal::service('rdf_ff.schema_field_validator');
+$validator =
+    \Drupal::service('rdf_schema_field_validation.schema_field_validator');
 $is_defined = $validator
     ->isDefinedInSchema($entity_type_id, $bundle, $field_name, $field_column);
 ```

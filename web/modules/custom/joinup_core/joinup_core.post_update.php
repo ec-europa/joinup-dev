@@ -83,8 +83,8 @@ function joinup_core_post_update_install_rdf_etl_and_spain_ctt() {
 }
 
 /**
- * Enable the Rdf Federated Fields module.
+ * Enable the 'rdf_schema_field_validation' module.
  */
-function joinup_core_post_update_install_rdf_ff() {
-  \Drupal::service('module_installer')->install(['rdf_ff']);
+function joinup_core_post_update_install_rdf_schema_field_validation() {
+  \Drupal::service('module_installer')->install(['rdf_schema_field_validation']);
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\rdf_ff;
+declare(strict_types = 1);
+
+namespace Drupal\rdf_schema_field_validation;
 
 /**
  * Interface SchemaFieldValidatorInterface.
@@ -22,6 +24,6 @@ interface SchemaFieldValidatorInterface {
    * @return bool
    *   Whether the field name is defined in the schema.
    */
-  public function isDefinedInSchema($entity_type_id, $bundle, $field_name, $column = '');
+  public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column = '');
 
 }

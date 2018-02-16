@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_ff\Kernel;
+namespace Drupal\Tests\rdf_schema_field_validation\Kernel;
 
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
@@ -9,7 +9,7 @@ use EasyRdf\Graph;
 /**
  * Suite that tests the rdf field schema validation service.
  */
-class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
+class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
 
   /**
    * The SPARQL connection.
@@ -35,7 +35,7 @@ class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
   /**
    * The field schema validation service.
    *
-   * @var \Drupal\rdf_ff\SchemaFieldValidatorInterface
+   * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
    */
   protected $schemaFieldValidator;
 
@@ -47,7 +47,7 @@ class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
   public static $modules = [
     'rdf_entity',
     'rdf_entity_test',
-    'rdf_ff',
+    'rdf_schema_field_validation',
   ];
 
   /**
@@ -58,13 +58,13 @@ class RdfFieldSchemaValidationTest extends JoinupKernelTestBase {
 
     $this->spaqlEndpoint = $this->container->get('sparql_endpoint');
     $this->entityTypeManger = $this->container->get('entity_type.manager');
-    $this->schemaFieldValidator = $this->container->get('rdf_ff.schema_field_validator');
+    $this->schemaFieldValidator = $this->container->get('rdf_schema_field_validation.schema_field_validator');
 
     /** @var \Drupal\rdf_entity\Entity\RdfEntityMapping $dummy_mapping */
     $dummy_mapping = $this->entityTypeManger->getStorage('rdf_entity_mapping')->load("rdf_entity.dummy");
-    $dummy_mapping->setThirdPartySetting('rdf_ff', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
-    $dummy_mapping->setThirdPartySetting('rdf_ff', 'graph', $this->definitionUri);
-    $dummy_mapping->setThirdPartySetting('rdf_ff', 'class', 'http://www.w3.org/2000/01/rdf-schema#Class');
+    $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
+    $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'graph', $this->definitionUri);
+    $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'class', 'http://www.w3.org/2000/01/rdf-schema#Class');
     $dummy_mapping->save();
 
     $filename = __DIR__ . '/../../fixtures/dummy_definition.rdf';

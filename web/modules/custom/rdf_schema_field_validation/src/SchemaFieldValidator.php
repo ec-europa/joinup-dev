@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\rdf_ff;
+declare(strict_types = 1);
+
+namespace Drupal\rdf_schema_field_validation;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -53,13 +55,10 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Exception
-   *   Thrown if the entity does not have mapped properties.
    */
-  public function isDefinedInSchema($entity_type_id, $bundle, $field_name, $column_name = '') {
+  public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column_name = '') {
     $mapping = $this->getEntityMapping($entity_type_id, $bundle);
-    if (empty($mapping) || empty($properties = $mapping->getThirdPartySettings('rdf_ff'))) {
+    if (empty($mapping) || empty($properties = $mapping->getThirdPartySettings('rdf_schema_field_validation'))) {
       throw new \Exception("The entity does not appear to have mapped properties.");
     }
 
@@ -81,7 +80,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    * @return \Drupal\rdf_entity\RdfEntityMappingInterface|null
    *   The rdf entity mapping or null, if none is found.
    */
-  protected function getEntityMapping($entity_type_id, $bundle): ?RdfEntityMappingInterface {
+  protected function getEntityMapping(string $entity_type_id, string $bundle): ?RdfEntityMappingInterface {
     $id = "{$entity_type_id}.{$bundle}";
     /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
     $mapping = $this->entityTypeManager->getStorage('rdf_entity_mapping')->load($id);
@@ -106,8 +105,14 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
    * @return string
    *   The query string.
    */
-  protected function getQuery($graph, $class, array $property_predicates, $rdf_type, $field_iri): string {
-    $search = ['@graph', '@class', '@property_predicates', '@rdf_type', '@field_iri'];
+  protected function getQuery(string $graph, string $class, array $property_predicates, string $rdf_type, string $field_iri): string {
+    $search = [
+      '@graph',
+      '@class',
+      '@property_predicates',
+      '@rdf_type',
+      '@field_iri',
+    ];
     $replace = [
       SparqlArg::uri($graph),
       SparqlArg::uri($class),
@@ -116,6 +121,8 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
       SparqlArg::uri($field_iri),
     ];
 
+    // The query will ask whether a field belongs to an ontology that itself is
+    // defined as a class.
     $query = <<<QUERY
 ASK { 
   GRAPH @graph { 

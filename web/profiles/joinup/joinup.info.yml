@@ -72,7 +72,7 @@ dependencies:
   - rdf_entity
   - rdf_etl
   - rdf_export
-  - rdf_ff
+  - rdf_schema_field_validation
   - rdf_taxonomy
   - search_api
   - search_api_arbitrary_facet
