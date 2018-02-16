@@ -5565,11 +5565,17 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "dev-master",
+            "version": "dev-fix-purge-backend",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "master"
+                "url": "https://github.com/claudiu-cristea/virtuoso.git",
+                "reference": "f35cca95c7786f238775698bc8101080c12bbb56"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/claudiu-cristea/virtuoso/zipball/f35cca95c7786f238775698bc8101080c12bbb56",
+                "reference": "f35cca95c7786f238775698bc8101080c12bbb56",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -5577,7 +5583,19 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2017-10-30T16:51:41+00:00"
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/claudiu-cristea/virtuoso/tree/fix-purge-backend"
+            },
+            "time": "2018-02-16T18:32:55+00:00"
         },
         {
             "name": "egulias/email-validator",
