@@ -134,69 +134,51 @@ class InviteToGroupForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateAddUser(array &$form, FormStateInterface $form_state) {
+    parent::validateAddUser($form, $form_state);
     if ($this->rdfEntity->bundle() !== 'collection') {
       return;
     }
 
-    // Ensure that users are not already invited or members of the group.
-    $users = $this->getUserList($form_state);
-    $already_members = [];
-    $already_invited = [];
-    $invitation_storage = $this->entityTypeManager->getStorage('invitation');
-    $entity_type_id = $this->rdfEntity->getEntityTypeId();
-    $entity_id = $this->rdfEntity->id();
+    $user = $this->loadUserByMail($form_state->getValue('autocomplete'));
+    if (empty($user)) {
+      return;
+    }
+
     $membership_states = [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_BLOCKED,
     ];
 
-    foreach ($users as $user) {
-      if (!empty($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states))) {
-        $already_members[$membership->getState()][] = $user->getAccountName();
-      }
-      else {
-        $invitations = $invitation_storage->loadByProperties([
-          'entity_type' => $entity_type_id,
-          'entity_id' => $entity_id,
-          'recipient_id' => $user->id(),
-          'bundle' => 'group',
-        ]);
-        $invitation = reset($invitations);
-        if (!empty($invitation)) {
-          $already_invited[] = $user->getAccountName();
-        }
-      }
-    }
-
-    $errors = [];
-    foreach ($membership_states as $state) {
-      if (!empty($already_members[$state])) {
-        $errors[] = $this->t('There are already @state memberships for the following users: @users.', [
-          '@state' => $state,
-          '@users' => implode(', ', $already_members[$state]),
-        ]);
-      }
-    }
-    if (!empty($already_invited)) {
-      $errors[] = $this->t('The following users are already invited to the @group: @users.', [
+    if (!empty($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states))) {
+      $form_state->setErrorByName('autocomplete', $this->t('There is already @prefix @state membership for @user in the @group.', [
+        '@user' => $user->getAccountName(),
+        '@prefix' => $membership->getState() === OgMembershipInterface::STATE_ACTIVE ? 'an' : 'a',
+        '@state' => $membership->getState(),
         '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
-        '@users' => implode(', ', $already_invited),
-      ]);
+      ]));
     }
+    else {
+      // Set it in else clause to avoid checking for invitations if a membership
+      // already exists.
+      $invitation_storage = $this->entityTypeManager->getStorage('invitation');
+      $entity_type_id = $this->rdfEntity->getEntityTypeId();
+      $entity_id = $this->rdfEntity->id();
 
-    if (!empty($errors)) {
-      // Currently, ::setError and ::setErrorByName does not handle multiple
-      // error messages per element. Thus, we are showing the error messages
-      // using the global drupal_set_message and we are setting an error on the
-      // users element.
-      // @see: https://www.drupal.org/node/2818437
-      foreach ($errors as $error) {
-        drupal_set_message($error, 'error');
+      $invitations = $invitation_storage->loadByProperties([
+        'entity_type' => $entity_type_id,
+        'entity_id' => $entity_id,
+        'recipient_id' => $user->id(),
+        'bundle' => 'group',
+      ]);
+      $invitation = reset($invitations);
+      if (!empty($invitation)) {
+        $form_state->setErrorByName('autocomplete', $this->t('There is already an active invitation for @user.', [
+          '@user' => $user->getAccountName(),
+          '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
+        ]));
       }
-      $form_state->setRebuild(TRUE);
     }
-    parent::validateForm($form, $form_state);
   }
 
   /**

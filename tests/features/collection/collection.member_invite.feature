@@ -99,10 +99,7 @@ Feature: Collection membership invitations
     And I click "Add members"
     And I fill in "E-mail" with "lois.griffin@example.com"
     And I press "Add"
-    And I press "Invite members"
-
-    And I should see the error message "The following users are already invited to the collection: Lois Griffin."
-    And I press the remove button on the chip "Lois Griffin"
+    Then I should see the error message "There is already an active invitation for Lois Griffin."
 
     # Reject the invitation.
     When I click the reject invitation link from the last email sent to "Lois Griffin"
@@ -116,20 +113,21 @@ Feature: Collection membership invitations
     Then I should see the heading "Page not found"
 
     # Check that a member cannot be invited again.
+    When all e-mails have been sent
     And I go to the "Stewie's family" collection
     And I click "Members" in the "Left sidebar"
     And I click "Add members"
     And I fill in "E-mail" with "stewie.griffin@example.com"
     And I press "Add"
-    And I fill in "E-mail" with "meg.griffin@example.com"
+    Then I should see the error message "There is already an active membership for Stewie Griffin in the collection."
+    When I fill in "E-mail" with "meg.griffin@example.com"
     And I press "Add"
-    And I press "Invite members"
-    Then I should see the error message "There are already active memberships for the following users: Stewie Griffin."
-    Then I should see the error message "There are already blocked memberships for the following users: Meg Griffin."
-    And I press the remove button on the chip "Stewie Griffin"
+    Then I should see the error message "There is already a blocked membership for Meg Griffin in the collection."
+    # Ensure that no chips are left in the page.
+    When I press "Invite members"
+    Then I should see the error message "Please add at least one user."
 
     # Add a facilitator.
-    When all e-mails have been sent
     And I fill in "E-mail" with "bryan.griffin@example.com"
     And I press "Add"
     Then the page should show the chips:
