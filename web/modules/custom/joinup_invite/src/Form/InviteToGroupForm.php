@@ -141,37 +141,60 @@ class InviteToGroupForm extends InviteFormBase {
 
     // Ensure that users are not already invited or members of the group.
     $users = $this->getUserList($form_state);
-    $invalid_users = [];
+    $already_members = [];
+    $already_invited = [];
     $invitation_storage = $this->entityTypeManager->getStorage('invitation');
     $entity_type_id = $this->rdfEntity->getEntityTypeId();
     $entity_id = $this->rdfEntity->id();
+    $membership_states = [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_BLOCKED,
+    ];
+
     foreach ($users as $user) {
-      $invitations = $invitation_storage->loadByProperties([
-        'entity_type' => $entity_type_id,
-        'entity_id' => $entity_id,
-        'recipient_id' => $user->id(),
-        'bundle' => 'group',
-      ]);
-      $invitation = reset($invitations);
-
-      $membership_states = [
-        OgMembershipInterface::STATE_ACTIVE,
-        OgMembershipInterface::STATE_BLOCKED,
-        OgMembershipInterface::STATE_PENDING,
-      ];
-      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states);
-
-      if (!empty($invitation) || !empty($membership)) {
-        $invalid_users[] = $user->getAccountName();
+      if (!empty($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states))) {
+        $already_members[$membership->getState()][] = $user->getAccountName();
+      }
+      else {
+        $invitations = $invitation_storage->loadByProperties([
+          'entity_type' => $entity_type_id,
+          'entity_id' => $entity_id,
+          'recipient_id' => $user->id(),
+          'bundle' => 'group',
+        ]);
+        $invitation = reset($invitations);
+        if (!empty($invitation)) {
+          $already_invited[] = $user->getAccountName();
+        }
       }
     }
 
-    if (!empty($invalid_users)) {
-      $error = $this->t('The following users are already invited or members of the @group: @users.', [
+    $errors = [];
+    foreach ($membership_states as $state) {
+      if (!empty($already_members[$state])) {
+        $errors[] = $this->t('There are already @state memberships for the following users: @users.', [
+          '@state' => $state,
+          '@users' => implode(', ', $already_members[$state]),
+        ]);
+      }
+    }
+    if (!empty($already_invited)) {
+      $errors[] = $this->t('The following users are already invited to the @group: @users.', [
         '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
-        '@users' => implode(', ', $invalid_users),
+        '@users' => implode(', ', $already_invited),
       ]);
-      $form_state->setError($form['users'], $error);
+    }
+
+    if (!empty($errors)) {
+      // Currently, ::setError and ::setErrorByName does not handle multiple
+      // error messages per element. Thus, we are showing the error messages
+      // using the global drupal_set_message and we are setting an error on the
+      // users element.
+      // @see: https://www.drupal.org/node/2818437
+      foreach ($errors as $error) {
+        drupal_set_message($error, 'error');
+      }
+      $form_state->setRebuild(TRUE);
     }
     parent::validateForm($form, $form_state);
   }
@@ -236,7 +259,7 @@ class InviteToGroupForm extends InviteFormBase {
    * @return string
    *   The role id.
    */
-  protected function getRoleId($role_option): string {
+  protected function getRoleId(string $role_option): string {
     return implode('-', [
       $this->rdfEntity->getEntityTypeId(),
       $this->rdfEntity->bundle(),
@@ -255,7 +278,7 @@ class InviteToGroupForm extends InviteFormBase {
    * @return bool
    *   Whether or not the message was successfully delivered.
    */
-  protected function sendMessage(InvitationInterface $invitation, $role): bool {
+  protected function sendMessage(InvitationInterface $invitation, string $role): bool {
     $arguments = $this->generateArguments($this->rdfEntity);
     $arguments += ['@invitation:target_role' => $role];
 

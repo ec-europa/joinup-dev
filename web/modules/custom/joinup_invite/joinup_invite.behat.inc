@@ -60,7 +60,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $invitation_info = $this->getInvitationInfo($type);
     $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     if (empty($invitation)) {
-      throw new Exception("No invitation was found for {$user->getAccountName()} in the \"{$group->label()}\" {$group->bundle()}");
+      throw new Exception("No invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
     PHPUnit_Framework_Assert::assertEquals($invitation->getStatus(), $statuses[$status]);
   }
@@ -87,7 +87,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $invitation_info = $this->getInvitationInfo($type);
     $invitation = Invitation::loadByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     if (!empty($invitation)) {
-      throw new Exception("An invitation was found for {$user->getAccountName()} in the \"{$group->label()}\" {$group->bundle()}");
+      throw new Exception("An invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
   }
 

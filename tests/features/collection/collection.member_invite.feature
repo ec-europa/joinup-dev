@@ -11,6 +11,7 @@ Feature: Collection membership invitations
       | Lois Griffin   |       | lois.griffin@example.com   | Lois       | Griffin     |
       | Bryan Griffin  |       | bryan.griffin@example.com  | Bryan      | Griffin     |
       | Stewie Griffin |       | stewie.griffin@example.com | Stewie     | Griffin     |
+      | Meg Griffin    |       | meg.griffin@example.com    | Meg        | Griffin     |
     And the following collections:
       | title           | description        | logo     | banner     | closed | state     |
       | Stewie's family | Any fan of family? | logo.png | banner.jpg | yes    | validated |
@@ -18,6 +19,7 @@ Feature: Collection membership invitations
       | collection      | user           | roles       | state  |
       | Stewie's family | Pieter Griffin | facilitator | active |
       | Stewie's family | Stewie Griffin |             | active |
+      | Stewie's family | Meg Griffin    |             | blocked|
 
   Scenario:Only privileged members are able to access the invitation page.
     When I am not logged in
@@ -91,6 +93,17 @@ Feature: Collection membership invitations
       | body      | Pieter has invited you to join the collection "Stewie's family" as a member. |
     And "Lois Griffin" should have a pending invitation in the "Stewie's family" collection
 
+    # Check that the same user cannot be invited again.
+    And I go to the "Stewie's family" collection
+    And I click "Members" in the "Left sidebar"
+    And I click "Add members"
+    And I fill in "E-mail" with "lois.griffin@example.com"
+    And I press "Add"
+    And I press "Invite members"
+
+    And I should see the error message "The following users are already invited to the collection: Lois Griffin."
+    And I press the remove button on the chip "Lois Griffin"
+
     # Reject the invitation.
     When I click the reject invitation link from the last email sent to "Lois Griffin"
     And no invitation should exist for the user "Lois Griffin" in the "Stewie's family" collection
@@ -102,14 +115,17 @@ Feature: Collection membership invitations
     When I click the reject invitation link from the last email sent to "Lois Griffin"
     Then I should see the heading "Page not found"
 
-    # Check that the same user cannot be invited again.
+    # Check that a member cannot be invited again.
     And I go to the "Stewie's family" collection
     And I click "Members" in the "Left sidebar"
-    When I click "Add members"
-    When I fill in "E-mail" with "stewie.griffin@example.com"
+    And I click "Add members"
+    And I fill in "E-mail" with "stewie.griffin@example.com"
+    And I press "Add"
+    And I fill in "E-mail" with "meg.griffin@example.com"
     And I press "Add"
     And I press "Invite members"
-    Then I should see the error message "The following users are already invited or members of the collection: Stewie Griffin."
+    Then I should see the error message "There are already active memberships for the following users: Stewie Griffin."
+    Then I should see the error message "There are already blocked memberships for the following users: Meg Griffin."
     And I press the remove button on the chip "Stewie Griffin"
 
     # Add a facilitator.
