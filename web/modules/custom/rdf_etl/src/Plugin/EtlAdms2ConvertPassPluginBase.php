@@ -70,33 +70,50 @@ abstract class EtlAdms2ConvertPassPluginBase extends PluginBase implements EtlAd
    */
   protected function getTriplesFromGraph(string $graph_uri, ?string $subject = NULL, ?string $predicate = NULL, ?string $objects = NULL): array {
     $filter = [];
-    $filter[] = $subject ? "VALUES ?subject { <$subject> } ." : '';
-    $filter[] = $predicate ? "VALUES ?predicate { <$predicate> } ." : '';
-    $filter[] = $objects ? "VALUES ?object { $objects } ." : '';
-    $filter = implode("\n", $filter);
+    $filter[] = $subject ? "VALUES ?subject { <$subject> }" : NULL;
+    $filter[] = $predicate ? "VALUES ?predicate { <$predicate> }" : NULL;
+    $filter[] = $objects ? "VALUES ?object { $objects }" : NULL;
+    $filter = implode(" .\n", array_filter($filter));
 
+    $limit = 10000;
+
+    // Using a sub-query to prevent Virtuoso 22023 Error SR353.
+    // @see http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksHowToHandleBandwidthLimitExceed
     $query = <<<QUERY
 SELECT ?graph ?subject ?predicate ?object
-FROM NAMED <$graph_uri>
 WHERE {
-  GRAPH ?graph {
-    ?subject ?predicate ?object .
-    $filter
+  SELECT ?graph ?subject ?predicate ?object
+  FROM NAMED <{$graph_uri}>
+  WHERE {
+    GRAPH ?graph {
+      ?subject ?predicate ?object .
+      {$filter}
+    }
   }
+  ORDER BY ?subject
 }
-ORDER BY ?subject
+LIMIT <{$limit}>
+OFFSET %d
 QUERY;
 
+    $offset = 0;
     $return = [];
-    /** @var \EasyRdf\Sparql\Result $results */
-    $results = $this->sparql->query($query);
-    foreach ($results as $result) {
-      $return[] = [
-        'subject' => (string) $result->subject,
-        'predicate' => (string) $result->predicate,
-        'object' => (string) $result->object,
-      ];
-    }
+
+    // Split the results in chunks to overcome the virtuoso.ini ResultSetMaxRows
+    // value which usually defaults to 1000000.
+    // @see https://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtConfigScale#Configuration%20Options
+    do {
+      /** @var \EasyRdf\Sparql\Result $results */
+      $results = $this->sparql->query(sprintf($query, $offset));
+      foreach ($results as $result) {
+        $return[] = [
+          'subject' => (string) $result->subject,
+          'predicate' => (string) $result->predicate,
+          'object' => (string) $result->object,
+        ];
+      }
+      $offset += $limit;
+    } while ($results->count());
 
     return $return;
   }
