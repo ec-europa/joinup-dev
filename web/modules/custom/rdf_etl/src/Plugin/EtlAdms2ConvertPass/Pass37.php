@@ -107,17 +107,6 @@ RDF;
         // Deletes the download URLs from the asset distribution.
         $download_urls_to_delete = SparqlArg::toResourceUris($entity[$predicate]);
         $this->deleteTriples($graph, $subject, $predicate, $download_urls_to_delete);
-
-        // If this entity lacks access URLs, use download URLs as access URLs as
-        // they are the same thing.
-        // @see https://joinup.ec.europa.eu/discussion/cr26-distribution-remove-property-dcatdownloadurl
-        if (!$this->getTriplesFromGraph($graph, $subject, 'http://www.w3.org/ns/dcat#accessURL')) {
-          $this->insertTriples($graph, [
-            SparqlArg::uri($subject) => [
-              '<http://www.w3.org/ns/dcat#accessURL>' => $download_urls_to_delete,
-            ],
-          ]);
-        }
       }
     }
   }
