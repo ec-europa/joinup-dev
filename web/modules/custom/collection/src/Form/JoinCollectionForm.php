@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
@@ -97,6 +98,8 @@ class JoinCollectionForm extends FormBase {
     // confirmation form, disguised as a form submit button. The confirmation
     // form should open in a modal dialog for JavaScript-enabled browsers.
     $membership = $this->getUserNonBlockedMembership($user, $collection);
+    // If a user is invited, show the same message as the pending membership.
+    $invitation = $this->getUserPendingInvitation($user, $collection);
     $button_classes = [
       'button',
       'button--blue-light',
@@ -109,7 +112,7 @@ class JoinCollectionForm extends FormBase {
 
     // In case the user is not a member or does not have a pending membership,
     // give the possibility to request one.
-    if (empty($membership)) {
+    if (empty($membership) && empty($invitation)) {
       $form['join'] = [
         '#attributes' => [
           'class' => $button_classes,
@@ -119,7 +122,7 @@ class JoinCollectionForm extends FormBase {
       ];
     }
     // If the user has an active membership, he can cancel it as well.
-    elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
+    elseif ($membership && $membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $parameters = ['rdf_entity' => $collection->id()];
       if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
         $form['leave'] = [
@@ -140,8 +143,10 @@ class JoinCollectionForm extends FormBase {
       }
       $form['#attached']['library'][] = 'core/drupal.ajax';
     }
-    // If the user has a pending membership, do not allow to request a new one.
-    elseif ($membership->getState() === OgMembershipInterface::STATE_PENDING) {
+    // If the user has a pending membership, or a pending invitation
+    // do not allow to request a new one.
+    elseif (($membership && $membership->getState() === OgMembershipInterface::STATE_PENDING)
+      || ($invitation && $invitation->getStatus())) {
       $form['pending'] = [
         '#type' => 'link',
         '#title' => $this->t('Membership is pending'),
@@ -238,6 +243,30 @@ class JoinCollectionForm extends FormBase {
       OgMembershipInterface::STATE_PENDING,
     ]);
     return $membership;
+  }
+
+  /**
+   * Returns an invitation of the user that is pending.
+   *
+   * @param \Drupal\user\UserInterface $user
+   *   The user entity.
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The group entity.
+   *
+   * @return \Drupal\joinup_invite\Entity\InvitationInterface|null
+   *   The membership of the user or null.
+   */
+  protected function getUserPendingInvitation(UserInterface $user, RdfInterface $collection) {
+    /** @var \Drupal\joinup_invite\Entity\InvitationInterface[] $invitation */
+    $invitation = $this->entityTypeManager->getStorage('invitation')->loadByProperties([
+      'entity_type' => $collection->getEntityTypeId(),
+      'entity_id' => $collection->id(),
+      'recipient_id' => $user->id(),
+      'status' => InvitationInterface::STATUS_PENDING,
+      'bundle' => 'group',
+    ]);
+
+    return reset($invitation);
   }
 
 }

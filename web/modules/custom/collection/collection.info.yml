@@ -13,6 +13,7 @@ dependencies:
   - image
   - inline_entity_form
   - joinup_core
+  - joinup_invite
   - link
   - og
   - og_menu
