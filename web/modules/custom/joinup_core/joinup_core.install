@@ -64,6 +64,14 @@ function joinup_core_update_8100(&$sandbox) {
 }
 
 /**
+ * Delete the queue of the cached_computed_field module.
+ */
+function joinup_core_update_8101() {
+  $queue = \Drupal::queue('cached_computed_field_expired_fields', FALSE);
+  $queue->deleteQueue();
+}
+
+/**
  * Update the type of collections, solutions, releases and distributions.
  */
 function joinup_core_update_8102() {
