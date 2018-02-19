@@ -86,7 +86,6 @@ Feature: Collection membership invitations
     Given the option with text "Member" from select "Role" is selected
     When I press "Invite members"
     Then I should see the success message "An invitation has been sent to the selected users. Their membership is pending."
-    And the "Stewie's family" collection should have 1 pending member
     And the following email should have been sent:
       | recipient | Lois Griffin                                                                 |
       | subject   | Joinup: You are invited to join the collection "Stewie's family".            |
@@ -104,7 +103,6 @@ Feature: Collection membership invitations
     # Reject the invitation.
     When I click the reject invitation link from the last email sent to "Lois Griffin"
     And no invitation should exist for the user "Lois Griffin" in the "Stewie's family" collection
-    And the "Stewie's family" collection should have 0 pending members
 
     # Ensure that the accept/reject click is not accessible anymore.
     When I click the accept invitation link from the last email sent to "Lois Griffin"
@@ -135,7 +133,6 @@ Feature: Collection membership invitations
     When I select "Facilitator" from "Role"
     And I press "Invite members"
     Then I should see the success message "An invitation has been sent to the selected users. Their membership is pending."
-    And the "Stewie's family" collection should have 1 pending members
     And "Bryan Griffin" should have a pending invitation in the "Stewie's family" collection
     And the following email should have been sent:
       | recipient | Bryan Griffin                                                                     |

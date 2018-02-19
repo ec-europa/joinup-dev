@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\EventSubscriber;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
@@ -62,12 +64,15 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     $user = $invitation->getRecipient();
     $group = $invitation->getEntity();
 
-    // We don't need to act if another action has been taken on the membership.
-    $membership = $this->membershipManager->getMembership($group, $user, [OgMembershipInterface::STATE_PENDING]);
-    if (empty($membership)) {
+    if ($this->getMembership($group, $user)) {
       drupal_set_message($this->t('There is no action pending for this user.'));
     }
     else {
+      $membership = $this->membershipManager->createMembership($group, $user);
+      if (!empty($invitation->get('invitation_role')->first())) {
+        $role = $invitation->get('invitation_role')->first()->entity;
+        $membership->addRole($role);
+      }
       // Disable notifications related to memberships.
       $membership->skip_notification = TRUE;
       $membership->setState(OgMembershipInterface::STATE_ACTIVE)->save();
@@ -98,16 +103,34 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     $user = $invitation->getRecipient();
     $group = $invitation->getEntity();
 
-    // If the status is not pending, some other action has been taken and the
-    // invitation has not been updated.
-    $membership = $this->membershipManager->getMembership($group, $user, [OgMembershipInterface::STATE_PENDING]);
-    if (!empty($membership)) {
+    // If there is already a membership, it means that it has been created
+    // somewhere else in the meantime.
+    if (!empty($this->getMembership($group, $user))) {
+      drupal_set_message($this->t('There is no action pending for this user.'));
+    }
+    else {
       drupal_set_message($this->t('The invitation has been rejected. Thank you for your feedback.'));
-
-      // We do not delete the membership as it will happen automatically.
-      // @see: joinup_invite_invitation_delete().
       $invitation->delete();
     }
+  }
+
+  /**
+   * Loads a membership regardless of its state.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group entity.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user entity.
+   *
+   * @return \Drupal\og\OgMembershipInterface|null
+   *   An og membership.
+   */
+  protected function getMembership(EntityInterface $group, AccountInterface $user) {
+    return $this->membershipManager->getMembership($group, $user, [
+      OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
+      OgMembershipInterface::STATE_BLOCKED,
+    ]);
   }
 
 }

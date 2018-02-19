@@ -147,6 +147,7 @@ class InviteToGroupForm extends InviteFormBase {
 
     $membership_states = [
       OgMembershipInterface::STATE_ACTIVE,
+      OgMembershipInterface::STATE_PENDING,
       OgMembershipInterface::STATE_BLOCKED,
     ];
 
@@ -193,21 +194,15 @@ class InviteToGroupForm extends InviteFormBase {
 
     foreach ($users as $user) {
       if ($this->rdfEntity->bundle() === 'collection') {
-        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user)
-          ->addRole($role)
-          ->setState(OgMembershipInterface::STATE_PENDING);
-        // Skip notifications related to memberships.
-        $membership->skip_notification = TRUE;
-        $membership->save();
-
         /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
         $invitation = $this->entityTypeManager->getStorage('invitation')
-          ->create(['bundle' => 'group'])
-          ->setEntity($this->rdfEntity)
+          ->create(['bundle' => 'group']);
+        $invitation->set('invitation_role', $role->id());
+        $invitation->setEntity($this->rdfEntity)
           ->setRecipient($user)
           ->setOwner($current_user)
-          ->setStatus(InvitationInterface::STATUS_PENDING);
-        $invitation->save();
+          ->setStatus(InvitationInterface::STATUS_PENDING)
+          ->save();
 
         $this->sendMessage($invitation, $role_option);
         drupal_set_message($this->t('An invitation has been sent to the selected users. Their membership is pending.'));

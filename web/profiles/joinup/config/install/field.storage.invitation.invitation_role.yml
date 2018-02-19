@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_invite
+    - og
+id: invitation.invitation_role
+field_name: invitation_role
+entity_type: invitation
+type: entity_reference
+settings:
+  target_type: og_role
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

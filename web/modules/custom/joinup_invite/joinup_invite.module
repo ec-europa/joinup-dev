@@ -63,35 +63,6 @@ function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $blo
 /**
  * Implements hook_ENTITY_TYPE_delete().
  *
- * Deletes the membership related to the invitation deleted.
- */
-function joinup_invite_invitation_delete(EntityInterface $entity) {
-  $user = $entity->getRecipient();
-  $group = $entity->getEntity();
-
-  // In case the user or group entity is deleted, skip the procedure.
-  // The membership will be cleaned up as an orphaned by og.
-  if (empty($user) || empty($group)) {
-    return;
-  }
-  $states = [
-    OgMembershipInterface::STATE_ACTIVE,
-    OgMembershipInterface::STATE_BLOCKED,
-    OgMembershipInterface::STATE_PENDING,
-  ];
-
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $membership = $membership_manager->getMembership($group, $user, $states);
-  if (!empty($membership)) {
-    $membership->skip_notification = 1;
-    $membership->delete();
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_delete().
- *
  * If a membership is deleted and an invitation exists for the same group and
  * user, delete the invitation as well.
  */
