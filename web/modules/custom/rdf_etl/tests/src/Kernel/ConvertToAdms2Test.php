@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\rdf_etl\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use EasyRdf\Graph;
-use EasyRdf\GraphStore;
 
 /**
  * Tests the 'convert_to_adms2' process step plugin.
@@ -18,6 +18,7 @@ use EasyRdf\GraphStore;
 class ConvertToAdms2Test extends KernelTestBase {
 
   use RdfDatabaseConnectionTrait;
+  use RdfEntityGraphStoreTrait;
 
   /**
    * The  ADMS v1 to v2 transformation plugin manager.
@@ -39,11 +40,7 @@ class ConvertToAdms2Test extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
     $this->setUpSparql();
-
-    $options = $this->sparql->getConnectionOptions();
-    $connection_uri = "http://{$options['host']}:{$options['port']}/sparql-graph-crud";
 
     $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_pass');
     $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
@@ -59,13 +56,9 @@ class ConvertToAdms2Test extends KernelTestBase {
     }
 
     if ($rdf_data = $this->prepareRdfData($rdf_data)) {
-      $graph_store = new GraphStore($connection_uri);
-      $graph = new Graph();
+      $graph = new Graph($graph_uri);
       $graph->parse($rdf_data);
-      $out = $graph_store->replace($graph, $graph_uri);
-      if (!$out->isSuccessful()) {
-        throw new \Exception("Cannot import RDF data from plugin '$plugin_id' in graph '$graph_uri'.");
-      }
+      $this->createGraphStore()->replace($graph);
     }
   }
 
@@ -79,7 +72,8 @@ class ConvertToAdms2Test extends KernelTestBase {
     $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
 
     // Run updates.
-    $convert_plugin->execute([]);
+    $data = [];
+    $convert_plugin->execute($data);
 
     // Execute assertions.
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
