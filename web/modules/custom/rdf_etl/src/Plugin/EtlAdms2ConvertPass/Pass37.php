@@ -41,7 +41,7 @@ class Pass37 extends EtlAdms2ConvertPassPluginBase {
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#downloadURL'
     );
-    // Check that the download URLs were removed from the 1st distribution.
+    // Check that the download URLs were removed from the distribution.
     $test->assertEmpty($results);
 
     $results = $this->getTriplesFromGraph(
@@ -49,30 +49,8 @@ class Pass37 extends EtlAdms2ConvertPassPluginBase {
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#accessURL'
     );
-    // Check that the access URL value of the 1sr distribution was preserved.
+    // Check that the access URL value of the distribution has been preserved.
     $test->assertEquals('http://example.com/access-url/37/1', $results[0]['object']);
-
-    $results = $this->getTriplesFromGraph(
-      static::TEST_GRAPH,
-      'http://example.com/distribution/37/2',
-      'http://www.w3.org/ns/dcat#downloadURL'
-    );
-    // Check that the download URLs were removed from the 2nd distribution.
-    $test->assertEmpty($results);
-
-    $results = $this->getTriplesFromGraph(
-      static::TEST_GRAPH,
-      'http://example.com/distribution/37/2',
-      'http://www.w3.org/ns/dcat#accessURL'
-    );
-    // Check that download URLs were converted to access URLs.
-    $test->assertCount(2, $results);
-    $urls = array_column($results, 'object');
-    sort($urls);
-    $test->assertSame([
-      'http://example.com/download-url/37/2/1',
-      'http://example.com/download-url/37/2/2',
-    ], $urls);
   }
 
   /**
@@ -86,12 +64,6 @@ class Pass37 extends EtlAdms2ConvertPassPluginBase {
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/1"/>
     <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/2"/>
     <dct:title xml:lang="en">Distribution 37/1</dct:title>
-</rdf:Description>
-<rdf:Description rdf:about="http://example.com/distribution/37/2">
-    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-    <dcat:downloadURL rdf:resource="http://example.com/download-url/37/2/1"/>
-    <dcat:downloadURL rdf:resource="http://example.com/download-url/37/2/2"/>
-    <dct:title xml:lang="en">Distribution 37/2</dct:title>
 </rdf:Description>
 RDF;
   }
