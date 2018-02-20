@@ -147,9 +147,7 @@ Feature: Collection membership invitations
 
     # Ensure that the accept/reject click is not accessible anymore.
     When I click the accept invitation link from the last email sent to "Bryan Griffin"
-    Then I should see the text "There is no action pending for this user."
-    When I click the accept invitation link from the last email sent to "Bryan Griffin"
-    Then I should see the text "There is no action pending for this user."
+    Then I should see the text "Access denied"
 
     # Try new privileges.
     When I am logged in as "Bryan Griffin"
