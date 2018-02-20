@@ -199,11 +199,9 @@ Feature: Invite members to subscribe to discussions
     And I should see the success message "You have been subscribed to this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
-    # Try to accept the invitation a second time. An appropriate message should
-    # be shown.
+    # Try to accept the invitation a second time. Access should not be allowed.
     When I accept the invitation for the "Concerned about dissolved gases?" discussion
-    Then I should see the heading "Concerned about dissolved gases?"
-    And I should see the success message "You were already subscribed to this discussion."
+    Then I should see the text "Access denied"
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to invite the user again. This should not send an invitation since the
