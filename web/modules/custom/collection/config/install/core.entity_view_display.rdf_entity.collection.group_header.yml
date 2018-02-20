@@ -21,7 +21,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.banner
-    - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - ds
@@ -53,7 +52,7 @@ content:
     weight: 1
     label: hidden
     settings:
-      image_style: image_style_collection_logo
+      image_style: image_style_group_logo
       image_link: ''
     third_party_settings:
       ds:

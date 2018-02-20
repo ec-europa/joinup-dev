@@ -7,7 +7,6 @@ dependencies:
   - joinup_core
   - message
   - message_notify
-  - solution
   - state_machine_revisions
 
 config_devel:

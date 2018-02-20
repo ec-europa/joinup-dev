@@ -192,6 +192,7 @@ config_devel:
   - filter.format.simple_html
   - filter.format.simple_text
   - honeypot.settings
+  - image.style.image_style_group_logo
   - image.style.profile_icon
   - image.style.profile_icon_big
   - joinup_invite.invitation_type.group
