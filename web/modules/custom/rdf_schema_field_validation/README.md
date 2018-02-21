@@ -20,7 +20,7 @@ The rdf property that defines relationships for example, is
 ## Usage
 ```
 $entity_type_id = 'entity_test';
-$bundle = 'bunlde';
+$bundle = 'bundle';
 $field_name = 'field_text';
 $field_column = 'value';
  

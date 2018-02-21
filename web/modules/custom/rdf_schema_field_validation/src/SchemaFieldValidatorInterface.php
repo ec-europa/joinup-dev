@@ -24,6 +24,6 @@ interface SchemaFieldValidatorInterface {
    * @return bool
    *   Whether the field name is defined in the schema.
    */
-  public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column = '');
+  public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column = ''): bool;
 
 }

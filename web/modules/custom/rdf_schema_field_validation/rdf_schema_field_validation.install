@@ -28,10 +28,7 @@ function rdf_schema_field_validation_update_8102() {
   catch (\Exception $e) {
     throw $e;
   }
-  $out = $gs->replace($graph, $graph_uri);
-  if (!$out->isSuccessful()) {
-    throw new \Exception("Something went wrong.");
-  }
+  $gs->replace($graph, $graph_uri);
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
