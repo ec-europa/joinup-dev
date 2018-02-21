@@ -41,6 +41,9 @@
     <echo msg="Loading Truncate Cache Tables task." />
     <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
 
+    <echo msg="Loading Empty MySQL Database task." />
+    <taskdef name="emptymysqldatabase" classname="\DrupalProject\Phing\MySqlEmptyDatabaseTask" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
@@ -171,14 +174,7 @@
                 target="${exports.sql.destination}" />
     </target>
 
-    <target name="restore-mysql-dump">
-        <drush
-                command="sql-drop"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
+    <target name="restore-mysql-dump" depends="empty-mysql-database">
         <drush
                 command="sql-query"
                 assume="yes"
@@ -191,6 +187,14 @@
              The dump might contain stale data since we use Redis on production
              for caching. -->
         <phingcall target="truncate-cache-tables" />
+    </target>
+
+    <target name="empty-mysql-database">
+        <echo message="Drop all MySQL tables from the database." />
+        <emptymysqldatabase
+                url="${drupal.db.dsn}"
+                userId="${drupal.db.user}"
+                password="${drupal.db.password}" />
     </target>
 
     <target name="truncate-cache-tables">
