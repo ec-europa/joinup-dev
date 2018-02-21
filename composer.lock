@@ -5569,12 +5569,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claudiu-cristea/virtuoso.git",
-                "reference": "f35cca95c7786f238775698bc8101080c12bbb56"
+                "reference": "6c95007c6ef395f7637d2a184de48dbbd33de8e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claudiu-cristea/virtuoso/zipball/f35cca95c7786f238775698bc8101080c12bbb56",
-                "reference": "f35cca95c7786f238775698bc8101080c12bbb56",
+                "url": "https://api.github.com/repos/claudiu-cristea/virtuoso/zipball/6c95007c6ef395f7637d2a184de48dbbd33de8e8",
+                "reference": "6c95007c6ef395f7637d2a184de48dbbd33de8e8",
                 "shasum": ""
             },
             "type": "library",
@@ -5595,7 +5595,7 @@
             "support": {
                 "source": "https://github.com/claudiu-cristea/virtuoso/tree/fix-purge-backend"
             },
-            "time": "2018-02-16T18:32:55+00:00"
+            "time": "2018-02-21T12:09:18+00:00"
         },
         {
             "name": "egulias/email-validator",

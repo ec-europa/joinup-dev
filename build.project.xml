@@ -83,16 +83,6 @@
             Password="${sparql.password}" />
     </target>
 
-    <target name="purge-rdf-backend">
-        <rdf-purge
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            SolrUrl="${solr.server.url}"
-            SolrCores="${solr.cores}" />
-    </target>
-
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
             IsqlPath="${isql.bin}"
