@@ -1,4 +1,4 @@
-name: 'Rdf federated fields'
+name: 'Rdf schema field validation'
 type: module
 description: 'An API that verifies whether the field an RDF entity has, is part of the schema.'
 core: 8.x
