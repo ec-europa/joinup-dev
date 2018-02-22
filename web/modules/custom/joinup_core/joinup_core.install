@@ -65,7 +65,8 @@ function joinup_core_update_8100(&$sandbox) {
  * Re-enable the subpathauto, views_bulk_operations and email_registration.
  */
 function joinup_core_update_8101() {
-  $core_extensions = \Drupal::configFactory()->getEditable('core.extension');
+  $config_factory = \Drupal::configFactory()->reset();
+  $core_extensions = $config_factory->getEditable('core.extension');
   $modules = $core_extensions->get('module') + [
     'subpathauto' => 0,
     'views_bulk_operations' => 0,
