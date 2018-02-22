@@ -31,6 +31,7 @@ function joinup_subscription_post_update_subscribe_to_community_content(&$sandbo
   foreach (OgMembership::loadMultiple($mids) as $membership) {
     // Avoid breaking the update path for leftover memberships.
     if (empty($membership->getGroup())) {
+      trigger_error(sprintf("Group with id %s is missing.", $membership->getGroupId()), E_USER_WARNING);
       continue;
     }
     $membership->set('subscription_bundles', [
