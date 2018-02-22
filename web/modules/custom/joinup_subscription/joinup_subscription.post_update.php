@@ -29,6 +29,10 @@ function joinup_subscription_post_update_subscribe_to_community_content(&$sandbo
     ->execute();
 
   foreach (OgMembership::loadMultiple($mids) as $membership) {
+    // Avoid breaking the update path for leftover memberships.
+    if (empty($membership->getGroup())) {
+      continue;
+    }
     $membership->set('subscription_bundles', [
       ['entity_type' => 'node', 'bundle' => 'discussion'],
       ['entity_type' => 'node', 'bundle' => 'document'],
