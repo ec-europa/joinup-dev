@@ -60,3 +60,19 @@ function joinup_core_requirements($phase) {
 function joinup_core_update_8100(&$sandbox) {
   \Drupal::service('module_installer')->install(['config_sync']);
 }
+
+/**
+ * Re-enable the subpathauto, views_bulk_operations and email_registration.
+ */
+function joinup_core_update_8101() {
+  $config_factory = \Drupal::configFactory()->reset();
+  $core_extensions = $config_factory->getEditable('core.extension');
+  $modules = $core_extensions->get('module') + [
+    'subpathauto' => 0,
+    'views_bulk_operations' => 0,
+    'email_registration' => 0,
+  ];
+  asort($modules);
+  // Avoid any schema or dependency checks when saving.
+  $core_extensions->set('module', $modules)->save(TRUE);
+}
