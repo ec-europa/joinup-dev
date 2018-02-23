@@ -3917,12 +3917,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "e35303fda4f27264dabbc76a99741a9dfa9ef5ef"
+                "reference": "a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/e35303fda4f27264dabbc76a99741a9dfa9ef5ef",
-                "reference": "e35303fda4f27264dabbc76a99741a9dfa9ef5ef",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c",
+                "reference": "a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c",
                 "shasum": ""
             },
             "require": {
@@ -3947,7 +3947,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-02-19T16:42:14+00:00"
+            "time": "2018-02-23T08:39:55+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -9797,7 +9797,8 @@
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            }
+            },
+            "time": "2017-10-19T21:26:16+00:00"
         },
         {
             "name": "drupal/devel",
@@ -9966,8 +9967,6 @@
             },
             "require-dev": {
                 "behat/mink-zombie-driver": "^1.2",
-                "drupal/coder": "^8.2",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0",
                 "phpunit/phpunit": "3.7.*"
             },
@@ -9992,14 +9991,6 @@
                 {
                     "name": "Jonathan Hedstrom",
                     "email": "jhedstrom@gmail.com"
-                },
-                {
-                    "name": "Melissa Anderson",
-                    "homepage": "https://github.com/eliza411"
-                },
-                {
-                    "name": "Pieter Frenssen",
-                    "homepage": "https://github.com/pfrenssen"
                 }
             ],
             "description": "Drupal extension for Behat",
