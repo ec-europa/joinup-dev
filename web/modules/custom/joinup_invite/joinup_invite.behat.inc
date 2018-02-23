@@ -47,7 +47,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then :user should have a(n) :status invitation in the :label :type
    */
-  public function userShouldBeInvitedToGroup($user, $status, $label, $type): void {
+  public function userShouldBeInvitedToGroup(string $user, string $status, string $label, string $type): void {
     $statuses = [
       'accepted' => InvitationInterface::STATUS_ACCEPTED,
       'pending' => InvitationInterface::STATUS_PENDING,
@@ -81,7 +81,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then no invitation should exist for the user :user in the :label :type
    */
-  public function assertNoInvitation($user, $label, $type): void {
+  public function assertNoInvitation(string $user, string $label, string $type): void {
     $user = $this->getUserByName($user);
     $group = $this->getRdfEntityByLabel($label, $type);
     $invitation_info = $this->getInvitationInfo($type);
@@ -198,7 +198,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I click the :action invitation link from the last email sent to :user
    */
-  public function clickDeleteConfirmationLink($action, $user): void {
+  public function clickDeleteConfirmationLink(string $action, string $user): void {
     $user = $this->getUserByName($user);
     $user_email = $user->getEmail();
 
