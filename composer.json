@@ -59,7 +59,7 @@
         "pfrenssen/phpcs-pre-push": "1.0",
         "phing/phing": "~2.10",
         "phpunit/phpunit": ">=4.8.28 <5",
-        "symfony/css-selector": "~2.8|~3.0",
+        "symfony/css-selector": "~2.8|~3.0|~4.0",
         "webflo/drupal-core-require-dev": "~8.4"
     },
     "conflict": {
