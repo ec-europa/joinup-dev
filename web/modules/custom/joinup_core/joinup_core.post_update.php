@@ -5,6 +5,10 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use EasyRdf\Graph;
+use EasyRdf\GraphStore;
+
 /**
  * Enable the Sub-Pathauto module.
  */
@@ -80,4 +84,31 @@ function joinup_core_post_update_install_smart_trim() {
  */
 function joinup_core_post_update_install_rdf_etl_and_spain_ctt() {
   \Drupal::service('module_installer')->install(['rdf_etl', 'spain_ctt']);
+}
+
+/**
+ * Enable and configure the 'rdf_schema_field_validation' module.
+ */
+function joinup_core_post_update_configure_rdf_schema_field_validation() {
+  \Drupal::service('module_installer')->install(['rdf_schema_field_validation']);
+  $graph_uri = 'http://adms-definition';
+  $class_definition = 'http://www.w3.org/2000/01/rdf-schema#Class';
+
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $connection_options = $sparql_endpoint->getConnectionOptions();
+  $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
+  // Use a local SPARQL 1.1 Graph Store.
+  $gs = new GraphStore($connect_string);
+  $graph = new Graph($graph_uri);
+  $graph->parseFile(DRUPAL_ROOT . '/../resources/fixtures/adms-definition.rdf');
+  $gs->replace($graph);
+
+  $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
+  foreach ($data as $bundle) {
+    RdfEntityMapping::loadByName('rdf_entity', $bundle)
+      ->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain'])
+      ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
+      ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
+      ->save();
+  }
 }
