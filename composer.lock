@@ -1753,11 +1753,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4074,11 +4070,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1488538684"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4097,6 +4089,10 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -5565,17 +5561,11 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "dev-fix-purge-backend",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/claudiu-cristea/virtuoso.git",
-                "reference": "6c95007c6ef395f7637d2a184de48dbbd33de8e8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/claudiu-cristea/virtuoso/zipball/6c95007c6ef395f7637d2a184de48dbbd33de8e8",
-                "reference": "6c95007c6ef395f7637d2a184de48dbbd33de8e8",
-                "shasum": ""
+                "url": "git@github.com:ec-europa/virtuoso.git",
+                "reference": "master"
             },
             "type": "library",
             "autoload": {
@@ -5583,19 +5573,7 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "license": [
-                "EUPL"
-            ],
-            "authors": [
-                {
-                    "name": "Sander Van Dooren",
-                    "email": "sander.vandooren@ausy.be"
-                }
-            ],
-            "support": {
-                "source": "https://github.com/claudiu-cristea/virtuoso/tree/fix-purge-backend"
-            },
-            "time": "2018-02-21T12:09:18+00:00"
+            "time": "2017-10-30T16:51:41+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10411,11 +10389,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1511190785",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1505199844"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10426,14 +10400,6 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
-                },
-                {
-                    "name": "adriancid",
-                    "homepage": "https://www.drupal.org/user/1962106"
-                },
-                {
-                    "name": "bolbol",
-                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
