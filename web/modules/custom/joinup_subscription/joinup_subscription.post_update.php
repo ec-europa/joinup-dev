@@ -29,9 +29,10 @@ function joinup_subscription_post_update_subscribe_to_community_content(&$sandbo
     ->execute();
 
   foreach (OgMembership::loadMultiple($mids) as $membership) {
-    // Avoid breaking the update path for leftover memberships.
+    // Organic Groups can be configured to delete memberships asynchronously in
+    // a cron job or a manually started batch process. This means orphaned
+    // memberships can be present in the database. Ignore them.
     if (empty($membership->getGroup())) {
-      trigger_error(sprintf("Group with id %s is missing.", $membership->getGroupId()), E_USER_WARNING);
       continue;
     }
     $membership->set('subscription_bundles', [
