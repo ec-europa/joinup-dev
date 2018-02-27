@@ -152,9 +152,8 @@ class InviteToGroupForm extends InviteFormBase {
     ];
 
     if (!empty($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states))) {
-      $form_state->setErrorByName('autocomplete', $this->t('There is already @prefix @state membership for @user in the @group.', [
+      $form_state->setErrorByName('autocomplete', $this->t('The user @user is already a member (state: @state) of the @group.', [
         '@user' => $user->getAccountName(),
-        '@prefix' => $membership->getState() === OgMembershipInterface::STATE_ACTIVE ? 'an' : 'a',
         '@state' => $membership->getState(),
         '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
       ]));

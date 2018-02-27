@@ -117,10 +117,10 @@ Feature: Collection membership invitations
     And I click "Add members"
     And I fill in "E-mail" with "stewie.griffin@example.com"
     And I press "Add"
-    Then I should see the error message "There is already an active membership for Stewie Griffin in the collection."
+    Then I should see the error message "The user Stewie Griffin is already a member (state: active) of the collection."
     When I fill in "E-mail" with "meg.griffin@example.com"
     And I press "Add"
-    Then I should see the error message "There is already a blocked membership for Meg Griffin in the collection."
+    Then I should see the error message "The user Meg Griffin is already a member (state: blocked) of the collection."
     # Ensure that no chips are left in the page.
     When I press "Invite members"
     Then I should see the error message "Please add at least one user."
