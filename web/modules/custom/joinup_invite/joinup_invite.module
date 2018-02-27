@@ -95,14 +95,22 @@ function joinup_invite_form_join_collection_form_alter(&$form, FormStateInterfac
     return;
   }
 
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $membership = $membership_manager->getMembership($collection, $user);
+  // If no membership is available, show the pending membership if there is a
+  // pending invitation instead. If a membership exists, then do not override
+  // anything as the parent form is already handling it properly.
+  $membership = \Drupal::service('og.membership_manager')->getMembership($collection, $user, [
+    OgMembershipInterface::STATE_ACTIVE,
+    OgMembershipInterface::STATE_PENDING,
+    OgMembershipInterface::STATE_BLOCKED,
+  ]);
+  if ($membership) {
+    return;
+  }
+
   $invitation = Invitation::loadByEntityAndUser($collection, $user, 'group');
-  if (($membership && $membership->getState() === OgMembershipInterface::STATE_PENDING) ||
-    ($invitation && $invitation->getStatus() === InvitationInterface::STATUS_PENDING)) {
+  if ($invitation && $invitation->getStatus() === InvitationInterface::STATUS_PENDING) {
+    // Ensure that the join button is not shown for empty memberships.
     unset($form['join']);
-    unset($form['leave']);
     $form['pending'] = [
       '#type' => 'link',
       '#title' => t('Membership is pending'),
