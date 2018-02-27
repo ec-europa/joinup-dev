@@ -151,7 +151,7 @@ class InviteToGroupForm extends InviteFormBase {
       OgMembershipInterface::STATE_BLOCKED,
     ];
 
-    if (!empty($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states))) {
+    if ($membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user, $membership_states)) {
       $form_state->setErrorByName('autocomplete', $this->t('The user @user is already a member (state: @state) of the @group.', [
         '@user' => $user->getAccountName(),
         '@state' => $membership->getState(),
@@ -173,9 +173,10 @@ class InviteToGroupForm extends InviteFormBase {
       ]);
       $invitation = reset($invitations);
       if (!empty($invitation)) {
-        $form_state->setErrorByName('autocomplete', $this->t('User @user already has a pending invitation for @group "@title"', [
+        $form_state->setErrorByName('autocomplete', $this->t('User @user already has a pending invitation for the @group "@title".', [
           '@user' => $user->getAccountName(),
           '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
+          '@title' => $this->rdfEntity->label(),
         ]));
       }
     }
@@ -195,13 +196,13 @@ class InviteToGroupForm extends InviteFormBase {
       if ($this->rdfEntity->bundle() === 'collection') {
         /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
         $invitation = $this->entityTypeManager->getStorage('invitation')
-          ->create(['bundle' => 'group']);
-        $invitation->set('invitation_role', $role->id());
-        $invitation->setEntity($this->rdfEntity)
+          ->create(['bundle' => 'group'])
+          ->set('invitation_role', $role->id())
+          ->setEntity($this->rdfEntity)
           ->setRecipient($user)
           ->setOwner($current_user)
-          ->setStatus(InvitationInterface::STATUS_PENDING)
-          ->save();
+          ->setStatus(InvitationInterface::STATUS_PENDING);
+        $invitation->save();
 
         $this->sendMessage($invitation, $role_option);
         drupal_set_message($this->t('An invitation has been sent to the selected users. Their membership is pending.'));
@@ -258,8 +259,9 @@ class InviteToGroupForm extends InviteFormBase {
     $arguments = $this->generateArguments($this->rdfEntity);
     $arguments += ['@invitation:target_role' => $role];
 
-    $message = $this->messageHelper->createMessage($invitation, self::TEMPLATE_GROUP_INVITE, $arguments);
-    $message->save();
+    $this->messageHelper
+      ->createMessage($invitation, self::TEMPLATE_GROUP_INVITE, $arguments)
+      ->save();
     return $this->messageHelper->sendMessage($invitation, self::TEMPLATE_GROUP_INVITE);
   }
 

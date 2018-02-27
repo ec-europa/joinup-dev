@@ -16,10 +16,10 @@ Feature: Collection membership invitations
       | title           | description        | logo     | banner     | closed | state     |
       | Stewie's family | Any fan of family? | logo.png | banner.jpg | yes    | validated |
     And the following collection user memberships:
-      | collection      | user           | roles       | state  |
-      | Stewie's family | Pieter Griffin | facilitator | active |
-      | Stewie's family | Stewie Griffin |             | active |
-      | Stewie's family | Meg Griffin    |             | blocked|
+      | collection      | user           | roles       | state   |
+      | Stewie's family | Pieter Griffin | facilitator | active  |
+      | Stewie's family | Stewie Griffin |             | active  |
+      | Stewie's family | Meg Griffin    |             | blocked |
 
   Scenario:Only privileged members are able to access the invitation page.
     When I am not logged in
@@ -99,6 +99,7 @@ Feature: Collection membership invitations
     And I fill in "E-mail" with "lois.griffin@example.com"
     And I press "Add"
     Then I should see the following error message:
+      | error messages                                                                          |
       | User Lois Griffin already has a pending invitation for the collection "Stewie's family" |
 
     # Reject the invitation.
