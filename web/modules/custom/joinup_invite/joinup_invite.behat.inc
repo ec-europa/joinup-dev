@@ -53,14 +53,14 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
       'pending' => InvitationInterface::STATUS_PENDING,
     ];
     if (!isset($statuses[$status])) {
-      throw new Exception('Only the following statuses are allowed: ' . implode(', ', array_keys($statuses)));
+      throw new \Exception('Only the following statuses are allowed: ' . implode(', ', array_keys($statuses)));
     }
     $user = $this->getUserByName($user);
     $group = $this->getRdfEntityByLabel($label, $type);
     $invitation_info = $this->getInvitationInfo($type);
     $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     if (empty($invitation)) {
-      throw new Exception("No invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
+      throw new \Exception("No invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
     PHPUnit_Framework_Assert::assertEquals($invitation->getStatus(), $statuses[$status]);
   }
@@ -87,7 +87,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $invitation_info = $this->getInvitationInfo($type);
     $invitation = Invitation::loadByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
     if (!empty($invitation)) {
-      throw new Exception("An invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
+      throw new \Exception("An invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
   }
 
@@ -176,7 +176,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
       ->condition('bundle', $bundle);
     $results = $query->execute();
     if (empty($results)) {
-      throw new Exception('No invitation was found.');
+      throw new \Exception('No invitation was found.');
     }
 
     $iid = reset($results);
@@ -205,7 +205,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception('No mail was sent.');
     }
 
     $link = NULL;
@@ -233,7 +233,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
         '@action' => $action,
         '@body' => $body,
       ]);
-      throw new Exception($message);
+      throw new \Exception($message);
     }
     $url = reset($matches['action_url']);
     $this->visitPath($url);
