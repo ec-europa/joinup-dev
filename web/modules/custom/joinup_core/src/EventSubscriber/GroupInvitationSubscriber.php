@@ -66,12 +66,6 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
 
     if ($this->getMembership($group, $user)) {
       drupal_set_message($this->t('There is no action pending for this user.'));
-      // If a user already has a membership and is here, it means that there was
-      // a leftover pending invitation (the subscriber is called after a pending
-      // invitation is accepted). In that case, delete the invitation. The
-      // reason behind it is that if the invitation is not deleted, it might
-      // falsely seem that the membership exists due to an accepted invitation.
-      $invitation->delete();
     }
     else {
       $membership = $this->membershipManager->createMembership($group, $user);
