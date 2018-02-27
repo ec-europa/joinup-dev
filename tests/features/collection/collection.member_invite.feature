@@ -98,7 +98,8 @@ Feature: Collection membership invitations
     And I click "Add members"
     And I fill in "E-mail" with "lois.griffin@example.com"
     And I press "Add"
-    Then I should see the error message "There is already an active invitation for Lois Griffin."
+    Then I should see the following error message:
+      | User Lois Griffin already has a pending invitation for the collection "Stewie's family" |
 
     # Reject the invitation.
     When I click the reject invitation link from the last email sent to "Lois Griffin"

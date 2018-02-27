@@ -173,7 +173,7 @@ class InviteToGroupForm extends InviteFormBase {
       ]);
       $invitation = reset($invitations);
       if (!empty($invitation)) {
-        $form_state->setErrorByName('autocomplete', $this->t('There is already an active invitation for @user.', [
+        $form_state->setErrorByName('autocomplete', $this->t('User @user already has a pending invitation for @group "@title"', [
           '@user' => $user->getAccountName(),
           '@group' => $this->rdfEntity->get('rid')->entity->getSingularLabel(),
         ]));
