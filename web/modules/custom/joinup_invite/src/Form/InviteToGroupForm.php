@@ -170,6 +170,7 @@ class InviteToGroupForm extends InviteFormBase {
         'entity_id' => $entity_id,
         'recipient_id' => $user->id(),
         'bundle' => 'group',
+        'status' => InvitationInterface::STATUS_PENDING,
       ]);
       $invitation = reset($invitations);
       if (!empty($invitation)) {

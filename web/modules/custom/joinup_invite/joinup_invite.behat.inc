@@ -51,6 +51,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $statuses = [
       'accepted' => InvitationInterface::STATUS_ACCEPTED,
       'pending' => InvitationInterface::STATUS_PENDING,
+      'rejected' => InvitationInterface::STATUS_REJECTED,
     ];
     if (!isset($statuses[$status])) {
       throw new \Exception('Only the following statuses are allowed: ' . implode(', ', array_keys($statuses)));
@@ -58,7 +59,7 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
     $user = $this->getUserByName($user);
     $group = $this->getRdfEntityByLabel($label, $type);
     $invitation_info = $this->getInvitationInfo($type);
-    $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
+    $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle'], [$statuses[$status]]);
     if (empty($invitation)) {
       throw new \Exception("No invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
@@ -160,6 +161,8 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   The recipient related to the invitation.
    * @param string $bundle
    *   The bundle of the invitation.
+   * @param array $status
+   *   An array of statuses to filter. Defaults to pending.
    *
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The invitation object.
@@ -167,13 +170,14 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when an invitation is not found.
    */
-  protected function loadInvitationUnchangedByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = ''): ?InvitationInterface {
+  protected function loadInvitationUnchangedByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = '', array $status = [InvitationInterface::STATUS_PENDING]): ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
     $query = $storage->getQuery();
     $query->condition('entity_type', $entity->getEntityTypeId())
       ->condition('entity_id', $entity->id())
       ->condition('recipient_id', $recipient->id())
-      ->condition('bundle', $bundle);
+      ->condition('bundle', $bundle)
+      ->condition('status', $status, 'IN');
     $results = $query->execute();
     if (empty($results)) {
       throw new \Exception('No invitation was found.');

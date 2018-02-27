@@ -104,13 +104,30 @@ Feature: Collection membership invitations
 
     # Reject the invitation.
     When I click the reject invitation link from the last email sent to "Lois Griffin"
-    And no invitation should exist for the user "Lois Griffin" in the "Stewie's family" collection
+    And "Lois Griffin" should have a rejected invitation in the "Stewie's family" collection
 
     # Ensure that the accept/reject click is not accessible anymore.
     When I click the accept invitation link from the last email sent to "Lois Griffin"
-    Then I should see the heading "Page not found"
+    Then I should see the text "Access denied"
     When I click the reject invitation link from the last email sent to "Lois Griffin"
-    Then I should see the heading "Page not found"
+    Then I should see the text "Access denied"
+
+    # Ensure that a user can be invited again even if he rejected an invitation before.
+    When all e-mails have been sent
+    And I go to the "Stewie's family" collection
+    And I click "Members" in the "Left sidebar"
+    And I click "Add members"
+    And I fill in "E-mail" with "lois.griffin@example.com"
+    And I press "Add"
+    And I press "Invite members"
+    Then I should see the success message "An invitation has been sent to the selected users. Their membership is pending."
+    And the following email should have been sent:
+      | recipient | Lois Griffin                                                                 |
+      | subject   | Joinup: You are invited to join the collection "Stewie's family".            |
+      | body      | Pieter has invited you to join the collection "Stewie's family" as a member. |
+    And "Lois Griffin" should have a pending invitation in the "Stewie's family" collection
+    # But there is already a rejected invitation as well.
+    And "Lois Griffin" should have a rejected invitation in the "Stewie's family" collection
 
     # Check that a member cannot be invited again.
     When all e-mails have been sent
@@ -149,6 +166,8 @@ Feature: Collection membership invitations
 
     # Ensure that the accept/reject click is not accessible anymore.
     When I click the accept invitation link from the last email sent to "Bryan Griffin"
+    Then I should see the text "Access denied"
+    When I click the reject invitation link from the last email sent to "Bryan Griffin"
     Then I should see the text "Access denied"
 
     # Try new privileges.

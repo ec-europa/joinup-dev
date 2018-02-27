@@ -110,7 +110,6 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     }
     else {
       drupal_set_message($this->t('The invitation has been rejected. Thank you for your feedback.'));
-      $invitation->delete();
     }
   }
 
