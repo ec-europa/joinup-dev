@@ -81,6 +81,9 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL) {
+    $form_state->set('user', $user);
+    $form_state->set('collection', $collection);
+
     $form['#access'] = $this->access();
 
     $user = $this->entityTypeManager->getStorage('user')->load($user->id());

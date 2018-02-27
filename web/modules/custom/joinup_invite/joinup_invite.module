@@ -9,6 +9,10 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\og\OgMembershipInterface;
 
 /**
@@ -78,5 +82,43 @@ function joinup_invite_og_membership_delete(OgMembershipInterface $entity) {
   // nonetheless.
   foreach ($invitations as $invitation) {
     $invitation->delete();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_invite_form_join_collection_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $user = $form_state->get('user');
+  $collection = $form_state->get('collection');
+  if (empty($user) || empty($collection)) {
+    return;
+  }
+
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $membership = $membership_manager->getMembership($collection, $user);
+  $invitation = Invitation::loadByEntityAndUser($collection, $user, 'group');
+  if (($membership && $membership->getState() === OgMembershipInterface::STATE_PENDING) ||
+    ($invitation && $invitation->getStatus() === InvitationInterface::STATUS_PENDING)) {
+    unset($form['join']);
+    unset($form['leave']);
+    $form['pending'] = [
+      '#type' => 'link',
+      '#title' => t('Membership is pending'),
+      '#url' => Url::fromRoute('<current>', [], ['fragment' => 'pending']),
+      '#attributes' => [
+        'class' => [
+          'button',
+          'button--blue-light',
+          'mdl-button',
+          'mdl-js-button',
+          'mdl-button--raised',
+          'mdl-js-ripple-effect',
+          'mdl-button--accent',
+          'button--small',
+        ],
+      ],
+    ];
   }
 }
