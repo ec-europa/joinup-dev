@@ -86,16 +86,6 @@
             Password="${sparql.password}" />
     </target>
 
-    <target name="purge-rdf-backend">
-        <rdf-purge
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            SolrUrl="${solr.server.url}"
-            SolrCores="${solr.cores}" />
-    </target>
-
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
             IsqlPath="${isql.bin}"
@@ -445,6 +435,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
 
 </project>
