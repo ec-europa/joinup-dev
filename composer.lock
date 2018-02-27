@@ -5103,7 +5103,7 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2017-10-30T16:51:41+00:00"
+            "time": "2018-02-26T09:58:25+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -5820,7 +5820,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
+            "time": "2018-02-26T04:06:28+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",

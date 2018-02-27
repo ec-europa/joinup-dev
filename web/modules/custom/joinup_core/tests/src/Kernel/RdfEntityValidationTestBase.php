@@ -22,6 +22,8 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'og',
     'piwik_reporting_api',
     'rdf_taxonomy',
+    'rdf_entity',
+    'rdf_schema_field_validation',
     'state_machine',
     'taxonomy',
   ];
