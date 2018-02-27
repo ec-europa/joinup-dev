@@ -194,4 +194,16 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
         </drush>
     </target>
 
+    <target name="purge-solr-backend" description="Empty Solr cores">
+        <!--<mkdir dir="${tmp.dir}"/>-->
+        <!--<httpget url="${solr.server.url}/${solr.core.published}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true" dir="${tmp.dir}"/>-->
+        <!--<httpget url="${solr.server.url}/${solr.core.unpublished}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true" dir="${tmp.dir}"/>-->
+        <exec passthru="true"
+              command="curl '${solr.server.url}/${solr.core.published}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
+        />
+        <exec passthru="true"
+              command="curl '${solr.server.url}/${solr.core.unpublished}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
+        />
+    </target>
+
 </project>

@@ -1753,11 +1753,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4074,11 +4070,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1488538684",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
+                    "datestamp": "1488538684"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4097,6 +4089,10 @@
                 {
                     "name": "markus_petrux",
                     "homepage": "https://www.drupal.org/user/39593"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
                 }
             ],
             "description": "Provides a \"Remember Me\" feature on the login form.",
@@ -10393,11 +10389,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.20",
-                    "datestamp": "1511190785",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1505199844"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10408,14 +10400,6 @@
                 {
                     "name": "Mohamed Anis Taktak",
                     "homepage": "https://www.drupal.org/u/matio89"
-                },
-                {
-                    "name": "adriancid",
-                    "homepage": "https://www.drupal.org/user/1962106"
-                },
-                {
-                    "name": "bolbol",
-                    "homepage": "https://www.drupal.org/user/3400070"
                 },
                 {
                     "name": "eme",
