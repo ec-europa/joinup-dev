@@ -69,8 +69,8 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     }
     else {
       $membership = $this->membershipManager->createMembership($group, $user);
-      if (!empty($invitation->get('invitation_role')->first())) {
-        $role = $invitation->get('invitation_role')->first()->entity;
+      if (!$invitation->get('invitation_role')->isEmpty()) {
+        $role = $invitation->invitation_role->entity;
         $membership->addRole($role);
       }
       // Disable notifications related to memberships.
