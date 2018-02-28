@@ -93,37 +93,6 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Accepts or rejects an invitation.
-   *
-   * @param string $action
-   *   The action being taken on the invitation, can be either 'accept' or
-   *   'reject'.
-   * @param string $title
-   *   The title of the entity the user has been invited to.
-   * @param string $type
-   *   The type of the entity the user has been invited to.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown when the action is anything other than 'accept' or 'reject'.
-   *
-   * @When I :action the invitation for the :title :type
-   */
-  public function acceptInvitation(string $action, string $title, string $type): void {
-    if (!in_array($action, ['accept', 'reject'])) {
-      throw new \InvalidArgumentException("Unknown action '{$action}'. Valid actions are 'accept' and 'reject'.");
-    }
-    $group = $this->getNodeByTitle($title, $type);
-    $user = $this->userManager->getCurrentUser();
-    $user = $this->getUserByName($user->name);
-
-    $invitation_info = $this->getInvitationInfo($type);
-    $invitation = $this->loadInvitationUnchangedByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
-    $arguments = $this->getInvitationMessageHelper()->getMessage($invitation, $invitation_info['message_template'])->getArguments();
-
-    $this->visitPath($arguments["@invitation:${action}_url"]);
-  }
-
-  /**
    * Returns information about the invitations related to the given entity type.
    *
    * @param string $entity_type
