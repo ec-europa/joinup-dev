@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "205bc61b4792fed3b4eb531b1db20c2c",
+    "content-hash": "64af637e4f58f7b249a0e0621156e567",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4641,6 +4641,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
