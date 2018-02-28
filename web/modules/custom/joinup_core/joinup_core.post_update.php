@@ -112,3 +112,52 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
       ->save();
   }
 }
+
+/**
+ * Fix the owner class predicate [ISAICP-4333].
+ */
+function joinup_core_post_update_fix_owner_predicate() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+  SELECT ?graph ?entity_id ?type
+  FROM <http://joinup.eu/owner/published>
+  FROM <http://joinup.eu/owner/draft>
+  WHERE {
+    GRAPH ?graph {
+      ?entity_id a ?type .
+    }
+  }
+QUERY;
+
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][] = $result->entity_id->getUri();
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> a <http://xmlns.com/foaf/spec/#term_Agent>
+  }
+  INSERT {
+    <@entity_id> a <http://xmlns.com/foaf/0.1/Agent>
+  }
+  WHERE {
+    <@entity_id> a <http://xmlns.com/foaf/spec/#term_Agent>
+  }
+QUERY;
+  $search = ['@graph', '@entity_id'];
+  foreach ($items_to_update as $graph => $entity_ids) {
+    foreach ($entity_ids as $entity_id) {
+      $replace = [
+        $graph,
+        $entity_id,
+      ];
+      $query = str_replace($search, $replace, $update_query);
+      $sparql_endpoint->query($query);
+    }
+  }
+}
