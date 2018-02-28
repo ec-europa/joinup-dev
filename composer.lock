@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e31a5ae1893dba73434825812731f951",
+    "content-hash": "5ae021401349ef11fef9197c102674e8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3913,16 +3913,16 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-8.x-1.x",
+            "version": "dev-ISAICP-4216",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c"
+                "reference": "a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c",
+                "reference": "a18bd2199a2f3e30e6aac6b3eb7bfe2b94b55f8c",
                 "shasum": ""
             },
             "require": {
@@ -3947,7 +3947,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-02-20T12:56:56+00:00"
+            "time": "2018-02-23T08:39:55+00:00"
         },
         {
             "name": "drupal/redirect",
