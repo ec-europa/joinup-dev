@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.17",
+            "version": "3.52.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b63aa5831954684a24e6c4583329c4a047e3ea61"
+                "reference": "becba2be9cfb22d6394c4d7e4d8cb70807c8a6b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b63aa5831954684a24e6c4583329c4a047e3ea61",
-                "reference": "b63aa5831954684a24e6c4583329c4a047e3ea61",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/becba2be9cfb22d6394c4d7e4d8cb70807c8a6b3",
+                "reference": "becba2be9cfb22d6394c4d7e4d8cb70807c8a6b3",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-02-26T23:54:37+00:00"
+            "time": "2018-02-27T21:06:51+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -207,16 +207,16 @@
         },
         {
             "name": "chi-teck/drupal-code-generator",
-            "version": "1.22.0",
+            "version": "1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chi-teck/drupal-code-generator.git",
-                "reference": "c7e3018ebcbdb5befcfe928c792146078c8c2d05"
+                "reference": "8c5067b75f7e2b2bffdeb20553e42cf098290589"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/c7e3018ebcbdb5befcfe928c792146078c8c2d05",
-                "reference": "c7e3018ebcbdb5befcfe928c792146078c8c2d05",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/8c5067b75f7e2b2bffdeb20553e42cf098290589",
+                "reference": "8c5067b75f7e2b2bffdeb20553e42cf098290589",
                 "shasum": ""
             },
             "require": {
@@ -239,10 +239,10 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL2"
+                "GPL-2.0-or-later"
             ],
             "description": "Drupal code generator",
-            "time": "2018-01-06T15:54:30+00:00"
+            "time": "2018-02-27T19:15:16+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -825,16 +825,16 @@
         },
         {
             "name": "consolidation/robo",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/Robo.git",
-                "reference": "b6296f1cf1088f1a11b0b819f9e42ef6f00b79a9"
+                "reference": "9ef2724f72feb017517a755564516dbde99e15e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/Robo/zipball/b6296f1cf1088f1a11b0b819f9e42ef6f00b79a9",
-                "reference": "b6296f1cf1088f1a11b0b819f9e42ef6f00b79a9",
+                "url": "https://api.github.com/repos/consolidation/Robo/zipball/9ef2724f72feb017517a755564516dbde99e15e4",
+                "reference": "9ef2724f72feb017517a755564516dbde99e15e4",
                 "shasum": ""
             },
             "require": {
@@ -858,6 +858,7 @@
                 "codeception/aspect-mock": "^1|^2.1.1",
                 "codeception/base": "^2.3.7",
                 "codeception/verify": "^0.3.2",
+                "goaop/framework": "~2.1.2",
                 "greg-1-anderson/composer-test-scenarios": "^1",
                 "natxet/cssmin": "3.0.4",
                 "patchwork/jsqueeze": "~2",
@@ -898,7 +899,7 @@
                 }
             ],
             "description": "Modern task runner",
-            "time": "2017-12-29T06:48:35+00:00"
+            "time": "2018-02-28T01:03:54+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -1607,7 +1608,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/cached_computed_field",
-                "reference": "22574f6f73d50e228af15803e7dff3c559967f60"
+                "reference": "54df872abc90aaaa5c363a63d6ae14ebc23dd2c2"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -1618,8 +1619,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+2-dev",
-                    "datestamp": "1499267041",
+                    "version": "8.x-1.0-beta2+3-dev",
+                    "datestamp": "1518700384",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -1645,7 +1646,7 @@
                 "source": "http://cgit.drupalcode.org/cached_computed_field",
                 "issues": "https://www.drupal.org/project/issues/cached_computed_field"
             },
-            "time": "2018-02-15T13:00:33+00:00"
+            "time": "2018-02-28T13:16:10+00:00"
         },
         {
             "name": "drupal/changed_fields",
@@ -5039,16 +5040,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "9.2.0",
+            "version": "9.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "78c1ec41bf57f3b3b489c7dbe0b8124a79089931"
+                "reference": "e40f5bb6a291f643d4699a95ef6873ac40ae8302"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/78c1ec41bf57f3b3b489c7dbe0b8124a79089931",
-                "reference": "78c1ec41bf57f3b3b489c7dbe0b8124a79089931",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/e40f5bb6a291f643d4699a95ef6873ac40ae8302",
+                "reference": "e40f5bb6a291f643d4699a95ef6873ac40ae8302",
                 "shasum": ""
             },
             "require": {
@@ -5136,7 +5137,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2018-02-26T20:08:39+00:00"
+            "time": "2018-02-27T21:26:53+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
