@@ -146,7 +146,7 @@ QUERY;
     <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> "@contact_uri"^^<http://www.w3.org/2001/XMLSchema#string>
   }
   INSERT {
-    <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> <@contact_uri>
+    <@entity_id> <http://www.w3.org/ns/dcat#contactPoint> <@contact_uri>
   }
   WHERE {
     <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> "@contact_uri"^^<http://www.w3.org/2001/XMLSchema#string>
