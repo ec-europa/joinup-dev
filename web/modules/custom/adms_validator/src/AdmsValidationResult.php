@@ -28,10 +28,11 @@ class AdmsValidationResult {
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   public function __construct(Result $result, $graph_uri, Connection $sparql) {
+    $skipped_rules = [15, 100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
-      if (!in_array($error->Rule_ID->getValue(), range(100, 103))) {
+      if (!in_array($error->Rule_ID->getValue(), $skipped_rules)) {
         $this->errors[] = new SchemaError($error);
       }
     }
