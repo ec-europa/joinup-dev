@@ -25,6 +25,7 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_is_solution_type
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
@@ -343,6 +344,14 @@ field_settings:
         - field.storage.rdf_entity.field_owner_name
       module:
         - rdf_entity
+  field_is_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_pinned_in
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_pinned_in
   field_is_solution_type:
     label: 'Solution type'
     datasource_id: 'entity:rdf_entity'

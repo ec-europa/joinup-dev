@@ -41,6 +41,9 @@
     <echo msg="Loading Truncate Cache Tables task." />
     <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
 
+    <echo msg="Loading Empty MySQL Database task." />
+    <taskdef name="emptymysqldatabase" classname="\DrupalProject\Phing\MySqlEmptyDatabaseTask" />
+
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
@@ -61,11 +64,15 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+
         <!-- Set the auto-increment default values for some tables. -->
         <setmysqlautoincrement />
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-settings-php" />
-        <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
+
+        <!-- Set the transaction type to READ-COMMITTED. -->
+        <phingcall target="set-mysql-transaction-type" />
+
+        <!-- Create the private files directory -->
+        <phingcall target="create-private-files-directory" />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
@@ -77,16 +84,6 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}" />
-    </target>
-
-    <target name="purge-rdf-backend">
-        <rdf-purge
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            SolrUrl="${solr.server.url}"
-            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -167,14 +164,7 @@
                 target="${exports.sql.destination}" />
     </target>
 
-    <target name="restore-mysql-dump">
-        <drush
-                command="sql-drop"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
+    <target name="restore-mysql-dump" depends="empty-mysql-database">
         <drush
                 command="sql-query"
                 assume="yes"
@@ -187,6 +177,14 @@
              The dump might contain stale data since we use Redis on production
              for caching. -->
         <phingcall target="truncate-cache-tables" />
+    </target>
+
+    <target name="empty-mysql-database">
+        <echo message="Drop all MySQL tables from the database." />
+        <emptymysqldatabase
+                url="${drupal.db.dsn}"
+                userId="${drupal.db.user}"
+                password="${drupal.db.password}" />
     </target>
 
     <target name="truncate-cache-tables">
@@ -274,11 +272,62 @@
             output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
+    <!-- Set the transaction type to READ-COMMITTED. -->
+    <target name="set-mysql-transaction-type"
+            description="Sets the MySQL transaction to READ-COMMITTED"
+            depends="writable-settings-folder, writable-settings-php">
+
+        <!-- Avoid duplicates in settings.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$databases\['default'\]\['default'\]\['init_commands'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <append destFile="${website.settings.php}" text="$databases['default']['default']['init_commands'] = ['isolation' => &quot;SET SESSION tx_isolation='READ-COMMITTED'&quot;];${line.separator}" />
+    </target>
+
+    <!-- Create the private files directory -->
+    <target name="create-private-files-directory"
+            description="Create Drupal private files directory."
+            depends="enable-dev-settings, writable-settings-folder, writable-settings-local-php">
+
+        <!-- Create the directory if doesn't already exist. -->
+        <mkdir dir="${drupal.private_files.dir}"/>
+
+        <!-- Avoid duplicates in settings.local.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['file_private_path'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <!-- Add the settings.local.php setting. -->
+        <append destFile="${website.settings.local.php}" text="$settings['file_private_path'] = '${drupal.private_files.dir}';${line.separator}" />
+    </target>
+
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
-    <target name="disable-persistent-session-cookies">
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-services-yml" />
+    <target name="disable-persistent-session-cookies"
+        description="Disable persistent session cookies"
+        depends="writable-settings-folder, writable-services-yml">
+
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="services.yml" />
@@ -386,6 +435,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
 
 </project>

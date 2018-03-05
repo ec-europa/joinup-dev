@@ -11,12 +11,12 @@ dependencies:
 id: mycontent
 theme: joinup_theme
 region: filters
-weight: -8
+weight: -6
 provider: null
 plugin: 'facet_block:content_my_content'
 settings:
   id: 'facet_block:content_my_content'
-  label: 'My content (Content)'
+  label: 'Content overview - My content'
   provider: facets
   label_display: '0'
 visibility:

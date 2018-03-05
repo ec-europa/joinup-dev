@@ -32,7 +32,10 @@ processor_configs:
     processor_id: aggregated_entity_bundle_label
     weights:
       build: 0
-    settings: {  }
+    settings:
+      plural_count_label:
+        enabled: true
+        context: no_count_capitalize
   count_limit:
     processor_id: count_limit
     weights:

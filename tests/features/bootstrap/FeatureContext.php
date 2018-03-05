@@ -388,18 +388,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected($option, $select) {
-    $selectField = $this->getSession()->getPage()->find('css', $select);
-    if ($selectField === NULL) {
+    $element = $this->findSelect($select);
+    if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
-    $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
-    if ($optionField === NULL) {
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
       throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
-    if ($optionField->getHtml() != $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $optionField->getHtml()));
+    if ($option_element->getText() !== $option) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
     }
   }
 
