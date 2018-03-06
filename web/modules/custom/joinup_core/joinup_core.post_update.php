@@ -148,13 +148,15 @@ QUERY;
   $update_query = <<<QUERY
   WITH <@graph>
   DELETE {
-    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string>
+    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> .
+    <@entity_id> <@predicate> "@access_url" .
   }
   INSERT {
     <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#anyURI>
   }
   WHERE {
-    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string>
+    <@entity_id> <@predicate> ?access_url .
+    VALUES ?access_url { "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> "@access_url" }
   }
 QUERY;
   foreach ($items_to_update as $data_array) {
