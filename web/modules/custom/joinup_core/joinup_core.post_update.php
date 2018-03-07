@@ -117,6 +117,10 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
+  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
+  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $rdf_entity_mapping->save();
+
   /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
