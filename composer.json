@@ -222,6 +222,9 @@
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+            },
+            "pfrenssen/piwik-reporting-api": {
+                "Provide support for both GET and POST requests. @see https://github.com/pfrenssen/piwik-reporting-api/pull/6": "https://patch-diff.githubusercontent.com/raw/pfrenssen/piwik-reporting-api/pull/6.patch"
             }
         }
     },
