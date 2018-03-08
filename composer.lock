@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.20",
+            "version": "3.52.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "299ac47ff5171d6a25f788dc333c0a3c8db40f69"
+                "reference": "f42076f6347590dfbf4de7befc19bb660be0ea22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/299ac47ff5171d6a25f788dc333c0a3c8db40f69",
-                "reference": "299ac47ff5171d6a25f788dc333c0a3c8db40f69",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f42076f6347590dfbf4de7befc19bb660be0ea22",
+                "reference": "f42076f6347590dfbf4de7befc19bb660be0ea22",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-01T20:18:42+00:00"
+            "time": "2018-03-07T22:55:58+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1949,16 +1949,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.5.0-rc1",
+            "version": "8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "a8897035912d10ecd7930ab15ee1b229746f3db9"
+                "reference": "0b9070370e272da441b4be52561c559c05f4553d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/a8897035912d10ecd7930ab15ee1b229746f3db9",
-                "reference": "a8897035912d10ecd7930ab15ee1b229746f3db9",
+                "url": "https://api.github.com/repos/drupal/core/zipball/0b9070370e272da441b4be52561c559c05f4553d",
+                "reference": "0b9070370e272da441b4be52561c559c05f4553d",
                 "shasum": ""
             },
             "require": {
@@ -2000,7 +2000,7 @@
                 "symfony/serializer": "~3.4.0",
                 "symfony/translation": "~3.4.0",
                 "symfony/validator": "~3.4.0",
-                "symfony/yaml": "~3.4.0",
+                "symfony/yaml": "~3.4.5",
                 "twig/twig": "^1.35.0",
                 "zendframework/zend-diactoros": "^1.1",
                 "zendframework/zend-feed": "^2.4"
@@ -2194,7 +2194,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-02-21T17:08:11+00:00"
+            "time": "2018-03-07T21:10:20+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3356,17 +3356,17 @@
         },
         {
             "name": "drupal/migrate_run",
-            "version": "1.0.0-alpha6",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_run",
-                "reference": "8.x-1.0-alpha6"
+                "reference": "8.x-1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-alpha6.zip",
-                "reference": "8.x-1.0-alpha6",
-                "shasum": "36369465976a3bb9960e6f2ece20cf48d8c61dae"
+                "url": "https://ftp.drupal.org/files/projects/migrate_run-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "6efe6a1c9e145a0d4dcbd192cc046221426b7e61"
             },
             "require": {
                 "drupal/core": "^8.2"
@@ -3380,8 +3380,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6",
-                    "datestamp": "1507658345",
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1520368084",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3642,8 +3642,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0+3-dev",
-                    "datestamp": "1503521643",
+                    "version": "8.x-1.0+6-dev",
+                    "datestamp": "1520089985",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -9393,9 +9393,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
-                },
-                "patches_applied": {
-                    "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
                 }
             },
             "autoload": {
@@ -10397,8 +10394,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2017-11-15T09:36:28+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
