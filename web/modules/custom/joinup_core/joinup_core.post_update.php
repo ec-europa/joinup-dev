@@ -74,3 +74,14 @@ function joinup_core_post_update_move_contact_form_attachments() {
 function joinup_core_post_update_install_smart_trim() {
   \Drupal::service('module_installer')->install(['smart_trim']);
 }
+
+/**
+ * Sets the PIWIK batch size to 50 items and item limit to 1000.
+ */
+function joinup_core_post_update_piwik_bulk_size() {
+  // This will allow to mainly always timeout, otherwise keep processing.
+  \Drupal::configFactory()->getEditable('cached_computed_field.settings')
+    ->set('batch_size', 100)
+    ->set('item_limit', 200)
+    ->save();
+}
