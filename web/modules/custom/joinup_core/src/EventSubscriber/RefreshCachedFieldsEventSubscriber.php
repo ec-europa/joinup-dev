@@ -2,8 +2,9 @@
 
 namespace Drupal\joinup_core\EventSubscriber;
 
-use Drupal\cached_computed_field\Event\RefreshExpiredFieldEventInterface;
-use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldSubscriberBase;
+use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
+use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
+use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -13,12 +14,11 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_core\Exception\JoinupCoreUndefinedUrlException;
 use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
-use Piwik\ReportingApi\QueryInterface;
 
 /**
  * Event subscriber that updates stale data with fresh results from Piwik.
  */
-class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscriberBase {
+class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberBase {
 
   /**
    * The name of the field that contains download counts.
@@ -86,89 +86,127 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
   /**
    * {@inheritdoc}
    */
-  public function refreshExpiredField(RefreshExpiredFieldEventInterface $event) {
-    // Only react to fields that store the download count or visit count.
-    if (!in_array($event->getFieldName(), [static::FIELD_NAME_DOWNLOAD_COUNT, static::FIELD_NAME_VISIT_COUNT])) {
-      return;
-    }
-    // Only refresh the field if it has actually expired. It might have been
-    // updated already since it has been added to the processing queue.
-    if (!$this->fieldNeedsRefresh($event)) {
-      return;
-    }
+  public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
+    $items = $event->getExpiredItems()->getItems();
+    $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
+    $query->setParameters([
+      'module' => 'API',
+      'method' => 'API.getBulkRequest',
+      'format' => 'json'
+    ]);
 
-    $new_value = $this->getCount($this->getEntity($event));
-    if ($new_value !== FALSE) {
-      $this->updateFieldValue($event, $new_value);
-    }
-  }
+    $piwik_config = $this->configFactory->get('piwik.settings');
+    $piwik_reporting_api_config = $this->configFactory->get('piwik_reporting_api.settings');
+    $site_id = $piwik_config->get('site_id');
+    $token_auth = $piwik_reporting_api_config->get('token_auth');
 
-  /**
-   * Returns the action count the given entity received in the given period.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to check.
-   *
-   * @return int|false
-   *   The number of visits, or FALSE if the number of visits could not be
-   *   determined.
-   */
-  protected function getCount(ContentEntityInterface $entity) {
-    $bundle = $entity->bundle();
-    $period = $this->getTimePeriod($bundle);
-    $type = $this->getType($bundle);
-    $method = $this->getPiwikMethod($bundle);
-
-    // Start building the query.
-    $query = $this->piwikQueryFactory->getQuery($method);
-
-    // Try to retrieve the URL from the entity.
-    try {
-      $this->setUrlParameter($query, $entity);
-    }
-    catch (JoinupCoreUndefinedUrlException $e) {
-      // If no URL was found then we cannot get results from Piwik. This can
-      // happen for example when retrieving the download count from a
-      // distribution that has no files associated with it.
-      // We are returning 0 instead of FALSE so that this field will not be
-      // re-queued on every cron run for eternity.
-      return 0;
-    }
-
-    $date_range = [
-      // If the period is 0 we should get all results since launch.
-      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
-      (new DateTimePlus())->format('Y-m-d'),
+    $sub_params = [
+      'module' => 'API',
+      'idSite' => $site_id,
+      'token_auth' => $token_auth,
     ];
 
-    $query->setParameters([
-      'period' => 'year',
-      'date' => implode(',', $date_range),
-      'showColumns' => $type,
-    ]);
-    $response = $query->execute();
-    if (!$response->hasError()) {
-      $response = $response->getResponse();
+    foreach ($items as $index => $item) {
+      if (!$entity = $this->getExpiredEntity($item)) {
+        continue;
+      }
+
+      $bundle = $entity->bundle();
+      $period = $this->getTimePeriod($bundle);
+      $type = $this->getType($bundle);
+      $method = $this->getPiwikMethod($bundle);
+      $url_parameter_name = $this->getUrlParameterName($bundle);
+      $url_parameter = $this->getUrlParameter($entity);
+
+      $date_range = [
+        // If the period is 0 we should get all results since launch.
+        $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
+        (new DateTimePlus())->format('Y-m-d'),
+      ];
+
+      $query->setParameters([
+        'period' => 'year',
+        'date' => implode(',', $date_range),
+        'showColumns' => $type,
+      ]);
+
+      $query_params = $sub_params;
+      $query_params['period'] = 'year';
+      $query_params['date'] = implode(',', $date_range);
+      $query_params['method'] = $method;
+      $query_params['showColumns'] = $type;
+      $query->setParameter('urls[' . $index . ']', http_build_query($query_params + [
+          $url_parameter_name => $url_parameter
+        ]
+      ));
+    }
+
+    /** @var \Piwik\ReportingApi\Query $query */
+    $client = $query->getHttpClient();
+    $client->setMethod('POST');
+    try {
+      $response = $query->execute()->getResponse();
+    }
+    catch (\Exception $e) {
+      $this->loggerFactory->get('joinup_core')->error($e->getMessage());
+      return;
+    }
+
+    foreach ($items as $index => $expired_item) {
+      $response_item = $response[$index];
       $count = 0;
-      foreach ($response as $year => $result) {
+      foreach ($response_item as $year => $result) {
         $item = $result[0];
         if (!empty($item->$type)) {
           $count = $count + (int) $item->$type;
         }
       }
-      return $count;
+      $this->updateFieldValue($expired_item, $count);
+    }
+  }
+
+  /**
+   * Fetches the expired entity.
+   *
+   * @param \Drupal\cached_computed_field\ExpiredItemInterface $item
+   *   The expired item object.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The expired entity object or NULL if none is found.
+   */
+  protected function getExpiredEntity(ExpiredItemInterface $item) {
+    return $this->entityTypeManager->getStorage($item->getEntityTypeId())->load($item->getEntityId());
+  }
+
+  /**
+   * Gets the correct URL parameter for the query.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity from which to prune the URL.
+   *
+   * @return string
+   *   The url for the request.
+   *
+   * @throws \Drupal\joinup_core\Exception\JoinupCoreUndefinedUrlException
+   *   Thrown when a URL could not be distilled from the given entity.
+   */
+  protected function getUrlParameter(ContentEntityInterface $entity) {
+    $bundle = $entity->bundle();
+    switch ($this->getMethod($bundle)) {
+      case 'download_counts':
+        $url = $this->getFileUrl($entity);
+        break;
+
+      default:
+        $url = $this->getEntityUrl($entity);
+        break;
     }
 
-    // An error occurred. Log it to notify the devops team.
-    $message = 'Error "@error" occurred when querying the Piwik API to get information on the entity of type "@entity_type_id" with ID "@entity_id".';
-    $arguments = [
-      '@error' => $response->getErrorMessage(),
-      '@entity_type_id' => $entity->getEntityTypeId(),
-      '@entity_id' => $entity->id(),
-    ];
-    $this->loggerFactory->get('joinup_core')->warning($message, $arguments);
+    if (empty($url)) {
+      throw new JoinupCoreUndefinedUrlException();
+    }
 
-    return FALSE;
+    return $url;
   }
 
   /**
@@ -247,36 +285,6 @@ class RefreshCachedPiwikDataEventSubscriber extends RefreshExpiredFieldSubscribe
   protected function getUrlParameterName($bundle) {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'downloadUrl' : 'pageUrl';
-  }
-
-  /**
-   * Sets the correct URL parameter on the query.
-   *
-   * @param \Piwik\ReportingApi\QueryInterface $query
-   *   The Piwik reporting API query object.
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity from which to prune the URL.
-   *
-   * @throws \Drupal\joinup_core\Exception\JoinupCoreUndefinedUrlException
-   *   Thrown when a URL could not be distilled from the given entity.
-   */
-  protected function setUrlParameter(QueryInterface $query, ContentEntityInterface $entity) {
-    $bundle = $entity->bundle();
-    switch ($this->getMethod($bundle)) {
-      case 'download_counts':
-        $url = $this->getFileUrl($entity);
-        break;
-
-      default:
-        $url = $this->getEntityUrl($entity);
-        break;
-    }
-
-    if (empty($url)) {
-      throw new JoinupCoreUndefinedUrlException();
-    }
-
-    $query->setParameter($this->getUrlParameterName($bundle), $url);
   }
 
   /**
