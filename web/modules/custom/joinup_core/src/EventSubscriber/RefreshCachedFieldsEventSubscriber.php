@@ -92,7 +92,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $query->setParameters([
       'module' => 'API',
       'method' => 'API.getBulkRequest',
-      'format' => 'json'
+      'format' => 'json',
     ]);
 
     $piwik_config = $this->configFactory->get('piwik.settings');
@@ -136,9 +136,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       $query_params['method'] = $method;
       $query_params['showColumns'] = $type;
       $query->setParameter('urls[' . $index . ']', http_build_query($query_params + [
-          $url_parameter_name => $url_parameter
-        ]
-      ));
+        $url_parameter_name => $url_parameter,
+      ]));
     }
 
     /** @var \Piwik\ReportingApi\Query $query */
@@ -161,6 +160,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
           $count = $count + (int) $item->$type;
         }
       }
+
       $this->updateFieldValue($expired_item, $count);
     }
   }
