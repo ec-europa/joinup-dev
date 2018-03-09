@@ -78,8 +78,6 @@ function joinup_invite_og_membership_delete(OgMembershipInterface $entity) {
     'bundle' => 'group',
   ]);
 
-  // Normally, only one invitation should exist per entity and user, but iterate
-  // nonetheless.
   foreach ($invitations as $invitation) {
     $invitation->delete();
   }
@@ -107,8 +105,7 @@ function joinup_invite_form_join_collection_form_alter(&$form, FormStateInterfac
     return;
   }
 
-  $invitation = Invitation::loadByEntityAndUser($collection, $user, 'group');
-  if ($invitation && $invitation->getStatus() === InvitationInterface::STATUS_PENDING) {
+  if (Invitation::loadByEntityAndUser($collection, $user, 'group', InvitationInterface::STATUS_PENDING)) {
     // Ensure that the join button is not shown for empty memberships.
     unset($form['join']);
     $form['pending'] = [

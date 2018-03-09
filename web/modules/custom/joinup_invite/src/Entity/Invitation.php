@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_invite\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
@@ -288,38 +287,19 @@ class Invitation extends ContentEntityBase implements InvitationInterface {
   /**
    * {@inheritdoc}
    */
-  public function preSave(EntityStorageInterface $storage): void {
-    // Do not allow to store an invitation if the user or entity is missing.
-    $recipient = $this->getRecipient();
-    if ($recipient->isAnonymous()) {
-      throw new \LogicException('Only registered user can receive invitations.');
-    }
-
-    if (!$entity = $this->getEntity()) {
-      throw new \LogicException('An entity is required for creating an invitation.');
-    }
-
-    // Do not allow multiple invitations to be saved for a particular user and
-    // entity.
-    $existing_invitation = static::loadByEntityAndUser($entity, $recipient);
-    if (!empty($existing_invitation) && ($entity->isNew() || $existing_invitation->id() !== $entity->id())) {
-      throw new \Exception("An invitation already exists for {$entity->getEntityType()->getLabel()} '{$entity->label()}' and user '{$recipient->getAccountName()}'.");
-    }
-
-    parent::preSave($storage);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle = ''): ?InvitationInterface {
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle, string $status = NULL): ?InvitationInterface {
     $storage = \Drupal::entityTypeManager()->getStorage('invitation');
-    $invitations = $storage->loadByProperties([
+    $criteria = [
       'entity_type' => $entity->getEntityTypeId(),
       'entity_id' => $entity->id(),
       'recipient_id' => $recipient->id(),
       'bundle' => $bundle,
-    ]);
+    ];
+    if ($status) {
+      $criteria['status'] = $status;
+    }
+    $invitations = $storage->loadByProperties($criteria);
+
     return !empty($invitations) ? reset($invitations) : NULL;
   }
 
