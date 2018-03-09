@@ -15,7 +15,6 @@ use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup_discussion\Form\InviteToDiscussionForm;
-use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteToGroupForm;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
@@ -64,32 +63,6 @@ class JoinupInviteSubContext extends DrupalSubContextBase implements DrupalSubCo
       throw new \Exception("No invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
     }
     PHPUnit_Framework_Assert::assertEquals($invitation->getStatus(), $statuses[$status]);
-  }
-
-  /**
-   * Asserts that there is no invitation for the given user and group.
-   *
-   * @param string $user
-   *   The user name.
-   * @param string $label
-   *   The group label.
-   * @param string $type
-   *   The group type.
-   *
-   * @throws \Exception
-   *   Thrown when an invalid status is requested or the requested invitation
-   *   is not found.
-   *
-   * @Then no invitation should exist for the user :user in the :label :type
-   */
-  public function assertNoInvitation(string $user, string $label, string $type): void {
-    $user = $this->getUserByName($user);
-    $group = $this->getRdfEntityByLabel($label, $type);
-    $invitation_info = $this->getInvitationInfo($type);
-    $invitation = Invitation::loadByEntityAndUser($group, $user, $invitation_info['invitation_bundle']);
-    if (!empty($invitation)) {
-      throw new \Exception("An invitation was found for {$user->getAccountName()} in the '{$group->label()}' {$group->bundle()}");
-    }
   }
 
   /**
