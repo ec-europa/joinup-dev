@@ -52,6 +52,9 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
+   *
+   * @throws \RuntimeException
+   *   When the user is already member and has also an invitation to the group.
    */
   public function acceptInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
@@ -65,25 +68,24 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     $group = $invitation->getEntity();
 
     if ($this->getMembership($group, $user)) {
-      drupal_set_message($this->t('There is no action pending for this user.'));
+      throw new \RuntimeException("User {$user->getAccountName()} is member and has also a pending invitation (id: {$invitation->id()}) to {$group->bundle()} {$group->label()}.");
     }
-    else {
-      $membership = $this->membershipManager->createMembership($group, $user);
-      if (!$invitation->get('invitation_role')->isEmpty()) {
-        $role = $invitation->invitation_role->entity;
-        $membership->addRole($role);
-      }
-      // Disable notifications related to memberships.
-      $membership->skip_notification = TRUE;
-      $membership->setState(OgMembershipInterface::STATE_ACTIVE)->save();
-      $facilitator_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
-      $role_argument = $membership->hasRole($facilitator_id) ? $this->t('facilitator') : $this->t('member');
-      drupal_set_message($this->t('You are now a @role of the "@title" @bundle.', [
-        '@role' => $role_argument,
-        '@title' => $group->label(),
-        '@bundle' => $group->get('rid')->entity->getSingularLabel(),
-      ]));
+
+    $membership = $this->membershipManager->createMembership($group, $user);
+    if (!$invitation->get('invitation_role')->isEmpty()) {
+      $role = $invitation->invitation_role->entity;
+      $membership->addRole($role);
     }
+    // Disable notifications related to memberships.
+    $membership->skip_notification = TRUE;
+    $membership->setState(OgMembershipInterface::STATE_ACTIVE)->save();
+    $facilitator_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
+    $role_argument = $membership->hasRole($facilitator_id) ? $this->t('facilitator') : $this->t('member');
+    drupal_set_message($this->t('You are now a @role of the "@title" @bundle.', [
+      '@role' => $role_argument,
+      '@title' => $group->label(),
+      '@bundle' => $group->get('rid')->entity->getSingularLabel(),
+    ]));
   }
 
   /**
@@ -91,6 +93,9 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
+   *
+   * @throws \RuntimeException
+   *   When the user is already member and has also an invitation to the group.
    */
   public function rejectInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
@@ -103,14 +108,11 @@ class GroupInvitationSubscriber implements EventSubscriberInterface {
     $user = $invitation->getRecipient();
     $group = $invitation->getEntity();
 
-    // If there is already a membership, it means that it has been created
-    // somewhere else in the meantime.
-    if (!empty($this->getMembership($group, $user))) {
-      drupal_set_message($this->t('There is no action pending for this user.'));
+    if ($this->getMembership($group, $user)) {
+      throw new \RuntimeException("User {$user->getAccountName()} is member and has also a pending invitation (id: {$invitation->id()}) to {$group->bundle()} {$group->label()}.");
     }
-    else {
-      drupal_set_message($this->t('The invitation has been rejected. Thank you for your feedback.'));
-    }
+
+    drupal_set_message($this->t('The invitation has been rejected. Thank you for your feedback.'));
   }
 
   /**
