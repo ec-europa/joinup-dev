@@ -89,11 +89,6 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
     $items = $event->getExpiredItems()->getItems();
     $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
-    $query->setParameters([
-      'module' => 'API',
-      'method' => 'API.getBulkRequest',
-      'format' => 'json',
-    ]);
 
     $piwik_config = $this->configFactory->get('piwik.settings');
     $piwik_reporting_api_config = $this->configFactory->get('piwik_reporting_api.settings');
@@ -123,12 +118,6 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
         (new DateTimePlus())->format('Y-m-d'),
       ];
-
-      $query->setParameters([
-        'period' => 'year',
-        'date' => implode(',', $date_range),
-        'showColumns' => $type,
-      ]);
 
       $query_params = $sub_params;
       $query_params['period'] = 'year';
