@@ -64,3 +64,11 @@ joinup_core.rdf_entity_uri_web_converter_page:
     _permission: 'access uri converter'
   options:
     _admin_route: TRUE
+
+joinup_core.admin_reporting:
+  path: '/admin/reporting'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Reporting'
+  requirements:
+    _permission: 'access joinup reports'
