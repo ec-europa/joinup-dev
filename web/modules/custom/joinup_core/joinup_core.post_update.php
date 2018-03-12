@@ -114,6 +114,65 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
 }
 
 /**
+ * Fix the banner predicate [ISAICP-4332].
+ */
+function joinup_core_post_update_fix_banner_predicate() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+  SELECT ?graph ?entity_id ?image_uri
+  FROM <http://joinup.eu/collection/published>
+  FROM <http://joinup.eu/collection/draft>
+  FROM <http://joinup.eu/solution/published>
+  FROM <http://joinup.eu/solution/draft>
+  FROM <http://joinup.eu/asset_release/published>
+  FROM <http://joinup.eu/asset_release/draft>
+  WHERE {
+    GRAPH ?graph {
+      ?entity_id a ?type .
+      ?entity_id <http://xmlns.com/foaf/0.1/#term_Image> ?image_uri
+    }
+  }
+QUERY;
+
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][$result->entity_id->getUri()] = [
+      'value' => $result->image_uri->getValue(),
+      'datatype' => $result->image_uri->getDatatype(),
+    ];
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <http://xmlns.com/foaf/0.1/#term_Image> "@value"^^@datatype
+  }
+  INSERT {
+    <@entity_id> <http://xmlns.com/foaf/0.1/Image> "@value"^^@datatype
+  }
+  WHERE {
+    <@entity_id> <http://xmlns.com/foaf/0.1/#term_Image> "@value"^^@datatype
+  }
+QUERY;
+  $search = ['@graph', '@entity_id', '@value', '@datatype'];
+  foreach ($items_to_update as $graph => $graph_data) {
+    foreach ($graph_data as $entity_id => $item) {
+      $replace = [
+        $graph,
+        $entity_id,
+        $item['value'],
+        $item['datatype'],
+      ];
+      $query = str_replace($search, $replace, $update_query);
+      $sparql_endpoint->query($query);
+    }
+  }
+}
+
+/**
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
