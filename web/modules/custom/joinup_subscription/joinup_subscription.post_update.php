@@ -29,6 +29,12 @@ function joinup_subscription_post_update_subscribe_to_community_content(&$sandbo
     ->execute();
 
   foreach (OgMembership::loadMultiple($mids) as $membership) {
+    // Organic Groups can be configured to delete memberships asynchronously in
+    // a cron job or a manually started batch process. This means orphaned
+    // memberships can be present in the database. Ignore them.
+    if (empty($membership->getGroup())) {
+      continue;
+    }
     $membership->set('subscription_bundles', [
       ['entity_type' => 'node', 'bundle' => 'discussion'],
       ['entity_type' => 'node', 'bundle' => 'document'],
