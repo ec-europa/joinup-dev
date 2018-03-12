@@ -18,8 +18,9 @@ default:
       filters:
         tags: '~@wip'
   extensions:
-    Behat\MinkExtension:
+    Drupal\MinkExtension:
       base-url: '${behat.base_url}'
+      ajax_timeout: 10
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'

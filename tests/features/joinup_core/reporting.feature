@@ -59,8 +59,8 @@ Feature:
 
     # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.
     When I am an anonymous user
-    And I am on "/admin/reporting/solutions-by-type/csv"
+    And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
     Then I should see the error message "Access denied. You must sign in to view this page."
     When I am logged in as an "authenticated user"
-    And I am on "/admin/reporting/solutions-by-type/csv"
+    And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
     Then I should get an access denied error
