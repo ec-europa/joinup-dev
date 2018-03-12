@@ -123,7 +123,11 @@ class InvitationController extends ControllerBase {
    */
   public function access(InvitationInterface $invitation, string $action, string $hash) : AccessResultInterface {
     $valid_action = in_array($action, [self::ACTION_ACCEPT, self::ACTION_REJECT]);
-    return AccessResult::allowedIf($valid_action && static::generateHash($invitation, $action) === $hash);
+    return AccessResult::allowedIf(
+      $valid_action
+      && $invitation->getStatus() === InvitationInterface::STATUS_PENDING
+      && static::generateHash($invitation, $action) === $hash
+    );
   }
 
   /**

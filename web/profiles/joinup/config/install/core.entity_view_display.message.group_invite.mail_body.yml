@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.group_invite
+id: message.group_invite.mail_body
+targetEntityType: message
+bundle: group_invite
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true

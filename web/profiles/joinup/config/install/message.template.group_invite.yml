@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: group_invite
+label: 'Group invite'
+description: 'Sent when a user is invited to join a collection or a solution.'
+text:
+  -
+    value: '<p>Joinup: You are invited to join the @entity:bundle "@entity:title".</p>'
+    format: full_html
+  -
+    value: '<p>@actor:field_user_first_name has invited you to join the @entity:bundle "@entity:title" as a @invitation:target_role.</p><p> Please, click <a href="@invitation:accept_url">here</a> to accept the invitation or <a href="@invitation:reject_url">here</a> to reject it.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

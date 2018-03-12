@@ -15,6 +15,11 @@ services:
     arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory', '@config.factory', '@logger.factory']
     tags:
       - { name: 'event_subscriber' }
+  joinup_core.invitation_subscriber:
+    class: Drupal\joinup_core\EventSubscriber\GroupInvitationSubscriber
+    arguments: ['@og.membership_manager']
+    tags:
+      - { name: event_subscriber }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']

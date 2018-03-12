@@ -99,10 +99,10 @@ themes:
 config_devel:
   - block.block.authoredon
   - block.block.changed
+  - block.block.contentbundle
   - block.block.entity_bundle_facet
   - block.block.eventdate
   - block.block.exposed_form_search_page
-  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader
@@ -115,8 +115,8 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
-  - block.block.mycontentcollection
   - block.block.mycontent
+  - block.block.mycontentcollection
   - block.block.mycontentsolution
   - block.block.navigation
   - block.block.overviewmessage
@@ -158,6 +158,8 @@ config_devel:
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.message.group_invite.mail_body
+  - core.entity_view_display.message.group_invite.mail_subject
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
@@ -188,6 +190,7 @@ config_devel:
   - facets.facet.event_date
   - facets.facet.solution_my_content
   - facets.facet.solution_type
+  - field.field.message.group_invite.field_invitation
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
@@ -199,8 +202,10 @@ config_devel:
   - filter.format.simple_html
   - filter.format.simple_text
   - honeypot.settings
+  - image.style.image_style_group_logo
   - image.style.profile_icon
   - image.style.profile_icon_big
+  - joinup_invite.invitation_type.group
   - language.content_settings.rdf_entity.asset_distribution
   - language.content_settings.rdf_entity.asset_release
   - language.content_settings.rdf_entity.collection
@@ -208,6 +213,7 @@ config_devel:
   - language.content_settings.rdf_entity.solution
   - linkit.linkit_profile.default
   - mailsystem.settings
+  - message.template.group_invite
   - og.settings
   - og_menu.ogmenu.navigation
   - password_policy.password_policy.generic_policy

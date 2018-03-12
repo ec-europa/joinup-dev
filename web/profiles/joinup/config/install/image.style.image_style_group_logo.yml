@@ -1,8 +1,7 @@
-uuid: 08a0cb2b-9f36-4a4c-a4dc-4e1115b3a144
 langcode: en
 status: true
 dependencies: {  }
-name: image_style_collection_logo
+name: image_style_group_logo
 label: 'Collection logo'
 effects:
   44945a7e-eb75-4071-bdae-b0c0e6331dda:

@@ -9,6 +9,11 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\Invitation;
+use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\og\OgMembershipInterface;
 
 /**
  * Implements hook_user_cancel().
@@ -56,5 +61,69 @@ function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $blo
     // Make sure that the primaryadminactions block varies per og role.
     $cache_contexts = $build['#cache']['contexts'] ?? [];
     $build['#cache']['contexts'] = Cache::mergeContexts($cache_contexts, ['og_role']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * If a membership is deleted and an invitation exists for the same group and
+ * user, delete the invitation as well.
+ */
+function joinup_invite_og_membership_delete(OgMembershipInterface $entity) {
+  $invitations = \Drupal::entityTypeManager()->getStorage('invitation')->loadByProperties([
+    'entity_type' => $entity->getGroupEntityType(),
+    'entity_id' => $entity->getGroupId(),
+    'recipient_id' => $entity->getOwnerId(),
+    'bundle' => 'group',
+  ]);
+
+  foreach ($invitations as $invitation) {
+    $invitation->delete();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_invite_form_join_collection_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $user = $form_state->get('user');
+  $collection = $form_state->get('collection');
+  if (empty($user) || empty($collection)) {
+    return;
+  }
+
+  // If no membership is available, show the pending membership if there is a
+  // pending invitation instead. If a membership exists, then do not override
+  // anything as the parent form is already handling it properly.
+  $membership = \Drupal::service('og.membership_manager')->getMembership($collection, $user, [
+    OgMembershipInterface::STATE_ACTIVE,
+    OgMembershipInterface::STATE_PENDING,
+    OgMembershipInterface::STATE_BLOCKED,
+  ]);
+  if ($membership) {
+    return;
+  }
+
+  if (Invitation::loadByEntityAndUser($collection, $user, 'group', InvitationInterface::STATUS_PENDING)) {
+    // Ensure that the join button is not shown for empty memberships.
+    unset($form['join']);
+    $form['pending'] = [
+      '#type' => 'link',
+      '#title' => t('Membership is pending'),
+      '#url' => Url::fromRoute('<current>', [], ['fragment' => 'pending']),
+      '#attributes' => [
+        'class' => [
+          'button',
+          'button--blue-light',
+          'mdl-button',
+          'mdl-js-button',
+          'mdl-button--raised',
+          'mdl-js-ripple-effect',
+          'mdl-button--accent',
+          'button--small',
+        ],
+      ],
+    ];
   }
 }

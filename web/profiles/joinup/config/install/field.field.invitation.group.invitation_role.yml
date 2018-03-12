@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.invitation.invitation_role
+    - joinup_invite.invitation_type.group
+id: invitation_type.group.invitation_role
+field_name: invitation_role
+entity_type: invitation
+bundle: group
+label: Invitation role
+description: 'A role to be assigned to a membership.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:og_role'
+  handler_settings:
+    target_bundles:
+      og_role: og_role
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

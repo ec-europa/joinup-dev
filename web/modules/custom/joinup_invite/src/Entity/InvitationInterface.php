@@ -41,7 +41,7 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The entity.
    */
-  public function getEntity(): ContentEntityInterface;
+  public function getEntity(): ?ContentEntityInterface;
 
   /**
    * Sets the entity the user will be invited to.
@@ -171,10 +171,12 @@ interface InvitationInterface extends ContentEntityInterface, EntityChangedInter
    *   The invitation recipient user account.
    * @param string $bundle
    *   The invitation type.
+   * @param string|null $status
+   *   (optional) An invitation status to filter on if it has been passed.
    *
    * @return self|null
    *   The invitation, or NULL if the requested invitation doesn't exist.
    */
-  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle): ?self;
+  public static function loadByEntityAndUser(ContentEntityInterface $entity, AccountInterface $recipient, string $bundle, string $status = NULL): ?self;
 
 }

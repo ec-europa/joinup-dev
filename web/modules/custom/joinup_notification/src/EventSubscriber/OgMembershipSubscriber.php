@@ -4,6 +4,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgMembershipInterface;
@@ -184,6 +185,23 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     // is not pending as it is not a reject but a delete.
     if ($this->membership->getState() !== OgMembershipInterface::STATE_PENDING) {
       return FALSE;
+    }
+
+    // If there is a pending invitation related to the same user and group, do
+    // not send a notification. This can occur when a membership is manually
+    // deleted despite the fact that it was created by an invitation.
+    $invitations = $this->entityTypeManager->getStorage('invitation')->loadByProperties([
+      'entity_type' => $this->membership->getGroupEntityType(),
+      'entity_id' => $this->membership->getGroupId(),
+      'recipient_id' => $this->membership->getOwnerId(),
+      'bundle' => 'group',
+    ]);
+    if (!empty($invitations)) {
+      /** @var \Drupal\joinup_invite\Entity\InvitationInterface $invitation */
+      $invitation = reset($invitations);
+      if ($invitation->getStatus() === InvitationInterface::STATUS_REJECTED || $invitation->getStatus() === InvitationInterface::STATUS_PENDING) {
+        return FALSE;
+      }
     }
 
     return TRUE;

@@ -194,16 +194,14 @@ Feature: Invite members to subscribe to discussions
     # Initially there should not be any subscriptions.
     And the "Concerned about dissolved gases?" discussion should have 0 subscribers
     Given I am logged in as "Glory Ruskin"
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
+    When I click the accept invitation link from the last email sent to "Glory Ruskin"
     Then I should see the heading "Concerned about dissolved gases?"
     And I should see the success message "You have been subscribed to this discussion."
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
-    # Try to accept the invitation a second time. An appropriate message should
-    # be shown.
-    When I accept the invitation for the "Concerned about dissolved gases?" discussion
-    Then I should see the heading "Concerned about dissolved gases?"
-    And I should see the success message "You were already subscribed to this discussion."
+    # Try to accept the invitation a second time. Access should not be allowed.
+    When I click the accept invitation link from the last email sent to "Glory Ruskin"
+    Then I should see the text "Access denied"
     And the "Concerned about dissolved gases?" discussion should have 1 subscriber
 
     # Try to invite the user again. This should not send an invitation since the
