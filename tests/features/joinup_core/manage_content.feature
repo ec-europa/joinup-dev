@@ -54,7 +54,7 @@ Feature:
     When I go to the homepage of the "Vintage Art" collection
     Then I should see the link "Manage content"
     Given I click "Manage content"
-    Then I should see "Manage content" in the SevenHeader
+    Then I should see "Manage content" in the Header
 
     # Select rows.
     Given I select the "The Panama Papers" row
