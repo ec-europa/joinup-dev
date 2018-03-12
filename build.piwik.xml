@@ -106,7 +106,7 @@
         name="download-piwik-containers"
         depends="download-piwik-repository">
         <exec
-            command='docker-compose create'
+            command='docker-compose up --no-start'
             dir="${piwik.dir}"
             passthru="true"
             checkreturn="true" />
