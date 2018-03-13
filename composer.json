@@ -42,7 +42,7 @@
         "drupal/persistent_login": "dev-1.x#1320f841da3c",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
         "drupal/piwik": "~1.0",
-        "drupal/piwik_reporting_api": "^1.0-beta2",
+        "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/rdf_entity": "dev-8.x-1.x",
         "drupal/redirect": "^1.0",
@@ -221,9 +221,6 @@
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",
                 "Download link returns 406 with Drupal ^8.5.0 @see https://www.drupal.org/project/views_data_export/issues/2951185": "https://www.drupal.org/files/issues/2951185-2.patch"
-            },
-            "pfrenssen/piwik-reporting-api": {
-                "Provide support for both GET and POST requests. @see https://github.com/pfrenssen/piwik-reporting-api/pull/6": "https://patch-diff.githubusercontent.com/raw/pfrenssen/piwik-reporting-api/pull/6.patch"
             }
         }
     },
