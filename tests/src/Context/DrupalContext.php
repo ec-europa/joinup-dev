@@ -20,11 +20,15 @@ class DrupalContext extends DrupalExtensionDrupalContext {
    */
   public function loggedIn() {
     $session = $this->getSession();
-    $session->visit($this->locatePath('/'));
+
+    // If the session has not been started yet, or no page has yet been loaded,
+    // then this is a brand new test session and the user is not logged in.
+    if (!$session->isStarted() || !$page = $session->getPage()) {
+      return FALSE;
+    }
 
     // Check if the 'logged-in' class is present on the page.
-    $element = $session->getPage();
-    return $element->find('css', 'body.user-logged-in');
+    return $page->find('css', 'body.user-logged-in');
   }
 
   /**
