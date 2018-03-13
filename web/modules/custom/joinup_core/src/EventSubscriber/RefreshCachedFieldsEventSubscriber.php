@@ -9,6 +9,7 @@ use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
@@ -88,6 +89,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    */
   public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
     $items = $event->getExpiredItems()->getItems();
+
+    // All requests are sent by POST method to handle the amount of concurrent
+    // requests in terms of request length.
+    $this->piwikQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
     $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
 
     $piwik_config = $this->configFactory->get('piwik.settings');
@@ -106,32 +111,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         continue;
       }
 
-      $bundle = $entity->bundle();
-      $period = $this->getTimePeriod($bundle);
-      $type = $this->getType($bundle);
-      $method = $this->getPiwikMethod($bundle);
-      $url_parameter_name = $this->getUrlParameterName($bundle);
-      $url_parameter = $this->getUrlParameter($entity);
-
-      $date_range = [
-        // If the period is 0 we should get all results since launch.
-        $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
-        (new DateTimePlus())->format('Y-m-d'),
-      ];
-
-      $query_params = $sub_params;
-      $query_params['period'] = 'year';
-      $query_params['date'] = implode(',', $date_range);
-      $query_params['method'] = $method;
-      $query_params['showColumns'] = $type;
-      $query->setParameter('urls[' . $index . ']', http_build_query($query_params + [
-        $url_parameter_name => $url_parameter,
-      ]));
+      $query_params = $this->getSubqueryParams($entity, $sub_params);
+      $query->setParameter('urls[' . $index . ']', http_build_query($query_params));
     }
 
-    /** @var \Piwik\ReportingApi\Query $query */
-    $client = $query->getHttpClient();
-    $client->setMethod('POST');
     try {
       $response = $query->execute()->getResponse();
     }
@@ -350,6 +333,39 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     }
 
     return FALSE;
+  }
+
+  /**
+   * Builds a list of parameters for a query.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity with the expired field.
+   * @param array $parameters
+   *   A list of extra parameters to pass to the array of parameters.
+   *
+   * @return array
+   *   A list of parameters.
+   */
+  protected function getSubqueryParams(EntityInterface $entity, array $parameters = []): array {
+    $bundle = $entity->bundle();
+    $period = $this->getTimePeriod($bundle);
+    $type = $this->getType($bundle);
+    $method = $this->getPiwikMethod($bundle);
+    $url_parameter_name = $this->getUrlParameterName($bundle);
+    $url_parameter = $this->getUrlParameter($entity);
+
+    $date_range = [
+      // If the period is 0 we should get all results since launch.
+      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
+      (new DateTimePlus())->format('Y-m-d'),
+    ];
+
+    $parameters['period'] = 'year';
+    $parameters['date'] = implode(',', $date_range);
+    $parameters['method'] = $method;
+    $parameters['showColumns'] = $type;
+    $parameters[$url_parameter_name] = $url_parameter;
+    return $parameters;
   }
 
 }
