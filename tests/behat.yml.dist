@@ -17,6 +17,8 @@ default:
             s3Secret: '${exports.s3.secret}'
       filters:
         tags: '~@wip'
+      paths:
+        - features/featured_entities.feature
   extensions:
     Drupal\MinkExtension:
       base-url: '${behat.base_url}'
