@@ -17,7 +17,6 @@ use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use Drupal\search_api\PostRequestIndexingTrait;
 
 /**
  * Defines generic step definitions.
