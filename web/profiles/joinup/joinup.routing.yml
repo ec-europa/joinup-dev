@@ -68,7 +68,7 @@ joinup.site_unfeature:
     _title: 'Remove from featured'
     field_name: field_site_featured
     value: false
-    message: '@bundle %title has been removed from the feature contents.'
+    message: '@bundle %title has been removed from the featured contents.'
   requirements:
     _permission: 'unfeature entity'
     _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
