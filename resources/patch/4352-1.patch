@@ -1,8 +1,8 @@
 diff --git a/core/lib/Drupal/Core/Entity/ContentEntityType.php b/core/lib/Drupal/Core/Entity/ContentEntityType.php
-index 3871405176..c27ee5e7c9 100644
+index 3871405176..d14cd764a6 100644
 --- a/core/lib/Drupal/Core/Entity/ContentEntityType.php
 +++ b/core/lib/Drupal/Core/Entity/ContentEntityType.php
-@@ -26,6 +26,14 @@ class ContentEntityType extends EntityType implements ContentEntityTypeInterface
+@@ -26,6 +26,18 @@ class ContentEntityType extends EntityType implements ContentEntityTypeInterface
     */
    protected $requiredRevisionMetadataKeys = [];
  
@@ -11,6 +11,10 @@ index 3871405176..c27ee5e7c9 100644
 +  }
 +
 +  public function isRenderCacheable() {
++    return FALSE;
++  }
++
++  public function isPersistentlyCacheable() {
 +    return FALSE;
 +  }
 +
