@@ -28,7 +28,7 @@ class AdmsValidationResult {
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   public function __construct(Result $result, $graph_uri, Connection $sparql) {
-    $skipped_rules = [41, 100, 101, 102, 103];
+    $skipped_rules = [100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
