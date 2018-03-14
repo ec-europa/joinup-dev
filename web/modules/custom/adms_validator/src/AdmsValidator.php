@@ -92,9 +92,11 @@ class AdmsValidator implements AdmsValidatorInterface {
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/1
     $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
 
-    // @todo: Workaround for a wrong definition.
-    // @see: https://github.com/SEMICeu/ADMS-AP/issues/2
-    // @see: https://github.com/SEMICeu/adms-ap_validator/issues/3
+    // Workaround for a wrong definition.
+    // @see https://github.com/SEMICeu/ADMS-AP/issues/2
+    // @see https://github.com/SEMICeu/adms-ap_validator/issues/3
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4376
+    // @todo Remove this workaround in ISAICP-4376.
     return preg_replace('/(\?s skos\:hasTopConcept \?o\.[ \n\t]+FILTER\(\!)isLiteral(\(\?o\)\)\.)/', '\1isIri\2', $query);
   }
 
