@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4260b9e4394b330b2f5e13c5ec810feb",
+    "content-hash": "2a76a2d0a5ed24748cd532ca01d78d0b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4032,7 +4032,8 @@
             "type": "drupal-module",
             "extra": {
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
+                    "Add support for the xsd:anyURI base type @see https://github.com/ec-europa/rdf_entity/pull/25": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/25.patch"
                 }
             },
             "license": [
@@ -5258,11 +5259,11 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "dev-master",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "master"
+                "reference": "2.0.0"
             },
             "type": "library",
             "autoload": {
@@ -12016,7 +12017,6 @@
         "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
-        "ec-europa/virtuoso": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
