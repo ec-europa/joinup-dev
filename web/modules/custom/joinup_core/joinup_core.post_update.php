@@ -8,6 +8,7 @@
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
+use EasyRdf\Resource;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -220,6 +221,62 @@ QUERY;
       ];
       $query = str_replace($search, $replace, $update_query);
       $sparql_endpoint->query($query);
+    }
+  }
+}
+
+/**
+ * Fix data type of the solution contact point[ISAICP-4334].
+ */
+function joinup_core_post_update_fix_solution_contact_datatypea() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  // Two issues are to be fixed here.
+  // 1. The contact reference should be a resource instead of a literal.
+  // 2. The predicate should be updated so that the IRI does not use the https
+  // protocol.
+  $retrieve_query = <<<QUERY
+SELECT ?graph ?entity_id ?contact
+WHERE {
+  GRAPH ?graph {
+    ?entity_id a ?type .
+    ?entity_id <https://www.w3.org/ns/dcat#contactPoint> ?contact .
+  }
+}
+QUERY;
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    $contact_uri = $result->contact instanceof Resource ? $result->contact->getUri() : $result->contact->getValue();
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][$result->entity_id->getUri()][] = $contact_uri;
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> ?contact_uri
+  }
+  INSERT {
+    <@entity_id> <http://www.w3.org/ns/dcat#contactPoint> <@contact_uri>
+  }
+  WHERE {
+    <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> ?contact_uri .
+    FILTER (str(?contact_uri) = str("@contact_uri"))
+  }
+QUERY;
+  $search = ['@graph', '@entity_id', '@contact_uri'];
+  foreach ($items_to_update as $graph => $graph_data) {
+    foreach ($graph_data as $entity_id => $contact_uris) {
+      foreach ($contact_uris as $contact_uri) {
+        $replace = [
+          $graph,
+          $entity_id,
+          $contact_uri,
+        ];
+        $query = str_replace($search, $replace, $update_query);
+        $sparql_endpoint->query($query);
+      }
     }
   }
 }
