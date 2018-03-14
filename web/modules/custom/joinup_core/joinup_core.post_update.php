@@ -8,6 +8,7 @@
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
+use EasyRdf\Resource;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -110,5 +111,224 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
       ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
       ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
       ->save();
+  }
+}
+
+/**
+ * Fix the banner predicate [ISAICP-4332].
+ */
+function joinup_core_post_update_fix_banner_predicate() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+  SELECT ?graph ?entity_id ?image_uri
+  FROM <http://joinup.eu/collection/published>
+  FROM <http://joinup.eu/collection/draft>
+  FROM <http://joinup.eu/solution/published>
+  FROM <http://joinup.eu/solution/draft>
+  FROM <http://joinup.eu/asset_release/published>
+  FROM <http://joinup.eu/asset_release/draft>
+  WHERE {
+    GRAPH ?graph {
+      ?entity_id a ?type .
+      ?entity_id <http://xmlns.com/foaf/0.1/#term_Image> ?image_uri
+    }
+  }
+QUERY;
+
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][$result->entity_id->getUri()] = [
+      'value' => $result->image_uri->getValue(),
+      'datatype' => $result->image_uri->getDatatype(),
+    ];
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <http://xmlns.com/foaf/0.1/#term_Image> "@value"^^@datatype
+  }
+  INSERT {
+    <@entity_id> <http://xmlns.com/foaf/0.1/Image> "@value"^^@datatype
+  }
+  WHERE {
+    <@entity_id> <http://xmlns.com/foaf/0.1/#term_Image> "@value"^^@datatype
+  }
+QUERY;
+  $search = ['@graph', '@entity_id', '@value', '@datatype'];
+  foreach ($items_to_update as $graph => $graph_data) {
+    foreach ($graph_data as $entity_id => $item) {
+      $replace = [
+        $graph,
+        $entity_id,
+        $item['value'],
+        $item['datatype'],
+      ];
+      $query = str_replace($search, $replace, $update_query);
+      $sparql_endpoint->query($query);
+    }
+  }
+}
+
+/**
+ * Fix the owner class predicate [ISAICP-4333].
+ */
+function joinup_core_post_update_fix_owner_predicate() {
+  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
+  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $rdf_entity_mapping->save();
+
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+SELECT ?graph ?entity_id ?type
+WHERE {
+  GRAPH ?graph {
+    ?entity_id a ?type .
+    VALUES ?graph { <http://joinup.eu/owner/published> <http://joinup.eu/owner/draft> }
+  }
+}
+QUERY;
+
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][] = $result->entity_id->getUri();
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/spec/#term_Agent>
+  }
+  INSERT {
+    <@entity_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Agent>
+  }
+  WHERE {
+    <@entity_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/spec/#term_Agent>
+  }
+QUERY;
+  $search = ['@graph', '@entity_id'];
+  foreach ($items_to_update as $graph => $entity_ids) {
+    foreach ($entity_ids as $entity_id) {
+      $replace = [
+        $graph,
+        $entity_id,
+      ];
+      $query = str_replace($search, $replace, $update_query);
+      $sparql_endpoint->query($query);
+    }
+  }
+}
+
+/**
+ * Fix data type of the solution contact point[ISAICP-4334].
+ */
+function joinup_core_post_update_fix_solution_contact_datatypea() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  // Two issues are to be fixed here.
+  // 1. The contact reference should be a resource instead of a literal.
+  // 2. The predicate should be updated so that the IRI does not use the https
+  // protocol.
+  $retrieve_query = <<<QUERY
+SELECT ?graph ?entity_id ?contact
+WHERE {
+  GRAPH ?graph {
+    ?entity_id a ?type .
+    ?entity_id <https://www.w3.org/ns/dcat#contactPoint> ?contact .
+  }
+}
+QUERY;
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    $contact_uri = $result->contact instanceof Resource ? $result->contact->getUri() : $result->contact->getValue();
+    // Index by entity id so that only one value is inserted.
+    $items_to_update[$result->graph->getUri()][$result->entity_id->getUri()][] = $contact_uri;
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> ?contact_uri
+  }
+  INSERT {
+    <@entity_id> <http://www.w3.org/ns/dcat#contactPoint> <@contact_uri>
+  }
+  WHERE {
+    <@entity_id> <https://www.w3.org/ns/dcat#contactPoint> ?contact_uri .
+    FILTER (str(?contact_uri) = str("@contact_uri"))
+  }
+QUERY;
+  $search = ['@graph', '@entity_id', '@contact_uri'];
+  foreach ($items_to_update as $graph => $graph_data) {
+    foreach ($graph_data as $entity_id => $contact_uris) {
+      foreach ($contact_uris as $contact_uri) {
+        $replace = [
+          $graph,
+          $entity_id,
+          $contact_uri,
+        ];
+        $query = str_replace($search, $replace, $update_query);
+        $sparql_endpoint->query($query);
+      }
+    }
+  }
+}
+
+/**
+ * Fix data type of the access url field [ISAICP-4349].
+ */
+function joinup_core_post_update_fix_access_url_datatype() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+SELECT ?graph ?entity_id ?predicate ?access_url
+WHERE {
+  GRAPH ?graph {
+    ?entity_id a ?type .
+    ?entity_id ?predicate ?access_url .
+    VALUES ?type { <http://www.w3.org/ns/dcat#Catalog> <http://www.w3.org/ns/dcat#Distribution> }
+    VALUES ?predicate { <http://www.w3.org/ns/dcat#accessURL> <http://xmlns.com/foaf/spec/#term_homepage> }
+    VALUES ?graph { <http://joinup.eu/collection/draft> <http://joinup.eu/collection/published> <http://joinup.eu/asset_distribution/published> }
+    FILTER (!datatype(?access_url) = xsd:anyURI) .
+  }
+}
+QUERY;
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // The above query should not have errors or duplicated values so lets keep
+    // a simple array structure.
+    $items_to_update[] = [
+      '@graph' => $result->graph->getUri(),
+      '@entity_id' => $result->entity_id->getUri(),
+      '@predicate' => $result->predicate->getUri(),
+      '@access_url' => $result->access_url->getValue(),
+    ];
+  }
+
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> .
+    <@entity_id> <@predicate> "@access_url" .
+  }
+  INSERT {
+    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+  }
+  WHERE {
+    <@entity_id> <@predicate> ?access_url .
+    VALUES ?access_url { "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> "@access_url" }
+  }
+QUERY;
+  foreach ($items_to_update as $data_array) {
+    $query = str_replace(array_keys($data_array), array_values($data_array), $update_query);
+    $sparql_endpoint->query($query);
   }
 }

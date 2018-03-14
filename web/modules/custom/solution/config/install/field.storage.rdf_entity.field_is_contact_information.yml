@@ -7,8 +7,8 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'https://www.w3.org/ns/dcat#contactPoint'
-        format: 'xsd:string'
+        predicate: 'http://www.w3.org/ns/dcat#contactPoint'
+        format: resource
 id: rdf_entity.field_is_contact_information
 field_name: field_is_contact_information
 entity_type: rdf_entity
