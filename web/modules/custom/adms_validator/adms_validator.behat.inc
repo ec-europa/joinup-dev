@@ -40,7 +40,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase implements DrupalSubC
 
     /** @var \Drupal\adms_validator\AdmsValidatorInterface $validator */
     $validator = \Drupal::service('adms_validator.validator');
-    $result = $validator->validateGraph('http://joinup/validation-graph');
+    $result = $validator->validateGraphByUri('http://joinup/validation-graph');
 
     $sparql_endpoint->query('CLEAR GRAPH <http://joinup/validation-graph>');
 

@@ -24,7 +24,7 @@ interface AdmsValidatorInterface {
   const SEMIC_VALIDATION_QUERY_PATH = 'SEMICeu/adms-ap_validator/pages/adms-ap.txt';
 
   /**
-   * Validates the triples stored in a graph.
+   * Validates the triples stored in a graph, given the graph URI.
    *
    * @param string $graph_uri
    *   The graph URI.
@@ -32,7 +32,7 @@ interface AdmsValidatorInterface {
    * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
    */
-  public function validateGraph(string $graph_uri): AdmsValidationResult;
+  public function validateGraphByUri(string $graph_uri): AdmsValidationResult;
 
   /**
    * Validates the triples from a graph object.
@@ -43,7 +43,7 @@ interface AdmsValidatorInterface {
    * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
    */
-  public function validateGraphObject(Graph $graph): AdmsValidationResult;
+  public function validateGraph(Graph $graph): AdmsValidationResult;
 
   /**
    * Validates the triples from a blob of RDF content.
