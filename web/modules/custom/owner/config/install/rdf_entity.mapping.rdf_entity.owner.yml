@@ -8,7 +8,7 @@ third_party_settings: {  }
 id: rdf_entity.owner
 entity_type_id: rdf_entity
 bundle: owner
-rdf_type: 'http://xmlns.com/foaf/spec/#term_Agent'
+rdf_type: 'http://xmlns.com/foaf/0.1/Agent'
 base_fields_mapping:
   rid:
     target_id:
