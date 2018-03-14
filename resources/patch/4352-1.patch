@@ -1,0 +1,15 @@
+diff --git a/core/lib/Drupal/Core/Entity/ContentEntityType.php b/core/lib/Drupal/Core/Entity/ContentEntityType.php
+index 3871405176..68a8fd54c1 100644
+--- a/core/lib/Drupal/Core/Entity/ContentEntityType.php
++++ b/core/lib/Drupal/Core/Entity/ContentEntityType.php
+@@ -26,6 +26,10 @@ class ContentEntityType extends EntityType implements ContentEntityTypeInterface
+    */
+   protected $requiredRevisionMetadataKeys = [];
+ 
++  public function isStaticallyCacheable() {
++    return FALSE;
++  }
++
+   /**
+    * {@inheritdoc}
+    */

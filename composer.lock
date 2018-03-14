@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "940d705974697d9ef89ab4611c129b31",
+    "content-hash": "211f63ce0172f1de451fd1ddcfcecf9d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.24",
+            "version": "3.52.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e39a486cca4455f1c2294521281efbec5075a144"
+                "reference": "c1ce16adeeb9a47270f6ba8fb7aef5e1d62fa7d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e39a486cca4455f1c2294521281efbec5075a144",
-                "reference": "e39a486cca4455f1c2294521281efbec5075a144",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c1ce16adeeb9a47270f6ba8fb7aef5e1d62fa7d0",
+                "reference": "c1ce16adeeb9a47270f6ba8fb7aef5e1d62fa7d0",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-12T19:40:30+00:00"
+            "time": "2018-03-13T19:14:00+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2159,6 +2159,7 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
+                    "4352": "resources/patch/4352-1.patch",
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
                     "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-26.patch",
@@ -4010,12 +4011,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c"
+                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
+                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
                 "shasum": ""
             },
             "require": {
@@ -4040,7 +4041,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-02-20T12:56:56+00:00"
+            "time": "2018-03-14T13:19:35+00:00"
         },
         {
             "name": "drupal/redirect",
