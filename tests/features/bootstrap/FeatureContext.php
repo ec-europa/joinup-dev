@@ -1153,6 +1153,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterStep
    */
   public function indexEntities() {
+    \Drupal::service('cache_tags.invalidator')->resetChecksums();
     \Drupal::service('search_api.post_request_indexing')->destruct();
   }
 
