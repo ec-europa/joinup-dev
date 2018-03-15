@@ -22,7 +22,7 @@ Feature: As a solution owner
       | Learn German in 1 Month | shy    | facilitator |
       | Learn German in 1 Month | frozen | owner       |
 
-  Scenario Outline: Administrators and owner can transfer the solution ownership.
+  Scenario Outline: Administrators, moderators and owners can transfer the solution ownership.
     Given I am logged in as "<user>"
     And I go to the homepage of the "Learn German in 1 Month" solution
     And I click "Members"
@@ -65,20 +65,16 @@ Feature: As a solution owner
     Examples:
       | user  | option exists |
       | happy | contain       |
+      | light | contain       |
       | cruel | not contain   |
 
-  Scenario Outline: Moderators and facilitators do not have access to transfer ownership.
-    Given I am logged in as "<user>"
+  Scenario: Solution facilitators do not have access to transfer ownership.
+    Given I am logged in as "shy"
     And I go to the homepage of the "Learn German in 1 Month" solution
     Given I click "Members"
     Then the available options in the "Action" select should not include the "Transfer the ownership of the solution to the selected member" options
 
-    Examples:
-      | user  |
-      | light |
-      | shy   |
-
-  Scenario: Collection facilitators or authenticated users cannot transfer ownership of a solution.
+  Scenario: Collection facilitators cannot transfer ownership of a solution.
     Given the following collection:
       | title | Babylon   |
       | state | validated |
