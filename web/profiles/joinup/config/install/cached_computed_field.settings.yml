@@ -1,3 +1,2 @@
 batch_size: 100
-item_limit: 200
 time_limit: 60

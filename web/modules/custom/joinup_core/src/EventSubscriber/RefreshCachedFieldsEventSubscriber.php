@@ -4,7 +4,6 @@ namespace Drupal\joinup_core\EventSubscriber;
 
 use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
 use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
-use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -107,7 +106,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     ];
 
     foreach ($items as $index => $item) {
-      if (!$entity = $this->getExpiredEntity($item)) {
+      if (!$entity = $this->getEntity($item)) {
+        continue;
+      }
+
+      // Only refresh the field if it has actually expired. It might have been
+      // updated already since it has been added to the processing queue.
+      if (!$this->fieldNeedsRefresh($item)) {
         continue;
       }
 
@@ -135,19 +140,6 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
       $this->updateFieldValue($expired_item, $count);
     }
-  }
-
-  /**
-   * Fetches the expired entity.
-   *
-   * @param \Drupal\cached_computed_field\ExpiredItemInterface $item
-   *   The expired item object.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface|null
-   *   The expired entity object or NULL if none is found.
-   */
-  protected function getExpiredEntity(ExpiredItemInterface $item) {
-    return $this->entityTypeManager->getStorage($item->getEntityTypeId())->load($item->getEntityId());
   }
 
   /**
