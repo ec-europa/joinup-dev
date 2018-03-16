@@ -12,6 +12,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -1146,6 +1147,34 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->wait(60000,
       "jQuery(':contains(\"$text\")').length > 0"
     );
+  }
+
+  /**
+   * Adds the moderator role when creating an administrator user.
+   *
+   * In Joinup all administrators are also considered to be moderators. In fact,
+   * an administrator has exactly the same responsibilities, except for some
+   * additional things like adding / removing moderators and managing redirects.
+   *
+   * This ensures that all administrators created during tests will also have
+   * the moderator role, since in reality it should never be possible to create
+   * an administrator without this role.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope $event
+   *   The event that fires before a user is created.
+   *
+   * @BeforeUserCreate
+   */
+  public function addModeratorRoleToAdministrator(BeforeUserCreateScope $event) {
+    $user = $event->getEntity();
+
+    $roles = explode(',', $user->role);
+    $roles = array_map('trim', $roles);
+    $lowercase_roles = array_map('strtolower', $roles);
+    if (in_array('administrator', $lowercase_roles) && !in_array('moderator', $lowercase_roles)) {
+      $roles[] = 'moderator';
+      $user->role = implode(',', $roles);
+    }
   }
 
 }
