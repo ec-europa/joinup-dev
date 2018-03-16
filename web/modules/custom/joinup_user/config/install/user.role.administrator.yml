@@ -6,8 +6,6 @@ label: Administrator
 weight: 4
 is_admin: false
 permissions:
-  - 'access joinup reports'
-  - 'access uri converter'
   - 'administer account settings'
   - 'administer redirects'
   - 'administer solution ownership'
