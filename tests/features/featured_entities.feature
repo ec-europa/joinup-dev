@@ -84,49 +84,6 @@ Feature: Featuring content site-wide
     Examples:
       | content type | label      |
       | event        | Event      |
-      | document     | Document   |
-      | discussion   | Discussion |
-      | news         | News       |
-
-  Scenario Outline: Moderators can feature and unfeature collections and solutions site-wide.
-    When I am an anonymous user
-    And I am on the homepage
-    And I click "<header link>" in the "Header" region
-    Then I should see the following tiles in the correct order:
-      | <featured>   |
-      | <unfeatured> |
-    And I should not see the contextual link "Feature" in the "<featured>" tile
-    And I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
-
-    When I am logged in as an "authenticated user"
-    And I click "<header link>"
-    Then I should not see the contextual link "Feature" in the "<featured>" tile
-    And I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
-
-    # Facilitators cannot use the global featured functionality.
-    When I am logged in as "Niles Turner"
-    And I click "<header link>"
-    Then I should not see the contextual link "Feature" in the "<featured>" tile
-    And I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
-
-    When I am logged in as a moderator
-    And I click "<header link>"
-    Then I should see the contextual link "Feature" in the "<unfeatured>" tile
-    And the "<unfeatured>" tile should not be marked as featured
-    And I should see the contextual link "Remove from featured" in the "<featured>" tile
-    And the "<featured>" tile should be marked as featured
-    But I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
-    And I should not see the contextual link "Feature" in the "<featured>" tile
-
-    When I click the contextual link "Feature" in the "<unfeatured>" tile
-    Then I should see the success message "<label> <unfeatured> has been set as featured content."
-    And the "<featured>" tile should be marked as featured
-
-    And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
-    Then I should see the success message "<label> <unfeatured> has been removed from the featured contents."
-    And the "<unfeatured>" tile should not be marked as featured
-
-    Examples:
-      | header link | featured                      | unfeatured                  | label      |
-      | Collections | Tidy Neutron                  | Reborn Eternal Gamma        | Collection |
-      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   |
+#      | document     | Document   |
+#      | discussion   | Discussion |
+#      | news         | News       |

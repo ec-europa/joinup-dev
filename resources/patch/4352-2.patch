@@ -1,0 +1,19 @@
+diff --git a/core/lib/Drupal/Core/Entity/EntityStorageBase.php b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
+index e5bf880aef..5e1e288bf8 100644
+--- a/core/lib/Drupal/Core/Entity/EntityStorageBase.php
++++ b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
+@@ -267,6 +267,14 @@ public function loadMultiple(array $ids = NULL) {
+       }
+       $entities = $passed_ids;
+     }
++    foreach ($entities as $entity) {
++      if ($entity->label() == 'Ionizing radiation types') {
++        $backtrace = array_map(function ($value) {
++          return (!empty($value['file']) ? $value['file'] : 'no file') . ' line ' . (!empty($value['line']) ? $value['line'] : 'no line');
++        }, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5));
++        drupal_set_message(implode('<br />', $backtrace));
++      }
++    }
+ 
+     return $entities;
+   }
