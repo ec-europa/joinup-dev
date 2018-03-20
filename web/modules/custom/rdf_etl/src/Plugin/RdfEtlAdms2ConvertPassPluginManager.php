@@ -8,7 +8,7 @@ use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\rdf_etl\Annotation\Adms2ConvertPass;
+use Drupal\rdf_etl\Annotation\RdfEtlAdms2ConvertPass;
 
 /**
  * Provides the  ADMS v1 to v2 transformation plugin manager.
@@ -27,7 +27,7 @@ class RdfEtlAdms2ConvertPassPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/rdf_etl/Adms2ConvertPass', $namespaces, $module_handler, EtlAdms2ConvertPassInterface::class, Adms2ConvertPass::class);
+    parent::__construct('Plugin/rdf_etl/Adms2ConvertPass', $namespaces, $module_handler, RdfEtlAdms2ConvertPassInterface::class, RdfEtlAdms2ConvertPass::class);
     $this->alterInfo('rdf_etl_adms2_convert_pass_info');
     $this->setCacheBackend($cache_backend, 'rdf_etl_adms2_convert_pass_plugins');
   }

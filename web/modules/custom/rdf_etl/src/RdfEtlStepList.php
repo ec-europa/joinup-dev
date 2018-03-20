@@ -7,7 +7,7 @@ namespace Drupal\rdf_etl;
 /**
  * {@inheritdoc}
  */
-class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface {
+class RdfEtlStepList implements RdfEtlStepListInterface {
 
   /**
    * An array of pipeline step definition.
@@ -26,23 +26,16 @@ class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface 
   /**
    * {@inheritdoc}
    */
-  public function add(string $plugin_id): PipelineStepDefinitionInterface {
-    $this->list[] = new PipelineStepDefinition($plugin_id);
-    $this->position = key($this->list);
-    return $this->list[$this->position];
+  public function add(string $plugin_id): RdfEtlStepListInterface {
+    $this->list[] = $plugin_id;
+//    $this->position = key($this->list);
+    return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function first(): PipelineStepDefinitionInterface {
-    return $this->list[0];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function current(): PipelineStepDefinitionInterface {
+  public function current(): string {
     if (!$this->valid()) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }
@@ -52,7 +45,7 @@ class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface 
   /**
    * {@inheritdoc}
    */
-  public function get($position): PipelineStepDefinitionInterface {
+  public function get(int $position): string {
     if (!isset($this->list[$position])) {
       throw new \Exception('Cannot get out of bound element from pipeline definition list.');
     }
@@ -90,7 +83,7 @@ class PipelineStepDefinitionList implements PipelineStepDefinitionListInterface 
   /**
    * {@inheritdoc}
    */
-  public function seek(int $position): PipelineStepDefinitionInterface {
+  public function seek(int $position): string {
     $this->position = $position;
     return $this->current();
   }

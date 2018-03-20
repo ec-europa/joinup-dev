@@ -10,21 +10,21 @@ namespace Drupal\Tests\rdf_etl\Unit;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Messenger\Messenger;
-use Drupal\rdf_etl\EtlOrchestrator;
-use Drupal\rdf_etl\EtlState;
-use Drupal\rdf_etl\EtlStateManager;
 use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginBase;
 use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager;
 use Drupal\rdf_etl\Plugin\RdfEtlStepInterface;
 use Drupal\rdf_etl\Plugin\RdfEtlStepPluginBase;
 use Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager;
+use Drupal\rdf_etl\RdfEtlOrchestrator;
+use Drupal\rdf_etl\RdfEtlState;
+use Drupal\rdf_etl\RdfEtlStateManager;
 use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests the data pipeline processor.
  *
  * @group rdf_etl
- * @coversDefaultClass \Drupal\rdf_etl\EtlOrchestrator
+ * @coversDefaultClass \Drupal\rdf_etl\RdfEtlOrchestrator
  */
 class RdfEtlOrchestratorTest extends UnitTestCase {
 
@@ -45,7 +45,7 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
   /**
    * The state manager.
    *
-   * @var \Drupal\rdf_etl\EtlStateManager|\Prophecy\Prophecy\ObjectProphecy
+   * @var \Drupal\rdf_etl\RdfEtlStateManager|\Prophecy\Prophecy\ObjectProphecy
    */
   protected $stateManager;
 
@@ -70,7 +70,7 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
     parent::setUp();
     $this->pipelinePluginManager = $this->prophesize(RdfEtlPipelinePluginManager::class);
     $this->stepPluginManager = $this->prophesize(RdfEtlStepPluginManager::class);
-    $this->stateManager = $this->prophesize(EtlStateManager::class);
+    $this->stateManager = $this->prophesize(RdfEtlStateManager::class);
     $this->formBuilder = $this->prophesize(FormBuilder::class);
     $this->messenger = $this->prophesize(Messenger::class);
   }
@@ -81,7 +81,7 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
    * @covers ::__construct
    */
   public function testInstance() {
-    $this->assertInstanceOf(EtlOrchestrator::class, $this->createOrchestrator());
+    $this->assertInstanceOf(RdfEtlOrchestrator::class, $this->createOrchestrator());
   }
 
   /**
@@ -104,14 +104,16 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
     $container->set('string_translation', $this->getStringTranslationStub());
     \Drupal::setContainer($container);
 
-    $state = new EtlState('demo_pipe', 0);
+    $state = new RdfEtlState('demo_pipe', 0);
     $state_manager = $this->stateManager;
     $state_manager->isPersisted()->willReturn(TRUE);
     $state_manager->state()->willReturn($state);
     $state_manager->reset()->shouldBeCalled();
 
+    $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
+    $definition = ['label' => 'Bar', 'steps' => ['test_step']];
     $this->pipelinePluginManager->createInstance('demo_pipe')
-      ->willReturn(new TestPipeline([], '', ['label' => 'Bar']));
+      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal()));
 
     (new TestOrchestrator(
       $this->pipelinePluginManager->reveal(),
@@ -125,11 +127,11 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
   /**
    * Initializes a new orchestrator object.
    *
-   * @return \Drupal\rdf_etl\EtlOrchestratorInterface
+   * @return \Drupal\rdf_etl\RdfEtlOrchestratorInterface
    *   The new orchestrator object.
    */
   protected function createOrchestrator() {
-    return new EtlOrchestrator(
+    return new RdfEtlOrchestrator(
       $this->pipelinePluginManager->reveal(),
       $this->stepPluginManager->reveal(),
       $this->stateManager->reveal(),
@@ -157,12 +159,12 @@ class TestStep extends RdfEtlStepPluginBase {
  *
  * Used to replace the ::getStepInstance() method with a mock.
  */
-class TestOrchestrator extends EtlOrchestrator {
+class TestOrchestrator extends RdfEtlOrchestrator {
 
   /**
    * {@inheritdoc}
    */
-  protected function getStepInstance(EtlState $state): RdfEtlStepInterface {
+  protected function getStepInstance(RdfEtlState $state): RdfEtlStepInterface {
     return new TestStep([], '', ['label' => 'Foo']);
   }
 
@@ -171,13 +173,4 @@ class TestOrchestrator extends EtlOrchestrator {
 /**
  * Testing pipeline plugin.
  */
-class TestPipeline extends RdfEtlPipelinePluginBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function initStepDefinition(): void {
-    $this->steps->add('test_step');
-  }
-
-}
+class TestPipeline extends RdfEtlPipelinePluginBase {}

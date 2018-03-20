@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin\rdf_etl\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
+use Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginBase;
 
 /**
  * Conversion Pass #50.
@@ -20,11 +20,11 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  *
  * @see https://joinup.ec.europa.eu/discussion/cr3-repository-remove-property-admssupportedschema-or-change-property-range
  *
- * @Adms2ConvertPass(
+ * @RdfEtlAdms2ConvertPass(
  *   id = "pass_50",
  * )
  */
-class Pass50 extends EtlAdms2ConvertPassPluginBase {
+class Pass50 extends RdfEtlAdms2ConvertPassPluginBase {
 
   /**
    * {@inheritdoc}

@@ -32,4 +32,11 @@ class RdfEtlPipeline extends Plugin {
    */
   public $label;
 
+  /**
+   * The list of steps for this pipeline.
+   *
+   * @var string[]
+   */
+  public $steps;
+
 }

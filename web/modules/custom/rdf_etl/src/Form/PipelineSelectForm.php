@@ -4,7 +4,7 @@ namespace Drupal\rdf_etl\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_etl\EtlStateManager;
+use Drupal\rdf_etl\RdfEtlStateManager;
 use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,7 +23,7 @@ class PipelineSelectForm extends FormBase {
   /**
    * The state manager service.
    *
-   * @var \Drupal\rdf_etl\EtlStateManager
+   * @var \Drupal\rdf_etl\RdfEtlStateManager
    */
   protected $stateManager;
 
@@ -32,10 +32,10 @@ class PipelineSelectForm extends FormBase {
    *
    * @param \Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager $pipeline_plugin_manager
    *   The pipeline plugin manager service.
-   * @param \Drupal\rdf_etl\EtlStateManager $state_manager
+   * @param \Drupal\rdf_etl\RdfEtlStateManager $state_manager
    *   The state manager service.
    */
-  public function __construct(RdfEtlPipelinePluginManager $pipeline_plugin_manager, EtlStateManager $state_manager) {
+  public function __construct(RdfEtlPipelinePluginManager $pipeline_plugin_manager, RdfEtlStateManager $state_manager) {
     $this->pipelinePluginManager = $pipeline_plugin_manager;
     $this->stateManager = $state_manager;
   }
@@ -66,15 +66,7 @@ class PipelineSelectForm extends FormBase {
       return $this->redirect('rdf_etl.execute_pipeline', ['pipeline' => $state->getPipelineId()]);
     }
 
-    $form['inline'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'container-inline',
-        ],
-      ],
-    ];
-    $form['inline']['pipeline'] = [
+    $form['pipeline'] = [
       '#type' => 'select',
       '#title' => $this->t('Data pipeline'),
       '#options' => array_map(function ($pipeline) {
@@ -82,7 +74,7 @@ class PipelineSelectForm extends FormBase {
       }, $this->pipelinePluginManager->getDefinitions()),
       '#required' => TRUE,
     ];
-    $form['inline']['submit'] = [
+    $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Execute'),
     ];

@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
-use Drupal\rdf_etl\PipelineStepDefinitionInterface;
-use Drupal\rdf_etl\PipelineStepDefinitionList;
+use Drupal\rdf_etl\RdfEtlStepList;
 
 /**
  * Defines an interface for Data pipeline plugins.
@@ -16,10 +15,10 @@ interface RdfEtlPipelineInterface extends PluginInspectionInterface {
   /**
    * Gets the sequence in which the data processing steps should be performed.
    *
-   * @return \Drupal\rdf_etl\PipelineStepDefinitionList
+   * @return \Drupal\rdf_etl\RdfEtlStepList
    *   The sequence definition.
    */
-  public function stepDefinitionList(): PipelineStepDefinitionList;
+  public function stepDefinitionList(): RdfEtlStepList;
 
   /**
    * Returns an individual step definition.
@@ -27,10 +26,10 @@ interface RdfEtlPipelineInterface extends PluginInspectionInterface {
    * @param int $sequence
    *   The offset in the list.
    *
-   * @return \Drupal\rdf_etl\PipelineStepDefinitionInterface
+   * @return string
    *   The step definition.
    */
-  public function getStepDefinition(int $sequence): PipelineStepDefinitionInterface;
+  public function getStepPluginId(int $sequence): string;
 
   /**
    * Sets step-iterator to the given position.
@@ -38,6 +37,6 @@ interface RdfEtlPipelineInterface extends PluginInspectionInterface {
    * @param int $sequence
    *   The position in the flow.
    */
-  public function setActiveStepDefinition(int $sequence): void;
+  public function setActiveStep(int $sequence): void;
 
 }

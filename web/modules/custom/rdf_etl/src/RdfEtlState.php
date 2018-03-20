@@ -7,10 +7,10 @@ namespace Drupal\rdf_etl;
 /**
  * Class representing a state of a pipeline.
  */
-class EtlState {
+class RdfEtlState {
 
   /**
-   * The pipeline plugin id.
+   * The pipeline plugin ID.
    *
    * @var string
    */
@@ -24,7 +24,7 @@ class EtlState {
   protected $sequence;
 
   /**
-   * EtlState constructor.
+   * Creates a new state object.
    *
    * @param string $pipeline
    *   The pipeline plugin id.
@@ -37,7 +37,7 @@ class EtlState {
   }
 
   /**
-   * Get the persisted position within the pipeline.
+   * Returns the persisted position within the pipeline.
    *
    * @return int
    *   The current position of within the pipeline.
@@ -47,7 +47,7 @@ class EtlState {
   }
 
   /**
-   * Get the persisted pipeline id.
+   * Returns the persisted pipeline id.
    *
    * @return string
    *   The plugin id of the pipeline.

@@ -12,7 +12,7 @@ use Drupal\KernelTests\KernelTestBase;
  * Such a plugin performs only one specific change/pass in the process of
  * converting to ADMS v1 data to ADMS v2.01.
  */
-interface EtlAdms2ConvertPassInterface {
+interface RdfEtlAdms2ConvertPassInterface {
 
   /**
    * Testing graph.

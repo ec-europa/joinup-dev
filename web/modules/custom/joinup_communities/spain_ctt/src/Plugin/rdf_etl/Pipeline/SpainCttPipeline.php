@@ -8,19 +8,13 @@ use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginBase;
  * The data pipeline of Spanish repository.
  *
  * @RdfEtlPipeline(
- *  id = "spain",
- *  label = @Translation("Spain - Center for Technology Transfer"),
+ *   id = "spain",
+ *   label = @Translation("Spain - Center for Technology Transfer"),
+ *   steps = {
+ *     "manual_upload_step",
+ *     "convert_to_adms2",
+ *     "adms_validation",
+ *   },
  * )
  */
-class SpainCttPipeline extends RdfEtlPipelinePluginBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function initStepDefinition(): void {
-    $this->steps->add('manual_upload_step');
-    $this->steps->add('convert_to_adms2');
-    $this->steps->add('adms_validation');
-  }
-
-}
+class SpainCttPipeline extends RdfEtlPipelinePluginBase {}

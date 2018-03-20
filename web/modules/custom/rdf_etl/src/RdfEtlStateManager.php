@@ -9,7 +9,7 @@ use Drupal\Core\State\StateInterface;
 /**
  * Class EtlState.
  */
-class EtlStateManager implements EtlStateManagerInterface {
+class RdfEtlStateManager implements RdfEtlStateManagerInterface {
 
   /**
    * The Drupal state system.
@@ -51,7 +51,7 @@ class EtlStateManager implements EtlStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setState(EtlState $state): EtlStateManagerInterface {
+  public function setState(RdfEtlState $state): RdfEtlStateManagerInterface {
     $this->pipeline = $state->getPipelineId();
     $this->state->set('rdf_etl.active_pipeline', $this->pipeline);
     $this->sequence = $state->sequence();
@@ -62,14 +62,14 @@ class EtlStateManager implements EtlStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function state(): EtlState {
-    return new EtlState($this->pipeline, $this->sequence);
+  public function state(): RdfEtlState {
+    return new RdfEtlState($this->pipeline, $this->sequence);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function reset(): EtlStateManagerInterface {
+  public function reset(): RdfEtlStateManagerInterface {
     $this->state->delete('rdf_etl.active_pipeline_sequence');
     $this->state->delete('rdf_etl.active_pipeline');
     $this->pipeline = NULL;

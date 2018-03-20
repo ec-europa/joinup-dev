@@ -7,7 +7,7 @@ namespace Drupal\rdf_etl;
 /**
  * Class EtlState.
  */
-interface EtlStateManagerInterface {
+interface RdfEtlStateManagerInterface {
 
   /**
    * Whether a persisted state is available.
@@ -20,26 +20,26 @@ interface EtlStateManagerInterface {
   /**
    * Persists the pipeline state for a following request.
    *
-   * @param \Drupal\rdf_etl\EtlState $state
+   * @param \Drupal\rdf_etl\RdfEtlState $state
    *   The state object to persist.
    *
    * @return $this
    */
-  public function setState(EtlState $state): EtlStateManagerInterface;
+  public function setState(RdfEtlState $state): RdfEtlStateManagerInterface;
 
   /**
    * Returns the current state.
    *
-   * @return \Drupal\rdf_etl\EtlState
+   * @return \Drupal\rdf_etl\RdfEtlState
    *   The state value object.
    */
-  public function state(): EtlState;
+  public function state(): RdfEtlState;
 
   /**
    * Delete the persisted state.
    *
    * @return $this
    */
-  public function reset(): EtlStateManagerInterface;
+  public function reset(): RdfEtlStateManagerInterface;
 
 }

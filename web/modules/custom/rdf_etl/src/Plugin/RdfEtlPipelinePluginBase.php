@@ -5,54 +5,77 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rdf_etl\PipelineStepDefinitionInterface;
-use Drupal\rdf_etl\PipelineStepDefinitionList;
+use Drupal\rdf_etl\RdfEtlStepList;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Base class for Data pipeline plugins.
+ * Base class for pipeline plugins.
  */
-abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipelineInterface {
+abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipelineInterface, ContainerFactoryPluginInterface {
 
   /**
    * The execution order of the pipeline.
    *
-   * @var \Drupal\rdf_etl\PipelineStepDefinitionList
+   * @var \Drupal\rdf_etl\RdfEtlStepList
    */
   public $steps;
 
   /**
-   * {@inheritdoc}
+   * Constructs a Drupal\Component\Plugin\PluginBase object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $step_plugin_manager
+   *   The step plugin manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RdfEtlStepPluginManager $step_plugin_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->steps = new PipelineStepDefinitionList();
-    $this->initStepDefinition();
+    $this->steps = new RdfEtlStepList();
+    foreach ($this->getPluginDefinition()['steps'] as $step_plugin_id) {
+      if (!$step_plugin_manager->hasDefinition($step_plugin_id)) {
+        throw new \InvalidArgumentException("Invalid step plugin '$step_plugin_id'.");
+      }
+      $this->steps->add($step_plugin_id);
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function stepDefinitionList(): PipelineStepDefinitionList {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('plugin.manager.rdf_etl_step')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function stepDefinitionList(): RdfEtlStepList {
     return $this->steps;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getStepDefinition(int $sequence): PipelineStepDefinitionInterface {
+  public function getStepPluginId(int $sequence): string {
     return $this->steps->get($sequence);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setActiveStepDefinition(int $sequence): void {
+  public function setActiveStep(int $sequence): void {
     $this->steps->seek($sequence);
   }
-
-  /**
-   * Initializes steps to a PipelineStepDefinitionList.
-   */
-  abstract protected function initStepDefinition(): void;
 
 }

@@ -6,7 +6,7 @@ namespace Drupal\rdf_etl\Plugin\rdf_etl\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
+use Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginBase;
 
 /**
  * Conversion Pass #37.
@@ -19,11 +19,11 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  *
  * @see https://joinup.ec.europa.eu/discussion/cr26-distribution-remove-property-dcatdownloadurl
  *
- * @Adms2ConvertPass(
+ * @RdfEtlAdms2ConvertPass(
  *   id = "pass_37",
  * )
  */
-class Pass37 extends EtlAdms2ConvertPassPluginBase {
+class Pass37 extends RdfEtlAdms2ConvertPassPluginBase {
 
   /**
    * {@inheritdoc}

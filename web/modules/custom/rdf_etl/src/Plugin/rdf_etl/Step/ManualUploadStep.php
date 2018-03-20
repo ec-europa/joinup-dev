@@ -69,6 +69,7 @@ class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements Container
     $this->clearExistingData();
     try {
       $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
+      $data['adms_file']->delete();
     }
     catch (\Exception $exception) {
       $data['error'] = $this->t('Could not store triples in triple store. Reason @message', [
@@ -102,35 +103,28 @@ class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements Container
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::validateConfigurationForm($form, $form_state);
 
-    $build_info = $form_state->getBuildInfo();
-    $data = &$build_info['data'];
-
-    $adms_file = $form_state->getValue('adms_file');
-    if (!isset($adms_file[0]) || !$file = File::load($adms_file[0])) {
+    if (!$file = $this->getFile($form_state)) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
+
     try {
-      $data['graph'] = $this->fileToGraph($file);
+      $form_state->set('adms_file', $file);
+      $form_state->set('graph', $this->fileToGraph($file));
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
     }
-
-    $form_state->setBuildInfo($build_info);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state): void {
-    $build_info = $form_state->getBuildInfo();
-    $data = &$build_info['data'];
-    $data['result'] = $form_state->getValue('adms_file');
-    $form_state->setBuildInfo($build_info);
-    if ($file = File::load($form_state->getValue('adms_file')[0])) {
-      $file->delete();
-    }
+  public function extractDataFromSubmit(FormStateInterface $form_state): array {
+    return [
+      'adms_file' => $form_state->get('adms_file'),
+      'graph' => $form_state->get('graph'),
+    ];
   }
 
   /**
@@ -146,6 +140,23 @@ class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements Container
     $graph = new Graph();
     $graph->parseFile($file->getFileUri());
     return $graph;
+  }
+
+  /**
+   * Returns the file entity from the form state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return FileInterface|null
+   *   The uploaded file entity.
+   */
+  protected function getFile(FormStateInterface $form_state): ?FileInterface {
+    $adms_files = $form_state->getValue('adms_file');
+    if (!isset($adms_files[0]) || !$file = File::load($adms_files[0])) {
+      return NULL;
+    }
+    return $file;
   }
 
   /**

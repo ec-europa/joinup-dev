@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\rdf_etl\EtlOrchestratorInterface;
+use Drupal\rdf_etl\RdfEtlOrchestratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,18 +16,18 @@ class PipelineExecutionController extends ControllerBase {
   /**
    * Drupal\rdf_etl\EtlOrchestrator definition.
    *
-   * @var \Drupal\rdf_etl\EtlOrchestratorInterface
+   * @var \Drupal\rdf_etl\RdfEtlOrchestratorInterface
    */
-  protected $rdfEtlOrchestrator;
+  protected $orchestrator;
 
   /**
    * Constructs a new PipelineExecutionController object.
    *
-   * @param \Drupal\rdf_etl\EtlOrchestratorInterface $rdf_etl_orchestrator
+   * @param \Drupal\rdf_etl\RdfEtlOrchestratorInterface $rdf_etl_orchestrator
    *   The Etl orchestrator.
    */
-  public function __construct(EtlOrchestratorInterface $rdf_etl_orchestrator) {
-    $this->rdfEtlOrchestrator = $rdf_etl_orchestrator;
+  public function __construct(RdfEtlOrchestratorInterface $rdf_etl_orchestrator) {
+    $this->orchestrator = $rdf_etl_orchestrator;
   }
 
   /**
@@ -49,7 +49,7 @@ class PipelineExecutionController extends ControllerBase {
    *   Render array.
    */
   public function execution(string $pipeline) {
-    return $this->rdfEtlOrchestrator->run($pipeline);
+    return $this->orchestrator->run($pipeline);
   }
 
   /**
@@ -61,7 +61,7 @@ class PipelineExecutionController extends ControllerBase {
    *   The render array.
    */
   public function reset(): array {
-    $this->rdfEtlOrchestrator->reset();
+    $this->orchestrator->reset();
     return ['#markup' => 'Orchestrator reset.'];
   }
 

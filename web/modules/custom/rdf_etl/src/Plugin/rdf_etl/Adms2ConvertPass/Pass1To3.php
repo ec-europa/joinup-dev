@@ -6,7 +6,7 @@ namespace Drupal\rdf_etl\Plugin\rdf_etl\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
+use Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginBase;
 
 /**
  * Conversion Passes #1, #2 and #3.
@@ -38,12 +38,12 @@ use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase;
  *
  * @see https://joinup.ec.europa.eu/discussion/cr42-make-adms-ap-dcat-ap
  *
- * @Adms2ConvertPass(
+ * @RdfEtlAdms2ConvertPass(
  *   id = "pass_1_2_3",
  *   weight = -1000
  * )
  */
-class Pass1To3 extends EtlAdms2ConvertPassPluginBase {
+class Pass1To3 extends RdfEtlAdms2ConvertPassPluginBase {
 
   /**
    * {@inheritdoc}

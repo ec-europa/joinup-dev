@@ -11,7 +11,7 @@ use Drupal\KernelTests\KernelTestBase;
 /**
  * Provides a base class for Adms2ConvertPass plugins.
  */
-abstract class EtlAdms2ConvertPassPluginBase extends PluginBase implements EtlAdms2ConvertPassInterface {
+abstract class RdfEtlAdms2ConvertPassPluginBase extends PluginBase implements RdfEtlAdms2ConvertPassInterface {
 
   /**
    * The SPARQL database connection.
@@ -280,7 +280,7 @@ QUERY;
    * @param array $entity
    *   A simple representation of an entity. See ::processGraph().
    *
-   * @see \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginBase::processGraph()
+   * @see \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginBase::processGraph()
    */
   protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {}
 

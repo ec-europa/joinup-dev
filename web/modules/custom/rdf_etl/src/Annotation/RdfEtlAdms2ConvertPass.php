@@ -14,7 +14,7 @@ use Drupal\Component\Annotation\Plugin;
  *
  * @Annotation
  */
-class Adms2ConvertPass extends Plugin {
+class RdfEtlAdms2ConvertPass extends Plugin {
 
   /**
    * The plugin ID.
