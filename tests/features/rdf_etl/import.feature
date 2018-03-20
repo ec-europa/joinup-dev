@@ -14,6 +14,12 @@ Feature: As a site moderator I am able to import RDF files.
     And I go to the etl orchestrator
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
+    # Test the wizard reset.
+    And I reset the orchestrator
+    Then I go to the etl orchestrator
+    When I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
+
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Next"
 

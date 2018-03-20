@@ -172,7 +172,7 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
       'step' => $step_instance,
     ];
 
-    if ($has_form = $step_instance instanceof RdfEtlStepWithFormInterface) {
+    if ($step_instance instanceof RdfEtlStepWithFormInterface) {
       $form_state = new FormState();
       $data = $this->buildForm($step_instance, $form_state, $data);
       // In case of validation errors, or a rebuild (e.g. multi step), bail out.
@@ -184,15 +184,15 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
       $this->redirectForm($form_state);
     }
 
-    // If this step execution has produced errors, exit here the pipeline
-    // execution but show the errors.
+    // If this step execution returns errors, exit here the pipeline execution
+    // but show the errors.
     if ($error = $step_instance->execute($data)) {
       $this->setStepErrorResponse($error, $data);
       $this->stateManager->reset();
       return NULL;
     }
 
-    // Advance to next state.
+    // Advance to the next state.
     $data['state'] = $this->getNextState($current_state);
 
     // The pipeline execution finished with success.
@@ -262,13 +262,13 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
   /**
    * Builds the state object that points to the next step in the pipeline.
    *
-   * @param \Drupal\rdf_etl\RdfEtlState|null $state
+   * @param \Drupal\rdf_etl\RdfEtlState $state
    *   The current state.
    *
    * @return \Drupal\rdf_etl\RdfEtlState
    *   The next state.
    */
-  protected function getNextState(?RdfEtlState $state): RdfEtlState {
+  protected function getNextState(RdfEtlState $state): RdfEtlState {
     $this->pipeline->stepDefinitionList()->seek($state->sequence());
     $this->pipeline->stepDefinitionList()->next();
     $sequence = $this->pipeline->stepDefinitionList()->valid() ? $this->pipeline->stepDefinitionList()->key() : static::FINAL_STEP;
