@@ -13,7 +13,6 @@ Feature:
     Examples:
       | role          | code |
       | authenticated | 403  |
-      | administrator | 200  |
       | moderator     | 200  |
 
   # This scenario is a light test to avoid regressions.

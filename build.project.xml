@@ -23,9 +23,6 @@
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
-    <echo msg="Loading Remove Patched Packages task." />
-    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
-
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
