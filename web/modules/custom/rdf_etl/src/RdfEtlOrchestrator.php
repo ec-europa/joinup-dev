@@ -176,7 +176,7 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
       $form_state = new FormState();
       $data = $this->buildForm($step_instance, $form_state, $data);
       // In case of validation errors, or a rebuild (e.g. multi step), bail out.
-      if (!$form_state->isExecuted()) {
+      if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
         // Set the current state.
         $this->stateManager->setState($current_state);
         return NULL;

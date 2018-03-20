@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: As a site moderator I am able to import RDF files.
 
   Scenario: Test the import RDF files
@@ -21,6 +21,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Execute"
 
     When I attach the file "invalid_adms.rdf" to "File"
+    And I press "Upload"
     And I press "Next"
 
     Then I should see the following error messages:
@@ -33,6 +34,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Execute"
 
     When I attach the file "valid_adms.rdf" to "File"
+    And I press "Upload"
     And I press "Next"
 
     Then I should see the following success messages:

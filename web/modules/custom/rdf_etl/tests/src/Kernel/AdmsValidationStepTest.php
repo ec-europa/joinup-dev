@@ -67,15 +67,15 @@ class AdmsValidationStepTest extends KernelTestBase {
     $this->createGraphStore()->replace($graph, static::TEST_GRAPH);
 
     // Execute the validation step.
-    $plugin->execute($data);
+    $result = $plugin->execute($data);
 
     if ($expected_valid) {
       // Check that no error was detected during validation.
-      $this->assertArrayNotHasKey('error', $data);
+      $this->assertEmpty($result);
     }
     else {
       // Check that errors were detected during validation.
-      $this->assertArrayHasKey('error', $data);
+      $this->assertNotEmpty($result);
     }
   }
 

@@ -31,7 +31,7 @@ class RdfEtlOrchestratorForm extends FormBase {
     ]);
     $form = $this->buildProgressIndicator($form, $form_state);
     $form['data'] = $this->buildSubForm($form, $form_state);
-    $form['submit'] = [
+    $form['next'] = [
       '#type' => 'submit',
       '#value' => $this->t('Next'),
     ];
