@@ -2,28 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
+namespace Drupal\rdf_etl\Plugin\rdf_etl\Step;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\rdf_etl\ProcessStepBase;
+use Drupal\rdf_etl\Plugin\RdfEtlStepWithFormPluginBase;
 use EasyRdf\Graph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a manual data upload step plugin.
  *
- * @EtlProcessStep(
+ * @RdfEtlStep(
  *  id = "manual_upload_step",
  *  label = @Translation("Manual upload"),
  * )
  */
-class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, ContainerFactoryPluginInterface {
+class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements ContainerFactoryPluginInterface {
 
   use RdfEntityGraphStoreTrait;
 
@@ -68,9 +67,13 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
    */
   public function execute(array &$data): void {
     $this->clearExistingData();
-    $response = $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
-    if (!$response->isSuccessful()) {
-      $data['error'] = 'Could not store triples in triple store.';
+    try {
+      $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
+    }
+    catch (\Exception $exception) {
+      $data['error'] = $this->t('Could not store triples in triple store. Reason @message', [
+        '@message' => $exception->getMessage(),
+      ]);
     }
   }
 
@@ -87,6 +90,7 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
       '#upload_validators'  => [
         'file_validate_extensions' => ['rdf ttl'],
       ],
+      '#required' => TRUE,
     ];
 
     return $form;
@@ -101,7 +105,8 @@ class ManualUploadStep extends ProcessStepBase implements PluginFormInterface, C
     $build_info = $form_state->getBuildInfo();
     $data = &$build_info['data'];
 
-    if (!$file = File::load($form_state->getValue('adms_file')[0])) {
+    $adms_file = $form_state->getValue('adms_file');
+    if (!isset($adms_file[0]) || !$file = File::load($adms_file[0])) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }

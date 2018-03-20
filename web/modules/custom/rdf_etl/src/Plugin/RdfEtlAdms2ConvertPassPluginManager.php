@@ -13,7 +13,7 @@ use Drupal\rdf_etl\Annotation\Adms2ConvertPass;
 /**
  * Provides the  ADMS v1 to v2 transformation plugin manager.
  */
-class EtlAdms2ConvertPassPluginManager extends DefaultPluginManager {
+class RdfEtlAdms2ConvertPassPluginManager extends DefaultPluginManager {
 
   /**
    * Constructs a new EtlProcessStepManager object.
@@ -27,9 +27,9 @@ class EtlAdms2ConvertPassPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/EtlAdms2ConvertPass', $namespaces, $module_handler, EtlAdms2ConvertPassInterface::class, Adms2ConvertPass::class);
-    $this->alterInfo('rdf_etl_admis2_convert_pass_info');
-    $this->setCacheBackend($cache_backend, 'rdf_etl_admis2_convert_pass_plugins');
+    parent::__construct('Plugin/rdf_etl/Adms2ConvertPass', $namespaces, $module_handler, EtlAdms2ConvertPassInterface::class, Adms2ConvertPass::class);
+    $this->alterInfo('rdf_etl_adms2_convert_pass_info');
+    $this->setCacheBackend($cache_backend, 'rdf_etl_adms2_convert_pass_plugins');
   }
 
   /**

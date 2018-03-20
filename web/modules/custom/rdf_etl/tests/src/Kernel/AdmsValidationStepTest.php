@@ -57,8 +57,8 @@ class AdmsValidationStepTest extends KernelTestBase {
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
-    $manager = \Drupal::service('plugin.manager.etl_process_step');
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $manager */
+    $manager = \Drupal::service('plugin.manager.rdf_etl_step');
     $data = ['sink_graph' => static::TEST_GRAPH];
     $plugin = $manager->createInstance('adms_validation', $data);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\rdf_etl\Plugin\EtlAdms2ConvertPass;
+namespace Drupal\rdf_etl\Plugin\rdf_etl\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;

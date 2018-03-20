@@ -7,12 +7,14 @@ namespace Drupal\rdf_etl;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_etl\Form\EtlOrchestratorForm;
-use Drupal\rdf_etl\Plugin\EtlDataPipelineManager;
-use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
-use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
+use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager;
+use Drupal\rdf_etl\Plugin\RdfEtlStepInterface;
+use Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager;
+use Drupal\rdf_etl\Plugin\RdfEtlStepWithFormInterface;
 
 /**
  * The ETL Orchestrator.
@@ -23,11 +25,6 @@ use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
 class EtlOrchestrator implements EtlOrchestratorInterface {
 
   use StringTranslationTrait;
-
-  /**
-   * The default pipeline id.
-   */
-  const DEFAULT_PIPELINE = 'pipeline_selection_pipe';
 
   /**
    * The first step id.
@@ -42,37 +39,37 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   /**
    * The form builder service.
    *
-   * @var \Drupal\Core\Form\FormBuilderInterface
+   * @var \Drupal\Core\Form\FormSubmitterInterface
    */
   protected $formBuilder;
 
   /**
    * The active pipeline.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineInterface
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlPipelineInterface
    */
   protected $pipeline;
 
   /**
    * The EtlDataPipelineManager plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager
    */
-  protected $pluginManagerEtlDataPipeline;
+  protected $pipelinePluginManager;
 
   /**
    * The EtlProcessStepManager plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager
    */
-  protected $pluginManagerEtlProcessStep;
+  protected $stepPluginManager;
 
   /**
    * The response value.
    *
    * @var mixed
    */
-  protected $response = [];
+  protected $response;
 
   /**
    * The persistent state of the importer.
@@ -82,33 +79,51 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   protected $stateManager;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructs a new EtlOrchestrator object.
    *
-   * @param \Drupal\rdf_etl\Plugin\EtlDataPipelineManager $plugin_manager_etl_data_pipeline
+   * @param \Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager $pipeline_plugin_manager
    *   The EtlDataPipelineManager plugin manager.
-   * @param \Drupal\rdf_etl\Plugin\EtlProcessStepManager $plugin_manager_etl_process_step
+   * @param \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $step_plugin_manager
    *   The EtlProcessStepManager plugin manager.
    * @param \Drupal\rdf_etl\EtlStateManager $state_manager
    *   The persistent state of the importer.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   The form builder service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(EtlDataPipelineManager $plugin_manager_etl_data_pipeline, EtlProcessStepManager $plugin_manager_etl_process_step, EtlStateManager $state_manager, FormBuilderInterface $form_builder) {
-    $this->pluginManagerEtlDataPipeline = $plugin_manager_etl_data_pipeline;
-    $this->pluginManagerEtlProcessStep = $plugin_manager_etl_process_step;
+  public function __construct(RdfEtlPipelinePluginManager $pipeline_plugin_manager, RdfEtlStepPluginManager $step_plugin_manager, EtlStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger) {
+    $this->pipelinePluginManager = $pipeline_plugin_manager;
+    $this->stepPluginManager = $step_plugin_manager;
     $this->stateManager = $state_manager;
     $this->formBuilder = $form_builder;
+    $this->messenger = $messenger;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function run() {
-    $current_state = $this->initializeActiveState();
-    $new_state = $this->executeStep($current_state);
-    if ($new_state) {
-      $this->stateManager->setState($new_state);
-    }
+  public function run(string $pipeline) {
+    $current_state = $this->initializeActiveState($pipeline);
+
+    // Execute all consecutive steps until we reach one that has output. A step
+    // produces response/output in one of the following cases:
+    // - It's a step with form.
+    // - It's the final step.
+    // - It stops the pipeline with an error.
+    do {
+      if ($new_state = $this->executeStep($current_state)) {
+        $this->stateManager->setState($new_state);
+        $current_state = $new_state;
+      }
+    } while (!$this->response);
 
     return $this->response;
   }
@@ -126,81 +141,103 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
    * @param \Drupal\rdf_etl\EtlState $state
    *   The pipeline state.
    *
-   * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
+   * @return \Drupal\rdf_etl\Plugin\RdfEtlStepInterface
    *   The active process step.
    */
-  protected function getStepInstance(EtlState $state): EtlProcessStepInterface {
-    $step_definition = $this->pipeline->getStepDefinition($state->sequence());
-    return $this->pluginManagerEtlProcessStep->createInstance($step_definition->getPluginId());
+  protected function getStepInstance(EtlState $state): RdfEtlStepInterface {
+    return $this->stepPluginManager->createInstance($this->stepDefinition($state)->getPluginId());
   }
 
   /**
    * Initialize the state machine from the persisted state.
    *
+   * @param string $pipeline
+   *   The pipeline to be used.
+   *
    * @return \Drupal\rdf_etl\EtlState
    *   The current active state.
    */
-  protected function initializeActiveState(): EtlState {
+  protected function initializeActiveState(string $pipeline): EtlState {
     if (!$this->stateManager->isPersisted()) {
       // Initialize to default pipeline.
-      $active_state = new EtlState(
-        self::DEFAULT_PIPELINE,
-        self::FIRST_STEP
-      );
+      $active_state = new EtlState($pipeline, self::FIRST_STEP);
     }
     else {
       $active_state = $this->stateManager->state();
     }
-    $this->pipeline = $this->pluginManagerEtlDataPipeline->createInstance($active_state->pipelineId());
+    $this->pipeline = $this->pipelinePluginManager->createInstance($active_state->getPipelineId());
     // Restore the active pipeline from the persistent store.
     $this->pipeline->setActiveStepDefinition($active_state->sequence());
     return $active_state;
   }
 
   /**
-   * Progress the state machine with one step.
+   * Progresses the state machine with one step.
    *
    * @param \Drupal\rdf_etl\EtlState $current_state
    *   The current state.
    *
    * @return \Drupal\rdf_etl\EtlState
    *   The next state.
+   *
+   * @throws \Drupal\Core\Form\EnforcedResponseException
+   * @throws \Drupal\Core\Form\FormAjaxException
+   *   If errors occurred during the form build.
    */
   protected function executeStep(EtlState $current_state): ?EtlState {
-    $data = [];
-    $data['state'] = $current_state;
+    $step_instance = $this->getStepInstance($current_state);
+    $data = [
+      'state' => $current_state,
+      'step' => $step_instance,
+    ];
 
-    $data = $this->stepDefinition($current_state)->invokeHook('pre_form_execution', $data);
-    $form_state = new FormState();
-    $data = $this->buildForm($current_state, $form_state, $data);
+    if ($has_form = $step_instance instanceof RdfEtlStepWithFormInterface) {
+      $form_state = new FormState();
+      $data = $this->buildForm($step_instance, $form_state, $data);
+      // In case of validation errors, or a rebuild (e.g. multi step), bail out.
+      if (!$form_state->isExecuted()) {
+        // Set the current state.
+        $this->stateManager->setState($current_state);
+        return NULL;
+      }
+    }
 
-    // In case of validation errors, or a (re)build (e.g. multi step), bail out.
-    if (!$form_state->isExecuted()) {
+    $step_instance->execute($data);
+
+    // If this step execution has produced errors, end here the pipeline
+    // execution but show the errors.
+    if (!empty($data['error'])) {
+      $this->setStepErrorResponse($data);
+      $this->stateManager->reset();
       return NULL;
     }
 
-    $data['state'] = $this->getNextState($current_state);
-    $data = $this->stepDefinition($current_state)->invokeHook('post_form_execution', $data);
-    $this->getStepInstance($current_state)->execute($data);
+    if ($has_form) {
+      $this->redirectForm($form_state);
+    }
 
-    $this->redirectForm($form_state);
+    // Advance to next state.
+    $data['state'] = $this->getNextState($current_state);
+
+    // The pipeline execution finished with success.
+    if ($data['state']->sequence() === self::FINAL_STEP) {
+      $this->setSuccessResponse($data);
+      $this->stateManager->reset();
+      return NULL;
+    }
+
     return $data['state'];
   }
 
   /**
-   * Reload the page if the form needs to rebuild.
+   * Reloads the page if the form needs to rebuild.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    */
   protected function redirectForm(FormStateInterface $form_state): void {
     $form_state->disableRedirect(FALSE);
-
-    /** @var \Drupal\Core\Form\FormBuilder $form_builder */
-    $form_builder = $this->formBuilder;
-    // @todo Depending on the implementation: method not present in interface.
-    $redirect = $form_builder->redirectForm($form_state);
-    if ($redirect) {
+    if ($redirect = $this->formBuilder->redirectForm($form_state)) {
       $this->response = $redirect;
     }
   }
@@ -219,29 +256,26 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   }
 
   /**
-   * Build the state object that points to the next step in the pipeline.
+   * Builds the state object that points to the next step in the pipeline.
    *
-   * @param \Drupal\rdf_etl\EtlState $state
+   * @param \Drupal\rdf_etl\EtlState|null $state
    *   The current state.
    *
    * @return \Drupal\rdf_etl\EtlState
    *   The next state.
    */
-  protected function getNextState(EtlState $state): EtlState {
+  protected function getNextState(?EtlState $state): EtlState {
     $this->pipeline->stepDefinitionList()->seek($state->sequence());
     $this->pipeline->stepDefinitionList()->next();
-    $next_state = new EtlState($state->pipelineId(), self::FINAL_STEP);
-    if ($this->pipeline->stepDefinitionList()->valid()) {
-      $next_state = new EtlState($state->pipelineId(), $this->pipeline->stepDefinitionList()->key());
-    }
-    return $next_state;
+    $sequence = $this->pipeline->stepDefinitionList()->valid() ? $this->pipeline->stepDefinitionList()->key() : static::FINAL_STEP;
+    return new EtlState($state->getPipelineId(), $sequence);
   }
 
   /**
    * Builds the form.
    *
-   * @param \Drupal\rdf_etl\EtlState $current_state
-   *   The current state.
+   * @param \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $step
+   *   The step plugin instance.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    * @param array $data
@@ -249,10 +283,14 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
    *
    * @return array
    *   The data array.
+   *
+   * @throws \Drupal\Core\Form\EnforcedResponseException
+   * @throws \Drupal\Core\Form\FormAjaxException
+   *   If errors occurred during the form build.
    */
-  protected function buildForm(EtlState $current_state, FormStateInterface &$form_state, array $data): array {
-    $active_step_plugin_id = $this->stepDefinition($current_state)->getPluginId();
-    $form_state->addBuildInfo('active_process_step', $active_step_plugin_id);
+  protected function buildForm(RdfEtlStepInterface $step, FormStateInterface &$form_state, array $data): array {
+    $form_state->addBuildInfo('active_step', $step);
+    $form_state->addBuildInfo('pipeline', $this->pipeline);
     $form_state->addBuildInfo('data', $data);
     $this->response = $this->formBuilder->buildForm(EtlOrchestratorForm::class, $form_state);
     return $form_state->getBuildInfo()['data'];
@@ -262,7 +300,6 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
    * {@inheritdoc}
    */
   public function getActivePipelineLabel(): TranslatableMarkup {
-    $this->initializeActiveState();
     return $this->pipeline->getPluginDefinition()['label'];
   }
 
@@ -270,8 +307,43 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
    * {@inheritdoc}
    */
   public function getActiveStepLabel(): TranslatableMarkup {
-    $current_state = $this->initializeActiveState();
+    $current_state = $this->stateManager->state();
     return $this->getStepInstance($current_state)->getPluginDefinition()['label'];
+  }
+
+  /**
+   * Sets the step error response.
+   *
+   * @param array $data
+   *   Step processed data.
+   */
+  protected function setStepErrorResponse(array $data): void {
+    $error = is_string($data['error']) ? ['#markup' => $data['error']] : $data['error'];
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $step */
+    $step = $data['step'];
+    $arguments = [
+      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+      '%step' => $step->getPluginDefinition()['label'],
+    ];
+    $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
+    $this->messenger->addError($message);
+    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', $arguments)];
+  }
+
+  /**
+   * Sets the success response.
+   *
+   * @param array $data
+   *   Step processed data.
+   */
+  protected function setSuccessResponse(array $data): void {
+    $arguments = [
+      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+    ];
+    $message = $this->t('The %pipeline execution has finished with success.', $arguments);
+    $this->messenger->addStatus($message);
+    $this->response = ['#title' => $this->t('Successfully executed %pipeline import pipeline', $arguments)];
+    // @todo Add a list of executed steps as page content.
   }
 
 }

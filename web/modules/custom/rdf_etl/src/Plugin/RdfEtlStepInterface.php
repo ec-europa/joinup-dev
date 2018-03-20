@@ -10,7 +10,7 @@ use Drupal\Component\Plugin\ConfigurablePluginInterface;
 /**
  * Defines an interface for Process step plugins.
  */
-interface EtlProcessStepInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
+interface RdfEtlStepInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
 
   /**
    * The graph where the triples are stored during the import process.

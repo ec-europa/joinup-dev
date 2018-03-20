@@ -11,7 +11,7 @@ use Drupal\rdf_etl\PipelineStepDefinitionList;
 /**
  * Base class for Data pipeline plugins.
  */
-abstract class EtlDataPipelineBase extends PluginBase implements EtlDataPipelineInterface {
+abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipelineInterface {
 
   /**
    * The execution order of the pipeline.

@@ -2,15 +2,15 @@ services:
   rdf_etl.state_manager:
     class: Drupal\rdf_etl\EtlStateManager
     arguments: ['@state']
-  plugin.manager.etl_data_pipeline:
-    class: Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+  plugin.manager.rdf_etl_pipeline:
+    class: Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager
     parent: default_plugin_manager
-  plugin.manager.etl_process_step:
-    class: Drupal\rdf_etl\Plugin\EtlProcessStepManager
+  plugin.manager.rdf_etl_step:
+    class: Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager
     parent: default_plugin_manager
-  plugin.manager.etl_adms2_convert_pass:
-    class: Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
+  plugin.manager.rdf_etl_adms2_convert_pass:
+    class: Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginManager
     parent: default_plugin_manager
   rdf_etl.orchestrator:
     class: Drupal\rdf_etl\EtlOrchestrator
-    arguments: ['@plugin.manager.etl_data_pipeline', '@plugin.manager.etl_process_step', '@rdf_etl.state_manager', '@form_builder']
+    arguments: ['@plugin.manager.rdf_etl_pipeline', '@plugin.manager.rdf_etl_step', '@rdf_etl.state_manager', '@form_builder', '@messenger']

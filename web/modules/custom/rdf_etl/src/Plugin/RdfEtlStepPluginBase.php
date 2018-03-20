@@ -2,18 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\rdf_etl;
+namespace Drupal\rdf_etl\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
 
 /**
- * Base class for the for process step plugins supporting forms.
+ * Base class for the for process step plugins.
  */
-abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInterface {
+abstract class RdfEtlStepPluginBase extends PluginBase implements RdfEtlStepInterface {
 
   use StringTranslationTrait;
 
@@ -50,12 +48,6 @@ abstract class ProcessStepBase extends PluginBase implements EtlProcessStepInter
       $this->defaultConfiguration(),
       $configuration
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
   }
 
   /**

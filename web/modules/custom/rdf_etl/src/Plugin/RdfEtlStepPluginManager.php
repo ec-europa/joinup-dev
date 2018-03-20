@@ -7,15 +7,15 @@ namespace Drupal\rdf_etl\Plugin;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\rdf_etl\Annotation\EtlDataPipeline;
+use Drupal\rdf_etl\Annotation\RdfEtlStep;
 
 /**
- * Provides the Data pipeline plugin manager.
+ * Provides the Process step plugin manager.
  */
-class EtlDataPipelineManager extends DefaultPluginManager {
+class RdfEtlStepPluginManager extends DefaultPluginManager {
 
   /**
-   * Constructs a new EtlDataPipelineManager object.
+   * Constructs a new plugin manager object.
    *
    * @param \Traversable $namespaces
    *   An object that implements \Traversable which contains the root paths
@@ -26,9 +26,9 @@ class EtlDataPipelineManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/EtlDataPipeline', $namespaces, $module_handler, EtlDataPipelineInterface::class, EtlDataPipeline::class);
-    $this->alterInfo('rdf_etl_etl_data_pipeline_info');
-    $this->setCacheBackend($cache_backend, 'rdf_etl_etl_data_pipeline_plugins');
+    parent::__construct('Plugin/rdf_etl/Step', $namespaces, $module_handler, RdfEtlStepInterface::class, RdfEtlStep::class);
+    $this->alterInfo('rdf_etl_step_info');
+    $this->setCacheBackend($cache_backend, 'rdf_etl_step_plugins');
   }
 
 }

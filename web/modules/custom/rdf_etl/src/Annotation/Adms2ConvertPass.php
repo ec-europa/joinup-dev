@@ -9,7 +9,7 @@ use Drupal\Component\Annotation\Plugin;
 /**
  * Defines a plugin that performs a ADMS v1 to v2 transformation.
  *
- * @see \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
+ * @see \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginManager
  * @see plugin_api
  *
  * @Annotation

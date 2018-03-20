@@ -10,12 +10,15 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 interface EtlOrchestratorInterface {
 
   /**
-   * Execute the orchestrator.
+   * Executes the orchestrator.
+   *
+   * @param string $pipeline
+   *   The pipeline to be used.
    *
    * @return mixed
    *   The response.
    */
-  public function run();
+  public function run(string $pipeline);
 
   /**
    * Controller callback: Reset the state machine.

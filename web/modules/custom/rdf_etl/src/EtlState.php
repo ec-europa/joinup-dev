@@ -52,7 +52,7 @@ class EtlState {
    * @return string
    *   The plugin id of the pipeline.
    */
-  public function pipelineId(): String {
+  public function getPipelineId(): String {
     return $this->pipeline;
   }
 

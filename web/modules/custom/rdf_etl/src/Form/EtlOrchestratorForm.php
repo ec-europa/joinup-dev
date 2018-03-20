@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\rdf_etl\Plugin\EtlProcessStepInterface;
+use Drupal\rdf_etl\Plugin\RdfEtlStepInterface;
 
 /**
  * Class EtlOrchestratorForm.
@@ -35,18 +35,17 @@ class EtlOrchestratorForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Form state.
    *
-   * @return \Drupal\rdf_etl\Plugin\EtlProcessStepInterface
+   * @return \Drupal\rdf_etl\Plugin\RdfEtlStepInterface
    *   An instance of the current step plugin.
    *
    * @throws \Exception
+   *   When no active step has been passed.
    */
-  protected function activeProcessStep(FormStateInterface $form_state): EtlProcessStepInterface {
-    if (!isset($form_state->getBuildInfo()['active_process_step'])) {
+  protected function activeProcessStep(FormStateInterface $form_state): RdfEtlStepInterface {
+    if (!isset($form_state->getBuildInfo()['active_step'])) {
       throw new \Exception('No active process step.');
     }
-    $plugin_id = $form_state->getBuildInfo()['active_process_step'];
-    $plugin = \Drupal::getContainer()->get('plugin.manager.etl_process_step')->createInstance($plugin_id);
-    return $plugin;
+    return $form_state->getBuildInfo()['active_step'];
   }
 
   /**
@@ -57,6 +56,10 @@ class EtlOrchestratorForm extends FormBase {
     if (!$this->activeProcessStep($form_state) instanceof PluginFormInterface) {
       return $this->selfSubmittingForm($form, $form_state);
     }
+    $form['#title'] = $this->t('@pipeline: @step', [
+      '@pipeline' => $form_state->getBuildInfo()['pipeline']->getPluginDefinition()['label'],
+      '@step' => $form_state->getBuildInfo()['active_step']->getPluginDefinition()['label'],
+    ]);
     return $this->buildSubForm($form, $form_state);
   }
 
@@ -70,12 +73,14 @@ class EtlOrchestratorForm extends FormBase {
    *
    * @return array
    *   The form array.
+   *
+   * @throws \Exception
+   *   When no active step has been passed.
    */
   protected function buildSubForm(array $form, FormStateInterface $form_state): array {
     $form['data'] = [];
     $subform_state = SubformState::createForSubform($form['data'], $form, $form_state);
-    $form['data'] = $this->activeProcessStep($form_state)
-      ->buildConfigurationForm($form['data'], $subform_state);
+    $form['data'] = $this->activeProcessStep($form_state)->buildConfigurationForm($form['data'], $subform_state);
     $form['data']['#tree'] = TRUE;
     $form['submit'] = [
       '#type' => 'submit',

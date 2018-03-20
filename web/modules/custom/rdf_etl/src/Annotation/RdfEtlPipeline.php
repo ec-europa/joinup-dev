@@ -9,12 +9,12 @@ use Drupal\Component\Annotation\Plugin;
 /**
  * Defines a Data pipeline item annotation object.
  *
- * @see \Drupal\rdf_etl\Plugin\EtlDataPipelineManager
+ * @see \Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager
  * @see plugin_api
  *
  * @Annotation
  */
-class EtlDataPipeline extends Plugin {
+class RdfEtlPipeline extends Plugin {
 
   /**
    * The plugin ID.

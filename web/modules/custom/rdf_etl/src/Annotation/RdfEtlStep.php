@@ -9,12 +9,12 @@ use Drupal\Component\Annotation\Plugin;
 /**
  * Defines a Process step item annotation object.
  *
- * @see \Drupal\rdf_etl\Plugin\EtlProcessStepManager
+ * @see \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager
  * @see plugin_api
  *
  * @Annotation
  */
-class EtlProcessStep extends Plugin {
+class RdfEtlStep extends Plugin {
 
   /**
    * The plugin ID.

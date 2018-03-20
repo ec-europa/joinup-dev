@@ -23,7 +23,7 @@ class ConvertToAdms2Test extends KernelTestBase {
   /**
    * The  ADMS v1 to v2 transformation plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginManager
    */
   protected $adms2ConverPassPluginManager;
 
@@ -42,7 +42,7 @@ class ConvertToAdms2Test extends KernelTestBase {
     parent::setUp();
     $this->setUpSparql();
 
-    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_pass');
+    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.rdf_etl_adms2_convert_pass');
     $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
 
     $rdf_data = '';
@@ -66,9 +66,9 @@ class ConvertToAdms2Test extends KernelTestBase {
    * Test ADMSv2 changes.
    */
   public function test() {
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
-    $manager = $this->container->get('plugin.manager.etl_process_step');
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepInterface $plugin */
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $manager */
+    $manager = $this->container->get('plugin.manager.rdf_etl_step');
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $plugin */
     $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
 
     // Run updates.

@@ -11,7 +11,7 @@ use Drupal\rdf_etl\PipelineStepDefinitionList;
 /**
  * Defines an interface for Data pipeline plugins.
  */
-interface EtlDataPipelineInterface extends PluginInspectionInterface {
+interface RdfEtlPipelineInterface extends PluginInspectionInterface {
 
   /**
    * Gets the sequence in which the data processing steps should be performed.

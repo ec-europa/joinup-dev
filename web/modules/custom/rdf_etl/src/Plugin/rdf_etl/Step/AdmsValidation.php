@@ -2,23 +2,23 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\rdf_etl\Plugin\EtlProcessStep;
+namespace Drupal\rdf_etl\Plugin\rdf_etl\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\rdf_etl\ProcessStepBase;
+use Drupal\rdf_etl\Plugin\RdfEtlStepPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a process step that validates uploaded data.
  *
- * @EtlProcessStep(
+ * @RdfEtlStep(
  *  id = "adms_validation",
  *  label = @Translation("ADMS Validation"),
  * )
  */
-class AdmsValidation extends ProcessStepBase implements ContainerFactoryPluginInterface {
+class AdmsValidation extends RdfEtlStepPluginBase implements ContainerFactoryPluginInterface {
 
   use RdfEntityGraphStoreTrait;
 

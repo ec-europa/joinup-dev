@@ -1,8 +1,16 @@
-rdf_etl.pipeline_execution_controller_execution:
+rdf_etl.pipeline_select:
   path: '/admin/content/etl'
   defaults:
-    _controller: '\Drupal\rdf_etl\Controller\PipelineExecutionController::execution'
-    _title_callback: '\Drupal\rdf_etl\Controller\PipelineExecutionController::getTitle'
+    _form: 'Drupal\rdf_etl\Form\PipelineSelectForm'
+    _title: 'Select pipeline'
+  requirements:
+    _permission: 'run etl pipeline'
+
+rdf_etl.execute_pipeline:
+  path: '/admin/content/etl/execute/{pipeline}'
+  defaults:
+    _controller: 'Drupal\rdf_etl\Controller\PipelineExecutionController::execution'
+    _title: 'Select pipeline'
   requirements:
     _permission: 'run etl pipeline'
 
