@@ -2,8 +2,6 @@
 
 namespace Drupal\rdf_etl;
 
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-
 /**
  * Class EtlOrchestrator.
  */

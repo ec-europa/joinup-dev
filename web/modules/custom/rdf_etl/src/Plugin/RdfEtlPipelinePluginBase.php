@@ -6,7 +6,6 @@ namespace Drupal\rdf_etl\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\rdf_etl\PipelineStepDefinitionInterface;
 use Drupal\rdf_etl\RdfEtlStepList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

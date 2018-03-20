@@ -150,7 +150,7 @@ class TestStep extends RdfEtlStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data): void {}
+  public function execute(array &$data) {}
 
 }
 

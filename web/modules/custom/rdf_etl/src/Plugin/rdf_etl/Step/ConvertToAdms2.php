@@ -56,7 +56,7 @@ class ConvertToAdms2 extends RdfEtlStepPluginBase implements ContainerFactoryPlu
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data): void {
+  public function execute(array &$data) {
     $data += ['sink_graph' => $this->getConfiguration()['sink_graph']];
     // @todo There are ~75 passes, need to use batch processing?
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {

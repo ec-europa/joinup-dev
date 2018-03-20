@@ -23,8 +23,13 @@ interface RdfEtlStepInterface extends PluginInspectionInterface, ConfigurablePlu
    * Execute the business logic of the process step (the actual ETL action).
    *
    * @param array $data
-   *   The data array.
+   *   An array of data to be passed to the execute method.
+   *
+   * @return null|array|\Drupal\Component\Render\MarkupInterface|string
+   *   If no errors were encountered during the step execution, nothing should
+   *   be returned. Return the error message as a render array or a markup
+   *   object or as a string.
    */
-  public function execute(array &$data): void;
+  public function execute(array &$data);
 
 }

@@ -28,7 +28,6 @@ class RdfEtlStepList implements RdfEtlStepListInterface {
    */
   public function add(string $plugin_id): RdfEtlStepListInterface {
     $this->list[] = $plugin_id;
-//    $this->position = key($this->list);
     return $this;
   }
 

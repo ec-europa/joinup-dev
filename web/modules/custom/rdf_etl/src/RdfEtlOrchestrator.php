@@ -184,18 +184,12 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
       $this->redirectForm($form_state);
     }
 
-    $step_instance->execute($data);
-
     // If this step execution has produced errors, exit here the pipeline
     // execution but show the errors.
-    if (!empty($data['error'])) {
-      $this->setStepErrorResponse($data);
+    if ($error = $step_instance->execute($data)) {
+      $this->setStepErrorResponse($error, $data);
       $this->stateManager->reset();
       return NULL;
-    }
-
-    if ($has_form) {
-     // $this->redirectForm($form_state);
     }
 
     // Advance to next state.
@@ -222,7 +216,7 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
    */
   protected function getStepInstance(RdfEtlState $state): RdfEtlStepInterface {
     $plugin_id = $this->pipeline->getStepPluginId($state->sequence());
-    /** @var RdfEtlStepInterface $plugin_instance */
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $plugin_instance */
     $plugin_instance = $this->stepPluginManager->createInstance($plugin_id);
     return $plugin_instance;
   }
@@ -284,11 +278,12 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
   /**
    * Sets the step error response.
    *
+   * @param null|array|\Drupal\Component\Render\MarkupInterface|string $error
+   *   The error message as a render array or a markup object or as a string.
    * @param array $data
    *   Step processed data.
    */
-  protected function setStepErrorResponse(array $data): void {
-    $error = $data['error'];
+  protected function setStepErrorResponse($error, array $data): void {
     $error = is_string($error) || $error instanceof MarkupInterface ? ['#markup' => $error] : $error;
     /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $step */
     $step = $data['step'];

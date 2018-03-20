@@ -61,18 +61,21 @@ class AdmsValidation extends RdfEtlStepPluginBase implements ContainerFactoryPlu
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data): void {
+  public function execute(array &$data) {
     $graph_uri = $this->getConfiguration()['sink_graph'];
     $graph = $this->createGraphStore()->get($graph_uri);
     $validation = $this->admsValidator->validateGraph($graph);
-    if (!$validation->isSuccessful()) {
-      $data['error'] = [
-        [
-          '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
-        ],
-        $validation->toTable(),
-      ];
+
+    if ($validation->isSuccessful()) {
+      return NULL;
     }
+
+    return [
+      [
+        '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
+      ],
+      $validation->toTable(),
+    ];
   }
 
 }

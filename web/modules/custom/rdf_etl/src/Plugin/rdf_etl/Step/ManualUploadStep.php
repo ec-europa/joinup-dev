@@ -65,14 +65,14 @@ class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements Container
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data): void {
+  public function execute(array &$data) {
     $this->clearExistingData();
     try {
       $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
       $data['adms_file']->delete();
     }
     catch (\Exception $exception) {
-      $data['error'] = $this->t('Could not store triples in triple store. Reason @message', [
+      return $this->t('Could not store triples in triple store. Reason: @message', [
         '@message' => $exception->getMessage(),
       ]);
     }
@@ -148,7 +148,7 @@ class ManualUploadStep extends RdfEtlStepWithFormPluginBase implements Container
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    *
-   * @return FileInterface|null
+   * @return \Drupal\file\FileInterface|null
    *   The uploaded file entity.
    */
   protected function getFile(FormStateInterface $form_state): ?FileInterface {
