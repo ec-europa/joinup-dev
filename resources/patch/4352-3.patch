@@ -1,0 +1,16 @@
+diff --git a/src/Utility/PostRequestIndexing.php b/src/Utility/PostRequestIndexing.php
+index a9cc7450..8a048317 100644
+--- a/src/Utility/PostRequestIndexing.php
++++ b/src/Utility/PostRequestIndexing.php
+@@ -82,6 +82,11 @@ class PostRequestIndexing implements PostRequestIndexingInterface, EventSubscrib
+       try {
+         $items = $index->loadItemsMultiple($item_ids);
+         if ($items) {
++          foreach ($items as $item) {
++            /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $item */
++            $entity = $item->getValue();
++            drupal_set_message('Indexing ' . $entity->getEntityTypeId() . ' ' . $entity->label());
++          }
+           $index->indexSpecificItems($items);
+         }
+       }
