@@ -30,14 +30,11 @@ processor_configs:
       sort: -10
     settings:
       sort: ASC
-  aggregated_entity_bundle_label:
-    processor_id: aggregated_entity_bundle_label
+  aggregated_entity_reference_label:
+    processor_id: aggregated_entity_reference_label
     weights:
       build: 5
-    settings:
-      plural_count_label:
-        enabled: true
-        context: no_count_capitalize
+    settings: {  }
   count_limit:
     processor_id: count_limit
     weights:
