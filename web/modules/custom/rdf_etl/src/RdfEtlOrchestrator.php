@@ -239,8 +239,8 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
    *   If errors occurred during the form build.
    */
   protected function buildForm(RdfEtlStepInterface $step, FormStateInterface &$form_state, array $data): array {
-    $form_state->addBuildInfo('active_step', $step);
-    $form_state->addBuildInfo('pipeline', $this->pipeline);
+    $form_state->addBuildInfo('active_step', $step->getPluginId());
+    $form_state->addBuildInfo('pipeline', $this->pipeline->getPluginId());
     $form_state->addBuildInfo('data', $data);
     $this->response = $this->formBuilder->buildForm(RdfEtlOrchestratorForm::class, $form_state);
     return $form_state->getBuildInfo()['data'];
@@ -269,9 +269,9 @@ class RdfEtlOrchestrator implements RdfEtlOrchestratorInterface {
    *   The next state.
    */
   protected function getNextState(RdfEtlState $state): RdfEtlState {
-    $this->pipeline->stepDefinitionList()->seek($state->sequence());
-    $this->pipeline->stepDefinitionList()->next();
-    $sequence = $this->pipeline->stepDefinitionList()->valid() ? $this->pipeline->stepDefinitionList()->key() : static::FINAL_STEP;
+    $this->pipeline->getStepList()->seek($state->sequence());
+    $this->pipeline->getStepList()->next();
+    $sequence = $this->pipeline->getStepList()->valid() ? $this->pipeline->getStepList()->key() : static::FINAL_STEP;
     return new RdfEtlState($state->getPipelineId(), $sequence);
   }
 

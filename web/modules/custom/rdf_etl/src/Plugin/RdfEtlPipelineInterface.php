@@ -18,7 +18,7 @@ interface RdfEtlPipelineInterface extends PluginInspectionInterface {
    * @return \Drupal\rdf_etl\RdfEtlStepList
    *   The sequence definition.
    */
-  public function stepDefinitionList(): RdfEtlStepList;
+  public function getStepList(): RdfEtlStepList;
 
   /**
    * Returns an individual step definition.

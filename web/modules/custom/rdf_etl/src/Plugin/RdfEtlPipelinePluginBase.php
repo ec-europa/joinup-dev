@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rdf_etl\RdfEtlStepList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,12 +15,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipelineInterface, ContainerFactoryPluginInterface {
 
+  use DependencySerializationTrait;
+
   /**
    * The execution order of the pipeline.
    *
    * @var \Drupal\rdf_etl\RdfEtlStepList
    */
-  public $steps;
+  protected $steps;
+
+  /**
+   * The step plugin manager service.
+   *
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager
+   */
+  protected $stepPluginManager;
 
   /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
@@ -35,13 +45,7 @@ abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipe
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, RdfEtlStepPluginManager $step_plugin_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->steps = new RdfEtlStepList();
-    foreach ($this->getPluginDefinition()['steps'] as $step_plugin_id) {
-      if (!$step_plugin_manager->hasDefinition($step_plugin_id)) {
-        throw new \InvalidArgumentException("Invalid step plugin '$step_plugin_id'.");
-      }
-      $this->steps->add($step_plugin_id);
-    }
+    $this->stepPluginManager = $step_plugin_manager;
   }
 
   /**
@@ -59,7 +63,19 @@ abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipe
   /**
    * {@inheritdoc}
    */
-  public function stepDefinitionList(): RdfEtlStepList {
+  public function getStepList(): RdfEtlStepList {
+    if (!isset($this->steps)) {
+      $this->steps = new RdfEtlStepList();
+      foreach ($this->getPluginDefinition()['steps'] as $step_plugin_id) {
+        if (!\Drupal::service('plugin.manager.rdf_etl_step')->hasDefinition($step_plugin_id)) {
+          throw new \InvalidArgumentException("Invalid step plugin '$step_plugin_id'.");
+        }
+        $this->steps->add($step_plugin_id);
+      }
+      if (!iterator_count($this->steps)) {
+        throw new \InvalidArgumentException("Pipeline '{$this->getPluginId()}' has no valid steps.");
+      }
+    }
     return $this->steps;
   }
 
@@ -67,14 +83,14 @@ abstract class RdfEtlPipelinePluginBase extends PluginBase implements RdfEtlPipe
    * {@inheritdoc}
    */
   public function getStepPluginId(int $sequence): string {
-    return $this->steps->get($sequence);
+    return $this->getStepList()->get($sequence);
   }
 
   /**
    * {@inheritdoc}
    */
   public function setActiveStep(int $sequence): void {
-    $this->steps->seek($sequence);
+    $this->getStepList()->seek($sequence);
   }
 
 }

@@ -102,6 +102,7 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
   public function testRun() {
     $container = new ContainerBuilder();
     $container->set('string_translation', $this->getStringTranslationStub());
+    $container->set('plugin.manager.rdf_etl_step', $this->stepPluginManager->reveal());
     \Drupal::setContainer($container);
 
     $state = new RdfEtlState('demo_pipe', 0);
