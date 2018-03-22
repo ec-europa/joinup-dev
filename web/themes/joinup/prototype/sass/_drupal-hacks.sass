@@ -1,13 +1,6 @@
 .draggable
-  a.tabledrag-handle
-    float: none
-    height: auto
-    margin-left: 0
   .field-multiple-drag
     width: 25px
-  .handle,
-  .indentation
-    display: none
 
 .tabledrag-toggle-weight-wrapper
   display: none
@@ -15,7 +8,8 @@
 // @todo Remove this hack as part of ISAICP-3021.
 // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
 .joinup-nodrag
-  a.tabledrag-handle
+  a.tabledrag-handle,
+  .field-multiple-drag
     display: none !important
 
 #edit-field-ar-owner-actions.container-inline
