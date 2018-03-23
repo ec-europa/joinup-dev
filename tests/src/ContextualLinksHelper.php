@@ -105,8 +105,7 @@ class ContextualLinksHelper {
     /** @var \Symfony\Component\BrowserKit\Client $client */
     $client = clone $this->getSession()->getDriver()->getClient();
 
-    $contextual_ids = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
+    $contextual_ids = array_map(function (NodeElement $element): string {
       return $element->getAttribute('data-contextual-id');
     }, $element->findAll('xpath', '//*[@data-contextual-id]'));
 
@@ -211,7 +210,7 @@ class ContextualLinksHelper {
 
     // Wait until the contextual module JavaScript is executed. Markup will be
     // appended upon completion.
-    $contextual_button = $this->waitUntil(function () use ($element) {
+    $contextual_button = $this->waitUntil(function () use ($element): ?NodeElement {
       return $element->find('css', '.contextual > button.trigger');
     });
 

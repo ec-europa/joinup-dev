@@ -83,9 +83,8 @@ trait ContextualLinksTrait {
     // Check if the wrapper for the contextual links is present on the page.
     // Since the button is appended by the contextual.js script, we might need
     // to wait a bit before the button itself is visible.
-    $button = $element->waitFor(5, function ($object) {
-      /** @var \Behat\Mink\Element\NodeElement $object */
-      return $object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
+    $button = $element->waitFor(5, function (NodeElement $element): ?NodeElement {
+      return $element->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
     });
 
     if (!$button) {
