@@ -31,32 +31,6 @@ Feature: Featuring content site-wide
       | Ionizing radiation types            | Tidy Neutron | validated | no       |
       | Elementary particles standard model | Tidy Neutron | validated | yes      |
 
-    When I am an anonymous user
-    And I go to the homepage of the "Tidy Neutron" collection
-    Then I should see the following tiles in the correct order:
-      | Opensource neutron generators       |
-      | Ionizing radiation types            |
-      | Elementary particles standard model |
-    And I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Feature" in the "Elementary particles standard model" tile
-    And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
-
-    When I am logged in as an "authenticated user"
-    And I go to the homepage of the "Tidy Neutron" collection
-    Then I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Feature" in the "Elementary particles standard model" tile
-    And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
-
-    # Facilitators cannot use the global featured functionality.
-    When I am logged in as "Niles Turner"
-    And I go to the homepage of the "Tidy Neutron" collection
-    Then I should not see the contextual link "Feature" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Feature" in the "Elementary particles standard model" tile
-    And I should not see the contextual link "Remove from featured" in the "Ionizing radiation types" tile
-    And I should not see the contextual link "Remove from featured" in the "Elementary particles standard model" tile
-
     When I am logged in as a moderator
     # Wait for contextual links to be generated. There is a session race condition that happens when a contextual link
     # has a CSRF token. The session will store the seed if not yet present, but if a new request is made before the
