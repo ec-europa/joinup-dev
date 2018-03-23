@@ -1,0 +1,12 @@
+diff --git a/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php b/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
+index 19272abecb..5a184b0b75 100644
+--- a/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
++++ b/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
+@@ -43,6 +43,7 @@ public function registerService($id) {
+    *   The event object.
+    */
+   public function onKernelTerminate(PostResponseEvent $event) {
++    drupal_set_message(implode(' ', $this->services));
+     foreach ($this->services as $id) {
+       // Check if the service was initialized during this request, destruction
+       // is not necessary if the service was not used.

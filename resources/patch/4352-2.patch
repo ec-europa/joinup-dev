@@ -8,7 +8,7 @@ index e5bf880aef..937aad4459 100644
      }
 +    foreach ($entities as $entity) {
 +      if ($entity->label() == 'Ionizing radiation types') {
-+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
++        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 +        array_shift($backtrace);
 +        $backtrace = array_map(function ($value) {
 +          return (!empty($value['file']) ? substr($value['file'], -50) : 'no file') . ':' . (!empty($value['line']) ? $value['line'] : 'no line');
