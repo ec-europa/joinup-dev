@@ -1,12 +1,34 @@
+diff --git a/core/includes/bootstrap.inc b/core/includes/bootstrap.inc
+index e4abd3ed12..764c049ac6 100644
+--- a/core/includes/bootstrap.inc
++++ b/core/includes/bootstrap.inc
+@@ -522,6 +522,7 @@ function drupal_set_message($message = NULL, $type = 'status', $repeat = FALSE)
+ function drupal_get_messages($type = NULL, $clear_queue = TRUE) {
+   @trigger_error('drupal_get_message() is deprecated in Drupal 8.5.0 and will be removed before Drupal 9.0.0. Use \Drupal\Core\Messenger\MessengerInterface::all() or \Drupal\Core\Messenger\MessengerInterface::messagesByType() instead. See https://www.drupal.org/node/2774931', E_USER_DEPRECATED);
+   $messenger = \Drupal::messenger();
++  $data = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt');
+   if ($messages = $messenger->all()) {
+     if ($type) {
+       if ($clear_queue) {
+@@ -535,6 +536,7 @@ function drupal_get_messages($type = NULL, $clear_queue = TRUE) {
+       if ($clear_queue) {
+         $messenger->deleteAll();
+       }
++      if (!empty($data)) $messages['status'][] = $data;
+       return $messages;
+     }
+   }
 diff --git a/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php b/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
-index 19272abecb..5a184b0b75 100644
+index 19272abecb..79bf576258 100644
 --- a/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
 +++ b/core/lib/Drupal/Core/EventSubscriber/KernelDestructionSubscriber.php
-@@ -43,6 +43,7 @@ public function registerService($id) {
+@@ -43,6 +43,9 @@ public function registerService($id) {
     *   The event object.
     */
    public function onKernelTerminate(PostResponseEvent $event) {
-+    drupal_set_message(implode(' ', $this->services));
++    global $lalalala_testing;
++    $data = $lalalala_testing ? $lalalala_testing . ', ' . implode(', ', $this->services) : '';
++    file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt', $data);
      foreach ($this->services as $id) {
        // Check if the service was initialized during this request, destruction
        // is not necessary if the service was not used.
