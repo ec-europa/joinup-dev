@@ -1,0 +1,27 @@
+diff --git a/src/Entity/Index.php b/src/Entity/Index.php
+index e0eab54d..fad68163 100644
+--- a/src/Entity/Index.php
++++ b/src/Entity/Index.php
+@@ -1055,6 +1055,8 @@ class Index extends ConfigEntityBase implements IndexInterface {
+    *   "trackItemsUpdated".
+    */
+   protected function trackItemsInsertedOrUpdated($datasource_id, array $ids, $tracker_method) {
++    global $lalalala_testing;
++    $data = __METHOD__ . ' hasValidTracker: ' . (string) (int) $this->hasValidTracker() . ' status: ' . (string) (int) $this->status();
+     if ($this->hasValidTracker() && $this->status()) {
+       $item_ids = [];
+       foreach ($ids as $id) {
+@@ -1062,10 +1064,13 @@ class Index extends ConfigEntityBase implements IndexInterface {
+       }
+       $this->getTrackerInstance()->$tracker_method($item_ids);
+       if (!$this->isReadOnly() && $this->getOption('index_directly') && !$this->batchTracking) {
++        $data .= ' registering: ' . implode(', ', $item_ids);
+         \Drupal::getContainer()->get('search_api.post_request_indexing')
+           ->registerIndexingOperation($this->id(), $item_ids);
+       }
+     }
++    $data = $lalalala_testing ? $lalalala_testing . $data : '';
++    file_put_contents(DRUPAL_ROOT . '/test.txt', $data);
+   }
+ 
+   /**
