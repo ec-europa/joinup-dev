@@ -218,12 +218,20 @@ Feature: Sharing content between collections
 
   @javascript
   Scenario Outline: The sharing options should be shown in a modal window.
-    Given collection:
-      | title | Secrets   |
-      | state | validated |
-    Given <content type> content:
+    Given collections:
+      | title   | state     |
+      | Secrets | validated |
+      | Gossip  | validated |
+    And <content type> content:
       | title                 | collection | state     |
       | An unshareable secret | Secrets    | validated |
+    And users:
+      | Username        | E-mail                |
+      | Sanjica Sauvage | sanjisauv@example.com |
+    And the following collection user memberships:
+      | collection   | user            |
+      | Secrets      | Sanjica Sauvage |
+      | Gossip       | Sanjica Sauvage |
     And I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "An unshareable secret"
     And I click "Share"
@@ -233,6 +241,25 @@ Feature: Sharing content between collections
       | Twitter  |
       | Google + |
       | Linkedin |
+
+    # Check that the collection the content is shared in is immediately shown in the "Shared in" tiles.
+    Given I am logged in as "Sanjica Sauvage"
+    When I go to the content page of the type "<content type>" with the title "An unshareable secret"
+    And I click "Share"
+    Then a modal should open
+    And I should see the following lines of text:
+      | Share in                    |
+      | Facebook                    |
+      | Twitter                     |
+      | Google +                    |
+      | Linkedin                    |
+      | Other collections in Joinup |
+    When I check "Gossip"
+    And I press "Share" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should see the success message "Sharing updated."
+    And I should see the heading "Shared in"
+    And I should see the "Gossip" tile
 
     Examples:
       | content type |
