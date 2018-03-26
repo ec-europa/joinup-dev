@@ -72,3 +72,11 @@ joinup_core.admin_reporting:
     _title: 'Reporting'
   requirements:
     _permission: 'access joinup reports'
+
+joinup_core.transfer_group_ownership_confirm:
+  path: '/group/transfer/ownership'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm'
+    _title: Transfer
+  requirements:
+    _custom_access: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm::access'
