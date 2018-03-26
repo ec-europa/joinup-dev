@@ -94,17 +94,6 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $this->piwikQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
     $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
 
-    $piwik_config = $this->configFactory->get('piwik.settings');
-    $piwik_reporting_api_config = $this->configFactory->get('piwik_reporting_api.settings');
-    $site_id = $piwik_config->get('site_id');
-    $token_auth = $piwik_reporting_api_config->get('token_auth');
-
-    $sub_params = [
-      'module' => 'API',
-      'idSite' => $site_id,
-      'token_auth' => $token_auth,
-    ];
-
     foreach ($items as $index => $item) {
       if (!$entity = $this->getEntity($item)) {
         continue;
@@ -116,8 +105,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         continue;
       }
 
-      $query_params = $this->getSubqueryParams($entity, $sub_params);
-      $query->setParameter('urls[' . $index . ']', http_build_query($query_params));
+      $query->setParameter('urls[' . $index . ']', http_build_query($this->getSubQueryParameters($entity)));
     }
 
     try {
@@ -129,6 +117,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     }
 
     foreach ($items as $index => $expired_item) {
+      $bundle = $this->getEntity($expired_item)->bundle();
+      $type = $this->getType($bundle);
       $response_item = $response[$index];
       $count = 0;
       foreach ($response_item as $year => $result) {
@@ -328,7 +318,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   }
 
   /**
-   * Builds a list of parameters for a query.
+   * Builds a list of parameters for a sub query.
+   *
+   * This method gathers all information needed for each sub query separately.
+   * All the default parameters, e.g. the authentication token and the site id,
+   * are set automatically by generating a new query each time.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity with the expired field.
@@ -338,7 +332,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return array
    *   A list of parameters.
    */
-  protected function getSubqueryParams(EntityInterface $entity, array $parameters = []): array {
+  protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): array {
     $bundle = $entity->bundle();
     $period = $this->getTimePeriod($bundle);
     $type = $this->getType($bundle);
@@ -346,6 +340,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $url_parameter_name = $this->getUrlParameterName($bundle);
     $url_parameter = $this->getUrlParameter($entity);
 
+    $sub_query = $this->piwikQueryFactory->getQuery($method);
     $date_range = [
       // If the period is 0 we should get all results since launch.
       $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
@@ -357,7 +352,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $parameters['method'] = $method;
     $parameters['showColumns'] = $type;
     $parameters[$url_parameter_name] = $url_parameter;
-    return $parameters;
+    // Default settings for current requests.
+    $parameters['format'] = 'json';
+    $parameters['module'] = 'API';
+    // We are setting and retrieving the parameters in order to also get the
+    // default parameters that the query comes with.
+    $sub_query->setParameters($parameters);
+    return $sub_query->getParameters();
   }
 
 }
