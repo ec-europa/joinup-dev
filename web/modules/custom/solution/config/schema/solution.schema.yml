@@ -14,7 +14,3 @@ solution.settings:
           sequence:
             type: string
             label: 'Role'
-
-action.configuration.joinup_transfer_group_ownership:
-  type: action_configuration_default
-  label: 'Transfer the ownership of the solution to the selected member'
