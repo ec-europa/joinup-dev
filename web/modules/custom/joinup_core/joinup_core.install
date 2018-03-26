@@ -60,3 +60,11 @@ function joinup_core_requirements($phase) {
 function joinup_core_update_8100(&$sandbox) {
   \Drupal::service('module_installer')->install(['config_sync']);
 }
+
+/**
+ * Delete the queue of the cached_computed_field module.
+ */
+function joinup_core_update_8101() {
+  $queue = \Drupal::queue('cached_computed_field_expired_fields', FALSE);
+  $queue->deleteQueue();
+}
