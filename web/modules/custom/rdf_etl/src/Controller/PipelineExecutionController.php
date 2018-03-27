@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\rdf_etl\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\rdf_etl\RdfEtlOrchestratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\rdf_etl\EtlOrchestrator;
 
 /**
  * Class PipelineExecutionController.
@@ -16,37 +16,40 @@ class PipelineExecutionController extends ControllerBase {
   /**
    * Drupal\rdf_etl\EtlOrchestrator definition.
    *
-   * @var \Drupal\rdf_etl\EtlOrchestrator
+   * @var \Drupal\rdf_etl\RdfEtlOrchestratorInterface
    */
-  protected $rdfEtlOrchestrator;
+  protected $orchestrator;
 
   /**
    * Constructs a new PipelineExecutionController object.
    *
-   * @param \Drupal\rdf_etl\EtlOrchestrator $rdf_etl_orchestrator
+   * @param \Drupal\rdf_etl\RdfEtlOrchestratorInterface $rdf_etl_orchestrator
    *   The Etl orchestrator.
    */
-  public function __construct(EtlOrchestrator $rdf_etl_orchestrator) {
-    $this->rdfEtlOrchestrator = $rdf_etl_orchestrator;
+  public function __construct(RdfEtlOrchestratorInterface $rdf_etl_orchestrator) {
+    $this->orchestrator = $rdf_etl_orchestrator;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): PipelineExecutionController {
     return new static(
       $container->get('rdf_etl.orchestrator')
     );
   }
 
   /**
-   * Execution.
+   * Executes the pipeline passed by the route.
+   *
+   * @param string $pipeline
+   *   The pipeline to be executed.
    *
    * @return array
    *   Render array.
    */
-  public function execution() {
-    return $this->rdfEtlOrchestrator->run();
+  public function execution(string $pipeline) {
+    return $this->orchestrator->run($pipeline);
   }
 
   /**
@@ -58,20 +61,8 @@ class PipelineExecutionController extends ControllerBase {
    *   The render array.
    */
   public function reset(): array {
-    $this->rdfEtlOrchestrator->reset();
+    $this->orchestrator->reset();
     return ['#markup' => 'Orchestrator reset.'];
-  }
-
-  /**
-   * Build the page title for the orchestrator.
-   *
-   * @return string
-   *   The orchestrator title.
-   */
-  public function getTitle() {
-    $pipeline = $this->rdfEtlOrchestrator->getActivePipelineLabel();
-    $step = $this->rdfEtlOrchestrator->getActiveStepLabel();
-    return $pipeline->render() . ' - ' . $step->render();
   }
 
 }

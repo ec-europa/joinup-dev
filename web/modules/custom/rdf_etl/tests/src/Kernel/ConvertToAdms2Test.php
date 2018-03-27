@@ -6,7 +6,7 @@ namespace Drupal\Tests\rdf_etl\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface;
+use Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassInterface;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use EasyRdf\Graph;
 
@@ -23,7 +23,7 @@ class ConvertToAdms2Test extends KernelTestBase {
   /**
    * The  ADMS v1 to v2 transformation plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassPluginManager
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassPluginManager
    */
   protected $adms2ConverPassPluginManager;
 
@@ -42,13 +42,13 @@ class ConvertToAdms2Test extends KernelTestBase {
     parent::setUp();
     $this->setUpSparql();
 
-    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.etl_adms2_convert_pass');
-    $graph_uri = EtlAdms2ConvertPassInterface::TEST_GRAPH;
+    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.rdf_etl_adms2_convert_pass');
+    $graph_uri = RdfEtlAdms2ConvertPassInterface::TEST_GRAPH;
 
     $rdf_data = '';
     // Collect RDF testing data from plugins.
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
-      /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */
+      /** @var \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassInterface $plugin */
       $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
       if ($plugin_rdf_data = $plugin->getTestingRdfData()) {
         $rdf_data .= "$plugin_rdf_data\n";
@@ -66,10 +66,10 @@ class ConvertToAdms2Test extends KernelTestBase {
    * Test ADMSv2 changes.
    */
   public function test() {
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
-    $manager = $this->container->get('plugin.manager.etl_process_step');
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepInterface $plugin */
-    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => EtlAdms2ConvertPassInterface::TEST_GRAPH]);
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $manager */
+    $manager = $this->container->get('plugin.manager.rdf_etl_step');
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepInterface $plugin */
+    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => RdfEtlAdms2ConvertPassInterface::TEST_GRAPH]);
 
     // Run updates.
     $data = [];
@@ -77,7 +77,7 @@ class ConvertToAdms2Test extends KernelTestBase {
 
     // Execute assertions.
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
-      /** @var \Drupal\rdf_etl\Plugin\EtlAdms2ConvertPassInterface $plugin */
+      /** @var \Drupal\rdf_etl\Plugin\RdfEtlAdms2ConvertPassInterface $plugin */
       $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
       $plugin->performAssertions($this);
     }
@@ -87,7 +87,7 @@ class ConvertToAdms2Test extends KernelTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    $this->sparql->query("CLEAR GRAPH <" . EtlAdms2ConvertPassInterface::TEST_GRAPH . ">;");
+    $this->sparql->query("CLEAR GRAPH <" . RdfEtlAdms2ConvertPassInterface::TEST_GRAPH . ">;");
     parent::tearDown();
   }
 

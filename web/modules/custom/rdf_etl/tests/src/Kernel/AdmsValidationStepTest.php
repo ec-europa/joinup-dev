@@ -57,8 +57,8 @@ class AdmsValidationStepTest extends KernelTestBase {
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
-    /** @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager $manager */
-    $manager = \Drupal::service('plugin.manager.etl_process_step');
+    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $manager */
+    $manager = \Drupal::service('plugin.manager.rdf_etl_step');
     $data = ['sink_graph' => static::TEST_GRAPH];
     $plugin = $manager->createInstance('adms_validation', $data);
 
@@ -67,15 +67,15 @@ class AdmsValidationStepTest extends KernelTestBase {
     $this->createGraphStore()->replace($graph, static::TEST_GRAPH);
 
     // Execute the validation step.
-    $plugin->execute($data);
+    $result = $plugin->execute($data);
 
     if ($expected_valid) {
       // Check that no error was detected during validation.
-      $this->assertArrayNotHasKey('error', $data);
+      $this->assertEmpty($result);
     }
     else {
       // Check that errors were detected during validation.
-      $this->assertArrayHasKey('error', $data);
+      $this->assertNotEmpty($result);
     }
   }
 
