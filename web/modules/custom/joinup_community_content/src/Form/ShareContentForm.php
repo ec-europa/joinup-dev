@@ -3,7 +3,7 @@
 namespace Drupal\joinup_community_content\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -142,7 +142,7 @@ class ShareContentForm extends ShareContentFormBase {
     }
 
     // Show a message if the content was shared in at least one collection.
-    if (!$this->isAjaxForm() && !empty($collections)) {
+    if (!empty($collections)) {
       drupal_set_message('Sharing updated.');
     }
 
@@ -162,7 +162,7 @@ class ShareContentForm extends ShareContentFormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
-    $response->addCommand(new CloseModalDialogCommand());
+    $response->addCommand(new RedirectCommand((string) $this->node->toUrl()->toString()));
 
     return $response;
   }
