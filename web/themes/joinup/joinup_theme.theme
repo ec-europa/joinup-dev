@@ -1418,21 +1418,6 @@ function joinup_theme_preprocess_node(&$variables) {
   if ($node->bundle() == 'news') {
     $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   }
-
-  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
-    return;
-  }
-
-  /** @var \Drupal\file\FileInterface $file */
-  $file = $node->get('field_file')->first()->entity;
-  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
-
-  if (!$is_remote) {
-    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-  }
-  else {
-    $variables['extension'] = t('External');
-  }
 }
 
 /**

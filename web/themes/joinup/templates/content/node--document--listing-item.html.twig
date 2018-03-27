@@ -76,11 +76,6 @@
   ]
 %}
 <div {{ attributes.addClass(classes) }}>
-  {% if view_mode == 'view_mode_featured' %}
-    <div class="listing__image listing__image--default">
-      <span class="icon icon--mime-{{ extension }}"></span>
-    </div>
-  {% endif %}
   <div class="listing__metadata">
     <div class="listing__field">
       {{ title_prefix }}
