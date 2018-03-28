@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e7a16ca9a7398619027627dca24e744",
+    "content-hash": "f7cd07b094242b471b8f9a002697dd28",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5360,19 +5360,18 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "master"
+                "reference": "1.0.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Virtuoso\\": "src"
                 }
-            },
-            "time": "2018-02-26T09:58:25+00:00"
+            }
         },
         {
             "name": "egulias/email-validator",
@@ -12208,7 +12207,6 @@
         "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
-        "ec-europa/virtuoso": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
