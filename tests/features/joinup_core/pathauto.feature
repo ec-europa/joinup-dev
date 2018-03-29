@@ -54,4 +54,4 @@ Feature:
     When I visit the "Pathauto news" news
     Then the url should match "news/pathauto-news"
     When I visit the "Pathauto page" custom page
-    Then the url should match "page/pathauto-page"
+    Then the url should match "collection/pathauto-collection/pathauto-page"
