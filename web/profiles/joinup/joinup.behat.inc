@@ -1106,7 +1106,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertContextualLinkPresentInTile($links, $heading) {
     $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $found_links = array_keys($this->findContextualLinksInElement($element));
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
     $not_found = array_diff($links, $found_links);
     if (!empty($not_found)) {
@@ -1130,7 +1130,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertContextualLinkNotPresentInTile($links, $heading) {
     $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $found_links = array_keys($this->findContextualLinksInElement($element));
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
     $found = array_intersect($found_links, $links);
     if (!empty($found)) {
@@ -1155,13 +1155,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function iClickTheContextualLinkInTile($link, $heading) {
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
-
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$link]));
+    $this->clickContextualLink($element, $link);
   }
 
   /**

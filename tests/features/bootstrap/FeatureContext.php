@@ -542,13 +542,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I click the contextual link :text in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
-
-    if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Could not find a contextual link %s in the region %s. Available: %s', $text, $region, implode(', ', $links)));
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$text]));
+    $this->clickContextualLink($this->getRegion($region), $text);
   }
 
   /**
@@ -565,7 +559,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
       throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -586,7 +580,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )not see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionNotPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -648,8 +642,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual links button in the :region( region)
    * @Then the contextual links button should be visible in the :region( region)
    */
-  public function assertContextualLinkButtonVisible($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function assertContextualLinkButtonVisible(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $this->assertVisuallyVisible($button);
   }
 
@@ -661,8 +655,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I click the contextual links button in the :region( region)
    */
-  public function clickContextualLinkButton($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function clickContextualLinkButton(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $button->click();
   }
 
