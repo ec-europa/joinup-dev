@@ -214,6 +214,7 @@ class ScreenshotContext extends RawMinkContext {
 
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
+    $this->upload(file_get_contents(DRUPAL_ROOT . '/test.txt'), 'test-debug.txt');
 
     if ($message) {
       print strtr($message, ['@file_name' => $path ?: $file_name]);
