@@ -1,4 +1,0 @@
-rdf_etl.pipeline_select:
-  title: 'Execute ETL data pipeline'
-  route_name: rdf_etl.pipeline_select
-  parent: system.admin_content
