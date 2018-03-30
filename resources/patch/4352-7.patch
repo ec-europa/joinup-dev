@@ -1,0 +1,12 @@
+diff --git a/core/lib/Drupal/Core/Render/MainContent/HtmlRenderer.php b/core/lib/Drupal/Core/Render/MainContent/HtmlRenderer.php
+index 5966668af3..5a29173096 100644
+--- a/core/lib/Drupal/Core/Render/MainContent/HtmlRenderer.php
++++ b/core/lib/Drupal/Core/Render/MainContent/HtmlRenderer.php
+@@ -230,6 +230,7 @@ class HtmlRenderer implements MainContentRendererInterface {
+         ];
+       }
+ 
++      file_put_contents(DRUPAL_ROOT . '/test.txt', json_encode($main_content['#cache']) . "\n", FILE_APPEND);
+       $title = $get_title($main_content);
+ 
+       // Instantiate the page display, and give it the main content.
