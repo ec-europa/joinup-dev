@@ -1,0 +1,48 @@
+diff --git a/src/Plugin/views/cache/SearchApiCachePluginTrait.php b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
+index 9f6e7100..ea8feda3 100644
+--- a/src/Plugin/views/cache/SearchApiCachePluginTrait.php
++++ b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
+@@ -4,6 +4,7 @@ namespace Drupal\search_api\Plugin\views\cache;
+ 
+ use Drupal\Component\Utility\Crypt;
+ use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\CacheableMetadata;
+ use Drupal\Core\Cache\CacheBackendInterface;
+ use Drupal\Core\Cache\Context\CacheContextsManager;
+ use Drupal\search_api\Plugin\views\query\SearchApiQuery;
+@@ -140,8 +141,10 @@ trait SearchApiCachePluginTrait {
+ 
+     // Values to set: $view->result, $view->total_rows, $view->execute_time,
+     // $view->current_page.
++    file_put_contents(DRUPAL_ROOT . '/test.txt', $this->generateResultsKey() . "\n", FILE_APPEND);
+     if ($cache = $this->getCacheBackend()->get($this->generateResultsKey())) {
+       $cutoff = $this->cacheExpire($type);
++      file_put_contents(DRUPAL_ROOT . '/test.txt', "$cutoff - {$cache->created}" . "\n", FILE_APPEND);
+       if (!$cutoff || $cache->created > $cutoff) {
+         $view = $this->getView();
+         $view->result = $cache->data['result'];
+@@ -165,6 +168,7 @@ trait SearchApiCachePluginTrait {
+         return TRUE;
+       }
+     }
++    file_put_contents(DRUPAL_ROOT . '/test.txt', 'cache not found' . "\n", FILE_APPEND);
+     return FALSE;
+   }
+ 
+@@ -228,4 +232,16 @@ trait SearchApiCachePluginTrait {
+     throw new SearchApiException('No matching Search API Views query found in view.');
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function alterCacheMetadata(CacheableMetadata $cache_metadata) {
++    // When additional access checks are executed, the cache has to vary
++    // by user.
++    $query_options = $this->displayHandler->getOption('query');
++    if (isset($query_options['options']['skip_access']) && $query_options['options']['skip_access'] === FALSE) {
++      $cache_metadata->addCacheContexts(['user']);
++    }
++  }
++
+ }

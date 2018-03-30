@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "196bdff9b28c88ce6af0021917ac5f41",
+    "content-hash": "3024a82795f39cce38b2ebeb1f8906a5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4241,8 +4241,7 @@
                 "source": "http://git.drupal.org/project/search_api.git",
                 "issues": "https://www.drupal.org/project/issues/search_api",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
-            },
-            "time": "2018-02-23T11:58:50+00:00"
+            }
         },
         {
             "name": "drupal/search_api_solr",
