@@ -217,6 +217,7 @@ class ScreenshotContext extends RawMinkContext {
 
     if ($message) {
       print strtr($message, ['@file_name' => $path ?: $file_name]);
+      print file_get_contents(DRUPAL_ROOT . '/test.txt');
       // Depending on the output formatter used, Behat will suppress any output
       // generated during the test. Flush the output buffers so out message will
       // show up in the test logs.

@@ -199,6 +199,9 @@
                 "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch",
                 "Index items only at end of page request @see https://www.drupal.org/project/search_api/issues/2922525": "https://www.drupal.org/files/issues/2922525-10--index_delayed_at_shutdown--refactoring_followup.patch"
             },
+            "drupal/search_api_solr": {
+                "4352-3": "resources/patch/4352-6.patch"
+            },
             "drupal/simplenews": {
                 "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
             },

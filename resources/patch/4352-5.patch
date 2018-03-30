@@ -21,7 +21,7 @@ index e0eab54d..fad68163 100644
        }
      }
 +    $data = $lalalala_testing ? $lalalala_testing . $data : '';
-+    file_put_contents(DRUPAL_ROOT . '/test.txt', $data);
++    file_put_contents(DRUPAL_ROOT . '/test.txt', $data . "\n", FILE_APPEND);
    }
  
    /**

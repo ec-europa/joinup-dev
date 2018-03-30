@@ -28,7 +28,7 @@ index 19272abecb..79bf576258 100644
    public function onKernelTerminate(PostResponseEvent $event) {
 +    global $lalalala_testing;
 +    $data = $lalalala_testing ? $lalalala_testing . ', ' . implode(', ', $this->services) : '';
-+    // file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt', $data);
++    // file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt', $data . "\n", FILE_APPEND);
      foreach ($this->services as $id) {
        // Check if the service was initialized during this request, destruction
        // is not necessary if the service was not used.
