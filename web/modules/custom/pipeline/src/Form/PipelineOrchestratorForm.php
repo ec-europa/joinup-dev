@@ -184,10 +184,10 @@ class PipelineOrchestratorForm extends FormBase {
    */
   protected function getCurrentStep(FormStateInterface $form_state) {
     if (!isset($this->currentStep)) {
-      if (!isset($form_state->getBuildInfo()['active_step'])) {
+      if (!isset($form_state->getBuildInfo()['step'])) {
         throw new \RuntimeException('No active pipeline step.');
       }
-      $step_plugin_id = $form_state->getBuildInfo()['active_step'];
+      $step_plugin_id = $form_state->getBuildInfo()['step'];
       $this->currentStep = $this->stepPluginManager->createInstance($step_plugin_id);
     }
     return $this->currentStep;

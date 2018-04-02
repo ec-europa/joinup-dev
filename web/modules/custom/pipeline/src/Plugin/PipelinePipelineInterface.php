@@ -7,38 +7,24 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 /**
  * Defines an interface for pipeline plugins.
  */
-interface PipelinePipelineInterface extends PluginInspectionInterface {
+interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator {
+
+  /**
+   * Sets steps iterator pointer to a given step.
+   *
+   * @param string $step_plugin_id
+   *   The step plugin ID.
+   */
+  public function setCurrent($step_plugin_id);
 
   /**
    * Runs specific code after the pipeline is executed with success.
    */
-  public function onAfterPipelineExecute();
+  public function onSuccess();
 
   /**
-   * Gets the sequence in which the data processing steps should be performed.
-   *
-   * @return \Drupal\pipeline\PipelineStepList
-   *   The sequence definition.
+   * Runs specific code after the pipeline exits with error.
    */
-  public function getStepList();
-
-  /**
-   * Returns an individual step definition.
-   *
-   * @param int $sequence
-   *   The offset in the list.
-   *
-   * @return string
-   *   The step definition.
-   */
-  public function getStepPluginId($sequence);
-
-  /**
-   * Sets step-iterator to the given position.
-   *
-   * @param int $sequence
-   *   The position in the flow.
-   */
-  public function setActiveStep($sequence);
+  public function onError();
 
 }

@@ -16,12 +16,10 @@ interface PipelineOrchestratorInterface {
    * @return mixed
    *   The response.
    */
-  public function run(string $pipeline);
+  public function run($pipeline);
 
   /**
-   * Controller callback: Reset the state machine.
-   *
-   * Should not be used, unless something went really bad.
+   * Resets the state machine.
    */
   public function reset();
 

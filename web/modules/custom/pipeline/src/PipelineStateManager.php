@@ -17,11 +17,11 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   protected $state;
 
   /**
-   * The offset of the active step.
+   * The active step.
    *
-   * @var int
+   * @var string
    */
-  protected $sequence;
+  protected $step;
 
   /**
    * The pipeline plugin id.
@@ -35,15 +35,15 @@ class PipelineStateManager implements PipelineStateManagerInterface {
    */
   public function __construct(StateInterface $state) {
     $this->state = $state;
-    $this->pipeline = $this->state->get('pipeline.active_pipeline');
-    $this->sequence = $this->state->get('pipeline.active_pipeline_sequence');
+    $this->pipeline = $this->state->get('pipeline.pipeline');
+    $this->step = $this->state->get('pipeline.sequence');
   }
 
   /**
    * {@inheritdoc}
    */
   public function isPersisted() {
-    return isset($this->pipeline) && isset($this->sequence);
+    return isset($this->pipeline) && isset($this->step);
   }
 
   /**
@@ -51,27 +51,27 @@ class PipelineStateManager implements PipelineStateManagerInterface {
    */
   public function setState(PipelineState $state) {
     $this->pipeline = $state->getPipelineId();
-    $this->state->set('pipeline.active_pipeline', $this->pipeline);
-    $this->sequence = $state->sequence();
-    $this->state->set('pipeline.active_pipeline_sequence', $this->sequence);
+    $this->state->set('pipeline.pipeline', $this->pipeline);
+    $this->step = $state->getStep();
+    $this->state->set('pipeline.sequence', $this->step);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function state() {
-    return new PipelineState($this->pipeline, $this->sequence);
+  public function getState() {
+    return new PipelineState($this->pipeline, $this->step);
   }
 
   /**
    * {@inheritdoc}
    */
   public function reset() {
-    $this->state->delete('pipeline.active_pipeline_sequence');
-    $this->state->delete('pipeline.active_pipeline');
+    $this->state->delete('pipeline.sequence');
+    $this->state->delete('pipeline.pipeline');
     $this->pipeline = NULL;
-    $this->sequence = NULL;
+    $this->step = NULL;
     return $this;
   }
 

@@ -29,6 +29,14 @@ interface PipelineStepInterface extends PluginInspectionInterface, ConfigurableP
    * This method should be used to perform cleanup for objects, storage entries
    * created by this step but required for the rest of the pipeline.
    */
-  public function onAfterPipelineExecute();
+  public function onPipelineSuccess();
+
+  /**
+   * Allows this step to react when the pipeline execution end with error.
+   *
+   * This method should be used to perform cleanup for objects, storage entries
+   * created by this step but required for the rest of the pipeline.
+   */
+  public function onPipelineError();
 
 }

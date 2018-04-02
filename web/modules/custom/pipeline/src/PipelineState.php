@@ -15,37 +15,37 @@ class PipelineState {
   protected $pipeline;
 
   /**
-   * The state sequence.
+   * The pipeline step.
    *
-   * @var int
+   * @var string|null
    */
-  protected $sequence;
+  protected $step;
 
   /**
    * Creates a new state object.
    *
    * @param string $pipeline
    *   The pipeline plugin id.
-   * @param int $sequence
-   *   The sequence of the pipeline.
+   * @param int $step_plugin_id
+   *   The step of the pipeline.
    */
-  public function __construct(string $pipeline, int $sequence) {
+  public function __construct($pipeline, $step_plugin_id) {
     $this->pipeline = $pipeline;
-    $this->sequence = $sequence;
+    $this->step = $step_plugin_id;
   }
 
   /**
-   * Returns the persisted position within the pipeline.
+   * Returns the persisted step within the pipeline.
    *
-   * @return int
-   *   The current position of within the pipeline.
+   * @return string|null
+   *   The current step within the pipeline.
    */
-  public function sequence() {
-    return (int) $this->sequence;
+  public function getStep() {
+    return $this->step;
   }
 
   /**
-   * Returns the persisted pipeline id.
+   * Returns the persisted pipeline ID.
    *
    * @return string
    *   The plugin id of the pipeline.

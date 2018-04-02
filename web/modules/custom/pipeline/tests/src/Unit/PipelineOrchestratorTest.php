@@ -104,17 +104,17 @@ class PipelineOrchestratorTest extends UnitTestCase {
     $container->set('plugin.manager.pipeline_step', $this->stepPluginManager->reveal());
     \Drupal::setContainer($container);
 
-    $state = new PipelineState('demo_pipe', 0);
+    $state = new PipelineState('demo_pipe', 'test_step');
     $state_manager = $this->stateManager;
     $state_manager->isPersisted()->willReturn(TRUE);
-    $state_manager->state()->willReturn($state);
+    $state_manager->getState()->willReturn($state);
     $state_manager->reset()->shouldBeCalled();
 
     $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
     $this->stepPluginManager->createInstance('test_step')->willReturn(new TestStep([], '', ['label' => 'Foo']));
     $definition = ['label' => 'Bar', 'steps' => ['test_step']];
     $this->pipelinePluginManager->createInstance('demo_pipe')
-      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal()));
+      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
 
     (new TestOrchestrator(
       $this->pipelinePluginManager->reveal(),

@@ -24,7 +24,12 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   /**
    * {@inheritdoc}
    */
-  public function onAfterPipelineExecute() {}
+  public function onPipelineSuccess() {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onPipelineError() {}
 
   /**
    * {@inheritdoc}

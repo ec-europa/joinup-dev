@@ -62,7 +62,7 @@ class PipelineSelectForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     if ($this->stateManager->isPersisted()) {
-      $state = $this->stateManager->state();
+      $state = $this->stateManager->getState();
       return $this->redirect('pipeline.execute_pipeline', ['pipeline' => $state->getPipelineId()]);
     }
 

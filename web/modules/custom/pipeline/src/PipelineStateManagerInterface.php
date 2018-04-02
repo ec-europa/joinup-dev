@@ -31,7 +31,7 @@ interface PipelineStateManagerInterface {
    * @return \Drupal\pipeline\PipelineState
    *   The state value object.
    */
-  public function state();
+  public function getState();
 
   /**
    * Deletes the persisted state.
