@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\rdf_etl\Plugin\rdf_etl\Step;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\rdf_entity\RdfGraphHandlerInterface;
 use Drupal\rdf_etl\Plugin\RdfEtlStepPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -36,6 +36,13 @@ class AttachProvenanceData extends RdfEtlStepPluginBase implements ContainerFact
   protected $sparql;
 
   /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
    *
    * @param array $configuration
@@ -46,10 +53,13 @@ class AttachProvenanceData extends RdfEtlStepPluginBase implements ContainerFact
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manger.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, TimeInterface $time) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManger = $entity_type_manager;
+    $this->time = $time;
     $this->sparql = Database::getConnection('default', 'sparql_default');
   }
 
@@ -61,7 +71,8 @@ class AttachProvenanceData extends RdfEtlStepPluginBase implements ContainerFact
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('datetime.time')
     );
   }
 
@@ -92,7 +103,7 @@ QUERY;
         'rid' => 'provenance_activity',
         'provenance_entity' => $uri,
         'provenance_enabled' => TRUE,
-        'provenance_started' => \Drupal::time()->getRequestTime(),
+        'provenance_started' => $this->time->getRequestTime(),
       ]);
     }
 
