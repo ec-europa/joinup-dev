@@ -21,6 +21,7 @@ class SpainCttDataPipeline extends EtlDataPipelineBase {
   protected function initStepDefinition(): void {
     $this->steps = new PipelineStepDefinitionList();
     $this->steps->add('manual_upload_step');
+    $this->steps->add('attach_provenance_data');
   }
 
 }

@@ -230,9 +230,11 @@ class EtlOrchestrator implements EtlOrchestratorInterface {
   protected function getNextState(EtlState $state): EtlState {
     $this->pipeline->stepDefinitionList()->seek($state->sequence());
     $this->pipeline->stepDefinitionList()->next();
-    $next_state = new EtlState($state->pipelineId(), self::FINAL_STEP);
     if ($this->pipeline->stepDefinitionList()->valid()) {
       $next_state = new EtlState($state->pipelineId(), $this->pipeline->stepDefinitionList()->key());
+    }
+    else {
+      $next_state = new EtlState($state->pipelineId(), self::FINAL_STEP);
     }
     return $next_state;
   }

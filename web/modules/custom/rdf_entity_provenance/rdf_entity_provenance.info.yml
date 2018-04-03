@@ -1,0 +1,52 @@
+name: RDF - Provenance
+type: module
+description: Provides basic properties to track provenance data related to the entity.
+core: 8.x
+package: Custom
+dependencies:
+  - rdf_entity
+
+config_devel:
+  - core.entity_form_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.about
+  - core.entity_view_display.rdf_entity.collection.compact
+  - core.entity_view_display.rdf_entity.collection.default
+  - core.entity_view_display.rdf_entity.collection.group_header
+  - core.entity_view_display.rdf_entity.collection.rdf_draft
+  - core.entity_view_display.rdf_entity.collection.view_mode_featured
+  - core.entity_view_display.rdf_entity.collection.view_mode_tile
+  - facets.facet.collection_policy_domain
+  - facets.facet.collection_type
+  - facets.facet_source.search_api_field__rdf_entity.field_collection_content
+  - field.field.rdf_entity.collection.field_ar_abstract
+  - field.field.rdf_entity.collection.field_ar_access_url
+  - field.field.rdf_entity.collection.field_ar_affiliates
+  - field.field.rdf_entity.collection.field_ar_banner
+  - field.field.rdf_entity.collection.field_ar_closed
+  - field.field.rdf_entity.collection.field_ar_contact_information
+  - field.field.rdf_entity.collection.field_ar_description
+  - field.field.rdf_entity.collection.field_ar_elibrary_creation
+  - field.field.rdf_entity.collection.field_ar_logo
+  - field.field.rdf_entity.collection.field_ar_moderation
+  - field.field.rdf_entity.collection.field_ar_owner
+  - field.field.rdf_entity.collection.field_ar_state
+  - field.field.rdf_entity.collection.field_collection_content
+  - field.field.rdf_entity.collection.field_policy_domain
+  - field.field.rdf_entity.collection.field_site_featured
+  - field.field.rdf_entity.collection.field_site_pinned
+  - field.field.rdf_entity.collection.field_spatial_coverage
+  - field.storage.rdf_entity.field_ar_abstract
+  - field.storage.rdf_entity.field_ar_access_url
+  - field.storage.rdf_entity.field_ar_affiliates
+  - field.storage.rdf_entity.field_ar_banner
+  - field.storage.rdf_entity.field_ar_closed
+  - field.storage.rdf_entity.field_ar_contact_information
+  - field.storage.rdf_entity.field_ar_description
+  - field.storage.rdf_entity.field_ar_elibrary_creation
+  - field.storage.rdf_entity.field_ar_logo
+  - field.storage.rdf_entity.field_ar_moderation
+  - field.storage.rdf_entity.field_ar_owner
+  - field.storage.rdf_entity.field_ar_state
+  - field.storage.rdf_entity.field_collection_content
+  - rdf_entity.mapping.rdf_entity.provenance_activity
+  - rdf_entity.rdfentity.provenance_activity
