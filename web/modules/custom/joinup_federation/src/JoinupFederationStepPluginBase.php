@@ -12,12 +12,13 @@ use Drupal\pipeline\Plugin\PipelineStepPluginBase;
 abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase {
 
   /**
-   * {@inheritdoc}
+   * Returns the sink graph URI.
+   *
+   * @return string
+   *   The sink graph URI.
    */
-  public function defaultConfiguration(): array {
-    return [
-      'sink_graph' => JoinupFederationPipelinePluginBase::SINK_GRAPH,
-    ] + parent::defaultConfiguration();
+  protected function getSinkGraphUri() {
+    return $this->getPipeline()->getSinkGraphUri();
   }
 
 }

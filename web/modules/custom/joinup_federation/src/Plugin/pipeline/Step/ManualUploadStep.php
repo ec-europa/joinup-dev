@@ -69,9 +69,9 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $this->clearExistingData();
+    $this->clearGraph();
     try {
-      $this->createGraphStore()->replace($data['graph'], $this->getConfiguration()['sink_graph']);
+      $this->createGraphStore()->replace($data['graph'], $this->getSinkGraphUri());
       $data['adms_file']->delete();
     }
     catch (\Exception $exception) {
@@ -166,9 +166,8 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
    * @throws \Exception
    *   If the SPARQL query is failing.
    */
-  protected function clearExistingData(): void {
-    $graph_uri = $this->getConfiguration()['sink_graph'];
-    $this->sparqlConnection->update("CLEAR GRAPH <$graph_uri>");
+  protected function clearGraph(): void {
+    $this->sparqlConnection->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");
   }
 
 }

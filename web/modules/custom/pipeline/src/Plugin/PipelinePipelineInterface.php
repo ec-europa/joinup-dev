@@ -18,6 +18,17 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   public function setCurrent($step_plugin_id);
 
   /**
+   * Creates a step plugin instance in this pipeline.
+   *
+   * @param string $step_plugin_id
+   *   The step plugin ID.
+   *
+   * @return \Drupal\pipeline\Plugin\PipelineStepInterface
+   *   The step plugin instance.
+   */
+  public function createStepInstance($step_plugin_id);
+
+  /**
    * Runs specific code after the pipeline is executed with success.
    */
   public function onSuccess();

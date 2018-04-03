@@ -33,6 +33,7 @@ class ConvertToAdms2Test extends KernelTestBase {
   protected static $modules = [
     'pipeline',
     'joinup_federation',
+    'joinup_federation_test',
     'rdf_entity',
   ];
 
@@ -67,10 +68,13 @@ class ConvertToAdms2Test extends KernelTestBase {
    * Test ADMSv2 changes.
    */
   public function test() {
-    /** @var \Drupal\pipeline\Plugin\PipelineStepPluginManager $manager */
-    $manager = $this->container->get('plugin.manager.pipeline_step');
-    /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $plugin */
-    $convert_plugin = $manager->createInstance('convert_to_adms2', ['sink_graph' => JoinupFederationAdms2ConvertPassInterface::TEST_GRAPH]);
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
+    $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
+    $data = ['sink_graph' => JoinupFederationAdms2ConvertPassInterface::TEST_GRAPH];
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
+    $pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline', $data);
+
+    $convert_plugin = $pipeline->createStepInstance('convert_to_adms2');
 
     // Run updates.
     $data = [];

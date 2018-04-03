@@ -2,7 +2,9 @@
 
 namespace Drupal\pipeline\Plugin;
 
+use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\pipeline\PipelineStateManager;
@@ -11,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base class for pipeline plugins.
  */
-abstract class PipelinePipelinePluginBase extends PluginBase implements PipelinePipelineInterface, ContainerFactoryPluginInterface {
+abstract class PipelinePipelinePluginBase extends PluginBase implements PipelinePipelineInterface, ContainerFactoryPluginInterface, ConfigurablePluginInterface {
 
   use DependencySerializationTrait;
 
@@ -52,6 +54,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->setConfiguration($configuration);
     $this->stepPluginManager = $step_plugin_manager;
     $this->stateManager = $state_manager;
   }
@@ -67,6 +70,15 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createStepInstance($step_plugin_id) {
+    /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $step */
+    $step = $this->stepPluginManager->createInstance($step_plugin_id);
+    return $step->setPipeline($this);
   }
 
   /**
@@ -166,6 +178,38 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
       $this->next();
     }
     throw new \InvalidArgumentException("Step '$step_plugin_id' doesn't exist.");
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfiguration() {
+    return $this->configuration;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConfiguration(array $configuration) {
+    // Ensure sane defaults.
+    $this->configuration = NestedArray::mergeDeep(
+      $this->defaultConfiguration(),
+      $configuration
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    return [];
   }
 
 }

@@ -62,8 +62,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $graph_uri = $this->getConfiguration()['sink_graph'];
-    $graph = $this->createGraphStore()->get($graph_uri);
+    $graph = $this->createGraphStore()->get($this->getSinkGraphUri());
     $validation = $this->admsValidator->validateGraph($graph);
 
     if ($validation->isSuccessful()) {

@@ -2,7 +2,6 @@
 
 namespace Drupal\pipeline;
 
-use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,7 +10,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\pipeline\Form\PipelineOrchestratorForm;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
-use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 
 /**
@@ -46,13 +44,6 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected $pipelinePluginManager;
 
   /**
-   * The pipeline step plugin manager service.
-   *
-   * @var \Drupal\pipeline\Plugin\PipelineStepPluginManager
-   */
-  protected $stepPluginManager;
-
-  /**
    * The response value.
    *
    * @var mixed
@@ -78,8 +69,6 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *
    * @param \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager
    *   The pipeline plugin manager service.
-   * @param \Drupal\pipeline\Plugin\PipelineStepPluginManager $step_plugin_manager
-   *   The pipeline step plugin manager service.
    * @param \Drupal\pipeline\PipelineStateManager $state_manager
    *   The persistent state of the importer.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
@@ -87,9 +76,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    */
-  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger) {
+  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger) {
     $this->pipelinePluginManager = $pipeline_plugin_manager;
-    $this->stepPluginManager = $step_plugin_manager;
     $this->stateManager = $state_manager;
     $this->formBuilder = $form_builder;
     $this->messenger = $messenger;
@@ -156,13 +144,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   If errors occurred during the form build or step execution.
    */
   protected function executeStep(PipelineState $current_state) {
-    /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $plugin_instance */
-    $step_instance = $this->stepPluginManager->createInstance($current_state->getStep());
+    $step = $this->pipeline->createStepInstance($current_state->getStep());
 
     $data = [];
-    if ($step_instance instanceof PipelineStepWithFormInterface) {
+    if ($step instanceof PipelineStepWithFormInterface) {
       $form_state = new FormState();
-      $data = $this->buildForm($step_instance, $form_state, $data);
+      $data = $this->buildForm($step, $form_state, $data);
       // In case of validation errors, or a rebuild (e.g. multi step), bail out.
       if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
         // Set the current state.
@@ -173,7 +160,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     try {
-      $error = $step_instance->execute($data);
+      $error = $step->prepare($data)->execute($data);
     }
     catch (\Exception $exception) {
       // Catching any exception from the step execution just to reset the
@@ -187,7 +174,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // If this step execution returns errors, exit here the pipeline execution
     // but show the errors.
     if ($error) {
-      $this->setStepErrorResponse($error, $step_instance);
+      $this->setStepErrorResponse($error, $step);
       $this->pipeline->onError();
       return NULL;
     }
@@ -248,13 +235,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   /**
    * Sets the step error response.
    *
-   * @param null|array|\Drupal\Component\Render\MarkupInterface|string $error
-   *   The error message as a render array or a markup object or as a string.
+   * @param array $error
+   *   The error message as a render array.
    * @param \Drupal\pipeline\Plugin\PipelineStepInterface $step
    *   The step plugin instance.
    */
-  protected function setStepErrorResponse($error, PipelineStepInterface $step) {
-    $error = is_string($error) || $error instanceof MarkupInterface ? ['#markup' => $error] : $error;
+  protected function setStepErrorResponse(array $error, PipelineStepInterface $step) {
     $arguments = [
       '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
       '%step' => $step->getPluginDefinition()['label'],

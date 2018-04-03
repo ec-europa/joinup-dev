@@ -12,7 +12,6 @@ services:
     class: Drupal\pipeline\PipelineOrchestrator
     arguments:
       - '@plugin.manager.pipeline_pipeline'
-      - '@plugin.manager.pipeline_step'
       - '@pipeline.state_manager'
       - '@form_builder'
       - '@messenger'

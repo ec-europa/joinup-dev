@@ -30,6 +30,7 @@ class AdmsValidationStepTest extends KernelTestBase {
   protected static $modules = [
     'adms_validator',
     'joinup_federation',
+    'joinup_federation_test',
     'pipeline',
     'rdf_entity',
   ];
@@ -58,17 +59,20 @@ class AdmsValidationStepTest extends KernelTestBase {
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
-    /** @var \Drupal\pipeline\Plugin\PipelineStepPluginManager $manager */
-    $manager = \Drupal::service('plugin.manager.pipeline_step');
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
+    $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
     $data = ['sink_graph' => static::TEST_GRAPH];
-    $plugin = $manager->createInstance('adms_validation', $data);
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
+    $pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline', $data);
+
+    $step = $pipeline->createStepInstance('adms_validation');
 
     $graph = new Graph();
     $graph->parseFile(__DIR__ . "/../../fixtures/$rdf_file");
     $this->createGraphStore()->replace($graph, static::TEST_GRAPH);
 
     // Execute the validation step.
-    $result = $plugin->execute($data);
+    $result = $step->execute($data);
 
     if ($expected_valid) {
       // Check that no error was detected during validation.

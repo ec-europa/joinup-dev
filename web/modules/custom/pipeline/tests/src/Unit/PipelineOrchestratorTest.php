@@ -118,7 +118,6 @@ class PipelineOrchestratorTest extends UnitTestCase {
 
     (new TestOrchestrator(
       $this->pipelinePluginManager->reveal(),
-      $this->stepPluginManager->reveal(),
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
       $this->messenger->reveal()
@@ -134,7 +133,6 @@ class PipelineOrchestratorTest extends UnitTestCase {
   protected function createOrchestrator() {
     return new PipelineOrchestrator(
       $this->pipelinePluginManager->reveal(),
-      $this->stepPluginManager->reveal(),
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
       $this->messenger->reveal()
