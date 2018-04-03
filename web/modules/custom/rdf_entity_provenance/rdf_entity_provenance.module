@@ -50,6 +50,7 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
     ->setLabel(t('Provenance - Enabled'))
     ->setDescription(t('If set to false, the entity will not be federated.'))
     ->setComputed(FALSE)
+    ->setDefaultValue(TRUE)
     ->setCardinality(1)
     ->setRequired(FALSE);
 
