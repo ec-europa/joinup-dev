@@ -29,7 +29,7 @@ class RdfEtlSubContext extends DrupalSubContextBase {
    * @Given I reset the orchestrator
    */
   public function iResetTheOrchestrator() {
-    /** @var \Drupal\rdf_etl\EtlOrchestrator $orchestrator */
+    /** @var \Drupal\rdf_etl\RdfEtlOrchestrator $orchestrator */
     $orchestrator = \Drupal::service('rdf_etl.orchestrator');
     $orchestrator->reset();
   }

@@ -1,43 +1,53 @@
 <?php
 
+/**
+ * @file
+ * Tests the orchestrator.
+ */
+
 namespace Drupal\Tests\rdf_etl\Unit;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormBuilder;
-use Drupal\rdf_etl\EtlOrchestrator;
-use Drupal\rdf_etl\EtlState;
-use Drupal\rdf_etl\EtlStateManager;
-use Drupal\rdf_etl\Plugin\EtlDataPipelineManager;
-use Drupal\rdf_etl\Plugin\EtlProcessStepManager;
+use Drupal\Core\Messenger\Messenger;
+use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginBase;
+use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager;
+use Drupal\rdf_etl\Plugin\RdfEtlStepInterface;
+use Drupal\rdf_etl\Plugin\RdfEtlStepPluginBase;
+use Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager;
+use Drupal\rdf_etl\RdfEtlOrchestrator;
+use Drupal\rdf_etl\RdfEtlState;
+use Drupal\rdf_etl\RdfEtlStateManager;
 use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests the data pipeline processor.
  *
  * @group rdf_etl
- * @coversDefaultClass \Drupal\rdf_etl\EtlOrchestrator
+ * @coversDefaultClass \Drupal\rdf_etl\RdfEtlOrchestrator
  */
 class RdfEtlOrchestratorTest extends UnitTestCase {
 
   /**
    * The data pipeline plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlDataPipelineManager|\Prophecy\Prophecy\ObjectProphecy
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginManager|\Prophecy\Prophecy\ObjectProphecy
    */
-  protected $etlDataPipelineManager;
+  protected $pipelinePluginManager;
 
   /**
    * The process step plugin manager.
    *
-   * @var \Drupal\rdf_etl\Plugin\EtlProcessStepManager|\Prophecy\Prophecy\ObjectProphecy
+   * @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager|\Prophecy\Prophecy\ObjectProphecy
    */
-  protected $etlProcessStepManager;
+  protected $stepPluginManager;
 
   /**
-   * The ETL state manager.
+   * The state manager.
    *
-   * @var \Drupal\rdf_etl\EtlStateManager|\Prophecy\Prophecy\ObjectProphecy
+   * @var \Drupal\rdf_etl\RdfEtlStateManager|\Prophecy\Prophecy\ObjectProphecy
    */
-  protected $etlStateManager;
+  protected $stateManager;
 
   /**
    * The form builder.
@@ -47,15 +57,22 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
   protected $formBuilder;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\Messenger|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $messenger;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
-
-    $this->etlDataPipelineManager = $this->prophesize(EtlDataPipelineManager::class);
-    $this->etlProcessStepManager = $this->prophesize(EtlProcessStepManager::class);
-    $this->etlStateManager = $this->prophesize(EtlStateManager::class);
+    $this->pipelinePluginManager = $this->prophesize(RdfEtlPipelinePluginManager::class);
+    $this->stepPluginManager = $this->prophesize(RdfEtlStepPluginManager::class);
+    $this->stateManager = $this->prophesize(RdfEtlStateManager::class);
     $this->formBuilder = $this->prophesize(FormBuilder::class);
+    $this->messenger = $this->prophesize(Messenger::class);
   }
 
   /**
@@ -64,8 +81,7 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
    * @covers ::__construct
    */
   public function testInstance() {
-    $orchestrator = new EtlOrchestrator($this->etlDataPipelineManager->reveal(), $this->etlProcessStepManager->reveal(), $this->etlStateManager->reveal(), $this->formBuilder->reveal());
-    $this->assertInstanceOf(EtlOrchestrator::class, $orchestrator);
+    $this->assertInstanceOf(RdfEtlOrchestrator::class, $this->createOrchestrator());
   }
 
   /**
@@ -74,10 +90,8 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
    * @covers ::reset
    */
   public function testReset() {
-    $state = $this->etlStateManager;
-    $state->reset()->shouldBeCalled();
-    $orchestrator = new EtlOrchestrator($this->etlDataPipelineManager->reveal(), $this->etlProcessStepManager->reveal(), $state->reveal(), $this->formBuilder->reveal());
-    $orchestrator->reset();
+    $this->stateManager->reset()->shouldBeCalled();
+    $this->createOrchestrator()->reset();
   }
 
   /**
@@ -86,20 +100,78 @@ class RdfEtlOrchestratorTest extends UnitTestCase {
    * @covers ::run
    */
   public function testRun() {
-    $state = new EtlState('demo_pipe', 0);
-    $state_manager = $this->etlStateManager;
+    $container = new ContainerBuilder();
+    $container->set('string_translation', $this->getStringTranslationStub());
+    $container->set('plugin.manager.rdf_etl_step', $this->stepPluginManager->reveal());
+    \Drupal::setContainer($container);
+
+    $state = new RdfEtlState('demo_pipe', 0);
+    $state_manager = $this->stateManager;
     $state_manager->isPersisted()->willReturn(TRUE);
     $state_manager->state()->willReturn($state);
-    // As we are simply building the form, no state is persisted.
-    $state_manager->setState()->shouldNotBeCalled();
+    $state_manager->reset()->shouldBeCalled();
 
-    $pipelinePlugin = new TestDataPipeline([], '', []);
+    $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
+    $definition = ['label' => 'Bar', 'steps' => ['test_step']];
+    $this->pipelinePluginManager->createInstance('demo_pipe')
+      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal()));
 
-    $pipelineManager = $this->etlDataPipelineManager;
-    $pipelineManager->createInstance('demo_pipe')->willReturn($pipelinePlugin);
+    (new TestOrchestrator(
+      $this->pipelinePluginManager->reveal(),
+      $this->stepPluginManager->reveal(),
+      $this->stateManager->reveal(),
+      $this->formBuilder->reveal(),
+      $this->messenger->reveal()
+    ))->run('demo_pipe');
+  }
 
-    $orchestrator = new EtlOrchestrator($pipelineManager->reveal(), $this->etlProcessStepManager->reveal(), $state_manager->reveal(), $this->formBuilder->reveal());
-    $orchestrator->run();
+  /**
+   * Initializes a new orchestrator object.
+   *
+   * @return \Drupal\rdf_etl\RdfEtlOrchestratorInterface
+   *   The new orchestrator object.
+   */
+  protected function createOrchestrator() {
+    return new RdfEtlOrchestrator(
+      $this->pipelinePluginManager->reveal(),
+      $this->stepPluginManager->reveal(),
+      $this->stateManager->reveal(),
+      $this->formBuilder->reveal(),
+      $this->messenger->reveal()
+    );
   }
 
 }
+
+/**
+ * Testing step plugin.
+ */
+class TestStep extends RdfEtlStepPluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute(array &$data) {}
+
+}
+
+/**
+ * Testing orchestrator.
+ *
+ * Used to replace the ::getStepInstance() method with a mock.
+ */
+class TestOrchestrator extends RdfEtlOrchestrator {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getStepInstance(RdfEtlState $state): RdfEtlStepInterface {
+    return new TestStep([], '', ['label' => 'Foo']);
+  }
+
+}
+
+/**
+ * Testing pipeline plugin.
+ */
+class TestPipeline extends RdfEtlPipelinePluginBase {}
