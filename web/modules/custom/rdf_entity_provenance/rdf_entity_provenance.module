@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains hooks and functions for the rdf_entity_provenance module.
+ */
+
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 

@@ -32,7 +32,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function isFederated(RdfInterface $rdf_entity): bool{
+  public function isFederated(RdfInterface $rdf_entity): bool {
     return empty($this->getProvenanceActivity($rdf_entity));
   }
 
@@ -51,7 +51,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    * {@inheritdoc}
    */
   public function loadProvenanceActivity(RdfInterface $rdf_entity): ?RdfInterface {
-    /** @var RdfInterface $activity */
+    /** @var \Drupal\rdf_entity\RdfInterface $activity */
     $activity = $this->getStorage()->loadByProperties([
       'bundle' => 'provenance_activity',
       'provenance_entity' => $rdf_entity->id(),
@@ -70,7 +70,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    *   The provenance activity.
    */
   protected function createProvenanceActivity(RdfInterface $rdf_entity): RdfInterface {
-    /** @var RdfInterface $activity */
+    /** @var \Drupal\rdf_entity\RdfInterface $activity */
     $activity = $this->getStorage()->create([
       'bundle' => 'provenance_activity',
       'provenance_entity' => $rdf_entity->id(),

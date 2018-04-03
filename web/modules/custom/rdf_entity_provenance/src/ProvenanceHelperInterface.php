@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\rdf_entity_provenance;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
