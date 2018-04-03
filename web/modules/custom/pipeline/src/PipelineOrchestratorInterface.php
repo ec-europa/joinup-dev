@@ -8,10 +8,10 @@ namespace Drupal\pipeline;
 interface PipelineOrchestratorInterface {
 
   /**
-   * Executes the orchestrator.
+   * Executes a given pipeline.
    *
    * @param string $pipeline
-   *   The pipeline to be used.
+   *   The pipeline to be executed.
    *
    * @return mixed
    *   The response.

@@ -114,6 +114,9 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    *
    * @return \ArrayIterator
    *   The steps iterator.
+   *
+   * @throws \InvalidArgumentException
+   *   The steps defined in annotation are invalid ot no steps are provided.
    */
   protected function getStepList() {
     if (!isset($this->steps)) {

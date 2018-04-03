@@ -22,7 +22,7 @@ interface PipelineStepInterface extends PluginInspectionInterface {
   public function execute(array &$data);
 
   /**
-   * Gives a chances to plugins to perform some last tasks before executing.
+   * Gives a chance to plugins to perform some tasks just before executing.
    *
    * @param array $data
    *   An array of data to be passed to the execute method.
@@ -50,18 +50,12 @@ interface PipelineStepInterface extends PluginInspectionInterface {
   public function getPipeline();
 
   /**
-   * Allows this step to react after the pipeline execution.
-   *
-   * This method should be used to perform cleanup for objects, storage entries
-   * created by this step but required for the rest of the pipeline.
+   * Allows this step to react after the pipeline execution ends with success.
    */
   public function onPipelineSuccess();
 
   /**
-   * Allows this step to react when the pipeline execution end with error.
-   *
-   * This method should be used to perform cleanup for objects, storage entries
-   * created by this step but required for the rest of the pipeline.
+   * Allows this step to react when the pipeline execution ends with an error.
    */
   public function onPipelineError();
 

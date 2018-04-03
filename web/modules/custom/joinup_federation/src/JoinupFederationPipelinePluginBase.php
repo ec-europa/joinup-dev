@@ -102,10 +102,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   }
 
   /**
-   * Checks the backend for existing data in the sink graph.
-   *
-   * @throws \Exception
-   *   If the SPARQL query is failing.
+   * Clears the data from the sink graph.
    */
   protected function clearGraph(): void {
     $this->sparql->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");

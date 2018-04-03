@@ -10,10 +10,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  * @PipelinePipeline(
  *   id = "joinup_federation_testing_pipeline",
  *   label = @Translation("Joinup federation testing pipeline"),
- *   steps = {
- *     "convert_to_adms2",
- *     "adms_validation",
- *   },
+ *   steps = {},
  * )
  */
 class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase {}

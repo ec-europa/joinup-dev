@@ -24,7 +24,7 @@ class PipelineExecutionController extends ControllerBase {
   protected $orchestrator;
 
   /**
-   * The persistent state of the importer.
+   * The state manager service.
    *
    * @var \Drupal\pipeline\PipelineStateManager
    */
@@ -36,7 +36,7 @@ class PipelineExecutionController extends ControllerBase {
    * @param \Drupal\pipeline\PipelineOrchestratorInterface $orchestrator
    *   The pipeline orchestrator service.
    * @param \Drupal\pipeline\PipelineStateManagerInterface $state_manager
-   *   The persistent state of the importer.
+   *   The state manager service.
    */
   public function __construct(PipelineOrchestratorInterface $orchestrator, PipelineStateManagerInterface $state_manager) {
     $this->orchestrator = $orchestrator;

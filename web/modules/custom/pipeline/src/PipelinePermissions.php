@@ -39,7 +39,7 @@ class PipelinePermissions implements ContainerInjectionInterface {
   }
 
   /**
-   * Returns an array of node type permissions.
+   * Returns an array of pipeline related permissions.
    *
    * @return array[]
    *   The pipeline execution permissions.
