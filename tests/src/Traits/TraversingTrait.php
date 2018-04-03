@@ -309,41 +309,6 @@ trait TraversingTrait {
   }
 
   /**
-   * Returns the contextual links button that is present in the given region.
-   *
-   * @param string $region
-   *   The region in which the contextual links button is expected to reside.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The contextual links button.
-   *
-   * @throws \Exception
-   *   Thrown when the region or the contextual links button was not found on
-   *   the page.
-   */
-  protected function findContextualLinkButtonInRegion($region) {
-    $session = $this->getSession();
-    /** @var \Behat\Mink\Element\NodeElement $region_object */
-    $region_object = $session->getPage()->find('region', $region);
-    if (!$region_object) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
-    }
-
-    // Check if the wrapper for the contextual links is present on the page.
-    // Since the button is appended by the contextual.js script, we might need
-    // to wait a bit before the button itself is visible.
-    $button = $region_object->waitFor(5, function ($object) {
-      /** @var \Behat\Mink\Element\NodeElement $object */
-      return $object->find('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " contextual ")]/button');
-    });
-
-    if (!$button) {
-      throw new \Exception(sprintf('No contextual links found in the region "%s" on the page "%s".', $region, $session->getCurrentUrl()));
-    }
-    return $button;
-  }
-
-  /**
    * Returns the named element with the given locator, in the given region.
    *
    * Use this to easily locate "named elements" such as buttons, links, fields,
