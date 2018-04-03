@@ -14,6 +14,7 @@ use Drupal\rdf_etl\Plugin\RdfEtlPipelinePluginBase;
  *     "manual_upload_step",
  *     "convert_to_adms2",
  *     "adms_validation",
+ *     "attach_provenance_data"
  *   },
  * )
  */
