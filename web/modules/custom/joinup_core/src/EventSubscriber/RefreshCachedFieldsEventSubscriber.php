@@ -12,7 +12,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
-use Drupal\joinup_core\Exception\JoinupCoreUndefinedUrlException;
 use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
 
 /**
@@ -94,6 +93,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $this->piwikQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
     $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
 
+    $url_index = 0;
     foreach ($items as $index => $item) {
       if (!$entity = $this->getEntity($item)) {
         continue;
@@ -105,7 +105,15 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         continue;
       }
 
-      $query->setParameter('urls[' . $index . ']', http_build_query($this->getSubQueryParameters($entity)));
+      if ($parameters = $this->getSubQueryParameters($entity)) {
+        $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
+      }
+      else {
+        // Update the entity so that it wont be requested to update the value
+        // every time.
+        $this->updateFieldValue($item, 0);
+        unset($items[$index]);
+      }
     }
 
     try {
@@ -121,10 +129,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       $type = $this->getType($bundle);
       $response_item = $response[$index];
       $count = 0;
-      foreach ($response_item as $year => $result) {
-        $item = $result[0];
-        if (!empty($item->$type)) {
-          $count = $count + (int) $item->$type;
+      foreach ($response_item as $result) {
+        if (!empty($result->$type)) {
+          $count = $count + (int) $result->$type;
         }
       }
 
@@ -136,13 +143,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * Gets the correct URL parameter for the query.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity from which to prune the URL.
+   *   The entity that the request url is related to.
    *
-   * @return string
-   *   The url for the request.
-   *
-   * @throws \Drupal\joinup_core\Exception\JoinupCoreUndefinedUrlException
-   *   Thrown when a URL could not be distilled from the given entity.
+   * @return string|false
+   *   The url for the request or false if no url is detected.
    */
   protected function getUrlParameter(ContentEntityInterface $entity) {
     $bundle = $entity->bundle();
@@ -156,10 +160,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         break;
     }
 
-    if (empty($url)) {
-      throw new JoinupCoreUndefinedUrlException();
-    }
-
+    // Currently, the only case where false will be returned is if a
+    // distribution does not have a file attached. This is against ADMS
+    // specifications but might still occur since there are entities migrated
+    // and in the future also federated.
     return $url;
   }
 
@@ -329,8 +333,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param array $parameters
    *   A list of extra parameters to pass to the array of parameters.
    *
-   * @return array
-   *   A list of parameters.
+   * @return array|false
+   *   A list of parameters or false if the entity does not have a valid url to
+   *   request.
    */
   protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): array {
     $bundle = $entity->bundle();
@@ -347,7 +352,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       (new DateTimePlus())->format('Y-m-d'),
     ];
 
-    $parameters['period'] = 'year';
+    $parameters['period'] = 'range';
     $parameters['date'] = implode(',', $date_range);
     $parameters['method'] = $method;
     $parameters['showColumns'] = $type;
