@@ -26,3 +26,13 @@ form-components:
     - core/jquery.ui.slider
     - core/drupal
     - core/drupalSettings
+
+fieldset-show-more:
+  Version: 1.x
+  js:
+    js/fieldset-show-more.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/jquery.ui.accordion

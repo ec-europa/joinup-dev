@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Template override for fieldset with additional "Show more" collapse functionality.
+ */
+#}
+
+{{ attach_library('joinup_theme/fieldset-show-more') }}
+{% import _self as fieldset %}
+
+{% if label_hidden %}
+  {% if multiple %}
+    <div{{ attributes.addClass('fieldset__field fieldset__field--multiple fieldset__field--show-more') }}>
+      {% if items|length > 5 %}
+        {{ fieldset.render_items(items|slice(0,5)) }}
+        <div class="fieldset__extra-items">
+          {{ fieldset.render_items(items|slice(5)) }}
+        </div>
+        <a href="#" class="fieldset__show-more-link"><span class="fieldset__show-more-text">{{ 'Show more'|t }}</span> <span class="icon icon--arrow-down"></span></a>
+      {% else %}
+        {{ fieldset.render_items(items) }}
+      {% endif %}
+    </div>
+  {% else %}
+    {{ fieldset.render_items(items) }}
+  {% endif %}
+{% else %}
+  <div{{ attributes.addClass('fieldset__field') }}>
+    <div{{ title_attributes.addClass('fieldset__field-label') }}>{{ label }}</div>
+    {% if multiple %}
+      <div>
+    {% endif %}
+        {{ fieldset.render_items(items) }}
+    {% if multiple %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{%  macro render_items(items) %}
+  {% for item in items %}
+    <div{{ item.attributes.addClass('fieldset__field-item') }}>{{ item.content }}</div>
+  {% endfor %}
+{% endmacro %}
