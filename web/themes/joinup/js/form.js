@@ -32,14 +32,6 @@
     }
   };
 
-  Drupal.behaviors.alterTableDrag = {
-    attach: function (context, settings) {
-      $(context).find('.tabledrag-handle').once('alterTableDrag').each(function () {
-        $(this).addClass('draggable__icon icon icon--draggable');
-      });
-    }
-  };
-
   // Refreshes MDL checkbox classes after ajax callbacks.
   Drupal.behaviors.ajaxReload = {
     attach: function (context, settings) {

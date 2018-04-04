@@ -4,6 +4,7 @@ Feature: Sharing content between collections
   I want to share content between collections
   So that useful information has more visibility
 
+  @javascript
   Scenario Outline: Users can share content in the collections they are member of.
     Given users:
       | Username      | E-mail                    |
@@ -36,33 +37,32 @@ Feature: Sharing content between collections
     # Anonymous users can share only in social networks.
     When I am an anonymous user
     And I go to the content page of the type "<content type>" with the title "Interesting content"
-    And I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
-    Then I should see the heading "Share Interesting content in"
-    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
+    Then a modal should open
+    And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
     # This "authenticated user" is not member of any collections, so he can
     # share only in social networks.
     When I am logged in as an "authenticated user"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
-    Then I should see the heading "Share Interesting content in"
-    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
+    Then a modal should open
+    And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
     # A member of a single collection which is the one where the content was
     # created can share in social networks only.
     When I am logged in as "Marjolein Rye"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
-    Then I should see the heading "Share Interesting content in"
-    Then the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
+    Then a modal should open
+    And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
     # A collection member should see the link.
     When I am logged in as "Sara Barber"
     And I go to the "Rockabilly is still rocking" discussion
     Then I should see the heading "Rockabilly is still rocking"
     When I click "Share"
-    Then I should see the heading "Share Rockabilly is still rocking in"
+    Then a modal should open
     # Collections the user is member of should be available.
     And the following fields should be present "Hip-Hop, Drum'n'Bass"
     # While the original content collection and collections the user is not
@@ -72,18 +72,19 @@ Feature: Sharing content between collections
     # Verify on another node the correctness of the share tool.
     When I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
-    Then I should see the heading "Share Interesting content in"
+    Then a modal should open
     And the following fields should be present "Classic Rock, Drum'n'Bass"
     And the following fields should not be present "Hip-Hop, Power ballad"
 
     # Share the content in a collection.
     When I check "Classic Rock"
-    And I press "Share"
+    And I press "Share" in the "Modal buttons" region
+    And I wait for AJAX to finish
     Then I should see the success message "Sharing updated."
     # Verify that the collections where the content has already been shared are
     # not shown anymore in the list.
     When I click "Share"
-    Then I should see the heading "Share Interesting content in"
+    Then a modal should open
     Then the following fields should be present "Drum'n'Bass"
     And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad"
 
@@ -119,27 +120,29 @@ Feature: Sharing content between collections
     Then I should see the "Interesting content" tile
     And I should see the contextual link "Unshare" in the "Interesting content" tile
     When I click the contextual link "Unshare" in the "Interesting content" tile
-    Then I should see the heading "Unshare Interesting content from"
+    Then a modal will open
+    And I should see the text "Unshare Interesting content from"
     Then the following fields should be present "Classic Rock"
     And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
 
     # Unshare the content.
     When I uncheck "Classic Rock"
-    And I press "Save"
-    Then I should see the heading "Interesting content"
-    And I should see the success message "Sharing updated."
+    And I press "Save" in the "Modal buttons" region
+    And I wait for AJAX to finish
 
-    # Verify that the content is again shareable.
-    When I click "Share"
-    Then I should see the heading "Share Interesting content in"
-    And the following fields should be present "Classic Rock"
-    And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
-
-    # Verify that the collection content has been updated.
-    When I go to the homepage of the "Classic Rock" collection
-    Then I should see the "New D'n'B compilation released" tile
+    # I should still be on the same page, but the collection content should be
+    # changed. The "Interesting content" should no longer be visible.
+    Then I should see the success message "Sharing updated."
+    And I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
     But I should not see the "Interesting content" tile
+
+    # Verify that the content is again shareable.
+    When I go to the content page of the type "<content type>" with the title "Interesting content"
+    When I click "Share"
+    Then a modal should open
+    And the following fields should be present "Classic Rock"
+    And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
 
     # Verify that the unshare link is not present when the content is not
     # shared anywhere.
