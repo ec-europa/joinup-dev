@@ -1032,3 +1032,27 @@ function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $qu
     }
   }
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function joinup_core_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!$group = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+    throw new \RuntimeException('Called from a wrong page.');
+  }
+
+  /** @var \Drupal\Core\Action\ActionManager $action_manager */
+  $action_manager = \Drupal::service('plugin.manager.action');
+  /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $plugin */
+  $plugin = $action_manager->createInstance('joinup_transfer_group_ownership');
+
+  // Allow the ownership to be transferred only by users with proper permission.
+  if (!$plugin->canTransferOwnership($group, \Drupal::currentUser())) {
+    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership']);
+    return;
+  }
+
+  // Alter the action label in order to reflect the bundle of the group.
+  $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
+  $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
+}

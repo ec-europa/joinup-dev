@@ -60,7 +60,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: fieldset
+        template_suggestion: fieldset__show_more
     type: file_default
     region: content
   field_cp_content_listing:

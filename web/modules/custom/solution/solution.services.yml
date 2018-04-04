@@ -9,8 +9,3 @@ services:
     arguments: ['@entity_type.manager', '@config.factory', '@current_user']
     tags:
       - { name: state_machine.guard, group: solution }
-  solution.transfer_ownership_subscriber:
-    class: Drupal\solution\EventSubscriber\TransferSolutionOwnershipSubscriber
-    arguments: ['@current_user', '@user.private_tempstore']
-    tags:
-      - name: event_subscriber

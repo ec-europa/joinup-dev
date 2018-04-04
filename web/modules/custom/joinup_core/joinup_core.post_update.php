@@ -81,6 +81,15 @@ function joinup_core_post_update_install_smart_trim() {
 }
 
 /**
+ * Remove stale 'system.action.joinup_transfer_solution_ownership' config.
+ */
+function joinup_core_post_update_remove_action_transfer_solution_ownership() {
+  \Drupal::configFactory()
+    ->getEditable('system.action.joinup_transfer_solution_ownership')
+    ->delete();
+}
+
+/**
  * Enable 'rdf_etl' and 'spain_ctt' modules.
  */
 function joinup_core_post_update_install_rdf_etl_and_spain_ctt() {
