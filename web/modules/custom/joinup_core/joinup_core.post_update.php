@@ -90,10 +90,10 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
 }
 
 /**
- * Enable 'rdf_etl' and 'spain_ctt' modules.
+ * Enable 'spain_ctt' module.
  */
-function joinup_core_post_update_install_rdf_etl_and_spain_ctt() {
-  \Drupal::service('module_installer')->install(['rdf_etl', 'spain_ctt']);
+function joinup_core_post_update_install_spain_ctt() {
+  \Drupal::service('module_installer')->install(['spain_ctt']);
 }
 
 /**
