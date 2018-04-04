@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
  * Conversion Passes #1, #2 and #3.
@@ -85,7 +86,7 @@ class Pass1To3 extends JoinupFederationAdms2ConvertPassPluginBase {
 
     foreach (static::getAdms1To2TypeConversionMap() as $adms1_uri => $adms2_uri) {
       $results = $this->getTriplesFromGraph(
-        static::TEST_GRAPH,
+        ConvertToAdms2StepTest::getTestingSinkGraph(),
         $entities[$adms2_uri],
         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         "<$adms2_uri>"
@@ -94,7 +95,7 @@ class Pass1To3 extends JoinupFederationAdms2ConvertPassPluginBase {
       $test->assertCount(1, $results);
 
       $results = $this->getTriplesFromGraph(
-        static::TEST_GRAPH,
+        ConvertToAdms2StepTest::getTestingSinkGraph(),
         $entities[$adms2_uri],
         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         "<$adms1_uri>"

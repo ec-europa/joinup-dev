@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
  * Conversion Pass #37.
@@ -37,7 +38,7 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
    */
   public function performAssertions(KernelTestBase $test): void {
     $results = $this->getTriplesFromGraph(
-      static::TEST_GRAPH,
+      ConvertToAdms2StepTest::getTestingSinkGraph(),
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#downloadURL'
     );
@@ -45,7 +46,7 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
     $test->assertEmpty($results);
 
     $results = $this->getTriplesFromGraph(
-      static::TEST_GRAPH,
+      ConvertToAdms2StepTest::getTestingSinkGraph(),
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#accessURL'
     );

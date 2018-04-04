@@ -4,39 +4,30 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
 
 /**
  * Tests the 'convert_to_adms2' pipeline step plugin.
  *
- * @group pipeline
+ * @group joinup_federation
  */
-class ConvertToAdms2Test extends StepTestBase {
-
-  use RdfEntityGraphStoreTrait;
+class ConvertToAdms2StepTest extends StepTestBase {
 
   /**
-   * The  ADMS v1 to v2 transformation plugin manager.
-   *
-   * @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager
+   * Test ADMSv2 changes.
    */
-  protected $adms2ConverPassPluginManager;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.joinup_federation_adms2_convert_pass');
+  public function test() {
+    /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager $plugin_manager */
+    $plugin_manager = $this->container->get('plugin.manager.joinup_federation_adms2_convert_pass');
 
     $rdf_data = '';
+    /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface[] $instances */
+    $instances = [];
     // Collect RDF testing data from plugins.
-    foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
+    foreach ($plugin_manager->getDefinitions() as $plugin_id => $definition) {
       /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface $plugin */
-      $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
-      if ($plugin_rdf_data = $plugin->getTestingRdfData()) {
+      $instances[$plugin_id] = $plugin_manager->createInstance($plugin_id);
+      if ($plugin_rdf_data = $instances[$plugin_id]->getTestingRdfData()) {
         $rdf_data .= "$plugin_rdf_data\n";
       }
     }
@@ -46,19 +37,12 @@ class ConvertToAdms2Test extends StepTestBase {
       $graph->parse($rdf_data);
       $this->createGraphStore()->replace($graph);
     }
-  }
 
-  /**
-   * Test ADMSv2 changes.
-   */
-  public function test() {
     $this->runPipelineStep('convert_to_adms2');
 
     // Execute assertions.
-    foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
-      /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface $plugin */
-      $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
-      $plugin->performAssertions($this);
+    foreach ($instances as $plugin_id => $instance) {
+      $instance->performAssertions($this);
     }
   }
 

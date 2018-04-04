@@ -5,16 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a manual data upload step plugin.
@@ -24,46 +21,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  label = @Translation("Manual upload"),
  * )
  */
-class ManualUploadStep extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, ContainerFactoryPluginInterface {
+class ManualUploadStep extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
 
   use PipelineStepWithFormTrait;
   use RdfEntityGraphStoreTrait;
-
-  /**
-   * The SPARQL connection.
-   *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
-   */
-  protected $sparqlConnection;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('sparql_endpoint')
-    );
-  }
-
-  /**
-   * Creates a new 'manual_upload_step' pipeline step plugin.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_connection
-   *   The SPARQL database connection.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql_connection) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->sparqlConnection = $sparql_connection;
-  }
 
   /**
    * {@inheritdoc}
@@ -167,7 +128,7 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
    *   If the SPARQL query is failing.
    */
   protected function clearGraph(): void {
-    $this->sparqlConnection->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");
+    $this->sparql->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");
   }
 
 }

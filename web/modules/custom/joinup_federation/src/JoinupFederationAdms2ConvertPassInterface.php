@@ -15,13 +15,6 @@ use Drupal\KernelTests\KernelTestBase;
 interface JoinupFederationAdms2ConvertPassInterface {
 
   /**
-   * Testing graph.
-   *
-   * @var string
-   */
-  const TEST_GRAPH = 'http://example.com/graph/test/sink';
-
-  /**
    * The ADMS v2 asset type.
    *
    * @var string

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  label = @Translation("ADMS Validation"),
  * )
  */
-class AdmsValidation extends JoinupFederationStepPluginBase implements ContainerFactoryPluginInterface {
+class AdmsValidation extends JoinupFederationStepPluginBase {
 
   use RdfEntityGraphStoreTrait;
 
@@ -38,11 +38,13 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL database connection.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AdmsValidatorInterface $adms_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AdmsValidatorInterface $adms_validator) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->admsValidator = $adms_validator;
   }
 
@@ -54,6 +56,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('sparql_endpoint'),
       $container->get('adms_validator.validator')
     );
   }
