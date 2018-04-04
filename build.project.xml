@@ -264,6 +264,7 @@
         <mkdir dir="${sass.output.dir}" />
         <sass
             executable="${sass.bin}"
+            flags="--sourcemap=${sass.sourcemap}"
             style="${sass.style}"
             input="${sass.input}"
             output="${sass.output.dir}/${sass.output.file}" />
