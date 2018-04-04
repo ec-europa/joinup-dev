@@ -7,7 +7,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\pipeline\PipelineOrchestratorInterface;
-use Drupal\pipeline\PipelineStateManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -24,34 +23,20 @@ class PipelineExecutionController extends ControllerBase {
   protected $orchestrator;
 
   /**
-   * The state manager service.
-   *
-   * @var \Drupal\pipeline\PipelineStateManager
-   */
-  protected $stateManager;
-
-  /**
-   * Constructs a new PipelineExecutionController object.
+   * Constructs a new pipeline execution controller.
    *
    * @param \Drupal\pipeline\PipelineOrchestratorInterface $orchestrator
    *   The pipeline orchestrator service.
-   * @param \Drupal\pipeline\PipelineStateManagerInterface $state_manager
-   *   The state manager service.
    */
-  public function __construct(PipelineOrchestratorInterface $orchestrator, PipelineStateManagerInterface $state_manager) {
+  public function __construct(PipelineOrchestratorInterface $orchestrator) {
     $this->orchestrator = $orchestrator;
-    $this->stateManager = $state_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): PipelineExecutionController {
-    return new static(
-      $container->get('pipeline.orchestrator'),
-      $container->get('pipeline.state_manager'),
-      $container->get('current_route_match')
-    );
+    return new static($container->get('pipeline.orchestrator'));
   }
 
   /**
@@ -100,26 +85,6 @@ class PipelineExecutionController extends ControllerBase {
    *   The access result object.
    */
   public function allowExecute($pipeline, AccountInterface $account) {
-    return AccessResult::allowedIfHasPermission($account, "execute $pipeline pipeline");
-  }
-
-  /**
-   * Provides a custom access callback for the pipeline.reset_pipeline route.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The current use account.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result object.
-   */
-  public function allowReset(AccountInterface $account) {
-    if (!$this->stateManager->isPersisted()) {
-      // No state is persisted. Don't make any decision.
-      return AccessResult::neutral();
-    }
-    $pipeline = $this->stateManager->state()->getPipelineId();
-    // Normally, it's not possible that user has to reset a pipeline on which he
-    // has no permission because he could not instantiated it.
     return AccessResult::allowedIfHasPermission($account, "execute $pipeline pipeline");
   }
 
