@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
-use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use EasyRdf\Graph;
 
 /**
@@ -15,9 +12,8 @@ use EasyRdf\Graph;
  *
  * @group pipeline
  */
-class ConvertToAdms2Test extends KernelTestBase {
+class ConvertToAdms2Test extends StepTestBase {
 
-  use RdfDatabaseConnectionTrait;
   use RdfEntityGraphStoreTrait;
 
   /**
@@ -30,22 +26,10 @@ class ConvertToAdms2Test extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = [
-    'pipeline',
-    'joinup_federation',
-    'joinup_federation_test',
-    'rdf_entity',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
-    $this->setUpSparql();
 
     $this->adms2ConverPassPluginManager = $this->container->get('plugin.manager.joinup_federation_adms2_convert_pass');
-    $graph_uri = JoinupFederationAdms2ConvertPassInterface::TEST_GRAPH;
 
     $rdf_data = '';
     // Collect RDF testing data from plugins.
@@ -58,7 +42,7 @@ class ConvertToAdms2Test extends KernelTestBase {
     }
 
     if ($rdf_data = $this->prepareRdfData($rdf_data)) {
-      $graph = new Graph($graph_uri);
+      $graph = new Graph(static::getTestingSinkGraph());
       $graph->parse($rdf_data);
       $this->createGraphStore()->replace($graph);
     }
@@ -68,17 +52,7 @@ class ConvertToAdms2Test extends KernelTestBase {
    * Test ADMSv2 changes.
    */
   public function test() {
-    /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
-    $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
-    $data = ['sink_graph' => JoinupFederationAdms2ConvertPassInterface::TEST_GRAPH];
-    /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
-    $pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline', $data);
-
-    $convert_plugin = $pipeline->createStepInstance('convert_to_adms2');
-
-    // Run updates.
-    $data = [];
-    $convert_plugin->execute($data);
+    $this->runPipelineStep('convert_to_adms2');
 
     // Execute assertions.
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
@@ -86,14 +60,6 @@ class ConvertToAdms2Test extends KernelTestBase {
       $plugin = $this->adms2ConverPassPluginManager->createInstance($plugin_id);
       $plugin->performAssertions($this);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    $this->sparql->query("CLEAR GRAPH <" . JoinupFederationAdms2ConvertPassInterface::TEST_GRAPH . ">;");
-    parent::tearDown();
   }
 
   /**

@@ -13,6 +13,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   steps = {
  *     "manual_upload_step",
  *     "convert_to_adms2",
+ *     "remove_unsupported_data",
  *     "adms_validation",
  *   },
  * )
