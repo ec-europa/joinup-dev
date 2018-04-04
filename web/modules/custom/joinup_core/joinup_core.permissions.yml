@@ -7,3 +7,6 @@ access uri converter:
 access joinup reports:
   title: 'Access Joinup reports'
   description: 'Users granted with this permission are able to access the Joinup reports.'
+
+permission_callbacks:
+  - \Drupal\joinup_core\JoinupPermissions::groupOwnershipPermissions

@@ -1,0 +1,4 @@
+services:
+  plugin.manager.joinup_federation_adms2_convert_pass:
+    class: Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager
+    parent: default_plugin_manager

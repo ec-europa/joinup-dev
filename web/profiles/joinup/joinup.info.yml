@@ -71,7 +71,6 @@ dependencies:
   - rdf_draft
   - rdf_entity
   - rdf_entity_provenance
-  - rdf_etl
   - rdf_export
   - rdf_schema_field_validation
   - rdf_taxonomy

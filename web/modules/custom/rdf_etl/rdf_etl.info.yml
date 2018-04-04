@@ -1,7 +1,0 @@
-name: 'RDF - Extract, transform, Load'
-type: module
-description: 'The RDF ETL module facilitates creating data pipelines to federate data in to a triplestore.'
-core: 8.x
-package: Custom
-dependencies:
-  - rdf_entity
