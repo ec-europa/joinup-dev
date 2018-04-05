@@ -2,24 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\rdf_etl\Plugin\rdf_etl\Step;
+namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\rdf_etl\Plugin\RdfEtlStepPluginBase;
+use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a step that creates provenance activity entities for related data.
  *
- * @RdfEtlStep(
+ * @PipelineStep(
  *  id = "attach_provenance_data",
  *  label = @Translation("Attach provenance data to the entities"),
  * )
  */
-class AttachProvenanceData extends RdfEtlStepPluginBase implements ContainerFactoryPluginInterface {
+class AttachProvenanceData extends JoinupFederationStepPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The entity type manager service.
@@ -93,7 +93,7 @@ WHERE {
 }
 QUERY;
 
-    $sink = $this->getConfiguration()['sink_graph'];
+    $sink = $this->getSinkGraphUri();
     $query = str_replace('@sink_graph', $sink, $query);
     $results = $this->sparql->query($query);
     $activities = [];

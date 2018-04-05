@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rdf_etl\Kernel;
+namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
@@ -28,8 +28,10 @@ class AttachProvenanceDataStepTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'pipeline',
+    'joinup_federation',
+    'joinup_federation_test',
     'rdf_entity',
-    'rdf_etl',
     'user',
   ];
 
@@ -50,17 +52,19 @@ class AttachProvenanceDataStepTest extends KernelTestBase {
    *   If the plugin is invalid.
    */
   public function testAdmsValidationStepPlugin(): void {
-    /** @var \Drupal\rdf_etl\Plugin\RdfEtlStepPluginManager $manager */
-    $manager = \Drupal::service('plugin.manager.rdf_etl_step');
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
+    $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
     $data = ['sink_graph' => static::TEST_GRAPH];
-    $plugin = $manager->createInstance('attach_provenance_data', $data);
+    /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
+    $pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline', $data);
+    $step = $pipeline->createStepInstance('attach_provenance_data');
 
     $graph = new Graph();
     $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
     $this->createGraphStore()->replace($graph, static::TEST_GRAPH);
 
     // Execute the validation step.
-    $plugin->execute($data);
+    $step->execute($data);
     $this->assertNotEmpty($data['activities']);
     $this->assertEquals(3, count($data['activities']));
   }
