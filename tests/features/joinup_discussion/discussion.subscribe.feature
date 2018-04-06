@@ -73,8 +73,17 @@ Feature: Subscribing to discussions
     Then I fill in "Create comment" with "Is Dale in love with Flash?"
     And I fill in "Your name" with "Gerhardt von Troll"
     And I fill in "Email" with "trollingismylife@example.com"
-    But I wait for the honeypot validation to pass
-    Then I press "Post comment"
+    And I wait for the honeypot validation to pass
+    And I press "Post comment"
+    # Check that notification emails are not sent yet since the comment is not approved.
+    Then the following email should not have been sent:
+      | recipient | dale@example.com                                                                                    |
+      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient | hans@example.com                                                                                    |
+      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
