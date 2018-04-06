@@ -75,7 +75,6 @@ Feature: Subscribing to discussions
     And I fill in "Email" with "trollingismylife@example.com"
     But I wait for the honeypot validation to pass
     Then I press "Post comment"
-    Then 0 e-mails should have been sent
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
