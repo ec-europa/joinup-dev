@@ -618,7 +618,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
-      'custom_page' => [],
+      'custom_page' => [
+        'attachments' => 'field_attachment',
+      ],
       'discussion' => [
         'content' => 'body',
         'state' => 'field_state',

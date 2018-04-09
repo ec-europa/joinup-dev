@@ -1,24 +1,25 @@
 <?php
 
-namespace Drupal\solution\Form;
+namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionManager;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgMembershipInterface;
-use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Confirmation form for transferring the solution ownership.
+ * Confirmation form for transferring the group ownership.
  */
-class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
+class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
 
   /**
    * The current user service.
@@ -51,7 +52,7 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
   /**
    * The user private tempstore.
    *
-   * @var \Drupal\user\PrivateTempStore
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
   protected $tempStore;
 
@@ -61,6 +62,13 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
    * @var \Drupal\og\OgMembershipInterface|null
    */
   protected $membership = NULL;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
 
   /**
    * Constructs a new confirmation form object.
@@ -73,15 +81,21 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
    *   The action plugin manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager interface.
-   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   If the entity storage of 'og_membership' is not found.
    */
-  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, EntityTypeManagerInterface $entity_type_manager, PrivateTempStoreFactory $temp_store_factory) {
+  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, EntityTypeManagerInterface $entity_type_manager, PrivateTempStoreFactory $temp_store_factory, MessengerInterface $messenger) {
     $this->currentUser = $current_user;
     $this->renderer = $renderer;
     $this->actionPluginManager = $action_plugin_manager;
     $this->membershipStorage = $entity_type_manager->getStorage('og_membership');
-    $this->tempStore = $temp_store_factory->get('joinup_transfer_solution_ownership');
+    $this->tempStore = $temp_store_factory->get('joinup_transfer_group_ownership');
+    $this->messenger = $messenger;
 
     if ($data = $this->tempStore->get($this->currentUser->id())) {
       if (!$this->membership = OgMembership::load($data['membership'])) {
@@ -99,7 +113,8 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
       $container->get('renderer'),
       $container->get('plugin.manager.action'),
       $container->get('entity_type.manager'),
-      $container->get('user.private_tempstore')
+      $container->get('tempstore.private'),
+      $container->get('messenger')
     );
   }
 
@@ -107,8 +122,11 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to transfer the ownership of %solution solution to %user?', [
-      '%solution' => $this->membership->getGroup()->label(),
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->membership->getGroup();
+    return $this->t('Are you sure you want to transfer the ownership of %group @label to %user?', [
+      '%group' => $group->label(),
+      '@label' => $group->get('rid')->entity->getSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
     ]);
   }
@@ -122,10 +140,13 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
         return $this->t('@user (you)', ['@user' => $membership->getOwner()->getDisplayName()]);
       }
       return $membership->getOwner()->getDisplayName();
-    }, $this->getSolutionOwnerMembeships());
+    }, $this->getGroupOwnerMembeships());
 
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->membership->getGroup();
     $args = [
-      '%solution' => $this->membership->getGroup()->label(),
+      '%group' => $group->label(),
+      '@label' => $group->get('rid')->entity->getSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
     ];
 
@@ -139,8 +160,8 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
       $build[] = [
         '#prefix' => '<p>',
         '#markup' => $this->formatPlural(count($current_owners),
-          "The user %first_user will lose the ownership of the %solution solution.",
-          "The following users will lose the ownership of the %solution solution:",
+          "The user %first_user will lose the ownership of the %group @label.",
+          "The following users will lose the ownership of the %group @label:",
           $args + ['%first_user' => reset($current_owners)]
         ),
         '#suffix' => '</p>',
@@ -154,7 +175,7 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
     }
     $build[] = [
       '#prefix' => '<p>',
-      '#markup' => $this->t('The user %user will be the new owner of %solution solution.', $args),
+      '#markup' => $this->t('The user %user will be the new owner of %group @label.', $args),
       '#suffix' => '</p>',
     ];
     $build[] = [
@@ -180,16 +201,17 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
     // Cleanup the bulk form selection.
     $this->tempStore->delete($this->currentUser->id());
 
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $this->membership->getGroup();
-    $memberships = $this->getSolutionOwnerMembeships();
-    // Revoke 'owner' role from existing solution owners but grant them the
-    // facilitator role, if missed.
-    $facilitator = OgRole::loadByGroupAndName($solution, 'facilitator');
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->membership->getGroup();
+    $memberships = $this->getGroupOwnerMembeships();
+    // Revoke 'owner' role from existing group owners but grant them the
+    // facilitator role, as a compensation, if missed.
+    $facilitator = OgRole::loadByGroupAndName($group, 'facilitator');
+    $bundle = $group->bundle();
     foreach ($memberships as $membership) {
-      $membership->revokeRoleById('rdf_entity-solution-administrator');
+      $membership->revokeRoleById("rdf_entity-$bundle-administrator");
       // Add the facilitator role, if missed.
-      if (!$membership->hasRole('rdf_entity-solution-facilitator')) {
+      if (!$membership->hasRole($facilitator->id())) {
         $membership->addRole($facilitator);
       }
       // Skip notifications.
@@ -200,41 +222,42 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
     // Add the 'owner' role.
     // @todo Send a notification to the new owner in ISAICP-4111. Till then, we
     //   disable all notifications.
-    $role = OgRole::loadByGroupAndName($solution, 'administrator');
+    $role = OgRole::loadByGroupAndName($group, 'administrator');
     $this->membership->skip_notification = TRUE;
     $this->membership->addRole($role)->save();
 
-    // Make this user also author of the solution.
-    $solution->skip_notification = TRUE;
-    $solution->setOwner($this->membership->getOwner())->save();
+    // Make this user also author of the group.
+    $group->skip_notification = TRUE;
+    $group->setOwner($this->membership->getOwner())->save();
 
     $former_owners = array_map(function (OgMembershipInterface $membership) {
       return $membership->getOwner()->getDisplayName();
     }, $memberships);
 
     $args = [
-      '%solution' => $this->membership->getGroup()->label(),
+      '%group' => $group->label(),
+      '@label' => $group->get('rid')->entity->getSingularLabel(),
       '%user' => $this->membership->getOwner()->getDisplayName(),
       '@users' => implode(', ', $former_owners),
     ];
     if ($former_owners) {
       $message = $this->formatPlural(count($former_owners),
-        'Ownership of %solution solution transferred from user @users to %user.',
-        'Ownership of %solution solution transferred from users @users to %user.',
+        'Ownership of %group @label transferred from user @users to %user.',
+        'Ownership of %group @label transferred from users @users to %user.',
         $args
       );
     }
     else {
-      $message = $this->t('Ownership of %solution solution granted to %user.', $args);
+      $message = $this->t('Ownership of %group @label granted to %user.', $args);
     }
-    drupal_set_message($message);
+    $this->messenger->addStatus($message);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'joinup_transfer_solution_ownership_confirm';
+    return 'joinup_transfer_group_ownership_confirm';
   }
 
   /**
@@ -248,24 +271,25 @@ class TransferSolutionOwnershipConfirmForm extends ConfirmFormBase {
     if (!$this->membership) {
       return AccessResult::forbidden();
     }
-    /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $action */
-    $action = $this->actionPluginManager->createInstance('joinup_transfer_solution_ownership');
+    /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $action */
+    $action = $this->actionPluginManager->createInstance('joinup_transfer_group_ownership');
     return $action->access($this->membership, $this->currentUser, TRUE);
   }
 
   /**
-   * Returns a list of memberships of the solution owners.
+   * Returns a list of memberships of the group owners.
    *
    * @return \Drupal\og\OgMembershipInterface[]
-   *   The memberships of the actual solution.
+   *   The memberships of the actual group.
    */
-  protected function getSolutionOwnerMembeships() {
+  protected function getGroupOwnerMembeships() {
+    $role_id = "rdf_entity-{$this->membership->getGroup()->bundle()}-administrator";
     $ids = $this->membershipStorage->getQuery()
       ->condition('type', OgMembership::TYPE_DEFAULT)
       ->condition('entity_type', 'rdf_entity')
       ->condition('entity_id', $this->membership->getGroupId())
       ->condition('state', OgMembership::STATE_ACTIVE)
-      ->condition('roles', 'rdf_entity-solution-administrator')
+      ->condition('roles', $role_id)
       ->execute();
     return OgMembership::loadMultiple($ids);
   }
