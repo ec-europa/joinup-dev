@@ -12,7 +12,9 @@ Feature: User role management
     When all e-mails have been sent
     And I am on the homepage
     And I click "People"
-    And I fill in "Name or email contains" with "Nibby Noob"
+    Then the "Action" field should contain the "Add the Moderator role to the selected user(s), Remove the Moderator role from the selected user(s)" options
+    And the available options in the "Action" select should not include the "Add the Administrator role to the selected user(s), Remove the Administrator role from the selected user(s)" options
+    When I fill in "Name or email contains" with "Nibby Noob"
     And I press the "Filter" button
     # Select user and assign role
     And I check "Nibby Noob"
