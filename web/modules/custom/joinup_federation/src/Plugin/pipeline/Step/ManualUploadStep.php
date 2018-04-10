@@ -29,25 +29,19 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$data) {
-    parent::prepare($data);
-    $this->pipeline->clearGraphs();
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function execute(array &$data) {
     try {
       $this->createGraphStore()->replace($data['graph'], $this->getGraphUri('sink'));
       $data['adms_file']->delete();
     }
     catch (\Exception $exception) {
-      return $this->t('Could not store triples in triple store. Reason: @message', [
-        '@message' => $exception->getMessage(),
-      ]);
+      return [
+        '#markup' => $this->t('Could not store triples in triple store. Reason: @message', [
+          '@message' => $exception->getMessage(),
+        ]),
+      ];
     }
+    return NULL;
   }
 
   /**

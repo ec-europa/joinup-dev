@@ -84,8 +84,18 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       'graph' => [
         'sink' => static::GRAPH_BASE . '/sink/' . $this->currentUser->id(),
         'sink_plus_taxo' => static::GRAPH_BASE . '/sink-plus-taxo/' . $this->currentUser->id(),
-      ]
+      ],
     ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepare(array &$data) {
+    // This is an extra-precaution to ensure that there's no existing data in
+    // the pipeline graphs, left there after an eventually failed previous run.
+    $this->clearGraphs();
+    return $this;
   }
 
   /**
