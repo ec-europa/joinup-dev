@@ -7,7 +7,6 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -19,8 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class AdmsValidation extends JoinupFederationStepPluginBase {
-
-  use RdfEntityGraphStoreTrait;
 
   /**
    * The ADMS validator service.
@@ -65,8 +62,8 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $graph = $this->createGraphStore()->get($this->getGraphUri('sink_plus_taxo'));
-    $validation = $this->admsValidator->validateGraph($graph);
+    $graph_uri = $this->getGraphUri('sink_plus_taxo');
+    $validation = $this->admsValidator->validateByGraphUri($graph_uri);
 
     if ($validation->isSuccessful()) {
       return NULL;
