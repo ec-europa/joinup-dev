@@ -32,7 +32,7 @@ interface AdmsValidatorInterface {
    * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
    */
-  public function validateGraphByUri(string $graph_uri): AdmsValidationResult;
+  public function validateByGraphUri(string $graph_uri): AdmsValidationResult;
 
   /**
    * Validates the triples from a graph object.
