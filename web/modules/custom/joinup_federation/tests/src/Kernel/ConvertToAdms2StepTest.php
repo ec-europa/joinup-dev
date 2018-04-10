@@ -33,7 +33,7 @@ class ConvertToAdms2StepTest extends StepTestBase {
     }
 
     if ($rdf_data = $this->prepareRdfData($rdf_data)) {
-      $graph = new Graph(static::getTestingSinkGraph());
+      $graph = new Graph(static::getTestingGraphs()['sink']);
       $graph->parse($rdf_data);
       $this->createGraphStore()->replace($graph);
     }

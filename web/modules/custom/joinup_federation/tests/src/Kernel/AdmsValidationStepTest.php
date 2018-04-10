@@ -32,7 +32,7 @@ class AdmsValidationStepTest extends StepTestBase {
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
     $graph = new Graph();
     $graph->parseFile(__DIR__ . "/../../fixtures/$rdf_file");
-    $this->createGraphStore()->replace($graph, static::getTestingSinkGraph());
+    $this->createGraphStore()->replace($graph, static::getTestingGraphs()['sink_plus_taxo']);
 
     $result = $this->runPipelineStep('adms_validation');
 

@@ -86,7 +86,7 @@ class Pass1To3 extends JoinupFederationAdms2ConvertPassPluginBase {
 
     foreach (static::getAdms1To2TypeConversionMap() as $adms1_uri => $adms2_uri) {
       $results = $this->getTriplesFromGraph(
-        ConvertToAdms2StepTest::getTestingSinkGraph(),
+        ConvertToAdms2StepTest::getTestingGraphs()['sink'],
         $entities[$adms2_uri],
         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         "<$adms2_uri>"
@@ -95,7 +95,7 @@ class Pass1To3 extends JoinupFederationAdms2ConvertPassPluginBase {
       $test->assertCount(1, $results);
 
       $results = $this->getTriplesFromGraph(
-        ConvertToAdms2StepTest::getTestingSinkGraph(),
+        ConvertToAdms2StepTest::getTestingGraphs()['sink'],
         $entities[$adms2_uri],
         'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         "<$adms1_uri>"

@@ -51,15 +51,18 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   }
 
   /**
-   * Returns the sink graph URI.
+   * Returns the federation graph URI given a graph type.
+   *
+   * @param string $graph_type
+   *   The type of graph.
    *
    * @return string
-   *   The sink graph URI.
+   *   The graph URI.
    */
-  protected function getSinkGraphUri(): string {
+  protected function getGraphUri(string $graph_type): string {
     /** @var \Drupal\joinup_federation\JoinupFederationPipelineInterface $pipeline */
     $pipeline = $this->getPipeline();
-    return $pipeline->getSinkGraphUri();
+    return $pipeline->getGraphUri($graph_type);
   }
 
 }

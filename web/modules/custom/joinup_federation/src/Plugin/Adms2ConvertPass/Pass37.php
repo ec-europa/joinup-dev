@@ -38,7 +38,7 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
    */
   public function performAssertions(KernelTestBase $test): void {
     $results = $this->getTriplesFromGraph(
-      ConvertToAdms2StepTest::getTestingSinkGraph(),
+      ConvertToAdms2StepTest::getTestingGraphs()['sink'],
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#downloadURL'
     );
@@ -46,7 +46,7 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
     $test->assertEmpty($results);
 
     $results = $this->getTriplesFromGraph(
-      ConvertToAdms2StepTest::getTestingSinkGraph(),
+      ConvertToAdms2StepTest::getTestingGraphs()['sink'],
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#accessURL'
     );

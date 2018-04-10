@@ -29,10 +29,18 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
   /**
    * {@inheritdoc}
    */
+  public function prepare(array &$data) {
+    parent::prepare($data);
+    $this->pipeline->clearGraphs();
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute(array &$data) {
-    $this->clearGraph();
     try {
-      $this->createGraphStore()->replace($data['graph'], $this->getSinkGraphUri());
+      $this->createGraphStore()->replace($data['graph'], $this->getGraphUri('sink'));
       $data['adms_file']->delete();
     }
     catch (\Exception $exception) {
@@ -119,16 +127,6 @@ class ManualUploadStep extends JoinupFederationStepPluginBase implements Pipelin
       return NULL;
     }
     return $file;
-  }
-
-  /**
-   * Checks the backend for existing data in the sink graph.
-   *
-   * @throws \Exception
-   *   If the SPARQL query is failing.
-   */
-  protected function clearGraph(): void {
-    $this->sparql->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");
   }
 
 }
