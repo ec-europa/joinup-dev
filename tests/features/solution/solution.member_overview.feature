@@ -61,18 +61,18 @@ Feature: Solution membership overview
     And I should be on "/solution/growing-zone/members"
 
     And I should see the following tiles in the correct order:
-      | Ariadna Astrauskas  |
-      | Aušra Buhr          |
-      | Badurad Nussenbaum  |
-      | Callista Wronski    |
-      | Dilek Bannister     |
-      | Fadl Sherman        |
-      | Fulvia Gabrielson   |
-      | Gina Forney         |
-      | Glædwine Ruskin     |
-      | Irini Prescott      |
-      | Karna McReynolds    |
-      | Mark Estévez        |
+      | Ariadna Astrauskas |
+      | Aušra Buhr         |
+      | Badurad Nussenbaum |
+      | Callista Wronski   |
+      | Dilek Bannister    |
+      | Fadl Sherman       |
+      | Fulvia Gabrielson  |
+      | Gina Forney        |
+      | Glædwine Ruskin    |
+      | Irini Prescott     |
+      | Karna McReynolds   |
+      | Mark Estévez       |
     # The 13th and 14th member should not be visible on this page, but on the next page.
     And I should not see the "Peter Proudfoots" tile
     And I should not see the "Pocahontas Mathieu" tile
@@ -107,3 +107,58 @@ Feature: Solution membership overview
     # Clicking the user name should lead to the user profile page.
     When I click "Ariadna Astrauskas"
     Then I should see the heading "Ariadna Astrauskas"
+
+  Scenario: Privileged members should be able to filter users in the solutions members page.
+    Given users:
+      | Username     | First name | Family name |
+      | ledge        | Jack       | Cartwright  |
+      | user13343    | Jack       | Edgar       |
+      | jackolantern | Carter     | Edgar       |
+      | rightone     | Wright     | Jackson     |
+      | brighty      | Lavonne    | Atkins      |
+    And the following collection:
+      | title | Coffee lovers |
+      | state | validated     |
+    And the following solution:
+      | title       | Coffee grinders                      |
+      | description | Grind more coffee, make more coffee. |
+      | state       | validated                            |
+      | collection  | Coffee lovers                        |
+    And the following solution user memberships:
+      | solution        | user         | roles       |
+      | Coffee grinders | ledge        | owner       |
+      | Coffee grinders | user13343    | facilitator |
+      | Coffee grinders | jackolantern |             |
+      | Coffee grinders | rightone     |             |
+      | Coffee grinders | brighty      |             |
+
+    When I am logged in as "ledge"
+    And I go to the homepage of the "Coffee grinders" solution
+    And I click "Members" in the "Left sidebar"
+    Then the following fields should be present "Username, First name, Family name"
+
+    When I fill in "Username" with "right"
+    And I press "Apply"
+    Then I should see the link "Wright Jackson"
+    And I should see the link "Lavonne Atkins"
+    But I should not see the link "Jack Cartwright"
+
+    When I clear the content of the field "Username"
+    When I fill in "First name" with "Jack"
+    And I press "Apply"
+    Then I should see the link "Jack Cartwright"
+    And I should see the link "Jack Edgar"
+    But I should not see the link "Wright Jackson"
+    And I should not see the link "Carter Edgar"
+
+    When I clear the field "First name"
+    And I fill in "Family name" with "Edg"
+    And I press "Apply"
+    Then I should see the link "Jack Edgar"
+    And I should see the link "Carter Edgar"
+    But I should not see the link "Jack Cartwright"
+
+    When I fill in "Username" with "use"
+    And I press "Apply"
+    Then I should see the link "Jack Edgar"
+    But I should not see the link "Carter Edgar"
