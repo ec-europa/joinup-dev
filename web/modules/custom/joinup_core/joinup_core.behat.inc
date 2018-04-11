@@ -17,8 +17,14 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Asserts that only the expected chips are shown in the page.
    *
+   * A "chip" is a Material Design element that is used in dropdowns with multi-
+   * select to show which items have been selected when the dropdown is
+   * collapsed.
+   *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The table containing the expected chip labels.
+   *
+   * @see https://material.io/guidelines/components/chips.html
    *
    * @Then the page should show( only) the chips:
    */
@@ -36,8 +42,14 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Clicks the remove button in a chip.
    *
+   * A "chip" is a Material Design element that is used in dropdowns with multi-
+   * select to show which items have been selected when the dropdown is
+   * collapsed.
+   *
    * @param string $text
    *   The text or partial text of the chip.
+   *
+   * @see https://material.io/guidelines/components/chips.html
    *
    * @throws \Exception
    *   Thrown when either the chip or its remove button are not found.
