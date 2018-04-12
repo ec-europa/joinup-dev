@@ -1356,6 +1356,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Presses a button in a given WYSIWYG editor.
+   *
+   * @param string $button
+   *   The label of the button to press.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I press the button :button in the :label wysiwyg editor
+   */
+  public function pressButtonInWysiwyg($button, $label) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $this->pressWysiwygButton($label, $button);
+  }
+
+  /**
    * Checks that a given field label is associated with a WYSIWYG editor.
    *
    * @param string $label
