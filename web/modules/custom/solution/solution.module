@@ -235,6 +235,14 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     $collection->set('graph', $graph);
     $collection->save();
   }
+
+  // At this point the solution has already been indexed without the parent so
+  // The queries that are based on the affiliated collection will present false
+  // data. Reset the cache related to the solution and re index it so that the
+  // entity_groups property is properly set.
+  // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
+  $storage->resetCache([$solution_id]);
+  search_api_entity_insert(Rdf::load($solution_id));
 }
 
 /**
