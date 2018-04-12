@@ -110,7 +110,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
       $this->menuLinkContentStorage->create([
         'title' => $custom_page->label(),
         'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
-        'link' => ['uri' => 'internal:/node/' . $custom_page->id()],
+        'link' => ['uri' => 'entity:/node/' . $custom_page->id()],
         'enabled' => TRUE,
       ])->save();
     }
@@ -129,7 +129,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
         $mids = $this->menuLinkContentStorage->getQuery()
           ->condition('bundle', 'menu_link_content')
           ->condition('menu_name', $source_menu_name)
-          ->condition('link.uri', "internal:/{$custom_page->toUrl()->getInternalPath()}")
+          ->condition('link.uri', "entity:node/{$custom_page->id()}")
           ->execute();
         if ($mids) {
           $target_menu_name = "ogmenu-{$target_og_menu_instance->id()}";

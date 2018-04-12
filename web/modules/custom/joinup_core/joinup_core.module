@@ -526,7 +526,7 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('Members'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl('member-overview')->toString()],
+      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
       'weight' => -9,
     ]);
     $link->save();
@@ -534,7 +534,7 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('About'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
       'weight' => -8,
     ]);
     $link->save();
