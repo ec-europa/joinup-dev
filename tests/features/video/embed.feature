@@ -4,12 +4,13 @@ Feature: Embed of videos into the page.
   As a user of the website
   I should be able to embed a restricted set of videos in the page.
 
-  Scenario: As a community content editor I can embed video iframes from allowed providers into the content field.
+  Background:
     Given the following collection:
       | title       | Beer brewing corporation             |
       | description | Beer is the real nectar of the gods. |
       | state       | validated                            |
 
+  Scenario: As a community content editor I can embed video iframes from allowed providers into the content field.
     Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
     And I go to the homepage of the "Beer brewing corporation" collection
     And I click "Add news" in the plus button menu
@@ -40,3 +41,17 @@ Feature: Embed of videos into the page.
 
     But the response should not contain "https://player.vimeo.com/video/225133231"
     And the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
+
+  @javascript
+  Scenario: A video embed button should be shown to community content editors.
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
+    And I go to the homepage of the "Beer brewing corporation" collection
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    Then I should see the heading "Edit Collection Beer brewing corporation"
+    When I press the button "Video Embed" in the "Description" wysiwyg editor
+    Then a modal should open
+    # Put a video link.
+    # Assert that the video gets rendered.
+    # Try to manually put a source as encoded json with bad parameters like autoplay=true.
+    # Verify that it's fixed. This is triggered by the order of the plugins in the format.
