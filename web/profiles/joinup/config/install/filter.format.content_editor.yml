@@ -53,7 +53,7 @@ filters:
     id: joinup_video
     provider: joinup_video
     status: true
-    weight: -49
+    weight: -48
     settings:
       allowed_providers:
         google_docs: google_docs
@@ -111,5 +111,5 @@ filters:
     id: video_embed_wysiwyg
     provider: video_embed_wysiwyg
     status: true
-    weight: -48
+    weight: -49
     settings: {  }
