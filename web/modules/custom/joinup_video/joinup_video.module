@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup video module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_video_embed_dialog_alter().
+ *
+ * Hide autoplay and responsive settings in the video embed dialog.
+ */
+function joinup_video_form_video_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['settings']['#access'] = FALSE;
+}
