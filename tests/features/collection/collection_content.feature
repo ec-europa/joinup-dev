@@ -1,9 +1,8 @@
-@api
+@api @terms
 Feature: Given I am visiting the collection homepage
   I want to see the content tabs with the proper singular/plural labels.
 
-  Scenario: Test label variant based on the content count of each category.
-
+  Background:
     Given the following collection:
       | title | Turin Egyptian Collection |
       | state | validated                 |
@@ -30,8 +29,45 @@ Feature: Given I am visiting the collection homepage
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
 
-    Given I go to the homepage of the "Turin Egyptian Collection" collection
+  Scenario: Test that publishing new solutions result in counters being properly updated.
+    Given owner:
+      | name             | type                  |
+      | Particle sweeper | Private Individual(s) |
 
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
+    Given I am logged in as a moderator
+    And I go to the homepage of the "Turin Egyptian Collection" collection
+
+    # The solution counters do not include the unpublished solutions.
+    Then I should see the link "Solution (1)"
+    And I see the text "1 Solution" in the "Header" region
+
+    When I click "Add solution" in the plus button menu
+    And I fill in the following:
+      | Title            | Solution from draft to validated                                    |
+      | Description      | Testing that publishing a solution, updates the collection content. |
+      | Spatial coverage | Switzerland                                                         |
+      | Name             | Costas Papazoglou                                                   |
+      | E-mail address   | CostasPapazoglou@example.com                                        |
+    And I select "Data gathering, data processing" from "Policy domain"
+    And I select "[ABB59] Logging Service" from "Solution type"
+    And I press "Add existing" at the "Owner" field
+    And I fill in "Owner" with "Particle sweeper"
+    And I press "Add owner"
+    And I press "Publish"
+    Then I should see the heading "Solution from draft to validated"
+
+    When I go to the homepage of the "Turin Egyptian Collection" collection
+    # Since there are 2 solutions, the link moved in first since it is the type of content with most items.
+    # When the facet tab is displayed, the text is "@count Solutions", while if it is in the "More" dropdown, it shows
+    # as "Solutions (@count)".
+    Then I see the text "2 Solution" in the "Header" region
+    And I should see the link "2 Solutions"
+    Then I delete the "Solution from draft to validated" solution
+    And I delete the "Costas Papazoglou" contact information
+
+  Scenario: Test label variant based on the content count of each category.
+    Given I go to the homepage of the "Turin Egyptian Collection" collection
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
     And the "Event" content tab is displayed
@@ -40,7 +76,7 @@ Feature: Given I am visiting the collection homepage
     And I should see the link "Solution (1)"
     And I should see the link "Video (1)"
 
-    And the following solution:
+    Given the following solution:
       | title      | Protecting Artifacts      |
       | collection | Turin Egyptian Collection |
       | state      | validated                 |
