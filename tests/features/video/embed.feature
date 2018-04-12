@@ -5,12 +5,13 @@ Feature: Embed of videos into the page.
   I should be able to embed a restricted set of videos in the page.
 
   Scenario: As a community content editor I can embed video iframes from allowed providers into the content field.
-    Given the following collections:
-      | title      | description                                 | logo     | banner     | state     |
-      | Metal fans | "Share the love for nickel, tungsten & co." | logo.png | banner.jpg | validated |
+    Given the following collection:
+      | title       | Beer brewing corporation             |
+      | description | Beer is the real nectar of the gods. |
+      | state       | validated                            |
 
-    Given I am logged in as a "facilitator" of the "Metal fans" collection
-    And I go to the homepage of the "Metal fans" collection
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
+    And I go to the homepage of the "Beer brewing corporation" collection
     And I click "Add news" in the plus button menu
 
     Then I fill in the following:
