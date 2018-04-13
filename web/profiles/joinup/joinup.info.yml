@@ -82,6 +82,7 @@ dependencies:
   - state_machine_revisions
   - subpathauto
   - swiftmailer
+  - tallinn
   - text
   - toolbar
   - tour
