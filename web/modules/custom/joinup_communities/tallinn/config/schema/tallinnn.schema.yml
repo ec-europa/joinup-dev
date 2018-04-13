@@ -1,0 +1,7 @@
+field.field_settings.tallinn_entry:
+  type: mapping
+  label: 'Tallinn settings'
+  mapping:
+    tallinn_description:
+      type: string
+      label: 'Tallinn description'
