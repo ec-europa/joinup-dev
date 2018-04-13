@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Contains installation methods and hooks for the tallinn module.
+ */
+
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function tallinn_install() {
+  foreach (_tallinn_get_agreement_countries() as $country_name) {
+    Node::create([
+      'title' => $country_name,
+      'type' => 'tallinn_report',
+      'og_audience' => Tallinn_COMMUNITY_ID,
+    ])->save();
+  }
+}
+
+/**
+ * Returns a list of countries that have signed the tallinn agreement.
+ *
+ * @return string[]
+ *   A list of countries.
+ */
+function _tallinn_get_agreement_countries() {
+  return [
+    "Austria",
+    "Belgium",
+    "Bulgaria",
+    "Croatia",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Estonia",
+    "Finland",
+    "France",
+    "Germany",
+    "Greece",
+    "Hungary",
+    "Ireland",
+    "Italy",
+    "Latvia",
+    "Lithuania",
+    "Luxembourg",
+    "Malta",
+    "The Netherlands",
+    "Poland",
+    "Portugal",
+    "Romania",
+    "Slovak",
+    "Republic",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "United Kingdom",
+    "Iceland",
+    "Liechtenstein",
+    "Norway",
+    "Switzerland",
+  ];
+}
