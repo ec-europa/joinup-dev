@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_12
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_12
+field_name: field_tallinn_action_12
+entity_type: node
+bundle: tallinn_report
+label: 'Action 12'
+description: 'Enable the private sector to make use of national eID schemes and trust services in securing the delivery of their digital services, where beneficial to the citizen, including by the further development of single sign-on, mandates and delegations.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry
