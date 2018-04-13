@@ -1,0 +1,21 @@
+{% if title %}
+    <h2>{{ title }}</h2>
+{% endif %}
+{% if status %}
+    <div>
+        <strong>{{ "Status:"|t }}</strong>
+        <p>{{ status }}</p>
+    </div>
+{% endif %}
+{% if explanation %}
+    <div>
+        <strong>{{ "Explanation:" }}</strong>
+        <p>{{ explanation }}</p>
+    </div>
+{% endif %}
+{% if url %}
+    <div>
+        <strong>{{ "Reference link:"|t }}</strong>
+        <p>{{ url }}</p>
+    </div>
+{% endif %}

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hook implementations for the tallinn module.
+ */
+
+define('Tallinn_COMMUNITY_ID', 'http://data.europa.eu/w21/70715970-4384-4864-8811-a65bdb55450e');
+
+/**
+ * Implements hook_theme().
+ */
+function tallinn_theme($existing, $type, $theme, $path) {
+  return [
+    'tallinn_entry' => [
+      'variables' => [
+        'title' => '',
+        'status' => [],
+        'explanation' => [],
+        'url' => [],
+      ],
+    ],
+  ];
+}
