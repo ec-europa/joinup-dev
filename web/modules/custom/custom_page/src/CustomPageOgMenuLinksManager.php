@@ -64,7 +64,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
       $mids = $this->menuLinkContentStorage->getQuery()
         ->condition('bundle', 'menu_link_content')
         ->condition('menu_name', $menu_name)
-        ->condition('link.uri', "internal:/{$custom_page->toUrl()->getInternalPath()}")
+        ->condition('link.uri', "entity:node/{$custom_page->id()}")
         ->execute();
       if ($mids) {
         $parents = [];
