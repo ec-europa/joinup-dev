@@ -6,11 +6,26 @@
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/..)
 
+# Virtuoso has a checkpoint interval of 60 minutes. That means that every 60 minutes,
+# the server will be un responsive for a small amount of time (a few seconds).
+# Since our updates take too long, this can lead to "random" valid query failures.
+# Set the interval to 0 to disable automatic checkpoints. At the end of the update
+# The interval will be restored, and a manual checkpoint will be fired in order to
+# write all the transactions of the updates into the disk.
+echo "Disable automatic checkpoints."
+./vendor/bin/phing set-virtuoso-checkpoint -Dinterval="-1"
+
 # Perform the necessary steps for the update
 cd ${PROJECT_ROOT}
 ./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush cs-update --discard-overrides --yes &&
 ./vendor/bin/drush cache-rebuild --yes
+
+echo "Perform a manual checkpoint."
+./vendor/bin/phing execute-virtuoso-checkpoint
+
+echo "Restoring the virtuoso checkpoint interval."
+./vendor/bin/phing set-virtuoso-checkpoint -Dinterval=60
 
 # Check if any of the steps returned an error.
 STATUS=$?
