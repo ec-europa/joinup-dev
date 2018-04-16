@@ -5,7 +5,7 @@
  * Contains functions and hook implementations for the tallinn module.
  */
 
-define('Tallinn_COMMUNITY_ID', 'http://data.europa.eu/w21/70715970-4384-4864-8811-a65bdb55450e');
+define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/70715970-4384-4864-8811-a65bdb55450e');
 
 /**
  * Implements hook_theme().

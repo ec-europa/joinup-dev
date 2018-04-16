@@ -2,15 +2,11 @@
 
 namespace Drupal\tallinn\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\link\LinkItemInterface;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'tallinn_entry_default' widget.

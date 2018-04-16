@@ -4,9 +4,7 @@ namespace Drupal\tallinn\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\TypedData\MapDataDefinition;
 
 /**
  * Plugin implementation of the 'tallinn_entry' field type.

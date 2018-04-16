@@ -44,7 +44,7 @@ class TallinnEntryFormatter extends FormatterBase {
       '#markup' => $option,
       '#attributes' => [
         'class' => $classes,
-      ]
+      ],
     ];
 
     if (!empty($value['value'])) {

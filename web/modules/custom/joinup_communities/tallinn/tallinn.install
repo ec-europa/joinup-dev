@@ -15,7 +15,7 @@ function tallinn_install() {
     Node::create([
       'title' => $country_name,
       'type' => 'tallinn_report',
-      'og_audience' => Tallinn_COMMUNITY_ID,
+      'og_audience' => TALLINN_COMMUNITY_ID,
     ])->save();
   }
 }
