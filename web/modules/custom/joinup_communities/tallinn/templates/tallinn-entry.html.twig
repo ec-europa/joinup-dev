@@ -24,19 +24,21 @@
     {% endif %}
     {% if status %}
         <div {{ attributes.addClass(status_classes) }}>
-        {{ status }}
+            <span>{{ status }}</span>
         </div>
     {% endif %}
 
     {% if explanation %}
         <div>
-            <p>{{ explanation }}</p>
+            <strong>{{ "Explanation"|t }}:</strong>
+            <span>{{ explanation }}</span>
         </div>
     {% endif %}
 
     {% if url %}
         <div>
-            <p>{{ url }}</p>
+            <strong>{{ "Url"|t }}:</strong>
+            <span>{{ url }}</span>
         </div>
     {% endif %}
 </fieldset>

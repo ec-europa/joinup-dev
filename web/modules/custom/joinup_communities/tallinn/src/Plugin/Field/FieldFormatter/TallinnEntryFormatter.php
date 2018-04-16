@@ -81,7 +81,7 @@ class TallinnEntryFormatter extends FormatterBase {
    */
   protected function getOptionClasses(TypedDataInterface $item) {
     $option_classes = [
-      'no_data' => ['announcement', 'announcement_content'],
+      'no_data' => ['alert_message'],
       'no_progress' => ['alert_message', 'alert--error'],
       'in_progress' => ['alert_message', 'alert--warning'],
       'completed' => ['alert_message', 'alert--success'],

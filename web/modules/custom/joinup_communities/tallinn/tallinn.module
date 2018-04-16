@@ -30,6 +30,6 @@ function tallinn_theme($existing, $type, $theme, $path) {
  */
 function tallinn_preprocess_tallinn_entry(&$variables) {
   if (isset($variables['status']['#attributes']['class'])) {
-    $variables['#status_classes'] = $variables['status']['#attributes']['class'];
+    $variables['status_classes'] = $variables['status']['#attributes']['class'];
   }
 }
