@@ -21,6 +21,7 @@ function tallinn_theme($existing, $type, $theme, $path) {
         'explanation' => [],
         'url' => [],
       ],
+      'render' => 'element',
     ],
   ];
 }

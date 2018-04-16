@@ -35,19 +35,17 @@ class TallinnEntryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
 
-    $element['wrapper'] = [
+    $element = [
       '#type' => 'fieldset',
       '#title' => $this->fieldDefinition->getLabel(),
     ];
 
-    $element['wrapper']['tallinn_description'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h3',
-      '#value' => $this->fieldDefinition->getDescription(),
+    $element['tallinn_description'] = [
+      '#markup' => $this->fieldDefinition->getDescription(),
       '#weight' => 0,
     ];
 
-    $element['wrapper']['explanation'] = [
+    $element['explanation'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Explanations'),
       '#default_value' => $item->value,
@@ -55,7 +53,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#weight' => 1,
     ];
 
-    $element['wrapper']['status'] = [
+    $element['status'] = [
       '#type' => 'select',
       '#title' => $this->t('Implementation status'),
       '#options' => $this->getStatusOptions(),
@@ -63,12 +61,11 @@ class TallinnEntryWidget extends WidgetBase {
       '#weight' => 2,
     ];
 
-    $element['wrapper']['uri'] = [
+    $element['url'] = [
       '#type' => 'url',
       '#title' => $this->t('Related website'),
       '#default_value' => $item->uri,
       '#maxlength' => 2048,
-      '#required' => $element['#required'],
       // Only external links, i.e. full links.
       '#link_type' => LinkItemInterface::LINK_EXTERNAL,
       '#weight' => 3,
@@ -82,10 +79,12 @@ class TallinnEntryWidget extends WidgetBase {
    * Form element validation handler for the complete form element.
    */
   public static function validateFormElement($element, FormStateInterface $form_state, $form) {
-    $status = $element['wrapper']['status']['#value'];
-    $explanation = $element['wrapper']['explanation']['value']['#value'];
+    $status = $element['status']['#value'];
+    $explanation = $element['explanation']['value']['#value'];
     if ($status !== 'no_data' && empty($explanation)) {
-      $form_state->setError($element, t('An explanation is required. Please, fill in the <em>Explanations</em> field.'));
+      $form_state->setError($element, t(':title requires <em>Explanations</em> field filled if <em>Status</em> is not set to "No data".', [
+        ':title' => $element['#title'],
+      ]));
     }
   }
 
@@ -104,7 +103,7 @@ class TallinnEntryWidget extends WidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $values = parent::massageFormValues($values, $form, $form_state);
-    $values = $values[0]['wrapper'];
+    $values = $values[0];
     foreach ($values as $delta => $delta_values) {
       if (!empty($values['explanation']['value'])) {
         $values += $values['explanation'];
