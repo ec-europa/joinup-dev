@@ -31,37 +31,37 @@ class TallinnEntryFormatter extends FormatterBase {
       return [];
     }
 
-    $color = $this->getOptionToColor($item);
+    $value = $item->getValue();
+    $classes = $this->getOptionClasses($item);
     $option = $this->getOptionToString($item);
-    $font_color = in_array($color, ['red', 'green', 'grey']) ? 'white' : 'black';
     $build = [
       '#theme' => 'tallinn_entry',
-      '#title' => $this->fieldDefinition->getLabel(),
-      '#status' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $option,
-        '#attributes' => [
-          'style' => "background-color: {$color}; color: {$font_color}",
-        ],
-        '#weight' => 0,
-      ],
     ];
 
-    if ($value = $item->getValue()['value']) {
+    $build['#title'] = $this->fieldDefinition->getLabel();
+    $build['#description'] = $this->fieldDefinition->getDescription();
+    $build['#status'] = [
+      '#markup' => $option,
+      '#attributes' => [
+        'class' => $classes,
+      ]
+    ];
+
+    if (!empty($value['value'])) {
       $build['#explanation'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $item->getValue()['value'],
+        '#title' => t('Explanation'),
+        '#title_display' => 'inline',
+        '#type' => 'processed_text',
+        '#text' => $value['value'],
+        '#format' => $value['format'],
       ];
     }
 
-    if (!empty($item->getValue()['uri'])) {
-      $uri = $item->getValue()['uri'];
+    if (!empty($value['uri'])) {
       $build['#url'] = [
         '#type' => 'link',
-        '#url' => Url::fromUri($uri),
-        '#title' => $uri,
+        '#url' => Url::fromUri($value['uri']),
+        '#title' => $value['uri'],
       ];
     }
 
@@ -71,27 +71,23 @@ class TallinnEntryFormatter extends FormatterBase {
   }
 
   /**
-   * Returns the corresponding color of the selected status option.
+   * Returns the classes related to the selected status option.
    *
    * @param \Drupal\Core\TypedData\TypedDataInterface $item
    *   The field item.
    *
-   * @return string
-   *   The corresponding color or transparent in case no value exists.
+   * @return array
+   *   An array of classes to pass to the status area.
    */
-  protected function getOptionToColor(TypedDataInterface $item) {
-    $option_colors = [
-      'no_data' => 'grey',
-      'no_progress' => 'red',
-      'in_progress' => 'yellow',
-      'completed' => 'green',
+  protected function getOptionClasses(TypedDataInterface $item) {
+    $option_classes = [
+      'no_data' => ['announcement', 'announcement_content'],
+      'no_progress' => ['alert_message', 'alert--error'],
+      'in_progress' => ['alert_message', 'alert--warning'],
+      'completed' => ['alert_message', 'alert--success'],
     ];
 
-    if (!empty($item->getValue()['status'])) {
-      return $option_colors[$item->getValue()['status']];
-    }
-
-    return 'rgba(0, 0, 0, 0)';
+    return $option_classes[$item->getValue()['status']];
   }
 
   /**
