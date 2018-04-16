@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "be7d394f39f82fe9b394a1a2addfe2bb",
+    "content-hash": "2af95f66bd6df210f571a7107199217f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5255,11 +5255,17 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "dev-checkpoint_execution",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "checkpoint_execution"
+                "url": "https://github.com/ec-europa/virtuoso.git",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -5267,7 +5273,20 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2018-04-15T15:59:23+00:00"
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "issues": "https://github.com/ec-europa/virtuoso/issues"
+            },
+            "time": "2018-04-16T07:12:39+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -12022,7 +12041,6 @@
         "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
-        "ec-europa/virtuoso": 20,
         "jacklmoore/autosize": 20,
         "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
