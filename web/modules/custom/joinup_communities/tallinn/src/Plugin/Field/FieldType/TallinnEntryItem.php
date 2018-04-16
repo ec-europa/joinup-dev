@@ -27,20 +27,20 @@ class TallinnEntryItem extends FieldItemBase {
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     // Properties related to the options value.
     $properties['status'] = DataDefinition::create('string')
-      ->setLabel('Status')
+      ->setLabel('Implementation status')
       ->addConstraint('Length', ['max' => 255])
       ->setRequired(FALSE);
 
     // Properties related to the explanation value.
     $properties['value'] = DataDefinition::create('string')
-      ->setLabel(t('Details'))
+      ->setLabel(t('Explanation'))
       ->setRequired(FALSE);
     $properties['format'] = DataDefinition::create('filter_format')
       ->setLabel(t('Text format'));
 
     // Properties related to the link value.
     $properties['uri'] = DataDefinition::create('uri')
-      ->setLabel(t('URI'));
+      ->setLabel(t('Related website'));
 
     return $properties;
   }
