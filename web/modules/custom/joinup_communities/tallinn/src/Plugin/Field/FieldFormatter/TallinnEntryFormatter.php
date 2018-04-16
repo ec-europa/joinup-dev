@@ -65,8 +65,6 @@ class TallinnEntryFormatter extends FormatterBase {
       ];
     }
 
-    $build['#cache']['max-age'] = 0;
-
     return $build;
   }
 
