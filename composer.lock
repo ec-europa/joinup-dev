@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c24fa8668df9285f52dd8a738d2705bb",
+    "content-hash": "2af95f66bd6df210f571a7107199217f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1579,11 +1579,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4185,7 +4181,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1519387684",
+                    "datestamp": "1514109785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5259,18 +5255,38 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "2.0.0"
+                "url": "https://github.com/ec-europa/virtuoso.git",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Virtuoso\\": "src"
                 }
-            }
+            },
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "issues": "https://github.com/ec-europa/virtuoso/issues"
+            },
+            "time": "2018-04-16T07:12:39+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -6044,7 +6060,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2018-02-26T04:06:28+00:00"
+            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -10120,18 +10136,13 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-10-19T21:26:16+00:00"
+            }
         },
         {
             "name": "drupal/devel",

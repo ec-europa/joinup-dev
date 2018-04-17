@@ -230,4 +230,28 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->getSession()->visit($this->locatePath('/search?keys=' . $keywords));
   }
 
+  /**
+   * Asserts that a link has the "rel" attribute set to "nofollow".
+   *
+   * @param string $link
+   *   The link title.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found or when the link doesn't have the "rel"
+   *   attribute set to "nofollow".
+   *
+   * @Then search engines should be discouraged to follow the link :link
+   */
+  public function assertLinkHasRelNofollow($link) {
+    $element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("Link '$link' not found in the page.");
+    }
+
+    if ($element->getAttribute('rel') !== 'nofollow') {
+      throw new \Exception("Link '$link' doesn't have the 'rel' attribute set to 'nofollow'.");
+    }
+  }
+
 }
