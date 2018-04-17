@@ -111,7 +111,6 @@ function solution_rdf_entity_insert(RdfInterface $entity) {
   }
 
   solution_update_collection_affiliation($entity);
-
   solution_invalidate_collection($entity);
 }
 
@@ -178,25 +177,31 @@ function solution_update_collection_affiliation(RdfInterface $solution) {
   /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
 
+  $value = ['target_id' => $solution->id()];
   foreach ($solution->get('collections') as $item) {
     /** @var \Drupal\Core\Field\FieldItemListInterface $item */
     // Add the reference field both to the published and the draft collection.
     foreach (['default', 'draft'] as $graph_id) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
       if ($collection = $storage->load($item->getValue()['target_id'], [$graph_id])) {
+        $add_affiliate = TRUE;
         foreach ($collection->get('field_ar_affiliates') as $affiliate_item) {
           if ($affiliate_item->target_id === $solution->id()) {
             // This solutions is already an affiliate.
-            break 2;
+            $add_affiliate = FALSE;
+            break;
           }
         }
-        $value = ['target_id' => $solution->id()];
-        $collection->get('field_ar_affiliates')->appendItem($value);
-        $collection->set('graph', $graph_id)->save();
+        if ($add_affiliate) {
+          $collection->get('field_ar_affiliates')->appendItem($value);
+          $collection->set('graph', $graph_id)->save();
+        }
       }
     }
   }
 
+  $storage->resetCache([$solution->id()]);
+  search_api_entity_insert($solution);
 }
 
 /**
@@ -549,7 +554,7 @@ function solution_get_collection_ids(RdfInterface $solution) {
  * Also, when the entity is blacklisted, the published version is removed
  * (the entity becomes unpublished).
  */
-function solution_rdf_entity_update(EntityInterface $entity) {
+function solution_rdf_entity_update(RdfInterface $entity) {
   if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
@@ -564,6 +569,8 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
   }
+
+  solution_update_collection_affiliation($entity);
   solution_invalidate_collection($entity);
 }
 

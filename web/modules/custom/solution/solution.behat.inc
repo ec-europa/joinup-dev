@@ -531,6 +531,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     }
 
+    if (isset($fields['collections'])) {
+      $fields['collections'] = [$fields['collections']];
+    }
+
     // Convert any entity reference field label value with the entity ID.
     $fields = $this->convertEntityReferencesValues('rdf_entity', 'solution', $this->parseRdfEntityFields($fields));
     return $fields;
