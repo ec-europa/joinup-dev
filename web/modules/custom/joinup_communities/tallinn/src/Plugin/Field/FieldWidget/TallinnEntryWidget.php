@@ -82,7 +82,7 @@ class TallinnEntryWidget extends WidgetBase {
     $status = $element['status']['#value'];
     $explanation = $element['explanation']['value']['#value'];
     if ($status !== 'no_data' && empty($explanation)) {
-      $form_state->setError($element, t(':title requires <em>Explanations</em> field filled if <em>Status</em> is not set to "No data".', [
+      $form_state->setError($element['explanation']['value'], t(':title requires <em>Explanations</em> field filled if <em>Status</em> is not set to "No data".', [
         ':title' => $element['#title'],
       ]));
     }
