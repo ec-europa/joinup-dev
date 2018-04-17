@@ -81,8 +81,8 @@ class TallinnEntryWidget extends WidgetBase {
   public static function validateFormElement($element, FormStateInterface $form_state, $form) {
     $status = $element['status']['#value'];
     $explanation = $element['explanation']['value']['#value'];
-    if ($status !== 'no_data' && empty($explanation)) {
-      $form_state->setError($element['explanation']['value'], t(':title requires <em>Explanations</em> field filled if <em>Status</em> is not set to "No data".', [
+    if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
+      $form_state->setError($element['explanation']['value'], t(':title requires <em>Explanations</em> field filled if <em>Status</em> is set to "In progress" or "Completed".', [
         ':title' => $element['#title'],
       ]));
     }
