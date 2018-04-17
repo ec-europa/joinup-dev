@@ -78,14 +78,8 @@ class TallinnEntryFormatter extends FormatterBase {
    *   An array of classes to pass to the status area.
    */
   protected function getOptionClasses(TypedDataInterface $item) {
-    $option_classes = [
-      'no_data' => ['alert_message'],
-      'no_progress' => ['alert_message', 'alert--error'],
-      'in_progress' => ['alert_message', 'alert--warning'],
-      'completed' => ['alert_message', 'alert--success'],
-    ];
-
-    return $option_classes[$item->getValue()['status']];
+    $option_class = 'tallinn--' . $item->getValue()['status'];
+    return ['tallinn', 'tallinn__message', $option_class];
   }
 
   /**
