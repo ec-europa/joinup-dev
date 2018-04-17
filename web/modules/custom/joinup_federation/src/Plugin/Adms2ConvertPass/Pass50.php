@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
+use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
  * Conversion Pass #50.
@@ -38,7 +39,7 @@ class Pass50 extends JoinupFederationAdms2ConvertPassPluginBase {
    */
   public function performAssertions(KernelTestBase $test): void {
     $results = $this->getTriplesFromGraph(
-      static::TEST_GRAPH,
+      ConvertToAdms2StepTest::getTestingGraphs()['sink'],
       'http://example.com/repository/50',
       'http://www.w3.org/ns/adms#supportedSchema'
     );

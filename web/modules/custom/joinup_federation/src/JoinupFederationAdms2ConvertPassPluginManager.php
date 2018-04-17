@@ -38,7 +38,7 @@ class JoinupFederationAdms2ConvertPassPluginManager extends DefaultPluginManager
   protected function findDefinitions() {
     $definitions = parent::findDefinitions();
     // We do the sort here, not in ::getDefinitions(), so that definitions are
-    // cache correctly.
+    // cached correctly.
     uasort($definitions, [SortArray::class, 'sortByWeightElement']);
     return $definitions;
   }

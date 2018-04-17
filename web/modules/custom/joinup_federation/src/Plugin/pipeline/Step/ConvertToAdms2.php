@@ -2,9 +2,9 @@
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Convert ADMSv1 to v2"),
  * )
  */
-class ConvertToAdms2 extends JoinupFederationStepPluginBase implements ContainerFactoryPluginInterface {
+class ConvertToAdms2 extends JoinupFederationStepPluginBase {
 
   /**
    * The ADMS v1 to v2 transformation plugin manager.
@@ -33,11 +33,13 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements Container
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL database connection.
    * @param \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager
    *   The ADMS v1 to v2 transformation plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->adms2ConverPassPluginManager = $adms2_conver_pass_plugin_manager;
   }
 
@@ -49,6 +51,7 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements Container
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('sparql_endpoint'),
       $container->get('plugin.manager.joinup_federation_adms2_convert_pass')
     );
   }
@@ -57,7 +60,7 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements Container
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $data += ['sink_graph' => $this->getSinkGraphUri()];
+    $data += ['sink_graph' => $this->getGraphUri('sink')];
     // @todo There are ~75 passes, need to use batch processing?
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
       $this->adms2ConverPassPluginManager

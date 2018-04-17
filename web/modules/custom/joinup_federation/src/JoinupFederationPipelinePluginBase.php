@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Provides a base class for Joinup ETL pipelines.
@@ -19,9 +19,9 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * The current session.
    *
-   * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected $session;
+  protected $currentUser;
 
   /**
    * The SPARQL connection.
@@ -43,13 +43,13 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The step plugin manager service.
    * @param \Drupal\pipeline\PipelineStateManager $state_manager
    *   The pipeline state manager service.
-   * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
-   *   The current session.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, SessionInterface $session, Connection $sparql) {
-    $this->session = $session;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql) {
+    $this->currentUser = $current_user;
     $this->sparql = $sparql;
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
   }
@@ -64,7 +64,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $plugin_definition,
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
-      $container->get('session'),
+      $container->get('current_user'),
       $container->get('sparql_endpoint')
     );
   }
@@ -72,8 +72,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function getSinkGraphUri(): string {
-    return $this->getConfiguration()['sink_graph'];
+  public function getGraphUri(string $graph_type): string {
+    return $this->getConfiguration()['graph'][$graph_type];
   }
 
   /**
@@ -81,8 +81,21 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function defaultConfiguration(): array {
     return [
-      'sink_graph' => static::SINK_GRAPH_BASE . '/' . $this->session->getId(),
+      'graph' => [
+        'sink' => static::GRAPH_BASE . '/sink/' . $this->currentUser->id(),
+        'sink_plus_taxo' => static::GRAPH_BASE . '/sink-plus-taxo/' . $this->currentUser->id(),
+      ],
     ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepare(array &$data) {
+    // This is an extra-precaution to ensure that there's no existing data in
+    // the pipeline graphs, left there after an eventually failed previous run.
+    $this->clearGraphs();
+    return $this;
   }
 
   /**
@@ -90,7 +103,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function onSuccess(): void {
     parent::onSuccess();
-    $this->clearGraph();
+    $this->clearGraphs();
   }
 
   /**
@@ -98,14 +111,16 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function onError(): void {
     parent::onError();
-    $this->clearGraph();
+    $this->clearGraphs();
   }
 
   /**
-   * Clears the data from the sink graph.
+   * {@inheritdoc}
    */
-  protected function clearGraph(): void {
-    $this->sparql->update("CLEAR GRAPH <{$this->getSinkGraphUri()}>");
+  public function clearGraphs(): void {
+    foreach ($this->getConfiguration()['graph'] as $graph_uri) {
+      $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+    }
   }
 
 }
