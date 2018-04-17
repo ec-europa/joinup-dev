@@ -35,14 +35,11 @@ class TallinnEntryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
 
+    $wrapper_classes = 'js-form-wrapper form-wrapper';
     $element = [
-      '#type' => 'fieldset',
-      '#title' => $this->fieldDefinition->getLabel(),
-    ];
-
-    $element['tallinn_description'] = [
-      '#markup' => $this->fieldDefinition->getDescription(),
-      '#weight' => 0,
+      '#type' => 'details',
+      '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
+      '#open' => TRUE,
     ];
 
     $element['status'] = [
@@ -51,6 +48,8 @@ class TallinnEntryWidget extends WidgetBase {
       '#options' => $this->getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
+      '#prefix' => '<div class="' . $wrapper_classes . '">',
+      '#suffix' => '</div>',
     ];
 
     $element['explanation'] = [
@@ -59,6 +58,8 @@ class TallinnEntryWidget extends WidgetBase {
       '#default_value' => $item->value,
       '#format' => $item->format,
       '#weight' => 2,
+      '#prefix' => '<div class="' . $wrapper_classes . '">',
+      '#suffix' => '</div>',
     ];
 
     $element['url'] = [
@@ -69,6 +70,8 @@ class TallinnEntryWidget extends WidgetBase {
       // Only external links, i.e. full links.
       '#link_type' => LinkItemInterface::LINK_EXTERNAL,
       '#weight' => 3,
+      '#prefix' => '<div class="' . $wrapper_classes . '">',
+      '#suffix' => '</div>',
     ];
 
     $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
