@@ -9,7 +9,7 @@ field_name: field_tallinn_action_1
 entity_type: node
 bundle: tallinn_report
 label: 'Action 1'
-description: 'Provide citizens and businesses with the option to interact digitally with public administrations, if they choose to, while following the “User-centric principles for design and delivery of digital public services” as set out in the Annex of this declaration.'
+description: 'Provide citizens and businesses with the option to interact digitally with public administrations, if they choose to, while following the “User-centricity principles for design and delivery of digital public services” as set out in the Annex of this declaration.'
 required: false
 translatable: true
 default_value: {  }
