@@ -45,19 +45,19 @@ class TallinnEntryWidget extends WidgetBase {
       '#weight' => 0,
     ];
 
-    $element['explanation'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('Explanations'),
-      '#default_value' => $item->value,
-      '#format' => $item->format,
-      '#weight' => 1,
-    ];
-
     $element['status'] = [
       '#type' => 'select',
       '#title' => $this->t('Implementation status'),
       '#options' => $this->getStatusOptions(),
       '#default_value' => $item->status,
+      '#weight' => 1,
+    ];
+
+    $element['explanation'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('Explanations'),
+      '#default_value' => $item->value,
+      '#format' => $item->format,
       '#weight' => 2,
     ];
 
@@ -103,7 +103,7 @@ class TallinnEntryWidget extends WidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $values = parent::massageFormValues($values, $form, $form_state);
-    $values = $values[0];
+    $values = reset($values);
     foreach ($values as $delta => $delta_values) {
       if (!empty($values['explanation']['value'])) {
         $values += $values['explanation'];
