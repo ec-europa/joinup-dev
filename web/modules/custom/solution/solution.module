@@ -199,9 +199,6 @@ function solution_update_collection_affiliation(RdfInterface $solution) {
       }
     }
   }
-
-  $storage->resetCache([$solution->id()]);
-  search_api_entity_insert($solution);
 }
 
 /**
