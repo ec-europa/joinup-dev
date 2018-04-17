@@ -184,7 +184,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $properties = [
       'bundle' => 'menu_link_content',
       'menu_name' => "ogmenu-{$og_menu_instance_id}",
-      'link__uri' => "internal:/node/$nid",
+      'link__uri' => "entity:node/$nid",
     ];
     $storage = $this->container->get('entity_type.manager')
       ->getStorage('menu_link_content');

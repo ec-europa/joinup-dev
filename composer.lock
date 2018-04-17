@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5812ffb1c1877a98ae6b986a3c786acd",
+    "content-hash": "e1e3f13708643c1f9c3554bebb2aab33",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5263,11 +5263,17 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "2.0.0"
+                "url": "https://github.com/ec-europa/virtuoso.git",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -5275,7 +5281,20 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2018-02-26T09:58:25+00:00"
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "issues": "https://github.com/ec-europa/virtuoso/issues"
+            },
+            "time": "2018-04-16T07:12:39+00:00"
         },
         {
             "name": "egulias/email-validator",
