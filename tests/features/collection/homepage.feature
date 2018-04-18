@@ -151,6 +151,12 @@ Feature: Collection homepage
       | Rohirrim make extraordinary deal                  |
       | Breaking: Gandalf supposedly plans his retirement |
 
+  Scenario: Search engines and link crawlers should not follow advanced search link.
+    Given I go to the homepage of the "Middle earth daily" collection
+    Then search engines should be discouraged to follow the link "Advanced search"
+    When I click "Supplier exchange" in the "collection policy domain" inline facet
+    Then search engines should be discouraged to follow the link "Advanced search"
+
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.

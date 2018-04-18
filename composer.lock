@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2db7f8df2710a5c0f4ce4c6db739d862",
+    "content-hash": "1828af4904db12891ed415f3656e1df5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2999,71 +2999,6 @@
             }
         },
         {
-            "name": "drupal/inline_entity_form",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "dbfc93fc961b3e6c84497390c62ec36d02c1c4d7"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "require-dev": {
-                "drupal/entity_reference_revisions": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta1+2-dev",
-                    "datestamp": "1479155639",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                },
-                "patches_applied": {
-                    "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
-                    "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "bojanz",
-                    "homepage": "https://www.drupal.org/user/86106"
-                },
-                {
-                    "name": "dawehner",
-                    "homepage": "https://www.drupal.org/user/99340"
-                },
-                {
-                    "name": "rszrama",
-                    "homepage": "https://www.drupal.org/user/49344"
-                },
-                {
-                    "name": "slashrsm",
-                    "homepage": "https://www.drupal.org/user/744628"
-                },
-                {
-                    "name": "webflo",
-                    "homepage": "https://www.drupal.org/user/254778"
-                }
-            ],
-            "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
-            "homepage": "https://www.drupal.org/project/inline_entity_form",
-            "support": {
-                "source": "http://cgit.drupalcode.org/inline_entity_form"
-            },
-            "time": "2016-11-14T20:32:26+00:00"
-        },
-        {
             "name": "drupal/linkit",
             "version": "5.0.0-beta7",
             "source": {
@@ -3473,36 +3408,6 @@
             }
         },
         {
-            "name": "drupal/og",
-            "version": "dev-8.x-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Gizra/og.git",
-                "reference": "ae99712a9adce6794709c0e42832d392dd8c1789"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/ae99712a9adce6794709c0e42832d392dd8c1789",
-                "reference": "ae99712a9adce6794709c0e42832d392dd8c1789",
-                "shasum": ""
-            },
-            "require-dev": {
-                "drupal/coder": "~8.2"
-            },
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "description": "API to allow associating content with groups.",
-            "homepage": "https://drupal.org/project/og",
-            "support": {
-                "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og",
-                "source": "https://cgit.drupalcode.org/og"
-            },
-            "time": "2018-01-31T16:22:58+00:00"
-        },
-        {
             "name": "drupal/og_menu",
             "version": "1.0.0-alpha3",
             "source": {
@@ -3904,17 +3809,11 @@
         },
         {
             "name": "drupal/piwik_reporting_api",
-            "version": "1.0.0-beta2",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/piwik_reporting_api",
-                "reference": "8.x-1.0-beta2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "5b2e3bebd3f96e0dde3c29759747485cd53f0313"
+                "reference": "e042b23531e711b2063002bc11b8f8726035ba6f"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3927,7 +3826,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
+                    "version": "8.x-1.0-beta2+1-dev",
                     "datestamp": "1500465842",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3953,85 +3852,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/piwik_reporting_api",
                 "issues": "https://www.drupal.org/project/issues/piwik_reporting_api"
-            }
-        },
-        {
-            "name": "drupal/r4032login",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/r4032login",
-                "reference": "391f10d69b9b8c466a2fddac2a6b99f1289e7781"
             },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1486527783",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Bevan",
-                    "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
-                },
-                {
-                    "name": "RobLoach",
-                    "homepage": "https://www.drupal.org/user/61114"
-                },
-                {
-                    "name": "Sk8erPeter",
-                    "homepage": "https://www.drupal.org/user/1441344"
-                },
-                {
-                    "name": "bdone",
-                    "homepage": "https://www.drupal.org/user/687670"
-                },
-                {
-                    "name": "deekayen",
-                    "homepage": "https://www.drupal.org/user/972"
-                },
-                {
-                    "name": "lotyrin",
-                    "homepage": "https://www.drupal.org/user/216580"
-                },
-                {
-                    "name": "mikesmullin",
-                    "homepage": "https://www.drupal.org/user/108440"
-                },
-                {
-                    "name": "pwolanin",
-                    "homepage": "https://www.drupal.org/user/49851"
-                },
-                {
-                    "name": "shrop",
-                    "homepage": "https://www.drupal.org/user/14767"
-                }
-            ],
-            "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
-            "homepage": "https://www.drupal.org/project/r4032login",
-            "support": {
-                "source": "http://cgit.drupalcode.org/r4032login"
-            },
-            "time": "2017-02-08T04:20:19+00:00"
+            "time": "2018-03-13T10:54:36+00:00"
         },
         {
             "name": "drupal/rdf_entity",
@@ -5283,11 +5105,17 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "2.0.0"
+                "url": "https://github.com/ec-europa/virtuoso.git",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -5295,7 +5123,20 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2018-02-26T09:58:25+00:00"
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "issues": "https://github.com/ec-europa/virtuoso/issues"
+            },
+            "time": "2018-04-16T07:12:39+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10426,7 +10267,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2017-11-15T09:36:28+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -10711,7 +10553,8 @@
                 "url": "git@github.com:openeuropa/TableContext.git",
                 "reference": "initial-implementation"
             },
-            "type": "library"
+            "type": "library",
+            "time": "2018-04-18T15:55:48+00:00"
         },
         {
             "name": "pear/http_request2",
@@ -12042,6 +11885,7 @@
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/piwik_reporting_api": 20,
         "drupal/r4032login": 20,
         "drupal/rdf_entity": 20,
         "drupal/redis": 5,
