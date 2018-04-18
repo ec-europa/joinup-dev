@@ -25,47 +25,46 @@ class TallinnEntryFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    // All fields are single-value fields.
-    $item = $items->first();
-    if (empty($item)) {
-      return [];
-    }
+    $element = [];
+    foreach ($items as $delta => $item) {
+      // All fields are single-value fields.
+      if (empty($item)) {
+        return [];
+      }
 
-    $value = $item->getValue();
-    $classes = $this->getOptionClasses($item);
-    $option = $this->getOptionToString($item);
-    $build = [
-      '#theme' => 'tallinn_entry',
-    ];
-
-    $build['#title'] = $this->fieldDefinition->getLabel();
-    $build['#description'] = $this->fieldDefinition->getDescription();
-    $build['#status'] = [
-      '#markup' => $option,
-      '#attributes' => [
-        'class' => $classes,
-      ],
-    ];
-
-    if (!empty($value['value'])) {
-      $build['#explanation'] = [
-        '#title' => t('Explanation'),
-        '#title_display' => 'inline',
-        '#type' => 'processed_text',
-        '#text' => $value['value'],
-        '#format' => $value['format'],
+      $value = $item->getValue();
+      $classes = $this->getOptionClasses($item);
+      $option = $this->getOptionToString($item);
+      $element[$delta] = [
+        '#theme' => 'tallinn_entry_formatter',
+        '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
       ];
-    }
 
-    if (!empty($value['uri'])) {
-      $build['#url'] = [
-        '#type' => 'link',
-        '#url' => Url::fromUri($value['uri']),
-        '#title' => $value['uri'],
+      $element[$delta]['#status'] = [
+        '#type' => 'item',
+        '#markup' => $option,
       ];
+      $element[$delta]['#status_classes'] = implode(' ', $classes);
+
+      if (!empty($value['value'])) {
+        $element[$delta]['#explanation'] = [
+          '#type' => 'processed_text',
+          '#title' => $this->t('Explanation'),
+          '#text' => $value['value'],
+          '#format' => $value['format'],
+        ];
+      }
+
+      if (!empty($value['uri'])) {
+        $element[$delta]['#uri'] = [
+          '#type' => 'link',
+          '#url' => Url::fromUri($value['uri']),
+          '#title' => $value['uri'],
+        ];
+      }
     }
 
-    return $build;
+    return $element;
   }
 
   /**
