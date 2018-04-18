@@ -62,7 +62,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#suffix' => '</div>',
     ];
 
-    $element['url'] = [
+    $element['uri'] = [
       '#type' => 'url',
       '#title' => $this->t('Related website'),
       '#default_value' => $item->uri,
@@ -107,17 +107,15 @@ class TallinnEntryWidget extends WidgetBase {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $values = parent::massageFormValues($values, $form, $form_state);
     $values = reset($values);
-    foreach ($values as $delta => $delta_values) {
-      if (!empty($values['explanation']['value'])) {
-        $values += $values['explanation'];
-      }
-      unset($values['explanation']);
+    if (!empty($values['explanation']['value'])) {
+      $values += $values['explanation'];
+    }
+    unset($values['explanation']);
 
-      // In case the uri field is not filled, unset the value because an empty
-      // string will throw a primitive value issue.
-      if (empty($values['uri'])) {
-        unset($values['uri']);
-      }
+    // In case the uri field is not filled, unset the value because an empty
+    // string will throw a primitive value issue.
+    if (empty($values['uri'])) {
+      unset($values['uri']);
     }
 
     return $values;
