@@ -33,6 +33,9 @@ create:
           - cc_transition_publish
   'node:discussion:post_moderated':
     publish:
+      roles:
+        moderator:
+          - cc_transition_publish
       og_roles:
         rdf_entity-collection-administrator:
           - cc_transition_publish
