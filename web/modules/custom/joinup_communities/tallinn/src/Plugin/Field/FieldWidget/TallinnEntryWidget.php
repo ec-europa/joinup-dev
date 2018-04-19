@@ -41,11 +41,19 @@ class TallinnEntryWidget extends WidgetBase {
       '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
       '#open' => TRUE,
     ];
+    $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
+
+    // The description should go on top.
+    unset($element['#description']);
+    $element['description'] = [
+      '#markup' => $this->fieldDefinition->getDescription(),
+      '#weight' => 0,
+    ];
 
     $element['status'] = [
       '#type' => 'select',
       '#title' => $this->t('Implementation status'),
-      '#options' => $this->getStatusOptions(),
+      '#options' => TallinnEntryItem::getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
       '#prefix' => '<div class="' . $wrapper_classes . '">',
@@ -74,7 +82,6 @@ class TallinnEntryWidget extends WidgetBase {
       '#suffix' => '</div>',
     ];
 
-    $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
     return $element;
   }
 
@@ -85,20 +92,12 @@ class TallinnEntryWidget extends WidgetBase {
     $status = $element['status']['#value'];
     $explanation = $element['explanation']['value']['#value'];
     if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
-      $form_state->setError($element['explanation']['value'], t(':title requires <em>Explanations</em> field filled if <em>Status</em> is set to "In progress" or "Completed".', [
-        ':title' => $element['#title'],
-      ]));
+      $arguments = [
+        '@title' => $element['#title'],
+        '%status' => TallinnEntryItem::getStatusOptions()[$status],
+      ];
+      $form_state->setError($element['explanation']['value'], t('@title: <em>Explanations</em> field is required when the status is %status.', $arguments));
     }
-  }
-
-  /**
-   * Returns a list of available options for the status select field.
-   *
-   * @return array
-   *   A list of options.
-   */
-  protected function getStatusOptions() {
-    return TallinnEntryItem::getStatusOptions();
   }
 
   /**
