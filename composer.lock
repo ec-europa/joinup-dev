@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1828af4904db12891ed415f3656e1df5",
+    "content-hash": "59ce9d027c309270449d67ff1d50a9ce",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -302,16 +302,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.6.4",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "86ad51e8a3c64c9782446aae740a61fc6faa2522"
+                "reference": "88a69fda0f2187ad8714cedffd7a8872dceaa4c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/86ad51e8a3c64c9782446aae740a61fc6faa2522",
-                "reference": "86ad51e8a3c64c9782446aae740a61fc6faa2522",
+                "url": "https://api.github.com/repos/composer/composer/zipball/88a69fda0f2187ad8714cedffd7a8872dceaa4c2",
+                "reference": "88a69fda0f2187ad8714cedffd7a8872dceaa4c2",
                 "shasum": ""
             },
             "require": {
@@ -375,7 +375,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2018-04-13T10:04:24+00:00"
+            "time": "2018-01-31T15:28:18+00:00"
         },
         {
             "name": "composer/installers",
@@ -1852,7 +1852,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha7",
-                    "datestamp": "1516246084",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -1957,16 +1957,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.5.1",
+            "version": "8.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "2aeca7dfa2661296602ac16bf9fd6085f0a121be"
+                "reference": "bc21760d4be4ad117851809183c8d18880ab275a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/2aeca7dfa2661296602ac16bf9fd6085f0a121be",
-                "reference": "2aeca7dfa2661296602ac16bf9fd6085f0a121be",
+                "url": "https://api.github.com/repos/drupal/core/zipball/bc21760d4be4ad117851809183c8d18880ab275a",
+                "reference": "bc21760d4be4ad117851809183c8d18880ab275a",
                 "shasum": ""
             },
             "require": {
@@ -2202,7 +2202,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-03-27T09:58:42+00:00"
+            "time": "2018-04-18T17:00:56+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3901,6 +3901,54 @@
                 "source": "http://git.drupal.org/project/piwik.git",
                 "issues": "https://www.drupal.org/project/issues/piwik"
             }
+        },
+        {
+            "name": "drupal/piwik_reporting_api",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/piwik_reporting_api",
+                "reference": "e042b23531e711b2063002bc11b8f8726035ba6f"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/piwik": "*",
+                "pfrenssen/piwik-reporting-api": "dev-master"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2+1-dev",
+                    "datestamp": "1500465842",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Allows to retrieve reports from the Piwik API.",
+            "homepage": "https://www.drupal.org/project/piwik_reporting_api",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/piwik_reporting_api",
+                "issues": "https://www.drupal.org/project/issues/piwik_reporting_api"
+            },
+            "time": "2018-03-13T10:54:36+00:00"
         },
         {
             "name": "drupal/r4032login",
@@ -10392,7 +10440,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2017-11-15T09:36:28+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -10678,7 +10727,7 @@
                 "reference": "initial-implementation"
             },
             "type": "library",
-            "time": "2018-04-18T15:55:48+00:00"
+            "time": "2018-04-19T09:43:26+00:00"
         },
         {
             "name": "pear/http_request2",
