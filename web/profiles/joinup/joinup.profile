@@ -220,6 +220,10 @@ function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $fo
   $form['revision']['#access'] = FALSE;
   $form['meta']['#access'] = FALSE;
 
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+  $form['uid']['#access'] = \Drupal::currentUser()->hasPermission('administer nodes') && ($form_object->getEntity()->bundle() === 'tallinn_report');
+
   foreach (['field_comments', 'field_replies'] as $field) {
     if (!empty($form[$field])) {
       $form[$field]['#access'] = FALSE;
