@@ -107,6 +107,19 @@
       content: '*'
       color: $color-error
 
+// Elements with validation errors
+// --------------------------------------------------
+.form-item input.error,
+.form-item textarea.error,
+.form-item select.error
+  border-width: 1px
+  border-color: #eb5b5c
+  color: #a51b00
+
+.form-item textarea.error + .cke
+  border-width: 1px
+  border-color: #eb5b5c
+
 // Modifiers
 // --------------------------------------------------
 .form__description--checkbox

@@ -35,12 +35,12 @@ class TallinnEntryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
 
-    $element = [
-      '#type' => 'fieldset',
-      '#title' => $this->fieldDefinition->getLabel(),
-    ];
+    $element['#type'] = 'fieldset';
+    $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
 
-    $element['tallinn_description'] = [
+    // The description should go on top.
+    unset($element['#description']);
+    $element['description'] = [
       '#markup' => $this->fieldDefinition->getDescription(),
       '#weight' => 0,
     ];
@@ -48,7 +48,7 @@ class TallinnEntryWidget extends WidgetBase {
     $element['status'] = [
       '#type' => 'select',
       '#title' => $this->t('Implementation status'),
-      '#options' => $this->getStatusOptions(),
+      '#options' => TallinnEntryItem::getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
     ];
@@ -71,7 +71,6 @@ class TallinnEntryWidget extends WidgetBase {
       '#weight' => 3,
     ];
 
-    $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
     return $element;
   }
 
@@ -82,20 +81,12 @@ class TallinnEntryWidget extends WidgetBase {
     $status = $element['status']['#value'];
     $explanation = $element['explanation']['value']['#value'];
     if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
-      $form_state->setError($element['explanation']['value'], t(':title requires <em>Explanations</em> field filled if <em>Status</em> is set to "In progress" or "Completed".', [
-        ':title' => $element['#title'],
-      ]));
+      $arguments = [
+        '@title' => $element['#title'],
+        '%status' => TallinnEntryItem::getStatusOptions()[$status],
+      ];
+      $form_state->setError($element['explanation']['value'], t('@title: <em>Explanations</em> field is required when the status is %status.', $arguments));
     }
-  }
-
-  /**
-   * Returns a list of available options for the status select field.
-   *
-   * @return array
-   *   A list of options.
-   */
-  protected function getStatusOptions() {
-    return TallinnEntryItem::getStatusOptions();
   }
 
   /**

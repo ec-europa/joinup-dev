@@ -79,13 +79,6 @@ class TallinnEntryItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function mainPropertyName() {
-    return 'value';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function isEmpty() {
     $value = $this->getValue();
     return empty($value['value']) && empty($value['status']) && empty($value['uri']);
