@@ -34,9 +34,15 @@ Feature:
     # A moderator is able to change any report's author.
     Given I am logged in as chef
     When I visit the tallinn_report content "Romania" edit screen
-    And I fill in "Authored by" with "vasile"
+    And I fill in "Authored by" with "dominique"
+    When I press "Save"
+    Then I should see the error message "The user dominique cannot be set as author of this report as he/she already owns 'France'."
+    But I fill in "Authored by" with "vasile"
     When I press "Save"
     Then I should see "Tallinn report Romania has been updated."
+    # Reports cannot be added via UI.
+    Given I go to "/node/add/tallinn_report"
+    Then I should get a 403 HTTP response
 
     # A Tallinn collection member can change its own report but not other's. In
     # the same time he's not able to change the node owner.
