@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hook implementations for the tallinn module.
+ */
+
+define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
+
+/**
+ * Implements hook_theme().
+ */
+function tallinn_theme($existing, $type, $theme, $path) {
+  return [
+    'tallinn_entry' => [
+      'variables' => [
+        'title' => '',
+        'description' => '',
+        'status' => [],
+        'status_classes' => [],
+        'explanation' => [],
+        'url' => [],
+      ],
+      'render' => 'element',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function tallinn_preprocess_tallinn_entry(&$variables) {
+  if (isset($variables['status']['#attributes']['class'])) {
+    $variables['status_classes'] = $variables['status']['#attributes']['class'];
+  }
+}

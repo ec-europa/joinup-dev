@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_24
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_24
+field_name: field_tallinn_action_24
+entity_type: node
+bundle: tallinn_report
+label: 'Action 24'
+description: "Devote resources for more and faster experimentation with emerging ICT within the public administration, including by the offering of 'testbeds' for researchers and businesses."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

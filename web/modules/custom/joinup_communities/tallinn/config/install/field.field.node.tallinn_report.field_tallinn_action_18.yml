@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_18
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_18
+field_name: field_tallinn_action_18
+entity_type: node
+bundle: tallinn_report
+label: 'Action 18'
+description: 'Make more use of open source solutions and/or open standards when (re)building ICT systems and solutions (among else, to avoid vendor lock-ins), including those developed and/or promoted by EU programmes for interoperability and standardisation, such as ISA2.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry
