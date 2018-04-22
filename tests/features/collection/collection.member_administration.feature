@@ -272,3 +272,34 @@ Feature: Collection membership administration
     And I press "Apply"
     Then I should see the link "King Emerson"
     But I should not see the link "Seamus Emerson"
+
+  Scenario: Sort member administration bulk form by full user name
+    Given users:
+      | Username | Roles | E-mail                   | First name | Family name |
+      | qux98765 |       | eric_foreman@example.com | Eric       | Foreman     |
+      | xyzzy123 |       | eric_drexler@example.com | Eric       | Drexler     |
+    And the following collection user memberships:
+      | collection        | user     | state  |
+      | Medical diagnosis | qux98765 | active |
+      | Medical diagnosis | xyzzy123 | active |
+    When I am logged in as "Lisa Cuddy"
+    And I go to the "Medical diagnosis" collection
+    When I click "Members" in the "Left sidebar"
+    Then I should see a table with 5 columns
+    # By default the table should be sorted alphabetically.
+    And the "member administration" table should contain the following column:
+      | Name              |
+      | Eric Drexler      |
+      | Eric Foreman      |
+      | Gregory House     |
+      | Kathie Cumbershot |
+      | Lisa Cuddy        |
+    # By clicking the header of the name column the ordering should be reversed.
+    When I click "Name"
+    Then the "member administration" table should contain the following column:
+      | Name              |
+      | Lisa Cuddy        |
+      | Kathie Cumbershot |
+      | Gregory House     |
+      | Eric Foreman      |
+      | Eric Drexler      |

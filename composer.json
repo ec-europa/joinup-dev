@@ -92,7 +92,7 @@
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mikey179/vfsStream": "~1.2",
-        "openeuropa/table-context": "dev-initial-implementation",
+        "openeuropa/table-extension": "dev-initial-implementation",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "^4.8.28",
@@ -113,7 +113,7 @@
         "psr-4": {
             "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src",
-            "OpenEuropa\\TableContext\\": "vendor/openeuropa/table-context/src"
+            "OpenEuropa\\TableExtension\\": "vendor/openeuropa/table-extension/src"
         },
         "classmap": [
             "scripts/composer/ScriptHandler.php",
@@ -277,10 +277,10 @@
         {
             "type": "package",
             "package": {
-                "name": "openeuropa/table-context",
+                "name": "openeuropa/table-extension",
                 "version": "dev-initial-implementation",
                 "source": {
-                    "url": "git@github.com:openeuropa/TableContext.git",
+                    "url": "git@github.com:openeuropa/TableExtension.git",
                     "type": "git",
                     "reference": "initial-implementation"
                 }

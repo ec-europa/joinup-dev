@@ -15,6 +15,9 @@ default:
             s3Bucket: '${exports.s3.bucket}'
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
+        - OpenEuropa\TableContext\Context\TableContext:
+            tableMap:
+              'member administration': '.og-members-overview table'
       filters:
         tags: '~@wip'
   extensions:

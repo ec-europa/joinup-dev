@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "59ce9d027c309270449d67ff1d50a9ce",
+    "content-hash": "0f72878898ff6d412236157e4136a55c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.54.4",
+            "version": "3.54.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6642a13df7ddcccf19e66c744c5bfae5b61e9e85"
+                "reference": "ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6642a13df7ddcccf19e66c744c5bfae5b61e9e85",
-                "reference": "6642a13df7ddcccf19e66c744c5bfae5b61e9e85",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec",
+                "reference": "ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-04-10T22:11:31+00:00"
+            "time": "2018-04-20T18:14:14+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -10719,15 +10719,14 @@
             "time": "2017-08-01T08:02:14+00:00"
         },
         {
-            "name": "openeuropa/table-context",
+            "name": "openeuropa/table-extension",
             "version": "dev-initial-implementation",
             "source": {
                 "type": "git",
-                "url": "git@github.com:openeuropa/TableContext.git",
+                "url": "git@github.com:openeuropa/TableExtension.git",
                 "reference": "initial-implementation"
             },
-            "type": "library",
-            "time": "2018-04-19T09:43:26+00:00"
+            "type": "library"
         },
         {
             "name": "pear/http_request2",
@@ -12076,7 +12075,7 @@
         "drupal/drupal-extension": 15,
         "drupal/stage_file_proxy": 20,
         "jcalderonzumba/gastonjs": 20,
-        "openeuropa/table-context": 20
+        "openeuropa/table-extension": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
