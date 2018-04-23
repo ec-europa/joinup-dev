@@ -53,3 +53,64 @@ function custom_page_post_update_aliases(array &$sandbox) {
   // process should continue with the next batch.
   $sandbox['#finished'] = 0.5;
 }
+
+/**
+ * Rewrite menu links for improved performance.
+ *
+ * Rewrite 'internal' schemas to 'entity' and 'route' schemas: Menu links using
+ * 'internal' get rebuild on each cache rebuild.
+ *
+ * @see \Drupal\Core\Url::fromUri()
+ */
+function custom_page_post_update_menu_links(array &$sandbox) {
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+
+  if (!isset($sandbox['current_id'])) {
+    $sandbox['current_id'] = 0;
+  }
+
+  $mids = $storage->getQuery()
+    ->condition('bundle', 'menu_link_content')
+    ->condition('link.uri', "internal:/", "STARTS_WITH")
+    ->condition('id', $sandbox['current_id'], '>')
+    ->range(0, 200)
+    ->sort('id', 'ASC')
+    ->execute();
+  $sandbox['#finished'] = FALSE;
+  if (empty($mids)) {
+    $sandbox['#finished'] = TRUE;
+    return;
+  }
+
+  /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link */
+  foreach ($storage->loadMultiple($mids) as $menu_link) {
+    $sandbox['current_id'] = $menu_link->id();
+    $link = $menu_link->get('link');
+    $uri = $link->first()->getValue()['uri'];
+
+    // Only act on wrong written entity paths.
+    if (!preg_match('#^internal:/(rdf_entity|node)/#', $uri)) {
+      continue;
+    }
+
+    // Rewrite the canonical entity paths to use the entity schema.
+    if (substr_count($uri, '/') === 2) {
+      $new_uri = str_replace('internal:/', 'entity:', $uri);
+    }
+    // Rewrite the members paths to its route based schema.
+    elseif (preg_match('#^internal:/(rdf_entity|node)/([^/].*)/members#', $uri)) {
+      $new_uri = str_replace('/members', '', $uri);
+      $new_uri = str_replace('internal:/rdf_entity/', 'route:entity.rdf_entity.member_overview;rdf_entity=', $new_uri);
+    }
+    // Rewrite the about paths to its route based schema.
+    elseif (preg_match('#^internal:/(rdf_entity|node)/([^/].*)/about#', $uri)) {
+      $new_uri = str_replace('/about', '', $uri);
+      $new_uri = str_replace('internal:/rdf_entity/', 'route:entity.rdf_entity.about_page;rdf_entity=', $new_uri);
+    }
+    else {
+      continue;
+    }
+
+    $menu_link->set('link', $new_uri)->save();
+  }
+}

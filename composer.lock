@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c24fa8668df9285f52dd8a738d2705bb",
+    "content-hash": "2af95f66bd6df210f571a7107199217f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.23",
+            "version": "3.52.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783"
+                "reference": "3aefee935e611e1ce959f0288cd160dc81d233a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3ce95b96c217a699168d937c4ed700e6a27ec783",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3aefee935e611e1ce959f0288cd160dc81d233a0",
+                "reference": "3aefee935e611e1ce959f0288cd160dc81d233a0",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-08T22:51:35+00:00"
+            "time": "2018-03-14T20:20:20+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1579,11 +1579,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1681,7 +1677,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2685,7 +2681,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1516352268",
+                    "datestamp": "1516303685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2885,7 +2881,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -3430,8 +3426,8 @@
                     "version": "8.x-1.0",
                     "datestamp": "1514929984",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 }
             },
@@ -3889,17 +3885,11 @@
         },
         {
             "name": "drupal/piwik_reporting_api",
-            "version": "1.0.0-beta2",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/piwik_reporting_api",
-                "reference": "8.x-1.0-beta2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik_reporting_api-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "5b2e3bebd3f96e0dde3c29759747485cd53f0313"
+                "reference": "e042b23531e711b2063002bc11b8f8726035ba6f"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3912,7 +3902,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
+                    "version": "8.x-1.0-beta2+1-dev",
                     "datestamp": "1500465842",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3938,7 +3928,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/piwik_reporting_api",
                 "issues": "https://www.drupal.org/project/issues/piwik_reporting_api"
-            }
+            },
+            "time": "2018-03-13T10:54:36+00:00"
         },
         {
             "name": "drupal/r4032login",
@@ -4020,12 +4011,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c"
+                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
-                "reference": "f623efd81a24e7ee264f468d1e16fdb2196e1d1c",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
+                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
                 "shasum": ""
             },
             "require": {
@@ -4050,21 +4041,21 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-02-20T12:56:56+00:00"
+            "time": "2018-03-14T13:19:35+00:00"
         },
         {
             "name": "drupal/redirect",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/redirect",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "93021b77f225a3035fbee361a21850a36a8cd684"
+                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "32916081c436ea325b51bc5b3ec840fa19857cf7"
             },
             "require": {
                 "drupal/core": "~8"
@@ -4075,8 +4066,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1513767485",
+                    "version": "8.x-1.1",
+                    "datestamp": "1520897880",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4190,7 +4181,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1519387684",
+                    "datestamp": "1514109785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4758,7 +4749,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5264,11 +5255,17 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ec-europa/virtuoso.git",
-                "reference": "2.0.0"
+                "url": "https://github.com/ec-europa/virtuoso.git",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "shasum": ""
             },
             "type": "library",
             "autoload": {
@@ -5276,7 +5273,20 @@
                     "Virtuoso\\": "src"
                 }
             },
-            "time": "2018-02-26T09:58:25+00:00"
+            "license": [
+                "EUPL"
+            ],
+            "authors": [
+                {
+                    "name": "Sander Van Dooren",
+                    "email": "sander.vandooren@ausy.be"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "issues": "https://github.com/ec-europa/virtuoso/issues"
+            },
+            "time": "2018-04-16T07:12:39+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -6050,7 +6060,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2018-02-26T04:06:28+00:00"
+            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6560,16 +6570,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/piwik-reporting-api.git",
-                "reference": "5ca31e08cee0f0f71263d7a5736a9cd6176d1337"
+                "reference": "0f826f25296c9f8f77f123ebd49b097858a395a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/5ca31e08cee0f0f71263d7a5736a9cd6176d1337",
-                "reference": "5ca31e08cee0f0f71263d7a5736a9cd6176d1337",
+                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/0f826f25296c9f8f77f123ebd49b097858a395a7",
+                "reference": "0f826f25296c9f8f77f123ebd49b097858a395a7",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "~6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0|^6.0|^7.0",
+                "squizlabs/php_codesniffer": "^3.2"
             },
             "type": "library",
             "autoload": {
@@ -6588,7 +6602,7 @@
                 }
             ],
             "description": "PHP client library to query the Piwik Reporting API.",
-            "time": "2017-07-17T09:33:42+00:00"
+            "time": "2018-03-12T18:51:43+00:00"
         },
         {
             "name": "phing/phing",
@@ -10122,18 +10136,13 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
             "homepage": "https://www.drupal.org/project/default_content",
             "support": {
                 "source": "http://cgit.drupalcode.org/default_content"
-            },
-            "time": "2017-10-19T21:26:16+00:00"
+            }
         },
         {
             "name": "drupal/devel",
@@ -12022,6 +12031,7 @@
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/piwik_reporting_api": 20,
         "drupal/r4032login": 20,
         "drupal/rdf_entity": 20,
         "drupal/redis": 5,
