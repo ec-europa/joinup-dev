@@ -228,6 +228,21 @@ function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $fo
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the members overview for collections and solutions to display a set of
+ * filters for privileged users.
+ */
+function joinup_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  $view = $form_state->get('view');
+  if (empty($view) || !$view instanceof ViewExecutable || $view->id() !== 'og_members_overview') {
+    return;
+  }
+  $current_user = \Drupal::currentUser();
+  $form['#access'] = $current_user->hasPermission('filter membership overview');
+}
+
+/**
  * Implements hook_field_formatter_third_party_settings_form().
  *
  * Allow adding template suggestions for each field.
