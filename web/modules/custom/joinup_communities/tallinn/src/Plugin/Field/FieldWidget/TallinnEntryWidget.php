@@ -39,15 +39,15 @@ class TallinnEntryWidget extends WidgetBase {
     $element = [
       '#type' => 'details',
       '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
+      // Store the label as well in order to use it in the validation if needed.
+      '#label' => $this->fieldDefinition->getLabel(),
       '#open' => TRUE,
     ];
     $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
 
-    // The description should go on top.
-    unset($element['#description']);
-    $element['description'] = [
-      '#markup' => $this->fieldDefinition->getDescription(),
-      '#weight' => 0,
+    $wrapper_classes = [
+      '#prefix' => '<div class="' . $wrapper_classes . '">',
+      '#suffix' => '</div>',
     ];
 
     $element['status'] = [
@@ -56,9 +56,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#options' => TallinnEntryItem::getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
-      '#prefix' => '<div class="' . $wrapper_classes . '">',
-      '#suffix' => '</div>',
-    ];
+    ] + $wrapper_classes;
 
     $element['explanation'] = [
       '#type' => 'text_format',
@@ -66,9 +64,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#default_value' => $item->value,
       '#format' => $item->format,
       '#weight' => 2,
-      '#prefix' => '<div class="' . $wrapper_classes . '">',
-      '#suffix' => '</div>',
-    ];
+    ] + $wrapper_classes;
 
     $element['uri'] = [
       '#type' => 'url',
@@ -78,9 +74,7 @@ class TallinnEntryWidget extends WidgetBase {
       // Only external links, i.e. full links.
       '#link_type' => LinkItemInterface::LINK_EXTERNAL,
       '#weight' => 3,
-      '#prefix' => '<div class="' . $wrapper_classes . '">',
-      '#suffix' => '</div>',
-    ];
+    ] + $wrapper_classes;
 
     return $element;
   }
@@ -93,7 +87,7 @@ class TallinnEntryWidget extends WidgetBase {
     $explanation = $element['explanation']['value']['#value'];
     if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
       $arguments = [
-        '@title' => $element['#title'],
+        '@title' => $element['#label'],
         '%status' => TallinnEntryItem::getStatusOptions()[$status],
       ];
       $form_state->setError($element['explanation']['value'], t('@title: <em>Explanations</em> field is required when the status is %status.', $arguments));
