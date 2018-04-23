@@ -39,7 +39,6 @@ permissions:
   - 'edit own document content'
   - 'edit own event content'
   - 'edit own news content'
-  - 'edit own tallinn_report content'
   - 'highlight collections'
   - 'invite facilitators'
   - 'invite users to discussions'

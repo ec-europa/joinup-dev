@@ -24,13 +24,6 @@ Feature:
       | Romania Report | gheorghe  | Kind of Tallinn |
       | France Report  | dominique | Kind of Tallinn |
 
-    # A user outside of Tallinn collection is not able to edit any report.
-    Given I am logged in as gheorghe
-    When I visit the tallinn_report content "Romania Report" edit screen
-    Then I should get a 403 HTTP response
-    When I visit the tallinn_report content "France Report" edit screen
-    Then I should get a 403 HTTP response
-
     # A moderator is able to change any report's author.
     Given I am logged in as chef
     When I visit the tallinn_report content "Romania Report" edit screen
