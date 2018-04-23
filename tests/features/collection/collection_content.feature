@@ -63,6 +63,18 @@ Feature: Given I am visiting the collection homepage
     # as "Solutions (@count)".
     Then I see the text "2 Solution" in the "Header" region
     And I should see the link "2 Solutions"
+
+    # Create a draft version of the solution to verify that counters are not affected.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4436
+    When I go to the homepage of the "Solution from draft to validated" solution
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Title" with "Solution from draft to validated but draft"
+    And I press "Save as draft"
+    Then I should see the heading "Solution from draft to validated"
+
+    When I go to the homepage of the "Turin Egyptian Collection" collection
+    Then I see the text "2 Solution" in the "Header" region
+    And I should see the link "2 Solutions"
     Then I delete the "Solution from draft to validated" solution
     And I delete the "Costas Papazoglou" contact information
 
