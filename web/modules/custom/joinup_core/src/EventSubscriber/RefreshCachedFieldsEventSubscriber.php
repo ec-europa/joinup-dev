@@ -4,6 +4,7 @@ namespace Drupal\joinup_core\EventSubscriber;
 
 use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
 use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
+use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -364,6 +365,23 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     // default parameters that the query comes with.
     $sub_query->setParameters($parameters);
     return $sub_query->getParameters();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function updateFieldValue(ExpiredItemInterface $expiredItem, $value) {
+    $request_time = $this->time->getRequestTime();
+    $cache_lifetime = $this->getField($expiredItem)->getSettings()['cache-max-age'];
+
+    $entity = $this->getEntity($expiredItem);
+    $entity->set($expiredItem->getFieldName(), [
+      'value' => $value,
+      'expire' => $request_time + $cache_lifetime,
+    ]);
+    // Set the flag to skip notifications for updates performed by cron.
+    $entity->skip_notification = TRUE;
+    $entity->save();
   }
 
 }
