@@ -401,16 +401,16 @@ function collection_solution_count(RdfInterface $entity) {
   foreach ($solutions as $solution) {
     $solution_ids[] = $solution->getValue()['target_id'];
   }
-  $solution_count = 0;
+  $results = 0;
   if ($solution_ids) {
-    $solution_count = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+    $solution_count = \Drupal::entityQuery('rdf_entity');
+    $solution_count->setGraphType(['default']);
+    $results = $solution_count->condition('rid', 'solution')
       ->condition('id', $solution_ids, 'IN')
-      ->condition('field_is_state', 'validated')
       ->count()
       ->execute();
   }
-  return $solution_count;
+  return $results;
 }
 
 /**
