@@ -14,6 +14,8 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
+define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
+
 /**
  * Implements hook_theme().
  */
