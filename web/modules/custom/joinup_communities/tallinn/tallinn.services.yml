@@ -1,0 +1,4 @@
+services:
+  tallinn.tallinn_helper:
+    class: Drupal\tallinn\TallinnHelper
+    arguments: ['@entity_type.manager', '@config.factory']
