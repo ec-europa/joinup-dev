@@ -403,7 +403,10 @@ function collection_solution_count(RdfInterface $entity) {
   }
   $results = 0;
   if ($solution_ids) {
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $solution_count */
     $solution_count = \Drupal::entityQuery('rdf_entity');
+    // @todo Chain the query methods.
+    // @see https://github.com/ec-europa/rdf_entity/issues/26
     $solution_count->setGraphType(['default']);
     $results = $solution_count->condition('rid', 'solution')
       ->condition('id', $solution_ids, 'IN')
