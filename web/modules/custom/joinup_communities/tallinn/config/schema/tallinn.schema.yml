@@ -1,7 +1,0 @@
-tallinn.settings:
-  type: config_object
-  label: 'Settings related to the tallinn module.'
-  mapping:
-    tallin_id:
-      type: string
-      label: 'The Tallinn collection entity id.'
