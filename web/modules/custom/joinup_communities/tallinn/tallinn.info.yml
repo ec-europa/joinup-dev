@@ -13,6 +13,7 @@ dependencies:
 config_devel:
   - core.entity_form_display.node.tallinn_report.default
   - core.entity_view_display.node.tallinn_report.default
+  - core.entity_view_display.node.tallinn_report.view_mode_tile
   - field.field.node.tallinn_report.field_tallinn_action_10
   - field.field.node.tallinn_report.field_tallinn_action_11
   - field.field.node.tallinn_report.field_tallinn_action_12
