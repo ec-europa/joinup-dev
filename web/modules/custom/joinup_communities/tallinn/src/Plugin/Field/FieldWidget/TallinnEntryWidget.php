@@ -35,7 +35,6 @@ class TallinnEntryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
 
-    $wrapper_classes = 'js-form-wrapper form-wrapper';
     $element = [
       '#type' => 'details',
       '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
@@ -45,8 +44,8 @@ class TallinnEntryWidget extends WidgetBase {
     ];
     $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
 
-    $wrapper_classes = [
-      '#prefix' => '<div class="' . $wrapper_classes . '">',
+    $wrapper = [
+      '#prefix' => '<div class="js-form-wrapper form-wrapper">',
       '#suffix' => '</div>',
     ];
 
@@ -56,7 +55,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#options' => TallinnEntryItem::getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
-    ] + $wrapper_classes;
+    ] + $wrapper;
 
     $element['explanation'] = [
       '#type' => 'text_format',
@@ -64,7 +63,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#default_value' => $item->value,
       '#format' => $item->format,
       '#weight' => 2,
-    ] + $wrapper_classes;
+    ] + $wrapper;
 
     $element['uri'] = [
       '#type' => 'url',
@@ -74,7 +73,7 @@ class TallinnEntryWidget extends WidgetBase {
       // Only external links, i.e. full links.
       '#link_type' => LinkItemInterface::LINK_EXTERNAL,
       '#weight' => 3,
-    ] + $wrapper_classes;
+    ] + $wrapper;
 
     return $element;
   }

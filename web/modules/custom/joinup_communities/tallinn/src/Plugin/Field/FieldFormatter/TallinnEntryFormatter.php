@@ -25,25 +25,27 @@ class TallinnEntryFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $item = $items->first();
     // All fields are single-value fields.
+    $item = $items->first();
     if (empty($item)) {
       return [];
     }
 
     $value = $item->getValue();
-    $classes = $this->getOptionClasses($item);
-    $option = $this->getOptionToString($item);
     $element = [
       '#theme' => 'tallinn_entry_formatter',
       '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
     ];
 
     $element['#status'] = [
-      '#type' => 'item',
-      '#markup' => $option,
+      '#type' => 'container',
+      'value' => [
+        '#markup' => $this->getOptionToString($item),
+      ],
+      '#attributes' => [
+        'class' => $this->getOptionClasses($item),
+      ],
     ];
-    $element['#status_classes'] = implode(' ', $classes);
 
     if (!empty($value['value'])) {
       $element['#explanation'] = [
