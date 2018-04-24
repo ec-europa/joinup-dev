@@ -46,7 +46,7 @@ function tallinn_install() {
 
   // Create the page that will show all information related to the agreement.
   Node::create([
-    'title' => t('Tallin initiaitve'),
+    'title' => t('Tallinn initiaitve'),
     'type' => 'custom_page',
     'og_audience' => $group->id(),
     'body' => [[
