@@ -6,11 +6,15 @@
  */
 
 use Drupal\node\Entity\Node;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_install().
  */
 function tallinn_install() {
+  // Configure permissions for the tallinn_report content.
+  user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
+  // Create Tallinn reports.
   foreach (_tallinn_get_agreement_countries() as $country_name) {
     $node = Node::create([
       'title' => $country_name,
