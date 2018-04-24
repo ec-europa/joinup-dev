@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
 define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
@@ -92,4 +94,37 @@ function tallinn_report_author_uniqueness(array &$form, FormStateInterface $form
  */
 function tallinn_node_create_access(AccountInterface $account, array $context, $entity_bundle) {
   return $entity_bundle === 'tallinn_report' ? AccessResult::forbidden() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Tallinn entities are only accessible by the owners, the facilitators of the
+ * Tallinn collection and the moderators.
+ */
+function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->getType() !== 'tallinn_report' || $op !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  if ($account->isAnonymous()) {
+    return AccessResult::forbidden();
+  }
+
+  if ($account->id() === $node->getOwnerId()) {
+    return AccessResult::allowed();
+  }
+
+  $access = $node->access('view any tallinn report node', $account);
+  return $access ? AccessResult::allowed() : AccessResult::forbidden();
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Do not show the tallinn report records as part of the collection content
+ * field. They will be shown in the corresponding page.
+ */
+function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  $query->addCondition('entity_bundle', 'tallinn_report', '<>');
 }
