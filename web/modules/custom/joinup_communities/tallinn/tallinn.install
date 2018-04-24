@@ -14,12 +14,21 @@ use Drupal\user\UserInterface;
 function tallinn_install() {
   // Configure permissions for the tallinn_report content.
   user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
+
+  $group = \Drupal::service('tallinn.tallinn_helper')->getTallinnEntity();
+
+  // During tests, or behat scenarios there will be no tallinn entity available.
+  // Escape early for test installations.
+  if (empty($group)) {
+    return;
+  }
+
   // Create Tallinn reports.
   foreach (_tallinn_get_agreement_countries() as $country_name) {
     Node::create([
       'title' => $country_name,
       'type' => 'tallinn_report',
-      'og_audience' => TALLINN_COMMUNITY_ID,
+      'og_audience' => $group->id(),
     ])->save();
   }
 
@@ -34,7 +43,7 @@ function tallinn_install() {
   Node::create([
     'title' => t('Tallin initiaitve'),
     'type' => 'custom_page',
-    'og_audience' => TALLINN_COMMUNITY_ID,
+    'og_audience' => $group->id(),
     'body' => [[
       'value' => $body,
       'format' => 'content_editor',
