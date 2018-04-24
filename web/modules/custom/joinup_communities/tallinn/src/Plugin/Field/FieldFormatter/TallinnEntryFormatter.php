@@ -32,40 +32,39 @@ class TallinnEntryFormatter extends FormatterBase {
     }
 
     $value = $item->getValue();
-    $classes = $this->getOptionClasses($item);
-    $option = $this->getOptionToString($item);
-    $build = [
-      '#theme' => 'tallinn_entry',
+    $element = [
+      '#theme' => 'tallinn_entry_formatter',
+      '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
     ];
 
-    $build['#title'] = $this->fieldDefinition->getLabel();
-    $build['#description'] = $this->fieldDefinition->getDescription();
-    $build['#status'] = [
-      '#markup' => $option,
+    $element['#status'] = [
+      '#type' => 'container',
+      'value' => [
+        '#markup' => $this->getOptionToString($item),
+      ],
       '#attributes' => [
-        'class' => $classes,
+        'class' => $this->getOptionClasses($item),
       ],
     ];
 
     if (!empty($value['value'])) {
-      $build['#explanation'] = [
-        '#title' => t('Explanation'),
-        '#title_display' => 'inline',
+      $element['#explanation'] = [
         '#type' => 'processed_text',
+        '#title' => $this->t('Explanation'),
         '#text' => $value['value'],
         '#format' => $value['format'],
       ];
     }
 
     if (!empty($value['uri'])) {
-      $build['#url'] = [
+      $element['#uri'] = [
         '#type' => 'link',
         '#url' => Url::fromUri($value['uri']),
         '#title' => $value['uri'],
       ];
     }
 
-    return $build;
+    return $element;
   }
 
   /**

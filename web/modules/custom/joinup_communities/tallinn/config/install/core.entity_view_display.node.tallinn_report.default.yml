@@ -40,175 +40,175 @@ content:
     type: tallinn_entry
     weight: 0
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_10:
     type: tallinn_entry
     weight: 9
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_11:
     type: tallinn_entry
     weight: 10
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_12:
     type: tallinn_entry
     weight: 11
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_13:
     type: tallinn_entry
     weight: 12
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_14:
     type: tallinn_entry
     weight: 13
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_15:
     type: tallinn_entry
     weight: 14
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_16:
     type: tallinn_entry
     weight: 15
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_17:
     type: tallinn_entry
     weight: 16
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_18:
     type: tallinn_entry
     weight: 17
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_19:
     type: tallinn_entry
     weight: 18
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_2:
     type: tallinn_entry
     weight: 1
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_20:
     type: tallinn_entry
     weight: 19
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_21:
     type: tallinn_entry
     weight: 20
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_22:
     type: tallinn_entry
     weight: 21
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_23:
     type: tallinn_entry
     weight: 22
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_24:
     type: tallinn_entry
     weight: 23
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_25:
     type: tallinn_entry
     weight: 24
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_3:
     type: tallinn_entry
     weight: 2
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_4:
     type: tallinn_entry
     weight: 3
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_5:
     type: tallinn_entry
     weight: 4
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_6:
     type: tallinn_entry
     weight: 5
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_7:
     type: tallinn_entry
     weight: 6
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_8:
     type: tallinn_entry
     weight: 7
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_tallinn_action_9:
     type: tallinn_entry
     weight: 8
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
 hidden:

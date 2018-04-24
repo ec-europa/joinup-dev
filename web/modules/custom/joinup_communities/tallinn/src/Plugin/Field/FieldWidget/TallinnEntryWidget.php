@@ -35,14 +35,18 @@ class TallinnEntryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $item = $items[$delta];
 
-    $element['#type'] = 'fieldset';
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
+      // Store the label as well in order to use it in the validation if needed.
+      '#label' => $this->fieldDefinition->getLabel(),
+      '#open' => TRUE,
+    ];
     $element['#element_validate'][] = [get_called_class(), 'validateFormElement'];
 
-    // The description should go on top.
-    unset($element['#description']);
-    $element['description'] = [
-      '#markup' => $this->fieldDefinition->getDescription(),
-      '#weight' => 0,
+    $wrapper = [
+      '#prefix' => '<div class="js-form-wrapper form-wrapper">',
+      '#suffix' => '</div>',
     ];
 
     $element['status'] = [
@@ -51,7 +55,7 @@ class TallinnEntryWidget extends WidgetBase {
       '#options' => TallinnEntryItem::getStatusOptions(),
       '#default_value' => $item->status,
       '#weight' => 1,
-    ];
+    ] + $wrapper;
 
     $element['explanation'] = [
       '#type' => 'text_format',
@@ -59,9 +63,9 @@ class TallinnEntryWidget extends WidgetBase {
       '#default_value' => $item->value,
       '#format' => $item->format,
       '#weight' => 2,
-    ];
+    ] + $wrapper;
 
-    $element['url'] = [
+    $element['uri'] = [
       '#type' => 'url',
       '#title' => $this->t('Related website'),
       '#default_value' => $item->uri,
@@ -69,7 +73,7 @@ class TallinnEntryWidget extends WidgetBase {
       // Only external links, i.e. full links.
       '#link_type' => LinkItemInterface::LINK_EXTERNAL,
       '#weight' => 3,
-    ];
+    ] + $wrapper;
 
     return $element;
   }
@@ -82,7 +86,7 @@ class TallinnEntryWidget extends WidgetBase {
     $explanation = $element['explanation']['value']['#value'];
     if (in_array($status, ['in_progress', 'completed']) && empty($explanation)) {
       $arguments = [
-        '@title' => $element['#title'],
+        '@title' => $element['#label'],
         '%status' => TallinnEntryItem::getStatusOptions()[$status],
       ];
       $form_state->setError($element['explanation']['value'], t('@title: <em>Explanations</em> field is required when the status is %status.', $arguments));
@@ -95,17 +99,15 @@ class TallinnEntryWidget extends WidgetBase {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $values = parent::massageFormValues($values, $form, $form_state);
     $values = reset($values);
-    foreach ($values as $delta => $delta_values) {
-      if (!empty($values['explanation']['value'])) {
-        $values += $values['explanation'];
-      }
-      unset($values['explanation']);
+    if (!empty($values['explanation']['value'])) {
+      $values += $values['explanation'];
+    }
+    unset($values['explanation']);
 
-      // In case the uri field is not filled, unset the value because an empty
-      // string will throw a primitive value issue.
-      if (empty($values['uri'])) {
-        unset($values['uri']);
-      }
+    // In case the uri field is not filled, unset the value because an empty
+    // string will throw a primitive value issue.
+    if (empty($values['uri'])) {
+      unset($values['uri']);
     }
 
     return $values;

@@ -16,11 +16,16 @@ function tallinn_install() {
   user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
   // Create Tallinn reports.
   foreach (_tallinn_get_agreement_countries() as $country_name) {
-    Node::create([
+    $node = Node::create([
       'title' => $country_name,
       'type' => 'tallinn_report',
       'og_audience' => TALLINN_COMMUNITY_ID,
-    ])->save();
+    ]);
+
+    for ($i = 1; $i < 26; $i++) {
+      $node->set('field_tallinn_action_' . $i, ['status' => 'no_data']);
+    }
+    $node->save();
   }
 }
 

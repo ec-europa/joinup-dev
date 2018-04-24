@@ -74,11 +74,11 @@ class MinkContext extends DrupalExtensionMinkContext {
    *
    * @Given I wait for animations to finish
    */
-  public function iWaitForAjaxToFinish() {
+  public function iWaitForAjaxToFinish($event = NULL) {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
     $tricksy = TRUE;
-    parent::iWaitForAjaxToFinish();
+    parent::iWaitForAjaxToFinish($event);
   }
 
 }
