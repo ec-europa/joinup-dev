@@ -65,7 +65,8 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
           // Show all tallinn reports in one page.
           "limit" => "33",
         ],
-      ]]
+      ],
+      ],
     ];
     $this->tallinnInitiativePage = Node::create($data);
     $this->tallinnInitiativePage->save();
@@ -121,4 +122,5 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
     $this->tallinnCollection->skip_notification = TRUE;
     $this->tallinnCollection->delete();
   }
+
 }

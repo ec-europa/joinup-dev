@@ -43,7 +43,8 @@ function tallinn_install() {
     'body' => [[
       'value' => $body,
       'format' => 'content_editor',
-    ]],
+    ],
+    ],
     'field_cp_content_listing' => [[
       "value" => [
         "fields" => [
@@ -57,7 +58,9 @@ function tallinn_install() {
         // Show all tallinn reports in one page.
         "limit" => "33",
       ],
-    ]]])->save();
+    ],
+    ],
+  ])->save();
 }
 
 /**
