@@ -25,11 +25,16 @@ function tallinn_install() {
 
   // Create Tallinn reports.
   foreach (_tallinn_get_agreement_countries() as $country_name) {
-    Node::create([
+    $node = Node::create([
       'title' => $country_name,
       'type' => 'tallinn_report',
       'og_audience' => $group->id(),
-    ])->save();
+    ]);
+
+    for ($i = 1; $i < 26; $i++) {
+      $node->set('field_tallinn_action_' . $i, ['status' => 'no_data']);
+    }
+    $node->save();
   }
 
   $body = '<p>The Tallinn Ministerial Declaration on eGovernment marks a new political commitment at EU level on significant priorities towards ensuring high quality, user-centric digital public services for citizens and seamless cross-border public services for businesses.</p>
