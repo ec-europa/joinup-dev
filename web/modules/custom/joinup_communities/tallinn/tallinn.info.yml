@@ -4,7 +4,9 @@ description: Specificities for the Tallinn community.
 core: 8.x
 package: Joinup communities
 dependencies:
+  - collection
   - field_group
+  - node
   - og
   - rdf_entity
 
