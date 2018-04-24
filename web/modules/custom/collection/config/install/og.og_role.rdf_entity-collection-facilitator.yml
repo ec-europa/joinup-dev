@@ -49,6 +49,7 @@ permissions:
   - 'update any navigation ogmenu_instance'
   - 'update group'
   - 'view all revisions'
+  - 'view any tallinn report node'
   - 'view any unpublished content'
   - 'view rdf_entity draft graph'
   - 'view unpublished rdf entity'

@@ -1,0 +1,3 @@
+view any tallinn report node:
+  title: 'View any tallinn report node'
+  description: 'Allows user to access all tallinn reports. By default, view access is denied.'
