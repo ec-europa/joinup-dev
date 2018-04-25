@@ -2,12 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.og_audience
     - node.type.tallinn_report
-    - rdf_entity.rdfentity.collection
   module:
+    - joinup_core
     - og
-id: node.discussion.og_audience
+id: node.tallinn_report.og_audience
 field_name: og_audience
 entity_type: node
 bundle: tallinn_report
