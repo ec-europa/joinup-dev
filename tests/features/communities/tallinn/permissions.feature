@@ -28,22 +28,22 @@ Feature:
     Given I am logged in as chef
     When I go to the "Tallinn declaration" collection
     Then I should not see the following lines of text:
-      | Romania Report |
       | France Report  |
+      | Romania Report |
 
     # Moderators can see all reports in the Tallinn Initiative page.
     When I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
-      | Romania Report |
       | France Report  |
+      | Romania Report |
 
     # Facilitators can see all reports in the Tallinn Initiative page.
     Given I am logged in as "sherlock"
     When I go to the "Tallinn declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
-      | Romania Report |
       | France Report  |
+      | Romania Report |
 
     # Each user can only see his report.
     Given I am logged in as "gheorghe"
@@ -59,6 +59,29 @@ Feature:
     Then I should see the following tiles in the correct order:
       | France Report |
     But I should not see the text "Romania Report"
+
+  Scenario: Test that the page is showing the results properly.
+    # The tallinn facet should not be shown.
+    Given I am an anonymous user
+    When I go to the "Tallinn declaration" collection
+    And I click "Tallinn initiative" in the "Left sidebar" region
+    Then I should not see the following facet items "Tallinn reports"
+
+    # Verify that editing a report, does not put it in the last position.
+    Given I am logged in as chef
+    When I go to the "Tallinn declaration" collection
+    And I click "Tallinn initiative" in the "Left sidebar" region
+    Then I should see the following tiles in the correct order:
+      | Romania Report |
+      | France Report  |
+
+    When I click the contextual link "Edit" in the "Romania Report" tile
+    And I press "Save"
+    And I go to the "Tallinn declaration" collection
+    And I click "Tallinn initiative" in the "Left sidebar" region
+    Then I should see the following tiles in the correct order:
+      | Romania Report |
+      | France Report  |
 
   Scenario: Test permissions on Tallinn Reports.
     # A moderator is able to change any report's author.

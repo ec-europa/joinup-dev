@@ -144,7 +144,7 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
 
   // By default, results are not sorted. Sort results by title.
   if (isset($build['field_cp_content_listing']['#results'])) {
-    uasort($build['field_cp_content_listing']['#results'], function($first, $second) {
+    uasort($build['field_cp_content_listing']['#results'], function ($first, $second) {
       return $first['#entity']->label() <=> $second['#entity']->label();
     });
   }
