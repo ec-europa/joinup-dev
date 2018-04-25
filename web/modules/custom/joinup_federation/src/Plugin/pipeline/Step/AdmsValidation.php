@@ -13,8 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Defines a pipeline step that validates uploaded data.
  *
  * @PipelineStep(
- *  id = "adms_validation",
- *  label = @Translation("ADMS Validation"),
+ *   id = "adms_validation",
+ *   label = @Translation("ADMS Validation"),
  * )
  */
 class AdmsValidation extends JoinupFederationStepPluginBase {
