@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.1.0",
         "SEMICeu/adms-ap_validator": "dev-master",
-        "composer/composer": "~1.0",
+        "composer/composer": "1.6.3",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "^1.6.4",
@@ -17,7 +17,7 @@
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.5.1",
+        "drupal/core": "^8.5.2",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
