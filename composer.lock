@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f72878898ff6d412236157e4136a55c",
+    "content-hash": "97f62480af84fe8980bfce628fde5e7e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.54.6",
+            "version": "3.55.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec"
+                "reference": "42fd0afe654b549d3353e82fe05bed1cd8c70b49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec",
-                "reference": "ea86c808c9c8a1cd39dab2baa1b9dd38e03323ec",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/42fd0afe654b549d3353e82fe05bed1cd8c70b49",
+                "reference": "42fd0afe654b549d3353e82fe05bed1cd8c70b49",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-04-20T18:14:14+00:00"
+            "time": "2018-04-24T19:18:36+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -3184,17 +3184,17 @@
         },
         {
             "name": "drupal/message",
-            "version": "1.0.0-rc1",
+            "version": "1.0.0-rc2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message",
-                "reference": "8.x-1.0-rc1"
+                "reference": "8.x-1.0-rc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-rc1.zip",
-                "reference": "8.x-1.0-rc1",
-                "shasum": "eceb8f05f429ce4e2babf67cafcd5b932b2b3ec1"
+                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-rc2.zip",
+                "reference": "8.x-1.0-rc2",
+                "shasum": "8c74e4e98fd6bfa19728f499dc5f14ce29f5ba17"
             },
             "require": {
                 "drupal/core": "*"
@@ -3209,15 +3209,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
-                    "datestamp": "1508449444",
+                    "version": "8.x-1.0-rc2",
+                    "datestamp": "1524519784",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Show the manage fields and displays in message template": "https://patch-diff.githubusercontent.com/raw/Gizra/message/pull/210.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10720,11 +10717,11 @@
         },
         {
             "name": "openeuropa/table-extension",
-            "version": "dev-initial-implementation",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@github.com:openeuropa/TableExtension.git",
-                "reference": "initial-implementation"
+                "reference": "master"
             },
             "type": "library"
         },
