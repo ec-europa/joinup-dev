@@ -454,6 +454,9 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
+ *
+ * - Invalidates the user cache tags when an OG membership changes.
+ * - Sends an e-mail when a user's role(s) change.
  */
 function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
