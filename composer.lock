@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b74c043b4c0216f489c555c92d77701d",
+    "content-hash": "9af6f7137495e87bf96e3b462cd161d0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1689,7 +1689,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2178,7 +2178,8 @@
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2765065-91.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
-                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
+                    "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                    "SA-CORE-2018-004": "https://cgit.drupalcode.org/drupal/rawdiff/?h=8.5.x&id=bb6d396609600d1169da29456ba3db59abae4b7e"
                 }
             },
             "autoload": {
@@ -2697,7 +2698,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1516352268",
+                    "datestamp": "1516303685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3445,8 +3446,8 @@
                     "version": "8.x-1.0",
                     "datestamp": "1514929984",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 }
             },
@@ -3660,7 +3661,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1520092685",
+                    "datestamp": "1524421084",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3985,10 +3986,6 @@
                     "homepage": "https://www.drupal.org/user/49989"
                 },
                 {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
-                },
-                {
                     "name": "RobLoach",
                     "homepage": "https://www.drupal.org/user/61114"
                 },
@@ -4034,12 +4031,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18"
+                "reference": "0fad025b19985b02e161cbe8a34216a8b2c44093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
-                "reference": "eb4a2f3dbbc575ee3b6d9cb947315ac7adcf1e18",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/0fad025b19985b02e161cbe8a34216a8b2c44093",
+                "reference": "0fad025b19985b02e161cbe8a34216a8b2c44093",
                 "shasum": ""
             },
             "require": {
@@ -4064,7 +4061,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-03-14T13:19:35+00:00"
+            "time": "2018-04-25T16:18:22+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -4204,7 +4201,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1519387684",
+                    "datestamp": "1514109785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4772,7 +4769,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5306,7 +5303,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
