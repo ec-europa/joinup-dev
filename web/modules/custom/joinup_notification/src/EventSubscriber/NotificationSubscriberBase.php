@@ -13,6 +13,7 @@ use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
@@ -278,39 +279,22 @@ abstract class NotificationSubscriberBase {
    *   - Actor role
    *   - Actor full name (This will be 'The Joinup Support Team' if the user
    *   has the moderator role)
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the entity cannot be generated.
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = [];
-    /** @var \Drupal\user\UserInterface $actor */
-    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $entity->label();
     $arguments['@entity:bundle'] = $entity->bundle();
     $arguments['@entity:url'] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $arguments['@actor:field_user_first_name'] = $actor_first_name;
-    $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
-    if ($actor->isAnonymous()) {
-      // If an anonymous is creating content, set the first name to also be 'the
-      // Joinup Moderation Team' because some emails use only the first name
-      // instead of the full name.
-      $arguments['@actor:role'] = 'moderator';
-      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
-    }
-    elseif ($actor->hasRole('moderator')) {
-      /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
-      $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
-        $actor_first_name . ' ' . $actor_family_name :
-        $actor->get('full_name')->value;
-    }
-    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
+    $arguments += MessageArgumentGenerator::getActorArguments();
+    $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
+
     $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
 
     return $arguments;

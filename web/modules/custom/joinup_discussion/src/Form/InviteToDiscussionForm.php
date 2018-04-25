@@ -15,6 +15,7 @@ use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
@@ -327,41 +328,24 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * Returns the arguments for an invitation message.
    *
-   * @todo This was copied from NotificationSubscriberBase::generateArguments()
-   *   but we cannot call that code directly since it is contained in an
-   *   abstract class. Remove this once ISAICP-4152 is in.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
-   *
    * @param \Drupal\Core\Entity\EntityInterface $discussion
    *   The discussion for which to generate the message arguments.
    *
    * @return array
    *   The message arguments.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the discussion cannot be generated.
    */
-  protected function generateArguments(EntityInterface $discussion) : array {
+  protected function generateArguments(EntityInterface $discussion): array {
     $arguments = [];
-    /** @var \Drupal\user\UserInterface $actor */
-    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser()->id());
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $discussion->label();
     $arguments['@entity:url'] = $discussion->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $arguments['@actor:field_user_first_name'] = $actor_first_name;
-    $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
-    if ($actor->hasRole('moderator')) {
-      /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
-      $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
-        $actor_first_name . ' ' . $actor_family_name :
-        $actor->get('full_name')->value;
-    }
+    $arguments += MessageArgumentGenerator::getActorArguments();
 
     return $arguments;
   }
