@@ -78,7 +78,7 @@ class MinkContext extends DrupalExtensionMinkContext {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
     $tricksy = TRUE;
-    parent::iWaitForAjaxToFinish();
+    parent::iWaitForAjaxToFinish($event);
   }
 
 }
