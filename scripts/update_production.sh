@@ -19,6 +19,7 @@ echo "Disable automatic checkpoints."
 cd ${PROJECT_ROOT}
 ./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush cs-update --discard-overrides --yes &&
+./vendor/bin/drush search-api:reset-tracker --yes &&
 ./vendor/bin/drush cache-rebuild --yes
 
 echo "Perform a manual checkpoint."
