@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
@@ -115,4 +117,35 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
  */
 function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   $query->addCondition('entity_bundle', 'tallinn_report', '<>');
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->getType() !== 'custom_page') {
+    return;
+  }
+  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== TALLINN_COMMUNITY_ID) {
+    return;
+  }
+
+  // Since the entities are only viewable by their authors - apart from users
+  // that can view all of them - the search api field facets will display a
+  // wrong amount of results as they do not respect the view access - unlike the
+  // search api field formatter. Remove the facets as the item limit is set to
+  // the amount of the report entities.
+  // Unset the facets only if there is a facet showing a tab for tallinn
+  // reports. Tallinn reports are only shown on one page and on that page, only
+  // tallinn reports are shown, so the check is straight forward.
+  if (isset($build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
+    unset($build['node_field_cp_content_listing_top']);
+  }
+
+  // By default, results are not sorted. Sort results by title.
+  if (isset($build['field_cp_content_listing']['#results'])) {
+    uasort($build['field_cp_content_listing']['#results'], function($first, $second) {
+      return $first['#entity']->label() <=> $second['#entity']->label();
+    });
+  }
 }
