@@ -11,6 +11,7 @@ use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\node\Entity\Node;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions and related methods provided by the tallinn module.
@@ -41,11 +42,13 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @beforeScenario @tallinn
    */
   public function setupTallinnData() {
-    $this->createCollection([
-      'id' => TALLINN_COMMUNITY_ID,
-      'label' => 'Tallinn declaration',
-      'field_ar_state' => 'validated',
-    ]);
+    if (!Rdf::load(TALLINN_COMMUNITY_ID)) {
+      $this->createCollection([
+        'id' => TALLINN_COMMUNITY_ID,
+        'label' => 'Tallinn declaration',
+        'field_ar_state' => 'validated',
+      ]);
+    }
 
     // Create the page that will show all information related to the agreement.
     $data = [
@@ -117,8 +120,10 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @AfterScenario
    */
   public function cleanTallinEntities() {
-    $this->tallinnInitiativePage->skipNotification = TRUE;
-    $this->tallinnInitiativePage->delete();
+    if (!empty($this->tallinnInitiativePage)) {
+      $this->tallinnInitiativePage->skipNotification = TRUE;
+      $this->tallinnInitiativePage->delete();
+    }
     $this->tallinnCollection->skip_notification = TRUE;
     $this->tallinnCollection->delete();
   }

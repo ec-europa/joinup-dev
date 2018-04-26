@@ -89,4 +89,5 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
  */
 function joinup_core_post_update_install_tallinn() {
   \Drupal::service('module_installer')->install(['tallinn']);
+  tallinn_install_default();
 }

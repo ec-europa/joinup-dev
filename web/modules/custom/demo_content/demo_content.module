@@ -4,3 +4,18 @@
  * @file
  * Contains demo_content.module.
  */
+
+/**
+ * Implements hook_modules_installed().
+ */
+function demo_content_modules_installed($modules) {
+  // Normally, default entities would be created in the hook install. However,
+  // the tallinn entities require the tallinn collection and this is imported
+  // by default_content module.
+  // default_content is hooking into modules installed and so this hook will
+  // fire when demo_content content is installed, and since default_content is a
+  // dependency it fires first.
+  if (in_array('demo_content', $modules)) {
+    tallinn_install_default();
+  }
+}
