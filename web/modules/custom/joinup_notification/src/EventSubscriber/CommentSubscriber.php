@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -198,7 +200,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     // The parent is passed here instead so that the entity url will retrieve
     // the parent entity's url as the comments do not have one.
     $arguments = parent::generateArguments($this->parent);

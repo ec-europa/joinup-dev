@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\contact_form\EventSubscriber;
 
 use Drupal\contact_form\ContactFormEvents;
@@ -192,7 +194,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     return [];
   }
 
