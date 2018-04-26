@@ -123,7 +123,7 @@ function tallinn_search_api_query_search_api_field_field_collection_content_alte
  * Implements hook_entity_view_alter().
  */
 function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  if ($entity->getType() !== 'custom_page') {
+  if ($entity->bundle() !== 'custom_page') {
     return;
   }
   if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== TALLINN_COMMUNITY_ID) {
