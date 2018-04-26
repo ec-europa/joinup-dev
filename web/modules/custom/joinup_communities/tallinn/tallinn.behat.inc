@@ -40,7 +40,7 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
    *
    * @beforeScenario @tallinn
    */
-  public function createJoinupCollection() {
+  public function setupTallinnData() {
     $this->createCollection([
       'id' => TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn declaration',
