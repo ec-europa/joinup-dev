@@ -11,6 +11,8 @@ dependencies:
   - user
 
 config_devel:
+  - core.entity_view_display.message.og_membership_role_change.mail_body
+  - core.entity_view_display.message.og_membership_role_change.mail_subject
   - facets.facet.user_content_bundle
   - facets.facet_source.search_api_field__user.field_user_content
   - field.field.user.user.field_social_media
@@ -34,5 +36,6 @@ config_devel:
   - field.storage.user.field_user_professional_domain
   - field.storage.user.field_user_professional_profile
   - joinup_user.mail
+  - message.template.og_membership_role_change
   - og.og_membership_type.og_membership_type
   - user.role.administrator

@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: og_membership_role_change
+label: 'Group membership role change'
+description: 'Message sent when a user receives a new role inside a collection or solution.'
+text:
+  -
+    value: '<p>Your role has been changed to @membership:roles</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
