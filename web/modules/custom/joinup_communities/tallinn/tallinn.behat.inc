@@ -124,8 +124,10 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
       $this->tallinnInitiativePage->skipNotification = TRUE;
       $this->tallinnInitiativePage->delete();
     }
-    $this->tallinnCollection->skip_notification = TRUE;
-    $this->tallinnCollection->delete();
+    if (!empty($this->tallinnCollection)) {
+      $this->tallinnCollection->skip_notification = TRUE;
+      $this->tallinnCollection->delete();
+    }
   }
 
 }
