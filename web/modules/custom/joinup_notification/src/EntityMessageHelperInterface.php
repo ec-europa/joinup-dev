@@ -1,0 +1,83 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\joinup_notification;
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\message\MessageInterface;
+
+/**
+ * Interface for services that assist in managing messages for entities.
+ *
+ * This interface is intended for services that send notification messages
+ * when an entity is created, updated or deleted.
+ */
+interface EntityMessageHelperInterface {
+
+  /**
+   * Constant representing sorting by ascending creation date.
+   */
+  const SORT_ASC = 'ASC';
+
+  /**
+   * Constant representing sorting by descending creation date.
+   */
+  const SORT_DESC = 'DESC';
+
+  /**
+   * Creates a new message that is associated with the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity that will be referenced in the new message.
+   * @param string $template
+   *   The message template ID.
+   * @param array $arguments
+   *   The array of arguments that will be used to replace token-like strings in
+   *   the message.
+   *
+   * @return \Drupal\message\MessageInterface
+   *   The newly created, unsaved, message.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the passed entity cannot be referenced. Possibly since it
+   *   hasn't yet been saved and does not have an ID yet.
+   */
+  public function createMessage(EntityInterface $entity, string $template, array $arguments): MessageInterface;
+
+  /**
+   * Returns the messages that are associated with the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity that is referenced by the message.
+   * @param string $template
+   *   The message template ID.
+   * @param array $values
+   *   An associative array of properties to filter the messages by, where the
+   *   keys are the property names and the values are the values those
+   *   properties must have.
+   * @param int $limit
+   *   The maximum number of entities to return. Defaults to 10 messages.
+   * @param string $order
+   *   Whether to sort by ascending or descending creation date. Defaults to
+   *   descending order.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   The corresponding messages.
+   */
+  public function getMessages(EntityInterface $entity, string $template, array $values = [], int $limit = 10, string $order = self::SORT_DESC): array;
+
+  /**
+   * Sends the message that is associated with the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity that is referenced by the message.
+   * @param string $template
+   *   The message template ID.
+   *
+   * @return bool
+   *   TRUE if the message was sent successfully. FALSE otherwise.
+   */
+  public function sendMessage(EntityInterface $entity, string $template): bool;
+
+}
