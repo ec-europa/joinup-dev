@@ -25,3 +25,11 @@ function joinup_user_post_update_joinup_reports() {
     user_role_grant_permissions($rid, ['access joinup reports']);
   }
 }
+
+/**
+ * Remove configuration for an e-mail that has been replaced by a Message.
+ */
+function joinup_user_post_update_remove_obsolete_og_roles_changed_message_config() {
+  $config = \Drupal::configFactory()->getEditable('joinup_user.mail');
+  $config->clear('og_roles_changed')->save();
+}
