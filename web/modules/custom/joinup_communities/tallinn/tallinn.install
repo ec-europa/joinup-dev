@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains installation functions for the tallinn module.
+ */
+
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_install().
+ */
+function tallinn_install() {
+  // Configure permissions for the tallinn_report content.
+  user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
+}

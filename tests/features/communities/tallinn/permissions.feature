@@ -72,16 +72,16 @@ Feature:
     When I go to the "Tallinn declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
-      | Romania Report |
       | France Report  |
+      | Romania Report |
 
     When I click the contextual link "Edit" in the "Romania Report" tile
     And I press "Save"
     And I go to the "Tallinn declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
-      | Romania Report |
       | France Report  |
+      | Romania Report |
 
   Scenario: Test permissions on Tallinn Reports.
     # A moderator is able to change any report's author.
@@ -97,7 +97,7 @@ Feature:
     Given I go to "/node/add/tallinn_report"
     Then I should get a 403 HTTP response
 
-    # A Tallinn collection member can change its own report but not other's. In
+    # A user can change its own report but not other's. In
     # the same time he's not able to change the node owner.
     Given I am logged in as vasile
     When I visit the tallinn_report content "Romania Report" edit screen

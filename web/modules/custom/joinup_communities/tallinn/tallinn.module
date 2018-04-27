@@ -15,7 +15,6 @@ use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 
 define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
 
@@ -163,9 +162,6 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
  * install tallinn default entities.
  */
 function tallinn_install_default() {
-  // Configure permissions for the tallinn_report content.
-  user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
-
   $collection = Rdf::load(TALLINN_COMMUNITY_ID);
   if (empty($collection)) {
     return;
