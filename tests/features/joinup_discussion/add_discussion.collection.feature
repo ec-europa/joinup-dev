@@ -70,6 +70,8 @@ Feature: Discussions added to collections
       | File description | The content of this file is mind blowing.  |
     And I press "Publish"
     Then I should see the heading "An amazing discussion"
+    # Verify that the author is visible on the page.
+    And I should see the text "Kesha Pontecorvo"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
 
