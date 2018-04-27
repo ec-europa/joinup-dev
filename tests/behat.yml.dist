@@ -18,8 +18,9 @@ default:
       filters:
         tags: '~@wip'
   extensions:
-    Behat\MinkExtension:
+    Drupal\MinkExtension:
       base-url: '${behat.base_url}'
+      ajax_timeout: 10
       files_path: '${behat.files.path}'
       goutte: ~
       javascript_session: 'selenium2'
@@ -30,6 +31,7 @@ default:
       api_driver: 'drupal'
       blackbox: ~
       region_map:
+        Administration toolbar: '#toolbar-administration'
         Comment: '.comments-section'
         Contact information inline form: '#edit-field-ar-contact-information-wrapper'
         Content: '.section--content-middle'
@@ -40,6 +42,7 @@ default:
         Header menu: '#block-joinup-theme-main-menu'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
+        Modal title: '.ui-dialog-title'
         Modal content: '#drupal-modal'
         Modal buttons: '.ui-dialog-buttonpane'
         Navigation menu block: '#block-navigation'

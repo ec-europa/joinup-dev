@@ -1,8 +1,5 @@
 {
     "_links": {
-        "self": {
-            "href": "http:\/\/default\/user\/17?_format=hal_json"
-        },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
         }

@@ -17,6 +17,7 @@ Feature: Subscribing to discussions
       | Rare Whey   | Whey is the liquid remaining after milk has been curdled.        | Dairy products | draft     | Dr. Hans Zarkov |
     Then the "Rare butter" discussion should have 0 subscribers
 
+  @javascript
   Scenario: Subscribe to a discussion.
     When I am an anonymous user
     And I go to the "Rare Butter" discussion
@@ -44,8 +45,9 @@ Feature: Subscribing to discussions
     And the "Rare butter" discussion should have 1 subscriber
 
     When I click "Unsubscribe"
-    Then I should see the heading "Unsubscribe from this discussion?"
-    When I press "Unsubscribe"
+    Then a modal should open
+    And I should see "Unsubscribe from this discussion?" in the "Modal title" region
+    When I press "Unsubscribe" in the "Modal buttons" region
     Then I should see the heading "Rare Butter"
     And I should see the link "Subscribe"
     And the "Rare butter" discussion should have 0 subscribers
@@ -71,9 +73,17 @@ Feature: Subscribing to discussions
     Then I fill in "Create comment" with "Is Dale in love with Flash?"
     And I fill in "Your name" with "Gerhardt von Troll"
     And I fill in "Email" with "trollingismylife@example.com"
-    But I wait for the honeypot validation to pass
-    Then I press "Post comment"
-    Then 0 e-mails should have been sent
+    And I wait for the honeypot validation to pass
+    And I press "Post comment"
+    # Check that notification emails are not sent yet since the comment is not approved.
+    Then the following email should not have been sent:
+      | recipient | dale@example.com                                                                                    |
+      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient | hans@example.com                                                                                    |
+      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"

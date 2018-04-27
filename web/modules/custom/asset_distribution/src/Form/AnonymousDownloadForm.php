@@ -97,6 +97,10 @@ class AnonymousDownloadForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
       '#ajax' => [
+        // Enable ajax submit for the whole form by specifying the wrapper.
+        // Since the submit callback returns an ajax response, there is no need
+        // to provide an ajax callback. The wrapper will be used in case of
+        // validation errors.
         'wrapper' => $form['#id'],
       ],
     ];

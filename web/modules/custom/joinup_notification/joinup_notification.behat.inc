@@ -400,6 +400,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       ->set('defaults.sender', 'test_mail_collector')
       ->save();
     \Drupal::state()->set('system.test_mail_collector', []);
+    \Drupal::state()->resetCache();
 
     $this->restoreReadOnlyConfig();
   }

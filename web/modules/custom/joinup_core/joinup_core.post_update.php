@@ -49,7 +49,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
   foreach ($message_storage->loadMultiple($ids) as $message) {
     /** @var \Drupal\file\FileInterface $attachment */
     if ($attachment = $message->field_contact_attachment->entity) {
-      if (!$attachment || ($file_system->realpath($attachment->getFileUri()) === FALSE)) {
+      if (!file_exists($attachment->getFileUri())) {
         continue;
       }
       $target = file_uri_target($attachment->getFileUri());
@@ -73,4 +73,13 @@ function joinup_core_post_update_move_contact_form_attachments() {
  */
 function joinup_core_post_update_install_smart_trim() {
   \Drupal::service('module_installer')->install(['smart_trim']);
+}
+
+/**
+ * Remove stale 'system.action.joinup_transfer_solution_ownership' config.
+ */
+function joinup_core_post_update_remove_action_transfer_solution_ownership() {
+  \Drupal::configFactory()
+    ->getEditable('system.action.joinup_transfer_solution_ownership')
+    ->delete();
 }

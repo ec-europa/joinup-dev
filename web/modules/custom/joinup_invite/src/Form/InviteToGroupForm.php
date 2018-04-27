@@ -7,14 +7,22 @@ namespace Drupal\joinup_invite\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form to add a user as facilitator of a rdf entity group.
+ * Form to add a member with a certain role in a rdf entity group.
  */
-class InviteFacilitatorsForm extends InviteFormBase {
+class InviteToGroupForm extends InviteFormBase {
+
+  /**
+   * The group where to invite users.
+   *
+   * @var \Drupal\rdf_entity\RdfInterface
+   */
+  protected $rdfEntity;
 
   /**
    * The og membership manager service.
@@ -24,7 +32,7 @@ class InviteFacilitatorsForm extends InviteFormBase {
   protected $ogMembershipManager;
 
   /**
-   * Constructs a new InviteFacilitatorsForm object.
+   * Constructs a new InviteToGroupForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
@@ -51,21 +59,42 @@ class InviteFacilitatorsForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'invite_facilitators_form';
+    return 'invite_to_group_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getSubmitButtonText() : TranslatableMarkup {
-    return $this->t('Add facilitators');
+  protected function getSubmitButtonText(): TranslatableMarkup {
+    return $this->t('Add members');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getCancelButtonUrl(): Url {
+    return new Url('entity.rdf_entity.member_overview', [
+      'rdf_entity' => $this->rdfEntity->id(),
+    ]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
-    $form_state->set('group', $rdf_entity);
+    $this->rdfEntity = $rdf_entity;
+
+    $form['role'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Role'),
+      '#required' => TRUE,
+      '#options' => [
+        'member' => $this->t('Member'),
+        'facilitator' => $this->t('Facilitator'),
+      ],
+      '#default_value' => 'member',
+    ];
+
     return parent::build($form, $form_state);
   }
 
@@ -73,24 +102,28 @@ class InviteFacilitatorsForm extends InviteFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $users = array_filter($form_state->getValue('users'));
-    $group = $form_state->get('group');
-    $role_id = $group->getEntityTypeId() . '-' . $group->bundle() . '-facilitator';
-    $facilitator_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
+    $users = $this->getUserList($form_state);
+    $role_id = implode('-', [
+      $this->rdfEntity->getEntityTypeId(),
+      $this->rdfEntity->bundle(),
+      $form_state->getValue('role'),
+    ]);
+    $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
-    foreach ($users as $uid) {
-      $user = $this->entityTypeManager->getStorage('user')->load($uid);
-      $membership = $this->ogMembershipManager->getMembership($group, $user);
+    foreach ($users as $user) {
+      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user);
       if (empty($membership)) {
-        $membership = $this->ogMembershipManager->createMembership($group, $user);
+        $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user);
       }
-      $membership->addRole($facilitator_role);
+      $membership->addRole($role);
       $membership->save();
     }
 
-    drupal_set_message($this->t('Your settings have been saved.'), 'status', TRUE);
+    drupal_set_message($this->t('Successfully added the role %role to the selected users.', [
+      '%role' => $role->label(),
+    ]));
     $form_state->setRedirect('entity.rdf_entity.member_overview', [
-      'rdf_entity' => $group->id(),
+      'rdf_entity' => $this->rdfEntity->id(),
     ]);
   }
 

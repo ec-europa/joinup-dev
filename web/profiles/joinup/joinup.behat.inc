@@ -618,7 +618,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
-      'custom_page' => [],
+      'custom_page' => [
+        'attachments' => 'field_attachment',
+      ],
       'discussion' => [
         'content' => 'body',
         'state' => 'field_state',
@@ -1006,7 +1008,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Assert that the text is visible in a given region.
    *
-   * @Then I (should )see the text :text in the :region region
+   * @Then I see the text :text in the :region region
    */
   public function assertTextVisible($text, $region) {
     $actual = $this->getRegion($region)->getText();
@@ -1106,7 +1108,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertContextualLinkPresentInTile($links, $heading) {
     $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $found_links = array_keys($this->findContextualLinksInElement($element));
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
     $not_found = array_diff($links, $found_links);
     if (!empty($not_found)) {
@@ -1130,7 +1132,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertContextualLinkNotPresentInTile($links, $heading) {
     $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $found_links = array_keys($this->findContextualLinksInElement($element));
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
     $found = array_intersect($found_links, $links);
     if (!empty($found)) {
@@ -1155,13 +1157,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function iClickTheContextualLinkInTile($link, $heading) {
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
-
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$link]));
+    $this->clickContextualLink($element, $link);
   }
 
   /**
@@ -2227,6 +2223,34 @@ JS;
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
+  }
+
+  /**
+   * Press the enter key in the keyboard.
+   *
+   * Works only in Javascript-enabled browsers.
+   *
+   * @param string $field
+   *   The field where to press the enter key.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   not found.
+   *
+   * @When I hit enter( in the keyboard) on the field :field
+   */
+  public function hitEnterKeyboard($field) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires Javascript to run.');
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("Could not find field '$field'");
+    }
+
+    $element->keyDown("\r");
+    $element->keyUp("\r");
   }
 
   /**

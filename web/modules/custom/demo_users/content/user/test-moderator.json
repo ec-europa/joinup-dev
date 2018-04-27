@@ -1,0 +1,134 @@
+{
+    "_links": {
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uuid": [
+        {
+            "value": "cd61fcc4-1e10-46cb-beac-73f0134fcbb1"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "name": [
+        {
+            "value": "test-moderator"
+        }
+    ],
+    "pass": [
+        {
+            "value": "test-moderator"
+        }
+    ],
+    "mail": [
+        {
+            "value": "test-moderator@example.com"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "moderator"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-03-15T14:46:30+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-03-15T14:46:30+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_last_password_reset": [
+        {
+            "value": "2018-03-15T16:46:30"
+        }
+    ],
+    "field_password_expiration": [
+        {
+            "value": false
+        }
+    ],
+    "field_social_media": [
+        {
+            "platform": null,
+            "value": null,
+            "platform_values": {
+                "facebook": {
+                    "value": ""
+                },
+                "github": {
+                    "value": ""
+                },
+                "googleplus": {
+                    "value": ""
+                },
+                "linkedin": {
+                    "value": ""
+                },
+                "slideshare": {
+                    "value": ""
+                },
+                "twitter": {
+                    "value": ""
+                },
+                "vimeo": {
+                    "value": ""
+                },
+                "youtube": {
+                    "value": ""
+                }
+            }
+        }
+    ],
+    "field_user_content": [
+        {
+            "value": {
+                "fields": {
+                    "user_content_bundle": {
+                        "weight": 0,
+                        "region": "top"
+                    }
+                },
+                "enabled": 1,
+                "query_presets": "",
+                "limit": 12
+            }
+        }
+    ],
+    "field_user_family_name": [
+        {
+            "value": "Moderator"
+        }
+    ],
+    "field_user_first_name": [
+        {
+            "value": "Test"
+        }
+    ],
+    "field_user_subscription_events": [
+        {
+            "value": true
+        }
+    ]
+}

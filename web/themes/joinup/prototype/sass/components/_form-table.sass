@@ -70,16 +70,25 @@
         .menu-item__link
           display: table-cell
           vertical-align: middle
-        .tabledrag-handle + .form-managed-file,
-        .tabledrag-handle + .menu-item__link
-          padding-left: 30px
-        .tabledrag-changed
-          left: 50px
-          +centered($horizontal: false, $vertical: true)
         .form-managed-file
           width: 100%
         .checkbox
           margin: 0
+      .tabledrag-handle
+        height: auto
+        margin: 0 10px 0 0
+        .handle
+          width: 20px
+          height: 20px
+          margin: 0
+          padding: 0
+          background-position: 50% 50%
+      .tabledrag-changed
+        padding-left: 5px
+  .indentation
+    height: 24px
+    margin: 0
+    padding: 0
 
 .table-operations
   .form-table

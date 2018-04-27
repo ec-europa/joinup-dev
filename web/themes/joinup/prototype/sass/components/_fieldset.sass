@@ -36,6 +36,19 @@
   p:last-child
     margin-bottom: 0
 
+.fieldset__show-more-link
+  display: block
+  margin-top: $field-margin
+  .icon--arrow-down
+    transition: transform 300ms
+  &.is-expanded
+    .icon--arrow-down
+      transform: rotateZ(-180deg)
+
+.fieldset__extra-items
+  html.js &
+    display: none
+
 // Modifiers
 // --------------------------------------------------
 .fieldset--separated

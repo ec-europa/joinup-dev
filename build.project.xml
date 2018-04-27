@@ -23,9 +23,6 @@
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
-    <echo msg="Loading Remove Patched Packages task." />
-    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
-
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
 
@@ -40,6 +37,9 @@
 
     <echo msg="Loading Truncate Cache Tables task." />
     <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
+
+    <echo msg="Loading Empty MySQL Database task." />
+    <taskdef name="emptymysqldatabase" classname="\DrupalProject\Phing\MySqlEmptyDatabaseTask" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
@@ -81,16 +81,6 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}" />
-    </target>
-
-    <target name="purge-rdf-backend">
-        <rdf-purge
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            SolrUrl="${solr.server.url}"
-            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -171,14 +161,7 @@
                 target="${exports.sql.destination}" />
     </target>
 
-    <target name="restore-mysql-dump">
-        <drush
-                command="sql-drop"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
+    <target name="restore-mysql-dump" depends="empty-mysql-database">
         <drush
                 command="sql-query"
                 assume="yes"
@@ -191,6 +174,14 @@
              The dump might contain stale data since we use Redis on production
              for caching. -->
         <phingcall target="truncate-cache-tables" />
+    </target>
+
+    <target name="empty-mysql-database">
+        <echo message="Drop all MySQL tables from the database." />
+        <emptymysqldatabase
+                url="${drupal.db.dsn}"
+                userId="${drupal.db.user}"
+                password="${drupal.db.password}" />
     </target>
 
     <target name="truncate-cache-tables">
@@ -273,6 +264,7 @@
         <mkdir dir="${sass.output.dir}" />
         <sass
             executable="${sass.bin}"
+            flags="--sourcemap=${sass.sourcemap}"
             style="${sass.style}"
             input="${sass.input}"
             output="${sass.output.dir}/${sass.output.file}" />
@@ -397,6 +389,17 @@
         </if>
     </target>
 
+    <target name="ensure-search-api-solr-site-hash">
+        <drush
+                command="php:eval"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
+        </drush>
+    </target>
+
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
@@ -441,6 +444,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
 
 </project>

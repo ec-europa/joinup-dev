@@ -9,9 +9,12 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 
@@ -20,10 +23,43 @@ use Drupal\og_menu\Tests\Traits\OgMenuTrait;
  */
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
+
+  /**
+   * Handles the attachment field for custom page nodes.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
+   *
+   * @BeforeNodeCreate
+   */
+  public static function massageCustomPageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+    /** @var \stdClass $node */
+    $node = $scope->getEntity();
+
+    if ($node->type !== 'custom_page' || empty($node->attachments)) {
+      return;
+    }
+
+    // We want to copy it from the fixtures into the file system and register it
+    // in the DocumentSubContext so it can be cleaned up after the scenario
+    // ends. Perform a small dance to get access to the context class from
+    // inside this static callback.
+    /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+    $environment = $scope->getEnvironment();
+    /** @var \CustomPageSubContext $context */
+    $context = $environment->getContext(self::class);
+
+    foreach ($context->explodeCommaSeparatedStepArgument($node->attachments) as $filename) {
+      $context->createFile($filename);
+    }
+  }
 
   /**
    * Navigates to the canonical page display of a custom page.
