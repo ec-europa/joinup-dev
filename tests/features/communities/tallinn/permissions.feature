@@ -14,19 +14,19 @@ Feature:
       | gheorghe  |           |
       | sherlock  |           |
     And the following collection user memberships:
-      | collection          | user      | roles       |
-      | Tallinn declaration | vasile    |             |
-      | Tallinn declaration | dominique |             |
-      | Tallinn declaration | sherlock  | facilitator |
+      | collection                      | user      | roles       |
+      | Tallinn Ministerial Declaration | vasile    |             |
+      | Tallinn Ministerial Declaration | dominique |             |
+      | Tallinn Ministerial Declaration | sherlock  | facilitator |
     And tallinn_report content:
-      | title          | author    | collection          |
-      | Romania Report | gheorghe  | Tallinn declaration |
-      | France Report  | dominique | Tallinn declaration |
+      | title          | author    | collection                      |
+      | Romania Report | gheorghe  | Tallinn Ministerial Declaration |
+      | France Report  | dominique | Tallinn Ministerial Declaration |
 
   Scenario: Test view access on Tallinn Reports.
     # Test that the tallinn tiles are not visible in the overview page.
     Given I am logged in as chef
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     Then I should not see the following lines of text:
       | France Report  |
       | Romania Report |
@@ -39,7 +39,7 @@ Feature:
 
     # Facilitators can see all reports in the Tallinn Initiative page.
     Given I am logged in as "sherlock"
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
@@ -47,14 +47,14 @@ Feature:
 
     # Each user can only see his report.
     Given I am logged in as "gheorghe"
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | Romania Report |
     But I should not see the text "France Report"
 
     Given I am logged in as "dominique"
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report |
@@ -63,13 +63,13 @@ Feature:
   Scenario: Test that the page is showing the results properly.
     # The tallinn facet should not be shown.
     Given I am an anonymous user
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should not see the following facet items "Tallinn reports"
 
     # Verify that editing a report, does not put it in the last position.
     Given I am logged in as chef
-    When I go to the "Tallinn declaration" collection
+    When I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
@@ -77,7 +77,7 @@ Feature:
 
     When I click the contextual link "Edit" in the "Romania Report" tile
     And I press "Save"
-    And I go to the "Tallinn declaration" collection
+    And I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |

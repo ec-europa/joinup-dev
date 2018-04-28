@@ -45,7 +45,7 @@ class TallinnSubContext extends DrupalSubContextBase implements DrupalSubContext
     if (!Rdf::load(TALLINN_COMMUNITY_ID)) {
       $this->createCollection([
         'id' => TALLINN_COMMUNITY_ID,
-        'label' => 'Tallinn declaration',
+        'label' => 'Tallinn Ministerial Declaration',
         'field_ar_state' => 'validated',
       ]);
     }
