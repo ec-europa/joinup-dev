@@ -24,14 +24,6 @@ Feature:
       | France Report  | dominique | Tallinn Ministerial Declaration |
 
   Scenario: Test view access on Tallinn Reports.
-    # Each user can only see his report.
-    Given I am logged in as "gheorghe"
-    When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
-    Then I should see the following tiles in the correct order:
-      | Romania Report |
-    But I should not see the "France Report" tile
-
     # Test that the tallinn tiles are not visible in the overview page.
     Given I am logged in as chef
     When I go to the "Tallinn Ministerial Declaration" collection
@@ -59,7 +51,7 @@ Feature:
     And I click "Tallinn initiative" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | Romania Report |
-    But I should not see the "France Report" tile
+    But I should not see the text "France Report"
 
     Given I am logged in as "dominique"
     When I go to the "Tallinn Ministerial Declaration" collection
