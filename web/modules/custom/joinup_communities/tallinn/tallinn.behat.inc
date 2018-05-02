@@ -8,6 +8,7 @@
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -17,6 +18,7 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class TallinnSubContext extends DrupalSubContextBase {
 
+  use ConfigReadOnlyTrait;
   use EntityTrait;
   use RdfEntityTrait;
 
@@ -65,11 +67,13 @@ class TallinnSubContext extends DrupalSubContextBase {
       $og_config = \Drupal::configFactory()->getEditable('og.settings');
       $delete_orphans = $og_config->get('delete_orphans');
       // Keep group content.
+      static::bypassReadOnlyConfig();
       $og_config->set('delete_orphans', FALSE)->save();
       // Delete collection.
       $collection->delete();
       // Restore OG policy.
       $og_config->set('delete_orphans', $delete_orphans)->save();
+      static::restoreReadOnlyConfig();
     }
   }
 
