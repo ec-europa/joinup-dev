@@ -214,11 +214,16 @@ function joinup_inline_entity_form_reference_form_alter(&$reference_form, &$form
  * - Disable access to the comment settings. These are managed on collection
  *   level.
  * - Disable access to the meta information.
+ * - Allow access to the uid field only to the moderators.
  */
 function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['revision_information']['#access'] = FALSE;
   $form['revision']['#access'] = FALSE;
   $form['meta']['#access'] = FALSE;
+
+  if (isset($form['uid'])) {
+    $form['uid']['#access'] = \Drupal::currentUser()->hasPermission('administer nodes');
+  }
 
   foreach (['field_comments', 'field_replies'] as $field) {
     if (!empty($form[$field])) {
