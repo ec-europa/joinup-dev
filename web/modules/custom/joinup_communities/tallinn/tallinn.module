@@ -105,7 +105,7 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     return AccessResult::allowed();
   }
 
-  $access = $node->access('view any tallinn report node', $account);
+  $access = $node->access('view any tallinn_report content', $account);
   return $access ? AccessResult::allowed() : AccessResult::forbidden();
 }
 
