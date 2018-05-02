@@ -75,7 +75,7 @@ Feature:
       | France Report  |
       | Romania Report |
 
-    When I click the contextual link "Edit" in the "Romania Report" tile
+    When I go to the "tallinn_report" content "Romania Report" edit screen
     And I press "Save"
     And I go to the "Tallinn Ministerial Declaration" collection
     And I click "Tallinn initiative" in the "Left sidebar" region
