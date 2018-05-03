@@ -156,7 +156,7 @@
                 dir="${tmp.dir}"
         />
         <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
-        <delete file="${tmp}/dump.sql" failonerror="false" />
+        <delete file="${tmp.dir}/dump.sql" failonerror="false" />
         <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
     </target>
 
@@ -167,7 +167,7 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="file" value="${tmp}/dump.sql" />
+            <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
         <!-- Make sure to truncate the cache tables immediately after importing.
              The dump might contain stale data since we use Redis on production
