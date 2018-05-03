@@ -5,14 +5,19 @@ core: 8.x
 package: Joinup communities
 dependencies:
   - collection
+  - custom_page
   - field_group
+  - joinup_core
   - node
   - og
   - rdf_entity
+  - search_api_field
+  - user
 
 config_devel:
   - core.entity_form_display.node.tallinn_report.default
   - core.entity_view_display.node.tallinn_report.default
+  - core.entity_view_display.node.tallinn_report.view_mode_tile
   - field.field.node.tallinn_report.field_tallinn_action_10
   - field.field.node.tallinn_report.field_tallinn_action_11
   - field.field.node.tallinn_report.field_tallinn_action_12
@@ -38,6 +43,7 @@ config_devel:
   - field.field.node.tallinn_report.field_tallinn_action_7
   - field.field.node.tallinn_report.field_tallinn_action_8
   - field.field.node.tallinn_report.field_tallinn_action_9
+  - field.field.node.tallinn_report.og_audience
   - field.storage.node.field_tallinn_action_10
   - field.storage.node.field_tallinn_action_11
   - field.storage.node.field_tallinn_action_12

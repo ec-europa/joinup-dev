@@ -6,10 +6,13 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
 define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
@@ -81,4 +84,69 @@ function tallinn_report_author_uniqueness(array &$form, FormStateInterface $form
  */
 function tallinn_node_create_access(AccountInterface $account, array $context, $entity_bundle) {
   return $entity_bundle === 'tallinn_report' ? AccessResult::forbidden() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Tallinn entities are only accessible by the owners, the facilitators of the
+ * Tallinn collection and the moderators.
+ */
+function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->getType() !== 'tallinn_report' || $op !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  if ($account->isAnonymous()) {
+    return AccessResult::forbidden();
+  }
+
+  if ($account->id() === $node->getOwnerId()) {
+    return AccessResult::allowed();
+  }
+
+  $access = $node->access('view any tallinn_report content', $account);
+  return $access ? AccessResult::allowed() : AccessResult::forbidden();
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Do not show the tallinn report records as part of the collection content
+ * field. They will be shown in the corresponding page.
+ */
+function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  $query->addCondition('entity_bundle', 'tallinn_report', '<>');
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->bundle() !== 'custom_page') {
+    return;
+  }
+  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== TALLINN_COMMUNITY_ID) {
+    return;
+  }
+
+  // Since the entities are only viewable by their authors - apart from users
+  // that can view all of them - the search api field facets will display a
+  // wrong amount of results as they do not respect the view access - unlike the
+  // search api field formatter. Remove the facets as the item limit is set to
+  // the amount of the report entities.
+  // Unset the facets only if there is a facet showing a tab for tallinn
+  // reports. Tallinn reports are only shown on one page and on that page, only
+  // tallinn reports are shown, so the check is straight forward.
+  if (isset($build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
+    unset($build['node_field_cp_content_listing_top']);
+  }
+
+  // By default, results are not sorted. Sort results by title.
+  if (isset($build['field_cp_content_listing']['#results'])) {
+    uasort($build['field_cp_content_listing']['#results'], function ($first, $second) {
+      return $first['#entity']->label() <=> $second['#entity']->label();
+    });
+  }
+  $build['field_cp_content_listing']['#cache']['contexts'][] = 'og_role';
 }

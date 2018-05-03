@@ -12,7 +12,7 @@
  * - uri: The uri renderable array.
  */
 #}
-<details{{ attributes.addClass(['fieldset', 'fieldset--box']) }} open=''>
+<details{{ attributes.addClass(['fieldset', 'fieldset--box', 'tallinn-box']) }} open=''>
   <summary{{ title_attributes.addClass('form__label') }}>{{ title }}</summary>
   {% if status %}
     <div class='{{ status_classes }}'>
