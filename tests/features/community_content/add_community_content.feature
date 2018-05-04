@@ -45,6 +45,7 @@ Feature: Add community content
     And I go to the homepage of the "The night shift" collection
     And I click "Add <content type>"
     Then I should see the heading "Add <content type>"
+    And the following fields should be present "Authored by"
     But I should not see the following lines of text:
       | Authored on                  |
       | Create new revision          |
