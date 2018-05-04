@@ -18,7 +18,7 @@ use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use OpenEuropa\TableExtension\Hook\Scope\AfterTableFetchScope;
+use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 
 /**
  * Defines generic step definitions.

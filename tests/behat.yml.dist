@@ -15,7 +15,7 @@ default:
             s3Bucket: '${exports.s3.bucket}'
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
-        - OpenEuropa\TableExtension\Context\TableContext
+        - LoversOfBehat\TableExtension\Context\TableContext
       filters:
         tags: '~@wip'
   extensions:
@@ -28,7 +28,7 @@ default:
       browser_name: '${behat.browser_name}'
       selenium2:
         wd_host: '${behat.webdriver_url}'
-    OpenEuropa\TableExtension:
+    LoversOfBehat\TableExtension:
       table_map:
         'member administration': '.og-members-overview table'
     Drupal\DrupalExtension:
