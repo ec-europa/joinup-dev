@@ -5,11 +5,13 @@ dependencies:
     - rdf_entity.graph.default
     - rdf_entity.graph.draft
     - rdf_entity.rdfentity.collection
-third_party_settings: {  }
 id: rdf_entity.collection
 entity_type_id: rdf_entity
 bundle: collection
 rdf_type: 'http://www.w3.org/ns/adms#AssetRepository'
+graph:
+  default: 'http://joinup.eu/collection/published'
+  draft: 'http://joinup.eu/collection/draft'
 base_fields_mapping:
   rid:
     target_id:
@@ -71,7 +73,4 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
-graph:
-  default: 'http://joinup.eu/collection/published'
-  draft: 'http://joinup.eu/collection/draft'
 entity_id_plugin: joinup_po_namespace

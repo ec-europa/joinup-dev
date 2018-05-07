@@ -21,15 +21,73 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
+    - ds
     - search_api_field
+    - smart_trim
     - user
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
+  field_ar_abstract:
+    type: smart_trim
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+  field_ar_description:
+    type: smart_trim
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_collection_content:
-    weight: 3
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -44,25 +102,28 @@ content:
     third_party_settings: {  }
     region: content
   rdf_entity_field_collection_content_inline_facets:
-    weight: 2
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   rdf_entity_field_collection_content_top:
-    weight: 1
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  read_more:
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   changed: true
   created: true
-  field_ar_abstract: true
   field_ar_access_url: true
   field_ar_affiliates: true
   field_ar_banner: true
   field_ar_closed: true
   field_ar_contact_information: true
-  field_ar_description: true
   field_ar_elibrary_creation: true
   field_ar_logo: true
   field_ar_moderation: true

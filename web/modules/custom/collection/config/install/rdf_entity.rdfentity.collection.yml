@@ -1,11 +1,10 @@
 langcode: en
 status: true
 dependencies: {  }
-third_party_settings: {  }
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
 label_singular: collection
 label_plural: collections
 label_count:
-  no_count_capitalize: "Collection\x03Collections"
+  no_count_capitalize: !!binary Q29sbGVjdGlvbgNDb2xsZWN0aW9ucw==
