@@ -196,7 +196,7 @@
                 "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
             },
             "drupal/smart_trim": {
-                "Missing schema.yml @see https://www.drupal.org/project/smart_trim/issues/2851703": "https://www.drupal.org/files/issues/2851703-2.patch"
+                "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
