@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
@@ -314,17 +315,23 @@ function collection_entity_extra_field_info() {
     'visible' => FALSE,
   ];
 
+  $display['read_more'] = [
+    'label' => t('Read more'),
+    'description' => t('Shows a link to the about page of the collection'),
+    'visible' => FALSE,
+  ];
+
   return $fields;
 }
 
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
- * Populates the extra field 'join_collection'.
+ * Shows extra fields for the collection bundle.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   /** @var \Drupal\rdf_entity\RdfInterface $entity */
-  if ($entity->bundle() != 'collection') {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
 
@@ -365,6 +372,26 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
         'tags' => $tags,
       ],
     ];
+  }
+
+  // Read more link to the about page.
+  if ($display->getComponent('read_more')) {
+    $build['read_more'] = $entity->toLink(t('Read more'), 'about-page')->toRenderable();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  if ($entity->bundle() !== 'collection' || $display->getMode() !== 'default') {
+    return;
+  }
+
+  // Hide the description when the abstract is available.
+  if (Element::children($build['field_ar_abstract'])) {
+    $build['field_ar_description']['#access'] = FALSE;
   }
 }
 
