@@ -382,7 +382,11 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
 
   // Read more link to the about page.
   if ($display->getComponent('read_more')) {
-    $build['read_more'] = $entity->toLink(t('Read more'), 'about-page')->toRenderable();
+    $build['read_more'] = $entity->toLink(t('Read more'), 'about-page', [
+      'attributes' => [
+        'class' => ['about-page', 'read-more'],
+      ],
+    ])->toRenderable();
   }
 }
 
