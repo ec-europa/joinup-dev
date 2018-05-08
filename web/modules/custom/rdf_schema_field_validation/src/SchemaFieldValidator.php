@@ -63,6 +63,11 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
     }
 
     $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);
+    // Mappings with empty predicates are not defined in schema.
+    if (empty($predicate[$bundle])) {
+      return FALSE;
+    }
+
     $rdf_type = $mapping->getRdfType();
     $query = $this->getQuery($properties['graph'], $properties['class'], $properties['property_predicates'], $rdf_type, $predicate[$bundle]);
 
