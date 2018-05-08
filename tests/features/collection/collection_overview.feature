@@ -103,30 +103,40 @@ Feature: Collections Overview
       | name        | Irwin BVBA made-up company   |
       | Website URL | http://www.example.org/irwin |
     And the following collection:
-      | title               | Fitness at work                                                      |
-      | description         | This collection is intended to show ways of being fit while working. |
-      | policy domain       | E-health                                                             |
-      | owner               | Tamsin Irwin                                                         |
-      | abstract            | Fit while working is dope.                                           |
-      | logo                | logo.png                                                             |
-      | banner              | banner.jpg                                                           |
-      | contact information | Irwin BVBA made-up company                                           |
-      | spatial coverage    | Belgium                                                              |
-      | closed              | no                                                                   |
-      | elibrary creation   | facilitators                                                         |
-      | moderation          | no                                                                   |
-      | state               | validated                                                            |
+      | title               | Fitness at work                                                                              |
+      | description         | <p>This collection is intended to show ways of being <strong>fit while working</strong>.</p> |
+      | policy domain       | E-health                                                                                     |
+      | owner               | Tamsin Irwin                                                                                 |
+      | abstract            | <strong>Fit while working</strong> is dope.                                                  |
+      | contact information | Irwin BVBA made-up company                                                                   |
+      | policy domain       | Statistics and Analysis                                                                      |
+      | spatial coverage    | Belgium                                                                                      |
+      | closed              | no                                                                                           |
+      | elibrary creation   | members                                                                                      |
+      | moderation          | no                                                                                           |
+      | state               | validated                                                                                    |
 
     When I go to the homepage of the "Fitness at work" collection
-    And I click "About" in the "Left sidebar" region
+    # Check for HTML so that we assert that actually the HTML has been stripped.
+    Then the page should contain the html text "Fit while working is dope"
+    But I should not see the text "This collection is intended to show ways of being fit while working"
+    When I click "About" in the "Left sidebar" region
     Then I should see the heading "About Fitness at work"
-    And I should see the text "Fit while working is dope."
-    And I should see the text "This collection is intended to show ways of being fit while working."
+    And I should see the text "Fit while working is dope"
+    And I should see the text "This collection is intended to show ways of being fit while working"
     And I should see the text "Tamsin Irwin"
     And I should see the text "Irwin BVBA made-up company"
     # The following 2 fields should not be visible after change request in ISAICP-3664.
     And I should not see the text "E-health"
     And I should not see the text "Belgium"
+
+    # When there is no abstract, the description should be shown in the homepage.
+    When I am logged in as a "moderator"
+    And I go to the "Fitness at work" collection edit form
+    And I fill in "Abstract" with ""
+    And I press "Publish"
+    Then I should see the heading "Fitness at work"
+    And the page should contain the html text "This collection is intended to show ways of being fit while working"
 
   @terms
   Scenario: Custom pages should not be visible on the overview page
