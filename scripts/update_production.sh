@@ -22,7 +22,6 @@ cd ${PROJECT_ROOT}
 ./vendor/bin/drush cache-rebuild --yes
 echo "Rebuilding node access records..."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
-echo "Done."
 echo "Perform a manual checkpoint."
 ./vendor/bin/phing execute-virtuoso-checkpoint
 
