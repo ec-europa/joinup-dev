@@ -176,4 +176,16 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     $this->visitPath($owner->url());
   }
 
+  /**
+   * Checks if a owner exists.
+   *
+   * @param string $owner
+   *   The owner's name.
+   *
+   * @When Owner :owner exists
+   */
+  public function visitEditOwner($owner) {
+    $this->getRdfEntityByLabel($owner, 'owner');
+  }
+
 }

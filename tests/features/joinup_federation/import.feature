@@ -40,3 +40,11 @@ Feature: As a site moderator I am able to import RDF files.
     Then I should see the following success messages:
       | The Spain - Center for Technology Transfer execution has finished with success. |
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
+
+    Given I go to the "Asset" solution edit form
+    Then I should get a 200 HTTP response
+
+    Given I go to the "Contact" contact information page
+    Then I should get a 200 HTTP response
+
+    And Owner "The Publisher" exists

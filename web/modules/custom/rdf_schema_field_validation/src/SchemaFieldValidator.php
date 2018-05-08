@@ -59,7 +59,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column_name = ''): bool {
     $mapping = $this->getEntityMapping($entity_type_id, $bundle);
     if (empty($mapping) || empty($properties = $mapping->getThirdPartySettings('rdf_schema_field_validation'))) {
-      throw new \Exception("The entity does not appear to have mapped properties.");
+      throw new \Exception("$entity_type_id $bundle $field_name $column_name The entity does not appear to have mapped properties.");
     }
 
     $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);

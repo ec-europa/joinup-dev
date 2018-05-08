@@ -146,45 +146,42 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
           ];
         }
         $save_required = FALSE;
-      }
-      else {
-        // The entity doesn't exist. Create an empty entity.
-        $local_entity = Rdf::create([
-          'rid' => $bundle,
-          'id' => $id,
-          'graph' => 'default',
-          'uid' => $this->currentUser->id(),
-        ]);
-        $save_required = TRUE;
-      }
+        foreach ($local_entity->getFieldDefinitions() as $field_name => $field_definition) {
+          // Bypass fields without mapping or fields we don't want to override.
+          if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
+            continue;
+          }
+          // Only stored fields are allowed.
+          if ($field_definition->isComputed()) {
+            continue;
+          }
 
-      foreach ($local_entity->getFieldDefinitions() as $field_name => $field_definition) {
-        // Bypass fields without mapping or fields we don't want to override.
-        if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
-          continue;
-        }
-        // Only stored fields are allowed.
-        if ($field_definition->isComputed()) {
-          continue;
-        }
-
-        $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-        foreach ($columns as $column_name => $column_schema) {
-          // Check if the field is an ADMS-AP field.
-          if ($this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name, $column_name)) {
-            $incoming_field = $incoming_entity->get($field_name);
-            $local_field = $local_entity->get($field_name);
-            // Assign only if the incoming and local fields are different.
-            if (!$local_field->equals($incoming_field)) {
-              $local_field->setValue($incoming_field->getValue());
-              $save_required = TRUE;
-              // Don't check the rest of the columns because the whole field has
-              // been already assigned.
-              break;
+          $columns = $field_definition->getFieldStorageDefinition()->getColumns();
+          foreach ($columns as $column_name => $column_schema) {
+            // Check if the field is an ADMS-AP field.
+            if ($this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name, $column_name)) {
+              $incoming_field = $incoming_entity->get($field_name);
+              $local_field = $local_entity->get($field_name);
+              // Assign only if the incoming and local fields are different.
+              if (!$local_field->equals($incoming_field)) {
+                $local_field->setValue($incoming_field->getValue());
+                $save_required = TRUE;
+                // Don't check the rest of the columns because the whole field
+                // has been already assigned.
+                break;
+              }
             }
           }
         }
       }
+      else {
+        // The entity doesn't exist, copy the incoming in the default graph.
+        $local_entity = $incoming_entity;
+        $local_entity->set('field_is_state', 'validated');
+        $local_entity->setOwnerId($this->currentUser->id());
+        $save_required = TRUE;
+      }
+
       if ($save_required) {
         $local_entity->save();
       }
