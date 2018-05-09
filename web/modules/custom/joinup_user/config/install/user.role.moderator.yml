@@ -37,7 +37,6 @@ permissions:
   - 'edit own document content'
   - 'edit owner rdf entity'
   - 'feature entity'
-  - 'filter membership overview'
   - 'moderate entity parents'
   - 'pin entity'
   - 'unfeature entity'
