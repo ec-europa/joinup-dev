@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
@@ -14,6 +15,7 @@ use Drupal\rdf_entity\Entity\RdfEntityGraph;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -47,6 +49,13 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
 
   /**
    * The RDF entity SPARQL storage.
@@ -84,13 +93,16 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    *   The current user.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
    *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }
 
@@ -105,6 +117,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       $container->get('sparql_endpoint'),
       $container->get('current_user'),
       $container->get('entity_type.manager'),
+      $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator')
     );
   }
@@ -119,6 +132,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
     $incoming_ids = $this->getSparqlQuery()
       ->graphs([$sink_graph_id])
       ->execute();
+    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, [$sink_graph_id]) : [];
 
     // Get the incoming entities that are stored also locally.
@@ -126,15 +140,18 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       ->graphs(['default', 'draft'])
       ->condition('id', array_values($incoming_ids), 'IN')
       ->execute();
+    /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
 
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
       $bundle = $incoming_entity->bundle();
-      /** @var \Drupal\rdf_entity\RdfInterface $local_entity */
+
+      // The entity already exists.
       if (isset($local_entities[$id])) {
-        // The entity already exists.
         $local_entity = $local_entities[$id];
+
+        // Check for bundle mismatch between the local and the incoming entity.
         if ($local_entity->bundle() !== $bundle) {
           $arguments = [
             '%id' => $id,
@@ -145,44 +162,34 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
             '#markup' => $this->t("The imported @incoming with the ID '%id' tries to override a local %local with the same ID.", $arguments),
           ];
         }
-        $save_required = FALSE;
-        foreach ($local_entity->getFieldDefinitions() as $field_name => $field_definition) {
-          // Bypass fields without mapping or fields we don't want to override.
-          if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
-            continue;
-          }
-          // Only stored fields are allowed.
-          if ($field_definition->isComputed()) {
-            continue;
-          }
 
-          $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-          foreach ($columns as $column_name => $column_schema) {
-            // Check if the field is an ADMS-AP field.
-            if ($this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name, $column_name)) {
-              $incoming_field = $incoming_entity->get($field_name);
-              $local_field = $local_entity->get($field_name);
-              // Assign only if the incoming and local fields are different.
-              if (!$local_field->equals($incoming_field)) {
-                $local_field->setValue($incoming_field->getValue());
-                $save_required = TRUE;
-                // Don't check the rest of the columns because the whole field
-                // has been already assigned.
-                break;
-              }
-            }
+        $needs_save = $this->updateAdmsFields($local_entity, $incoming_entity);
+      }
+      // No local entity. Copy the incoming entity as a published entity.
+      else {
+        $local_entity = $incoming_entity;
+        $local_entity->setOwnerId($this->currentUser->id());
+
+        // Determine the state field for this bundle, if any.
+        $state_field_name = NULL;
+        foreach ($this->entityFieldManager->getFieldMapByFieldType('state')['rdf_entity'] as $field_name => $field_info) {
+          if (isset($field_info['bundles'][$bundle])) {
+            $state_field_name = $field_name;
+            break;
           }
         }
-      }
-      else {
-        // The entity doesn't exist, copy the incoming in the default graph.
-        $local_entity = $incoming_entity;
-        $local_entity->set('field_is_state', 'validated');
-        $local_entity->setOwnerId($this->currentUser->id());
-        $save_required = TRUE;
+
+        // There are also entities without a state field.
+        if ($state_field_name) {
+          $local_entity->set($state_field_name, 'validated');
+        }
+        $local_entity->graph->value = 'default';
+
+        // A new entity needs to be saved.
+        $needs_save = TRUE;
       }
 
-      if ($save_required) {
+      if ($needs_save) {
         $local_entity->save();
       }
     }
@@ -276,6 +283,51 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       }
     }
     return $mappings;
+  }
+
+  /**
+   * Updates the ADMS field values from the incoming to the local entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $local_entity
+   *   The local entity.
+   * @param \Drupal\rdf_entity\RdfInterface $incoming_entity
+   *   The imported entity.
+   *
+   * @return bool
+   *   If the local entity has been changed and needs to be saved.
+   */
+  protected function updateAdmsFields(RdfInterface $local_entity, RdfInterface $incoming_entity): bool {
+    $changed = FALSE;
+
+    foreach ($local_entity->getFieldDefinitions() as $field_name => $field_definition) {
+      // Bypass fields without mapping or fields we don't want to override.
+      if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
+        continue;
+      }
+      // Only stored fields are allowed.
+      if ($field_definition->isComputed()) {
+        continue;
+      }
+
+      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
+      foreach ($columns as $column_name => $column_schema) {
+        // Check if the field is an ADMS-AP field.
+        if ($this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $local_entity->bundle(), $field_name, $column_name)) {
+          $incoming_field = $incoming_entity->get($field_name);
+          $local_field = $local_entity->get($field_name);
+          // Assign only if the incoming and local fields are different.
+          if (!$local_field->equals($incoming_field)) {
+            $local_field->setValue($incoming_field->getValue());
+            $changed = TRUE;
+            // Don't check the rest of the columns because the whole field has
+            // been already assigned.
+            break;
+          }
+        }
+      }
+    }
+
+    return $changed;
   }
 
 }
