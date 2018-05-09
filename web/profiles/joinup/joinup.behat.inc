@@ -2344,16 +2344,4 @@ JS;
     \PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
   }
 
-  /**
-   * Clears a field (input, textarea, select) value.
-   *
-   * @param string $field
-   *   The field name.
-   *
-   * @Then I clear (the content of )the field :field
-   */
-  public function clearField($field) {
-    $this->getSession()->getPage()->fillField($field, '');
-  }
-
 }

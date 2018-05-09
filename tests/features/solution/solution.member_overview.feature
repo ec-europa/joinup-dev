@@ -61,18 +61,18 @@ Feature: Solution membership overview
     And I should be on "/solution/growing-zone/members"
 
     And I should see the following tiles in the correct order:
-      | Ariadna Astrauskas |
-      | Aušra Buhr         |
-      | Badurad Nussenbaum |
-      | Callista Wronski   |
-      | Dilek Bannister    |
-      | Fadl Sherman       |
-      | Fulvia Gabrielson  |
-      | Gina Forney        |
-      | Glædwine Ruskin    |
-      | Irini Prescott     |
-      | Karna McReynolds   |
-      | Mark Estévez       |
+      | Ariadna Astrauskas  |
+      | Aušra Buhr          |
+      | Badurad Nussenbaum  |
+      | Callista Wronski    |
+      | Dilek Bannister     |
+      | Fadl Sherman        |
+      | Fulvia Gabrielson   |
+      | Gina Forney         |
+      | Glædwine Ruskin     |
+      | Irini Prescott      |
+      | Karna McReynolds    |
+      | Mark Estévez        |
     # The 13th and 14th member should not be visible on this page, but on the next page.
     And I should not see the "Peter Proudfoots" tile
     And I should not see the "Pocahontas Mathieu" tile
