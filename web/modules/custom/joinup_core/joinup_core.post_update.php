@@ -85,6 +85,13 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
 }
 
 /**
+ * Enable the Tallinn module.
+ */
+function joinup_core_post_update_install_tallinn() {
+  \Drupal::service('module_installer')->install(['tallinn']);
+}
+
+/**
  * Update the counter refresh times and refresh the snapshot [ISAICP-4466].
  */
 function joinup_core_post_update_update_cached_timers() {
