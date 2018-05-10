@@ -1,7 +1,7 @@
-@api @ConfigReadonly
+@api
 Feature: As a site moderator I am able to import RDF files.
 
-
+  @ConfigReadonly
   Scenario: Test the import RDF files
     Given I am logged in as a moderator
     And I go to the pipeline orchestrator

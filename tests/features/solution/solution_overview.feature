@@ -6,7 +6,6 @@ Feature: Solutions Overview
 
   Scenario: Check visibility of "Solutions" menu link.
     Given I am an anonymous user
-    And I am on the homepage
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
