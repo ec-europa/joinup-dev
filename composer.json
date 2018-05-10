@@ -167,7 +167,7 @@
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
             },
             "drupal/config_sync": {
-                "Perform clean refresh after each configuration update. @see https://www.drupal.org/project/config_sync/issues/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-3-D8.patch"
+                "Perform clean refresh after each configuration update. @see https://www.drupal.org/project/config_sync/issues/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
             },
             "drupal/email_registration": {
                 "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
