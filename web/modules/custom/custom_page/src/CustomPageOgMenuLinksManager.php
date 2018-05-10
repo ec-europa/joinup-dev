@@ -11,6 +11,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Manages the OG Menu links of custom pages.
@@ -214,12 +215,14 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    *   The OG menu instance or NULL if none can be determined.
    */
   protected function getOgMenuInstanceByGroupId(string $group_id) : ?OgMenuInstanceInterface {
-    $properties = [
-      'type' => 'navigation',
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group_id,
-    ];
-    if ($instances = $this->ogMenuInstanceStorage->loadByProperties($properties)) {
-      return reset($instances);
+    if (Rdf::load($group_id)) {
+      $properties = [
+        'type' => 'navigation',
+        OgGroupAudienceHelperInterface::DEFAULT_FIELD => $group_id,
+      ];
+      if ($instances = $this->ogMenuInstanceStorage->loadByProperties($properties)) {
+        return reset($instances);
+      }
     }
     return NULL;
   }
