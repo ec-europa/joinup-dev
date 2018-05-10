@@ -7,13 +7,12 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
-use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -25,7 +24,6 @@ use Drupal\joinup\Traits\UtilityTrait;
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   use BrowserCapabilityDetectionTrait;
-  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
@@ -1142,24 +1140,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->wait(60000,
       "jQuery(':contains(\"$text\")').length > 0"
     );
-  }
-
-  /**
-   * Disables the config_readonly functionality before running a scenario.
-   *
-   * @BeforeScenario @ConfigReadonly
-   */
-  public function disableConfigReadonly() {
-    $this->bypassReadOnlyConfig(30);
-  }
-
-  /**
-   * Restores the config_readonly functionality after running a scenario.
-   *
-   * @AfterScenario @ConfigReadonly
-   */
-  public function restoreConfigReadonly() {
-    $this->restoreReadOnlyConfig();
   }
 
 }
