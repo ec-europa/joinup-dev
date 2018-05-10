@@ -1150,7 +1150,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @BeforeScenario @ConfigReadonly
    */
   public function disableConfigReadonly() {
-    $this->bypassReadOnlyConfig(60);
+    $this->bypassReadOnlyConfig(30);
   }
 
   /**
