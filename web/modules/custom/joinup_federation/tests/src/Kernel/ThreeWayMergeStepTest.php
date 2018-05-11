@@ -39,8 +39,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
   protected function setUp() {
     parent::setUp();
 
-    // Create the default graph.
+    // Create the 'default' and 'staging' graphs.
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.default.yml'));
+    RdfEntityGraph::create($graph)->save();
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/rdf_entity.graph.staging.yml'));
     RdfEntityGraph::create($graph)->save();
 
     // Create the language vocabulary and mapping.
@@ -114,6 +116,8 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $storage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
     $storage->delete($storage->loadMultiple([
       'http://asset',
+      'http://publisher',
+      'http://contact',
     ]));
     parent::tearDown();
   }

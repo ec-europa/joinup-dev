@@ -1,0 +1,8 @@
+langcode: en
+status: true
+id: staging
+weight: 1000
+name: Staging
+description: 'Used to temporary store imported RDF data.'
+entity_types:
+  - rdf_entity

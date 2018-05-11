@@ -11,9 +11,7 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityGraph;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
@@ -35,13 +33,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
-
-  /**
-   * The RDF graph entity.
-   *
-   * @var \Drupal\rdf_entity\RdfEntityGraphInterface
-   */
-  protected $graph;
 
   /**
    * The entity type manager service.
@@ -126,14 +117,14 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $sink_graph_id = $this->getSinkGraph()->id();
+    $this->createStagingGraphMappings();
 
     // Get the incoming entities.
     $incoming_ids = $this->getSparqlQuery()
-      ->graphs([$sink_graph_id])
+      ->graphs(['staging'])
       ->execute();
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
-    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, [$sink_graph_id]) : [];
+    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
 
     // Get the incoming entities that are stored also locally.
     $local_ids = $this->getSparqlQuery()
@@ -164,6 +155,9 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         }
 
         $needs_save = $this->updateAdmsFields($local_entity, $incoming_entity);
+
+        // Cleanup the entity from the 'staging' graph.
+        $this->getRdfStorage()->deleteFromGraph($id, 'staging');
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
@@ -194,52 +188,25 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       }
     }
 
-    // Cleanup the Drupal representation of the sink graph.
-    $this->deleteSinkGraph();
+    $this->deleteStagingGraphMappings();
   }
 
   /**
-   * Creates a Drupal representation of the sink graph and return it.
-   *
-   * @return \Drupal\rdf_entity\RdfEntityGraphInterface
-   *   The graph entity.
+   * Creates mappings for staging graph in each RDF entity bundle.
    */
-  protected function getSinkGraph(): RdfEntityGraphInterface {
-    if (!isset($this->graph)) {
-      $graph_id = "sink_{$this->currentUser->id()}";
-
-      // Try first to get an existing graph.
-      if (!$this->graph = RdfEntityGraph::load($graph_id)) {
-        // Or create a new one.
-        $this->graph = RdfEntityGraph::create([
-          'id' => $graph_id,
-          'name' => "Sink graph for user #{$this->currentUser->id()}",
-          'status' => TRUE,
-          'weight' => 1000,
-        ]);
-        $this->graph->save();
-      }
-
-      // Create mappings for each RDF entity bundle.
-      foreach ($this->getRdfEntityMappings() as $mapping) {
-        if (!$mapping->getGraphUri($graph_id)) {
-          $mapping->addGraphs([$graph_id => $this->getGraphUri('sink')])->save();
-        }
-      }
-    }
-    return $this->graph;
-  }
-
-  /**
-   * Deletes the sink graph entity.
-   */
-  protected function deleteSinkGraph(): void {
-    $graph_id = $this->getSinkGraph()->id();
-    /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
+  protected function createStagingGraphMappings(): void {
     foreach ($this->getRdfEntityMappings() as $mapping) {
-      $mapping->unsetGraphs([$graph_id])->save();
+      $mapping->addGraphs(['staging' => $this->getGraphUri('sink')])->save();
     }
-    $this->graph->delete();
+  }
+
+  /**
+   * Deletes the mappings for staging graph from each RDF entity bundle.
+   */
+  protected function deleteStagingGraphMappings(): void {
+    foreach ($this->getRdfEntityMappings() as $mapping) {
+      $mapping->unsetGraphs(['staging'])->save();
+    }
   }
 
   /**
