@@ -12,13 +12,6 @@ use Drupal\pipeline\Plugin\PipelinePipelineInterface;
 interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
 
   /**
-   * The base part of the URI of the graph used during the import process.
-   *
-   * @var string
-   */
-  const GRAPH_BASE = 'http://joinup-federation';
-
-  /**
    * Returns the graph URI for a specific federation graph.
    *
    * @param string $graph_type

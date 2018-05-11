@@ -11,7 +11,6 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
@@ -117,8 +116,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $this->createStagingGraphMappings();
-
     // Get the incoming entities.
     $incoming_ids = $this->getSparqlQuery()
       ->graphs(['staging'])
@@ -187,69 +184,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $local_entity->save();
       }
     }
-
-    $this->deleteStagingGraphMappings();
-  }
-
-  /**
-   * Creates mappings for staging graph in each RDF entity bundle.
-   */
-  protected function createStagingGraphMappings(): void {
-    foreach ($this->getRdfEntityMappings() as $mapping) {
-      $mapping->addGraphs(['staging' => $this->getGraphUri('sink')])->save();
-    }
-  }
-
-  /**
-   * Deletes the mappings for staging graph from each RDF entity bundle.
-   */
-  protected function deleteStagingGraphMappings(): void {
-    foreach ($this->getRdfEntityMappings() as $mapping) {
-      $mapping->unsetGraphs(['staging'])->save();
-    }
-  }
-
-  /**
-   * Returns the RDF storage.
-   *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   *   The RDF storage.
-   */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
-    if (!isset($this->rdfStorage)) {
-      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
-    }
-    return $this->rdfStorage;
-  }
-
-  /**
-   * Returns the SPARQL entity query.
-   *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   *   The entity query.
-   */
-  protected function getSparqlQuery(): SparqlQueryInterface {
-    if (!isset($this->sparqlQuery)) {
-      $this->sparqlQuery = $this->getRdfStorage()->getQuery();
-    }
-    return $this->sparqlQuery;
-  }
-
-  /**
-   * Returns a list of RDF entity mapping entities keyed by entity ID.
-   *
-   * @return \Drupal\rdf_entity\RdfEntityMappingInterface[]
-   *   A list of RDF entity mapping entities keyed by entity ID.
-   */
-  protected function getRdfEntityMappings(): array {
-    $mappings = [];
-    /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
-    foreach (RdfEntityMapping::loadMultiple() as $id => $mapping) {
-      if ($mapping->getTargetEntityTypeId() === 'rdf_entity') {
-        $mappings[$id] = $mapping;
-      }
-    }
-    return $mappings;
   }
 
   /**
@@ -295,6 +229,32 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
     }
 
     return $changed;
+  }
+
+  /**
+   * Returns the RDF storage.
+   *
+   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   *   The RDF storage.
+   */
+  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+    if (!isset($this->rdfStorage)) {
+      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
+    }
+    return $this->rdfStorage;
+  }
+
+  /**
+   * Returns the SPARQL entity query.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   *   The entity query.
+   */
+  protected function getSparqlQuery(): SparqlQueryInterface {
+    if (!isset($this->sparqlQuery)) {
+      $this->sparqlQuery = $this->getRdfStorage()->getQuery();
+    }
+    return $this->sparqlQuery;
   }
 
 }

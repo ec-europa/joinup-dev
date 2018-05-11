@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Contains joinup_federation.module.
+ */
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function joinup_federation_rdf_entity_mapping_load(array $mappings) {
+  /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
+  foreach ($mappings as $mapping) {
+    // Add the staging graph to the mapping entity.
+    $mapping->addGraphs(['staging' => 'http://joinup-federation/sink']);
+  }
+}
