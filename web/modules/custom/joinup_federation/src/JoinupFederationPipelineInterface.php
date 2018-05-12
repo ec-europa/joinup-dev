@@ -23,6 +23,14 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
   public function getGraphUri(string $graph_type): string;
 
   /**
+   * Clears the data from a given graph.
+   *
+   * @param string $graph_uri
+   *   The URI of the graph to be emptied.
+   */
+  public function clearGraph(string $graph_uri): void;
+
+  /**
    * Clears the data from the federation graphs.
    */
   public function clearGraphs(): void;
