@@ -158,15 +158,19 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
-        $local_entity = $incoming_entity;
-        $local_entity->setOwnerId($this->currentUser->id());
+        $local_entity = (clone $incoming_entity)
+          ->enforceIsNew()
+          ->setOwnerId($this->currentUser->id());
 
         // Determine the state field for this bundle, if any.
         $state_field_name = NULL;
-        foreach ($this->entityFieldManager->getFieldMapByFieldType('state')['rdf_entity'] as $field_name => $field_info) {
-          if (isset($field_info['bundles'][$bundle])) {
-            $state_field_name = $field_name;
-            break;
+        $state_field_map = $this->entityFieldManager->getFieldMapByFieldType('state');
+        if (!empty($state_field_map['rdf_entity'])) {
+          foreach ($state_field_map['rdf_entity'] as $field_name => $field_info) {
+            if (isset($field_info['bundles'][$bundle])) {
+              $state_field_name = $field_name;
+              break;
+            }
           }
         }
 
@@ -178,9 +182,14 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
 
         // A new entity needs to be saved.
         $needs_save = TRUE;
+
+        // Delete the incoming entity from the staging graph.
+        $incoming_entity->skip_notification = TRUE;
+        $incoming_entity->delete();
       }
 
       if ($needs_save) {
+        $local_entity->skip_notification = TRUE;
         $local_entity->save();
       }
     }
