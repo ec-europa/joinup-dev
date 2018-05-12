@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\rdf_entity\Exception\UnmappedFieldException;
 use Drupal\rdf_entity\RdfEntityMappingInterface;
 use Drupal\rdf_entity\RdfFieldHandler;
 
@@ -62,7 +63,14 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
       throw new \Exception("$entity_type_id $bundle $field_name $column_name The entity does not appear to have mapped properties.");
     }
 
-    $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);
+    try {
+      $predicate = $this->fieldHanlder->getFieldPredicates($entity_type_id, $field_name, $column_name);
+    }
+    catch (UnmappedFieldException $exception) {
+      // An unmapped field is not defined in schema.
+      return FALSE;
+    }
+
     // Mappings with empty predicates are not defined in schema.
     if (empty($predicate[$bundle])) {
       return FALSE;
