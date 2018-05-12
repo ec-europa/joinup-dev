@@ -75,6 +75,16 @@ class ThreeWayMergeStepTest extends StepTestBase {
     ])->save();
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
     RdfEntityMapping::create($mapping)->save();
+
+    // Create the owner bundle.
+    RdfEntityType::create(['rid' => 'owner', 'name' => 'Owner'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../owner/config/install/rdf_entity.mapping.rdf_entity.owner.yml'));
+    RdfEntityMapping::create($mapping)->save();
+
+    // Create the contact information bundle.
+    RdfEntityType::create(['rid' => 'contact_information', 'name' => 'Contact info'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../contact_information/config/install/rdf_entity.mapping.rdf_entity.contact_information.yml'));
+    RdfEntityMapping::create($mapping)->save();
   }
 
   /**
@@ -93,8 +103,18 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
     $this->createGraphStore()->replace($graph);
 
+    // Check that 'http://asset' exists before import, in the default graph.
+    $this->assertNotNull(Rdf::load('http://asset', ['default']));
+    // Check that the publisher and contact info are missed from default graph.
+    $this->assertNull(Rdf::load('http://publisher', ['default']));
+    $this->assertNull(Rdf::load('http://contact', ['default']));
+
     $this->runPipelineStep('remove_unsupported_data');
     $this->runPipelineStep('add_joinup_vocabularies');
+    // Cleanup the 'sink_plus_taxo' graph left after the last step. Normally
+    // this cleanup is accomplished by the 'adms_validation' step but we want to
+    // avoid running that step in this test.
+    $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
     $result = $this->runPipelineStep('3_way_merge');
 
@@ -107,6 +127,13 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // Check that an existing entity values are overridden.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
+
+    // Check that new entities were created in the 'default' graph and were
+    // removed from the staging graph.
+    $this->assertNotNull(Rdf::load('http://publisher', ['default']));
+    $this->assertNotNull(Rdf::load('http://contact', ['default']));
+    $this->assertNull(Rdf::load('http://publisher', ['staging']));
+    $this->assertNull(Rdf::load('http://contact', ['staging']));
   }
 
   /**
