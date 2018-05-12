@@ -22,7 +22,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   protected $sparql;
 
   /**
-   * The pipilene.
+   * The pipeline.
    *
    * @var \Drupal\joinup_federation\JoinupFederationPipelineInterface
    */
