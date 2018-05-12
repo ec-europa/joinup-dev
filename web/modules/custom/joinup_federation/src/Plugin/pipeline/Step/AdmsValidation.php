@@ -65,6 +65,9 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
     $graph_uri = $this->getGraphUri('sink_plus_taxo');
     $validation = $this->admsValidator->validateByGraphUri($graph_uri);
 
+    // Cleanup the 'sink_plus_taxo' graph.
+    $this->pipeline->clearGraph($this->getGraphUri('sink_plus_taxo'));
+
     if ($validation->isSuccessful()) {
       return NULL;
     }
