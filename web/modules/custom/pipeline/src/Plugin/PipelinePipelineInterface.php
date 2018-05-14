@@ -30,6 +30,10 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
 
   /**
    * Gives a chance to plugins to perform some tasks just before executing.
+   *
+   * @return null|array
+   *   If no errors were encountered during the pipeline preparation, nothing
+   *   should be returned. Return the error message as a render array.
    */
   public function prepare();
 

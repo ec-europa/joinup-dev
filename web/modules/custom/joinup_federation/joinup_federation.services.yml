@@ -2,3 +2,10 @@ services:
   plugin.manager.joinup_federation_adms2_convert_pass:
     class: Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager
     parent: default_plugin_manager
+  joinup_federation.tempstore.shared:
+    parent: tempstore.shared
+    # Overriding the expiry time from 7 days to 1 hour.
+    arguments:
+      index_3: 3600
+    tags:
+      - { name: backend_overridable }
