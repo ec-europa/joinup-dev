@@ -53,9 +53,9 @@ QUERY;
     $entities = [];
     foreach ($results as $result) {
       $subject = $result->subject->getUri();
-      $entities[$subject] = [
-        'uri' => $subject,
-      ];
+      if (!empty($result->next) || !empty($result->prev)) {
+        $entities[$subject]['uri'] = $subject;
+      }
       if (isset($result->next)) {
         $entities[$subject]['next'] = $result->next->getUri();
       }
