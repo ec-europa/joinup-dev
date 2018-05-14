@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_25
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_25
+field_name: field_tallinn_action_25
+entity_type: node
+bundle: tallinn_report
+label: 'Action 25'
+description: 'Work to modernise the design of public services, procurement and contracting arrangements, to make them compatible with modern and agile ways of developing and deploying digital technology.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_22
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_22
+field_name: field_tallinn_action_22
+entity_type: node
+bundle: tallinn_report
+label: 'Action 22'
+description: 'Commit to expand and deepen the exchange and sharing of good eGovernment practices and successful domestic solutions, to speed up the digital transformation at all levels of government – including by enhancing the joint governance structures with local and regional authorities.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

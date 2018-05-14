@@ -229,11 +229,17 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   protected function sendMessage(NodeInterface $discussion, string $message_template): bool {
     try {
-      return $this->messageDelivery
-        ->createMessage($message_template)
-        ->setArguments($this->getArguments($discussion))
-        ->setRecipients($this->getSubscribers($discussion))
-        ->sendMail();
+      $success = TRUE;
+      // Create individual messages for each subscriber so that we can honor the
+      // user's chosen digest frequency.
+      foreach ($this->getSubscribers($discussion) as $subscriber) {
+        $notifier_options = [
+          'entity_type' => $discussion->getEntityTypeId(),
+          'entity_id' => $discussion->id(),
+        ];
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, $this->getArguments($discussion), $subscriber, $notifier_options, TRUE) && $success;
+      }
+      return $success;
     }
     catch (\Exception $e) {
       $context = ['exception' => $e];

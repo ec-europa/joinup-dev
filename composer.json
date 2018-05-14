@@ -17,7 +17,7 @@
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.5.2",
+        "drupal/core": "^8.5.3",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -30,7 +30,8 @@
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "^5.0-beta6",
-        "drupal/message": "^1.0-beta2",
+        "drupal/message": "^1.0-rc2",
+        "drupal/message_digest": "dev-1.x#6d7b6a89f5d11408c0af79f8dea9ed775ad94f25",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
@@ -92,6 +93,7 @@
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mikey179/vfsStream": "~1.2",
+        "lovers-of-behat/table-extension": "~1.0",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "^4.8.28",
@@ -179,8 +181,8 @@
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
-            "drupal/message": {
-                "Show the manage fields and displays in message template": "https://patch-diff.githubusercontent.com/raw/Gizra/message/pull/210.patch"
+            "drupal/message_digest": {
+                "Aggregated patch for issues #2285947 #2881263 #2933016 #2933896 #2933931 #2934111 @see https://www.drupal.org/project/issues/message_digest": "resources/patch/message_digest_aggregated.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"

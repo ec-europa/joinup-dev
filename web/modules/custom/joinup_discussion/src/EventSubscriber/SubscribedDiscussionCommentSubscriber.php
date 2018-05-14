@@ -91,6 +91,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   The notification event object.
    */
   public function commentCrudProxy(NotificationEvent $event): void {
+    // @todo We shouldn't rely on data stored in local properties. This service
+    //   persists on the dependency injection container and might contain stale
+    //   data. Instead the Comment entity should be passed to any other methods
+    //   that require it.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4253
     $this->comment = $event->getEntity();
 
     // Discussion comments are 'reply' comment types.
@@ -200,11 +205,20 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   Whether or not the sending of the e-mails has succeeded.
    */
   protected function sendMessage(): bool {
-    return $this->messageDelivery
-      ->createMessage('discussion_comment_new')
-      ->setArguments($this->getArguments())
-      ->setRecipients($this->getRecipients())
-      ->sendMail();
+    $success = TRUE;
+    // Create individual messages for each subscriber so that we can honor the
+    // user's chosen digest frequency.
+    foreach ($this->getRecipients() as $recipient) {
+      if ($recipient->isAnonymous()) {
+        continue;
+      }
+      $notifier_options = [
+        'entity_type' => $this->discussion->getEntityTypeId(),
+        'entity_id' => $this->discussion->id(),
+      ];
+      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options, TRUE) && $success;
+    }
+    return $success;
   }
 
 }

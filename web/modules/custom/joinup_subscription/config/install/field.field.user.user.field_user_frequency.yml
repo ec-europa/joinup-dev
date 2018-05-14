@@ -14,7 +14,9 @@ label: 'Notification frequency'
 description: 'How often do you prefer to receive status updates on new and/or updated content on Joinup?'
 required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: daily
 default_value_callback: ''
 settings: {  }
 field_type: list_string

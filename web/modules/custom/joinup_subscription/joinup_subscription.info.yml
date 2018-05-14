@@ -6,15 +6,16 @@ package: Joinup
 dependencies:
   - flag
   - joinup_core
+  - message_digest
   - options
 
 config_devel:
- - core.entity_form_display.user.user.subscription_settings
- - core.entity_form_mode.user.subscription_settings
- - field.field.user.user.field_user_frequency
- - field.field.user.user.field_user_group_types
- - field.field.user.user.field_user_subscription_events
- - field.storage.user.field_user_frequency
- - field.storage.user.field_user_group_types
- - field.storage.user.field_user_subscription_events
- - flag.flag.subscribe_discussions
+  - core.entity_form_mode.user.subscription_settings
+  - field.field.user.user.field_user_frequency
+  - field.field.user.user.field_user_group_types
+  - field.field.user.user.field_user_subscription_events
+  - field.storage.user.field_user_frequency
+  - field.storage.user.field_user_group_types
+  - field.storage.user.field_user_subscription_events
+  - flag.flag.subscribe_discussions
+  - message_digest.interval.monthly
