@@ -111,9 +111,4 @@ function joinup_core_post_update_update_cached_timers() {
     $editable->setData($data);
     $editable->save();
   }
-
-  // Refresh the snapshot properly.
-  $config_sync_snapshotter = \Drupal::service('config_sync.snapshotter');
-  $config_sync_snapshotter->deleteSnapshot();
-  $config_sync_snapshotter->refreshSnapshot();
 }
