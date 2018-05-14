@@ -160,7 +160,10 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     try {
-      $error = $step->prepare($data)->execute($data);
+      $error = $step->prepare($data);
+      if (!$error) {
+        $error = $step->execute($data);
+      }
     }
     catch (\Exception $exception) {
       // Catching any exception from the step execution just to reset the

@@ -92,10 +92,10 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$data) {
+  public function prepare(): void {
     // This is an extra-precaution to ensure that there's no existing data in
     // the pipeline graphs, left there after a potential failed previous run.
-    return $this->clearGraphs();
+    $this->clearGraphs();
   }
 
   /**
