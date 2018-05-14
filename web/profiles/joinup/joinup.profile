@@ -228,6 +228,43 @@ function joinup_form_node_form_alter(&$form, FormStateInterface $form_state, $fo
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the members overview for collections and solutions to display a set of
+ * filters for privileged users.
+ *
+ * @todo Remove this when the filters will be improved for use by all users.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4471
+ */
+function joinup_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  $view = $form_state->get('view');
+  if (empty($view) || !$view instanceof ViewExecutable || $view->id() !== 'og_members_overview') {
+    return;
+  }
+
+  $current_user = \Drupal::currentUser();
+  if (\Drupal::currentUser()->hasPermission('filter membership overview')) {
+    return;
+  }
+
+  // If the user doesn't have permission to filter the membership table, deny
+  // access to the filter fields, and also remove the filters from the view
+  // because otherwise Views will try to filter using empty values, and the
+  // result will be empty.
+  $form['#access'] = $current_user->hasPermission('filter membership overview');
+
+  $display = $view->getDisplay();
+  foreach ([
+    'name',
+    'field_user_first_name_value',
+    'field_user_family_name_value',
+  ] as $id) {
+    unset($display->handlers['filter'][$id]);
+  }
+}
+
+/**
  * Implements hook_field_formatter_third_party_settings_form().
  *
  * Allow adding template suggestions for each field.

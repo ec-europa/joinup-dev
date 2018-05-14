@@ -1,0 +1,38 @@
+// Tallinn
+//
+// Tallinn status messages.
+//
+// .tallinn--no_progress       - #eb5b5c
+// .tallinn--in_progress       - #ee8917
+// .tallinn--no_data           - #707475
+// .tallinn--completed         - #98c04c
+
+// Component
+// --------------------------------------------------
+.tallinn
+  position: relative
+  padding: 5px 5px
+  +border-radius(4px)
+
+// Elements
+// --------------------------------------------------
+.tallinn__message, .tallinn__message a
+  color: #fff
+
+// Modifiers
+// --------------------------------------------------
+.tallinn--no_progress
+  background-color: $color-error
+
+.tallinn--in_progress
+  background-color: $color-orange
+
+.tallinn--no_data
+  background-color: $color-grey-medium
+
+.tallinn--completed
+  background-color: $color-success
+
+details.tallinn-box
+  margin-left: 0
+  margin-right: 0

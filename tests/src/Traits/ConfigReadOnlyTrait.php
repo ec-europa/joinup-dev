@@ -24,7 +24,7 @@ trait ConfigReadOnlyTrait {
    * @param int $timeout
    *   The timeout in seconds. Defaults to 2 seconds.
    */
-  public function bypassReadOnlyConfig($timeout = 2) {
+  public static function bypassReadOnlyConfig($timeout = 2) {
     // Skip this if the Read Only Config functionality is not active.
     if (!Settings::get('config_readonly')) {
       return;
@@ -41,7 +41,7 @@ trait ConfigReadOnlyTrait {
   /**
    * Restores the read only configuration functionality if available.
    */
-  public function restoreReadOnlyConfig() {
+  public static function restoreReadOnlyConfig() {
     // Skip this if the Read Only Config functionality is not active.
     if (!Settings::get('config_readonly')) {
       return;
