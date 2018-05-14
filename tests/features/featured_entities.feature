@@ -25,6 +25,7 @@ Feature: Featuring content site-wide
       | Opensource neutron generators | Niles Turner | facilitator |
       | Gamma-sensible spectroscopy   | Niles Turner | facilitator |
 
+  @javascript
   Scenario Outline: Moderators can feature and unfeature content site-wide.
     Given <content type> content:
       | title                               | collection   | state     | featured |
