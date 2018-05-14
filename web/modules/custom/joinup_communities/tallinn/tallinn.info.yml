@@ -1,0 +1,72 @@
+name: Tallinn
+type: module
+description: Specificities for the Tallinn community.
+core: 8.x
+package: Joinup communities
+dependencies:
+  - collection
+  - custom_page
+  - field_group
+  - joinup_core
+  - node
+  - og
+  - rdf_entity
+  - search_api_field
+  - user
+
+config_devel:
+  - core.entity_form_display.node.tallinn_report.default
+  - core.entity_view_display.node.tallinn_report.default
+  - core.entity_view_display.node.tallinn_report.view_mode_tile
+  - field.field.node.tallinn_report.field_tallinn_action_10
+  - field.field.node.tallinn_report.field_tallinn_action_11
+  - field.field.node.tallinn_report.field_tallinn_action_12
+  - field.field.node.tallinn_report.field_tallinn_action_13
+  - field.field.node.tallinn_report.field_tallinn_action_14
+  - field.field.node.tallinn_report.field_tallinn_action_15
+  - field.field.node.tallinn_report.field_tallinn_action_16
+  - field.field.node.tallinn_report.field_tallinn_action_17
+  - field.field.node.tallinn_report.field_tallinn_action_18
+  - field.field.node.tallinn_report.field_tallinn_action_19
+  - field.field.node.tallinn_report.field_tallinn_action_1
+  - field.field.node.tallinn_report.field_tallinn_action_20
+  - field.field.node.tallinn_report.field_tallinn_action_21
+  - field.field.node.tallinn_report.field_tallinn_action_22
+  - field.field.node.tallinn_report.field_tallinn_action_23
+  - field.field.node.tallinn_report.field_tallinn_action_24
+  - field.field.node.tallinn_report.field_tallinn_action_25
+  - field.field.node.tallinn_report.field_tallinn_action_2
+  - field.field.node.tallinn_report.field_tallinn_action_3
+  - field.field.node.tallinn_report.field_tallinn_action_4
+  - field.field.node.tallinn_report.field_tallinn_action_5
+  - field.field.node.tallinn_report.field_tallinn_action_6
+  - field.field.node.tallinn_report.field_tallinn_action_7
+  - field.field.node.tallinn_report.field_tallinn_action_8
+  - field.field.node.tallinn_report.field_tallinn_action_9
+  - field.field.node.tallinn_report.og_audience
+  - field.storage.node.field_tallinn_action_10
+  - field.storage.node.field_tallinn_action_11
+  - field.storage.node.field_tallinn_action_12
+  - field.storage.node.field_tallinn_action_13
+  - field.storage.node.field_tallinn_action_14
+  - field.storage.node.field_tallinn_action_15
+  - field.storage.node.field_tallinn_action_16
+  - field.storage.node.field_tallinn_action_17
+  - field.storage.node.field_tallinn_action_18
+  - field.storage.node.field_tallinn_action_19
+  - field.storage.node.field_tallinn_action_1
+  - field.storage.node.field_tallinn_action_20
+  - field.storage.node.field_tallinn_action_21
+  - field.storage.node.field_tallinn_action_22
+  - field.storage.node.field_tallinn_action_23
+  - field.storage.node.field_tallinn_action_24
+  - field.storage.node.field_tallinn_action_25
+  - field.storage.node.field_tallinn_action_2
+  - field.storage.node.field_tallinn_action_3
+  - field.storage.node.field_tallinn_action_4
+  - field.storage.node.field_tallinn_action_5
+  - field.storage.node.field_tallinn_action_6
+  - field.storage.node.field_tallinn_action_7
+  - field.storage.node.field_tallinn_action_8
+  - field.storage.node.field_tallinn_action_9
+  - node.type.tallinn_report

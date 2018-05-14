@@ -83,3 +83,10 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
     ->getEditable('system.action.joinup_transfer_solution_ownership')
     ->delete();
 }
+
+/**
+ * Enable the Tallinn module.
+ */
+function joinup_core_post_update_install_tallinn() {
+  \Drupal::service('module_installer')->install(['tallinn']);
+}

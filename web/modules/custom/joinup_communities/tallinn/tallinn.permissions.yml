@@ -1,0 +1,3 @@
+view any tallinn_report content:
+  title: 'View any Tallinn report content'
+  description: 'Allows user to access all tallinn reports. By default, view access is denied.'
