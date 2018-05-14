@@ -32,7 +32,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateGraphByUri(string $graph_uri): AdmsValidationResult {
+  public function validateByGraphUri(string $graph_uri): AdmsValidationResult {
     $query_result = $this->sparqlEndpoint->query(self::validationQuery($graph_uri));
     return new AdmsValidationResult($query_result, $graph_uri, $this->sparqlEndpoint);
   }
@@ -52,7 +52,7 @@ class AdmsValidator implements AdmsValidatorInterface {
     }
 
     // Perform the validation.
-    return $this->validateGraphByUri($graph->getUri());
+    return $this->validateByGraphUri($graph->getUri());
   }
 
   /**

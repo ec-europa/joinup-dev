@@ -5,9 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
+use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,9 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *  label = @Translation("ADMS Validation"),
  * )
  */
-class AdmsValidation extends JoinupFederationStepPluginBase implements ContainerFactoryPluginInterface {
-
-  use RdfEntityGraphStoreTrait;
+class AdmsValidation extends JoinupFederationStepPluginBase {
 
   /**
    * The ADMS validator service.
@@ -38,11 +35,13 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   *   The SPARQL database connection.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AdmsValidatorInterface $adms_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AdmsValidatorInterface $adms_validator) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->admsValidator = $adms_validator;
   }
 
@@ -54,6 +53,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('sparql_endpoint'),
       $container->get('adms_validator.validator')
     );
   }
@@ -62,8 +62,8 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements Container
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $graph = $this->createGraphStore()->get($this->getSinkGraphUri());
-    $validation = $this->admsValidator->validateGraph($graph);
+    $graph_uri = $this->getGraphUri('sink_plus_taxo');
+    $validation = $this->admsValidator->validateByGraphUri($graph_uri);
 
     if ($validation->isSuccessful()) {
       return NULL;

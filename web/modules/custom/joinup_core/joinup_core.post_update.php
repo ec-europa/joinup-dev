@@ -341,3 +341,10 @@ QUERY;
     $sparql_endpoint->query($query);
   }
 }
+
+/**
+ * Enable the Tallinn module.
+ */
+function joinup_core_post_update_install_tallinn() {
+  \Drupal::service('module_installer')->install(['tallinn']);
+}

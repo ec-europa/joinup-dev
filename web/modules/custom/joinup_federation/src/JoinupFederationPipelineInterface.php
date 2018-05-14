@@ -16,14 +16,22 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
    *
    * @var string
    */
-  const SINK_GRAPH_BASE = 'http://etl-sink';
+  const GRAPH_BASE = 'http://joinup-federation';
 
   /**
-   * Returns the sink graph URI.
+   * Returns the graph URI for a specific federation graph.
+   *
+   * @param string $graph_type
+   *   The type of graph.
    *
    * @return string
-   *   The sink graph URI.
+   *   The graph URI.
    */
-  public function getSinkGraphUri(): string;
+  public function getGraphUri(string $graph_type): string;
+
+  /**
+   * Clears the data from the federation graphs.
+   */
+  public function clearGraphs(): void;
 
 }
