@@ -82,6 +82,7 @@ dependencies:
   - state_machine_revisions
   - subpathauto
   - swiftmailer
+  - tallinn
   - text
   - toolbar
   - tour
@@ -233,5 +234,6 @@ config_devel:
   - views.view.group_content_management
   - views.view.members_overview
   - views.view.moderator_solutions_by_type
+  - views.view.og_members_overview
   - views.view.solutions
   - views.view.user_admin_people
