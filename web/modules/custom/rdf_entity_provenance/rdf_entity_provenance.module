@@ -40,7 +40,10 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
     ->setCardinality(1)
     ->setRequired(FALSE);
 
-  // A link towards the created local entity.
+  // A link towards the entity that the provenance record stores metadata about.
+  // We are keeping a record for each entity available in a repository, whether
+  // we import it or not - in order to keep a track of the federation status.
+  // Thus, the field cannot be an entity reference.
   // @see: https://www.w3.org/TR/2013/REC-prov-o-20130430/#generated.
   $fields['provenance_entity'] = BaseFieldDefinition::create('string')
     ->setLabel(t('Provenance - Entity'))
