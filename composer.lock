@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e75fee7795c5ec1ebce914406c72f4a6",
+    "content-hash": "284b5ca6fa67c29d21037038cb7f8a3c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4176,17 +4176,17 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.7"
+                "reference": "8.x-1.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "a380eb516a813d99cf6178bd0fe15e8ea7be5842"
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "04d7b3b680e84aad086a61fb9eb4ffe77dc278e4"
             },
             "require": {
                 "drupal/core": "^8.4"
@@ -4201,7 +4201,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.7",
+                    "version": "8.x-1.8",
                     "datestamp": "1523872384",
                     "security-coverage": {
                         "status": "covered",
@@ -4218,8 +4218,7 @@
                     "4352-5": "resources/patch/4352-5.patch",
                     "4352-8": "resources/patch/4352-8.patch",
                     "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
-                    "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch",
-                    "Index items only at end of page request @see https://www.drupal.org/project/search_api/issues/2922525": "https://www.drupal.org/files/issues/2922525-10--index_delayed_at_shutdown--refactoring_followup.patch"
+                    "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
