@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation;
 
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineStateManager;
+use Drupal\pipeline\Plugin\PipelinePipelineInterface;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -93,34 +94,34 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function prepare(array &$data) {
     // This is an extra-precaution to ensure that there's no existing data in
-    // the pipeline graphs, left there after an eventually failed previous run.
-    $this->clearGraphs();
-    return $this;
+    // the pipeline graphs, left there after a potential failed previous run.
+    return $this->clearGraphs();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function onSuccess(): void {
-    parent::onSuccess();
+  public function onSuccess(): JoinupFederationPipelineInterface {
     $this->clearGraphs();
+    return parent::onSuccess();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function onError(): void {
-    parent::onError();
+  public function onError(): JoinupFederationPipelineInterface {
     $this->clearGraphs();
+    return parent::onError();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function clearGraphs(): void {
+  public function clearGraphs(): JoinupFederationPipelineInterface {
     foreach ($this->getConfiguration()['graph'] as $graph_uri) {
       $this->sparql->update("CLEAR GRAPH <$graph_uri>");
     }
+    return $this;
   }
 
 }

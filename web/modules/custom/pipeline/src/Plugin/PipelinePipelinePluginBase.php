@@ -93,6 +93,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
     }
     // Reset the state manager.
     $this->stateManager->reset();
+    return $this;
   }
 
   /**
@@ -107,6 +108,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
     }
     // Reset the state manager.
     $this->stateManager->reset();
+    return $this;
   }
 
   /**

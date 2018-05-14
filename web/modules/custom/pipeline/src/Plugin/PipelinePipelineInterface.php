@@ -30,11 +30,15 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
 
   /**
    * Runs specific code after the pipeline is executed with success.
+   *
+   * @return $this
    */
   public function onSuccess();
 
   /**
    * Runs specific code after the pipeline exits with error.
+   *
+   * @return $this
    */
   public function onError();
 

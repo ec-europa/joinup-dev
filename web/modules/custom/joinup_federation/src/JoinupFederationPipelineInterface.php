@@ -31,7 +31,9 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
 
   /**
    * Clears the data from the federation graphs.
+   *
+   * @return $this
    */
-  public function clearGraphs(): void;
+  public function clearGraphs(): self;
 
 }
