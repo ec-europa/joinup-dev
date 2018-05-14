@@ -19,30 +19,25 @@ class ConvertToAdms2StepTest extends StepTestBase {
   public function test() {
     /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager $plugin_manager */
     $plugin_manager = $this->container->get('plugin.manager.joinup_federation_adms2_convert_pass');
+    $sink_graph = static::getTestingGraphs()['sink'];
+    $data = ['sink_graph' => $sink_graph];
 
-    $rdf_data = '';
-    /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface[] $instances */
-    $instances = [];
     // Collect RDF testing data from plugins.
     foreach ($plugin_manager->getDefinitions() as $plugin_id => $definition) {
-      /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface $plugin */
-      $instances[$plugin_id] = $plugin_manager->createInstance($plugin_id);
-      if ($plugin_rdf_data = $instances[$plugin_id]->getTestingRdfData()) {
-        $rdf_data .= "$plugin_rdf_data\n";
+      /** @var \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassInterface $instance */
+      $instance = $plugin_manager->createInstance($plugin_id);
+      if ($plugin_rdf_data = $instance->getTestingRdfData()) {
+        if ($rdf_data = $this->prepareRdfData($plugin_rdf_data)) {
+          $graph = new Graph(static::getTestingGraphs()['sink']);
+
+          $graph->parse($rdf_data);
+          $this->createGraphStore()->replace($graph);
+          $instance->convert($data);
+          $instance->performAssertions($this);
+        }
       }
-    }
 
-    if ($rdf_data = $this->prepareRdfData($rdf_data)) {
-      $graph = new Graph(static::getTestingGraphs()['sink']);
-      $graph->parse($rdf_data);
-      $this->createGraphStore()->replace($graph);
-    }
-
-    $this->runPipelineStep('convert_to_adms2');
-
-    // Execute assertions.
-    foreach ($instances as $plugin_id => $instance) {
-      $instance->performAssertions($this);
+      $this->sparql->query("CLEAR GRAPH <$sink_graph>;");
     }
   }
 
