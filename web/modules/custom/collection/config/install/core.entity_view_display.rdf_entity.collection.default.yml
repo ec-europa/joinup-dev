@@ -38,7 +38,7 @@ content:
     settings:
       trim_length: 500
       trim_type: chars
-      trim_suffix: ''
+      trim_suffix: …
       wrap_class: trimmed
       more_text: More
       more_class: more-link
@@ -66,7 +66,7 @@ content:
     settings:
       trim_length: 500
       trim_type: chars
-      trim_suffix: ''
+      trim_suffix: …
       wrap_class: trimmed
       more_text: More
       more_class: more-link
