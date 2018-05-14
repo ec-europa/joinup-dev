@@ -37,7 +37,7 @@ class Pass27To30 extends JoinupFederationAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $sink_graph = ConvertToAdms2StepTest::getTestingGraphs()['sink'];
+    $sink_graph = $data['sink_graph'];
     $query = <<<QUERY
 SELECT ?subject ?subject_type ?prev ?next
 FROM <$sink_graph>
