@@ -29,6 +29,11 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   public function createStepInstance($step_plugin_id);
 
   /**
+   * Gives a chance to plugins to perform some tasks just before executing.
+   */
+  public function prepare();
+
+  /**
    * Runs specific code after the pipeline is executed with success.
    *
    * @return $this

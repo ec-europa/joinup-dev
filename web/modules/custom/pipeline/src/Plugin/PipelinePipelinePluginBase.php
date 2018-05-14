@@ -84,6 +84,11 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
   /**
    * {@inheritdoc}
    */
+  public function prepare() {}
+
+  /**
+   * {@inheritdoc}
+   */
   public function onSuccess() {
     // Ask each step if they want to take some action after pipeline execution.
     foreach ($this->getStepList() as $step_plugin_id) {

@@ -2,6 +2,7 @@
 
 namespace Drupal\pipeline;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
@@ -9,7 +10,6 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\pipeline\Form\PipelineOrchestratorForm;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
-use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 
 /**
@@ -94,12 +94,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // - It's a step with form.
     // - It's the final step.
     // - It stops the pipeline with an error.
-    do {
+    while (!$this->response) {
       if ($new_state = $this->executeStep($current_state)) {
         $this->stateManager->setState($new_state);
         $current_state = $new_state;
       }
-    } while (!$this->response);
+    }
 
     return $this->response;
   }
@@ -121,6 +121,19 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
 
     if (!$this->stateManager->isPersisted()) {
       $current_state = new PipelineState($pipeline, $this->pipeline->current());
+
+      $error = $this->pipeline->prepare();
+      // If this pipeline preparation returns errors, exit here the pipeline
+      // execution but show the errors.
+      if ($error) {
+        $arguments = [
+          '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+        ];
+        $message = $this->t('%pipeline failed to start. Please review the following errors:', $arguments);
+        $this->setErrorResponse($error, $message);
+        $this->pipeline->onError();
+      }
+
     }
     else {
       $current_state = $this->stateManager->getState();
@@ -177,7 +190,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // If this step execution returns errors, exit here the pipeline execution
     // but show the errors.
     if ($error) {
-      $this->setStepErrorResponse($error, $step);
+      $arguments = [
+        '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+        '%step' => $step->getPluginDefinition()['label'],
+      ];
+      $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
+      $this->setErrorResponse($error, $message);
       $this->pipeline->onError();
       return NULL;
     }
@@ -240,17 +258,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *
    * @param array $error
    *   The error message as a render array.
-   * @param \Drupal\pipeline\Plugin\PipelineStepInterface $step
-   *   The step plugin instance.
+   * @param \Drupal\Component\Render\MarkupInterface $message
+   *   The message to be shown on the top of the page.
    */
-  protected function setStepErrorResponse(array $error, PipelineStepInterface $step) {
-    $arguments = [
-      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
-      '%step' => $step->getPluginDefinition()['label'],
-    ];
-    $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
+  protected function setErrorResponse(array $error, MarkupInterface $message) {
     $this->messenger->addError($message);
-    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', $arguments)];
+    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', ['%pipeline' => $this->pipeline->getPluginDefinition()['label']])];
   }
 
   /**
