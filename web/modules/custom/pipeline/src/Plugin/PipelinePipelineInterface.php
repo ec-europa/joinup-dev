@@ -47,4 +47,9 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
    */
   public function onError();
 
+  /**
+   * Acts when a reset action occurs.
+   */
+  public function reset();
+
 }

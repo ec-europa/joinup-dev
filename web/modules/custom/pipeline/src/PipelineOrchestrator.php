@@ -282,7 +282,10 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function reset(): void {
+  public function reset($pipeline) {
+    $plugin = $this->pipelinePluginManager->createInstance($pipeline);
+    // Ask the plugin to act on reset.
+    $plugin->reset();
     $this->stateManager->reset();
   }
 

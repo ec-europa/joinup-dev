@@ -117,6 +117,11 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function reset() {}
+
+  /**
    * Gets the steps internal iterator.
    *
    * @return \ArrayIterator

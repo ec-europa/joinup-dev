@@ -7,7 +7,7 @@ pipeline.pipeline_select:
     _permission: 'access pipeline selector'
 
 pipeline.execute_pipeline:
-  path: '/admin/content/pipeline/execute/{pipeline}'
+  path: '/admin/content/pipeline/{pipeline}/execute'
   defaults:
     _controller: 'Drupal\pipeline\Controller\PipelineExecutionController::execution'
     _title: 'Select pipeline'
@@ -15,9 +15,9 @@ pipeline.execute_pipeline:
     _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowExecute'
 
 pipeline.reset_pipeline:
-  path: '/admin/content/pipeline/reset'
+  path: '/admin/content/pipeline/{pipeline}/reset'
   defaults:
     _controller: '\Drupal\pipeline\Controller\PipelineExecutionController::reset'
     _title: 'Reset the current pipeline'
   requirements:
-    _permission: 'Drupal\pipeline\Controller\PipelineExecutionController::access'
+    _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowReset'

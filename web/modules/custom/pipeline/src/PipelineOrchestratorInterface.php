@@ -19,8 +19,11 @@ interface PipelineOrchestratorInterface {
   public function run($pipeline);
 
   /**
-   * Resets the state machine.
+   * Resets a given pipeline.
+   *
+   * @param string $pipeline
+   *   The pipeline to reset.
    */
-  public function reset();
+  public function reset($pipeline);
 
 }
