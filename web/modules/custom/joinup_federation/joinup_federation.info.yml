@@ -6,3 +6,4 @@ package: Joinup
 dependencies:
   - pipeline
   - rdf_entity
+  - rdf_entity_provenance

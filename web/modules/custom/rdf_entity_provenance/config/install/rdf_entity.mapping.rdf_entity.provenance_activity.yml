@@ -59,22 +59,6 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/provenance/enabled'
       format: 'xsd:boolean'
-  content_translation_source:
-    value:
-      predicate: ''
-      format: ''
-  content_translation_outdated:
-    value:
-      predicate: ''
-      format: ''
-  content_translation_uid:
-    target_id:
-      predicate: ''
-      format: ''
-  content_translation_status:
-    value:
-      predicate: ''
-      format: ''
   graph:
     value:
       predicate: ''

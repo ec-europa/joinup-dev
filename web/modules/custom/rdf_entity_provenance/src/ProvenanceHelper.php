@@ -32,16 +32,9 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function isFederated(RdfInterface $rdf_entity): bool {
-    return empty($this->getProvenanceActivity($rdf_entity));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getProvenanceActivity(RdfInterface $rdf_entity): RdfInterface {
-    if (!$activity = $this->loadProvenanceActivity($rdf_entity)) {
-      $activity = $this->createProvenanceActivity($rdf_entity);
+  public function getProvenanceByReferredEntity(string $id): RdfInterface {
+    if (!$activity = $this->loadProvenanceActivity($id)) {
+      $activity = $this->createProvenanceActivity($id);
     }
 
     return $activity;
@@ -50,30 +43,30 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function loadProvenanceActivity(RdfInterface $rdf_entity): ?RdfInterface {
-    /** @var \Drupal\rdf_entity\RdfInterface $activity */
-    $activity = $this->getStorage()->loadByProperties([
-      'bundle' => 'provenance_activity',
-      'provenance_entity' => $rdf_entity->id(),
+  public function loadProvenanceActivity(string $id): ?RdfInterface {
+    /** @var \Drupal\rdf_entity\RdfInterface[] $activities */
+    $activities = $this->getStorage()->loadByProperties([
+      'rid' => 'provenance_activity',
+      'provenance_entity' => $id,
     ]);
 
-    return $activity;
+    return empty($activities) ? NULL : reset($activities);
   }
 
   /**
    * Creates a provenance activity for the passed rdf_entity.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   * @param string $id
    *   The rdf entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface
    *   The provenance activity.
    */
-  protected function createProvenanceActivity(RdfInterface $rdf_entity): RdfInterface {
+  protected function createProvenanceActivity(string $id): RdfInterface {
     /** @var \Drupal\rdf_entity\RdfInterface $activity */
     $activity = $this->getStorage()->create([
-      'bundle' => 'provenance_activity',
-      'provenance_entity' => $rdf_entity->id(),
+      'rid' => 'provenance_activity',
+      'provenance_entity' => $id,
     ]);
 
     return $activity;
