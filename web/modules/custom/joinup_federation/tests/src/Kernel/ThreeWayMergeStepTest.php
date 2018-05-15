@@ -73,6 +73,23 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'field_name' => 'field_is_description',
       'label' => 'Description',
     ])->save();
+    FieldStorageConfig::create([
+      'type' => 'entity_reference',
+      'entity_type' => 'rdf_entity',
+      'field_name' => 'field_status',
+    ])->setThirdPartySetting('rdf_entity', 'mapping', [
+      'target_id' => [
+        'predicate' => 'http://www.w3.org/ns/adms#status',
+        'format' => 'resource',
+      ],
+    ])->save();
+    FieldConfig::create([
+      'entity_type' => 'rdf_entity',
+      'bundle' => 'solution',
+      'field_name' => 'field_status',
+      'label' => 'Status',
+    ])->save();
+
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
     RdfEntityMapping::create($mapping)->save();
 
@@ -97,6 +114,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'id' => 'http://asset',
       'label' => 'This will be overridden',
       'field_is_description' => 'Also this...',
+      'field_status' => 'http://example.com/status',
     ])->save();
 
     $graph = new Graph(static::getTestingGraphs()['sink']);
@@ -127,6 +145,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // Check that an existing entity values are overridden.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
+    $this->assertTrue($solution->get('field_status')->isEmpty());
 
     // Check that new entities were created in the 'default' graph and were
     // removed from the staging graph.
