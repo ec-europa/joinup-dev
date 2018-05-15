@@ -89,8 +89,11 @@ class PipelineOrchestratorTest extends UnitTestCase {
    * @covers ::reset
    */
   public function testReset() {
+    $definition = ['label' => 'Bar', 'steps' => ['test_step']];
+    $this->pipelinePluginManager->createInstance('demo_pipe')
+      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
     $this->stateManager->reset()->shouldBeCalled();
-    $this->createOrchestrator()->reset();
+    $this->createOrchestrator()->reset('demo_pipe');
   }
 
   /**

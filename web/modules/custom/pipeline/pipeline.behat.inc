@@ -26,12 +26,15 @@ class PipelineSubContext extends DrupalSubContextBase {
   /**
    * Reset the pipeline orchestrator through the API.
    *
-   * @Given I reset the pipeline orchestrator
+   * @param string $pipeline
+   *   The pipeline ID.
+   *
+   * @Given I reset the :pipeline pipeline
    */
-  public function iResetThePipelineOrchestrator() {
+  public function iResetThePipelineOrchestrator($pipeline) {
     /** @var \Drupal\pipeline\PipelineOrchestrator $orchestrator */
     $orchestrator = \Drupal::service('pipeline.orchestrator');
-    $orchestrator->reset();
+    $orchestrator->reset($pipeline);
   }
 
 }

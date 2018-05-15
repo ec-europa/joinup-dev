@@ -70,8 +70,10 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The shared temp store factory service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql, SharedTempStoreFactory $shared_tempstore_factory) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
     $this->currentUser = $current_user;
+
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
+
     $this->sparql = $sparql;
     $this->sharedTempStoreFactory = $shared_tempstore_factory;
   }
