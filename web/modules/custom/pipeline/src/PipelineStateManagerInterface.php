@@ -40,4 +40,16 @@ interface PipelineStateManagerInterface {
    */
   public function reset($pipeline_id);
 
+  /**
+   * Returns metadata about the persisted state.
+   *
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   *
+   * @return \stdClass|null
+   *   An object with the owner and updated time if the key has a value, or
+   *   NULL otherwise.
+   */
+  public function getStateMetadata($pipeline_id);
+
 }

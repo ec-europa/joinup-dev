@@ -57,6 +57,13 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getStateMetadata($pipeline_id) {
+    return $this->getPrivateTempStore()->getMetadata($this->getKey($pipeline_id));
+  }
+
+  /**
    * Returns the user private temp store.
    *
    * @return \Drupal\Core\TempStore\PrivateTempStore
