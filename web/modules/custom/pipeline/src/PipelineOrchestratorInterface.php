@@ -10,13 +10,11 @@ interface PipelineOrchestratorInterface {
   /**
    * Executes a given pipeline.
    *
-   * @param string $pipeline
-   *   The pipeline to be executed.
-   *
+   * @param $pipeline_id
    * @return mixed
    *   The response.
    */
-  public function run($pipeline);
+  public function run($pipeline_id);
 
   /**
    * Resets a given pipeline.

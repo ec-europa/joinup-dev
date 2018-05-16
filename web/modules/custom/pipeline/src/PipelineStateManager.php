@@ -2,7 +2,7 @@
 
 namespace Drupal\pipeline;
 
-use Drupal\Core\State\StateInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 
 /**
  * Manages the pipeline state.
@@ -10,69 +10,76 @@ use Drupal\Core\State\StateInterface;
 class PipelineStateManager implements PipelineStateManagerInterface {
 
   /**
-   * The Drupal state system.
+   * The user private temp store factory.
    *
-   * @var \Drupal\Core\State\StateInterface
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
-  protected $state;
+  protected $privateTempStoreFactory;
 
   /**
-   * The active step.
+   * The user private temp store.
    *
-   * @var string
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
-  protected $step;
+  protected $privateTempStore;
 
   /**
-   * The pipeline plugin id.
+   * Constructs a new pipeline state manager service.
    *
-   * @var string
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_tempstore_factory
+   *    The user private temp store factory.
    */
-  protected $pipeline;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(StateInterface $state) {
-    $this->state = $state;
-    $this->pipeline = $this->state->get('pipeline.pipeline');
-    $this->step = $this->state->get('pipeline.sequence');
+  public function __construct(PrivateTempStoreFactory $private_tempstore_factory) {
+    $this->privateTempStoreFactory = $private_tempstore_factory;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isPersisted() {
-    return isset($this->pipeline) && isset($this->step);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setState(PipelineState $state) {
-    $this->pipeline = $state->getPipelineId();
-    $this->state->set('pipeline.pipeline', $this->pipeline);
-    $this->step = $state->getStep();
-    $this->state->set('pipeline.sequence', $this->step);
+  public function setState($pipeline_id, $step_id) {
+    $this->getPrivateTempStore()->set($this->getKey($pipeline_id), $step_id);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getState() {
-    return new PipelineState($this->pipeline, $this->step);
+  public function getState($pipeline_id) {
+    return $this->getPrivateTempStore()->get($this->getKey($pipeline_id));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function reset() {
-    $this->state->delete('pipeline.sequence');
-    $this->state->delete('pipeline.pipeline');
-    $this->pipeline = NULL;
-    $this->step = NULL;
+  public function reset($pipeline_id) {
+    $this->getPrivateTempStore()->delete($this->getKey($pipeline_id));
     return $this;
+  }
+
+  /**
+   * Returns the user private temp store.
+   *
+   * @return \Drupal\Core\TempStore\PrivateTempStore
+   *   The private tempstore.
+   */
+  protected function getPrivateTempStore() {
+    if (!isset($this->privateTempStore)) {
+      $this->privateTempStore = $this->privateTempStoreFactory->get('pipeline');
+    }
+    return $this->privateTempStore;
+  }
+
+  /**
+   * Builds the private temp store entry key.
+   *
+   * @param string $pipeline_id
+   *   The ID of the pipeline plugin.
+   *
+   * @return string
+   *   The key that identifies a particular pipeline state.
+   */
+  protected function getKey($pipeline_id) {
+    return "state:$pipeline_id";
   }
 
 }

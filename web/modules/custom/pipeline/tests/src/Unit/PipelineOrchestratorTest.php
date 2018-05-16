@@ -11,7 +11,6 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\pipeline\PipelineOrchestrator;
-use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
@@ -91,8 +90,8 @@ class PipelineOrchestratorTest extends UnitTestCase {
   public function testReset() {
     $definition = ['label' => 'Bar', 'steps' => ['test_step']];
     $this->pipelinePluginManager->createInstance('demo_pipe')
-      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
-    $this->stateManager->reset()->shouldBeCalled();
+      ->willReturn(new TestPipeline([], 'demo_pipe', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
+    $this->stateManager->reset('demo_pipe')->shouldBeCalled();
     $this->createOrchestrator()->reset('demo_pipe');
   }
 
@@ -107,19 +106,17 @@ class PipelineOrchestratorTest extends UnitTestCase {
     $container->set('plugin.manager.pipeline_step', $this->stepPluginManager->reveal());
     \Drupal::setContainer($container);
 
-    $state = new PipelineState('demo_pipe', 'test_step');
     $state_manager = $this->stateManager;
-    $state_manager->isPersisted()->willReturn(TRUE);
-    $state_manager->getState()->willReturn($state);
-    $state_manager->reset()->shouldBeCalled();
+    $state_manager->getState('demo_pipe')->willReturn('test_step');
+    $state_manager->reset('demo_pipe')->shouldBeCalled();
 
     $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
     $this->stepPluginManager->createInstance('test_step')->willReturn(new TestStep([], '', ['label' => 'Foo']));
     $definition = ['label' => 'Bar', 'steps' => ['test_step']];
     $this->pipelinePluginManager->createInstance('demo_pipe')
-      ->willReturn(new TestPipeline([], '', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
+      ->willReturn(new TestPipeline([], 'demo_pipe', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));
 
-    (new TestOrchestrator(
+    (new PipelineOrchestrator(
       $this->pipelinePluginManager->reveal(),
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
@@ -153,22 +150,6 @@ class TestStep extends PipelineStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {}
-
-}
-
-/**
- * Testing orchestrator.
- *
- * Used to replace the ::getStepInstance() method with a mock.
- */
-class TestOrchestrator extends PipelineOrchestrator {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getStepInstance(PipelineState $state) {
-    return new TestStep([], '', ['label' => 'Foo']);
-  }
 
 }
 

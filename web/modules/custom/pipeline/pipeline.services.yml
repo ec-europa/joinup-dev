@@ -1,7 +1,7 @@
 services:
   pipeline.state_manager:
     class: Drupal\pipeline\PipelineStateManager
-    arguments: ['@state']
+    arguments: ['@tempstore.private']
   plugin.manager.pipeline_pipeline:
     class: Drupal\pipeline\Plugin\PipelinePipelinePluginManager
     parent: default_plugin_manager

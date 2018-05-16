@@ -8,36 +8,36 @@ namespace Drupal\pipeline;
 interface PipelineStateManagerInterface {
 
   /**
-   * Checks whether a persisted state is available.
+   * Persists the pipeline state.
    *
-   * @return bool
-   *   The persistence state.
-   */
-  public function isPersisted();
-
-  /**
-   * Persists the pipeline state for a following request.
-   *
-   * @param \Drupal\pipeline\PipelineState $state
-   *   The state object to persist.
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   * @param string $step_id
+   *   The pipeline step plugin ID.
    *
    * @return $this
    */
-  public function setState(PipelineState $state);
+  public function setState($pipeline_id, $step_id);
 
   /**
-   * Returns the current state.
+   * Returns the current state for a given pipeline.
    *
-   * @return \Drupal\pipeline\PipelineState
-   *   The state value object.
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   *
+   * @return string|null
+   *   The step plugin ID or NULL.
    */
-  public function getState();
+  public function getState($pipeline_id);
 
   /**
-   * Deletes the persisted state.
+   * Deletes the persisted state for a given pipeline.
+   *
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
    *
    * @return $this
    */
-  public function reset();
+  public function reset($pipeline_id);
 
 }
