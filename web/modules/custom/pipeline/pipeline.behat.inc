@@ -32,9 +32,7 @@ class PipelineSubContext extends DrupalSubContextBase {
    * @Given I reset the :pipeline pipeline
    */
   public function iResetThePipelineOrchestrator($pipeline) {
-    /** @var \Drupal\pipeline\PipelineOrchestrator $orchestrator */
-    $orchestrator = \Drupal::service('pipeline.orchestrator');
-    $orchestrator->reset($pipeline);
+    $this->visitPath("admin/content/$pipeline/reset");
   }
 
 }
