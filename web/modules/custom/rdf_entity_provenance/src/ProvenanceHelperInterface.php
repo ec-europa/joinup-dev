@@ -17,7 +17,7 @@ interface ProvenanceHelperInterface {
    * @param string $id
    *   The rdf id that the provenance activity describes.
    *
-   * @return \Drupal\rdf_entity\RdfInterface|null
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The provenance activity related to the rdf entity passed.
    */
   public function getProvenanceByReferredEntity(string $id): RdfInterface;
