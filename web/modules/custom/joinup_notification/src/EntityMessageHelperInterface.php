@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\message\MessageInterface;
 
 /**
@@ -35,6 +36,9 @@ interface EntityMessageHelperInterface {
    * @param array $arguments
    *   The array of arguments that will be used to replace token-like strings in
    *   the message.
+   * @param string $field_name
+   *   The name of the field that references the entity for which the message is
+   *   to be created.
    *
    * @return \Drupal\message\MessageInterface
    *   The newly created, unsaved, message.
@@ -43,7 +47,7 @@ interface EntityMessageHelperInterface {
    *   Thrown when the passed entity cannot be referenced. Possibly since it
    *   hasn't yet been saved and does not have an ID yet.
    */
-  public function createMessage(EntityInterface $entity, string $template, array $arguments): MessageInterface;
+  public function createMessage(EntityInterface $entity, string $template, array $arguments, string $field_name = 'field_entity'): MessageInterface;
 
   /**
    * Returns the messages that are associated with the given entity.
@@ -52,6 +56,9 @@ interface EntityMessageHelperInterface {
    *   The entity that is referenced by the message.
    * @param string $template
    *   The message template ID.
+   * @param string $field_name
+   *   The name of the field that references the entity for which the message is
+   *   to be created.
    * @param array $values
    *   An associative array of properties to filter the messages by, where the
    *   keys are the property names and the values are the values those
@@ -65,20 +72,7 @@ interface EntityMessageHelperInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The corresponding messages.
    */
-  public function getMessages(EntityInterface $entity, string $template, array $values = [], int $limit = 10, string $order = self::SORT_DESC): array;
-
-  /**
-   * Sends the message that is associated with the given entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity that is referenced by the message.
-   * @param string $template
-   *   The message template ID.
-   *
-   * @return bool
-   *   TRUE if the message was sent successfully. FALSE otherwise.
-   */
-  public function sendMessage(EntityInterface $entity, string $template): bool;
+  public function getMessages(EntityInterface $entity, string $template, string $field_name = 'field_entity', array $values = [], int $limit = 10, string $order = self::SORT_DESC): array;
 
   /**
    * Checks that the entity is suitable for being handled by the service.
@@ -93,5 +87,13 @@ interface EntityMessageHelperInterface {
    *   Thrown when the entity is not valid.
    */
   public function validateEntity(EntityInterface $entity): void;
+
+  /**
+   * Returns the entity storage for the Message entity type.
+   *
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The entity storage.
+   */
+  public function getMessageEntityStorage(): EntityStorageInterface;
 
 }

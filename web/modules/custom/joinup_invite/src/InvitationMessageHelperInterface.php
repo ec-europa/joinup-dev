@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_invite;
 
 use Drupal\joinup_invite\Entity\InvitationInterface;
-use Drupal\joinup_notification\EntityMessageHelperInterface;
 use Drupal\message\MessageInterface;
 
 /**
@@ -19,7 +18,7 @@ use Drupal\message\MessageInterface;
  * you have created. When creating a new notification message through this
  * service, the Invitation will automatically be referenced through that field.
  */
-interface InvitationMessageHelperInterface extends EntityMessageHelperInterface {
+interface InvitationMessageHelperInterface {
 
   /**
    * Creates a new message that is associated with the given invitation.
