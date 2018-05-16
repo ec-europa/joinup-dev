@@ -46,7 +46,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function createMessage(InvitationInterface $invitation, string $template, array $arguments) : MessageInterface {
+  public function createMessage(InvitationInterface $invitation, string $template, array $arguments): MessageInterface {
     // Check that the invitation has been saved, since we need to be able to
     // reference its ID.
     if ($invitation->isNew()) {
@@ -69,7 +69,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getMessage(InvitationInterface $invitation, string $template) : ?MessageInterface {
+  public function getMessage(InvitationInterface $invitation, string $template): ?MessageInterface {
     $messages = $this->entityTypeManager->getStorage('message')->loadByProperties([
       'template' => $template,
       'field_invitation' => $invitation->id(),
@@ -81,7 +81,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(InvitationInterface $invitation, string $template) : bool {
+  public function sendMessage(InvitationInterface $invitation, string $template): bool {
     if (!$message = $this->getMessage($invitation, $template)) {
       return FALSE;
     }
@@ -97,7 +97,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
    * @return array
    *   An associative array of default arguments, keyed by argument ID.
    */
-  protected function getDefaultArguments(InvitationInterface $invitation) : array {
+  protected function getDefaultArguments(InvitationInterface $invitation): array {
     $arguments = [];
 
     foreach (['accept', 'reject'] as $action) {
