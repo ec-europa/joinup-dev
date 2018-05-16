@@ -8,6 +8,9 @@ text:
   -
     value: '<p>Your role has been changed to @membership:roles</p>'
     format: full_html
+  -
+    value: '<p>@actor:full_name has changed your role in @group:bundle "@group:title" to @membership:roles.</p>'
+    format: full_html
 settings:
   'token options':
     clear: false

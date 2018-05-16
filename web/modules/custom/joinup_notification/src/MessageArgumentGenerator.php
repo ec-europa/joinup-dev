@@ -7,6 +7,7 @@ namespace Drupal\joinup_notification;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Url;
+use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -87,7 +88,9 @@ class MessageArgumentGenerator {
    *
    * @return array
    *   An associative array of message arguments, with the following keys:
-   *   -
+   *   - '@group:title': The group title.
+   *   - '@group:bundle': The group bundle, either 'solution' or 'collection'.
+   *   - '@group:url': The canonical URL for the group.
    */
   public static function getGroupArguments(EntityInterface $group): array {
     $arguments = [
@@ -100,7 +103,50 @@ class MessageArgumentGenerator {
     }
     catch (EntityMalformedException $e) {
       // No URL could be generated.
+      $arguments['@group:url'] = '';
     }
+
+    return $arguments;
+  }
+
+  /**
+   * Returns a set of arguments for the passed in membership.
+   *
+   * @param \Drupal\og\OgMembershipInterface $membership
+   *   The membership for which to generate message arguments.
+   *
+   * @return array
+   *   An associative array of message arguments, with the following keys:
+   *   - '@membership:group:title': The group title.
+   *   - '@membership:group:bundle': The group bundle, either 'solution' or
+   *     'collection'.
+   *   - '@membership:group:url': The canonical URL for the group.
+   *   - '@membership:roles': A comma-separated list of roles.
+   */
+  public static function getOgMembershipArguments(OgMembershipInterface $membership): array {
+    $arguments = [];
+
+    $group = $membership->getGroup();
+    foreach (static::getGroupArguments($group) as $key => $argument) {
+      $key = str_replace('@', '@membership:', $key);
+      $arguments[$key] = $argument;
+    }
+
+    $roles = [];
+    foreach ($membership->getRoles() as $role) {
+      // Skip the member role.
+      if ($role->isRequired()) {
+        continue;
+      }
+      $roles[] = $role->getName();
+    }
+
+    // If the user has no roles, the user is a regular member.
+    if (empty($roles)) {
+      $roles[] = 'member';
+    }
+
+    $arguments['@membership:roles'] = implode(', ', $roles);
 
     return $arguments;
   }
