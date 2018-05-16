@@ -52,7 +52,9 @@
   padding: 20px
 
 .listing__field
-  margin-bottom: 15px
+  margin-bottom: $tile-margin
+  &.listing__tags
+    margin-bottom: 0
 
 .listing__title,
 .listing__title a
@@ -171,15 +173,35 @@
     margin-right: 20px
 
 .listing__subtitle:first-of-type
-  margin-top: 5px
+  margin-top: $tile-margin-small
 
 // Set fixed height for fields.
 .listing__card
   +breakpoint(xs)
     min-height: 285px
 
+.listing__text-container
+  +breakpoint(xs)
+    overflow: hidden
+    margin-bottom: $tile-margin
+    .listing__field:last-child
+      margin-bottom: 0
+
+.listing__text-container--news
+  +breakpoint(xs)
+    +calc-space(5, $row-height, $tile-margin, 2, $row-height-small, $tile-margin-small)
+
+.listing__text-container--discussion,
+.listing__text-container--document
+  +breakpoint(xs)
+    +calc-space(6, $row-height, $tile-margin, 1, $row-height-small, $tile-margin-small)
+
+.listing__text-container--custom-page
+  +breakpoint(xs)
+    +calc-space(8, $row-height, $tile-margin)
+
 .listing__title
-  +number-rows(1, $row-height)
+  +number-rows(3, $row-height)
 
 .listing__card--collection,
 .listing__card--solution
@@ -200,7 +222,7 @@
   +number-rows(1, $row-height)
 
 .listing__subtitle
-  +number-rows(1, $row-height-small)
+  +number-rows(1, $row-height-small, true)
 
 .listing__teaser
   +number-rows(4, $row-height)
