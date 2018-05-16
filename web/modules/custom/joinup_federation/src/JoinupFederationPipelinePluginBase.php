@@ -22,13 +22,6 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   use StringTranslationTrait;
 
   /**
-   * The current session.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
    * The SPARQL connection.
    *
    * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
@@ -62,8 +55,6 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The step plugin manager service.
    * @param \Drupal\pipeline\PipelineStateManager $state_manager
    *   The pipeline state manager service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
@@ -107,8 +98,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   public function defaultConfiguration(): array {
     return [
       'graph' => [
-        'sink' => static::GRAPH_BASE . '/sink/' . $this->currentUser->id(),
-        'sink_plus_taxo' => static::GRAPH_BASE . '/sink-plus-taxo/' . $this->currentUser->id(),
+        'sink' => 'http://joinup-federation/sink',
+        'sink_plus_taxo' => 'http://joinup-federation/sink-plus-taxo',
       ],
     ] + parent::defaultConfiguration();
   }
@@ -160,9 +151,17 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
+  public function clearGraph(string $graph_uri): JoinupFederationPipelineInterface {
+    $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function clearGraphs(): JoinupFederationPipelineInterface {
     foreach ($this->getConfiguration()['graph'] as $graph_uri) {
-      $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+      $this->clearGraph($graph_uri);
     }
     return $this;
   }

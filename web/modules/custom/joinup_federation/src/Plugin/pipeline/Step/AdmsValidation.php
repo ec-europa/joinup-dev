@@ -13,8 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Defines a pipeline step that validates uploaded data.
  *
  * @PipelineStep(
- *  id = "adms_validation",
- *  label = @Translation("ADMS Validation"),
+ *   id = "adms_validation",
+ *   label = @Translation("ADMS Validation"),
  * )
  */
 class AdmsValidation extends JoinupFederationStepPluginBase {
@@ -64,6 +64,9 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
   public function execute(array &$data) {
     $graph_uri = $this->getGraphUri('sink_plus_taxo');
     $validation = $this->admsValidator->validateByGraphUri($graph_uri);
+
+    // Cleanup the 'sink_plus_taxo' graph.
+    $this->pipeline->clearGraph($this->getGraphUri('sink_plus_taxo'));
 
     if ($validation->isSuccessful()) {
       return NULL;

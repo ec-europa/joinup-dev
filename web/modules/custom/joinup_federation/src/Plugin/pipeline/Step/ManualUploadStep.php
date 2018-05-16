@@ -17,8 +17,8 @@ use EasyRdf\Graph;
  * Defines a manual data upload step plugin.
  *
  * @PipelineStep(
- *  id = "manual_upload_step",
- *  label = @Translation("Manual upload"),
+ *   id = "manual_upload_step",
+ *   label = @Translation("Manual upload"),
  * )
  */
 class ManualUploadStep extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {

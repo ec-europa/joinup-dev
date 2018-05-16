@@ -17,8 +17,8 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  * distributions, licences, owners or contact information.
  *
  * @PipelineStep(
- *  id = "remove_unsupported_data",
- *  label = @Translation("Remove data not supported by Joinup"),
+ *   id = "remove_unsupported_data",
+ *   label = @Translation("Remove data not supported by Joinup"),
  * )
  */
 class RemoveUnsupportedData extends JoinupFederationStepPluginBase {

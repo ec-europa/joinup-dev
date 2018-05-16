@@ -12,13 +12,6 @@ use Drupal\pipeline\Plugin\PipelinePipelineInterface;
 interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
 
   /**
-   * The base part of the URI of the graph used during the import process.
-   *
-   * @var string
-   */
-  const GRAPH_BASE = 'http://joinup-federation';
-
-  /**
    * Returns the graph URI for a specific federation graph.
    *
    * @param string $graph_type
@@ -28,6 +21,16 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
    *   The graph URI.
    */
   public function getGraphUri(string $graph_type): string;
+
+  /**
+   * Clears the data from a given graph.
+   *
+   * @param string $graph_uri
+   *   The URI of the graph to be emptied.
+   *
+   * @return $this
+   */
+  public function clearGraph(string $graph_uri): self;
 
   /**
    * Clears the data from the federation graphs.
