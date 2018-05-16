@@ -32,7 +32,7 @@ class PipelineSubContext extends DrupalSubContextBase {
    * @Given I reset the :pipeline pipeline
    */
   public function iResetThePipelineOrchestrator($pipeline) {
-    $this->visitPath("admin/content/$pipeline/reset");
+    $this->visitPath("admin/content/pipeline/$pipeline/reset");
   }
 
 }
