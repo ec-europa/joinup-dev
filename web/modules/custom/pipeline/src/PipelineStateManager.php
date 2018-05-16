@@ -27,7 +27,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
    * Constructs a new pipeline state manager service.
    *
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_tempstore_factory
-   *    The user private temp store factory.
+   *   The user private temp store factory.
    */
   public function __construct(PrivateTempStoreFactory $private_tempstore_factory) {
     $this->privateTempStoreFactory = $private_tempstore_factory;

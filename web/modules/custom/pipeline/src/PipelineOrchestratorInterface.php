@@ -10,7 +10,9 @@ interface PipelineOrchestratorInterface {
   /**
    * Executes a given pipeline.
    *
-   * @param $pipeline_id
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   *
    * @return mixed
    *   The response.
    */
