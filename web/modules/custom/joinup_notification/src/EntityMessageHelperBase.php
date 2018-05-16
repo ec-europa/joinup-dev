@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Url;
-use Drupal\joinup_invite\Controller\InvitationController;
-use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\message\MessageInterface;
 
 /**
- * Service that assists in creating and retrieving messages for invitations.
+ * Base class for services that assist in handling messages for entities.
  */
 abstract class EntityMessageHelperBase implements EntityMessageHelperInterface {
 
@@ -45,21 +45,17 @@ abstract class EntityMessageHelperBase implements EntityMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function createMessage(InvitationInterface $invitation, string $template, array $arguments) : MessageInterface {
-    // Check that the invitation has been saved, since we need to be able to
-    // reference its ID.
-    if ($invitation->isNew()) {
-      throw new \InvalidArgumentException('Messages can only be created for saved invitations.');
-    }
+  public function createMessage(EntityInterface $entity, string $template, array $arguments): MessageInterface {
+    $this->validateEntity($entity);
 
-    // Add defaults `@invitation:accept_url` and `@invitation:reject_url`.
-    $arguments += $this->getDefaultArguments($invitation);
+    // Add default arguments.
+    $arguments += $this->getDefaultArguments($entity);
 
     /** @var \Drupal\message\MessageInterface $message */
-    $message = $this->entityTypeManager->getStorage('message')->create([
+    $message = $this->getMessageEntityStorage()->create([
       'template' => $template,
       'arguments' => $arguments,
-      'field_invitation' => $invitation->id(),
+      'field_entity' => $entity->id(),
     ]);
 
     return $message;
@@ -68,10 +64,12 @@ abstract class EntityMessageHelperBase implements EntityMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getMessage(InvitationInterface $invitation, string $template) : ?MessageInterface {
-    $messages = $this->entityTypeManager->getStorage('message')->loadByProperties([
+  public function getMessages(EntityInterface $entity, string $template, array $values = [], int $limit = 10, string $order = self::SORT_DESC): array {
+    $this->validateEntity($entity);
+
+    $messages = $this->getMessageEntityStorage()->loadByProperties([
       'template' => $template,
-      'field_invitation' => $invitation->id(),
+      'field_invitation' => $entity->id(),
     ]);
 
     return $messages ? reset($messages) : NULL;
@@ -80,39 +78,59 @@ abstract class EntityMessageHelperBase implements EntityMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(InvitationInterface $invitation, string $template) : bool {
-    if (!$message = $this->getMessage($invitation, $template)) {
-      return FALSE;
-    }
+  public function sendMessage(EntityInterface $entity, MessageInterface $message): bool {
     return $this->messageDelivery
       ->setMessage($message)
-      ->setRecipients([$invitation->getRecipient()])
+      ->setRecipients([$entity->getRecipient()])
       ->sendMail();
   }
 
   /**
-   * Returns default arguments for invitation messages.
+   * {@inheritdoc}
+   */
+  public function validateEntity(EntityInterface $entity): void {
+    // Check that the entity has been saved, since we need to be able to
+    // reference its ID.
+    if ($entity->isNew()) {
+      throw new \InvalidArgumentException('Messages can only be created for saved entities.');
+    }
+  }
+
+  /**
+   * Returns the entity storage for the Message entity type.
    *
-   * @param \Drupal\joinup_invite\Entity\InvitationInterface $invitation
-   *   The invitation for which to create the default arguments.
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The entity storage.
+   */
+  protected function getMessageEntityStorage(): EntityStorageInterface {
+    try {
+      /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
+      $storage = $this->entityTypeManager->getStorage('message');
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      // Since the Joinup Notification module depends on the Message module we
+      // can reasonably expect that the Message entity type is available at
+      // runtime and we don't need to handle the possibility that it is not
+      // defined.
+      // Convert this in an (unchecked) runtime exception so we don't need to
+      // document this 'impossible' exception all the way up the call chain.
+      throw new \RuntimeException('Entity storage for the Message entity type is not defined.', 0, $e);
+    }
+
+    return $storage;
+  }
+
+  /**
+   * Returns default arguments for entity messages.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to create the default arguments.
    *
    * @return array
    *   An associative array of default arguments, keyed by argument ID.
    */
-  protected function getDefaultArguments(InvitationInterface $invitation) : array {
-    $arguments = [];
-
-    foreach (['accept', 'reject'] as $action) {
-      $url_arguments = [
-        'invitation' => $invitation->id(),
-        'action' => $action,
-        'hash' => InvitationController::generateHash($invitation, $action),
-      ];
-      $url_options = ['absolute' => TRUE];
-      $arguments["@invitation:${action}_url"] = Url::fromRoute('joinup_invite.update_invitation', $url_arguments, $url_options)->toString();
-    }
-
-    return $arguments;
+  protected function getDefaultArguments(EntityInterface $entity): array {
+    return [];
   }
 
 }

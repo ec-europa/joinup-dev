@@ -80,4 +80,18 @@ interface EntityMessageHelperInterface {
    */
   public function sendMessage(EntityInterface $entity, string $template): bool;
 
+  /**
+   * Checks that the entity is suitable for being handled by the service.
+   *
+   * Typical use cases are to check that the entity has been saved and is of the
+   * correct type and bundle.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the entity is not valid.
+   */
+  public function validateEntity(EntityInterface $entity): void;
+
 }
