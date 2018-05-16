@@ -9,11 +9,6 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Execute"
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
-    # Go back to the pipeline selection. You should be redirected to the current
-    # active/unfinished step.
-    And I go to the pipeline orchestrator
-    Then I should see "Spain - Center for Technology Transfer: Manual upload"
-
     # Test the wizard reset.
     And I reset the spain pipeline
     Then I go to the pipeline orchestrator
