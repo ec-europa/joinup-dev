@@ -18,8 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * step, in order to ensure that the incoming data refers Joinup set of terms.
  *
  * @PipelineStep(
- *  id = "add_joinup_vocabularies",
- *  label = @Translation("Add Joinup vocabularies"),
+ *   id = "add_joinup_vocabularies",
+ *   label = @Translation("Add Joinup vocabularies"),
  * )
  */
 class AddJoinupVocabularies extends JoinupFederationStepPluginBase {
