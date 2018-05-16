@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "284b5ca6fa67c29d21037038cb7f8a3c",
+    "content-hash": "6d6e559e2b86e29e43776cc254775041",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2172,6 +2172,7 @@
                     "4352-4": "resources/patch/4352-4.patch",
                     "4352-7": "resources/patch/4352-7.patch",
                     "4352-9": "resources/patch/4352-9.patch",
+                    "4352-10": "resources/patch/4352-10.patch",
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
                     "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-26.patch",
