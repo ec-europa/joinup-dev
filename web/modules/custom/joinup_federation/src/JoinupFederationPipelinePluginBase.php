@@ -36,6 +36,13 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   protected $sharedTempStoreFactory;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * The shared tempstore.
    *
    * @var \Drupal\Core\TempStore\SharedTempStore
@@ -55,6 +62,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The step plugin manager service.
    * @param \Drupal\pipeline\PipelineStateManager $state_manager
    *   The pipeline state manager service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
