@@ -9,7 +9,7 @@ description: 'Message sent to subscribers of a discussion when a new comment is 
 text:
   - value: 'Joinup: User @comment:author:username posted a comment in discussion "@entity:title"'
     format: full_html
-  - value: '<p>@comment:author:username has posted a comment on discussion "@entity:title" in "@group:label" @group:bundle.</p><p>To view the comment, click @entity:url.</p>'
+  - value: '<p>@comment:author:username has posted a comment on discussion "@entity:title" in "@group:title" @group:bundle.</p><p>To view the comment, click @entity:url.</p>'
     format: full_html
 settings:
   'token options':

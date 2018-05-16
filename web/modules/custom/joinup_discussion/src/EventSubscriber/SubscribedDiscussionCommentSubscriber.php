@@ -6,6 +6,7 @@ namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -189,13 +190,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     return [
       '@comment:author:username' => $this->comment->getOwner()->getDisplayName(),
       '@entity:title' => $this->discussion->label(),
-      '@group:label' => $this->group->label(),
-      '@group:bundle' => $this->group->bundle(),
       '@entity:url' => $this->discussion->toUrl('canonical', [
         'absolute' => TRUE,
         'fragment' => "comment-{$this->comment->id()}",
       ])->toString(),
-    ];
+    ] + MessageArgumentGenerator::getGroupArguments($this->group);
   }
 
   /**

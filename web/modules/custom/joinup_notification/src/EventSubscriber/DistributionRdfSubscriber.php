@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -199,8 +200,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
       ]);
     }
     if (!empty($solution)) {
-      $arguments['@group:title'] = $solution->label();
-      $arguments['@group:bundle'] = $solution->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($solution);
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($solution, $actor);
         if (!empty($membership)) {

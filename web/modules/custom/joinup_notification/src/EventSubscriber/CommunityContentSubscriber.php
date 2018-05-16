@@ -12,6 +12,7 @@ use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
@@ -315,8 +316,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // Add arguments related to the parent collection or solution.
     $parent = $this->relationManager->getParent($entity);
     if (!empty($parent)) {
-      $arguments['@group:title'] = $parent->label();
-      $arguments['@group:bundle'] = $parent->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($parent);
 
       // If the role is not yet set, get it from the parent collection|solution.
       if (empty($arguments['@actor:role'])) {

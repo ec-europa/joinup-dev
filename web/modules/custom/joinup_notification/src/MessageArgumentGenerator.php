@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_notification;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Url;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
@@ -75,6 +77,32 @@ class MessageArgumentGenerator {
     return [
       '@site:contact_url' => Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString(),
     ];
+  }
+
+  /**
+   * Returns a set of arguments for the passed in group.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $group
+   *   The group for which to generate message arguments.
+   *
+   * @return array
+   *   An associative array of message arguments, with the following keys:
+   *   -
+   */
+  public static function getGroupArguments(EntityInterface $group): array {
+    $arguments = [
+      '@group:title' => $group->label(),
+      '@group:bundle' => $group->bundle(),
+    ];
+
+    try {
+      $arguments['@group:url'] = $group->toUrl('canonical', ['absolute' => TRUE])->toString();
+    }
+    catch (EntityMalformedException $e) {
+      // No URL could be generated.
+    }
+
+    return $arguments;
   }
 
 }

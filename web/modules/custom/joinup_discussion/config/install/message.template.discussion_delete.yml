@@ -5,9 +5,9 @@ template: discussion_delete
 label: 'Discussion deletion'
 description: 'Sent when a discussion has been deleted.'
 text:
-  - value: 'Joinup: The discussion "@entity:title" was deleted in the space of "@group:label"'
+  - value: 'Joinup: The discussion "@entity:title" was deleted in the space of "@group:title"'
     format: full_html
-  - value: 'for your information, the discussion "@entity:title" was deleted from the "@group:label" @group:bundle.'
+  - value: 'for your information, the discussion "@entity:title" was deleted from the "@group:title" @group:bundle.'
     format: full_html
 settings:
   'token options':
