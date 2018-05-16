@@ -40,3 +40,10 @@ Feature: As a site moderator I am able to import RDF files.
     Then I should see the following success messages:
       | The Spain - Center for Technology Transfer execution has finished with success. |
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
+
+    # We manually delete the imported entities as they are not tracked by Behat
+    # and, as a consequence, will not be automatically deleted after test. Also
+    # this is a good test that the entities were imported and exist.
+    But I delete the "Asset" solution
+    And I delete the "Contact" contact information
+    And I delete the "The Publisher" owner

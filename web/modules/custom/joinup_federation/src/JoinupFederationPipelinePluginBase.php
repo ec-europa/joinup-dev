@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
@@ -15,13 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a base class for Joinup ETL pipelines.
  */
 abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePluginBase implements JoinupFederationPipelineInterface {
-
-  /**
-   * The current session.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
 
   /**
    * The SPARQL connection.
@@ -43,15 +35,12 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The step plugin manager service.
    * @param \Drupal\pipeline\PipelineStateManager $state_manager
    *   The pipeline state manager service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql) {
-    $this->currentUser = $current_user;
-    $this->sparql = $sparql;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, Connection $sparql) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
+    $this->sparql = $sparql;
   }
 
   /**
@@ -64,7 +53,6 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $plugin_definition,
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
-      $container->get('current_user'),
       $container->get('sparql_endpoint')
     );
   }
@@ -82,8 +70,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   public function defaultConfiguration(): array {
     return [
       'graph' => [
-        'sink' => static::GRAPH_BASE . '/sink/' . $this->currentUser->id(),
-        'sink_plus_taxo' => static::GRAPH_BASE . '/sink-plus-taxo/' . $this->currentUser->id(),
+        'sink' => 'http://joinup-federation/sink',
+        'sink_plus_taxo' => 'http://joinup-federation/sink-plus-taxo',
       ],
     ] + parent::defaultConfiguration();
   }
@@ -117,9 +105,16 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
+  public function clearGraph(string $graph_uri): void {
+    $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function clearGraphs(): void {
     foreach ($this->getConfiguration()['graph'] as $graph_uri) {
-      $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+      $this->clearGraph($graph_uri);
     }
   }
 

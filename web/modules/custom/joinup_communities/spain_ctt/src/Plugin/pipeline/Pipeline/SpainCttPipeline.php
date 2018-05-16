@@ -15,7 +15,8 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "convert_to_adms2",
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
- *     "adms_validation"
+ *     "adms_validation",
+ *     "3_way_merge",
  *   },
  * )
  */

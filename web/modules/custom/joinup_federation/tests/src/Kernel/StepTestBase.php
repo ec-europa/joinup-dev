@@ -42,9 +42,8 @@ abstract class StepTestBase extends KernelTestBase {
 
     /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
     $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
-    $configuration = ['graph' => static::getTestingGraphs()];
     /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
-    $this->pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline', $configuration);
+    $this->pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline');
   }
 
   /**
@@ -66,9 +65,7 @@ abstract class StepTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    foreach (static::getTestingGraphs() as $graph_uri) {
-      $this->sparql->query("CLEAR GRAPH <$graph_uri>;");
-    }
+    $this->pipeline->clearGraphs();
     parent::tearDown();
   }
 
@@ -80,8 +77,8 @@ abstract class StepTestBase extends KernelTestBase {
    */
   public static function getTestingGraphs(): array {
     return [
-      'sink' => 'http://example.com/graph/test/sink',
-      'sink_plus_taxo' => 'http://example.com/graph/test/sink-plus-taxo',
+      'sink' => 'http://joinup-federation/sink',
+      'sink_plus_taxo' => 'http://joinup-federation/sink-plus-taxo',
     ];
   }
 

@@ -22,6 +22,13 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   protected $sparql;
 
   /**
+   * The pipeline.
+   *
+   * @var \Drupal\joinup_federation\JoinupFederationPipelineInterface
+   */
+  protected $pipeline;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
