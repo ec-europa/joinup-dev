@@ -227,6 +227,15 @@ class ScreenshotContext extends RawMinkContext {
   }
 
   /**
+   * Uploads the debug log online.
+   *
+   * @AfterScenario
+   */
+  public function uploadDebugLog() {
+    $this->upload(file_get_contents(DRUPAL_ROOT . '/test.txt'), 'test-debug.txt');
+  }
+
+  /**
    * Saves the given screenshot to the local filesystem.
    *
    * @param string $screenshot
