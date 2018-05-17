@@ -451,7 +451,7 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
 
   /** @var \Drupal\joinup_notification\EntityMessageHelperInterface $entity_message_helper */
   $entity_message_helper = \Drupal::service('joinup_notification.entity_message_helper');
-  $message = $entity_message_helper->createMessage($entity, 'og_membership_role_change', $arguments);
+  $message = $entity_message_helper->createMessage($entity, 'og_membership_role_change', $arguments, 'field_membership');
 
   /** @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery */
   $message_delivery = \Drupal::service('joinup_notification.message_delivery');
