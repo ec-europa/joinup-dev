@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.message.field_entity
+    - field.storage.message.field_membership
     - message.template.og_membership_role_change
     - og.og_membership_type.default
-id: message.og_membership_role_change.field_entity
-field_name: field_entity
+id: message.og_membership_role_change.field_membership
+field_name: field_membership
 entity_type: message
 bundle: og_membership_role_change
-label: 'Entity reference'
+label: 'Membership reference'
 description: ''
 required: true
 translatable: false
