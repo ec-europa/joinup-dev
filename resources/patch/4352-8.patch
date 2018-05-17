@@ -1,5 +1,5 @@
 diff --git a/src/Plugin/views/cache/SearchApiCachePluginTrait.php b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
-index 9f6e7100..7f602a3b 100644
+index 9f6e7100..3b547d38 100644
 --- a/src/Plugin/views/cache/SearchApiCachePluginTrait.php
 +++ b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
 @@ -4,6 +4,7 @@ namespace Drupal\search_api\Plugin\views\cache;
@@ -10,7 +10,15 @@ index 9f6e7100..7f602a3b 100644
  use Drupal\Core\Cache\CacheBackendInterface;
  use Drupal\Core\Cache\Context\CacheContextsManager;
  use Drupal\search_api\Plugin\views\query\SearchApiQuery;
-@@ -140,8 +141,10 @@ trait SearchApiCachePluginTrait {
+@@ -126,6 +127,7 @@ trait SearchApiCachePluginTrait {
+     if ($expire !== Cache::PERMANENT) {
+       $expire += (int) $view->getRequest()->server->get('REQUEST_TIME');
+     }
++    file_put_contents(DRUPAL_ROOT . '/test.txt', 'SAPI cache results tags set:' . json_encode($this->getCacheTags()) . "\n", FILE_APPEND);
+     $this->getCacheBackend()
+       ->set($this->generateResultsKey(), $data, $expire, $this->getCacheTags());
+   }
+@@ -140,8 +142,10 @@ trait SearchApiCachePluginTrait {
  
      // Values to set: $view->result, $view->total_rows, $view->execute_time,
      // $view->current_page.
@@ -21,7 +29,7 @@ index 9f6e7100..7f602a3b 100644
        if (!$cutoff || $cache->created > $cutoff) {
          $view = $this->getView();
          $view->result = $cache->data['result'];
-@@ -165,6 +168,7 @@ trait SearchApiCachePluginTrait {
+@@ -165,6 +169,7 @@ trait SearchApiCachePluginTrait {
          return TRUE;
        }
      }
@@ -29,7 +37,7 @@ index 9f6e7100..7f602a3b 100644
      return FALSE;
    }
  
-@@ -195,6 +199,7 @@ trait SearchApiCachePluginTrait {
+@@ -195,6 +200,7 @@ trait SearchApiCachePluginTrait {
          ->convertTokensToKeys($display_handler_cache_contexts)
          ->getKeys();
 
@@ -37,7 +45,7 @@ index 9f6e7100..7f602a3b 100644
        $this->resultsKey = $view->storage->id() . ':' . $this->displayHandler->display['id'] . ':results:' . Crypt::hashBase64(serialize($key_data));
      }
 
-@@ -228,4 +233,16 @@ trait SearchApiCachePluginTrait {
+@@ -228,4 +234,16 @@ trait SearchApiCachePluginTrait {
      throw new SearchApiException('No matching Search API Views query found in view.');
    }
  
