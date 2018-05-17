@@ -71,10 +71,20 @@ Feature: As a group (collection or solution) owner or site moderator
     And I should not see the text "<type capitalized> owner" in the "frozen" row
     # The former owners are receiving, in compensation, the facilitator role.
     But I should see the text "<type capitalized> facilitator" in the "frozen" row
+    # The new owner should be notified.
     And the following system email should have been sent:
       | recipient | shy                                                             |
       | subject   | Your role has been changed to owner                             |
       | body      | <full name> has changed your role in <type> "<title>" to owner. |
+    # The old owners that were demoted to facilitator should be notified.
+    And the following system email should have been sent:
+      | recipient | cruel                                                                 |
+      | subject   | Your role has been changed to facilitator                             |
+      | body      | <full name> has changed your role in <type> "<title>" to facilitator. |
+    And the following system email should have been sent:
+      | recipient | frozen                                                                |
+      | subject   | Your role has been changed to facilitator                             |
+      | body      | <full name> has changed your role in <type> "<title>" to facilitator. |
 
     Examples:
       | user  | option exists | type       | type capitalized | title                       | full name               |
