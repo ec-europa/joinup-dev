@@ -10,9 +10,6 @@ use Drupal\message\MessageInterface;
 
 /**
  * Interface for services that assist in managing messages for entities.
- *
- * This interface is intended for services that send notification messages
- * when an entity is created, updated or deleted.
  */
 interface EntityMessageHelperInterface {
 
@@ -47,7 +44,7 @@ interface EntityMessageHelperInterface {
    *   Thrown when the passed entity cannot be referenced. Possibly since it
    *   hasn't yet been saved and does not have an ID yet.
    */
-  public function createMessage(EntityInterface $entity, string $template, array $arguments, string $field_name = 'field_entity'): MessageInterface;
+  public function createMessage(EntityInterface $entity, string $template, array $arguments, string $field_name): MessageInterface;
 
   /**
    * Returns the messages that are associated with the given entity.
@@ -72,7 +69,7 @@ interface EntityMessageHelperInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   The corresponding messages.
    */
-  public function getMessages(EntityInterface $entity, string $template, string $field_name = 'field_entity', array $values = [], int $limit = 10, string $order = self::SORT_DESC): array;
+  public function getMessages(EntityInterface $entity, string $template, string $field_name, array $values = [], int $limit = 10, string $order = self::SORT_DESC): array;
 
   /**
    * Checks that the entity is suitable for being handled by the service.

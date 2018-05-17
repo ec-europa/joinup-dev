@@ -44,6 +44,3 @@ services:
     parent: joinup_notification.notification_subscriber_base
     tags:
       - { name: event_subscriber }
-  joinup_notification.og_membership_message_helper:
-    class: Drupal\joinup_notification\OgMembershipMessageHelper
-    arguments: ['@entity_type.manager', '@joinup_notification.message_delivery']

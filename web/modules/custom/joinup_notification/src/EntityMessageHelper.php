@@ -19,11 +19,11 @@ use Drupal\message\MessageInterface;
  * To send these messages, use the JoinupMessageDelivery service.
  *
  * There are different use cases for sending messages, this is only intended for
- * basic creation, retrieval, and sending of messages. In case your entity
- * requires custom business logic then feel free to inject this service and
- * leverage it. See for example the InvitationMessageHelper which implements
- * default arguments and resends a single message for each invitation instead of
- * creating a new message every time.
+ * basic creation and retrieval of messages. In case your entity requires custom
+ * business logic then feel free to inject this service and leverage it. See for
+ * example the InvitationMessageHelper which implements default arguments and
+ * resends a single message for each invitation instead of creating a new
+ * message every time.
  *
  * Because of the wild variations in business logic regarding messages this was
  * designed as a standalone service rather than an base class or a trait because
@@ -54,7 +54,7 @@ class EntityMessageHelper implements EntityMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function createMessage(EntityInterface $entity, string $template, array $arguments, string $field_name = 'field_entity'): MessageInterface {
+  public function createMessage(EntityInterface $entity, string $template, array $arguments, string $field_name): MessageInterface {
     $this->validateEntity($entity);
 
     /** @var \Drupal\message\MessageInterface $message */
@@ -70,7 +70,7 @@ class EntityMessageHelper implements EntityMessageHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getMessages(EntityInterface $entity, string $template, string $field_name = 'field_entity', array $values = [], int $limit = 10, string $order = self::SORT_DESC): array {
+  public function getMessages(EntityInterface $entity, string $template, string $field_name, array $values = [], int $limit = 10, string $order = self::SORT_DESC): array {
     $this->validateEntity($entity);
 
     $query = $this->getMessageEntityStorage()->getQuery();
