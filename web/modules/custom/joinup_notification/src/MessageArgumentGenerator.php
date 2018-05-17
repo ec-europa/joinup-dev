@@ -134,14 +134,23 @@ class MessageArgumentGenerator {
 
     $roles = [];
     foreach ($membership->getRoles() as $role) {
-      // Skip the member role.
+      // Skip the required role 'member', this is implied.
       if ($role->isRequired()) {
         continue;
       }
+
+      // If the user is an administrator they will also have inherited the
+      // facilitator role. Having multiple roles might be confusing for
+      // non-technical users. Let's just call them the 'owner'.
+      if ($role->isAdmin()) {
+        $roles = ['owner'];
+        break;
+      }
+
       $roles[] = $role->getName();
     }
 
-    // If the user has no roles, the user is a regular member.
+    // If the user has no 'special' roles, then the user is a regular member.
     if (empty($roles)) {
       $roles[] = 'member';
     }
