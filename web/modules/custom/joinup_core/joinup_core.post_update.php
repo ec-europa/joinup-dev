@@ -90,3 +90,10 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
 function joinup_core_post_update_install_tallinn() {
   \Drupal::service('module_installer')->install(['tallinn']);
 }
+
+/**
+ * Enable the Message digest module.
+ */
+function joinup_core_post_update_install_message_digest() {
+  \Drupal::service('module_installer')->install(['message_digest']);
+}
