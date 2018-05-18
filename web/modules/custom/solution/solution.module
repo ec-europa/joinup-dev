@@ -235,6 +235,15 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     $collection->set('graph', $graph);
     $collection->save();
   }
+
+  // At this point the solution has already been indexed without the parent so
+  // The queries that are based on the affiliated collection will present false
+  // data. Reset the cache related to the solution and re index it so that the
+  // entity_groups property is properly set.
+  // @todo Avoid indexing twice the solution entity in ISAICP-4446.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
+  $storage->resetCache([$solution_id]);
+  search_api_entity_insert(Rdf::load($solution_id));
 }
 
 /**
@@ -764,23 +773,4 @@ function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_co
   }
 
   return empty($result);
-}
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function solution_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!$solution = \Drupal::routeMatch()->getParameter('rdf_entity')) {
-    throw new \RuntimeException('Called from a wrong page.');
-  }
-
-  /** @var \Drupal\Core\Action\ActionManager $action_manager */
-  $action_manager = \Drupal::service('plugin.manager.action');
-  /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $plugin */
-  $plugin = $action_manager->createInstance('joinup_transfer_solution_ownership');
-  // Allow the ownership to be transferred only for solutions and only by users
-  // with proper permissions.
-  if (!$plugin->canTransferOwnership($solution, \Drupal::currentUser())) {
-    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_solution_ownership']);
-  }
 }

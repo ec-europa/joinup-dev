@@ -187,6 +187,15 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          action_title: Action
+          include_exclude: include
+          selected_actions:
+            - pathauto_update_alias_user
+            - user_add_role_action.moderator
+            - user_block_user_action
+            - user_cancel_user_action
+            - user_remove_role_action.moderator
+            - user_unblock_user_action
           plugin_id: user_bulk_form
           entity_type: user
         name:

@@ -7,16 +7,18 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 
 /**
  * Defines generic step definitions.
@@ -542,13 +544,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I click the contextual link :text in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
-
-    if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Could not find a contextual link %s in the region %s. Available: %s', $text, $region, implode(', ', $links)));
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$text]));
+    $this->clickContextualLink($this->getRegion($region), $text);
   }
 
   /**
@@ -565,7 +561,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
       throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -586,7 +582,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )not see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionNotPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -648,8 +644,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual links button in the :region( region)
    * @Then the contextual links button should be visible in the :region( region)
    */
-  public function assertContextualLinkButtonVisible($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function assertContextualLinkButtonVisible(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $this->assertVisuallyVisible($button);
   }
 
@@ -661,8 +657,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I click the contextual links button in the :region( region)
    */
-  public function clickContextualLinkButton($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function clickContextualLinkButton(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $button->click();
   }
 
@@ -1146,6 +1142,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->wait(60000,
       "jQuery(':contains(\"$text\")').length > 0"
     );
+  }
+
+  /**
+   * Strips elements from tables that are only readable by screen readers.
+   *
+   * @AfterTableFetch
+   */
+  public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
+    $html_manipulator = new HtmlManipulator($scope->getHtml());
+    $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
   }
 
 }

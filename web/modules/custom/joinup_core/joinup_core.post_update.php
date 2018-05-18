@@ -74,3 +74,19 @@ function joinup_core_post_update_move_contact_form_attachments() {
 function joinup_core_post_update_install_smart_trim() {
   \Drupal::service('module_installer')->install(['smart_trim']);
 }
+
+/**
+ * Remove stale 'system.action.joinup_transfer_solution_ownership' config.
+ */
+function joinup_core_post_update_remove_action_transfer_solution_ownership() {
+  \Drupal::configFactory()
+    ->getEditable('system.action.joinup_transfer_solution_ownership')
+    ->delete();
+}
+
+/**
+ * Enable the Tallinn module.
+ */
+function joinup_core_post_update_install_tallinn() {
+  \Drupal::service('module_installer')->install(['tallinn']);
+}
