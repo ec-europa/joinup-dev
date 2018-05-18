@@ -25,7 +25,7 @@
         "drupal/email_registration": "^1.0",
         "drupal/facets": "^1.0-beta1",
         "drupal/field_group": "~1.0-rc6",
-        "drupal/file_url": "~1.0",
+        "drupal/file_url": "dev-ISAICP-4405",
         "drupal/flag": "^4.0@alpha",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
@@ -226,6 +226,10 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://git.drupal.org/project/file_url.git"
         },
         {
             "type": "vcs",
