@@ -1,0 +1,38 @@
+id: joinup_release
+module: joinup_core
+label: Joinup release tour
+langcode: en
+status: true
+dependencies: { }
+routes:
+  - route_name: 'entity.rdf_entity.canonical'
+tips:
+  you-should-do-this:
+    id: you-should-do-this
+    plugin: text
+    body: 'Once you''ve added a release, you should create a distribution, which is the actual downloadable content of the solution.'
+    weight: 1
+  click-the-plus-button:
+    id: click-the-plus-button
+    plugin: text
+    body: 'By clicking here you can browse through a list of items that you may add to the release...'
+    weight: 2
+    attributes:
+      data-class: 'circle-menu__button'
+  select-distribution:
+    id: select-distribution
+    plugin: text
+    body: '...among which a <a href="[site:url]rdf_entity/http_e_f_fdata_ceuropa_ceu_fw21_fcc93ce7a_b81c4_b472f_b8b3a_bf50869ed0c31">distribution</a>.'
+    weight: 3
+  distribution-tile:
+    id: distribution-tile
+    plugin: text
+    body: 'Each distribution is shown in the corresponding release page with all details necessary to identify and download it.'
+    weight: 4
+    attributes:
+      data-class: 'listing__title'
+  thanks:
+    id: thanks
+    plugin: text
+    body: 'Thank you for having toured with us through Joinup and... happy sharing!'
+    weight: 5

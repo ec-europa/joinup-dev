@@ -10,30 +10,23 @@ tips:
   introduction:
     id: introduction
     plugin: text
-    body: '<strong>Collections</strong> are where any other content on Joinup is stored.'
+    body: 'On this page you can find all Joinup collections sorted by creation date, with some collections put in evidence for you at the top of the list...'
     weight: 1
-    attributes:
-      data-class: 'icon--collections'
-  common_policy_domain:
-    id: common_policy_domain
-    plugin: text
-    body: 'Each of them is built around a common policy domain, that is, an area of topics over which e-professionals may exchange their experiences and share and reuse their solutions.'
-    weight: 2
     location: right
     attributes:
       data-class: 'listing__image'
-  philosophy:
-    id: philosophy
+  add-collection:
+    id: add-collection
     plugin: text
-    body: 'There are collections covering <em>broad, high-level domains</em> (energy, transport, law...) or more <em>focused, but still general domains</em> (eProcurement, Statistics, eIdentity and eSignature...). Finally, there are collections built around <em>specific topics</em> (projects, communities of professionals...) having anyway a wide, relevant impact on e-Government matters.'
+    body: '... and you can add a new collection by clicking on the <em>Create collection</em> tile.'
+    weight: 2
+    location: right
+    attributes:
+      data-class: 'icon--plus'
+  go-to-collection:
+    id: go-to-collection
+    plugin: text
+    body: 'Let''s enter in a <a href="[site:url]collection/semantic-interoperability-community-semic?tour=1">collection</a>...'
     weight: 3
-  this_page:
-    id: this_page
-    plugin: text
-    body: 'On this page you will find all the Joinup collections in order of descending creation date. By clicking on any of them you will reach their main page.'
-    weight: 4
-  would_you_like_to_know_more:
-    id: would_you_like_to_know_more
-    plugin: text
-    body: 'Do you want to know more on collections? If yes, please have a tour inside one of them.'
-    weight: 5
+    attributes:
+      data-class: 'listing__title'

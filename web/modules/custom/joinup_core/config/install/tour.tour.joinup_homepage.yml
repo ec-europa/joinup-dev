@@ -11,23 +11,21 @@ tips:
     id: welcome
     plugin: text
     label: 'Welcome to Joinup'
-    body: 'Joinup is the collaborative platform of the European Commission for e-Government professionals.'
+    body: 'On this page you can see all the content published on the platform: collections, solutions...'
     weight: 1
-  buzzwords:
-    id: buzzwords
+    attributes:
+      data-class: 'icon--collections'
+  keep-up-to-date:
+    id: keep-up-to-date
     plugin: text
-    body: 'You will find here services to share experiences, as well as to discover, choose, re-use, develop and implement interoperability solutions.'
+    body: '... and all news, events, documents, discussions presented in the various collections.'
     weight: 2
-  next:
-    id: next
-    plugin: text
-    body: 'You may click on &lt;next&gt; to start a tour of the platform and to proceed at each step.'
-    weight: 3
+    attributes:
+      data-class: 'icon--keep-up-to-date'
   collections:
     id: collections
     plugin: text
-    body: 'You may use Joinup first of all as a collaborative environment to work together with other e-Government professionals regardless of your respective geographical locations. The spaces to do so are the collections. <a href="[site:url]collections?tour=1">Let''s have a look at them</a>.'
-    weight: 4
-    location: right
+    body: 'This facet leads to the <a href="[site:url]collections?tour=1">overview</a> of all Joinup collections.'
+    weight: 3
     attributes:
-      data-class: 'stats__wrapper__collections'
+      data-class: 'icon--collections'
