@@ -43,9 +43,11 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
    * Locks the pipeline, preventing concurrent imports.
    *
    * If there's an ongoing import run by other user, this function will return
-   * FALSE, informing the caller that is not able to acquire the lock. If no
-   * other import, than the current one, is running, will acquire a lock and
-   * will return TRUE, allowing the caller to prevent concurrent operations.
+   * FALSE, informing the caller that is not able to acquire the lock. If
+   * there's no other import than the current one, will acquire a lock and
+   * will return TRUE, allowing the caller to prevent concurrent operations. If
+   * there is an ongoing import previously locked by the same user, the lock
+   * will be refreshed and the lock timeout is reset.
    *
    * @return bool
    *   If the lock has been successful.

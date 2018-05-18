@@ -152,7 +152,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    */
   public function reset() {
     // The reset operation can be triggered only by users granted with such
-    // permissions. They are able to release even the lock owned by other user.
+    // permissions. They are able to release even the lock owned by other users.
     $this->lockRelease(TRUE);
     parent::reset();
   }
