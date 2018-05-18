@@ -31,9 +31,10 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   /**
    * Gives a chance to plugins to perform some tasks just before executing.
    *
-   * @return null|array
+   * @return null|\Drupal\Component\Render\MarkupInterface|string
    *   If no errors were encountered during the pipeline preparation, nothing
-   *   should be returned. Return the error message as a render array.
+   *   should be returned. Return the error message as a translatable markup
+   *   object.
    */
   public function prepare();
 

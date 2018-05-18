@@ -15,3 +15,4 @@ services:
       - '@pipeline.state_manager'
       - '@form_builder'
       - '@messenger'
+      - '@current_user'

@@ -7,10 +7,13 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\pipeline\Form\PipelineOrchestratorForm;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The pipeline orchestrator.
@@ -65,7 +68,14 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected $messenger;
 
   /**
-   * Constructs a new PipelineOrchestrator object.
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a new pipeline orchestrator object.
    *
    * @param \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager
    *   The pipeline plugin manager service.
@@ -75,12 +85,15 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The form builder service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
-  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger) {
+  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger, AccountProxyInterface $current_user) {
     $this->pipelinePluginManager = $pipeline_plugin_manager;
     $this->stateManager = $state_manager;
     $this->formBuilder = $form_builder;
     $this->messenger = $messenger;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -119,23 +132,36 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected function getCurrentStep($pipeline_id) {
     $this->pipeline = $this->pipelinePluginManager->createInstance($pipeline_id);
 
+    // Resuming from a previous persisted state.
     if ($current_step_id = $this->stateManager->getState($pipeline_id)) {
       // Restore the active pipeline step from the persistent store.
       $this->pipeline->setCurrent($current_step_id);
     }
+    // Starting the pipeline from the beginning.
     else {
       $current_step_id = $this->pipeline->current();
 
+      // Run the pipeline preparation.
       $error = $this->pipeline->prepare();
+
       // If this pipeline preparation returns errors, exit here the pipeline
-      // execution but show the errors.
+      // execution but show the errors as error messages.
       if ($error) {
         $arguments = [
           '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+          '@reason' => $error,
         ];
-        $message = $this->t('%pipeline failed to start. Please review the following errors:', $arguments);
-        $this->setErrorResponse($error, $message);
-        $this->pipeline->onError();
+        $message = $this->t('%pipeline failed to start. Reason: @reason', $arguments);
+        $this->messenger->addError($message);
+
+        if ($this->currentUser->hasPermission("access pipeline selector")) {
+          $url = Url::fromRoute('pipeline.pipeline_select');
+        }
+        else {
+          $url = Url::fromUri('internal:/<front>');
+        }
+
+        $this->response = new RedirectResponse($url->setAbsolute()->toString());
       }
     }
 

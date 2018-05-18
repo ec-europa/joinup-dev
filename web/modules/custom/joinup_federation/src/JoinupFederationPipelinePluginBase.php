@@ -116,12 +116,10 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function prepare(): ?array {
+  public function prepare() {
     if (!$this->lock()) {
-      $arguments = ['%pipeline' => $this->getPluginDefinition()['label']];
-      return [
-        '#markup' => $this->t("There's another ongoing import process run by other user. You cannot run %pipeline right now.", $arguments),
-      ];
+      $arguments = ['@pipeline' => $this->getPluginDefinition()['label']];
+      return $this->t("There's another ongoing import process run by other user. You cannot run '@pipeline' right now.", $arguments);
     }
     // This is an extra-precaution to ensure that there's no existing data in
     // the pipeline graphs, left there after a potential failed previous run.
