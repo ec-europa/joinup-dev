@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Controller;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
@@ -64,6 +65,9 @@ class BooleanFieldToggleController extends ControllerBase {
     global $lalalala_testing;
     $lalalala_testing = 'value: ' . (string) (int) $value;
     $entity->set($field_name, $value)->save();
+
+    Cache::invalidateTags(['search_api_list:published']);
+    Cache::invalidateTags(['search_api_list:unpublished']);
 
     // Passing a variable to the t() function triggers a warning, but in this
     // case our message is not really dynamic. Core does the same for the
