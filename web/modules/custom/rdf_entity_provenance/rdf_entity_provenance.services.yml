@@ -1,0 +1,4 @@
+services:
+  rdf_entity_provenance.provenance_helper:
+    class: Drupal\rdf_entity_provenance\ProvenanceHelper
+    arguments: ['@entity_type.manager']
