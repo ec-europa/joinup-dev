@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e4b573e9cd3941555c0d6645c051e9f",
+    "content-hash": "13a13c2c957777f4130f23f54f6db55e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.56.2",
+            "version": "3.56.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b4a2ac39a00eef77c1da5fa3807e7ec54982dddd"
+                "reference": "20b60eafa13b8996d468558e86b14261de731e5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b4a2ac39a00eef77c1da5fa3807e7ec54982dddd",
-                "reference": "b4a2ac39a00eef77c1da5fa3807e7ec54982dddd",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/20b60eafa13b8996d468558e86b14261de731e5f",
+                "reference": "20b60eafa13b8996d468558e86b14261de731e5f",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-05-16T18:29:09+00:00"
+            "time": "2018-05-17T21:37:37+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2177,7 +2177,7 @@
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2765065-91.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
-                    "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
+                    "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-16.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
                 }
             },
