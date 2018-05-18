@@ -210,3 +210,10 @@ Feature: Homepage
     # The header should still be shown in the other pages.
     When I click "Collections"
     Then I should see the small header
+
+  Scenario: Only specific social network links are available in the footer.
+    When I am on the homepage
+    Then I should see the link "LinkedIn" in the Footer region
+    And I should see the link "Twitter" in the Footer region
+    But I should not see the link "Facebook" in the Footer region
+    And I should not see the link "Google+" in the Footer region
