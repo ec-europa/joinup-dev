@@ -27,8 +27,9 @@ Feature: Content Overview
       | title             | description        | state     | moderation |
       | Rumble collection | Sample description | validated | yes        |
     And "event" content:
-      | title           | collection        | state     | created           |
-      | Seventh Windows | Rumble collection | validated | 2018-10-03 4:21am |
+      | title                | collection        | state     | created           |
+      | Seventh Windows      | Rumble collection | validated | 2018-10-03 4:21am |
+      | A Night at the Opera | Rumble collection | validated | 2018-10-03 4:17am |
     And "news" content:
       | title            | collection        | state     | author       | created           |
       | The Playful Tale | Rumble collection | validated | batbull      | 2018-10-03 4:26am |
@@ -44,27 +45,31 @@ Feature: Content Overview
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
     And I click "Keep up to date"
-    Then I should see the following facet items "Discussion, Document, Event, News" in this order
+    Then I should see the following facet items "Discussion, Document, News, Events" in this order
+    And the "Events" content tab is displayed
     And I should not see the following facet items "Collection"
     And I should see the following tiles in the correct order:
-      | The Playful Tale  |
-      | Seventh Windows   |
-      | History of Flight |
-      | The Men's Female  |
+      | The Playful Tale     |
+      | Seventh Windows      |
+      | History of Flight    |
+      | The Men's Female     |
+      | A Night at the Opera |
     Then I should see the "Seventh Windows" tile
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
+    And I should see the "A Night at the Opera" tile
     And I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
 
-    # The tiles for discussion and news entities should show the full name of
-    # the author instead of the username.
-    And I should see the text "Simba Hobson" in the "The Playful Tale" tile
-    And I should see the text "Korinna Morin" in the "The Men's Female" tile
+    # The tiles for discussion and news entities should not display the author
+    # of the entity.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4454
+    And I should not see the text "Simba Hobson" in the "The Playful Tale" tile
+    And I should not see the text "Korinna Morin" in the "The Men's Female" tile
 
     When I click the "Document" content tab
-    Then I should see the following facet items "Document, Discussion, Event, News" in this order
+    Then I should see the following facet items "Document, Discussion, News, Events" in this order
     And I should see the following tiles in the correct order:
       | History of Flight |
 
@@ -76,6 +81,7 @@ Feature: Content Overview
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
+    And I should see the "A Night at the Opera" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
 
@@ -88,6 +94,7 @@ Feature: Content Overview
     And I should see the "The Playful Tale" tile
     And I should see the "History of Flight" tile
     And I should see the "The Men's Female" tile
+    And I should see the "A Night at the Opera" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
 

@@ -47,9 +47,9 @@ Feature: "Add custom page" visibility options.
 
   Scenario: Add custom page as a facilitator.
     Given collections:
-      | title           | logo      | state     |
-      | Open Collective | logo.png  | validated |
-      | Code Camp       | logo.png  | validated |
+      | title           | logo     | state     |
+      | Open Collective | logo.png | validated |
+      | Code Camp       | logo.png | validated |
     And I am logged in as a facilitator of the "Open Collective" collection
 
     # Initially there are no custom pages. A help text should inform the user
@@ -66,11 +66,18 @@ Feature: "Add custom page" visibility options.
     And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message"
 
     When I fill in the following:
-      | Title | About us                      |
+      | Title | About us |
     And I enter "We are open about everything!" in the "Body" wysiwyg editor
+    And I attach the file "test.zip" to "Add a new file"
+    And I press "Upload"
+    # The "Description" field is the description of the file.
+    And I fill in "Description" with "Test file"
     And I press "Save"
     Then I should see the heading "About us"
     And I should see the success message "Custom page About us has been created."
+    And I should see the text "Attachments"
+    # The description of the file is set as the text to display.
+    And I should see the link "Test file"
     And the "Open Collective" collection should have a custom page titled "About us"
     # Check that the link to the custom page is visible on the collection page.
     When I go to the homepage of the "Open Collective" collection
@@ -88,9 +95,9 @@ Feature: "Add custom page" visibility options.
       | Username | Roles     |
       | Falstad  | moderator |
     And collections:
-      | title           | logo      | state     |
-      | Open Collective | logo.png  | validated |
-      | Code Camp       | logo.png  | validated |
+      | title           | logo     | state     |
+      | Open Collective | logo.png | validated |
+      | Code Camp       | logo.png | validated |
     And collection user memberships:
       | collection      | user    | roles  |
       | Open Collective | Falstad | member |
@@ -102,3 +109,46 @@ Feature: "Add custom page" visibility options.
 
     When I go to the homepage of the "Code Camp" collection
     Then I should see the link "Add custom page" in the "Plus button menu"
+
+  @javascript
+  Scenario: Long list of attachments should be collapsed.
+    Given the following collection:
+      | title | Aggressive Rubber |
+      | state | validated         |
+    # Create custom pages with 5 and 6 attachments.
+    # 5 is the limit before adding the "Show more" functionality.
+    And custom_page content:
+      | title          | body                 | collection        | attachments                                                          |
+      | Rubber bands   | The aggressive ones. | Aggressive Rubber | empty.rdf, empty_pdf.pdf, invalid_adms.rdf, test.zip, text.pdf       |
+      | Elastic rubber | Also aggressive.     | Aggressive Rubber | ada.png, alan.jpg, blaise.jpg, charles.jpg, leonardo.jpg, linus.jpeg |
+
+    When I go to the "Rubber bands" custom page
+    Then the "empty.rdf" link in the Content region should be visible
+    And the "empty_pdf.pdf" link in the Content region should be visible
+    And the "invalid_adms.rdf" link in the Content region should be visible
+    And the "test.zip" link in the Content region should be visible
+    And the "text.pdf" link in the Content region should be visible
+    But I should not see the link "Show more" in the Content region
+
+    When I go to the "Elastic rubber" custom page
+    Then the "ada.png" link in the Content region should be visible
+    And the "alan.jpg" link in the Content region should be visible
+    And the "blaise.jpg" link in the Content region should be visible
+    And the "charles.jpg" link in the Content region should be visible
+    And the "leonardo.jpg" link in the Content region should be visible
+    And the "Show more" link in the Content region should be visible
+    # The sixth element should be hidden.
+    But the "linus.jpeg" link in the Content region should not be visible
+
+    # Expand the list. The sixth element should become visible.
+    When I click "Show more"
+    Then the "linus.jpeg" link in the Content region should be visible
+    And the "Show less" link in the Content region should be visible
+    But I should not see the link "Show more" in the Content region
+
+    # Collapse again the list.
+    When I click "Show less"
+    And I wait for animations to finish
+    Then the "linus.jpeg" link in the Content region should not be visible
+    And the "Show more" link in the Content region should be visible
+    But I should not see the link "Show less" in the Content region

@@ -25,6 +25,10 @@
 
     <target name="setup-continuousphp"
             depends="check-continuousphp">
+        <echo msg="Set the virtuoso checkpoint to -1. Do not use a checkpoint for CPHP testing."/>
+        <phingcall target="set-virtuoso-checkpoint">
+            <property name="interval" value="-1"/>
+        </phingcall>
         <echo message="Put the odbc configuration file in the home folder where CPHP can find it" />
         <copy
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
@@ -81,13 +85,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
               command="sed -i 's/^cphp\.//' build.properties.local"
               checkreturn="true"
               passthru="true" />
-    </target>
-
-    <!-- Remove all packages that are patched with cweagans/composer-patches. -->
-    <target name="remove-patched-packages">
-        <removepatchedpackages
-            composerJsonPath="${composer.json}"
-        />
     </target>
 
     <!-- provision new demo/test stack on AWS -->

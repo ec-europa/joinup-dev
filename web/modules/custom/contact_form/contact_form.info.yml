@@ -4,6 +4,9 @@ description: The contact form for the Joinup project.
 core: 8.x
 package: Joinup
 
+dependencies:
+  - joinup_notification
+
 config_devel:
  - contact_form.settings
  - core.entity_form_display.message.contact_form_submission.default

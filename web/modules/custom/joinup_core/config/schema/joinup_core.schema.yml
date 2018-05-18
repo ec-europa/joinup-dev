@@ -133,3 +133,7 @@ field.formatter.settings.joinup_timestamp_timeago:
     timeago_settings:
       type: ignore
       label: 'Timeago plugin settings'
+
+action.configuration.joinup_transfer_group_ownership:
+  type: action_configuration_default
+  label: 'Transfer the ownership of the group to the selected member'

@@ -12,6 +12,7 @@ dependencies:
   - joinup_community_content
   - joinup_core
   - og
+  - smart_trim
   - solution
   - view_unpublished
 

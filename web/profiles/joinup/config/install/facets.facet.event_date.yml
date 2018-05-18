@@ -1,6 +1,11 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.content_overview
+  module:
+    - search_api
 id: event_date
 name: 'Event date'
 url_alias: event_type
