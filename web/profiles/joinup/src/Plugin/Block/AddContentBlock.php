@@ -193,6 +193,11 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
       return [];
     }
 
+    // Escape early by not returning content.
+    if (empty($links)) {
+      return [];
+    }
+
     // Render the links as an unordered list, styled as buttons.
     $build = [
       '#theme' => 'item_list',
