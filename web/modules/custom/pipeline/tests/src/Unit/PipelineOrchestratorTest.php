@@ -10,6 +10,7 @@ namespace Drupal\Tests\pipeline\Unit;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Messenger\Messenger;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineOrchestrator;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
@@ -62,6 +63,13 @@ class PipelineOrchestratorTest extends UnitTestCase {
   protected $messenger;
 
   /**
+   * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface|\Prophecy\Prophecy\ObjectProphecy
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -71,6 +79,7 @@ class PipelineOrchestratorTest extends UnitTestCase {
     $this->stateManager = $this->prophesize(PipelineStateManager::class);
     $this->formBuilder = $this->prophesize(FormBuilder::class);
     $this->messenger = $this->prophesize(Messenger::class);
+    $this->currentUser = $this->prophesize(AccountProxyInterface::class);
   }
 
   /**
@@ -120,7 +129,8 @@ class PipelineOrchestratorTest extends UnitTestCase {
       $this->pipelinePluginManager->reveal(),
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
-      $this->messenger->reveal()
+      $this->messenger->reveal(),
+      $this->currentUser->reveal()
     ))->run('demo_pipe');
   }
 
@@ -135,7 +145,8 @@ class PipelineOrchestratorTest extends UnitTestCase {
       $this->pipelinePluginManager->reveal(),
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
-      $this->messenger->reveal()
+      $this->messenger->reveal(),
+      $this->currentUser->reveal()
     );
   }
 
