@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Url;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -142,7 +143,10 @@ class MessageArgumentGenerator {
       // If the user is an administrator they will also have inherited the
       // facilitator role. Having multiple roles might be confusing for
       // non-technical users. Let's just call them the 'owner'.
-      if ($role->isAdmin()) {
+      // Note that in Joinup the OG admin roles don't have the `is_admin` flag
+      // set because this would unlock unwanted permissions, so we cannot use
+      // `$role->isAdmin()` here. Instead we check if the role name matches.
+      if ($role->getName() === OgRoleInterface::ADMINISTRATOR) {
         $roles = ['owner'];
         break;
       }
