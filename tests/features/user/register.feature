@@ -43,6 +43,6 @@ Feature: User registration
       | Confirm password           | SuperSecret           |
       | Notify user of new account | 1                     |
     And the following system email should have been sent:
-      | recipient | SuperUser                                                                                                                     |
-      | subject   | Your Joinup account was created successfully.                                                                                 |
-      | body      | To quickly familiarise yourself with the functionalities available to registered users, you can follow a short tour of Joinup |
+      | recipient | SuperUser                                                                                                                                                                   |
+      | subject   | Your Joinup account was created successfully.                                                                                                                               |
+      | body      | Your account on Joinup has been created.  If you believe that a Joinup account linked to this email address was erroneously created, please contact The Joinup Support Team |
