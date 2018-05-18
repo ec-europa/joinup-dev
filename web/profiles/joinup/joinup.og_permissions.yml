@@ -1,0 +1,7 @@
+pin group content:
+  title: 'Pin group content'
+  description: 'Pin a group content at the top of its groups lists.'
+
+unpin group content:
+  title: 'Unpin group content'
+  description: 'Unpin a group content from the top of its groups lists.'

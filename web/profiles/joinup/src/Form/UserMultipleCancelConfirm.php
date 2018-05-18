@@ -7,9 +7,9 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\user\Form\UserMultipleCancelConfirm as CoreUserMultipleCancelConfirm;
-use Drupal\user\PrivateTempStoreFactory;
 use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,25 +24,24 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
   /**
    * Constructs a new UserMultipleCancelConfirm.
    *
-   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The temp store factory.
    * @param \Drupal\user\UserStorageInterface $user_storage
    *   The user storage.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityManagerInterface $entity_manager, JoinupRelationManager $relation_manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityManagerInterface $entity_manager, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($temp_store_factory, $user_storage, $entity_manager);
-
     $this->relationManager = $relation_manager;
   }
 
@@ -51,7 +50,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('user.private_tempstore'),
+      $container->get('tempstore.private'),
       $container->get('entity.manager')->getStorage('user'),
       $container->get('entity.manager'),
       $container->get('joinup_core.relations_manager')

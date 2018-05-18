@@ -47,4 +47,6 @@ content:
         template_suggestion: no_wrappers
     region: content
 hidden:
+  changed: true
+  created: true
   langcode: true

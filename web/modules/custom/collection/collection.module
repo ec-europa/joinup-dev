@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
@@ -22,8 +24,13 @@ use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
@@ -231,14 +238,13 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     }
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
   $state = $entity->field_ar_state->value;
   if (in_array($state, ['draft', 'proposed'])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, [
     'validated',
@@ -246,7 +252,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     'deletion_request',
     'archived',
   ])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -263,8 +269,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
@@ -402,16 +407,19 @@ function collection_solution_count(RdfInterface $entity) {
   foreach ($solutions as $solution) {
     $solution_ids[] = $solution->getValue()['target_id'];
   }
-  $solution_count = 0;
+  $results = 0;
   if ($solution_ids) {
-    $solution_count = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $solution_count */
+    $solution_count = \Drupal::entityQuery('rdf_entity');
+    // @todo Chain the query methods.
+    // @see https://github.com/ec-europa/rdf_entity/issues/26
+    $solution_count->setGraphType(['default']);
+    $results = $solution_count->condition('rid', 'solution')
       ->condition('id', $solution_ids, 'IN')
-      ->condition('field_is_state', 'validated')
       ->count()
       ->execute();
   }
-  return $solution_count;
+  return $results;
 }
 
 /**
@@ -446,35 +454,75 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 /**
  * Implements hook_search_api_solr_query_alter().
  *
- * Alters the Solr query for the collection content on the collection homepage
- * by setting the sorts as follows:
- * - Top level: Pinned content of the collection goes on top but not pinned
- *   content of other collections shared in this collection.
- * - 2nd level: The content score (relevancy) in the Solr index. The most
- *   relevant are on top.
- * - Last level: In case the score/relevancy is the same, the newest goes first.
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
+ * to sort the results with the following cascade of criteria:
+ * - entities pinned in the context of the collection;
+ * - the score (relevancy) in the Solr index. The most relevant are on top.
+ * - newer entities go first.
  */
 function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
-  if ($query->hasTag('search_api_field_field_collection_content')) {
-    /** @var \Drupal\Core\Entity\EntityInterface $entity */
-    if ($entity = $query->getOption('search_api_field entity')) {
-      // As the 1st level cannot be stored in the Solr index, because it depends
-      // on the collection homepage context, we create a "sort by function"
-      // computed sort. The values that are used for sort are evaluated at
-      // runtime instead of being retrieved from the index. The value returned
-      // by the computed sort is TRUE if the content item is pinned and belongs
-      // to the current displayed collection and FALSE otherwise.
-      // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
-      $computed_sort_pattern = "and(bs_sticky,query({!v='sm_entity_groups:%s'}))";
-      $computed_sort_argument = '"' . $entity->id() . '"';
-      $computed_sort = sprintf($computed_sort_pattern, $computed_sort_argument);
-      $solarium_query->setSorts([
-        $computed_sort => 'desc',
-        'score' => 'desc',
-        'ds_entity_created' => 'desc',
-      ]);
-    }
+  if (!$query->hasTag('search_api_field_field_collection_content')) {
+    return;
   }
+
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  if (!$entity = $query->getOption('search_api_field entity')) {
+    return;
+  }
+
+  // In order to sort by the pinned status of the entity, we need to create a
+  // sort function query. The values that are used for sort are evaluated at
+  // runtime instead of being retrieved from the index.
+  // An entity is pinned when:
+  // - for nodes, when they are belong to the current collection and the sticky
+  //   field is set to true;
+  // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function query is a good candidate for doing custom sorts,
+  // but it will return the score of the subquery. The score can be different
+  // between single results and can range from a small fraction above zero to
+  // infinite.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // @codingStandardsIgnoreEnd
+  // The and() operator will return false when the subquery score is lower than
+  // 1, so both of the above will fail the sorting.
+  // Solr 6.x has the gt(x,y) function, that will return true if x is greater
+  // than y. By using gt(), any positive score can be transformed to true.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // @codingStandardsIgnoreEnd
+  // Unfortunately, Solr 5.x doesn't support the gt() function.
+  // Both Solr versions support the termfreq() function, which will return the
+  // number of occurrences of a term in a field of the document.
+  // Alternatively, also the exists() function could be used in conjunction with
+  // the query() function, but it looks more expensive.
+  // Example:
+  // @codingStandardsIgnoreLine
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
+  // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
+  $computed_sort = sprintf(
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    $solarium_query->getHelper()->escapePhrase($entity->id())
+  );
+  $solarium_query->setSorts([
+    $computed_sort => 'desc',
+    'score' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
 }
 
 /**
@@ -559,4 +607,99 @@ function collection_rdf_entity_delete(RdfInterface $solution) {
       $collection->setChangedTime($request_time)->save();
     }
   }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * In the member administration bulk operation view we are formatting the
+ * username column as full names, but Views still sorts by username. Make sure
+ * we sort by first name + last name instead of by username.
+ */
+function collection_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Skip if this is not the member administration view.
+  if ($view->id() !== 'og_members_overview' || !$query instanceof Sql) {
+    return;
+  }
+  // Skip if we're not ordering by username.
+  if (empty($query->orderby[0]['field'])) {
+    return;
+  }
+  $field = $query->orderby[0]['field'];
+  if ($field !== 'users_field_data_og_membership.name') {
+    return;
+  }
+
+  $display = $view->getDisplay();
+
+  // Keep track of the direction of the sort.
+  $order = $query->orderby[0]['direction'] ?: 'ASC';
+
+  // Get rid of the original sort handlers and order by clauses that may be
+  // present in the view.
+  $query->orderby = [];
+  foreach ($display->getHandlers('sort') as $sort_handler) {
+    $sort_handler->destroy();
+  }
+
+  // Inject freshly initialized sort handlers for the first name and last name
+  // into the display.
+  $display->handlers['sort'] = array_map(function ($info) use ($view, $display) {
+    $handler = Views::handlerManager('sort')->getHandler($info, NULL);
+    $handler->init($view, $display, $info);
+    return $handler;
+  }, collection_get_og_members_overview_sort_handlers_info($order));
+
+  // Make sure the sort handlers are "built". This is making sure that the
+  // various references to objects and arrays are present at the places that
+  // Views expects them to be.
+  $view->_build('sort');
+}
+
+/**
+ * Returns info for Views sort handlers in the member administration form.
+ *
+ * We are overriding the username column in the member administration view so
+ * that the full name (first name + last name) is shown. This means that we need
+ * to override the sorting as well, since the usernames are not necessarily in
+ * the same alphabetical order as the full names. This function returns the info
+ * that can be used to create the Views sort handlers for the user's first and
+ * last name.
+ *
+ * @param string $order
+ *   The order in which to sort, either 'ASC' or 'DESC'.
+ *
+ * @return array
+ *   An associative array of Views sort handler configuration options, keyed by
+ *   field name.
+ *
+ * @see collection_views_query_alter()
+ */
+function collection_get_og_members_overview_sort_handlers_info(string $order): array {
+  return [
+    'field_user_first_name_value' => [
+      'id' => 'field_user_first_name_value',
+      'table' => 'user__field_user_first_name',
+      'field' => 'field_user_first_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+    'field_user_family_name_value' => [
+      'id' => 'field_user_family_name_value',
+      'table' => 'user__field_user_family_name',
+      'field' => 'field_user_family_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+  ];
 }

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_6
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_6
+field_name: field_tallinn_action_6
+entity_type: node
+bundle: tallinn_report
+label: 'Action 6'
+description: 'Take steps to identify redundant administrative burden in public services and introduce once only options for citizens and businesses in digital public services by collaboration and data exchange across our administrations at national, regional and local level as well as with other countries for cross-border digital public services.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

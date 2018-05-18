@@ -1,6 +1,11 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - search_api.index.published
+    - views.view.solutions
+  module:
+    - search_api
 id: solution_my_content
 name: 'My content (Solution)'
 url_alias: solution_my_content

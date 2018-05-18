@@ -20,6 +20,7 @@ use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
@@ -220,9 +221,7 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
 
   // Add the reference field both to the published and the draft collection.
   foreach (['default', 'draft'] as $graph) {
-    $storage->setRequestGraphs($collection_id, [$graph]);
-    $collection = $storage->load($collection_id);
-    $storage->getGraphHandler()->resetRequestGraphs([$collection_id]);
+    $collection = $storage->load($collection_id, [$graph]);
     if (empty($collection)) {
       continue;
     }
@@ -236,6 +235,15 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     $collection->set('graph', $graph);
     $collection->save();
   }
+
+  // At this point the solution has already been indexed without the parent so
+  // The queries that are based on the affiliated collection will present false
+  // data. Reset the cache related to the solution and re index it so that the
+  // entity_groups property is properly set.
+  // @todo Avoid indexing twice the solution entity in ISAICP-4446.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
+  $storage->resetCache([$solution_id]);
+  search_api_entity_insert(Rdf::load($solution_id));
 }
 
 /**
@@ -496,17 +504,16 @@ function solution_build_related_solutions_list(array $ids) {
  * Default graph is published. Draft graph is draft.
  */
 function solution_rdf_entity_presave(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -590,8 +597,7 @@ function solution_get_collection_ids(RdfInterface $solution) {
  * (the entity becomes unpublished).
  */
 function solution_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
@@ -767,23 +773,4 @@ function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_co
   }
 
   return empty($result);
-}
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function solution_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!$solution = \Drupal::routeMatch()->getParameter('rdf_entity')) {
-    throw new \RuntimeException('Called from a wrong page.');
-  }
-
-  /** @var \Drupal\Core\Action\ActionManager $action_manager */
-  $action_manager = \Drupal::service('plugin.manager.action');
-  /** @var \Drupal\solution\Plugin\Action\TransferSolutionOwnershipAction $plugin */
-  $plugin = $action_manager->createInstance('joinup_transfer_solution_ownership');
-  // Allow the ownership to be transferred only for solutions and only by users
-  // with proper permissions.
-  if (!$plugin->canTransferOwnership($solution, \Drupal::currentUser())) {
-    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_solution_ownership']);
-  }
 }

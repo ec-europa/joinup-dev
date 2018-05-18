@@ -10,11 +10,3 @@ solution.collection_solution.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
-
-solution.transfer_ownership_confirm:
-  path: '/solution/transfer/ownership'
-  defaults:
-    _form: 'Drupal\solution\Form\TransferSolutionOwnershipConfirmForm'
-    _title: Transfer
-  requirements:
-    _custom_access: 'Drupal\solution\Form\TransferSolutionOwnershipConfirmForm::access'

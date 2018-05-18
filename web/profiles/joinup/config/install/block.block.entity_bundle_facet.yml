@@ -10,13 +10,13 @@ dependencies:
     - joinup_theme
 id: entity_bundle_facet
 theme: joinup_theme
-region: featured
-weight: 0
+region: filters
+weight: -12
 provider: null
 plugin: 'facet_block:type'
 settings:
   id: 'facet_block:type'
-  label: 'Entity bundle facet'
+  label: 'Collection content - Content type'
   provider: facets
   label_display: '0'
 visibility:

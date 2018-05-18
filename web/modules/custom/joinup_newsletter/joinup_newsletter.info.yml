@@ -6,6 +6,7 @@ package: Joinup
 dependencies:
   - joinup_community_content
   - simplenews
+  - smart_trim
 
 config_devel:
   - core.entity_form_display.node.newsletter.default

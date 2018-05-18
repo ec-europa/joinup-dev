@@ -59,6 +59,8 @@ Feature: Creation of news through the UI.
     When I fill in "Kicker" with "Ytterbium metal of the year"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
+    # Verify that the author is visible.
+    And I should see the text "Milana Laninga"
     # Verify that the referenced solution is rendered as tile.
     And I should see the "Dig do's and don'ts" tile
     # Check that the full author name is shown instead of the username.

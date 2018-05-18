@@ -11,13 +11,19 @@ services:
     class: Drupal\joinup_core\PageTypeDeterminer
     arguments: ['@current_route_match', '@entity_type.bundle.info']
   joinup_core.refresh_visit_count:
-    class: Drupal\joinup_core\EventSubscriber\RefreshCachedPiwikDataEventSubscriber
+    class: Drupal\joinup_core\EventSubscriber\RefreshCachedFieldsEventSubscriber
     arguments: ['@entity_type.manager', '@datetime.time', '@piwik.query_factory', '@config.factory', '@logger.factory']
     tags:
       - { name: 'event_subscriber' }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
+    lazy: true
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
     arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager']
+  joinup_core.transfer_ownership_subscriber:
+    class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
+    arguments: ['@current_user', '@tempstore.private']
+    tags:
+      - name: event_subscriber
