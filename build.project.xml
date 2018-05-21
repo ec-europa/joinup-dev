@@ -425,6 +425,37 @@
         </drush>
     </target>
 
+    <target name="setup-stage-file-proxy" description="Set up the file proxy settings.">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy</param>
+        </drush>
+        <drush
+                command="config-set"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy.settings</param>
+            <param>origin</param>
+            <param>${stage_file_proxy.origin}</param>
+        </drush>
+        <drush
+                command="config-set"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy.settings</param>
+            <param>hotlink</param>
+            <param>${stage_file_proxy.hotlink}</param>
+        </drush>
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
