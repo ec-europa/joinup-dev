@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "528227e3753a65df9fe85ce4c59a8cc2",
+    "content-hash": "394b1afb1421c9074aa3028bab5b0773",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1590,11 +1590,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1830,17 +1826,11 @@
         },
         {
             "name": "drupal/config_sync",
-            "version": "1.0.0-alpha7",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_sync",
-                "reference": "8.x-1.0-alpha7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha7.zip",
-                "reference": "8.x-1.0-alpha7",
-                "shasum": "fb0ac9d658ac0ccc93ad31630a843e50e4c49f4d"
+                "reference": "c41d57838b45c84de0a5068e44572bc07779af6a"
             },
             "require": {
                 "drupal/config_provider": "*",
@@ -1905,7 +1895,8 @@
                 "source": "https://cgit.drupalcode.org/config_sync",
                 "issues": "https://drupal.org/project/issues/config_sync",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2018-05-14T12:57:23+00:00"
         },
         {
             "name": "drupal/config_update",
@@ -12093,6 +12084,7 @@
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
         "drupal/cached_computed_field": 20,
+        "drupal/config_sync": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,

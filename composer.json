@@ -15,7 +15,7 @@
         "drupal/cached_computed_field": "1.x-dev",
         "drupal/changed_fields": "^2.0",
         "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "^1.0-alpha7",
+        "drupal/config_sync": "1.x-dev",
         "drupal/config_update": "~1.4",
         "drupal/core": "^8.5.3",
         "drupal/diff": "^1.0@RC",
