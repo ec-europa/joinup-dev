@@ -27,7 +27,9 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    * @param array $data
    *   An array of data to be passed to the execute method.
    *
-   * @return $this
+   * @return null|array
+   *   If no errors were encountered during the step preparation, nothing should
+   *   be returned. Return the error message as a render array.
    */
   public function prepare(array &$data);
 

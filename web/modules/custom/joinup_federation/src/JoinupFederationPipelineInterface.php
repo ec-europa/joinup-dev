@@ -27,12 +27,43 @@ interface JoinupFederationPipelineInterface extends PipelinePipelineInterface {
    *
    * @param string $graph_uri
    *   The URI of the graph to be emptied.
+   *
+   * @return $this
    */
-  public function clearGraph(string $graph_uri): void;
+  public function clearGraph(string $graph_uri): self;
 
   /**
    * Clears the data from the federation graphs.
+   *
+   * @return $this
    */
-  public function clearGraphs(): void;
+  public function clearGraphs(): self;
+
+  /**
+   * Locks the pipeline, preventing concurrent imports.
+   *
+   * If there's an ongoing import run by other user, this function will return
+   * FALSE, informing the caller that is not able to acquire the lock. If
+   * there's no other import than the current one, will acquire a lock and
+   * will return TRUE, allowing the caller to prevent concurrent operations. If
+   * there is an ongoing import previously locked by the same user, the lock
+   * will be refreshed and the lock timeout is reset.
+   *
+   * @return bool
+   *   If the lock has been successful.
+   */
+  public function lock(): bool;
+
+  /**
+   * Releases the pipeline lock.
+   *
+   * This will release the lock create by the current user. Passing TRUE as
+   * argument, will release the lock regardless of lock ownership.
+   *
+   * @param bool $ignore_ownership
+   *   (optional) If TRUE, this will release the lock regardless if the current
+   *   user owns the lock. Defaults to FALSE.
+   */
+  public function lockRelease(bool $ignore_ownership = FALSE): void;
 
 }

@@ -55,13 +55,14 @@ class PipelineExecutionController extends ControllerBase {
   /**
    * Controller callback: Reset the state machine.
    *
-   * Should not be used, unless something went really bad.
+   * @param string $pipeline
+   *   The pipeline to reset.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   A redirect response.
    */
-  public function reset() {
-    $this->orchestrator->reset();
+  public function reset($pipeline) {
+    $this->orchestrator->reset($pipeline);
 
     if ($this->currentUser()->hasPermission("access pipeline selector")) {
       $url = Url::fromRoute('pipeline.pipeline_select');
@@ -86,6 +87,21 @@ class PipelineExecutionController extends ControllerBase {
    */
   public function allowExecute($pipeline, AccountInterface $account) {
     return AccessResult::allowedIfHasPermission($account, "execute $pipeline pipeline");
+  }
+
+  /**
+   * Provides a custom access callback for the pipeline.reset_pipeline route.
+   *
+   * @param string $pipeline
+   *   The pipeline plugin ID.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The current use account.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result object.
+   */
+  public function allowReset($pipeline, AccountInterface $account) {
+    return AccessResult::allowedIfHasPermission($account, "reset $pipeline pipeline");
   }
 
 }

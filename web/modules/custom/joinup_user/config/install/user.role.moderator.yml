@@ -42,6 +42,7 @@ permissions:
   - 'filter membership overview'
   - 'moderate entity parents'
   - 'pin entity'
+  - 'reset spain pipeline'
   - 'unfeature entity'
   - 'unpin entity'
   - 'view any unpublished content'

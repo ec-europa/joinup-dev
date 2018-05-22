@@ -10,17 +10,20 @@ interface PipelineOrchestratorInterface {
   /**
    * Executes a given pipeline.
    *
-   * @param string $pipeline
-   *   The pipeline to be executed.
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
    *
    * @return mixed
    *   The response.
    */
-  public function run($pipeline);
+  public function run($pipeline_id);
 
   /**
-   * Resets the state machine.
+   * Resets a given pipeline.
+   *
+   * @param string $pipeline
+   *   The pipeline to reset.
    */
-  public function reset();
+  public function reset($pipeline);
 
 }

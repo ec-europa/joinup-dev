@@ -84,6 +84,11 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
   /**
    * {@inheritdoc}
    */
+  public function prepare() {}
+
+  /**
+   * {@inheritdoc}
+   */
   public function onSuccess() {
     // Ask each step if they want to take some action after pipeline execution.
     foreach ($this->getStepList() as $step_plugin_id) {
@@ -92,7 +97,8 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
       $step_plugin->onPipelineSuccess();
     }
     // Reset the state manager.
-    $this->stateManager->reset();
+    $this->stateManager->reset($this->getPluginId());
+    return $this;
   }
 
   /**
@@ -106,7 +112,15 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
       $step_plugin->onPipelineError();
     }
     // Reset the state manager.
-    $this->stateManager->reset();
+    $this->stateManager->reset($this->getPluginId());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reset() {
+    $this->stateManager->reset($this->getPluginId());
   }
 
   /**

@@ -36,7 +36,7 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
     if (!isset($this->pipeline)) {
       throw new \RuntimeException("The step cannot be executed because no pipeline is set.");
     }
-    return $this;
+    return NULL;
   }
 
   /**
