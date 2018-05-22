@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
 interface ProvenanceHelperInterface {
 
   /**
-   * Loads or creates a provenance record for the passed rdf entity.
+   * Loads or creates a provenance record for the passed RDF entity ID.
    *
    * @param string $id
    *   The rdf id that the provenance activity describes.
@@ -21,6 +21,18 @@ interface ProvenanceHelperInterface {
    *   The provenance activity related to the rdf entity passed.
    */
   public function getProvenanceByReferredEntity(string $id): RdfInterface;
+
+  /**
+   * Loads or creates provenance entities for the passed RDF entity IDs.
+   *
+   * @param string[] $ids
+   *   A list of RDF entity IDs.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface[]
+   *   An associative array keyed by the referred entity and having the
+   *   provenance entity object as value.
+   */
+  public function getProvenanceByReferredEntities(array $ids): array;
 
   /**
    * Retrieves the provenance activity related to an rdf entity.
@@ -33,5 +45,17 @@ interface ProvenanceHelperInterface {
    *   record exists.
    */
   public function loadProvenanceActivity(string $id): ?RdfInterface;
+
+  /**
+   * Loads a list of provenance entities given a list of referred entities.
+   *
+   * @param string[] $ids
+   *   A list of referred entities.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface[]
+   *   An associative array keyed by the referred entity and having the
+   *   provenance entity object as value.
+   */
+  public function loadProvenanceActivities(array $ids): array;
 
 }

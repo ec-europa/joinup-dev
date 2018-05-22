@@ -41,24 +41,46 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    * {@inheritdoc}
    */
   public function getProvenanceByReferredEntity(string $id): RdfInterface {
-    if (!$activity = $this->loadProvenanceActivity($id)) {
-      $activity = $this->createProvenanceActivity($id);
-    }
+    return $this->getProvenanceByReferredEntities([$id])[$id];
+  }
 
-    return $activity;
+  /**
+   * {@inheritdoc}
+   */
+  public function getProvenanceByReferredEntities(array $ids): array {
+    $activities = $this->loadProvenanceActivities($ids);
+    // Shrink $ids list to the entities that are missing a provenance entry.
+    $ids = array_diff($ids, array_keys($activities));
+    foreach ($ids as $id) {
+      $activities[$id] = $this->createProvenanceActivity($id);
+    }
+    return $activities;
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadProvenanceActivity(string $id): ?RdfInterface {
-    /** @var \Drupal\rdf_entity\RdfInterface[] $activities */
-    $activities = $this->getStorage()->loadByProperties([
-      'rid' => 'provenance_activity',
-      'provenance_entity' => $id,
-    ]);
+    return $this->loadProvenanceActivities([$id])[$id] ?? NULL;
+  }
 
-    return empty($activities) ? NULL : reset($activities);
+  /**
+   * {@inheritdoc}
+   */
+  public function loadProvenanceActivities(array $ids): array {
+    $provenance_activity = [];
+    $provenance_ids = $this->getRdfStorage()->getQuery()
+      ->condition('rid', 'provenance_activity')
+      ->condition('provenance_entity', $ids, 'IN')
+      ->execute();
+    if ($provenance_ids) {
+      /** @var \Drupal\rdf_entity\RdfInterface $activity */
+      foreach ($this->getRdfStorage()->loadMultiple($provenance_ids) as $activity) {
+        $provenance_activity[$activity->get('provenance_entity')->value] = $activity;
+      }
+    }
+
+    return $provenance_activity;
   }
 
   /**
