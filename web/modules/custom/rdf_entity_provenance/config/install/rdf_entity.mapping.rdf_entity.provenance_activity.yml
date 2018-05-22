@@ -17,8 +17,8 @@ base_fields_mapping:
       format: resource
   uid:
     target_id:
-      predicate: ''
-      format: ''
+      predicate: 'http://joinup.eu/owner/uid'
+      format: 'xsd:integer'
   label:
     value:
       predicate: ''
