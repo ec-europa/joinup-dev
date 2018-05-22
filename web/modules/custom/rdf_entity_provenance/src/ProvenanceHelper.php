@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_entity_provenance;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -18,6 +19,13 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * The RDF entity storage.
+   *
+   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   */
+  protected $rdfStorage;
 
   /**
    * Constructs the ProvenanceHelper service object.
@@ -64,7 +72,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    */
   protected function createProvenanceActivity(string $id): RdfInterface {
     /** @var \Drupal\rdf_entity\RdfInterface $activity */
-    $activity = $this->getStorage()->create([
+    $activity = $this->getRdfStorage()->create([
       'rid' => 'provenance_activity',
       'provenance_entity' => $id,
     ]);
@@ -73,13 +81,16 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   }
 
   /**
-   * Retrieves the rdf_entity storage.
+   * Returns the RDF entity storage.
    *
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *   The entity storage.
+   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   *   The RDF entity storage.
    */
-  protected function getStorage() {
-    return $this->entityTypeManager->getStorage('rdf_entity');
+  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+    if (!isset($this->rdfStorage)) {
+      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
+    }
+    return $this->rdfStorage;
   }
 
 }
