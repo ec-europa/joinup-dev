@@ -21,7 +21,7 @@ use EasyRdf\Graph;
  *   label = @Translation("Manual upload"),
  * )
  */
-class ManualUploadStep extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
 
   use PipelineStepWithFormTrait;
   use RdfEntityGraphStoreTrait;
