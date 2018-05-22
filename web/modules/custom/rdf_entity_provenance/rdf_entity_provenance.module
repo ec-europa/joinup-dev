@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info().
@@ -54,4 +55,14 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
     ->setRequired(TRUE);
 
   return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function rdf_entity_provenance_rdf_entity_presave(RdfInterface $provenance_activity) {
+  if ($provenance_activity->bundle() === 'provenance_activity') {
+    // Provide a title just for administrative purposes.
+    $provenance_activity->setName("Provenance of {$provenance_activity->get('provenance_entity')->value}");
+  }
 }
