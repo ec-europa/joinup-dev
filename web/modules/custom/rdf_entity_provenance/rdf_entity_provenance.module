@@ -22,7 +22,7 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
   // different from the created date as it can be updated if the entity is
   // federated again.
   // @see: https://www.w3.org/TR/2013/REC-prov-o-20130430/#startedAtTime
-  $fields['provenance_started'] = BaseFieldDefinition::create('timestamp')
+  $fields['provenance_started'] = BaseFieldDefinition::create('changed')
     ->setLabel(t('Provenance - Created'))
     ->setDescription(t('The time that the provenance entity was imported/updated.'))
     ->setRequired(TRUE);
