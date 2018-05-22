@@ -154,7 +154,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $needs_save = $this->updateAdmsFields($local_entity, $incoming_entity);
 
         // Cleanup the entity from the 'staging' graph.
-        $this->getRdfStorage()->deleteFromGraph($id, 'staging');
+        $this->getRdfStorage()->deleteFromGraph([$incoming_entity], 'staging');
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
