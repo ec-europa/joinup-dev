@@ -448,6 +448,7 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   $arguments = MessageArgumentGenerator::getOgMembershipArguments($entity);
   $arguments += MessageArgumentGenerator::getGroupArguments($entity->getGroup());
   $arguments += MessageArgumentGenerator::getActorArguments();
+  $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
 
   /** @var \Drupal\joinup_notification\EntityMessageHelperInterface $entity_message_helper */
   $entity_message_helper = \Drupal::service('joinup_notification.entity_message_helper');
