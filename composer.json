@@ -184,9 +184,6 @@
             "drupal/message_digest": {
                 "Aggregated patch for issues #2285947 #2881263 #2933016 #2933896 #2933931 #2934111 @see https://www.drupal.org/project/issues/message_digest": "resources/patch/message_digest_aggregated.patch"
             },
-            "drupal/og": {
-                "OgRole::isAdmin() should return TRUE for administrators": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/370.patch"
-            },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
