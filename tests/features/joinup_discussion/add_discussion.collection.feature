@@ -70,6 +70,8 @@ Feature: Discussions added to collections
       | File description | The content of this file is mind blowing.  |
     And I press "Publish"
     Then I should see the heading "An amazing discussion"
+    # Verify that the author is visible on the page.
+    And I should see the text "Kesha Pontecorvo"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
 
@@ -80,7 +82,7 @@ Feature: Discussions added to collections
     # Check that the tile for the discussion is visible on the collection page.
     When I go to the homepage of the "The World of the Waves" collection
     Then I should see the link "An amazing discussion"
-    And I should see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
+    And I should not see the text "Kesha Pontecorvo" in the "An amazing discussion" tile
     # Initially there are 0 comments on the discussion.
     And I should see the text "0" in the "An amazing discussion" tile
 
