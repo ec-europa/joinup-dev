@@ -68,3 +68,29 @@ function joinup_core_update_8101() {
   $queue = \Drupal::queue('cached_computed_field_expired_fields', FALSE);
   $queue->deleteQueue();
 }
+
+/**
+ * Update the predicates for fields 'solution_type' and 'test_resource_type'.
+ */
+function joinup_core_update_8102() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $query = \Drupal::service('sparql_endpoint');
+  $test_resource_type_query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+INSERT { GRAPH ?g { ?subject <http://joinup.eu/test_resource_type> ?object } }
+USING <http://joinup.eu/solution/draft>
+USING <http://joinup.eu/solution/published>
+USING <http://joinup.eu/asset_release/draft>
+USING <http://joinup.eu/asset_release/published>
+WHERE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+QUERY;
+  $query->query($test_resource_type_query);
+  $solution_type_query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
+INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+USING <http://joinup.eu/solution/draft>
+USING <http://joinup.eu/solution/published>
+WHERE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
+QUERY;
+  $query->query($solution_type_query);
+}
