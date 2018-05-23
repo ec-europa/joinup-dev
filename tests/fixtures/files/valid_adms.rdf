@@ -44,7 +44,7 @@
 
     <rdf:Description rdf:about="http://asset/blacklisted">
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <dct:title>Blackisted asset</dct:title>
+        <dct:title>Blacklisted asset</dct:title>
         <dct:description>This asset has been blacklisted before.</dct:description>
         <dct:publisher rdf:resource="http://publisher"/>
         <dcat:contactPoint rdf:resource="http://contact"/>
