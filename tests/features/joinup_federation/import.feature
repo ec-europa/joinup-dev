@@ -6,6 +6,13 @@ Feature: As a site moderator I am able to import RDF files.
       | Username        | Roles     |
       | Antoine Batiste | moderator |
       | LaDonna         | moderator |
+    And solutions:
+      | uri          | title          | description         | state     |
+      | http://asset | Existing asset | Initial description | validated |
+    And provenance activities:
+      | entity                   | enabled | author          | started          |
+      | Existing asset           | yes     | Antoine Batiste | 2012-07-07 23:01 |
+      | http://asset/blacklisted | no      | Antoine Batiste | 2015-12-25 01:30 |
 
     Given I am logged in as "Antoine Batiste"
     And I go to the pipeline orchestrator
@@ -57,14 +64,55 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Upload"
     And I press "Next"
 
+    Then I should see "Spain - Center for Technology Transfer: User selection"
+    And the row "Not federated asset" is checked
+    And I should see the text "Not federated yet" in the "Not federated asset" row
+    And the row "Asset" is checked
+    And I should see the text "Federated on 07/07/2012 - 23:01 by Antoine Batiste" in the "Asset" row
+    And the row "Blacklisted asset" is not checked
+    And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Blacklisted asset" row
+
+    Given I press "Next"
     Then I should see the following success messages:
       | success messages                                                                |
       | The Spain - Center for Technology Transfer execution has finished with success. |
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
 
+    # Check that the existing solution values were overridden.
+    Given I go to the "Asset" solution edit form
+    Then the "Title" field should contain "Asset"
+    And the "Description" field should contain "This is an Asset."
+
+    # Check how the provenance records were created/updated.
+    Then the "Asset" entity is not blacklisted for federation
+    And the "Not federated asset" entity is not blacklisted for federation
+    But the "http://asset/blacklisted" entity is blacklisted for federation
+
+    Given I visit "/admin/content/pipeline/spain/execute"
+    And I attach the file "valid_adms.rdf" to "File"
+    And I press "Upload"
+    And I press "Next"
+
+    Then I should see "Spain - Center for Technology Transfer: User selection"
+    And the row "Not federated asset" is checked
+    And the row "Asset" is checked
+    And the row "Blacklisted asset" is not checked
+
+    # Swap 'Not federated asset' with 'Blacklisted asset'.
+    Given I uncheck the "Not federated asset" row
+    And I check the "Blacklisted asset" row
+    When I press "Next"
+
+    # Check how the provenance records were created/updated.
+    Then the "Asset" entity is not blacklisted for federation
+    And the "Not federated asset" entity is blacklisted for federation
+    But the "Blacklisted asset" entity is not blacklisted for federation
+
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.
-    But I delete the "Asset" solution
+    Then I delete the provenance activity of "Not federated asset" entity
     And I delete the "Contact" contact information
     And I delete the "The Publisher" owner
+    And I delete the "Not federated asset" solution
+    And I delete the "Blacklisted asset" solution
