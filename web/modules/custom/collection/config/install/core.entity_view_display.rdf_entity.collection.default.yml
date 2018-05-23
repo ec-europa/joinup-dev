@@ -57,7 +57,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: top_abstract
   field_ar_description:
     type: smart_trim
     weight: 2
@@ -85,7 +85,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: top_abstract
   field_collection_content:
     weight: 6
     label: above
