@@ -15,6 +15,7 @@ use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
 use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -188,8 +189,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
 
     $group = $this->getDiscussionGroup($discussion);
     if ($group) {
-      $arguments['@group:label'] = $group->label();
-      $arguments['@group:bundle'] = $group->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($group);
     }
 
     return $arguments;

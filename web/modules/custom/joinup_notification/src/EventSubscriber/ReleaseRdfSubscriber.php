@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -276,7 +279,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
@@ -288,8 +291,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     // Add arguments related to the parent collection or solution.
     $parent = $this->relationManager->getParent($entity);
     if (!empty($parent)) {
-      $arguments['@group:title'] = $parent->label();
-      $arguments['@group:bundle'] = $parent->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($parent);
       if (empty($arguments['@actor:role'])) {
         $membership = $this->membershipManager->getMembership($parent, $actor);
         if (!empty($membership)) {

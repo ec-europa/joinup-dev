@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -198,7 +201,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     // The parent is passed here instead so that the entity url will retrieve
     // the parent entity's url as the comments do not have one.
     $arguments = parent::generateArguments($this->parent);
@@ -218,9 +221,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $arguments['@parent:bundle'] = $this->parent->bundle();
     $arguments['@parent:url'] = $this->parent->toUrl('canonical', ['absolute' => TRUE])->toString();
 
-    $arguments['@group:title'] = $this->group->label();
-    $arguments['@group:bundle'] = $this->group->bundle();
-    $arguments['@group:url'] = $this->group->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments += MessageArgumentGenerator::getGroupArguments($this->group);
 
     if ($this->currentUser->isAnonymous() || empty($arguments['@actor:full_name'])) {
       $arguments['@actor:full_name'] = $this->currentUser->isAnonymous() ? t('an anonymous user') : t('a Joinup user');

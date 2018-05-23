@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: og_membership_role_change
+label: 'Group membership role change'
+description: 'Message sent when a user receives a new role inside a collection or solution.'
+text:
+  -
+    value: '<p>Your role has been changed to @membership:roles</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has changed your role in @group:bundle "@group:title" to @membership:roles.</p><p>If you think this action is not clear or not due, please contact <a href="@site:contact_url">Joinup Support</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

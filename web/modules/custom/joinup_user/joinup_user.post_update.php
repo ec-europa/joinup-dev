@@ -34,3 +34,14 @@ function joinup_user_post_update_access_dashboard() {
     'manage own subscriptions',
   ]);
 }
+
+/**
+ * Remove configuration for an e-mail that has been replaced by a Message.
+ */
+function joinup_user_post_update_remove_obsolete_og_roles_changed_message_config() {
+  // This was originally a regular 'hook_mail()' message but it has been
+  // converted into the 'og_membership_role_change' Message template. The
+  // original config is no longer used and can be removed.
+  $config = \Drupal::configFactory()->getEditable('joinup_user.mail');
+  $config->clear('og_roles_changed')->save();
+}
