@@ -129,7 +129,7 @@ trait UserTrait {
       $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($user->id());
     }
     catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('The user entity storage is not defined.', $e);
+      throw new \RuntimeException('The user entity storage is not defined.', 0, $e);
     }
 
     return $user;
