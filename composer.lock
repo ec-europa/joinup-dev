@@ -4025,12 +4025,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "74c8a4d1446041a3fefbac21c30f4b0efc38a731"
+                "reference": "3acbc19a628962c3603fb00d244ef3901e20b7fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/74c8a4d1446041a3fefbac21c30f4b0efc38a731",
-                "reference": "74c8a4d1446041a3fefbac21c30f4b0efc38a731",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/3acbc19a628962c3603fb00d244ef3901e20b7fd",
+                "reference": "3acbc19a628962c3603fb00d244ef3901e20b7fd",
                 "shasum": ""
             },
             "require": {
@@ -4055,7 +4055,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-05-18T07:43:59+00:00"
+            "time": "2018-05-22T09:03:57+00:00"
         },
         {
             "name": "drupal/redirect",
