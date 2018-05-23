@@ -556,8 +556,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $username
    *   The name of the user to delete.
    *
-   * @throws \Exception
-   *   Thrown when the user does not exist.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs while the user is being deleted.
    *
    * @Then I delete the :username user
    */
