@@ -18,7 +18,7 @@ Feature: User registration
       | Username    | TeStUSer              |
       | First name  | Test                  |
       | Family name | User                  |
-    # Then I should see the success message "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    Then I should see the success message "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     And the following system email should have been sent:
       | recipient | TeStUSer                                                                                                                                                                                                                                         |
       | subject   | Your Joinup account is pending approval.                                                                                                                                                                                                         |
