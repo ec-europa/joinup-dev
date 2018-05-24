@@ -5,10 +5,13 @@
  * Contains \SearchSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing searches.
@@ -26,7 +29,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then I should be on the search page
    */
-  public function assertSearchPage() {
+  public function assertSearchPage(): void {
     $this->assertSession()->addressEquals($this->locatePath('/search'));
   }
 
@@ -41,7 +44,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I click the :type content tab
    */
-  public function clickContentTypeFacet($type) {
+  public function clickContentTypeFacet(string $type): void {
     $this->assertContentTabDisplayed($type)->click();
   }
 
@@ -59,7 +62,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given the :type content tab is displayed
    */
-  public function assertContentTabDisplayed($type) {
+  public function assertContentTabDisplayed(string $type): void {
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
       "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
 
@@ -81,10 +84,10 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :type content tab should be selected
    */
-  public function assertContentTypeFacetSelected($type) {
+  public function assertContentTypeFacetSelected(string $type): void {
     $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ') and contains(concat(' ', normalize-space(@class), ' '), ' is-active ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')][normalize-space(string(.)) = '$type']";
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
-    \PHPUnit_Framework_Assert::assertNotEmpty($element);
+    Assert::assertNotEmpty($element);
   }
 
   /**
@@ -98,7 +101,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I should see the following facet items :labels in this order
    */
-  public function assertContentTypeFacetItemsPresent($labels) {
+  public function assertContentTypeFacetItemsPresent(string $labels): void {
     $labels = $this->explodeCommaSeparatedStepArgument($labels);
     $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')]";
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
@@ -110,7 +113,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $present = array_map('trim', $present);
-    PHPUnit_Framework_Assert::assertEquals($present, $labels);
+    Assert::assertEquals($present, $labels);
   }
 
   /**
@@ -124,7 +127,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I should not see the following facet items :labels
    */
-  public function assertContentTypeFacetItemsNotPresent($labels) {
+  public function assertContentTypeFacetItemsNotPresent(string $labels): void {
     $labels = $this->explodeCommaSeparatedStepArgument($labels);
 
     $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')]";
@@ -154,7 +157,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I click :link in the :facet inline facet
    */
-  public function iClickAnInlineFacetItemLink($link, $facet) {
+  public function iClickAnInlineFacetItemLink(string $link, string $facet): void {
     $this->findFacetByAlias($facet)->clickLink($link);
   }
 
@@ -171,7 +174,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then :text should be selected in the :facet inline facet
    */
-  public function assertInlineFacetActiveText($text, $facet) {
+  public function assertInlineFacetActiveText(string $text, string $facet): void {
     $element = $this->findFacetByAlias($facet);
 
     $active = $element->find('css', '.filter__term');
@@ -195,9 +198,12 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $values
    *   A comma-separated list of items to be present.
    *
+   * @throws \Exception
+   *   Thrown when the facet is not found in the page.
+   *
    * @Then the :facet inline facet should allow selecting the following values :value
    */
-  public function assertInlineFacetInactiveItems($facet, $values) {
+  public function assertInlineFacetInactiveItems(string $facet, string $values): void {
     $element = $this->findFacetByAlias($facet);
     $found = array_map(function ($item) {
       /** @var \Behat\Mink\Element\NodeElement $item */
@@ -205,7 +211,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
 
     $values = $this->explodeCommaSeparatedStepArgument($values);
-    \PHPUnit_Framework_Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
+    Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
   }
 
   /**
@@ -219,7 +225,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @When I enter :keywords in the header search bar and hit enter
    */
-  public function launchSearchFromHeader($keywords) {
+  public function launchSearchFromHeader(string $keywords): void {
     // The header search form is not a full form, so it doesn't have a submit
     // button.
     // Sending keys is not supported by Behat\Mink\Driver\GoutteDriver , so we
@@ -242,7 +248,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then search engines should be discouraged to follow the link :link
    */
-  public function assertLinkHasRelNofollow($link) {
+  public function assertLinkHasRelNofollow(string $link): void {
     $element = $this->getSession()->getPage()->findLink($link);
 
     if (!$element) {
