@@ -19,12 +19,6 @@ function joinup_install() {
     ->set('features.node_user_picture', FALSE)
     ->save(TRUE);
 
-  // Allow visitor account creation.
-  \Drupal::configFactory()
-    ->getEditable('user.settings')
-    ->set('register', USER_REGISTER_VISITORS)
-    ->save(TRUE);
-
   // Disable the warning about rebuilding node access. This is needlessly set
   // in the install hook of the View Unpublished module.
   // @todo Remove this once the bug is fixed.
