@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -62,7 +63,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Given the :type content tab is displayed
    */
-  public function assertContentTabDisplayed(string $type): void {
+  public function assertContentTabDisplayed(string $type): NodeElement {
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
       "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
 
