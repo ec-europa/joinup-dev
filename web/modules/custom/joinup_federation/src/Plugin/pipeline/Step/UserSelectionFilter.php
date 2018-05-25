@@ -84,6 +84,13 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   protected $rdfStorage;
 
   /**
+   * The RDF entity query.
+   *
+   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   */
+  protected $rdfEntityQuery;
+
+  /**
    * The incoming entities whitelist.
    *
    * @var array
@@ -348,9 +355,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
-    $query = $this->getRdfStorage()->getQuery();
-    $ids = $query->graphs(['staging'])->condition('rid', 'solution')->execute();
+    $ids = $this->getRdfEntityQuery()
+      ->graphs(['staging'])
+      ->condition('rid', 'solution')
+      ->execute();
 
     $activities = $this->provenanceHelper->getProvenanceByReferredEntities($ids);
     $labels = [];
@@ -512,6 +520,19 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
     }
     return $this->rdfStorage;
+  }
+
+  /**
+   * Returns the statically cached RDF entity query.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   *   The RDF entity query.
+   */
+  protected function getRdfEntityQuery() {
+    if (!isset($this->rdfEntityQuery)) {
+      $this->rdfEntityQuery = $this->getRdfStorage()->getQuery();
+    }
+    return $this->rdfEntityQuery;
   }
 
 }
