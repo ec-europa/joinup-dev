@@ -1,0 +1,14 @@
+id: rdf_entity.solution.reference_to_type1
+entity_type: rdf_entity
+bundle: solution
+field_name: reference_to_type1
+field_type: entity_reference
+settings:
+  handler: default:rdf_entity
+  handler_settings:
+    target_bundles:
+      type1: type1
+dependencies:
+  config:
+    - field.storage.rdf_entity.reference_to_type1
+    - rdf_entity.mapping.rdf_entity.type1
