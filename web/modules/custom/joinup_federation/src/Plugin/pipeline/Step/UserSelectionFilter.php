@@ -162,23 +162,23 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       return (bool) $checked;
     }, $data['user_selection']);
 
-    $activities = $this->provenanceHelper->getProvenanceByReferredEntities(array_keys($user_selection));
+    // Build a list of all whitelisted entities.
+    $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    // Remove the blacklisted entities, if any.
+    $all_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
+    if ($blacklist = array_diff($all_ids, $this->whitelist)) {
+      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+    }
+
+    $activities = $this->provenanceHelper->getProvenanceByReferredEntities($all_ids);
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($this->currentUser->id())
         // Update the provenance based on user input.
-        ->set('provenance_enabled', $user_selection[$id])
+        ->set('provenance_enabled', in_array($id, $this->whitelist))
         ->save();
     }
-
-    // Remove the blacklisted entities from the 'staging' graph.
-    $blacklist = array_keys(array_filter($user_selection, function (bool $checked): bool {
-      return !$checked;
-    }));
-    $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
-
-    return NULL;
   }
 
   /**
