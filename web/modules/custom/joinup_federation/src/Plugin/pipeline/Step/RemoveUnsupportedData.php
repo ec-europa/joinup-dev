@@ -13,8 +13,8 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  * Defines a process step that removes the triples not supported by Joinup.
  *
  * Scan the imported triples (which are now in the sink graph) and filter out
- * all that are not Joinup entities, as collections, solutions, releases,
- * distributions, licences, owners or contact information.
+ * all that are not Joinup entities, as solutions, releases, distributions,
+ * licences, owners or contact information.
  *
  * @PipelineStep(
  *   id = "remove_unsupported_data",
@@ -35,7 +35,7 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase {
     /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
     foreach (RdfEntityMapping::loadMultiple() as $mapping) {
       // Only add rdf:type URI for RDF entities.
-      if ($mapping->getTargetEntityTypeId() === 'rdf_entity') {
+      if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && $mapping->getTargetBundle() !== 'collection') {
         $rdf_entity_bundle_uris[] = $mapping->getRdfType();
       }
     }
