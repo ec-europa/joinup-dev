@@ -6,7 +6,9 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
@@ -17,10 +19,11 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
+use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a step plugin that allows the user to un-select certain entities.
+ * Defines a step plugin allowing the user to select certain solutions.
  *
  * @PipelineStep(
  *   id = "user_selection_filter",
@@ -60,11 +63,32 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   protected $currentUser;
 
   /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * The RDF schema field validator service.
+   *
+   * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
+   */
+  protected $rdfSchemaFieldValidator;
+
+  /**
    * The RDF entity storage.
    *
    * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
    */
   protected $rdfStorage;
+
+  /**
+   * The incoming entities whitelist.
+   *
+   * @var array
+   */
+  protected $whitelist = [];
 
   /**
    * Creates a new pipeline step plugin instance.
@@ -85,13 +109,19 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The date/time formatter service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
+   * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
+   *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, AccountProxyInterface $current_user, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->dateFormatter = $date_formatter;
     $this->currentUser = $current_user;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }
 
   /**
@@ -106,7 +136,9 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $container->get('entity_type.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
       $container->get('date.formatter'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('entity_field.manager'),
+      $container->get('rdf_schema_field_validation.schema_field_validator')
     );
   }
 
@@ -191,6 +223,124 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   }
 
   /**
+   * Collect all the whitelisted incoming entities.
+   *
+   * The user selects only solutions on the form of this pipeline step. But each
+   * solution might refer other entities, such as distributions, contact info,
+   * publishers, etc. And the latest might also refer other entities, defining a
+   * relation of type 'directed acyclic graph', with nested relations. Based on
+   * user selected solutions, we build a whitelist of solutions and their
+   * related entities. The whitelist is stored in the `$this->whitelist`
+   * protected property to be used later by the caller method.
+   *
+   * If a subsequent entity is referred, directly or through a nested relation,
+   * by both, a whitelisted and a blacklisted solutions, then this entity will
+   * be whitelisted.
+   *
+   * The caller will take care to delete from the 'staging' graph the entities
+   * that are not in the `$this->whitelist` and to create/update disabled
+   * provenance activity records.
+   *
+   * @param string $bundle
+   *   The bundle of the passed whitelisted entity IDs. As this method is called
+   *   recursively, this value will be computed on each call, except the first
+   *   call when it should be 'solution'.
+   * @param string[] $whitelist_ids
+   *   A list of whitelisted entity IDs. All entities are from $bundle bundle.
+   *   The caller should pass the list of whitelisted solution IDs.
+   * @param bool $recursive_call
+   *   Used internally to distinguish between caller calls and recursive calls.
+   *
+   * @throws \InvalidArgumentException
+   *   If on first call to the method, something different than 'solution' has
+   *   been passed as $bundle parameter or if a passed item from $whitelist_ids
+   *   is not from $bundle bundle.
+   */
+  protected function buildWhitelist(string $bundle, array $whitelist_ids, bool $recursive_call = FALSE): void {
+    static $whitelisted_solution_ids;
+    static $reference_fields = [];
+
+    // Passed IDs are whitelisted entities.
+    $this->whitelist = array_unique(array_merge($this->whitelist, $whitelist_ids));
+
+    // Store once the top level whitelisted solutions.
+    if (!$recursive_call) {
+      if ($bundle !== 'solution') {
+        throw new \InvalidArgumentException("First call of ::buildWhitelist() should always receive 'solution' as \$bundle parameter ('$bundle' was passed).");
+      }
+      $whitelisted_solution_ids = $whitelist_ids;
+    }
+
+    // Build and statically cache a list of reference fields, part of ADMS-AP,
+    // for this bundle.
+    if (!isset($reference_fields[$bundle])) {
+      $reference_fields[$bundle] = [];
+      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
+        if (
+          $field_definition->getType() === 'entity_reference'
+          && $field_definition->getFieldStorageDefinition()->getSetting('target_type') === 'rdf_entity'
+          && !$field_definition->isComputed()
+          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
+        ) {
+          $reference_fields[$bundle][] = $field_name;
+        }
+      }
+    }
+    // This bundle has no entity reference fields.
+    if (!$reference_fields[$bundle]) {
+      return;
+    }
+
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    foreach (Rdf::loadMultiple($whitelist_ids, ['staging']) as $id => $entity) {
+      if ($entity->bundle() !== $bundle) {
+        throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
+      }
+      foreach ($reference_fields[$bundle] as $field_name) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
+        $field = $entity->get($field_name);
+        foreach ($this->getReferencedEntityIdsByBundle($field) as $referenced_bundle => $referenced_entity_ids) {
+          // The list might contain blacklisted solutions.
+          if ($referenced_bundle === 'solution' && array_diff($referenced_entity_ids, $whitelisted_solution_ids)) {
+            // Remove blacklisted solutions.
+            if (!$referenced_entity_ids = array_intersect($referenced_entity_ids, $whitelisted_solution_ids)) {
+              continue;
+            }
+          }
+          $this->buildWhitelist($referenced_bundle, $referenced_entity_ids, TRUE);
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns a list of entity IDs grouped by bundle, given a reference field.
+   *
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
+   *   The entity reference field.
+   *
+   * @return array[]
+   *   An associative array keyed by bundle and having arrays of IDs as values.
+   */
+  protected function getReferencedEntityIdsByBundle(EntityReferenceFieldItemListInterface $field): array {
+    $return = [];
+    if (!$field->isEmpty()) {
+      // Can't use EntityReferenceFieldItemListInterface::referencedEntities()
+      // here because that doesn't filter on 'staging' graph.
+      $ids = array_filter(array_unique(array_map(function (array $item): string {
+        return $item['target_id'];
+      }, $field->getValue())));
+      if ($ids) {
+        /** @var \Drupal\rdf_entity\RdfInterface $entity */
+        foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
+          $return[$entity->bundle()][] = $id;
+        }
+      }
+    }
+    return $return;
+  }
+
+  /**
    * Returns a list of RDF entities from the staging graph, grouped by category.
    *
    * @return string[]
@@ -203,15 +353,14 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $ids = $query->graphs(['staging'])->condition('rid', 'solution')->execute();
 
     $activities = $this->provenanceHelper->getProvenanceByReferredEntities($ids);
-    $labels = array_fill_keys(['not_federated', 'federated', 'blacklisted'], []);
+    $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $solution) {
       $category = $this->getCategory($activities[$id]);
       $labels[$category][$id] = $solution->label();
     }
 
-    // Don't return empty categories.
-    return array_filter($labels);
+    return $labels;
   }
 
   /**
@@ -239,7 +388,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   }
 
   /**
-   * Returns federation metadata about a given entity.
+   * Returns federation information about a given entity.
    *
    * @param string $id
    *   The entity ID.
@@ -250,7 +399,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The solution label.
    *
    * @throws \Exception
-   *   If $category is unknown.
+   *   If the passed $category is unknown.
    */
   protected function getInfo(string $id, string $category): MarkupInterface {
     $activity = $this->provenanceHelper->getProvenanceByReferredEntity($id);
