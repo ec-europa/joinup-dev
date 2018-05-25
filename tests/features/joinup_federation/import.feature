@@ -86,7 +86,10 @@ Feature: As a site moderator I am able to import RDF files.
     # Check how the provenance records were created/updated.
     Then the "Asset" entity is not blacklisted for federation
     And the "Not federated asset" entity is not blacklisted for federation
+    And the "The Publisher" entity is not blacklisted for federation
+    And the "Contact" entity is not blacklisted for federation
     But the "http://asset/blacklisted" entity is blacklisted for federation
+    And the "http://publisher/blacklisted" entity is blacklisted for federation
 
     Given I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
@@ -106,13 +109,20 @@ Feature: As a site moderator I am able to import RDF files.
     # Check how the provenance records were created/updated.
     Then the "Asset" entity is not blacklisted for federation
     And the "Not federated asset" entity is blacklisted for federation
+    And the "The Publisher" entity is not blacklisted for federation
+    And the "Contact" entity is not blacklisted for federation
+    And the "Blacklisted publisher" entity is not blacklisted for federation
     But the "Blacklisted asset" entity is not blacklisted for federation
 
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.
     Then I delete the provenance activity of "Not federated asset" entity
+    And I delete the provenance activity of "The Publisher" entity
+    And I delete the provenance activity of "Contact" entity
+    And I delete the provenance activity of "Blacklisted publisher" entity
     And I delete the "Contact" contact information
     And I delete the "The Publisher" owner
     And I delete the "Not federated asset" solution
     And I delete the "Blacklisted asset" solution
+    And I delete the "Blacklisted publisher" owner
