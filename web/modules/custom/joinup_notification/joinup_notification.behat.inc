@@ -308,7 +308,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         throw new \Exception('There were arguments found in the mail or the body that were not replaced.');
       }
 
-      // Check the existence or absence of the signature.
+      // In the previous steps all whitespace has been converted to spaces and
+      // HTML tags were removed, but this might cause double spaces to appear.
+      // Replace all double spaces with single spaces.
+      $body = preg_replace("/\s+/", ' ', $body);
+      $mail_body = preg_replace("/\s+/", ' ', $mail_body);
+
       // Check the existence or absence of the signature.
       $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
       if ($signature_required && !$signature_present) {
