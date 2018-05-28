@@ -5,6 +5,8 @@
  * Contains joinup_federation.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_ENTITY_TYPE_load().
  */
@@ -13,5 +15,36 @@ function joinup_federation_rdf_entity_mapping_load(array $mappings) {
   foreach ($mappings as $mapping) {
     // Add the staging graph to the mapping entity.
     $mapping->addGraphs(['staging' => 'http://joinup-federation/sink']);
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+  if (empty($entity->id())) {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $provenance_helper */
+  $provenance_helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
+  $activity = $provenance_helper->getProvenanceByReferredEntity($entity->id());
+  if (empty($activity)) {
+    return;
+  }
+
+  $added_description = '<br /><strong>This field is has a federated value and thus, cannot be changed here.</strong>';
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
+  $field_manager = \Drupal::service('entity_field.manager');
+  /** @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $schema_validator */
+  $schema_validator = \Drupal::service('rdf_schema_field_validation.schema_field_validator');
+  foreach ($field_manager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle()) as $fieldDefinition) {
+    $field_name = $fieldDefinition->getName();
+    if (isset($form[$field_name]['widget']) && $schema_validator->isDefinedInSchema($entity->getEntityTypeId(), $entity->bundle(), $field_name)) {
+      $form[$field_name]['widget']['#disabled'] = TRUE;
+      $form[$field_name]['widget']['#description'] = ($form[$field_name]['widget']['#description'] ?? '') . $added_description;
+    }
   }
 }
