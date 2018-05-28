@@ -283,6 +283,29 @@ trait TraversingTrait {
   }
 
   /**
+   * Searches for a field that is disabled.
+   *
+   * @param string $label
+   *   The label of the field.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The date or time component element.
+   */
+  protected function findDisabledField($label) {
+    $page = $this->getSession()->getPage();
+    // The *[self::div|self::fieldset] is because ief sets the class 'form-item'
+    // in a fieldset rather than a div.
+    $element = $page->find('xpath', "//*[self::div|self::fieldset][contains(normalize-space(@class), 'form-item') and contains(., '{$label}')]//input[@disabled and @disabled='disabled']");
+    if (empty($element)) {
+      // Try again to fetch fields with textareas. These are marked as disabled
+      // by setting the class 'form-disabled' to the wrapper div and not in the
+      // input.
+      $element = $page->find('xpath', "//div[contains(normalize-space(@class), 'form-disabled') and contains(., '{$label}')]");
+    }
+    return $element;
+  }
+
+  /**
    * Returns the active links in the page or in a specific region.
    *
    * An "active" link is a link with the class "is-active" or with the class
