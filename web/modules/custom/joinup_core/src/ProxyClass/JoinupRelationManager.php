@@ -155,6 +155,16 @@ namespace Drupal\joinup_core\ProxyClass {
             return $this->lazyLoadItself()->getCollectionsWhereSoleOwner($user);
         }
 
+        /**
+         * {@inheritdoc}
+         */
+        public function getGroupMembershipsByRoles(\Drupal\Core\Entity\EntityInterface $entity, array $role_names, array $states = array (
+          0 => 'active',
+        )) : array
+        {
+            return $this->lazyLoadItself()->getGroupMembershipsByRoles($entity, $role_names, $states);
+        }
+
     }
 
 }

@@ -124,12 +124,12 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-administrator';
+    $memberships = $this->getGroupMembershipsByRoles($entity, ['administrator'], $states);
 
     $users = [];
-    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
+    foreach ($memberships as $membership) {
       $user = $membership->getOwner();
-      if (!empty($user) && $membership->hasRole($role_id)) {
+      if (!empty($user)) {
         $users[$user->id()] = $user;
       }
     }
@@ -197,6 +197,30 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
     }
 
     return $collections;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
+    $entity_type_id = $entity->getEntityTypeId();
+    $bundle_id = $entity->bundle();
+
+    $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
+      return implode('-', [$entity_type_id, $bundle_id, $role_name]);
+    }, $role_names);
+
+    $memberships = [];
+    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
+      foreach ($role_ids as $role_id) {
+        if ($membership->hasRole($role_id)) {
+          $memberships[$membership->id()] = $membership;
+          continue;
+        }
+      }
+    }
+
+    return $memberships;
   }
 
 }
