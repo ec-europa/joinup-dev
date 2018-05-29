@@ -5,18 +5,23 @@
  * Contains step definitions for the Joinup project.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 
 /**
  * Defines generic step definitions.
@@ -27,6 +32,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
 
   /**
@@ -506,12 +512,59 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should have a :username user
    */
-  public function assertUserExistence($username) {
-    $user = user_load_by_name($username);
+  public function assertUserExistence(string $username): void {
+    $user = $this->getUserByName($username);
 
     if (empty($user)) {
       throw new \Exception("Unable to load expected user " . $username);
     }
+  }
+
+  /**
+   * Checks the status of the given user.
+   *
+   * @param string $username
+   *   The name of the user to statusilize.
+   * @param string $status
+   *   The expected status, can be either 'active' or 'blocked'.
+   *
+   * @throws \Exception
+   *   Thrown when the user does not exist or doesn't have the expected status.
+   *
+   * @Then the account for :username should be :status
+   */
+  public function assertUserStatus(string $username, string $status): void {
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getUserByName($username);
+    $expected_status = $status === 'active';
+
+    if (empty($user)) {
+      throw new \Exception("Unable to load expected user $username.");
+    }
+
+    if ($user->isActive() !== $expected_status) {
+      throw new \Exception("The user does not have the $status status.");
+    }
+  }
+
+  /**
+   * Deletes the user account with the given name.
+   *
+   * This intended to be used for user accounts that are created through the UI
+   * and are not cleaned up automatically when a test ends.
+   *
+   * @param string $username
+   *   The name of the user to delete.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs while the user is being deleted.
+   *
+   * @Then I delete the :username user
+   */
+  public function deleteUser(string $username): void {
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getUserByName($username);
+    $user->delete();
   }
 
   /**
@@ -1140,6 +1193,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->getSession()->wait(60000,
       "jQuery(':contains(\"$text\")').length > 0"
     );
+  }
+
+  /**
+   * Strips elements from tables that are only readable by screen readers.
+   *
+   * @AfterTableFetch
+   */
+  public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
+    $html_manipulator = new HtmlManipulator($scope->getHtml());
+    $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
   }
 
 }

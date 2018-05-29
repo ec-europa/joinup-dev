@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_4
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_4
+field_name: field_tallinn_action_4
+entity_type: node
+bundle: tallinn_report
+label: 'Action 4'
+description: 'Ensure better digital accessibility of public services and information for all citizens and businesses, including by improving the accessibility of public administration websites and mobile apps.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

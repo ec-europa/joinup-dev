@@ -131,7 +131,7 @@ trait RdfEntityTrait {
    * @return \Drupal\rdf_entity\Entity\Rdf
    *   The newly created entity.
    */
-  protected function createRdfEntity($bundle, array $values) {
+  protected static function createRdfEntity($bundle, array $values) {
     // Convert timestamp fields from human-readable to timestamp.
     // @todo Replace this with a Behat hook.
     foreach (['changed', 'created'] as $field) {
