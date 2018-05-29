@@ -153,24 +153,23 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    if (!$data['user_selection']) {
-      return ['#markup' => $this->t('No entities were imported.')];
-    }
-
     // Normalize user selection to boolean values.
     $user_selection = array_map(function ($checked): bool {
       return (bool) $checked;
     }, $data['user_selection']);
 
-    // Build a list of all whitelisted entities.
-    $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
+      // Build a list of all whitelisted entities.
+      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    }
+
+    $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
     // Remove the blacklisted entities, if any.
-    $all_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
-    if ($blacklist = array_diff($all_ids, $this->whitelist)) {
+    if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
       $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
     }
 
-    $activities = $this->provenanceHelper->getProvenanceByReferredEntities($all_ids);
+    $activities = $this->provenanceHelper->getProvenanceByReferredEntities($all_imported_ids);
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
@@ -178,6 +177,13 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
         // Update the provenance based on user input.
         ->set('provenance_enabled', in_array($id, $this->whitelist))
         ->save();
+    }
+
+    // If no solution was selected, exit the pipeline here.
+    if ($user_selection_is_empty) {
+      return [
+        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
+      ];
     }
   }
 
