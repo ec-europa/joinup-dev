@@ -12,8 +12,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\joinup\Traits\TraversingTrait;
-use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -23,13 +21,11 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
 
   use EntityTrait;
   use RdfEntityTrait;
-  use UtilityTrait;
-  use TraversingTrait;
 
   /**
    * Test provenance entities.
    *
-   * @var \Drupal\rdf_entity\Entity\Rdf[]
+   * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $provenanceActivities = [];
 
@@ -112,7 +108,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
    * @param string $entity_label
    *   The entity label that will be checked that has a provenance activity
    *   related.
-   * @param string $entity_type
+   * @param string $entity_type_id
    *   The entity bundle of the entity that will be checked for having a
    *   provenance activity.
    *
@@ -121,68 +117,15 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
    *
    * @Then the :entity_label :entity_type should have a provenance activity related
    */
-  public function assertActivityRelatedToEntity(string $entity_label, string $entity_type): void {
-    $entity_type = str_replace(' ', '_', $entity_type);
-    $rdf_entity = $this->getRdfEntityByLabel($entity_label, $entity_type);
+  public function assertActivityRelatedToEntity(string $entity_label, string $entity_type_id): void {
+    $entity_type_id = str_replace(' ', '_', $entity_type_id);
+    $rdf_entity = $this->getRdfEntityByLabel($entity_label, $entity_type_id);
     /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $provenance_helper */
     $provenance_helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
     $activity = $provenance_helper->getProvenanceByReferredEntity($rdf_entity->id());
     if (empty($activity)) {
       throw new \Exception("The entity labeled {$rdf_entity->label()} does not have a provenance activity related.");
     }
-  }
-
-  /**
-   * Asserts that a list of fields are disabled.
-   *
-   * @param string $fields
-   *   A list of comma separated field labels.
-   *
-   * @throws \Exception
-   *   Thrown when a field is not found by name or is not disabled.
-   *
-   * @Then the following fields should be disabled :fields
-   */
-  public function givenDisabledFields(string $fields): void {
-    $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $found = [];
-    foreach ($fields as $field) {
-      $element = $this->findDisabledField($field);
-      if (empty($element)) {
-        $found[] = $field;
-      }
-    }
-
-    if (!empty($found)) {
-      throw new Exception('The following fields were not found or were enabled: ' . implode(', ', $found));
-    }
-  }
-
-  /**
-   * Asserts that a list of fields are not disabled.
-   *
-   * @param string $fields
-   *   A list of comma separated field labels.
-   *
-   * @throws \Exception
-   *   Thrown when a field is not found by name or is disabled.
-   *
-   * @Then the following fields should not be disabled :fields
-   */
-  public function givenNotDisabledFields(string $fields): void {
-    $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $found = [];
-    foreach ($fields as $field) {
-      $element = $this->findDisabledField($field);
-      if (!empty($element)) {
-        $found[] = $field;
-      }
-    }
-
-    if (!empty($found)) {
-      throw new Exception('The following fields were disabled: ' . implode(', ', $found));
-    }
-
   }
 
   /**
@@ -209,11 +152,12 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
    *
    * @return array
    *   The array with default values added.
+   *
+   * @todo: Remove this once ISAICP-4271 is in.
    */
   protected function provideDefaultValues(array $fields): array {
     $default_values = [
       'provenance_started' => \Drupal::time()->getRequestTime(),
-      'provenance_enabled' => TRUE,
     ];
 
     $fields += $default_values;
@@ -276,16 +220,14 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
   public function deleteActivity(string $entity_label, string $entity_bundle): void {
     $entity = $this->getEntityByLabel($entity_label, 'rdf_entity', $entity_bundle);
     if (empty($entity)) {
-      throw new Exception("Entity '${entity_label}' was not found.");
+      throw new \Exception("Entity '${entity_label}' was not found.");
     }
 
     /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $provenance_helper */
     $provenance_helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
-    $activity = $provenance_helper->getProvenanceByReferredEntity($entity->id());
+    $activity = $provenance_helper->loadProvenanceActivity($entity->id());
     if (empty($activity)) {
-      if (empty($entity_id)) {
-        throw new Exception("Entity '${entity_label}' does not have a provenance activity.");
-      }
+      throw new \Exception("Entity '${entity_label}' does not have a provenance activity.");
     }
 
     $activity->delete();
@@ -297,10 +239,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
    * @AfterScenario
    */
   public function cleanActivities(): void {
-    // Remove any collections that were created.
-    foreach ($this->provenanceActivities as $activity) {
-      $activity->delete();
-    }
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->delete($this->provenanceActivities);
   }
 
 }
