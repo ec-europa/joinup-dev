@@ -46,17 +46,25 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 
     if (in_array($route_name, $tabs_routes)) {
 
+      // Entity type form with tabs.
+      $tabs_types = ['collection', 'solution', 'tallinn_report'];
+
       // Get entity type on edit form.
       if ($entity = $route_match->getParameter('rdf_entity')) {
-        $rdf_type = $entity->getType();
+        $entity_type = $entity->getType();
       }
 
       // Get entity type on create form.
       elseif ($entity = $route_match->getParameter('rdf_type')) {
-        $rdf_type = $entity->id();
+        $entity_type = $entity->id();
       }
 
-      if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'], TRUE)) {
+      // Get entity type on node edit form.
+      elseif ($entity = $route_match->getParameter('node')) {
+        $entity_type = $entity->bundle();
+      }
+
+      if (isset($entity_type) && in_array($entity_type, $tabs_types, TRUE)) {
         $form_meta['has_tabs'] = TRUE;
       }
     }
@@ -105,6 +113,7 @@ function _joinup_horizontal_tabs_routes() {
  */
 function _joinup_vertical_tabs_routes() {
   return [
+    'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
     'rdf_entity.propose_form',
     'solution.collection_solution.add',
@@ -1386,6 +1395,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'rdf_entity_solution_edit_form',
     'rdf_entity_collection_add_form',
     'rdf_entity_solution_add_form',
+    'node_tallinn_report_edit_form',
   ];
 
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
