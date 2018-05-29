@@ -52,13 +52,13 @@ Feature: In order to avoid users changing federated values
       | state          | validated                   |
     And the following provenance activities:
       | associated with    | entity                   | enabled |
-      | http://example.com | A federated solution     | 1       |
-      | http://example.com | A federated collection   | 1       |
-      | http://example.com | A federated release      | 1       |
-      | http://example.com | A federated distribution | 1       |
-      | http://example.com | John Federator           | 1       |
-      | http://example.com | John Federator's contact | 1       |
-      | http://example.com | A federated licence      | 1       |
+      | http://example.com | A federated solution     | yes     |
+      | http://example.com | A federated collection   | yes     |
+      | http://example.com | A federated release      | yes     |
+      | http://example.com | A federated distribution | yes     |
+      | http://example.com | John Federator           | yes     |
+      | http://example.com | John Federator's contact | yes     |
+      | http://example.com | A federated licence      | yes     |
 
   Scenario: Verify that API functions properly.
     Then I should have 7 provenance activity

@@ -8,11 +8,13 @@
 declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Behat step definitions for testing provenance activities for rdf entities.
@@ -21,6 +23,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
 
   use EntityTrait;
   use RdfEntityTrait;
+  use EntityReferenceTrait;
 
   /**
    * Test provenance entities.
@@ -30,53 +33,70 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
   protected $provenanceActivities = [];
 
   /**
-   * Creates a number of provenance activities with data provided in a table.
+   * Creates a number of provenance activity entities from a table.
    *
    * Table format:
-   *
    * @codingStandardsIgnoreStart
-   * | started   | associated with    | entity              | enabled |
-   * | 123456789 | http://example.com | Related entity name | 1|0     |
+   * | entity                          | associated with              | enabled | author | started          |
+   * | The Great Solution              | http://example.com/publisher | yes     | joe    | 28-01-1995 12:06 |
+   * | http://example.com/distribution | http://example.com           | no      | donna  | 03-07-2012 03:54 |
    * @codingStandardsIgnoreEnd
    *
-   * Only the entity field is required. The 'started' timestamp will be filled
-   * with the current timestamp if left empty. The 'enabled' flag is by default
-   * TRUE.
+   * Only the 'entity' field is required. The 'entity' field could be passed
+   * either as an entity label for existing entities or as the entity ID for
+   * provenance activities referring not imported entities.
    *
-   * @param \Behat\Gherkin\Node\TableNode $data_table
-   *   The provenance entity data.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The collection data.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
    * @Given (the following )provenance activities:
    */
-  public function givenProvenanceRecords(TableNode $data_table): void {
+  public function givenProvenanceActivities(TableNode $table): void {
     $aliases = self::provenanceFieldAliases();
 
-    foreach ($data_table->getColumnsHash() as $entity) {
+    foreach ($table->getColumnsHash() as $activity) {
       $values = [];
       // Replace the column aliases with the actual field names.
-      foreach ($entity as $key => $value) {
+      foreach ($activity as $key => $value) {
         if (array_key_exists($key, $aliases)) {
           $values[$aliases[$key]] = $value;
         }
         else {
-          throw new \Exception("Unknown column '$key' in the provenance data table.");
+          throw new \Exception("Unknown column '$key' in table.");
         }
       };
 
-      if (empty($values['provenance_entity'])) {
-        throw new \Exception('The provenance entity is required.');
+      // Convert entity label to ID, if case.
+      if (!UrlHelper::isValid($values['provenance_entity'], TRUE)) {
+        $values['provenance_entity'] = $this->getRdfEntityByLabel($values['provenance_entity'])->id();
+      }
+
+      // Transform the date into a timestamp.
+      if (array_key_exists('provenance_started', $values)) {
+        $values['provenance_started'] = strtotime($values['provenance_started']);
       }
 
       // Convert user friendly values to machine values.
-      $values = $this->convertValueAliases($values);
+      if (array_key_exists('provenance_enabled', $values)) {
+        $values['provenance_enabled'] = strtolower($values['provenance_enabled']);
+        if (!in_array($values['provenance_enabled'], ['yes', 'no'])) {
+          throw new \Exception("Value '{$values['provenance_enabled']}' is not an acceptable value for field 'provenance_enabled'.");
+        }
+        $values['provenance_enabled'] = $values['provenance_enabled'] === 'yes';
+      }
 
-      // Provide default values.
-      $values = $this->provideDefaultValues($values);
+      // Convert any entity reference field label value with the entity ID.
+      $values = $this->convertEntityReferencesValues('rdf_entity', 'provenance_activity', $this->parseRdfEntityFields($values));
 
-      $this->createActivity($values);
+      // Add the bundle.
+      $values['rid'] = 'provenance_activity';
+
+      $activity = Rdf::create($values);
+      $activity->save();
+      $this->provenanceActivities[$activity->id()] = $activity;
     }
   }
 
@@ -140,66 +160,9 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase implements Drup
       'started' => 'provenance_started',
       'associated with' => 'provenance_associated_with',
       'entity' => 'provenance_entity',
+      'author' => 'uid',
       'enabled' => 'provenance_enabled',
     ];
-  }
-
-  /**
-   * Enriches the provided field values with defaults for missing values.
-   *
-   * @param array $fields
-   *   An array of fields keyed by field name.
-   *
-   * @return array
-   *   The array with default values added.
-   *
-   * @todo: Remove this once ISAICP-4271 is in.
-   */
-  protected function provideDefaultValues(array $fields): array {
-    $default_values = [
-      'provenance_started' => \Drupal::time()->getRequestTime(),
-    ];
-
-    $fields += $default_values;
-    return $fields;
-  }
-
-  /**
-   * Converts values from user friendly to normal machine values.
-   *
-   * @param array $fields
-   *   An array of fields keyed by field name.
-   *
-   * @return mixed
-   *   The array with the values converted.
-   *
-   * @throws \Exception
-   *    Throws an exception when a mapped value is not found.
-   */
-  protected function convertValueAliases(array $fields): array {
-    $entity_label = $fields['provenance_entity'];
-    $entity = $this->getEntityByLabel('rdf_entity', $entity_label);
-    if (empty($entity)) {
-      throw new \Exception("Entity with entity label '${entity_label}' was not found.");
-    }
-
-    $fields['provenance_entity'] = $entity->id();
-    return $fields;
-  }
-
-  /**
-   * Creates a provenance entity from the given property and field data.
-   *
-   * @param array $values
-   *   An optional associative array of values, keyed by property name.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface
-   *   A new provenance entity.
-   */
-  protected function createActivity(array $values): RdfInterface {
-    $activity = $this->createRdfEntity('provenance_activity', $values);
-    $this->provenanceActivities[$activity->id()] = $activity;
-    return $activity;
   }
 
   /**
