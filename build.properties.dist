@@ -172,6 +172,9 @@ phpunit.browsertest_output_dir = ${website.sites.dir}/simpletest/browser_output
 # The path to the file that lists HTML output from browsertests.
 phpunit.browsertest_output_file = ${phpunit.browsertest_output_dir}/outputfile.txt
 
+# The path to PHPUnite executable.
+phpunit.bin = ${project.basedir}/vendor/bin/phpunit
+
 
 # Development options
 # -------------------
