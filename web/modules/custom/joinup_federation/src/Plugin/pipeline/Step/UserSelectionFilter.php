@@ -241,8 +241,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * protected property to be used later by the caller method.
    *
    * If a subsequent entity is referred, directly or through a nested relation,
-   * by both, a whitelisted and a blacklisted solutions, then this entity will
-   * be whitelisted.
+   * by both, a whitelisted and a blacklisted solution, then this entity will be
+   * whitelisted.
    *
    * The caller will take care to delete from the 'staging' graph the entities
    * that are not in the `$this->whitelist` and to create/update disabled
