@@ -30,7 +30,7 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
 
   /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $provenance_helper */
   $provenance_helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
-  $activity = $provenance_helper->getProvenanceByReferredEntity($entity->id());
+  $activity = $provenance_helper->loadProvenanceActivity($entity->id());
   if (empty($activity)) {
     return;
   }
