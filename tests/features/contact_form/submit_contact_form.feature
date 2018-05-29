@@ -40,6 +40,9 @@ Feature: Submit the contact form
       | subject            | Joinup - Contact form submission |
       | body               | Dear sir, madam, ...             |
       | signature_required | no                               |
+    And I should see the following success messages:
+      | success messages                                              |
+      | Your message has been submitted. Thank you for your feedback. |
 
   Scenario: Check required fields
     When I am on the contact form
