@@ -455,7 +455,7 @@
         </reflexive>
         <append
                 destFile="${website.settings.local.php}"
-                text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = '${stage_file_proxy.hotlink}';${line.separator}" />
+                text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = ${stage_file_proxy.hotlink};${line.separator}" />
     </target>
 
     <target
