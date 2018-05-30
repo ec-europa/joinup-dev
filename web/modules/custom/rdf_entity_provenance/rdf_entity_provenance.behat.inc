@@ -28,6 +28,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
 
   /**
    * Provenance activity RDF entities used in test.
+   *
    * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $provenanceActivities = [];
