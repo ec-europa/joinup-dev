@@ -1,0 +1,65 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http_e_f_fjoinup_ctest_frdf_aentity_fprovenance_aactivity_fc9371581_b112f_b4a43_b9ba6_be8217970a70f?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/provenance_activity"
+        }
+    },
+    "id": [
+        {
+            "value": "http:\/\/joinup.test\/rdf_entity\/provenance_activity\/c9371581-112f-4a43-9ba6-e8217970a70f"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "provenance_activity"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-28T10:58:38+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-05-28T10:58:38+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/joinup.test\/rdf_entity\/provenance_activity\/c9371581-112f-4a43-9ba6-e8217970a70f"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "provenance_started": [
+        {
+            "value": "2018-05-28T10:58:38+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "provenance_associated_with": [
+        {
+            "value": "http:\/\/example.com"
+        }
+    ],
+    "provenance_entity": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/2905a1f9-9472-4caf-9971-1a0327228229"
+        }
+    ],
+    "provenance_enabled": [
+        {
+            "value": true
+        }
+    ]
+}

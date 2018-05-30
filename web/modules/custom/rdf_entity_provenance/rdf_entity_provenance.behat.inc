@@ -12,21 +12,22 @@ use Behat\Mink\Exception\ExpectationException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\EntityReferenceTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Behat step definitions for testing collections.
+ * Behat step definitions for testing provenance activities for RDF entities.
  */
 class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
 
   use EntityReferenceTrait;
+  use EntityTrait;
   use RdfEntityTrait;
 
   /**
    * Provenance activity RDF entities used in test.
-   *
    * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $provenanceActivities = [];
@@ -54,7 +55,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
    * @Given (the following )provenance activities:
    */
   public function givenProvenanceActivities(TableNode $table): void {
-    $aliases = self::collectionFieldAliases();
+    $aliases = self::provenanceFieldAliases();
 
     foreach ($table->getColumnsHash() as $activity) {
       $values = [];
@@ -70,8 +71,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
 
       // Convert entity label to ID, if case.
       if (!UrlHelper::isValid($values['provenance_entity'], TRUE)) {
-        $values['provenance_entity'] = $this->getRdfEntityByLabel($values['provenance_entity'])
-          ->id();
+        $values['provenance_entity'] = $this->getRdfEntityByLabel($values['provenance_entity'])->id();
       }
 
       // Transform the date into a timestamp.
@@ -101,25 +101,41 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Returns the field alias mapping.
+   * Asserts that a 'provenance_activity' entity exists, given a referral.
    *
-   * @return string[]
-   *   The field alias mapping.
+   * This method also returns the provenance activity, makes it useful to be
+   * called from other assertions.
+   *
+   * @param string $referral
+   *   The entity label or ID for existing entities, or the ID as URI for
+   *   provenance activities referring not imported entities.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The 'provenance_activity' RDF entity.
+   *
+   * @throws \Exception
+   *   If $referral was passed as entity label and that entity doesn't exist or
+   *   there's no provenance activity recorded for the referred entity.
+   *
+   * @Then (the ):referral (entity )should have a related provenance activity
    */
-  protected static function collectionFieldAliases(): array {
-    return [
-      'entity' => 'provenance_entity',
-      'associated with' => 'provenance_associated_with',
-      'enabled' => 'provenance_enabled',
-      'author' => 'uid',
-      'started' => 'provenance_started',
-    ];
+  public function getActivityForReferral(string $referral): RdfInterface {
+    $id = !UrlHelper::isValid($referral, TRUE) ? $this->getRdfEntityByLabel($referral)->id() : $referral;
+    /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $helper */
+    $helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
+    if (!$activity = $helper->loadProvenanceActivity($id)) {
+      throw new \Exception("There's no provenance activity for '$referral'.");
+    }
+    // Deal with the Behat static cache invalidation issue.
+    /** @var \Drupal\rdf_entity\RdfInterface $return */
+    $return = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged($activity->id());
+    return $return;
   }
 
   /**
    * Asserts that a given entity is on the federation blacklist.
    *
-   * If $referral exists as RDF entity, you could pass it as entity label,
+   * If $referral exists as RDF entity, you could pass it as an entity label,
    * otherwise pass the entity ID as URI.
    *
    * @param string $referral
@@ -165,7 +181,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Deletes a provenance activity given an entity label ot ID.
+   * Deletes a provenance activity given an entity label or ID.
    *
    * If $referral exists as RDF entity, you could pass it as entity label,
    * otherwise pass the entity ID as URI.
@@ -185,40 +201,50 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Returns a 'provenance_activity' entity, given a referral.
+   * Checks the number of available provenance activities.
    *
-   * @param string $referral
-   *   The entity label or ID for existing entities, or the ID as URI for
-   *   provenance activities referring not imported entities.
+   * @param int $number
+   *   The expected number of activities.
    *
    * @throws \Exception
-   *   If $referral was passed as entity label and that entity doesn't exist or
-   *   there's no provenance activity recorded for the referred entity.
+   *   Throws an exception when the expected number is not equal to the given.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
-   *   The 'provenance_activity' RDF entity.
+   * @Then I should have :number provenance activity
+   * @Then I should have :number provenance activities
    */
-  protected function getActivityForReferral(string $referral): RdfInterface {
-    $id = !UrlHelper::isValid($referral, TRUE) ? $this->getRdfEntityByLabel($referral)
-      ->id() : $referral;
-    /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $helper */
-    $helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
-    if (!$activity = $helper->loadProvenanceActivity($id)) {
-      throw new \Exception("There's no provenance activity for '$referral'.");
+  public function assertActivitiesCount(int $number): void {
+    $actual = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'provenance_activity')
+      ->count()
+      ->execute();
+    if ($actual != $number) {
+      throw new \Exception("Wrong number of activities. Expected number: $number, actual number: $actual.");
     }
-    // Deal with the Behat static cache invalidation issue.
-    return \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged($activity->id());
   }
 
   /**
-   * Removes any created provenance activities.
+   * Returns the field alias mapping.
+   *
+   * @return string[]
+   *   The field alias mapping.
+   */
+  protected static function provenanceFieldAliases(): array {
+    return [
+      'entity' => 'provenance_entity',
+      'associated with' => 'provenance_associated_with',
+      'enabled' => 'provenance_enabled',
+      'author' => 'uid',
+      'started' => 'provenance_started',
+    ];
+  }
+
+  /**
+   * Removes any created activities.
    *
    * @AfterScenario
    */
-  public function cleanProvenanceActivities(): void {
-    \Drupal::entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->delete($this->provenanceActivities);
+  public function cleanActivities(): void {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->delete($this->provenanceActivities);
   }
 
 }

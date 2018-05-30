@@ -40,6 +40,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
+   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
+   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
    */
   public function visitDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
@@ -262,20 +264,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    */
   public function assertAssetDistributionCount($number) {
     $this->assertRdfEntityCount($number, 'asset_distribution');
-  }
-
-  /**
-   * Navigates to the canonical page display of an asset distribution.
-   *
-   * @param string $title
-   *   The title of the asset distribution.
-   *
-   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
-   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
-   */
-  public function visitAssetDistribution($title) {
-    $distribution = $this->getAssetDistributionByName($title);
-    $this->visitPath($distribution->url());
   }
 
   /**
