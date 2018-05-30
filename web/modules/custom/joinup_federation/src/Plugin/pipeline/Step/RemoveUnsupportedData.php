@@ -34,7 +34,14 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase {
     $rdf_entity_bundle_uris = [];
     /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
     foreach (RdfEntityMapping::loadMultiple() as $mapping) {
-      // Only add rdf:type URI for RDF entities.
+      // Only add rdf:type URI for RDF entities. We exclude the 'collection' RDF
+      // entity bundle because:
+      // - Usually a pipeline is already an effect of an existing Joinup
+      //   collection. A pipeline will most likely be a 1-1 mapped to an
+      //   existing collection.
+      // - Collections are exposing also a lot of Joinup/Drupal specific logic
+      //   (such as OG, etc.) and that cannot be provided via an import.
+      // @todo Reconsider this decision, if case.
       if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && $mapping->getTargetBundle() !== 'collection') {
         $rdf_entity_bundle_uris[] = $mapping->getRdfType();
       }
