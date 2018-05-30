@@ -425,6 +425,39 @@
         </drush>
     </target>
 
+    <!-- Enable and configure the stage_file_proxy module. -->
+    <target name="setup-stage-file-proxy" description="Set up the file proxy settings.">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy</param>
+        </drush>
+        <phingcall target="configure-stage-file-proxy"/>
+    </target>
+
+    <target name="configure-stage-file-proxy">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out previous configuration. -->
+                <replaceregexp>
+                    <regexp
+                            pattern="^[^#](.*stage_file_proxy.*\.settings.*)$"
+                            replace="#\1"
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+                destFile="${website.settings.local.php}"
+                text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = '${stage_file_proxy.hotlink}';${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -438,7 +471,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-piwik-drupal, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-piwik-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
