@@ -15,8 +15,8 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Type: Mandatory class
  * Action: Updated
  * Description:
- * - The class Publisher was replaced by definition by the class Agent, as it
- * covers the only agent role in the profile.
+ * - Updated: The class Publisher was replaced by definition by the class Agent,
+ *   as it covers the only agent role in the profile.
  *
  * @Adms2ConvertPass(
  *   id = "pass_11",

@@ -15,8 +15,7 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Type: N.A.
  * Action: Updated
  * Description:
- * - The cardinality changed to single valued. Only the first value will be
- * kept.
+ * - Updated: Cardinality: 0..n -> 0..1.
  *
  * @Adms2ConvertPass(
  *   id = "pass_41",

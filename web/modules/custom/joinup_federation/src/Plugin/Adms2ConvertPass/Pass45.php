@@ -15,8 +15,9 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Type: N.A.
  * Action: Updated
  * Description:
- * - The cardinality changed to single valued. Only the first value will be
- * kept.
+ * - Updated: Cardinality: 1..n -> 1..1.
+ * - Updated the definition: the publisher is the Agent that publishes the asset
+ *   or solutions, not the Agent that publishes the metadata about it.
  *
  * @Adms2ConvertPass(
  *   id = "pass_45",

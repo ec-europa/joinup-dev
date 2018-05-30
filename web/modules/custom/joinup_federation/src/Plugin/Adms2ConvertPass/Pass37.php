@@ -16,9 +16,9 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Action: Deleted
  * Description:
  * - Deleted: The property was deleted from the Asset Distribution class because
- * it was sharing the same purpose with the dcat:accessURL property.
+ *   it was sharing the same purpose with the dcat:accessURL property.
  * - Ensure that the value of the dcat:downloadURL exists as a accessURL before
- * removing the value.
+ *   removing the value.
  *
  * @see https://joinup.ec.europa.eu/discussion/cr26-distribution-remove-property-dcatdownloadurl
  *

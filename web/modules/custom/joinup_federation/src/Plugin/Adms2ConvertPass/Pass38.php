@@ -16,11 +16,11 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Action: Deleted
  * Description:
  * - Deleted: The property was deleted from the Asset Distribution class because
- * it was sharing the same purpose with the dcat:format property.
+ *   it was sharing the same purpose with the dcat:format property.
  * - Ensure that the value of the dcat:mediaType exists as a format before
- * removing the value. The property dcat:format is optional with a maximum
- * cardinality of 1 so it has to be taken into account in order when attempting
- * to move the dcat:mediaType value.
+ *   removing the value. The property dcat:format is optional with a maximum
+ *   cardinality of 1 so it has to be taken into account in order when
+ *   attempting to move the dcat:mediaType value.
  *
  * @Adms2ConvertPass(
  *   id = "pass_38",

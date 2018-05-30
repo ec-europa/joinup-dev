@@ -12,20 +12,22 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Conversion Pass #4.
  *
  * URI: dct:hasVersion, dct:isVersionOf, adms:next, adms:prev, adms:last.
+ *
  * Description:
  *  - In ADMS v1, an Asset was a release and all other related Assets were
- * releases connected to each other with the properties adms:next, adms:prev and
- * adms:last, marking the next release, the previous release and the last
- * release.
- * In ADMS v2, the distinction between releases occurs through the version
- * number.
- * The procedure that will be followed is: The Asset that has not an adms:prev
- * flag, will be considered the solution. All other Assets related to it, will
- * be marked under it with the property dct:hasVersion. All the other related
- * Assets, will receive the property dct:isVersionOf, pointing to the parent
- * asset. Properties adms:last, adms:next and adms:prev will be removed.
- * The adms:last property does not since it was used to flag the latest release
- * but in ADMS-AP v2, it is not a valid way to sort.
+ *    releases connected to each other with the properties adms:next, adms:prev
+ *    and adms:last, marking the next release, the previous release and the last
+ *    release.
+ *    In ADMS v2, the distinction between releases occurs through the version
+ *    number.
+ *    The procedure that will be followed is: The Asset that has not an
+ *    adms:prev flag, will be considered the solution. All other Assets related
+ *    to it, will be marked under it with the property dct:hasVersion. All the
+ *    other related Assets, will receive the property dct:isVersionOf, pointing
+ *    to the parent asset. Properties adms:last, adms:next and adms:prev will be
+ *    removed.
+ *    The adms:last property does not since it was used to flag the latest
+ *    release but in ADMS-AP v2, it is not a valid way to sort.
  *
  * @Adms2ConvertPass(
  *   id = "pass_27_28_29_30",
@@ -121,7 +123,7 @@ QUERY;
       $entities[$parent_id]['hasVersion'][] = $current_id;
       $entities[$current_id]['isVersionOf'] = $parent_id;
     }
-    // Escape condition. Stop when there are no more children.
+    // Exit condition. Stop when there are no more children.
     if (isset($entities[$current_id]['next'])) {
       $entities = $this->generateAssetRelations($parent_id, $entities[$current_id]['next'], $entities);
     }

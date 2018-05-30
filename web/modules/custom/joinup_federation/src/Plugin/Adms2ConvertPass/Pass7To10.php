@@ -16,8 +16,11 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Type: N.A.
  * Action: Deleted
  * Description:
- *  - The optional classes above were deleted and now all of them are of type
- *  dcat:Dataset.
+ * - Deleted: The optional class Software Package was removed.
+ * - Deleted: The optional class Software Project was removed.
+ * - Deleted: The optional class Software Release was removed.
+ * - Deleted: The optional class Software Repository was removed because it was
+ *   not used.
  *
  * @Adms2ConvertPass(
  *   id = "pass_7_8_9_10",
