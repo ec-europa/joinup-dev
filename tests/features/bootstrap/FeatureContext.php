@@ -1106,6 +1106,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is unchecked.
    *
    * @Then the row :text is selected/checked
    */
@@ -1124,6 +1126,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is checked.
    *
    * @Then the row :text is not selected/checked
    */
