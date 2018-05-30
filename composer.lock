@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3854aa30f684f30502aabc0349082670",
+    "content-hash": "676d2a8e6e7491068d5b05c780458572",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4044,7 +4044,8 @@
             "extra": {
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch"
+                    "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch",
+                    "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch"
                 }
             },
             "license": [
