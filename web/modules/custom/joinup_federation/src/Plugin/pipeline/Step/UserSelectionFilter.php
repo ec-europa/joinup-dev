@@ -165,7 +165,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
     }
 
-    $activities = $this->provenanceHelper->getProvenanceByReferredEntities($all_imported_ids);
+    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($all_imported_ids);
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
@@ -365,7 +365,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       ->condition('rid', 'solution')
       ->execute();
 
-    $activities = $this->provenanceHelper->getProvenanceByReferredEntities($ids);
+    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($ids);
     $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $solution) {
@@ -415,7 +415,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   If the passed $category is unknown.
    */
   protected function getInfo(string $id, string $category): MarkupInterface {
-    $activity = $this->provenanceHelper->getProvenanceByReferredEntity($id);
+    $activity = $this->provenanceHelper->loadOrCreateEntityActivity($id);
     $arguments = [
       '%last_user' => $activity->getOwnerId() ? $activity->getOwner()->getDisplayName() : $this->t('[unknown]'),
       '%last_date' => !$activity->get('provenance_started')->isEmpty() ? $this->dateFormatter->format($activity->get('provenance_started')->value, 'short') : $this->t('[unknown]'),

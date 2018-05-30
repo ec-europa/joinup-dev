@@ -20,7 +20,7 @@ interface ProvenanceHelperInterface {
    * @return \Drupal\rdf_entity\RdfInterface
    *   The provenance activity related to the rdf entity passed.
    */
-  public function getProvenanceByReferredEntity(string $id): RdfInterface;
+  public function loadOrCreateEntityActivity(string $id): RdfInterface;
 
   /**
    * Loads or creates provenance entities for the passed RDF entity IDs.
@@ -32,7 +32,7 @@ interface ProvenanceHelperInterface {
    *   An associative array keyed by the referred entity and having the
    *   provenance entity object as value.
    */
-  public function getProvenanceByReferredEntities(array $ids): array;
+  public function loadOrCreateEntitiesActivity(array $ids): array;
 
   /**
    * Retrieves the provenance activity related to an rdf entity.

@@ -40,14 +40,14 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getProvenanceByReferredEntity(string $id): RdfInterface {
-    return $this->getProvenanceByReferredEntities([$id])[$id];
+  public function loadOrCreateEntityActivity(string $id): RdfInterface {
+    return $this->loadOrCreateEntitiesActivity([$id])[$id];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getProvenanceByReferredEntities(array $ids): array {
+  public function loadOrCreateEntitiesActivity(array $ids): array {
     $activities = $this->loadProvenanceActivities($ids);
     // Shrink $ids list to the entities that are missing a provenance entry.
     $ids = array_diff($ids, array_keys($activities));
