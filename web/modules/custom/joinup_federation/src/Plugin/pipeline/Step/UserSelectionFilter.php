@@ -153,11 +153,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    // Normalize user selection to boolean values.
-    $user_selection = array_map(function ($checked): bool {
-      return (bool) $checked;
-    }, $data['user_selection']);
-
+    $user_selection = $data['user_selection'];
     if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
       // Build a list of all whitelisted entities.
       $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
@@ -232,7 +228,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function extractDataFromSubmit(FormStateInterface $form_state) {
-    return ['user_selection' => $form_state->getValue('user_selection')];
+    // Normalize user selection to boolean values.
+    return ['user_selection' => array_map(function ($checked): bool {
+      return (bool) $checked;
+    }, $form_state->getValue('user_selection'))];
   }
 
   /**
