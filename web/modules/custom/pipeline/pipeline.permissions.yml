@@ -4,4 +4,4 @@ access pipeline selector:
   restrict access: true
 
 permission_callbacks:
-  - \Drupal\pipeline\PipelinePermissions::executePipeline
+  - \Drupal\pipeline\PipelinePermissions::buildPermissions

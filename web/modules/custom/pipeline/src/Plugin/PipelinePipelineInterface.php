@@ -29,13 +29,32 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   public function createStepInstance($step_plugin_id);
 
   /**
+   * Gives a chance to plugins to perform some tasks just before executing.
+   *
+   * @return null|\Drupal\Component\Render\MarkupInterface|string
+   *   If no errors were encountered during the pipeline preparation, nothing
+   *   should be returned. Return the error message as a translatable markup
+   *   object.
+   */
+  public function prepare();
+
+  /**
    * Runs specific code after the pipeline is executed with success.
+   *
+   * @return $this
    */
   public function onSuccess();
 
   /**
    * Runs specific code after the pipeline exits with error.
+   *
+   * @return $this
    */
   public function onError();
+
+  /**
+   * Acts when a reset action occurs.
+   */
+  public function reset();
 
 }

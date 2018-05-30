@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation;
 
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\TempStore\SharedTempStore;
+use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
@@ -16,12 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePluginBase implements JoinupFederationPipelineInterface {
 
-  /**
-   * The current session.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
+  use StringTranslationTrait;
 
   /**
    * The SPARQL connection.
@@ -29,6 +27,27 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
    */
   protected $sparql;
+
+  /**
+   * The shared temp store service.
+   *
+   * @var \Drupal\Core\TempStore\SharedTempStoreFactory
+   */
+  protected $sharedTempStoreFactory;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The shared tempstore.
+   *
+   * @var \Drupal\Core\TempStore\SharedTempStore
+   */
+  protected $sharedTempStore;
 
   /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
@@ -47,11 +66,16 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The current user.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
+   *   The shared temp store factory service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql, SharedTempStoreFactory $shared_tempstore_factory) {
     $this->currentUser = $current_user;
-    $this->sparql = $sparql;
+
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
+
+    $this->sparql = $sparql;
+    $this->sharedTempStoreFactory = $shared_tempstore_factory;
   }
 
   /**
@@ -65,7 +89,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $container->get('plugin.manager.pipeline_step'),
       $container->get('pipeline.state_manager'),
       $container->get('current_user'),
-      $container->get('sparql_endpoint')
+      $container->get('sparql_endpoint'),
+      $container->get('joinup_federation.tempstore.shared')
     );
   }
 
@@ -82,8 +107,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   public function defaultConfiguration(): array {
     return [
       'graph' => [
-        'sink' => static::GRAPH_BASE . '/sink/' . $this->currentUser->id(),
-        'sink_plus_taxo' => static::GRAPH_BASE . '/sink-plus-taxo/' . $this->currentUser->id(),
+        'sink' => 'http://joinup-federation/sink',
+        'sink_plus_taxo' => 'http://joinup-federation/sink-plus-taxo',
       ],
     ] + parent::defaultConfiguration();
   }
@@ -91,36 +116,93 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$data) {
+  public function prepare() {
+    if (!$this->lock()) {
+      $arguments = ['@pipeline' => $this->getPluginDefinition()['label']];
+      return $this->t("There's another ongoing import process run by other user. You cannot run '@pipeline' right now.", $arguments);
+    }
     // This is an extra-precaution to ensure that there's no existing data in
-    // the pipeline graphs, left there after an eventually failed previous run.
+    // the pipeline graphs, left there after a potential failed previous run.
     $this->clearGraphs();
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onSuccess(): JoinupFederationPipelineInterface {
+    $this->clearGraphs();
+    $this->lockRelease();
+    return parent::onSuccess();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function onError(): JoinupFederationPipelineInterface {
+    $this->clearGraphs();
+    $this->lockRelease();
+    return parent::onError();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reset() {
+    // The reset operation can be triggered only by users granted with such
+    // permissions. They are able to release even the lock owned by other users.
+    $this->lockRelease(TRUE);
+    parent::reset();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clearGraph(string $graph_uri): JoinupFederationPipelineInterface {
+    $this->sparql->update("CLEAR GRAPH <$graph_uri>");
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function onSuccess(): void {
-    parent::onSuccess();
-    $this->clearGraphs();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function onError(): void {
-    parent::onError();
-    $this->clearGraphs();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function clearGraphs(): void {
+  public function clearGraphs(): JoinupFederationPipelineInterface {
     foreach ($this->getConfiguration()['graph'] as $graph_uri) {
-      $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+      $this->clearGraph($graph_uri);
     }
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function lock(): bool {
+    return $this->getSharedTempStore()->setIfOwner('pipeline.lock', TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function lockRelease(bool $ignore_ownership = FALSE): void {
+    if ($ignore_ownership) {
+      $this->getSharedTempStore()->delete('pipeline.lock');
+    }
+    else {
+      $this->getSharedTempStore()->deleteIfOwner('pipeline.lock');
+    }
+  }
+
+  /**
+   * Returns the shared temp store.
+   *
+   * @return \Drupal\Core\TempStore\SharedTempStore
+   *   The shared temp store.
+   */
+  protected function getSharedTempStore(): SharedTempStore {
+    if (!isset($this->sharedTempStore)) {
+      $this->sharedTempStore = $this->sharedTempStoreFactory->get('joinup_federation', $this->currentUser->id());
+    }
+    return $this->sharedTempStore;
   }
 
 }

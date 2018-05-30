@@ -61,16 +61,20 @@ class PipelineSelectForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    if ($this->stateManager->isPersisted()) {
-      $state = $this->stateManager->getState();
-      return $this->redirect('pipeline.execute_pipeline', ['pipeline' => $state->getPipelineId()]);
-    }
-
-    $pipelines = [];
+    $pipelines = $unfinished_pipelines = [];
     foreach ($this->pipelinePluginManager->getDefinitions() as $plugin_id => $definition) {
       if ($this->currentUser()->hasPermission("execute $plugin_id pipeline")) {
+        if ($metadata = $this->stateManager->getStateMetadata($plugin_id)) {
+          $unfinished_pipelines[$plugin_id] = $metadata->updated;
+        }
         $pipelines[$plugin_id] = $definition['label'];
       }
+    }
+
+    // If this user has unfinished pipelines, jump to the most recent one.
+    if ($unfinished_pipelines) {
+      arsort($unfinished_pipelines);
+      return $this->redirect('pipeline.execute_pipeline', ['pipeline' => key($unfinished_pipelines)]);
     }
 
     $form['pipeline'] = [

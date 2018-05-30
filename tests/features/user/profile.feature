@@ -119,9 +119,25 @@ Feature: User profile
       | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers |
       | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      |
     And discussion content:
-      | title                  | author          | collection            | state     |
-      | Repopulating blue iris | Corwin Robert   | Botanic E.D.E.N.      | validated |
-      | title                  | Anise Edwardson | Ethic flower handling | validated |
+      | title                          | author          | collection            | state     |
+      | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated |
+      | Best topsoil for plant comfort | Anise Edwardson | Ethic flower handling | validated |
+    And document content:
+      | title                    | author        | collection       | state     |
+      | Cherry blossoms schedule | Corwin Robert | Botanic E.D.E.N. | validated |
+    And event content:
+      | title                | author        | collection       | state     |
+      | Spring blossom party | Corwin Robert | Botanic E.D.E.N. | validated |
+    And news content:
+      | title                         | author        | collection       | state     |
+      | Discovered new flower species | Corwin Robert | Botanic E.D.E.N. | validated |
+    And newsletter content:
+      | title        | author        | collection       | state     |
+      | Latest seeds | Corwin Robert | Botanic E.D.E.N. | validated |
+    And video content:
+      | title                 | author        | collection       | state     |
+      | Planting a tree howto | Corwin Robert | Botanic E.D.E.N. | validated |
+    # Contact information and owner tiles should never be shown.
     And the following contact:
       | name        | Wibo Verhoeven             |
       | email       | wibo.verhoeven@example.com |
@@ -141,15 +157,7 @@ Feature: User profile
     And I go to the public profile of "Corwin Robert"
     Then I should see the heading "Corwin Robert"
     # Tiles should be shown for the groups the user is member of or author of.
-    And I should see the "Botanic E.D.E.N." tile
-    And I should see the "SOUND project" tile
-    And I should see the "Repopulating blue iris" tile
-
-    But I should not see the "Ethic flower handling" tile
-    And I should not see the "E.C.O. fertilizers" tile
-    # Contact information and owner tiles should never be shown.
-    And I should not see the "Wibo Verhoeven" tile
-    And I should not see the "Somboon De Laurentis" tile
+    Then the page should show only the tiles "Botanic E.D.E.N., SOUND project, Repopulating blue iris, Cherry blossoms schedule, Spring blossom party, Discovered new flower species, Latest seeds, Planting a tree howto"
 
     # A message should be shown when visiting a profile of a user without
     # content.

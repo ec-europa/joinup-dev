@@ -44,7 +44,7 @@ class PipelinePermissions implements ContainerInjectionInterface {
    * @return array[]
    *   The pipeline execution permissions.
    */
-  public function executePipeline() {
+  public function buildPermissions() {
     $permissions = [];
 
     /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface[] $definitions */
@@ -54,6 +54,12 @@ class PipelinePermissions implements ContainerInjectionInterface {
       $permissions["execute $plugin_id pipeline"] = [
         'title' => $this->t('Execute the %pipeline pipeline', $arguments),
         'description' => $this->t('Allows users granted with this permissions ro run the %pipeline pipeline.', $arguments),
+        // @todo Eventually extract this value from the plugin annotation.
+        'restrict access' => TRUE,
+      ];
+      $permissions["reset $plugin_id pipeline"] = [
+        'title' => $this->t('Reset the %pipeline pipeline', $arguments),
+        'description' => $this->t('Allows users granted with this permissions ro reset the %pipeline pipeline.', $arguments),
         // @todo Eventually extract this value from the plugin annotation.
         'restrict access' => TRUE,
       ];

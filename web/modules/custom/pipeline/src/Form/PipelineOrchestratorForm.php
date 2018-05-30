@@ -77,8 +77,9 @@ class PipelineOrchestratorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $pipeline = $this->getCurrentPipeline($form_state);
     $form['#title'] = $this->t('@pipeline: @step', [
-      '@pipeline' => $this->getCurrentPipeline($form_state)->getPluginDefinition()['label'],
+      '@pipeline' => $pipeline->getPluginDefinition()['label'],
       '@step' => $this->getCurrentStep($form_state)->getPluginDefinition()['label'],
     ]);
     $form = $this->buildProgressIndicator($form, $form_state);
@@ -87,10 +88,12 @@ class PipelineOrchestratorForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Next'),
     ];
+    $pipeline_id = $pipeline->getPluginId();
     $form['cancel'] = [
       '#type' => 'link',
       '#title' => $this->t('Cancel'),
-      '#url' => Url::fromRoute('pipeline.reset_pipeline'),
+      '#url' => Url::fromRoute('pipeline.reset_pipeline', ['pipeline' => $pipeline_id]),
+      '#access' => $this->currentUser()->hasPermission("reset $pipeline_id pipeline"),
     ];
 
     return $form;

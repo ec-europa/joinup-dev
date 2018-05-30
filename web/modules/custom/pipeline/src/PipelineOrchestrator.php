@@ -2,15 +2,18 @@
 
 namespace Drupal\pipeline;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\pipeline\Form\PipelineOrchestratorForm;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
-use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The pipeline orchestrator.
@@ -65,7 +68,14 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected $messenger;
 
   /**
-   * Constructs a new PipelineOrchestrator object.
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Constructs a new pipeline orchestrator object.
    *
    * @param \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager
    *   The pipeline plugin manager service.
@@ -75,77 +85,103 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The form builder service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
-  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger) {
+  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger, AccountProxyInterface $current_user) {
     $this->pipelinePluginManager = $pipeline_plugin_manager;
     $this->stateManager = $state_manager;
     $this->formBuilder = $form_builder;
     $this->messenger = $messenger;
+    $this->currentUser = $current_user;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function run($pipeline) {
-    $current_state = $this->initializeActiveState($pipeline);
+  public function run($pipeline_id) {
+    $current_step_id = $this->getCurrentStep($pipeline_id);
 
     // Execute all consecutive steps until we reach one that has output. A step
     // produces response/output in one of the following cases:
     // - It's a step with form.
     // - It's the final step.
     // - It stops the pipeline with an error.
-    do {
-      if ($new_state = $this->executeStep($current_state)) {
-        $this->stateManager->setState($new_state);
-        $current_state = $new_state;
+    while (!$this->response) {
+      if ($new_step_id = $this->executeStep($current_step_id)) {
+        $this->stateManager->setState($pipeline_id, $new_step_id);
+        $current_step_id = $new_step_id;
       }
-    } while (!$this->response);
+    }
 
     return $this->response;
   }
 
   /**
-   * Initializes the state machine from the backend or constructs a new one.
+   * Initializes the state machine from the backend or start a new pipeline.
    *
-   * @param string $pipeline
+   * @param string $pipeline_id
    *   The pipeline to be used.
    *
-   * @return \Drupal\pipeline\PipelineState
-   *   The current active state.
+   * @return string
+   *   The current step plugin ID.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    *   If the instance cannot be created, such as if the ID is invalid.
    */
-  protected function initializeActiveState($pipeline) {
-    $this->pipeline = $this->pipelinePluginManager->createInstance($pipeline);
+  protected function getCurrentStep($pipeline_id) {
+    $this->pipeline = $this->pipelinePluginManager->createInstance($pipeline_id);
 
-    if (!$this->stateManager->isPersisted()) {
-      $current_state = new PipelineState($pipeline, $this->pipeline->current());
-    }
-    else {
-      $current_state = $this->stateManager->getState();
+    // Resuming from a previous persisted state.
+    if ($current_step_id = $this->stateManager->getState($pipeline_id)) {
       // Restore the active pipeline step from the persistent store.
-      $this->pipeline->setCurrent($current_state->getStep());
+      $this->pipeline->setCurrent($current_step_id);
+    }
+    // Starting the pipeline from the beginning.
+    else {
+      $current_step_id = $this->pipeline->current();
+
+      // Run the pipeline preparation.
+      $error = $this->pipeline->prepare();
+
+      // If this pipeline preparation returns errors, exit here the pipeline
+      // execution but show the errors as error messages.
+      if ($error) {
+        $arguments = [
+          '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+          '@reason' => $error,
+        ];
+        $message = $this->t('%pipeline failed to start. Reason: @reason', $arguments);
+        $this->messenger->addError($message);
+
+        if ($this->currentUser->hasPermission("access pipeline selector")) {
+          $url = Url::fromRoute('pipeline.pipeline_select');
+        }
+        else {
+          $url = Url::fromUri('internal:/<front>');
+        }
+
+        $this->response = new RedirectResponse($url->setAbsolute()->toString());
+      }
     }
 
-    return $current_state;
+    return $current_step_id;
   }
 
   /**
    * Executes the current step and progresses the state machine with one step.
    *
-   * @param \Drupal\pipeline\PipelineState $current_state
-   *   The current state.
+   * @param string $current_step_id
+   *   The current pipeline step plugin ID.
    *
-   * @return \Drupal\pipeline\PipelineState
-   *   The next state.
+   * @return string
+   *   The next step plugin ID.
    *
    * @throws \Exception
    *   If errors occurred during the form build or step execution.
    */
-  protected function executeStep(PipelineState $current_state) {
-    $step = $this->pipeline->createStepInstance($current_state->getStep());
-
+  protected function executeStep($current_step_id) {
+    $step = $this->pipeline->createStepInstance($current_step_id);
     $data = [];
     if ($step instanceof PipelineStepWithFormInterface) {
       $form_state = new FormState();
@@ -153,20 +189,23 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
       // In case of validation errors, or a rebuild (e.g. multi step), bail out.
       if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
         // Set the current state.
-        $this->stateManager->setState($current_state);
+        $this->stateManager->setState($this->pipeline->getPluginId(), $current_step_id);
         return NULL;
       }
       $this->redirectForm($form_state);
     }
 
     try {
-      $error = $step->prepare($data)->execute($data);
+      $error = $step->prepare($data);
+      if (!$error) {
+        $error = $step->execute($data);
+      }
     }
     catch (\Exception $exception) {
       // Catching any exception from the step execution just to reset the
       // pipeline and allowing a future run. Otherwise, on a new pipeline run,
       // the orchestrator will jump again to this step and might get stuck here.
-      $this->stateManager->reset();
+      $this->stateManager->reset($this->pipeline->getPluginId());
       // Propagate the exception.
       throw $exception;
     }
@@ -174,7 +213,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // If this step execution returns errors, exit here the pipeline execution
     // but show the errors.
     if ($error) {
-      $this->setStepErrorResponse($error, $step);
+      $arguments = [
+        '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+        '%step' => $step->getPluginDefinition()['label'],
+      ];
+      $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
+      $this->setErrorResponse($error, $message);
       $this->pipeline->onError();
       return NULL;
     }
@@ -189,9 +233,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
       return NULL;
     }
 
-    return $this->stateManager
-      ->setState(new PipelineState($this->pipeline->getPluginId(), $this->pipeline->current()))
-      ->getState();
+    return $this->pipeline->current();
   }
 
   /**
@@ -237,17 +279,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *
    * @param array $error
    *   The error message as a render array.
-   * @param \Drupal\pipeline\Plugin\PipelineStepInterface $step
-   *   The step plugin instance.
+   * @param \Drupal\Component\Render\MarkupInterface $message
+   *   The message to be shown on the top of the page.
    */
-  protected function setStepErrorResponse(array $error, PipelineStepInterface $step) {
-    $arguments = [
-      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
-      '%step' => $step->getPluginDefinition()['label'],
-    ];
-    $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
+  protected function setErrorResponse(array $error, MarkupInterface $message) {
     $this->messenger->addError($message);
-    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', $arguments)];
+    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', ['%pipeline' => $this->pipeline->getPluginDefinition()['label']])];
   }
 
   /**
@@ -266,8 +303,10 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function reset(): void {
-    $this->stateManager->reset();
+  public function reset($pipeline) {
+    $plugin = $this->pipelinePluginManager->createInstance($pipeline);
+    // Ask the plugin to act on reset.
+    $plugin->reset();
   }
 
 }
