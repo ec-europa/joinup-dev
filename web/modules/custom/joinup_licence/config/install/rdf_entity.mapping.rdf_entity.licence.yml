@@ -21,7 +21,7 @@ base_fields_mapping:
       format: resource
   label:
     value:
-      predicate: 'http://purl.org/dc/terms/title'
+      predicate: 'http://www.w3.org/2000/01/rdf-schema#label'
       format: t_literal
   langcode:
     value:
