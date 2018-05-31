@@ -37,6 +37,7 @@ use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 
@@ -1525,7 +1526,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @throws \Exception
    *   Thrown when the field does not have a description.
-   * @throws \PHPUnit_Framework_ExpectationFailedException
+   * @throws \PHPUnit\Framework\ExpectationFailedException
    *   Thrown when none of the field's descriptions match the given text.
    *
    * @Then I should see the description :description for (the ):label( field)
@@ -1542,11 +1543,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         // The description was found, stop searching.
         return;
       }
-      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      catch (ExpectationFailedException $e) {
         // The description did not match the expected string, keep searching.
       }
     }
-    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+    throw new ExpectationFailedException("The description $description was not found for the $label field.");
   }
 
   /**
@@ -1603,11 +1604,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertCurrentUserProfilePictureVisible() {
     if ($this->getUserManager()->currentUserIsAnonymous()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('No user is currently logged in.');
+      throw new ExpectationFailedException('No user is currently logged in.');
     }
     $user = User::load($this->getUserManager()->getCurrentUser()->uid);
     if ($user->field_user_photo->isEmpty()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('The currently logged in user does not have a profile picture.');
+      throw new ExpectationFailedException('The currently logged in user does not have a profile picture.');
     }
     /** @var \Drupal\file\FileInterface $photo */
     $photo = File::load($user->field_user_photo->target_id);
