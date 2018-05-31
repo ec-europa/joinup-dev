@@ -120,9 +120,10 @@ Feature: Collections Overview
     # Check for HTML so that we assert that actually the HTML has been stripped.
     Then the page should contain the html text "Fit while working is dope"
     And I should see the text "leo blandit a ornare non sollicitudin iaculis…"
+    # Check that later chunks of text in the abstract are not rendered.
     But I should not see the text "purus. Integer nec enim facilisis mi fermentum mollis sed vitae lacus"
     And I should not see the text "This collection is intended to show ways of being fit while working"
-    When I click "About" in the "Left sidebar" region
+    When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"
     And I should see the text "Fit while working is dope"
     And I should see the text "This collection is intended to show ways of being fit while working"
@@ -141,6 +142,8 @@ Feature: Collections Overview
     And the page should contain the html text "This collection is intended to show ways of being fit while working"
     And I should see the text "In consequat sapien risus a…"
     But I should not see the text "malesuada eros auctor eget. Curabitur at"
+    When I click "Read more" in the "Content" region
+    Then I should see the heading "About Fitness at work"
 
   @terms
   Scenario: Custom pages should not be visible on the overview page
