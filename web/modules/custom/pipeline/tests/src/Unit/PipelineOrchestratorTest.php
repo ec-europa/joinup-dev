@@ -22,8 +22,9 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests the data pipeline processor.
  *
- * @group pipeline
  * @coversDefaultClass \Drupal\pipeline\PipelineOrchestrator
+ *
+ * @group pipeline
  */
 class PipelineOrchestratorTest extends UnitTestCase {
 
@@ -120,7 +121,7 @@ class PipelineOrchestratorTest extends UnitTestCase {
     $state_manager->reset('demo_pipe')->shouldBeCalled();
 
     $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
-    $this->stepPluginManager->createInstance('test_step')->willReturn(new TestStep([], '', ['label' => 'Foo']));
+    $this->stepPluginManager->createInstance('test_step', [])->willReturn(new TestStep([], '', ['label' => 'Foo']));
     $definition = ['label' => 'Bar', 'steps' => ['test_step']];
     $this->pipelinePluginManager->createInstance('demo_pipe')
       ->willReturn(new TestPipeline([], 'demo_pipe', $definition, $this->stepPluginManager->reveal(), $this->stateManager->reveal()));

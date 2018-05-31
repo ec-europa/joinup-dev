@@ -53,7 +53,10 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    *   The pipeline state manager service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager) {
+    $this->normalizeStepList($plugin_definition);
+
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+
     $this->setConfiguration($configuration);
     $this->stepPluginManager = $step_plugin_manager;
     $this->stateManager = $state_manager;
@@ -77,7 +80,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    */
   public function createStepInstance($step_plugin_id) {
     /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $step */
-    $step = $this->stepPluginManager->createInstance($step_plugin_id);
+    $step = $this->stepPluginManager->createInstance($step_plugin_id, $this->getStepList()->offsetGet($step_plugin_id));
     return $step->setPipeline($this);
   }
 
@@ -91,9 +94,9 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    */
   public function onSuccess() {
     // Ask each step if they want to take some action after pipeline execution.
-    foreach ($this->getStepList() as $step_plugin_id) {
+    foreach ($this->getStepList() as $step_plugin_id => $step_plugin_config) {
       /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $step_plugin */
-      $step_plugin = $this->stepPluginManager->createInstance($step_plugin_id);
+      $step_plugin = $this->stepPluginManager->createInstance($step_plugin_id, $step_plugin_config);
       $step_plugin->onPipelineSuccess();
     }
     // Reset the state manager.
@@ -106,9 +109,9 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    */
   public function onError() {
     // Ask each step if they want to take some action after pipeline error.
-    foreach ($this->getStepList() as $step_plugin_id) {
+    foreach ($this->getStepList() as $step_plugin_id => $step_plugin_config) {
       /** @var \Drupal\pipeline\Plugin\PipelineStepInterface $step_plugin */
-      $step_plugin = $this->stepPluginManager->createInstance($step_plugin_id);
+      $step_plugin = $this->stepPluginManager->createInstance($step_plugin_id, $step_plugin_config);
       $step_plugin->onPipelineError();
     }
     // Reset the state manager.
@@ -130,20 +133,20 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    *   The steps iterator.
    *
    * @throws \InvalidArgumentException
-   *   The steps defined in annotation are invalid ot no steps are provided.
+   *   The steps defined in annotation are invalid or no steps are provided.
    */
   protected function getStepList() {
     if (!isset($this->steps)) {
-      $this->steps = new \ArrayIterator([], 1);
-      foreach ($this->getPluginDefinition()['steps'] as $step_plugin_id) {
+      $steps = $this->getPluginDefinition()['steps'];
+      foreach ($steps as $step_plugin_id => $step_plugin_config) {
         if (!\Drupal::service('plugin.manager.pipeline_step')->hasDefinition($step_plugin_id)) {
           throw new \InvalidArgumentException("Invalid step plugin '$step_plugin_id'.");
         }
-        $this->steps->append($step_plugin_id);
       }
-      if (!$this->steps->count()) {
+      if (!count($steps)) {
         throw new \InvalidArgumentException("Pipeline '{$this->getPluginId()}' has no valid steps.");
       }
+      $this->steps = new \ArrayIterator($steps, 1);
     }
     return $this->steps;
   }
@@ -189,7 +192,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
   public function setCurrent($step_plugin_id) {
     $this->rewind();
     while ($this->valid()) {
-      if ($this->current() === $step_plugin_id) {
+      if ($this->key() === $step_plugin_id) {
         return $this;
       }
       $this->next();
@@ -227,6 +230,46 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    */
   public function calculateDependencies() {
     return [];
+  }
+
+  /**
+   * Normalizes the steps list.
+   *
+   * Changes the plugin definition 'steps' entry from a list, such as:
+   * @codingStandardsIgnoreStart
+   * [
+   *   'foo',
+   *   'bar' => [
+   *     'baz',
+   *     'qux',
+   *   ],
+   *   'foobar',
+   * ]
+   * @codingStandardsIgnoreEnd
+   * into:
+   * @codingStandardsIgnoreStart
+   * [
+   *   'foo' => [],
+   *   'bar' => [
+   *     'baz',
+   *     'qux',
+   *   ],
+   *   'foobar' => [],
+   * ]
+   * @codingStandardsIgnoreEnd
+   *
+   * @param array $plugin_definition
+   *   The plugin definition to be altered.
+   */
+  protected function normalizeStepList(array &$plugin_definition) {
+    $steps = [];
+    foreach ($plugin_definition['steps'] as $delta => $step) {
+      $is_preconfigured = is_array($step);
+      $key = $is_preconfigured ? $delta : $step;
+      $value = $is_preconfigured ? $step : [];
+      $steps[$key] = $value;
+    }
+    $plugin_definition['steps'] = $steps;
   }
 
 }
