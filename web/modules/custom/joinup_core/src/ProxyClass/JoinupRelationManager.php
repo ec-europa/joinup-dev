@@ -165,6 +165,22 @@ namespace Drupal\joinup_core\ProxyClass {
             return $this->lazyLoadItself()->getGroupMembershipsByRoles($entity, $role_names, $states);
         }
 
+        /**
+         * {@inheritdoc}
+         */
+        public function getCollectionIds() : array
+        {
+            return $this->lazyLoadItself()->getCollectionIds();
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getSolutionIds() : array
+        {
+            return $this->lazyLoadItself()->getSolutionIds();
+        }
+
     }
 
 }

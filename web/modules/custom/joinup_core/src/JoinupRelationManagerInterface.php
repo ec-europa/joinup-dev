@@ -145,4 +145,20 @@ interface JoinupRelationManagerInterface {
    */
   public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
+  /**
+   * Returns the entity IDs of all collections.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  public function getCollectionIds(): array;
+
+  /**
+   * Returns the entity IDs of all solutions.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  public function getSolutionIds(): array;
+
 }
