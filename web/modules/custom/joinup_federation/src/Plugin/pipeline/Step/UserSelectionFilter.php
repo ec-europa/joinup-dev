@@ -273,13 +273,13 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
     static $reference_fields = [];
 
-    // Compute the whitelist of IDs not already added but exit on empty list.
-    if (!$ids_to_add = array_diff($whitelist_ids, $this->whitelist)) {
+    // Compute the whitelist of IDs not already added but exit early if empty.
+    if (!$new_whitelist_ids = array_diff($whitelist_ids, $this->whitelist)) {
       return;
     }
 
     // Add new whitelisted IDs.
-    $this->whitelist = array_merge($this->whitelist, $ids_to_add);
+    $this->whitelist = array_merge($this->whitelist, $new_whitelist_ids);
 
     // Store once the top level whitelisted solutions.
     if (!$whitelisted_solution_ids) {
@@ -310,7 +310,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }
 
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach (Rdf::loadMultiple($whitelist_ids, ['staging']) as $id => $entity) {
+    foreach (Rdf::loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
       if ($entity->bundle() !== $bundle) {
         throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
       }
