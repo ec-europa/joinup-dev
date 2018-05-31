@@ -22,43 +22,37 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - ds
+    - field_group
     - search_api_field
     - smart_trim
     - user
+third_party_settings:
+  field_group:
+    group_abstract_wrapper:
+      children:
+        - field_ar_abstract
+        - field_ar_description
+        - read_more
+      parent_name: ''
+      weight: 1
+      format_type: html_element
+      format_settings:
+        label: 'Abstract wrapper'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Abstract wrapper'
 id: rdf_entity.collection.default
 targetEntityType: rdf_entity
 bundle: collection
 mode: default
 content:
   field_ar_abstract:
-    type: smart_trim
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      trim_length: 500
-      trim_type: chars
-      trim_suffix: …
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      trim_options:
-        text: true
-        trim_zero: false
-      wrap_output: false
-      more_link: false
-      summary_handler: full
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-      joinup:
-        template_suggestion: top_abstract
-  field_ar_description:
     type: smart_trim
     weight: 2
     region: content
@@ -85,9 +79,37 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: top_abstract
+        template_suggestion: p_wrapper
+  field_ar_description:
+    type: smart_trim
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: p_wrapper
   field_collection_content:
-    weight: 6
+    weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -102,17 +124,17 @@ content:
     third_party_settings: {  }
     region: content
   rdf_entity_field_collection_content_inline_facets:
-    weight: 5
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   rdf_entity_field_collection_content_top:
-    weight: 4
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   read_more:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
