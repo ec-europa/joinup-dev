@@ -14,6 +14,13 @@ class AdmsValidationStepTest extends StepTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function getUsedStepPlugins(): array {
+    return ['adms_validation' => []];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = ['adms_validator'];
 
   /**

@@ -19,6 +19,13 @@ class AddJoinupVocabulariesStepTest extends StepTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function getUsedStepPlugins(): array {
+    return ['add_joinup_vocabularies' => []];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'rdf_taxonomy',
     'taxonomy',

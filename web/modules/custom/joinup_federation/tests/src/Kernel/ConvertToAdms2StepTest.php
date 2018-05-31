@@ -14,6 +14,13 @@ use EasyRdf\Graph;
 class ConvertToAdms2StepTest extends StepTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getUsedStepPlugins(): array {
+    return ['convert_to_adms2' => []];
+  }
+
+  /**
    * Test ADMSv2 changes.
    */
   public function test() {

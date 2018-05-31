@@ -13,4 +13,17 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   steps = {},
  * )
  */
-class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase {}
+class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase {
+
+  /**
+   * Allows the test to override the steps defined in annotation.
+   *
+   * @param array $steps
+   *   Associative array keyed by step plugin ID and having the plugin
+   *   configuration as values.
+   */
+  public function setSteps(array $steps) {
+    $this->pluginDefinition['steps'] = $steps;
+  }
+
+}
