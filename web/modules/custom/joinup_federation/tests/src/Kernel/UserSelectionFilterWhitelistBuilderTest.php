@@ -69,19 +69,20 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
     // Check that http://solution/2 is not added to the whitelist.
     $this->assertNotContains('http://solution/2', $whitelist);
     // An entity referred by a whitelisted and a blacklisted solution is added.
-    $this->assertContains('http://type1/1', $whitelist);
-    // Nested: http://solution/1 > http://type1/1 > http://type2/1. The last one
-    // is whitelisted because all upstream path is whitelisted.
-    $this->assertContains('http://type2/1', $whitelist);
+    $this->assertContains('http://distro/1', $whitelist);
+    // Nested: http://solution/1 > http://version/1 > http://distro/2. The last
+    // one is whitelisted because it comes via an whitelisted upstream path.
+    $this->assertContains('http://distro/2', $whitelist);
     // Referred only by a blacklisted solution.
-    $this->assertNotContains('http://type1/2', $whitelist);
-    // Nested: http://solution/2 > http://type1/2 > http://type2/2. The last one
-    // is blacklisted because all upstream path is blacklisted.
-    $this->assertNotContains('http://type2/2', $whitelist);
-    // Whitelisted because:
-    // is blacklisted on: http://solution/2 > http://type1/2 > http://type2/3,
-    // but whitelisted on: http://solution/1 > http://type1/1 > http://type2/3.
-    $this->assertContains('http://type2/3', $whitelist);
+    $this->assertNotContains('http://distro/3', $whitelist);
+    // Nested: http://solution/2 > http://version/2 > http://distro/4. The last
+    // one is blacklisted because the whole upstream path is blacklisted.
+    $this->assertNotContains('http://distro/4', $whitelist);
+    // Whitelisted because is blacklisted following the path:
+    // - http://solution/2 > http://version/2 > http://distro/5,
+    // but whitelisted following the path:
+    // - http://solution/1 > http://version/1 > http://distro/5.
+    $this->assertContains('http://distro/5', $whitelist);
   }
 
   /**
@@ -95,12 +96,15 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
       // This solution was checked to be federated.
       'http://solution/1' => [
         'rid' => 'solution',
-        'reference_to_type1' => [
+        'solution_to_version' => [
+          'http://version/1',
+        ],
+        'solution_to_distro' => [
           // This is referred by the blacklisted solution but is whitelisted
           // because is referred also by this whitelisted solution.
-          'http://type1/1',
+          'http://distro/1',
         ],
-        'reference_to_solution' => [
+        'solution_to_solution' => [
           'http://solution/2',
         ],
       ],
@@ -108,42 +112,44 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
       // will not be added to the whitelist.
       'http://solution/2' => [
         'rid' => 'solution',
-        'reference_to_type1' => [
-          'http://type1/1',
+        'solution_to_version' => [
+          'http://version/2',
+        ],
+        'solution_to_distro' => [
+          'http://distro/1',
           // Not whitelisted as is referred only by a blacklisted solution.
-          'http://type1/2',
+          'http://distro/3',
+        ],
+        'solution_to_solution' => [
+          'http://solution/1',
         ],
       ],
-      'http://type1/1' => [
-        'rid' => 'type1',
-        'reference_to_type2' => [
-          // Nested reference.
-          'http://type2/1',
-          'http://type2/3',
+      'http://version/1' => [
+        'rid' => 'version',
+        'version_to_distro' => [
+          'http://distro/1',
+          'http://distro/2',
+          // On the path http://solution/2 > http://version/2 > http://distro/5,
+          // is blacklisted but is also referred by the whitelisted path:
+          // http://solution/1 > http://version/1 > http://distro/5.
+          'http://distro/5',
         ],
-      ],
-      'http://type1/2' => [
-        'rid' => 'type1',
-        'reference_to_type2' => [
-          'http://type2/2',
-          // On the path http://solution/2 > http://type1/2 > http://type2/3 is
-          // blacklisted but is also referred by a whitelisted.
-          'http://type2/3',
-        ],
-      ],
-      'http://type2/1' => [
-        'rid' => 'type2',
-        'reference_to_solution' => [
+        'version_to_solution' => [
           // Circular, but it doesn't hurt.
           'http://solution/1',
         ],
       ],
-      'http://type2/2' => [
-        'rid' => 'type2',
+      'http://version/2' => [
+        'rid' => 'version',
+        'version_to_distro' => [
+          'http://distro/4',
+        ],
       ],
-      'http://type2/3' => [
-        'rid' => 'type2',
-      ],
+      'http://distro/1' => ['rid' => 'distro'],
+      'http://distro/2' => ['rid' => 'distro'],
+      'http://distro/3' => ['rid' => 'distro'],
+      'http://distro/4' => ['rid' => 'distro'],
+      'http://distro/5' => ['rid' => 'distro'],
     ];
   }
 

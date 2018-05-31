@@ -18,5 +18,5 @@ base_fields_mapping:
       predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
       format: resource
 graph:
-  default: 'http://joinup.eu/solution/published'
+  default: 'http://example.com/solution/published'
 entity_id_plugin: default

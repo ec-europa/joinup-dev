@@ -1,7 +1,7 @@
-id: rdf_entity.solution.reference_to_solution
+id: rdf_entity.solution.solution_to_solution
 entity_type: rdf_entity
 bundle: solution
-field_name: reference_to_solution
+field_name: solution_to_solution
 field_type: entity_reference
 settings:
   handler: default:rdf_entity
@@ -10,5 +10,5 @@ settings:
       solution: solution
 dependencies:
   config:
-    - field.storage.rdf_entity.reference_to_solution
-    - rdf_entity.mapping.rdf_entity.solution
+    - field.storage.rdf_entity.solution_to_solution
+    - rdf_entity.rdfentity.solution

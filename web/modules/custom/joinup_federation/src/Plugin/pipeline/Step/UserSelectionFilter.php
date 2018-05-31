@@ -229,9 +229,11 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    */
   public function extractDataFromSubmit(FormStateInterface $form_state) {
     // Normalize user selection to boolean values.
-    return ['user_selection' => array_map(function ($checked): bool {
-      return (bool) $checked;
-    }, $form_state->getValue('user_selection'))];
+    return [
+      'user_selection' => array_map(function ($checked): bool {
+        return (bool) $checked;
+      }, $form_state->getValue('user_selection')),
+    ];
   }
 
   /**
@@ -260,7 +262,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * @param string[] $whitelist_ids
    *   A list of whitelisted entity IDs. All entities are from $bundle bundle.
    *   The caller should pass the list of whitelisted solution IDs.
-   * @param bool $recursive_call
+   * @param array|null $whitelisted_solution_ids
    *   Used internally to distinguish between caller calls and recursive calls.
    *
    * @throws \InvalidArgumentException
@@ -268,15 +270,19 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   been passed as $bundle parameter or if a passed item from $whitelist_ids
    *   is not from $bundle bundle.
    */
-  protected function buildWhitelist(string $bundle, array $whitelist_ids, bool $recursive_call = FALSE): void {
-    static $whitelisted_solution_ids;
+  protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
     static $reference_fields = [];
 
-    // Passed IDs are whitelisted entities.
-    $this->whitelist = array_unique(array_merge($this->whitelist, $whitelist_ids));
+    // Compute the whitelist of IDs not already added but exit on empty list.
+    if (!$ids_to_add = array_diff($whitelist_ids, $this->whitelist)) {
+      return;
+    }
+
+    // Add new whitelisted IDs.
+    $this->whitelist = array_merge($this->whitelist, $ids_to_add);
 
     // Store once the top level whitelisted solutions.
-    if (!$recursive_call) {
+    if (!$whitelisted_solution_ids) {
       if ($bundle !== 'solution') {
         throw new \InvalidArgumentException("First call of ::buildWhitelist() should always receive 'solution' as \$bundle parameter ('$bundle' was passed).");
       }
@@ -319,7 +325,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
               continue;
             }
           }
-          $this->buildWhitelist($referenced_bundle, $referenced_entity_ids, TRUE);
+          $this->buildWhitelist($referenced_bundle, $referenced_entity_ids, $whitelisted_solution_ids);
         }
       }
     }

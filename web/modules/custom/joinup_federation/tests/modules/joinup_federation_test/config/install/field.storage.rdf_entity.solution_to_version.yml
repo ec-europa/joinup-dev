@@ -1,3 +1,9 @@
+id: rdf_entity.solution_to_version
+field_name: solution_to_version
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
 dependencies:
   module:
     - rdf_entity
@@ -7,9 +13,3 @@ third_party_settings:
       target_id:
         predicate: 'http://purl.org/dc/terms/hasVersion'
         format: resource
-id: rdf_entity.reference_to_type1
-field_name: reference_to_type1
-entity_type: rdf_entity
-type: entity_reference
-settings:
-  target_type: rdf_entity
