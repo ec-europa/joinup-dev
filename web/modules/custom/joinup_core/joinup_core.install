@@ -68,3 +68,21 @@ function joinup_core_update_8101() {
   $queue = \Drupal::queue('cached_computed_field_expired_fields', FALSE);
   $queue->deleteQueue();
 }
+
+/**
+ * Implements hook_update_N().
+ *
+ * Fix the release notes predicate.
+ */
+function joinup_core_update_8102() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <https://www.w3.org/TR/vocab-adms/#adms-versionnotes> ?object } }
+INSERT { GRAPH ?g { ?subject <http://www.w3.org/ns/adms#versionNotes> ?object } }
+USING <http://joinup.eu/asset_release/published>
+USING <http://joinup.eu/asset_release/draft>
+WHERE { GRAPH ?g { ?subject <https://www.w3.org/TR/vocab-adms/#adms-versionnotes> ?object } }
+QUERY;
+  $connection->query($query);
+}
