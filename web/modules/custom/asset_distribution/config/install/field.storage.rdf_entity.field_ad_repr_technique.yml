@@ -8,7 +8,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'https://www.w3.org/TR/vocab-adms/#adms_representationTechnique'
+        predicate: 'http://www.w3.org/ns/adms#representationTechnique'
         format: resource
 id: rdf_entity.field_ad_repr_technique
 field_name: field_ad_repr_technique
