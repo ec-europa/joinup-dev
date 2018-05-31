@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, uninstall, schema and requirements hook for Joinup.
+ * Install, uninstall, schema and requirements hook for joinup_licence module.
  */
 
 /**
