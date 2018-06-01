@@ -300,6 +300,13 @@ function collection_module_implements_alter(&$implementations, $hook) {
 function collection_entity_extra_field_info() {
   $fields = [];
   $collection = RdfEntityType::load('collection');
+
+  // This hook can fire before the collection bundle config is defined, in that
+  // case we have nothing meaningful to add.
+  if (empty($collection)) {
+    return;
+  }
+
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
   $display = &$fields['rdf_entity'][$collection->id()]['display'];
