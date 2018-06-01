@@ -7,6 +7,7 @@ use Drupal\entity_test\Entity\EntityTest;
 use Drupal\flag\Entity\Flag;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Tests the JoinupSubscription service.
@@ -151,8 +152,8 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     $subscribed_user = reset($subscribed_users);
     $unsubscribed_user = $this->createUser();
 
-    \PHPUnit_Framework_Assert::assertTrue($this->subscriptionService->isSubscribed($subscribed_user, $this->entity, $this->testFlagId));
-    \PHPUnit_Framework_Assert::assertFalse($this->subscriptionService->isSubscribed($unsubscribed_user, $this->entity, $this->testFlagId));
+    Assert::assertTrue($this->subscriptionService->isSubscribed($subscribed_user, $this->entity, $this->testFlagId));
+    Assert::assertFalse($this->subscriptionService->isSubscribed($unsubscribed_user, $this->entity, $this->testFlagId));
   }
 
   /**
@@ -184,18 +185,18 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     foreach ($expected_subscribers as $expected_subscriber) {
       // Check that an entry with the subscriber ID is present in the list.
       $id = $expected_subscriber->id();
-      \PHPUnit_Framework_Assert::assertArrayHasKey($id, $actual_subscribers);
+      Assert::assertArrayHasKey($id, $actual_subscribers);
 
       // Check that the entry is a user account and that it is the right one.
       $actual_subscriber = $actual_subscribers[$id];
-      \PHPUnit_Framework_Assert::assertInstanceOf(AccountInterface::class, $actual_subscriber);
-      \PHPUnit_Framework_Assert::assertEquals($expected_subscriber->id(), $actual_subscriber->id());
+      Assert::assertInstanceOf(AccountInterface::class, $actual_subscriber);
+      Assert::assertEquals($expected_subscriber->id(), $actual_subscriber->id());
 
       unset($actual_subscribers[$id]);
     }
 
     // Check that no unexpected subscribers are present.
-    \PHPUnit_Framework_Assert::assertEmpty($actual_subscribers);
+    Assert::assertEmpty($actual_subscribers);
   }
 
 }
