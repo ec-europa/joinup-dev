@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing documents.
@@ -95,7 +96,7 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // @see \Drupal\file_url\Plugin\Field\FieldFormatter\FileUrlFormatter::viewElements()
     $expected_href = file_url_transform_relative(file_create_url($file->getFileUri()));
-    \PHPUnit_Framework_Assert::assertEquals($expected_href, $link->getAttribute('href'), 'The download link is not pointing to the correct file.');
+    Assert::assertEquals($expected_href, $link->getAttribute('href'), 'The download link is not pointing to the correct file.');
   }
 
 }
