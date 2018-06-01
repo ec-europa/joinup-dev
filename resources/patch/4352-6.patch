@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/search_api/backend/SearchApiSolrBackend.php b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+index b880a36..2033535 100644
+--- a/src/Plugin/search_api/backend/SearchApiSolrBackend.php
++++ b/src/Plugin/search_api/backend/SearchApiSolrBackend.php
+@@ -1021,6 +1021,8 @@ class SearchApiSolrBackend extends BackendPluginBase implements SolrBackendInter
+       // Send search request.
+       $response = $connector->search($solarium_query);
+       $body = $response->getBody();
++      file_put_contents(DRUPAL_ROOT . '/test.txt', $_SERVER['REQUEST_URI'] . "\n", FILE_APPEND);
++      file_put_contents(DRUPAL_ROOT . '/test.txt', $body . "\n", FILE_APPEND);
+       if (200 != $response->getStatusCode()) {
+         throw new SearchApiSolrException(strip_tags($body), $response->getStatusCode());
+       }

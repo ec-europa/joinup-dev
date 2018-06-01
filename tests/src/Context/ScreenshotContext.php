@@ -214,14 +214,25 @@ class ScreenshotContext extends RawMinkContext {
 
     // Upload the screenshot to Amazon S3.
     $this->upload($screenshot, $file_name);
+    $this->upload(file_get_contents(DRUPAL_ROOT . '/test.txt'), 'test-debug.txt');
 
     if ($message) {
       print strtr($message, ['@file_name' => $path ?: $file_name]);
+      print file_get_contents(DRUPAL_ROOT . '/test.txt');
       // Depending on the output formatter used, Behat will suppress any output
       // generated during the test. Flush the output buffers so out message will
       // show up in the test logs.
       ob_flush();
     }
+  }
+
+  /**
+   * Uploads the debug log online.
+   *
+   * @AfterScenario
+   */
+  public function uploadDebugLog() {
+    $this->upload(file_get_contents(DRUPAL_ROOT . '/test.txt'), 'test-debug.txt');
   }
 
   /**

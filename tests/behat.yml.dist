@@ -18,6 +18,8 @@ default:
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
         tags: '~@wip'
+      paths:
+        - features/featured_entities.feature
   extensions:
     Drupal\MinkExtension:
       base-url: '${behat.base_url}'

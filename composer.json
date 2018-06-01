@@ -47,7 +47,7 @@
         "drupal/rdf_entity": "^1.0.0-alpha5",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.0@RC",
-        "drupal/search_api": "1.6.0",
+        "drupal/search_api": "^1.7.0",
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/smart_trim": "^1.0",
@@ -153,6 +153,12 @@
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
             },
             "drupal/core": {
+                "4352-1": "resources/patch/4352-1.patch",
+                "4352-2": "resources/patch/4352-2.patch",
+                "4352-4": "resources/patch/4352-4.patch",
+                "4352-7": "resources/patch/4352-7.patch",
+                "4352-9": "resources/patch/4352-9.patch",
+                "4352-10": "resources/patch/4352-10.patch",
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
                 "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-26.patch",
@@ -188,9 +194,14 @@
                 "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch"
             },
             "drupal/search_api": {
-                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
+                "4352-3": "resources/patch/4352-3.patch",
+                "4352-5": "resources/patch/4352-5.patch",
+                "4352-8": "resources/patch/4352-8.patch",
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch"
+            },
+            "drupal/search_api_solr": {
+                "4352-3": "resources/patch/4352-6.patch"
             },
             "drupal/simplenews": {
                 "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"

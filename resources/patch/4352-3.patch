@@ -1,0 +1,27 @@
+diff --git a/src/Utility/PostRequestIndexing.php b/src/Utility/PostRequestIndexing.php
+index 02f9c4de..6771b2a0 100644
+--- a/src/Utility/PostRequestIndexing.php
++++ b/src/Utility/PostRequestIndexing.php
+@@ -46,6 +46,10 @@ class PostRequestIndexing implements PostRequestIndexingInterface, DestructableI
+    * {@inheritdoc}
+    */
+   public function destruct() {
++    if (!empty($this->operations)) {
++      sleep(5);
++    }
++
+     foreach ($this->operations as $index_id => $item_ids) {
+       try {
+         $storage = $this->entityTypeManager->getStorage('search_api_index');
+@@ -68,6 +72,11 @@ class PostRequestIndexing implements PostRequestIndexingInterface, DestructableI
+       try {
+         $items = $index->loadItemsMultiple($item_ids);
+         if ($items) {
++          foreach ($items as $item) {
++            /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $item */
++            $entity = $item->getValue();
++            drupal_set_message('Indexing ' . $entity->getEntityTypeId() . ' ' . $entity->label());
++          }
+           $index->indexSpecificItems($items);
+         }
+       }

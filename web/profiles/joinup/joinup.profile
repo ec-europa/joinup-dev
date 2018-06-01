@@ -450,6 +450,8 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
 
   // If the entity has the site-wide featured field, enable the related js
   // library.
+  $message = __FUNCTION__ . "\n" . $entity->label() . "\n" . (($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) ? $entity->get('field_site_featured')->value : 'no field or value');
+  drupal_set_message($message);
   if ($entity->hasField('field_site_featured') && $entity->get('field_site_featured')->value) {
     $variables['attributes']['data-drupal-featured'][] = TRUE;
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';

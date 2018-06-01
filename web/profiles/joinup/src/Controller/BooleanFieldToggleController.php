@@ -61,6 +61,8 @@ class BooleanFieldToggleController extends ControllerBase {
    *   The redirect response.
    */
   public function doToggle(ContentEntityInterface $entity, $field_name, $value, $message) {
+    global $lalalala_testing;
+    $lalalala_testing = 'value: ' . (string) (int) $value;
     $entity->set($field_name, $value)->save();
 
     // Passing a variable to the t() function triggers a warning, but in this

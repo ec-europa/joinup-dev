@@ -1,0 +1,12 @@
+diff --git a/core/lib/Drupal/Core/Cache/CacheTagsInvalidator.php b/core/lib/Drupal/Core/Cache/CacheTagsInvalidator.php
+index 820da9886b..7ce1aba0d3 100644
+--- a/core/lib/Drupal/Core/Cache/CacheTagsInvalidator.php
++++ b/core/lib/Drupal/Core/Cache/CacheTagsInvalidator.php
+@@ -24,6 +24,7 @@ class CacheTagsInvalidator implements CacheTagsInvalidatorInterface {
+    */
+   public function invalidateTags(array $tags) {
+     assert(Inspector::assertAllStrings($tags), 'Cache tags must be strings.');
++    file_put_contents(DRUPAL_ROOT . '/test.txt', 'Invalidating tags: ' . json_encode($tags) . "\n", FILE_APPEND);
+ 
+     // Notify all added cache tags invalidators.
+     foreach ($this->invalidators as $invalidator) {
