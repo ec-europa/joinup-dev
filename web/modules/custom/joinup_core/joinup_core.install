@@ -73,24 +73,32 @@ function joinup_core_update_8101() {
  * Update the predicates for fields 'solution_type' and 'test_resource_type'.
  */
 function joinup_core_update_8102() {
-  /** @var \Drupal\Core\Database\Connection $query */
-  $query = \Drupal::service('sparql_endpoint');
-  $test_resource_type_query = <<<QUERY
+  /** @var \Drupal\Core\Database\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
 DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
 INSERT { GRAPH ?g { ?subject <http://joinup.eu/test_resource_type> ?object } }
-USING <http://joinup.eu/solution/draft>
-USING <http://joinup.eu/solution/published>
-USING <http://joinup.eu/asset_release/draft>
-USING <http://joinup.eu/asset_release/published>
-WHERE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/asset_release/draft>
+    <http://joinup.eu/asset_release/published>
+  }
+}
 QUERY;
-  $query->query($test_resource_type_query);
-  $solution_type_query = <<<QUERY
+  $connection->query($query);
+  $query = <<<QUERY
 DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
 INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
-USING <http://joinup.eu/solution/draft>
-USING <http://joinup.eu/solution/published>
-WHERE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+  }
+}
 QUERY;
-  $query->query($solution_type_query);
+  $connection->query($query);
 }
