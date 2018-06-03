@@ -70,8 +70,6 @@ function joinup_core_update_8101() {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Fix the spatial coverage predicate for collections and solutions.
  */
 function joinup_core_update_8102() {
@@ -80,11 +78,15 @@ function joinup_core_update_8102() {
   $query = <<<QUERY
 DELETE { GRAPH ?g { ?subject <http://www.w3.org/ns/dcat#spatial> ?object } }
 INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/spatial> ?object } }
-USING <http://joinup.eu/collection/published>
-USING <http://joinup.eu/collection/draft>
-USING <http://joinup.eu/solution/published>
-USING <http://joinup.eu/solution/draft>
-WHERE { GRAPH ?g { ?subject <http://www.w3.org/ns/dcat#spatial> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://www.w3.org/ns/dcat#spatial> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/collection/published>
+    <http://joinup.eu/collection/draft>
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/solution/draft>
+  }
+}
 QUERY;
   $connection->query($query);
 }
