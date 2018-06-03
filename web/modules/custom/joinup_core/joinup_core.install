@@ -70,8 +70,6 @@ function joinup_core_update_8101() {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Fix the documentation predicate.
  */
 function joinup_core_update_8102() {
@@ -80,11 +78,15 @@ function joinup_core_update_8102() {
   $query = <<<QUERY
 DELETE { GRAPH ?g { ?subject <http://xmlns.com/foaf/spec/#term_page> ?object } }
 INSERT { GRAPH ?g { ?subject <http://xmlns.com/foaf/0.1/page> ?object } }
-USING <http://joinup.eu/solution/published>
-USING <http://joinup.eu/solution/draft>
-USING <http://joinup.eu/asset_release/published>
-USING <http://joinup.eu/asset_release/draft>
-WHERE { GRAPH ?g { ?subject <http://xmlns.com/foaf/spec/#term_page> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://xmlns.com/foaf/spec/#term_page> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/asset_release/published>
+    <http://joinup.eu/asset_release/draft>
+  }
+}
 QUERY;
   $connection->query($query);
 }
