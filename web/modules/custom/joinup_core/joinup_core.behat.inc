@@ -35,7 +35,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
     }, $chips);
 
     $expected = $table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($expected, $found, "The expected chip elements don't match the ones found in the page", 0.0, 10, TRUE);
+    Assert::assertEquals($expected, $found, "The expected chip elements don't match the ones found in the page", 0.0, 10, TRUE);
   }
 
   /**
