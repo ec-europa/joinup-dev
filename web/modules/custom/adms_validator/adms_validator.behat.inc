@@ -8,12 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions to test ADMS-AP validation.
  */
-class AdmsValidatorSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class AdmsValidatorSubContext extends DrupalSubContextBase {
 
   /**
    * Asserts that entities in the published graph are ADMS-AP compliant.
@@ -44,7 +44,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase implements DrupalSubC
 
     $sparql_endpoint->query('CLEAR GRAPH <http://joinup/validation-graph>');
 
-    \PHPUnit_Framework_Assert::assertTrue($result->isSuccessful(), 'The published graph is not ADMS-AP compliant.');
+    Assert::assertTrue($result->isSuccessful(), 'The published graph is not ADMS-AP compliant.');
   }
 
 }
