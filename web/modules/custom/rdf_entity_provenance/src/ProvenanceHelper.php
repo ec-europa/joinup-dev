@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_entity_provenance;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -20,6 +21,13 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   protected $entityTypeManager;
 
   /**
+   * The RDF entity storage.
+   *
+   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   */
+  protected $rdfStorage;
+
+  /**
    * Constructs the ProvenanceHelper service object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -32,25 +40,47 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getProvenanceByReferredEntity(string $id): RdfInterface {
-    if (!$activity = $this->loadProvenanceActivity($id)) {
-      $activity = $this->createProvenanceActivity($id);
-    }
+  public function loadOrCreateEntityActivity(string $id): RdfInterface {
+    return $this->loadOrCreateEntitiesActivity([$id])[$id];
+  }
 
-    return $activity;
+  /**
+   * {@inheritdoc}
+   */
+  public function loadOrCreateEntitiesActivity(array $ids): array {
+    $activities = $this->loadProvenanceActivities($ids);
+    // Shrink $ids list to the entities that are missing a provenance entry.
+    $ids = array_diff($ids, array_keys($activities));
+    foreach ($ids as $id) {
+      $activities[$id] = $this->createProvenanceActivity($id);
+    }
+    return $activities;
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadProvenanceActivity(string $id): ?RdfInterface {
-    /** @var \Drupal\rdf_entity\RdfInterface[] $activities */
-    $activities = $this->getStorage()->loadByProperties([
-      'rid' => 'provenance_activity',
-      'provenance_entity' => $id,
-    ]);
+    return $this->loadProvenanceActivities([$id])[$id] ?? NULL;
+  }
 
-    return empty($activities) ? NULL : reset($activities);
+  /**
+   * {@inheritdoc}
+   */
+  public function loadProvenanceActivities(array $ids): array {
+    $provenance_activity = [];
+    $provenance_ids = $this->getRdfStorage()->getQuery()
+      ->condition('rid', 'provenance_activity')
+      ->condition('provenance_entity', $ids, 'IN')
+      ->execute();
+    if ($provenance_ids) {
+      /** @var \Drupal\rdf_entity\RdfInterface $activity */
+      foreach ($this->getRdfStorage()->loadMultiple($provenance_ids) as $activity) {
+        $provenance_activity[$activity->get('provenance_entity')->value] = $activity;
+      }
+    }
+
+    return $provenance_activity;
   }
 
   /**
@@ -64,7 +94,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
    */
   protected function createProvenanceActivity(string $id): RdfInterface {
     /** @var \Drupal\rdf_entity\RdfInterface $activity */
-    $activity = $this->getStorage()->create([
+    $activity = $this->getRdfStorage()->create([
       'rid' => 'provenance_activity',
       'provenance_entity' => $id,
     ]);
@@ -73,13 +103,16 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   }
 
   /**
-   * Retrieves the rdf_entity storage.
+   * Returns the RDF entity storage.
    *
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *   The entity storage.
+   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   *   The RDF entity storage.
    */
-  protected function getStorage() {
-    return $this->entityTypeManager->getStorage('rdf_entity');
+  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+    if (!isset($this->rdfStorage)) {
+      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
+    }
+    return $this->rdfStorage;
   }
 
 }

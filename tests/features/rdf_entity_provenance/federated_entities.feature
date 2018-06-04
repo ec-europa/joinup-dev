@@ -61,14 +61,14 @@ Feature: In order to avoid users changing federated values
       | http://example.com | A federated licence      | yes     |
 
   Scenario: Verify that API functions properly.
-    Then I should have 7 provenance activity
-    And the "A federated collection" "collection" should have a provenance activity related
-    And the "A federated solution" "solution" should have a provenance activity related
-    And the "A federated release" "asset release" should have a provenance activity related
-    And the "A federated distribution" "asset distribution" should have a provenance activity related
-    And the "John Federator" "owner" should have a provenance activity related
-    And the "John Federator's contact" "contact information" should have a provenance activity related
-    And the "A federated licence" "licence" should have a provenance activity related
+    Then I should have 7 provenance activities
+    And "A federated collection" should have a related provenance activity
+    And "A federated solution" should have a related provenance activity
+    And "A federated release" should have a related provenance activity
+    And "A federated distribution" should have a related provenance activity
+    And "John Federator" should have a related provenance activity
+    And "John Federator's contact" should have a related provenance activity
+    And "A federated licence" should have a related provenance activity
 
   Scenario Outline: Schema fields are disabled for federated entities.
     When I am logged in as a moderator

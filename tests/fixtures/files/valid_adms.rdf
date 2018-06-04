@@ -5,6 +5,7 @@
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dcat="http://www.w3.org/ns/dcat#"
          xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
     <rdf:Description rdf:about="http://asset">
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
         <dct:title>Asset</dct:title>
@@ -30,6 +31,30 @@
         <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
         <skos:label>Term</skos:label>
         <skos:inScheme rdf:resource="http://vocabulary"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://asset/not_federated">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Not federated asset</dct:title>
+        <dct:description>There was no previously attempt to federate this asset.</dct:description>
+        <dct:publisher rdf:resource="http://publisher"/>
+        <dcat:contactPoint rdf:resource="http://contact"/>
+        <dct:type rdf:resource="http://vocabulary/term"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://asset/blacklisted">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Blacklisted asset</dct:title>
+        <dct:description>This asset has been blacklisted before.</dct:description>
+        <dct:publisher rdf:resource="http://publisher/blacklisted"/>
+        <dcat:contactPoint rdf:resource="http://contact"/>
+        <dct:type rdf:resource="http://vocabulary/term"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://publisher/blacklisted">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <dct:type rdf:resource="http://purl.org/adms/publishertype/IndustryConsortium"/>
+        <foaf:name>Blacklisted publisher</foaf:name>
     </rdf:Description>
 
 </rdf:RDF>
