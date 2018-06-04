@@ -7,14 +7,14 @@
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for functionalities provided by Joinup core module.
  */
-class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupCoreSubContext extends DrupalSubContextBase {
 
   use UtilityTrait;
   use TraversingTrait;
