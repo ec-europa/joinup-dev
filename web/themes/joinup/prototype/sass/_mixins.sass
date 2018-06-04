@@ -183,5 +183,7 @@ $z-index: (auto: auto, zero: 0, highlight: 1, highlight+1: 2, highlight+2: 3, na
 // Calculates height for text container in tiles
 =calc-space($number, $row-height, $margin, $number-small: 0, $row-height-small: 0, $margin-small: 0)
   max-height: $number * $row-height + $number-small * $row-height-small + $margin + $margin-small
+  &.listing__text-container--tags
+    max-height: ($number - 1) * $row-height + $number-small * $row-height-small + $margin + $margin-small
 
 

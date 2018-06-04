@@ -75,6 +75,10 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
   ]
 %}
+
+{%
+  set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : ''
+%}
 <div {{ attributes.addClass(classes) }}>
   {% if view_mode == 'view_mode_featured' %}
     <div class="listing__image listing__image--default">
@@ -82,7 +86,7 @@
     </div>
   {% endif %}
   <div class="listing__metadata">
-    <div class="listing__text-container listing__text-container--document">
+    <div class="listing__text-container listing__text-container--document{{ class_container_tags }}">
       <div class="listing__field">
         {{ title_prefix }}
         <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>

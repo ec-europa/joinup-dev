@@ -75,9 +75,13 @@
     view_mode == 'view_mode_featured' ? 'listing__card--inline-containers',
   ]
 %}
+
+{%
+  set class_container_tags = (content.field_keywords|render) ? ' listing__text-container--tags' : ''
+%}
 <div {{ attributes.addClass(classes) }}>
   <div class="listing__metadata">
-    <div class="listing__text-container listing__text-container--discussion">
+    <div class="listing__text-container listing__text-container--discussion{{ class_container_tags }}">
       <div class="listing__field">
         {{ title_prefix }}
         <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>

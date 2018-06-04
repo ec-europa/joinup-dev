@@ -187,16 +187,15 @@
     .listing__field:last-child
       margin-bottom: 0
 
-.listing__text-container--news
-  +breakpoint(xs)
-    +calc-space(5, $row-height, $tile-margin, 2, $row-height-small, $tile-margin-small)
-
-.listing__text-container--discussion,
+.listing__text-container--news,
 .listing__text-container--document
   +breakpoint(xs)
-    +calc-space(6, $row-height, $tile-margin, 1, $row-height-small, $tile-margin-small)
+    +calc-space(7, $row-height, $tile-margin, 1, $row-height-small, $tile-margin-small)
 
-.listing__text-container--custom-page
+.listing__text-container--custom-page,
+.listing__text-container--licence,
+.listing__text-container--newsletter,
+.listing__text-container--discussion
   +breakpoint(xs)
     +calc-space(8, $row-height, $tile-margin)
 
@@ -225,16 +224,7 @@
   +number-rows(1, $row-height-small, true)
 
 .listing__teaser
-  +number-rows(4, $row-height)
-
-.listing__card--discussion,
-.listing__card--document
-  .listing__teaser
-    +number-rows(4, $row-height)
-
-.listing__card--custom-page
-  .listing__teaser
-    +number-rows(7, $row-height)
+  +number-rows(7, $row-height)
 
 .listing__card--user
   .listing__teaser
