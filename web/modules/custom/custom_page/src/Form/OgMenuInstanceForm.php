@@ -276,6 +276,17 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           '#default_value' => $link->getParent(),
         ];
 
+        // Disable nesting of links that are not pointing to nodes.
+        $route_info = $this->urlMatcher->match($link->getUrlObject()->toString());
+        if ($route_info['_route'] !== 'entity.node.canonical') {
+          // Prevent dragging from the interface.
+          $form[$id]['#attributes']['class'][] = 'tabledrag-root';
+          // Force parent value to be empty, so mangling with form elements
+          // is prevented on the backend too.
+          // @see \Drupal\Core\Menu\MenuLinkInterface::getParent()
+          $form[$id]['parent']['#value'] = '';
+        }
+
         // Build a list of operations. This form is shown to users that do not
         // have access to edit menu links, so instead we are showing links to
         // edit the custom pages directly.
@@ -284,7 +295,6 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         // Skip this if this link is not pointing to the canonical view of a
         // custom page, since this means the link has been added manually
         // somehow, probably by an administrator.
-        $route_info = $this->urlMatcher->match($link->getUrlObject()->toString());
         if (
           // The link should be to a canonical path of a node.
           $route_info['_route'] === 'entity.node.canonical'
