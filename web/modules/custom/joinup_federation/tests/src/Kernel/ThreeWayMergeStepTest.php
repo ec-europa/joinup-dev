@@ -28,7 +28,9 @@ class ThreeWayMergeStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      '3_way_merge' => [],
+      '3_way_merge' => [
+        'collection' => 'http://catalog',
+      ],
     ];
   }
 
@@ -104,6 +106,16 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
     RdfEntityMapping::create($mapping)->save();
 
+    // Create the collection bundle.
+    RdfEntityType::create(['rid' => 'collection', 'name' => 'Collection'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
+    RdfEntityMapping::create($mapping)->save();
+    // And the affiliates field.
+    $field_storage_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
+    FieldStorageConfig::create($field_storage_config)->save();
+    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
+    FieldConfig::create($field_config)->save();
+
     // Create the owner bundle.
     RdfEntityType::create(['rid' => 'owner', 'name' => 'Owner'])->save();
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../owner/config/install/rdf_entity.mapping.rdf_entity.owner.yml'));
@@ -126,6 +138,11 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'label' => 'This will be overridden',
       'field_is_description' => 'Also this...',
       'field_status' => 'http://example.com/status',
+    ])->save();
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://catalog',
+      'field_ar_affiliates' => 'http://asset',
     ])->save();
 
     $graph = new Graph(static::getTestingGraphs()['sink']);
@@ -157,6 +174,9 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
     $this->assertTrue($solution->get('field_status')->isEmpty());
+    // Check that the solution has been assigned to the configured collection.
+    $collection = Rdf::load('http://catalog');
+    $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
 
     // Check that new entities were created in the 'default' graph and were
     // removed from the staging graph.
@@ -173,6 +193,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $storage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
     $storage->delete($storage->loadMultiple([
       'http://asset',
+      'http://catalog',
       'http://publisher',
       'http://contact',
     ]));
