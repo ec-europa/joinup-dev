@@ -139,7 +139,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
     // Starting the pipeline from the beginning.
     else {
-      $current_step_id = $this->pipeline->current();
+      $current_step_id = $this->pipeline->key();
 
       // Run the pipeline preparation.
       $error = $this->pipeline->prepare();
@@ -233,7 +233,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
       return NULL;
     }
 
-    return $this->pipeline->current();
+    return $this->pipeline->key();
   }
 
   /**
