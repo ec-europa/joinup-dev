@@ -95,7 +95,7 @@
         "lovers-of-behat/table-extension": "~1.0",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
-        "phpunit/phpunit": "^4.8.28",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "~2.8"
     },
     "conflict": {
