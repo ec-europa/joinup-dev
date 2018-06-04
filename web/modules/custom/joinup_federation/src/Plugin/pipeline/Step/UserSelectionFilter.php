@@ -219,6 +219,11 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
         // We'll append a new pre-render callback.
         [static::class, 'alterFormPreRender'],
       ],
+      // Temporary disable the "(un)select all" checkbox because of a bug in the
+      // main theme that makes this functionality not to work properly.
+      // @todo Remove this line in ISAICP-4545.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4545
+      '#js_select' => FALSE,
     ];
 
     return $form;
