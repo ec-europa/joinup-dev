@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\message\Entity\MessageTemplate;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing notifications.
@@ -158,24 +159,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
+    Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
     /** @var array $mail */
     if ($html) {
-      PHPUnit_Framework_Assert::assertEquals(
-        SWIFTMAILER_FORMAT_HTML,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as HTML.'
-      );
+      Assert::assertEquals(SWIFTMAILER_FORMAT_HTML, $mail['headers']['Content-Type'], 'The mail is not sent as HTML.');
     }
     else {
-      PHPUnit_Framework_Assert::assertStringStartsWith(
-        SWIFTMAILER_FORMAT_PLAIN,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as plain text.'
-      );
+      Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
     }
   }
 
@@ -335,24 +328,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
+    Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
     /** @var array $mail */
     if ($html) {
-      PHPUnit_Framework_Assert::assertEquals(
-        SWIFTMAILER_FORMAT_HTML,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as HTML.'
-      );
+      Assert::assertEquals(SWIFTMAILER_FORMAT_HTML, $mail['headers']['Content-Type'], 'The mail is not sent as HTML.');
     }
     else {
-      PHPUnit_Framework_Assert::assertStringStartsWith(
-        SWIFTMAILER_FORMAT_PLAIN,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as plain text.'
-      );
+      Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
     }
   }
 

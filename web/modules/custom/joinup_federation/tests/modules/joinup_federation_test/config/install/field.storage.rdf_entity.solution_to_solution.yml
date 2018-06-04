@@ -1,0 +1,15 @@
+id: rdf_entity.solution_to_solution
+field_name: solution_to_solution
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/relation'
+        format: resource

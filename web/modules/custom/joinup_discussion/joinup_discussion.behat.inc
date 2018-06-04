@@ -9,6 +9,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing discussions.
@@ -45,7 +46,7 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function assertSubscribers($title, $count) {
     $discussion = $this->getNodeByTitle($title, 'discussion');
     $subscribers = $this->getSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
-    PHPUnit_Framework_Assert::assertEquals($count, count($subscribers));
+    Assert::assertEquals($count, count($subscribers));
   }
 
   /**

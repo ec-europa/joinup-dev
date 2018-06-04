@@ -1098,6 +1098,46 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks if a checkbox in a row with a given text is checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is unchecked.
+   *
+   * @Then the row :text is selected/checked
+   */
+  public function assertRowIsChecked($text) {
+    if (!$this->findCheckboxInRow($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
+   * Checks if a checkbox in a row with a given text is not checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is checked.
+   *
+   * @Then the row :text is not selected/checked
+   */
+  public function assertRowIsNotChecked($text) {
+    if ($this->findCheckboxInRow($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
@@ -1107,9 +1147,42 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
    *
-   * @Given I select/check the :row_text row
+   * @Given I select/check the :text row
    */
   public function assertSelectRow($text) {
+    $this->findCheckboxInRow($text)->check();
+  }
+
+  /**
+   * Attempts to uncheck a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I unselect/uncheck the :text row
+   */
+  public function assertUnSelectRow($text) {
+    $this->findCheckboxInRow($text)->uncheck();
+  }
+
+  /**
+   * Finds a checkbox in table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   */
+  protected function findCheckboxInRow($text) {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1129,7 +1202,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
       throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
-    $checkbox->check();
+
+    return $checkbox;
   }
 
   /**
