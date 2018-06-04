@@ -24,6 +24,17 @@ class ThreeWayMergeStepTest extends StepTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function getUsedStepPlugins(): array {
+    return [
+      'remove_unsupported_data' => [],
+      'add_joinup_vocabularies' => [],
+      '3_way_merge' => [],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'field',
     'rdf_schema_field_validation',

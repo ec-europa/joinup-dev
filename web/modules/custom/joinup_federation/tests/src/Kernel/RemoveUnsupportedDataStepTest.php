@@ -14,6 +14,13 @@ use EasyRdf\Graph;
 class RemoveUnsupportedDataStepTest extends StepTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getUsedStepPlugins(): array {
+    return ['remove_unsupported_data' => []];
+  }
+
+  /**
    * Test ADMSv2 changes.
    */
   public function test() {
