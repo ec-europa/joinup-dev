@@ -20,3 +20,27 @@ function joinup_federation_test_rdf_load_bundle_alter($entity_values, &$bundles)
     }
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_storage_load().
+ *
+ * Mock the behavior of collection field from solution for the testing purpose.
+ */
+function joinup_federation_test_rdf_entity_storage_load(array &$entities) {
+  /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\rdf_entity\RdfInterface $solution */
+  foreach ($entities as $solution) {
+    if ($solution->bundle() !== 'solution') {
+      continue;
+    }
+    $ids = $storage->getQuery()
+      ->condition('rid', 'collection')
+      ->condition('field_ar_affiliates', $solution->id())
+      ->execute();
+    if ($ids) {
+      $id = array_shift($ids);
+      $solution->collection = (object) ['target_id' => $id];
+    }
+  }
+}
