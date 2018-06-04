@@ -5,6 +5,8 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -211,17 +213,22 @@ function solution_add_form_parent_submit(array &$form, FormStateInterface $form_
  *   The ID of the solution to affiliate.
  * @param string $collection_id
  *   The ID of the collection to affiliate.
+ * @param string[] $graph_ids
+ *   (optional) The graph IDs where to update the affiliation. If omitted, the
+ *   'default' and 'draft' graph IDs are used.
+ * @param bool $reindex
+ *   (optional) If the solution should be re-indexed. Defaults to TRUE.
  *
  * @throws \Exception
  *   Thrown when the collection ID does not belong to a collection.
  */
-function solution_update_collection_affiliation($solution_id, $collection_id) {
+function solution_update_collection_affiliation(string $solution_id, string $collection_id, array $graph_ids = ['default', 'draft'], bool $reindex = TRUE): void {
   /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
 
   // Add the reference field both to the published and the draft collection.
-  foreach (['default', 'draft'] as $graph) {
-    $collection = $storage->load($collection_id, [$graph]);
+  foreach ($graph_ids as $graph_id) {
+    $collection = $storage->load($collection_id, [$graph_id]);
     if (empty($collection)) {
       continue;
     }
@@ -232,7 +239,7 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     $values = $collection->get('field_ar_affiliates')->getValue();
     $values[] = ['target_id' => $solution_id];
     $collection->set('field_ar_affiliates', $values);
-    $collection->set('graph', $graph);
+    $collection->set('graph', $graph_id);
     $collection->save();
   }
 
@@ -242,8 +249,10 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
   // entity_groups property is properly set.
   // @todo Avoid indexing twice the solution entity in ISAICP-4446.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
-  $storage->resetCache([$solution_id]);
-  search_api_entity_insert(Rdf::load($solution_id));
+  if ($reindex) {
+    $storage->resetCache([$solution_id]);
+    search_api_entity_insert(Rdf::load($solution_id));
+  }
 }
 
 /**
