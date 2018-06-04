@@ -32,7 +32,7 @@ content:
         hide_guidelines: '1'
     region: content
   field_comments:
-    weight: 5
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: comment_default
@@ -60,6 +60,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 8
+    region: content
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -67,6 +74,20 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 7
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
@@ -76,4 +97,3 @@ hidden:
   path: true
   promote: true
   sticky: true
-  uid: true

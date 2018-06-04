@@ -32,6 +32,6 @@ Feature: Block users
     And I press the "Apply to selected items" button
     Then I should see the success message "Unblock the selected user(s) was applied to 1 item."
     And the following system email should have been sent:
-      | recipient | Liam Lego                                                                                                                 |
-      | subject   | Your account was just unblocked.                                                                   |
-      | body      | For more information about how to avoid your account being blocked in the future, please visit our |
+      | recipient | Liam Lego                                                                                                                       |
+      | subject   | Your Joinup account has been activated.                                                                                         |
+      | body      | Your account at Joinup has been activated. You may now log in by clicking this link or copying and pasting it into your browser |
