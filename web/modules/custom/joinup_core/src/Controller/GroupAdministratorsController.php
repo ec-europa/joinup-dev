@@ -291,6 +291,7 @@ class GroupAdministratorsController extends ControllerBase {
           $this->t('User name'),
           $this->t('Role'),
         ],
+        '#attributes' => ['class' => ['collection-administrator-report']],
       ],
     ];
   }
