@@ -9,6 +9,11 @@ Feature: As a site moderator I am able to import RDF files.
     And solutions:
       | uri          | title          | description         | state     |
       | http://asset | Existing asset | Initial description | validated |
+    And collection:
+      | uri        | http://administracionelectronica.gob.es/ctt |
+      | title      | Spain                                       |
+      | state      | validated                                   |
+      | affiliates | Existing asset                              |
     And provenance activities:
       | entity                   | enabled | author          | started          |
       | Existing asset           | yes     | Antoine Batiste | 2012-07-07 23:01 |
@@ -91,6 +96,10 @@ Feature: As a site moderator I am able to import RDF files.
     But the "http://asset/blacklisted" entity is blacklisted for federation
     And the "http://publisher/blacklisted" entity is blacklisted for federation
 
+    # Check the affiliation of federated solutions.
+    And the "Asset" solution should be affiliated with the "Spain" collection
+    And the "Not federated asset" solution should be affiliated with the "Spain" collection
+
     Given I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
@@ -113,6 +122,11 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Contact" entity is not blacklisted for federation
     And the "Blacklisted publisher" entity is not blacklisted for federation
     But the "Blacklisted asset" entity is not blacklisted for federation
+
+    # Check the affiliation of federated solutions.
+    And the "Asset" solution should be affiliated with the "Spain" collection
+    And the "Not federated asset" solution should be affiliated with the "Spain" collection
+    And the "Blacklisted asset" solution should be affiliated with the "Spain" collection
 
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also

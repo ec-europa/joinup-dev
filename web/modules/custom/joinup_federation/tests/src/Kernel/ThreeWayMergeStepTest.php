@@ -128,9 +128,9 @@ class ThreeWayMergeStepTest extends StepTestBase {
   }
 
   /**
-   * Test the 3-way merge.
+   * Test the 3-way merge with an existing solution.
    */
-  public function test() {
+  public function testExistingSolution() {
     // Create a local entity whose values will be overwritten.
     Rdf::create([
       'rid' => 'solution',
@@ -184,6 +184,43 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $this->assertNotNull(Rdf::load('http://contact', ['default']));
     $this->assertNull(Rdf::load('http://publisher', ['staging']));
     $this->assertNull(Rdf::load('http://contact', ['staging']));
+  }
+
+
+  /**
+   * Test the 3-way merge with a new solution.
+   */
+  public function testNewSolution() {
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://catalog',
+    ])->save();
+
+    $graph = new Graph(static::getTestingGraphs()['sink']);
+    $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
+    $this->createGraphStore()->replace($graph);
+
+    // Check that 'http://asset' doesn't exists in the default graph.
+    $this->assertNull(Rdf::load('http://asset', ['default']));
+    // Check that the publisher and contact info are missed from default graph.
+    $this->assertNull(Rdf::load('http://publisher', ['default']));
+    $this->assertNull(Rdf::load('http://contact', ['default']));
+
+    $this->runPipelineStep('remove_unsupported_data');
+    $this->runPipelineStep('add_joinup_vocabularies');
+    // Cleanup the 'sink_plus_taxo' graph left after the last step. Normally
+    // this cleanup is accomplished by the 'adms_validation' step but we want to
+    // avoid running that step in this test.
+    $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
+
+    $result = $this->runPipelineStep('3_way_merge');
+
+    // Check that the step ran without any error.
+    $this->assertNull($result);
+
+    // Check that the solution has been assigned to the configured collection.
+    $collection = Rdf::load('http://catalog');
+    $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
   }
 
   /**
