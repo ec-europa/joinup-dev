@@ -98,6 +98,9 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       // delete the user at this point.
       unset($form['description']);
       $form += $build;
+      // No access to the 'Cancel' button should be given if there is at least
+      // one user that is a sole owner of a collection.
+      $form['actions']['submit']['#access'] = FALSE;
     }
 
     return $form;
