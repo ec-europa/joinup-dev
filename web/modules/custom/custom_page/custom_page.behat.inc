@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing custom pages.
@@ -194,7 +195,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $build = $link_tree_service->build($tree);
     $actual = !empty($build['#items']) ? count($build['#items']) : 0;
 
-    PHPUnit_Framework_Assert::assertEquals($count, $actual);
+    Assert::assertEquals($count, $actual);
   }
 
   /**
@@ -213,7 +214,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertItemsInMenuForm($menu, $label, $type, $count) {
     $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
-    PHPUnit_Framework_Assert::assertEquals($count, count($tree));
+    Assert::assertEquals($count, count($tree));
   }
 
   /**

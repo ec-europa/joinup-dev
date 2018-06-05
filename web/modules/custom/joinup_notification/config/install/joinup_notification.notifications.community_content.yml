@@ -162,13 +162,3 @@ delete:
     proposed:
       owner:
         - cc_delete
-  'node:discussion:post_moderated':
-    validated:
-      owner:
-        - cc_delete
-    needs_update:
-      owner:
-        - cc_delete
-    proposed:
-      owner:
-        - cc_delete

@@ -8,7 +8,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'http://www.w3.org/ns/dcat#spatial'
+        predicate: 'http://purl.org/dc/terms/spatial'
         format: resource
 id: rdf_entity.field_spatial_coverage
 field_name: field_spatial_coverage
