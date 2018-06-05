@@ -186,7 +186,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $this->assertNull(Rdf::load('http://contact', ['staging']));
   }
 
-
   /**
    * Test the 3-way merge with a new solution.
    */
