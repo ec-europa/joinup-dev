@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, uninstall, schema and requirements hook for the distribution module.
+ * Install, uninstall, schema, requirements for the asset_distribution.module.
  */
 
 /**
