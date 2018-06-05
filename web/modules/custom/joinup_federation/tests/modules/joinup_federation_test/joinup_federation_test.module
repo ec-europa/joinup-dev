@@ -27,6 +27,14 @@ function joinup_federation_test_rdf_load_bundle_alter($entity_values, &$bundles)
  * Mock the behavior of collection field from solution for the testing purpose.
  */
 function joinup_federation_test_rdf_entity_storage_load(array &$entities) {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $definitions = $entity_field_manager->getFieldStorageDefinitions('rdf_entity');
+  // Only act for tests that are providing the 'field_ar_affiliates' field.
+  if (!isset($definitions['field_ar_affiliates'])) {
+    return;
+  }
+
   /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   /** @var \Drupal\rdf_entity\RdfInterface $solution */

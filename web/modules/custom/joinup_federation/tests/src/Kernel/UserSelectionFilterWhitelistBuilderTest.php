@@ -18,6 +18,13 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
   /**
    * {@inheritdoc}
    */
+  protected function getUsedStepPlugins(): array {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'field',
     'rdf_entity_provenance',
