@@ -214,6 +214,11 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
 
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
+
+        // Disable nesting of rows where the value is forced as empty.
+        if (isset($element['parent']['#value']) && $element['parent']['#value'] === '') {
+          $form['links'][$id]['#attributes']['class'][] = 'tabledrag-root';
+        }
       }
     }
 
@@ -279,10 +284,9 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         // Disable nesting of links that are not pointing to nodes.
         $route_info = $this->urlMatcher->match($link->getUrlObject()->toString());
         if ($route_info['_route'] !== 'entity.node.canonical') {
-          // Prevent dragging from the interface.
-          $form[$id]['#attributes']['class'][] = 'tabledrag-root';
-          // Force parent value to be empty, so mangling with form elements
-          // is prevented on the backend too.
+          // Force parent value to be empty. This will disable any value
+          // submission for this form element, thus disallowing any parent to
+          // be selected.
           // @see \Drupal\Core\Menu\MenuLinkInterface::getParent()
           $form[$id]['parent']['#value'] = '';
         }
