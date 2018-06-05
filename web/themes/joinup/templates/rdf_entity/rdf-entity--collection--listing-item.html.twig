@@ -16,6 +16,7 @@
   <div class="listing__image">{{ content.field_ar_logo }}</div>
   <div class="listing__metadata">
     <div class="listing__field">
+      <div class="listing__link"><a href="{{ url }}"></a></div>
       {{ title_prefix }}<h2 class="listing__title">{{ label }}</h2>{{ title_suffix }}
     </div>
     {% if view_mode == 'view_mode_featured' %}
