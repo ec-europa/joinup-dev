@@ -4,6 +4,7 @@ namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
 use Drupal\joinup\Traits\MaterialDesignTrait;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Provides step definitions for interacting with Mink.
@@ -54,7 +55,7 @@ class MinkContext extends DrupalExtensionMinkContext {
       $xpath = '//*[text()[contains(.,"' . $text . '")]]';
       foreach ($this->getSession()->getPage()->findAll('xpath', $xpath) as $element) {
         if ($element->isVisible()) {
-          throw new \PHPUnit_Framework_ExpectationFailedException("Element with text '$text' is visually visible.");
+          throw new ExpectationFailedException("Element with text '$text' is visually visible.");
         }
       }
     }

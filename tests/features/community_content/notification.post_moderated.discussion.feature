@@ -99,7 +99,11 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
-    Then the following email should have been sent:
+    Then the following email should not have been sent:
       | recipient | CC member                                                                                                                |
       | subject   | Joinup: Content has been deleted                                                                                         |
       | body      | Facilitator CC Facilitator has deleted the discussion - "CC notify post delete" in the collection: "CC post collection". |
+    But the following email should have been sent:
+      | recipient | CC member                                                                                                          |
+      | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post collection"                    |
+      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post collection" collection. |
