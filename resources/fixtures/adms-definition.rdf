@@ -54,7 +54,7 @@
       </rdf:Description>
     </foaf:maker>
 
-    <dc:description>This is the RDF encoding of the Asset Description Metadata Schema, originally 
+    <dc:description>This is the RDF encoding of the Asset Description Metadata Schema, originally
     developed under the European Union's ISA Programme and further developed by the W3C Government Linked Data Working Group.
     It re-uses terms from several other vocabularies, notably Dublin Core, with elements of SKOS, FOAF and more. </dc:description>
     <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2016-5-11</dc:modified>
@@ -104,7 +104,7 @@
     <rdfs:domain rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
     <rdfs:domain rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
     <rdfs:domain rdf:resource="http://www.w3.org/ns/dcat#Catalog"/>
-    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenceDocument"/>
+    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
     <ns1:usageNote xml:lang="en">Mandatory Property - 1..n</ns1:usageNote>
     <ns1:usageNote xml:lang="en">Optional Property - 0..n</ns1:usageNote>
     <ns1:usageNote xml:lang="en">Recommended Property - 0..n</ns1:usageNote>
@@ -160,7 +160,7 @@
     <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
     <rdfs:domain rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
     <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
-    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenceDocument"/>
+    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
     <ns1:usageNote xml:lang="en">Mandatory Property - 1..n</ns1:usageNote>
     <ns1:usageNote xml:lang="en">Recommended Property - 0..n</ns1:usageNote>
     <ns1:usageNote xml:lang="en">Mandatory Property - 1..1</ns1:usageNote>
@@ -555,13 +555,13 @@
     <ns1:usageNote xml:lang="en">Mandatory Property - 1..n</ns1:usageNote>
   </rdf:Property>
 
-  <rdf:Property rdf:about="http://purl.org/dc/terms/licence">
+  <rdf:Property rdf:about="http://purl.org/dc/terms/license">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <dc:identifier xml:lang="en">dct:licence</dc:identifier>
+    <dc:identifier xml:lang="en">dct:license</dc:identifier>
     <rdfs:comment xml:lang="en">Conditions or restrictions for (re)use of the Distribution; if there are multiple licences, the most 'open' one should be given. Whenever relevant, the URIs under the concept scheme identified by http://purl.org/adms/OSIlicence/ can be used.</rdfs:comment>
     <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
     <rdfs:label xml:lang="en">Asset Distribution - licence</rdfs:label>
-    <rdfs:range rdf:resource="http://purl.org/dc/terms/LicenceDocument"/>
+    <rdfs:range rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
     <rdfs:domain rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
     <ns1:usageNote xml:lang="en">Mandatory Property - 1..1</ns1:usageNote>
   </rdf:Property>
@@ -580,7 +580,7 @@
   <rdf:Property rdf:about="http://www.w3.org/ns/adms#representationTechnique">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
     <dc:identifier xml:lang="en">adms:representationTechnique</dc:identifier>
-    <rdfs:comment xml:lang="en">Language in which the Distribution is expressed, using a controlled vocabulary - ADMS Representation Technique Vocabulary &gt;&gt; http://purl.org/adms/representationtechnique/ 
+    <rdfs:comment xml:lang="en">Language in which the Distribution is expressed, using a controlled vocabulary - ADMS Representation Technique Vocabulary &gt;&gt; http://purl.org/adms/representationtechnique/
 	Note: This is different from the file format, e.g. a ZIP file (file format) could contain an XML schema (representation technique) - </rdfs:comment>
     <rdfs:isDefinedBy rdf:resource="http://www.w3.org/ns/adms#"/>
     <rdfs:label xml:lang="en">Asset Distribution - representation Technique</rdfs:label>
@@ -715,7 +715,7 @@
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <rdfs:domain rdf:resource="http://purl.org/dc/terms/Location"/>
     <rdfs:domain rdf:resource="http://purl.org/dc/terms/LinguisticSystem"/>
-    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenceDocument"/>
+    <rdfs:domain rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
     <rdfs:domain rdf:resource="http://purl.org/dc/terms/MediaTypeOrExtent"/>
     <rdfs:domain rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
     <ns1:usageNote xml:lang="en">Recommended Property - 0..n</ns1:usageNote>
@@ -729,8 +729,8 @@
     <ns1:usageNote xml:lang="en">Optional class</ns1:usageNote>
   </rdfs:Class>
 
-  <rdfs:Class rdf:about="http://purl.org/dc/terms/LicenceDocument">
-    <dc:identifier xml:lang="en">dct:LicenceDocument</dc:identifier>
+  <rdfs:Class rdf:about="http://purl.org/dc/terms/LicenseDocument">
+    <dc:identifier xml:lang="en">dct:LicenseDocument</dc:identifier>
     <rdfs:comment xml:lang="en">Conditions or restrictions that apply to the use of a Repository or Distribution, e.g. whether it is in the public domain, or that some restrictions apply such as attribution being required, or that it can only be used for non-commercial purposes etc.</rdfs:comment>
     <rdfs:isDefinedBy rdf:resource="http://purl.org/dc/terms/"/>
     <rdfs:label xml:lang="en">Licence</rdfs:label>
