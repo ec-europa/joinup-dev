@@ -70,9 +70,43 @@ function joinup_core_update_8101() {
 }
 
 /**
- * Fix the spatial coverage predicate for collections and solutions.
+ * Update the predicates for fields 'solution_type' and 'test_resource_type'.
  */
 function joinup_core_update_8102() {
+  /** @var \Drupal\Core\Database\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+INSERT { GRAPH ?g { ?subject <http://joinup.eu/test_resource_type> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/asset_release/draft>
+    <http://joinup.eu/asset_release/published>
+  }
+}
+QUERY;
+  $connection->query($query);
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
+INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+  }
+}
+QUERY;
+  $connection->query($query);
+}
+
+/**
+ * Fix the spatial coverage predicate for collections and solutions.
+ */
+function joinup_core_update_8103() {
   /** @var \Drupal\Core\Database\Connection $connection */
   $connection = \Drupal::service('sparql_endpoint');
   $query = <<<QUERY
