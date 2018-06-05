@@ -26,7 +26,7 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 ## Running your own instance of Joinup
 
 ### Requirements
-* A regular LAMP stack
+* A regular LAMP stack running PHP 7.1.0 or higher
 * Virtuoso 7 (Triplestore database)
 * SASS compiler
 * Apache Solr
