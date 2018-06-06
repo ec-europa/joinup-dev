@@ -6,7 +6,6 @@ namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
@@ -16,7 +15,10 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * Type: N.A.
  * Action: Deleted
  * Description:
- * - Deleted: The property was deleted from the Asset Distribution class.
+ * - Deleted: The property was deleted from the Asset Distribution class because
+ *   it was sharing the same purpose with the dcat:accessURL property.
+ * - Ensure that the value of the dcat:downloadURL exists as a accessURL before
+ *   removing the value.
  *
  * @see https://joinup.ec.europa.eu/discussion/cr26-distribution-remove-property-dcatdownloadurl
  *
@@ -30,28 +32,60 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
    * {@inheritdoc}
    */
   public function convert(array $data): void {
-    $this->processGraph($data['sink_graph'], 'http://www.w3.org/ns/dcat#downloadURL');
+    $sink_graph = $data['sink_graph'];
+    // The FILTER NOT EXISTS avoids adding duplicate values.
+    $insert_query = <<<QUERY
+      WITH <$sink_graph>
+      DELETE { ?subject <http://www.w3.org/ns/dcat#downloadURL> ?download_url }
+      INSERT { ?subject <http://www.w3.org/ns/dcat#accessURL> ?download_url }
+      WHERE {
+        ?subject a ?type .
+        ?subject <http://www.w3.org/ns/dcat#downloadURL> ?download_url .
+        FILTER NOT EXISTS { ?subject <http://www.w3.org/ns/dcat#accessURL> ?download_url } .
+        VALUES ?type { <http://www.w3.org/ns/adms#AssetDistribution> <http://www.w3.org/ns/dcat#Distribution> } .
+      }
+QUERY;
+
+    // The delete query is separated so that values that are not converted to
+    // access url are also cleaned up.
+    $delete_query = <<<QUERY
+      WITH <$sink_graph>
+      DELETE { ?subject <http://www.w3.org/ns/dcat#downloadURL> ?value }
+      WHERE {
+        ?subject a ?type .
+        ?subject <http://www.w3.org/ns/dcat#downloadURL> ?value .
+        VALUES ?type { <http://www.w3.org/ns/adms#AssetDistribution> <http://www.w3.org/ns/dcat#Distribution> }  
+      }
+QUERY;
+
+    $this->sparql->query($insert_query);
+    $this->sparql->query($delete_query);
   }
 
   /**
    * {@inheritdoc}
    */
   public function performAssertions(KernelTestBase $test): void {
+    // Assert that there are no entities with a dcat:downloadURL property after
+    // the conversion.
     $results = $this->getTriplesFromGraph(
       ConvertToAdms2StepTest::getTestingGraphs()['sink'],
-      'http://example.com/distribution/37/1',
+      NULL,
       'http://www.w3.org/ns/dcat#downloadURL'
     );
-    // Check that the download URLs were removed from the distribution.
     $test->assertEmpty($results);
 
+    // Assert that the dcat:downloadURL property is properly converted as
+    // dcat:accessURL when there is not a accessURL set already.
     $results = $this->getTriplesFromGraph(
       ConvertToAdms2StepTest::getTestingGraphs()['sink'],
       'http://example.com/distribution/37/1',
       'http://www.w3.org/ns/dcat#accessURL'
     );
+    $test->assertCount(2, $results);
     // Check that the access URL value of the distribution has been preserved.
-    $test->assertEquals('http://example.com/access-url/37/1', $results[0]['object']);
+    $test->assertEquals('http://example.com/accessURL/37/1/1', $results[0]['object']);
+    $test->assertEquals('http://example.com/accessURL/37/1/2', $results[1]['object']);
   }
 
   /**
@@ -61,27 +95,12 @@ class Pass37 extends JoinupFederationAdms2ConvertPassPluginBase {
     return <<<RDF
 <rdf:Description rdf:about="http://example.com/distribution/37/1">
     <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-    <dcat:accessURL rdf:resource="http://example.com/access-url/37/1"/>
-    <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/1"/>
-    <dcat:downloadURL rdf:resource="http://example.com/download-url/37/1/2"/>
+    <dcat:accessURL rdf:resource="http://example.com/accessURL/37/1/1"/>
+    <dcat:downloadURL rdf:resource="http://example.com/accessURL/37/1/1"/>
+    <dcat:downloadURL rdf:resource="http://example.com/accessURL/37/1/2"/>
     <dct:title xml:lang="en">Distribution 37/1</dct:title>
 </rdf:Description>
 RDF;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function processGraphCallback(string $graph, ?string $subject, string $predicate, array $entity): void {
-    // Deal only with asset distributions...
-    if ($subject && $entity && $entity['type'] === static::ASSET_DISTRIBUTION) {
-      // ...that have one or more than one download URLs.
-      if (isset($entity[$predicate])) {
-        // Deletes the download URLs from the asset distribution.
-        $download_urls_to_delete = SparqlArg::toResourceUris($entity[$predicate]);
-        $this->deleteTriples($graph, $subject, $predicate, $download_urls_to_delete);
-      }
-    }
   }
 
 }
