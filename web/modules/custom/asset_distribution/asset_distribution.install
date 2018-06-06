@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall, schema, requirements for the asset_distribution.module.
+ */
+
+/**
+ * Corrects the representation technique predicate.
+ */
+function asset_distribution_update_8100() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+WITH <http://joinup.eu/asset_distribution/published>
+DELETE { ?subject <https://www.w3.org/TR/vocab-adms/#adms_representationTechnique> ?object }
+INSERT { ?subject <http://www.w3.org/ns/adms#representationTechnique> ?object }
+WHERE { ?subject <https://www.w3.org/TR/vocab-adms/#adms_representationTechnique> ?object }
+QUERY;
+  $connection->query($query);
+}
