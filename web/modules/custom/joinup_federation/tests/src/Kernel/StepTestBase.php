@@ -24,6 +24,15 @@ abstract class StepTestBase extends KernelTestBase {
   protected $pipeline;
 
   /**
+   * Returns the tested pipeline steps plugins data.
+   *
+   * @return array[]
+   *   An associative array of steps that are used in this test. The keys are
+   *   pipeline step plugin IDs and the values are their configurations.
+   */
+  abstract protected function getUsedStepPlugins(): array;
+
+  /**
    * {@inheritdoc}
    */
   protected static $modules = [
@@ -44,6 +53,7 @@ abstract class StepTestBase extends KernelTestBase {
     $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
     /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
     $this->pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline');
+    $this->pipeline->setSteps($this->getUsedStepPlugins());
   }
 
   /**

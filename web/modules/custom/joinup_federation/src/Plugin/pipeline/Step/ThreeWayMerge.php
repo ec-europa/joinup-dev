@@ -115,6 +115,15 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'collection' => NULL,
+    ] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute(array &$data) {
     // Get the incoming entities.
     $incoming_ids = $this->getSparqlQuery()
@@ -138,6 +147,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       // The entity already exists.
       if (isset($local_entities[$id])) {
         $local_entity = $local_entities[$id];
+
+        $this->checkCollectionMatch($local_entity);
 
         // Check for bundle mismatch between the local and the incoming entity.
         if ($local_entity->bundle() !== $bundle) {
@@ -189,6 +200,23 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       }
 
       if ($needs_save) {
+        if (
+          // If the entity to be saved is a solution...
+          ($local_entity->bundle() === 'solution')
+          // That doesn't exist locally...
+          && $local_entity->isNew()
+          // And the plugin has been configured to assign a collection...
+          && ($collection_id = $this->getConfiguration()['collection'])
+          // That exists...
+          && ($collection = Rdf::load($collection_id))
+        ) {
+          // Then update the collection affiliates.
+          $collection->get('field_ar_affiliates')->appendItem([
+            'target_id' => $local_entity->id(),
+          ]);
+          $collection->skip_notification = TRUE;
+          $collection->save();
+        }
         $local_entity->skip_notification = TRUE;
         $local_entity->save();
       }
@@ -238,6 +266,32 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
     }
 
     return $changed;
+  }
+
+  /**
+   * Checks if the configured collection matches the one of the local solution.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $local_solution
+   *   The local solution.
+   *
+   * @throws \Exception
+   *   If the configured collection is different than the collection of the
+   *   local solution.
+   */
+  protected function checkCollectionMatch(RdfInterface $local_solution): void {
+    // Check only solutions.
+    if ($local_solution->bundle() !== 'solution') {
+      return;
+    }
+
+    // If this plugin was not configured to assign a collection, exit early.
+    if (!$configured_collection_id = $this->getConfiguration()['collection']) {
+      return;
+    }
+
+    if ($configured_collection_id !== $local_solution->collection->target_id) {
+      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$configured_collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
+    }
   }
 
   /**
