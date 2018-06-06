@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall, schema and requirements hook for the owner module.
+ */
+
+/**
+ * Fix the owner type predicate.
+ */
+function owner_update_8100() {
+  /** @var \Drupal\Core\Database\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+WITH <http://joinup.eu/owner/published>
+DELETE { ?subject <http://joinup.eu/voc/owner-type> ?object }
+INSERT { ?subject <http://purl.org/dc/terms/type> ?object }
+WHERE { ?subject <http://joinup.eu/voc/owner-type> ?object }
+QUERY;
+  $connection->query($query);
+}
