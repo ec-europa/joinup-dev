@@ -8,7 +8,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       value:
-        predicate: 'https://www.w3.org/TR/vocab-adms/#adms-versionnotes'
+        predicate: 'http://www.w3.org/ns/adms#versionNotes'
         format: t_literal
       format:
         predicate: ''
