@@ -191,12 +191,24 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         }
         $local_entity->graph->value = 'default';
 
+        /** @var \Drupal\Core\Field\FieldItemListInterface $field */
+        foreach ($local_entity as $field_name => &$field) {
+          // Populate empty fields with their default value. This is a Drupal
+          // content entity that was not created via Drupal API. As an effect,
+          // empty fields didn't receive their default values. Wea have to
+          // explicitly do this before saving.
+          if ($field->isEmpty()) {
+            $field->applyDefaultValue();
+          }
+        }
+
         // A new entity needs to be saved.
         $needs_save = TRUE;
 
         // Delete the incoming entity from the staging graph.
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->delete();
+        // @todo Call $local_entity->validate() to catch also Drupal violations.
       }
 
       if ($needs_save) {
