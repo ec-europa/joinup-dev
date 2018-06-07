@@ -222,6 +222,12 @@
         <touch file="${phpunit.browsertest_output_file}" />
     </target>
 
+    <target name="run-phpunit" description="Run the PHPUnite test suites.">
+        <!-- Tried to use the PhpUnitTask but it's not so configurable. -->
+        <exec command="${phpunit.bin} -d memory_limit=2048M -c ./web/phpunit.xml --colors --bootstrap ${website.drupal.dir}/core/tests/bootstrap.php --no-coverage">
+        </exec>
+    </target>
+
     <!-- Enable modules for user acceptance testing. These are different from the
       ones in enable-dev-modules as it can contain modules not needed for development
       like demo content modules. -->
