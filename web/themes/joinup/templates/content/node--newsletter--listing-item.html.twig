@@ -77,12 +77,14 @@
 %}
 <div {{ attributes.addClass(classes) }}>
   <div class="listing__metadata">
-    <div class="listing__field">
-      <div class="listing__link"><a href="{{ url }}"></a></div>
-      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
-    </div>
-    <div class="listing__field">
-      <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
+    <div class="listing__text-container listing__text-container--newsletter">
+      <div class="listing__field">
+        <div class="listing__link"><a href="{{ url }}"></a></div>
+        <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      </div>
+      <div class="listing__field">
+        <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
+      </div>
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
