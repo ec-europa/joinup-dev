@@ -5,6 +5,10 @@
  * Contains joinup_federation_test.module.
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\solution\SolutionAffiliationFieldItemList;
+
 /**
  * Implements hook_rdf_load_bundle_alter().
  *
@@ -22,33 +26,26 @@ function joinup_federation_test_rdf_load_bundle_alter($entity_values, &$bundles)
 }
 
 /**
- * Implements hook_ENTITY_TYPE_storage_load().
- *
- * Mock the behavior of collection field from solution for the testing purpose.
+ * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_federation_test_rdf_entity_storage_load(array &$entities) {
+function joinup_federation_test_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'solution') {
+    return;
+  }
+
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
   $entity_field_manager = \Drupal::service('entity_field.manager');
   $definitions = $entity_field_manager->getFieldStorageDefinitions('rdf_entity');
-  // Only act for tests that are providing the 'field_ar_affiliates' field.
+
+  // Add this field only for tests that are providing the 'field_ar_affiliates'
+  // field storage.
   if (!isset($definitions['field_ar_affiliates'])) {
     return;
   }
 
-  /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  /** @var \Drupal\rdf_entity\RdfInterface $solution */
-  foreach ($entities as $solution) {
-    if ($solution->bundle() !== 'solution') {
-      continue;
-    }
-    $ids = $storage->getQuery()
-      ->condition('rid', 'collection')
-      ->condition('field_ar_affiliates', $solution->id())
-      ->execute();
-    if ($ids) {
-      $id = array_shift($ids);
-      $solution->collection = (object) ['target_id' => $id];
-    }
-  }
+  // Computed field, that represents the collections a solution is part of.
+  $fields['collection'] = BaseFieldDefinition::create('entity_reference')
+    ->setSetting('target_type', 'rdf_entity')
+    ->setComputed(TRUE)
+    ->setClass(SolutionAffiliationFieldItemList::class);
 }
