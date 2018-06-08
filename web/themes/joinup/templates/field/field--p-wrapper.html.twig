@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Theme override for a field template.
+ *
+ * Wraps a field content with a p tag.
+ * Use only when the field content doesn't contain any other block-level
+ * elements.
+ */
+#}
+{% for item in items %}
+  <p{{ attributes }}>{{ item.content }}</p>
+{% endfor %}
