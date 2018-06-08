@@ -39,6 +39,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Define ASCII values for key presses.
    */
   const KEY_LEFT = 37;
+
   const KEY_RIGHT = 39;
 
   /**
@@ -425,7 +426,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldRadioSelected($radio, $field) {
     // Find the grouping fieldset that contains the radios field.
-    $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
+    $fieldset = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $field,
+    ]);
 
     if (!$field) {
       throw new \Exception("The field '$field' was not found in the page.");
@@ -615,7 +619,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
-      throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(t('Contextual link %link expected but not found in the region %region', [
+        '%link' => $text,
+        '%region' => $region,
+      ]));
     }
   }
 
@@ -636,7 +643,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
-      throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(t('Unexpected contextual link %link found in the region %region', [
+        '%link' => $text,
+        '%region' => $region,
+      ]));
     }
   }
 
@@ -844,7 +854,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $values = $this->explodeCommaSeparatedStepArgument($values);
 
     /** @var \Behat\Mink\Element\NodeElement[] $items */
-    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+    $items = $this->getSession()->getPage()->findAll('named', array(
+      'field',
+      $field,
+    ));
 
     if (empty($items)) {
       throw new \Exception("Cannot find field $field.");
@@ -995,8 +1008,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     foreach ($lines as $line) {
       try {
         $this->assertSession()->pageTextContains($line);
-      }
-      catch (ResponseTextException $e) {
+      } catch (ResponseTextException $e) {
         $errors[] = $line;
       }
     }
@@ -1021,8 +1033,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     foreach ($lines as $line) {
       try {
         $this->assertSession()->pageTextNotContains($line);
-      }
-      catch (ResponseTextException $e) {
+      } catch (ResponseTextException $e) {
         $errors[] = $line;
       }
     }
@@ -1110,6 +1121,40 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Given I select/check the :row_text row
    */
   public function assertSelectRow($text) {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->check();
+  }
+
+  /**
+   * Attempts to uncheck a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @Given I deselect/uncheck the :row_text row
+   */
+  public function assertDeselectRow($text) {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->uncheck();
+  }
+
+  /**
+   * Attempts to fetch a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The checkbox element.
+   */
+  protected function getRowCheckboxByText($text) {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1129,7 +1174,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
       throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
-    $checkbox->check();
+
+    return $checkbox;
   }
 
   /**
