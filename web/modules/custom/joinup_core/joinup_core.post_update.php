@@ -90,3 +90,25 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
 function joinup_core_post_update_install_tallinn() {
   \Drupal::service('module_installer')->install(['tallinn']);
 }
+
+/**
+ * Update the counter refresh timers and refresh the snapshot [ISAICP-4531].
+ */
+function joinup_core_post_update_update_cached_timers() {
+  $editables = [
+    'field.field.node.discussion.field_visit_count',
+    'field.field.node.document.field_visit_count',
+    'field.field.node.event.field_visit_count',
+    'field.field.node.news.field_visit_count',
+    'field.field.rdf_entity.asset_distribution.field_download_count',
+  ];
+
+  $config_factory = \Drupal::configFactory();
+  foreach ($editables as $name) {
+    $editable = $config_factory->getEditable($name);
+    $data = $editable->getRawData();
+    $data['settings']['cache-max-age'] = 86400;
+    $editable->setData($data);
+    $editable->save();
+  }
+}
