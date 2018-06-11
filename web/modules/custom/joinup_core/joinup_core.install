@@ -216,3 +216,16 @@ QUERY;
     }
   }
 }
+
+/**
+ * Add the dct:Location class to the country terms [ISAICP-4566].
+ */
+function joinup_core_update_8107() {
+  $connection = Database::getConnection('default', 'sparql_default');
+  $query = <<<QUERY
+WITH <http://countries-skos>
+INSERT { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Location> }
+WHERE { ?entity a <http://www.w3.org/2004/02/skos/core#Concept> }
+QUERY;
+  $connection->query($query);
+}
