@@ -817,6 +817,36 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During saving a node, if the entity never had a published version and is now
+ * published, the creation date is updated with the current datetime.
+ */
+function joinup_core_node_presave(EntityInterface $entity) {
+  // Documents do not show the created date in the UI as they have the document
+  // publication date to show instead. However, since the listing screens sort
+  // by created date, the documents are updated just as the rest of the
+  // community content.
+  $community_bundles = ['discussion', 'document', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished()) {
+    return;
+  }
+  // Set the update time as the created time only if this is the first time this
+  // entity is published.
+  $published_revisions = \Drupal::entityQuery('node')
+    ->condition('type', $entity->bundle())
+    ->condition('status', 1)
+    ->condition('nid', $entity->id())
+    ->count()
+    ->execute();
+  if ($published_revisions != 0) {
+    return;
+  }
+
+  $entity->set('created', \Drupal::time()->getRequestTime());
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
