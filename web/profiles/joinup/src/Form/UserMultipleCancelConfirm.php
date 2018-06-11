@@ -69,6 +69,9 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
     foreach (Element::children($form['accounts']) as $user_id) {
       /** @var \Drupal\user\Entity\User $account */
       $account = $this->userStorage->load($user_id);
+      if (empty($account)) {
+        throw new \RuntimeException("User with id {$user_id} was not found.");
+      }
       $collections = $this->relationManager->getCollectionsWhereSoleOwner($account);
 
       if ($collections) {
@@ -98,6 +101,9 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       // delete the user at this point.
       unset($form['description']);
       $form += $build;
+      // No access to the 'Cancel' button should be given if there is at least
+      // one user that is a sole owner of a collection.
+      $form['actions']['submit']['#access'] = FALSE;
     }
 
     return $form;
