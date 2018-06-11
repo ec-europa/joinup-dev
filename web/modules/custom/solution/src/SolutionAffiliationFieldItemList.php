@@ -3,7 +3,7 @@
 namespace Drupal\solution;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
-use Drupal\Core\TypedData\ComputedItemListTrait;
+use Drupal\Core\TypedData\ComputedReferenceEntityItemListTrait;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -14,7 +14,7 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
  */
 class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
-  use ComputedItemListTrait;
+  use ComputedReferenceEntityItemListTrait;
 
   /**
    * {@inheritdoc}
