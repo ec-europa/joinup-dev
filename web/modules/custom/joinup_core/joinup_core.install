@@ -217,8 +217,6 @@ QUERY;
   }
 }
 
-
-
 /**
  * Convert landing page values into a resource [ISAICP-4568].
  */

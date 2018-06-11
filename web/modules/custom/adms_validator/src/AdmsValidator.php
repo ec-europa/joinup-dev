@@ -101,7 +101,6 @@ class AdmsValidator implements AdmsValidatorInterface {
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4348
     // @see https://github.com/SEMICeu/ADMS-AP/issues/5
     // @see https://github.com/SEMICeu/adms-ap_validator/issues/4
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4378
     $query = preg_replace('/(FILTER\(!EXISTS {\?o a )dct\:LinguisticSystem(}\)\.)/', '\1?some_class\2', $query);
 
     // Workaround for rules 13 and 32.
