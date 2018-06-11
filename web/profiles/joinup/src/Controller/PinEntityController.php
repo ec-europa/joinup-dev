@@ -182,9 +182,7 @@ class PinEntityController extends ControllerBase {
     $collections = [];
 
     if (JoinupHelper::isSolution($entity)) {
-      foreach ($entity->get('collection') as $ref) {
-        $collections[] = $ref->entity;
-      }
+      $collections = $entity->get('collection')->referencedEntities();
     }
     elseif (JoinupHelper::isCommunityContent($entity)) {
       $collections = [$this->relationManager->getParent($entity)];
