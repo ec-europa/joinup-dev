@@ -130,57 +130,6 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
 }
 
 /**
- * Links the solution to the collection to which it belongs.
- *
- * According to the ADMS model, the linked solutions of a collection are stored
- * as a property of the collection itself, called affiliates. The process of
- * linking a solution to a collection is:
- * - Request an affiliation. This request is registered by adding the collection
- *   to the affiliation_request field of the solution.
- * - Accept the affiliation. The collection is removed from the affiliation
- *   request of the solution and the solution is added to the affiliates field
- *   of the collection.
- *
- * @param string $solution_id
- *   The ID of the solution to affiliate.
- * @param string $collection_id
- *   The ID of the collection to affiliate.
- *
- * @throws \Exception
- *   Thrown when the collection ID does not belong to a collection.
- */
-function solution_update_collection_affiliation($solution_id, $collection_id) {
-  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-
-  // Add the reference field both to the published and the draft collection.
-  foreach (['default', 'draft'] as $graph) {
-    $collection = $storage->load($collection_id, [$graph]);
-    if (empty($collection)) {
-      continue;
-    }
-    if ($collection->bundle() !== 'collection') {
-      throw new \Exception('Only collections can be referenced in affiliation requests.');
-    }
-
-    $values = $collection->get('field_ar_affiliates')->getValue();
-    $values[] = ['target_id' => $solution_id];
-    $collection->set('field_ar_affiliates', $values);
-    $collection->set('graph', $graph);
-    $collection->save();
-  }
-
-  // At this point the solution has already been indexed without the parent so
-  // The queries that are based on the affiliated collection will present false
-  // data. Reset the cache related to the solution and re index it so that the
-  // entity_groups property is properly set.
-  // @todo Avoid indexing twice the solution entity in ISAICP-4446.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
-  $storage->resetCache([$solution_id]);
-  search_api_entity_insert(Rdf::load($solution_id));
-}
-
-/**
  * Implements hook_ENTITY_TYPE_access().
  *
  * Interrupts the permissions for updating a solution. The permission is not
