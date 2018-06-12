@@ -4,6 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\solution\Kernel;
 
+use Drupal\Core\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 
 /**
@@ -37,6 +42,13 @@ class SolutionValidationTest extends RdfEntityValidationTestBase {
     parent::setUp();
 
     $this->installConfig('solution');
+    RdfEntityType::create(['rid' => 'collection'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
+    RdfEntityMapping::create($mapping)->save();
+    $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
+    FieldStorageConfig::create($field_storage)->save();
+    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
+    FieldConfig::create($field_config)->save();
   }
 
   /**
