@@ -43,15 +43,42 @@ Feature: Embed of videos into the page.
     And the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
 
   @javascript
-  Scenario: A video embed button should be shown to community content editors.
+  Scenario Outline: A video embed button should be shown to community content editors.
     Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
     And I go to the homepage of the "Beer brewing corporation" collection
-    And I open the header local tasks menu
-    And I click "Edit" in the "Entity actions" region
-    Then I should see the heading "Edit Collection Beer brewing corporation"
-    When I press the button "Video Embed" in the "Description" wysiwyg editor
+    When I open the plus button menu
+    And I click "Add news"
+    When I fill in the following:
+      | Headline | Some test video |
+      | Kicker   | Some test video |
+    And I press the button "Video Embed" in the "Content" wysiwyg editor
     Then a modal should open
-    # Put a video link.
-    # Assert that the video gets rendered.
-    # Try to manually put a source as encoded json with bad parameters like autoplay=true.
-    # Verify that it's fixed. This is triggered by the order of the plugins in the format.
+    And I should see the text "Youtube and EC videos are allowed."
+    And I should see the text "Youtube example: https://www.youtube.com/watch?v=123456789abcd"
+    And I should see the text "EC url example: http://europa.eu/123abc!123"
+    And I should see the text "EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345"
+    When I fill in "Video URL" with "<url>"
+    And I press "Save" in the "Modal buttons" region
+    Then the modal should be closed
+    And I press "Save as draft"
+    Then the response should contain "<embed url>"
+
+    Examples:
+      | url                                                                      | embed url                                                                                   |
+      | https://www.youtube.com/watch?v=YTaLmMsaLOg                              | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                  |
+      | http://europa.eu/!dV74uw                                                 | //ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836 | //ec.europa.eu/avservices/play.cfm?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+
+  Scenario: Forcing auto-play into the content of an entity will not trigger the auto-play.
+    Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
+    And I go to the homepage of the "Beer brewing corporation" collection
+    And I click "Add news"
+    When I fill in the following:
+      | Headline | Some test video |
+      | Kicker   | Some test video |
+    And I fill in "Content" with:
+    """
+    <p>{"preview_thumbnail":"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/r5Kd7ltWS9w.jpg?itok=2PfetCfJ","video_url":"https://www.youtube.com/watch?v=r5Kd7ltWS9w","settings":{"responsive":true,"width":"854","height":"480","autoplay":true},"settings_summary":["Embedded Video (Responsive)."]}</p>
+    """
+    And I press "Publish"
+    Then the response should contain "autoplay=0"
