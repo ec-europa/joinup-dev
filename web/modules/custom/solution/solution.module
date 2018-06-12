@@ -106,17 +106,6 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
 
 /**
  * Implements hook_form_FORM_ID_alter().
- */
-function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInterface $form_state) {
-  $entity = $form_state->getFormObject()->getEntity();
-  if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
-//    $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
-//    $form['#entity_builders'][] = 'solution_add_form_set_collection';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
  *
  * When editing a solution, show a message to moderators informing them if a
  * solution with the same name already exists in a different collection. They
@@ -138,39 +127,6 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
   if (!solution_title_is_unique($form_state->getFormObject()->getEntity(), TRUE)) {
     drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
   }
-}
-
-/**
- * Keep a reference to the collection being saved.
- *
- * @param string $entity_type_id
- *   The entity type identifier.
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The entity updated with the submitted values.
- * @param array $form
- *   The complete form array.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.
- */
-function solution_add_form_set_collection($entity_type_id, EntityInterface $entity, array &$form, FormStateInterface $form_state) {
-  $collection_id = $form_state->getStorage()['collection'];
-  $entity->set('collection', [$collection_id]);
-}
-
-/**
- * Submit handler for the add solution form.
- *
- * Links the solution to the collection to which it belongs.
- *
- * In order for a solution to be affiliated with a collection when it is
- * created, the collection should be passed to the form_state object.
- *
- * @see \Drupal\solution\Controller\SolutionController::add()
- */
-function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
-  $solution_id = $form_state->getFormObject()->getEntity()->id();
-  $collection_id = $form_state->getStorage()['collection'];
-  solution_update_collection_affiliation($solution_id, $collection_id);
 }
 
 /**
