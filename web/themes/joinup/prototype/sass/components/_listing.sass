@@ -129,6 +129,9 @@
 
 .listing__action-link__wrapper
   padding: 0 20px
+  a
+    position: relative
+    +z-index(highlight+1)
 
 .listing__link
   position: absolute
@@ -250,6 +253,9 @@
     top: 1px
     margin-left: 6px
     +icon-size(16px)
+  a
+    position: relative
+    +z-index(highlight+1)
 
 .listing__single
   .label,
@@ -258,6 +264,8 @@
     vertical-align: middle
     a
       color: $color-base
+      position: relative
+      +z-index(highlight+1)
   .value
     display: inline
   .label
