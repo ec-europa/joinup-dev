@@ -148,8 +148,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       if (isset($local_entities[$id])) {
         $local_entity = $local_entities[$id];
 
-        $this->checkCollectionMatch($local_entity);
-
         // Check for bundle mismatch between the local and the incoming entity.
         if ($local_entity->bundle() !== $bundle) {
           $arguments = [
@@ -173,23 +171,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
           ->enforceIsNew()
           ->setOwnerId($this->currentUser->id());
 
-        // Determine the state field for this bundle, if any.
-        $state_field_name = NULL;
-        $state_field_map = $this->entityFieldManager->getFieldMapByFieldType('state');
-        if (!empty($state_field_map['rdf_entity'])) {
-          foreach ($state_field_map['rdf_entity'] as $field_name => $field_info) {
-            if (isset($field_info['bundles'][$bundle])) {
-              $state_field_name = $field_name;
-              break;
-            }
-          }
-        }
-
-        // There are also entities without a state field.
-        if ($state_field_name) {
-          $local_entity->set($state_field_name, 'validated');
-        }
-        $local_entity->graph->value = 'default';
+        $this->ensureFieldDefaults($local_entity);
 
         // A new entity needs to be saved.
         $needs_save = TRUE;
@@ -197,26 +179,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         // Delete the incoming entity from the staging graph.
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->delete();
+        // @todo Call $local_entity->validate() to catch also Drupal violations.
       }
 
       if ($needs_save) {
-        if (
-          // If the entity to be saved is a solution...
-          ($local_entity->bundle() === 'solution')
-          // That doesn't exist locally...
-          && $local_entity->isNew()
-          // And the plugin has been configured to assign a collection...
-          && ($collection_id = $this->getConfiguration()['collection'])
-          // That exists...
-          && ($collection = Rdf::load($collection_id))
-        ) {
-          // Then update the collection affiliates.
-          $collection->get('field_ar_affiliates')->appendItem([
-            'target_id' => $local_entity->id(),
-          ]);
-          $collection->skip_notification = TRUE;
-          $collection->save();
-        }
+        $this->handleAffiliation($local_entity);
         $local_entity->skip_notification = TRUE;
         $local_entity->save();
       }
@@ -269,7 +236,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
   }
 
   /**
-   * Checks if the configured collection matches the one of the local solution.
+   * Handles the incoming solution affiliation.
+   *
+   * For existing solutions, we only check if the configured collection ID
+   * matches the solution affiliation. For new solutions, we affiliate the
+   * solution to the configured collection.
    *
    * @param \Drupal\rdf_entity\RdfInterface $local_solution
    *   The local solution.
@@ -278,19 +249,78 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    *   If the configured collection is different than the collection of the
    *   local solution.
    */
-  protected function checkCollectionMatch(RdfInterface $local_solution): void {
+  protected function handleAffiliation(RdfInterface $local_solution): void {
     // Check only solutions.
     if ($local_solution->bundle() !== 'solution') {
       return;
     }
 
     // If this plugin was not configured to assign a collection, exit early.
-    if (!$configured_collection_id = $this->getConfiguration()['collection']) {
+    if (!$collection_id = $this->getConfiguration()['collection']) {
       return;
     }
 
-    if ($configured_collection_id !== $local_solution->collection->target_id) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$configured_collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
+    if (!$local_solution->isNew()) {
+      // Check for collection mismatch when federating an existing solution.
+      $match = FALSE;
+      foreach ($local_solution->get('collection') as $item) {
+        if ($item->target_id === $collection_id) {
+          $match = TRUE;
+          break;
+        }
+      }
+
+      if (!$match) {
+        throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
+      }
+
+      // For an existing solution we don't make any changes to its affiliation.
+      return;
+    }
+
+    // Add the solution as collection affiliate.
+    $collection = Rdf::load($collection_id);
+    $collection->get('field_ar_affiliates')->appendItem([
+      'target_id' => $local_solution->id(),
+    ]);
+    $collection->skip_notification = TRUE;
+    $collection->save();
+  }
+
+  /**
+   * Sets default values for fields.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $local_entity
+   *   The local entity.
+   */
+  protected function ensureFieldDefaults(RdfInterface $local_entity): void {
+    // Determine the state field for this bundle, if any.
+    $state_field_name = NULL;
+    $state_field_map = $this->entityFieldManager->getFieldMapByFieldType('state');
+    if (!empty($state_field_map['rdf_entity'])) {
+      foreach ($state_field_map['rdf_entity'] as $field_name => $field_info) {
+        if (isset($field_info['bundles'][$local_entity->bundle()])) {
+          $state_field_name = $field_name;
+          break;
+        }
+      }
+    }
+
+    // There are also entities without a state field.
+    if ($state_field_name) {
+      $local_entity->set($state_field_name, 'validated');
+    }
+    $local_entity->graph->value = 'default';
+
+    /** @var \Drupal\Core\Field\FieldItemListInterface $field */
+    foreach ($local_entity as $field_name => &$field) {
+      // Populate empty fields with their default value. This is a Drupal
+      // content entity that was not created via Drupal API. As an effect,
+      // empty fields didn't receive their default values. We have to
+      // explicitly do this before saving.
+      if ($field->isEmpty()) {
+        $field->applyDefaultValue();
+      }
     }
   }
 
