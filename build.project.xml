@@ -116,49 +116,48 @@
         </drush>
     </target>
 
-    <!-- Download database backups from Amazon S3. -->
+    <!-- Download database backups from the ASDA server. -->
     <target name="download-databases" depends="download-virtuoso-database, download-sql-database" />
 
-    <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
+    <!-- Downloads a backup of the Virtuoso database from the ASDA server. -->
     <target name="download-virtuoso-database">
         <mkdir dir="${exports.virtuoso.destination.folder}" />
         <echo msg="Fetching list of files to download." />
-        <s3list
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                prefix="${exports.virtuoso.source.folder}"
-                propertyName="exports.virtuoso.sources" />
-        <foreach
-                list="${exports.virtuoso.sources}"
-                target="fetch-virtuoso-database-dump"
-                param="exports.virtuoso.source" />
+        <httpget
+                url="${exports.virtuoso.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${exports.virtuoso.destination.folder}"
+        />
+        <untar file="${exports.virtuoso.destination.folder}JOINUP_VIRTUOSO_PRD_LATEST.tar.gz" todir="${exports.virtuoso.destination.folder}" />
+
+        <copy todir="${exports.virtuoso.destination.folder}">
+            <fileset dir="${exports.virtuoso.destination.folder}virtuoso_dump/">
+                <include name="*.bp"/>
+            </fileset>
+        </copy>
+        <delete>
+            <fileset dir="${exports.virtuoso.destination.folder}">
+                <include name="*.tar.gz" />
+                <include name="virtuoso_dump/" />
+            </fileset>
+        </delete>
     </target>
 
-    <!-- Downloads a single Virtuoso backup file from Amazon S3. -->
-    <target name="fetch-virtuoso-database-dump">
-        <echo msg="Downloading ${exports.virtuoso.source}." />
-        <s3dl
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                object="${exports.virtuoso.source}"
-                prefix="${exports.virtuoso.source.folder}"
-                target="${exports.virtuoso.destination.folder}${exports.virtuoso.source}" />
-    </target>
-
-    <!-- Downloads a backup of the SQL database from Amazon S3. -->
+    <!-- Downloads a backup of the SQL database from the ASDA server. -->
     <target name="download-sql-database">
-        <echo msg="Downloading SQL database dump from Amazon S3." />
-        <s3dl
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                object="${exports.sql.source}"
-                target="${exports.sql.destination}" />
+        <echo msg="Downloading SQL database dump from ASDA." />
+        <httpget
+                url="${exports.sql.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${tmp.dir}"
+        />
+        <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
+        <delete file="${tmp.dir}/dump.sql" failonerror="false" />
+        <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
     </target>
 
     <target name="restore-mysql-dump" depends="empty-mysql-database">
@@ -168,7 +167,7 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="file" value="${exports.sql.destination}" />
+            <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
         <!-- Make sure to truncate the cache tables immediately after importing.
              The dump might contain stale data since we use Redis on production
@@ -426,6 +425,39 @@
         </drush>
     </target>
 
+    <!-- Enable and configure the stage_file_proxy module. -->
+    <target name="setup-stage-file-proxy" description="Set up the file proxy settings.">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy</param>
+        </drush>
+        <phingcall target="configure-stage-file-proxy"/>
+    </target>
+
+    <target name="configure-stage-file-proxy">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out previous configuration. -->
+                <replaceregexp>
+                    <regexp
+                            pattern="^[^#](.*stage_file_proxy.*\.settings.*)$"
+                            replace="#\1"
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+                destFile="${website.settings.local.php}"
+                text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = ${stage_file_proxy.hotlink};${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -439,7 +471,7 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-piwik-drupal, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-piwik-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"

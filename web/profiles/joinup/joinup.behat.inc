@@ -36,6 +36,8 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 
@@ -90,7 +92,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $regex = '/' . preg_quote($text, '/') . '/ui';
     $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
 
-    PHPUnit_Framework_Assert::assertRegExp($regex, $actual, $message);
+    Assert::assertRegExp($regex, $actual, $message);
   }
 
   /**
@@ -336,7 +338,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // The PHPUnit assertion will allow to understand easily which values are
     // missing and which one are extra.
-    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
+    Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
   }
 
   /**
@@ -354,7 +356,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
+    Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
   }
 
   /**
@@ -372,7 +374,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
   }
 
   /**
@@ -509,7 +511,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ->count()
       ->execute();
 
-    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
+    Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -525,7 +527,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertPublicationState($title, $state) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getEntityByLabel('node', $title);
-    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
+    Assert::assertSame($node->isPublished(), $state === 'published');
   }
 
   /**
@@ -841,7 +843,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $element = reset($elements);
     $date = $element->findField('Date')->getValue();
     $time = $element->findField('Time')->getValue();
-    PHPUnit_Framework_Assert::assertEquals(trim($date . ' ' . $time), $value);
+    Assert::assertEquals(trim($date . ' ' . $time), $value);
   }
 
   /**
@@ -859,7 +861,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertNodeWorkflowState($title, $type, $state) {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
-    \PHPUnit_Framework_Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+    Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
   }
 
   /**
@@ -962,7 +964,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     sort($headings);
     sort($tiles_in_page);
-    \PHPUnit_Framework_Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
+    Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
   }
 
   /**
@@ -979,7 +981,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertTilesInBlock(TableNode $titles_table, $region) {
     $headings_in_page = array_keys($this->getTiles($region));
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
 
   /**
@@ -1002,7 +1004,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $headings_not_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
+    Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
   }
 
   /**
@@ -1047,7 +1049,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertOrderedTilesPresent(TableNode $titles_table) {
     $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
 
   /**
@@ -1197,7 +1199,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // might be present in wysiwygs or are used to add multiple values to a
       // field.
       $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
-      \PHPUnit_Framework_Assert::assertEquals($count, $actual);
+      Assert::assertEquals($count, $actual);
     }
   }
 
@@ -1235,7 +1237,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertPlusButtonMenuPresent() {
     $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
-    \PHPUnit_Framework_Assert::assertNotEmpty($element);
+    Assert::assertNotEmpty($element);
   }
 
   /**
@@ -1245,7 +1247,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertPlusButtonMenuNotPresent() {
     $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
-    \PHPUnit_Framework_Assert::assertEmpty($element);
+    Assert::assertEmpty($element);
   }
 
   /**
@@ -1380,7 +1382,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I should see the :label wysiwyg editor
    */
   public function assertWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertTrue($this->hasWysiwyg($label));
+    Assert::assertTrue($this->hasWysiwyg($label));
   }
 
   /**
@@ -1392,7 +1394,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the :label field should not have a wysiwyg editor
    */
   public function assertNoWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertFalse($this->hasWysiwyg($label));
+    Assert::assertFalse($this->hasWysiwyg($label));
   }
 
   /**
@@ -1498,7 +1500,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (empty($element)) {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
-    \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+    Assert::assertEquals($state, trim($element->getText()));
   }
 
   /**
@@ -1540,7 +1542,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @throws \Exception
    *   Thrown when the field does not have a description.
-   * @throws \PHPUnit_Framework_ExpectationFailedException
+   * @throws \PHPUnit\Framework\ExpectationFailedException
    *   Thrown when none of the field's descriptions match the given text.
    *
    * @Then I should see the description :description for (the ):label( field)
@@ -1553,15 +1555,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertContains($description, $element->getText());
+        Assert::assertContains($description, $element->getText());
         // The description was found, stop searching.
         return;
       }
-      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      catch (ExpectationFailedException $e) {
         // The description did not match the expected string, keep searching.
       }
     }
-    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+    throw new ExpectationFailedException("The description $description was not found for the $label field.");
   }
 
   /**
@@ -1581,7 +1583,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     foreach ($elements as $element) {
-      \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+      Assert::assertNotEquals($description, trim($element->getText()));
     }
   }
 
@@ -1618,11 +1620,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertCurrentUserProfilePictureVisible() {
     if ($this->getUserManager()->currentUserIsAnonymous()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('No user is currently logged in.');
+      throw new ExpectationFailedException('No user is currently logged in.');
     }
     $user = User::load($this->getUserManager()->getCurrentUser()->uid);
     if ($user->field_user_photo->isEmpty()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('The currently logged in user does not have a profile picture.');
+      throw new ExpectationFailedException('The currently logged in user does not have a profile picture.');
     }
     /** @var \Drupal\file\FileInterface $photo */
     $photo = File::load($user->field_user_photo->target_id);
@@ -1778,7 +1780,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
-      PHPUnit_Framework_Assert::assertEquals($expected_value, $element->getText());
+      Assert::assertEquals($expected_value, $element->getText());
     }
   }
 
@@ -1838,7 +1840,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
   }
 
   /**
@@ -1895,7 +1897,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function thePersistentUrlShouldContain($pattern) {
     $field_selector = $this->getSession()->getPage()->find('css', '.permalink');
     $href = $field_selector->getAttribute('href');
-    \PHPUnit_Framework_Assert::assertContains($pattern, $href);
+    Assert::assertContains($pattern, $href);
   }
 
   /**
@@ -2007,7 +2009,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $attribute = trim($element->getAttribute('href'), '/');
-    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
+    Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
   }
 
   /**
@@ -2036,7 +2038,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $attribute = trim($element->getAttribute('href'), '/');
-    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
+    Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
   }
 
   /**
@@ -2130,7 +2132,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $link = reset($links);
-    \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
+    Assert::assertEquals($text, $link->getText());
   }
 
   /**
@@ -2357,7 +2359,19 @@ JS;
 
     sort($bundles);
     sort($og_bundles);
-    \PHPUnit_Framework_Assert::assertEquals($bundles, $og_bundles);
+    Assert::assertEquals($bundles, $og_bundles);
+  }
+
+  /**
+   * Clears a field (input, textarea, select) value.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @Then I clear (the content of )the field :field
+   */
+  public function clearField($field) {
+    $this->getSession()->getPage()->fillField($field, '');
   }
 
 }

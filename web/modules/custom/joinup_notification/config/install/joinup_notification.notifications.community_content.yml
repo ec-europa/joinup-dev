@@ -33,6 +33,9 @@ create:
           - cc_transition_publish
   'node:discussion:post_moderated':
     publish:
+      roles:
+        moderator:
+          - cc_transition_publish
       og_roles:
         rdf_entity-collection-administrator:
           - cc_transition_publish
@@ -150,16 +153,6 @@ delete:
       owner:
         - cc_delete
   'node:post_moderated':
-    validated:
-      owner:
-        - cc_delete
-    needs_update:
-      owner:
-        - cc_delete
-    proposed:
-      owner:
-        - cc_delete
-  'node:discussion:post_moderated':
     validated:
       owner:
         - cc_delete

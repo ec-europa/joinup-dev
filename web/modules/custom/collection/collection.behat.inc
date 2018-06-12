@@ -24,6 +24,7 @@ use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\user\Entity\User;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing collections.
@@ -83,10 +84,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
       $child = $parent[$i];
-      \PHPUnit_Framework_Assert::assertEquals(
-        $child->find('css', 'a.sidebar-menu__link')->getText(),
-        $repeatedElement['text']
-      );
+      $actual_text = $child->find('css', 'a.sidebar-menu__link')->getText();
+      Assert::assertEquals($repeatedElement['text'], $actual_text);
       $i++;
     }
   }
