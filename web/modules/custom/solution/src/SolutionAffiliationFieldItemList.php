@@ -35,7 +35,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   public function postSave($update) {
     // Update the affiliation only on new solutions.
     if (!$update) {
-      $collection_ids = array_map(function (EntityReferenceItem $field_item): array {
+      $collection_ids = array_map(function (EntityReferenceItem $field_item): string {
         return $field_item->target_id;
       }, $this->list);
 
