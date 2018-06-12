@@ -110,8 +110,8 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
 function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInterface $form_state) {
   $entity = $form_state->getFormObject()->getEntity();
   if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
-    $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
-    $form['#entity_builders'][] = 'solution_add_form_set_collection';
+//    $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
+//    $form['#entity_builders'][] = 'solution_add_form_set_collection';
   }
 }
 
