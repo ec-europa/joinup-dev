@@ -285,7 +285,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $solution = $this->createRdfEntity('solution', $values);
-    $this->forceSearchApiReindex($solution);
     $this->solutions[$solution->id()] = $solution;
 
     return $solution;
