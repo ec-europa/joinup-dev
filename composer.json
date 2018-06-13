@@ -188,7 +188,8 @@
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
                 "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch",
                 "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch",
-                "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch"
+                "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
+                "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
