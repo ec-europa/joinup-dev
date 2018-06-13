@@ -260,31 +260,24 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       return;
     }
 
-    if (!$local_solution->isNew()) {
-      // Check for collection mismatch when federating an existing solution.
-      $match = FALSE;
-      foreach ($local_solution->get('collection') as $item) {
-        if ($item->target_id === $collection_id) {
-          $match = TRUE;
-          break;
-        }
-      }
-
-      if (!$match) {
-        throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
-      }
-
-      // For an existing solution we don't make any changes to its affiliation.
+    if ($local_solution->isNew()) {
+      $local_solution->set('collection', $collection_id);
       return;
     }
 
-    // Add the solution as collection affiliate.
-    $collection = Rdf::load($collection_id);
-    $collection->get('field_ar_affiliates')->appendItem([
-      'target_id' => $local_solution->id(),
-    ]);
-    $collection->skip_notification = TRUE;
-    $collection->save();
+    // Check for collection mismatch when federating an existing solution.
+    $match = FALSE;
+    foreach ($local_solution->get('collection') as $item) {
+      if ($item->target_id === $collection_id) {
+        $match = TRUE;
+        break;
+      }
+    }
+
+    if (!$match) {
+      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
+    }
+    // For an existing solution we don't make any changes to its affiliation.
   }
 
   /**
