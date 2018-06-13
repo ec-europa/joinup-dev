@@ -128,10 +128,14 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Not federated asset" solution should be affiliated with the "Spain" collection
     And the "Blacklisted asset" solution should be affiliated with the "Spain" collection
 
+    # Check that provenance activity records are not indexed.
+    When I am at "/search"
+    Then the "Activities" content tab is not displayed
+
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.
-    Then I delete the provenance activity of "Not federated asset" entity
+    And I delete the provenance activity of "Not federated asset" entity
     And I delete the provenance activity of "The Publisher" entity
     And I delete the provenance activity of "Contact" entity
     And I delete the provenance activity of "Blacklisted publisher" entity
