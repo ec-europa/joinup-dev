@@ -303,7 +303,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
     if ($state_field_name) {
       $local_entity->set($state_field_name, 'validated');
     }
-    $local_entity->graph->value = 'default';
+    $local_entity->set('graph', 'default');
 
     /** @var \Drupal\Core\Field\FieldItemListInterface $field */
     foreach ($local_entity as $field_name => &$field) {
