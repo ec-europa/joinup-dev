@@ -532,7 +532,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
     // The solution affiliation could be multi-value.
     if (isset($fields['collection'])) {
-      $fields['collection'] = array_filter(array_map('trim', explode(',', $fields['collection'])));
+      $fields['collection'] = $this->explodeCommaSeparatedStepArgument($fields['collection']);
     }
 
     // Convert any entity reference field label value with the entity ID.
