@@ -12,7 +12,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -50,6 +49,9 @@ function asset_distribution_entity_bundle_field_info_alter(&$fields, EntityTypeI
  * context and save it in the form state.
  *
  * @see \Drupal\asset_distribution\Controller\AssetDistributionController::add()
+ *
+ * @todo This should be implemented more elegant, by subscribing to RDF entity
+ * rdf_entity.rdf_add route and deny the access for asset_distribution.
  */
 function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state) {
   $rdf = \Drupal::routeMatch()->getParameter('rdf_entity');
@@ -61,32 +63,6 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
     throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
-
-  $form_state->set('context_rdf_entity_id', $rdf->id());
-
-  // Add a submit handler so we can add the distribution relation to the
-  // solution.
-  $form['actions']['submit']['#submit'][] = 'asset_distribution_form_rdf_entity_asset_distribution_form_submit';
-}
-
-/**
- * Submit handler for rdf_entity_asset_distribution_form.
- *
- * When creating a new asset distribution, add the relation to the solution or
- * the asset release. Usually this relation would point in the reverse way, but
- * this is how the data model has been designed.
- *
- * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
- */
-function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
-  $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
-  /** @var \Drupal\rdf_entity\Entity\RdfInterface $distribution */
-  $distribution = $form_state->getFormObject()->getEntity();
-
-  asset_distribution_add_parent_relation($distribution, $parent);
-
-  // Redirect to the parent solution or asset release from where we started.
-  $form_state->setRedirectUrl($parent->toUrl());
 }
 
 /**
@@ -185,33 +161,6 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
     // Provide a flag if this is a standalone distribution.
     $variables['is_standalone'] = !empty($rdf_entity->standalone);
   }
-}
-
-/**
- * Adds relation between an asset distribution and a parent solution or release.
- *
- * In the data model the relation is placed on the parent instead of on the
- * child.
- *
- * @param \Drupal\rdf_entity\RdfInterface $distribution
- *   The asset distribution to relate.
- * @param \Drupal\rdf_entity\RdfInterface $parent
- *   The parent entity, this can be either an asset release or an
- *   interoperability solution.
- */
-function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfInterface $parent) {
-  // Only add the relation if it doesn't yet exist.
-  $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
-  $related_distributions = $parent->get($field_name)->getValue();
-  foreach ($related_distributions as $related_distribution) {
-    if ($related_distribution['target_id'] === $distribution->id()) {
-      return;
-    }
-  }
-
-  $related_distributions[]['target_id'] = $distribution->id();
-  $parent->set($field_name, $related_distributions);
-  $parent->save();
 }
 
 /**

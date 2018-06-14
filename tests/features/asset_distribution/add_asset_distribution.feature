@@ -193,7 +193,7 @@ Feature: Add distribution through the UI
       | title       | Boost Software License                                                         |
       | description | It is a permissive license in the style of the BSD license and the MIT license |
     And distributions:
-      | title        | licence                | solution               |
+      | title        | licence                | parent                 |
       | Hot Snake    | WTFPL                  | Solution random x name |
       | Quality Yard | Boost Software License | Solution random x name |
 

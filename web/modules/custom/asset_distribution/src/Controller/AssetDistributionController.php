@@ -6,7 +6,6 @@ use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,8 +64,8 @@ class AssetDistributionController extends ControllerBase {
    */
   public function add(RdfInterface $rdf_entity) {
     $distribution = $this->createNewAssetDistribution($rdf_entity);
-
-    return $this->entityFormBuilder()->getForm($distribution);
+    $form_state_additions = ['redirect' => $rdf_entity->toUrl()];
+    return $this->entityFormBuilder()->getForm($distribution, 'default', $form_state_additions);
   }
 
   /**
@@ -114,7 +113,6 @@ class AssetDistributionController extends ControllerBase {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',
       'parent' => $rdf_entity->id(),
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
     ]);
   }
 
