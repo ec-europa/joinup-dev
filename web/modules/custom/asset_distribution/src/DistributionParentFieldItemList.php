@@ -28,7 +28,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function preSave() {
+  public function preSave(): void {
     parent::preSave();
 
     $distribution = $this->getEntity();
@@ -43,6 +43,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
       else {
         throw new \Exception("The distribution parent should be either a 'solution' or an 'asset_release'; '{$parent->bundle()}' was assigned.");
       }
+
       // Set the distribution audience.
       $distribution->set('og_audience', $audience);
     }
@@ -51,15 +52,14 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function postSave($update) {
+  public function postSave($update): bool {
     // Set the parent only for new distributions.
-    if (!$update) {
-      if ($parent = $this->list[0]->entity) {
-        // Update the parent.
-        $parent->skip_notification = TRUE;
-        $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
-        $parent->set($field_name, $parent->id())->save();
-      }
+    /** @var \Drupal\rdf_entity\RdfInterface $parent */
+    if (!$update && ($parent = $this->list[0]->entity)) {
+      $parent->skip_notification = TRUE;
+      $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
+      $parent->get($field_name)->appendItem(['target_id' => $this->getEntity()->id()]);
+      $parent->save();
     }
     return parent::postSave($update);
   }
