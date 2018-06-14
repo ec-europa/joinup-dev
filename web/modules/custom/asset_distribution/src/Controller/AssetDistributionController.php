@@ -2,7 +2,6 @@
 
 namespace Drupal\asset_distribution\Controller;
 
-use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\og\OgAccessInterface;
