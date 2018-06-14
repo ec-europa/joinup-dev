@@ -32,21 +32,19 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
     parent::preSave();
 
     $distribution = $this->getEntity();
-    if ($distribution->isNew() && $this->list[0]->entity) {
-      /** @var \Drupal\rdf_entity\RdfInterface $parent */
-      if ($parent = $this->list[0]->entity) {
-        if ($parent->bundle() === 'solution') {
-          $audience = $parent->id();
-        }
-        elseif ($parent->bundle() === 'asset_release' && $parent->get('field_isr_is_version_of')->entity) {
-          $audience = $parent->get('field_isr_is_version_of')->target_id;
-        }
-        else {
-          throw new \Exception("The distribution parent should be either a 'solution' or an 'asset_release'; '{$parent->bundle()}' was assigned.");
-        }
-        // Set the distribution audience.
-        $distribution->set('og_audience', $audience);
+    /** @var \Drupal\rdf_entity\RdfInterface $parent */
+    if ($distribution->get('og_audience')->isEmpty() && $distribution->isNew() && ($parent = $this->list[0]->entity)) {
+      if ($parent->bundle() === 'solution') {
+        $audience = $parent->id();
       }
+      elseif ($parent->bundle() === 'asset_release' && $parent->get('field_isr_is_version_of')->entity) {
+        $audience = $parent->get('field_isr_is_version_of')->target_id;
+      }
+      else {
+        throw new \Exception("The distribution parent should be either a 'solution' or an 'asset_release'; '{$parent->bundle()}' was assigned.");
+      }
+      // Set the distribution audience.
+      $distribution->set('og_audience', $audience);
     }
   }
 

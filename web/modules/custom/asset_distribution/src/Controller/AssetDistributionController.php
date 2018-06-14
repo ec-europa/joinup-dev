@@ -91,7 +91,7 @@ class AssetDistributionController extends ControllerBase {
    *   The unsaved asset_distribution entity.
    */
   protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
-    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $rdf_entity->field_isr_is_version_of->target_id;
+    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $rdf_entity->field_isr_is_version_of->entity;
 
     // A solution is needed to create a distribution. If the rdf entity
     // parameter is neither a solution or a release, the variable will be empty.
