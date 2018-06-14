@@ -19,13 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AssetDistributionController extends ControllerBase {
 
   /**
-   * The asset distribution relation manager.
-   *
-   * @var \Drupal\asset_distribution\AssetDistributionRelations
-   */
-  protected $assetDistributionRelations;
-
-  /**
    * The OG access handler.
    *
    * @var \Drupal\og\OgAccessInterface
@@ -35,8 +28,7 @@ class AssetDistributionController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(AssetDistributionRelations $asset_distribution_relations, OgAccessInterface $og_access) {
-    $this->assetDistributionRelations = $asset_distribution_relations;
+  public function __construct(OgAccessInterface $og_access) {
     $this->ogAccess = $og_access;
   }
 
@@ -44,10 +36,7 @@ class AssetDistributionController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('asset_distribution.relations'),
-      $container->get('og.access')
-    );
+    return new static($container->get('og.access'));
   }
 
   /**
@@ -103,7 +92,7 @@ class AssetDistributionController extends ControllerBase {
    *   The unsaved asset_distribution entity.
    */
   protected function createNewAssetDistribution(RdfInterface $rdf_entity) {
-    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $this->assetDistributionRelations->getReleaseSolution($rdf_entity);
+    $solution = $rdf_entity->bundle() === 'solution' ? $rdf_entity : $rdf_entity->field_isr_is_version_of->target_id;
 
     // A solution is needed to create a distribution. If the rdf entity
     // parameter is neither a solution or a release, the variable will be empty.
