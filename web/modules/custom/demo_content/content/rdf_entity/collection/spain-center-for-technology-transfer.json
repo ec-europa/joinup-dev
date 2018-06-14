@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "https:\/\/joinup.ec.europa.eu\/collection\/spain-center-technology-transfer?_format=hal_json"
+            "href": "http:\/\/administracionelectronica.gob.es\/ctt?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
@@ -19,7 +19,7 @@
     },
     "id": [
         {
-            "value": "https:\/\/joinup.ec.europa.eu\/collection\/spain-center-technology-transfer"
+            "value": "http:\/\/administracionelectronica.gob.es\/ctt"
         }
     ],
     "rid": [
@@ -45,7 +45,7 @@
     ],
     "uuid": [
         {
-            "value": "https:\/\/joinup.ec.europa.eu\/collection\/spain-center-technology-transfer"
+            "value": "http:\/\/administracionelectronica.gob.es\/ctt"
         }
     ],
     "field_ar_abstract": [
