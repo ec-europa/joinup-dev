@@ -28,7 +28,6 @@ Feature: Distribution API
       | documentation  | text.pdf                           |
       | release number | 1                                  |
       | release notes  | Changed release                    |
-      | distribution   | Asset distribution entity foo      |
       | is version of  | Asset distribution solution        |
     And the following distribution:
       | title       | Asset distribution entity foo         |
