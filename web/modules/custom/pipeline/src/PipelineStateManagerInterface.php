@@ -31,6 +31,27 @@ interface PipelineStateManagerInterface {
   public function getState($pipeline_id);
 
   /**
+   * Persists the batch progress between requests.
+   *
+   * @param string $pipeline_id
+   *   The active pipeline.
+   * @param \Drupal\pipeline\PipelineStepBatchProgressInterface $batch_progress
+   *   The batch progress object.
+   */
+  public function setBatchProgress(string $pipeline_id, PipelineStepBatchProgressInterface $batch_progress);
+
+  /**
+   * Retrieves the persisted batch progress.
+   *
+   * @param string $pipeline_id
+   *   The active pipeline.
+   *
+   * @return \Drupal\pipeline\PipelineStepBatchProgressInterface
+   *   The batch progress object.
+   */
+  public function getBatchProgress(string $pipeline_id): PipelineStepBatchProgressInterface;
+
+  /**
    * Deletes the persisted state for a given pipeline.
    *
    * @param string $pipeline_id
@@ -39,6 +60,14 @@ interface PipelineStateManagerInterface {
    * @return $this
    */
   public function reset($pipeline_id);
+
+  /**
+   * Clears the persisted state of the batch process.
+   *
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   */
+  public function resetBatchProgress(string $pipeline_id);
 
   /**
    * Returns metadata about the persisted state.
