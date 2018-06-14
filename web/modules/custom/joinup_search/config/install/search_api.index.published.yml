@@ -432,6 +432,7 @@ datasource_settings:
       selected:
         - contact_information
         - owner
+        - provenance_activity
     languages:
       default: true
       selected: {  }
