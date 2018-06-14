@@ -12,8 +12,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\file_url\FileUrlHandler;
 
 /**
