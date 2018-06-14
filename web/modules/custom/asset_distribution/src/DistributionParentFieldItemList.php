@@ -21,7 +21,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
    */
   protected function computeValue(): void {
     $distribution = $this->getEntity();
-    if ($distribution->id() && ($parent_id = $this->getParentId($distribution))) {
+    if ($parent_id = $this->getParentId($distribution)) {
       $this->list[0] = $this->createItem(0, ['target_id' => $parent_id]);
     }
   }
@@ -33,8 +33,9 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
     parent::preSave();
 
     $distribution = $this->getEntity();
-    if ($distribution->isNew() && !empty($this->list[0]->target_id)) {
-      if ($parent = Rdf::load($this->list[0]->target_id)) {
+    if ($distribution->isNew() && $this->list[0]->entity) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
+      if ($parent = $this->list[0]->entity) {
         if ($parent->bundle() === 'solution') {
           $audience = $parent->id();
         }
@@ -42,7 +43,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
           $audience = $parent->get('field_isr_is_version_of')->target_id;
         }
         else {
-          throw new \Exception("The distribution parent should be either a 'solution' or an 'asset_release'; '{$parent->bundle()}' was assigend.");
+          throw new \Exception("The distribution parent should be either a 'solution' or an 'asset_release'; '{$parent->bundle()}' was assigned.");
         }
         // Set the distribution audience.
         $distribution->set('og_audience', $audience);
@@ -55,9 +56,9 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
    */
   public function postSave($update) {
     // Set the parent only for new distributions.
-    if (!$update && !empty($this->list[0]->target_id)) {
-      // Update the parent.
-      if ($parent = Rdf::load($this->list[0]->target_id)) {
+    if (!$update) {
+      if ($parent = $this->list[0]->entity) {
+        // Update the parent.
         $parent->skip_notification = TRUE;
         $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
         $parent->set($field_name, $parent->id())->save();
