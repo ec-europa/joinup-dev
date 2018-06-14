@@ -38,7 +38,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
         if ($parent->bundle() === 'solution') {
           $audience = $parent->id();
         }
-        elseif ($parent->bundle() === 'asset_release' && !$parent->get('field_isr_is_version_of')->entity) {
+        elseif ($parent->bundle() === 'asset_release' && $parent->get('field_isr_is_version_of')->entity) {
           $audience = $parent->get('field_isr_is_version_of')->target_id;
         }
         else {
