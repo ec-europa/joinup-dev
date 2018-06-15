@@ -189,15 +189,10 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     if ($step instanceof PipelineStepWithFormInterface) {
-      $form_state = new FormState();
-      $data = $this->buildForm($step, $form_state, $data);
-      // In case of validation errors, or a rebuild (e.g. multi step), bail out.
-      if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
-        // Set the current state.
-        $this->stateManager->setState($this->pipeline->getPluginId(), $current_step_id);
+      $data = $this->handleFormExecution($step);
+      if ($data === FALSE) {
         return NULL;
       }
-      $this->redirectForm($form_state);
     }
 
     try {
@@ -244,6 +239,35 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     return $this->pipeline->key();
+  }
+
+  /**
+   * Handles the form execution.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepWithFormInterface $step
+   *   The active pipeline step.
+   *
+   * @return array|bool
+   *   Either the form data, or FALSE to stop processing.
+   */
+  protected function handleFormExecution(PipelineStepWithFormInterface $step) {
+    if ($step instanceof PipelineStepBatchInterface) {
+      // If a batch is running, skip form rendering.
+      if (!$step->getProgress()->needsInitialisation()) {
+        // Bail out, but keep processing.
+        return [];
+      }
+    }
+    $form_state = new FormState();
+    $data = $this->buildForm($step, $form_state, []);
+    // In case of validation errors, or a rebuild (e.g. multi step), bail out.
+    if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
+      // Set the current state.
+      $this->stateManager->setState($this->pipeline->getPluginId(), $step->getPluginId());
+      return FALSE;
+    }
+    $this->redirectForm($form_state);
+    return $data;
   }
 
   /**
