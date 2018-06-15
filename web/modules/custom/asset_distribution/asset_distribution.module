@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset_distribution\AssetDistributionRelations;
 use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -63,6 +64,20 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
     throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
+  $form_state->set('context_rdf_entity_id', $rdf->id());
+  $form['actions']['submit']['#submit'][] = 'asset_distribution_form_rdf_entity_asset_distribution_form_submit';
+}
+
+/**
+ * Submit handler for rdf_entity_asset_distribution_form.
+ *
+ * Redirects to the overview of the parent entity instead of the entity itself.
+ *
+ * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
+ */
+function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
+  $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
+  $form_state->setRedirectUrl($parent->toUrl());
 }
 
 /**
