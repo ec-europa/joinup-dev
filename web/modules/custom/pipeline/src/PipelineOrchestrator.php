@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\pipeline\Form\PipelineOrchestratorForm;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -183,6 +184,10 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected function executeStep($current_step_id) {
     $step = $this->pipeline->createStepInstance($current_step_id);
     $data = [];
+    if ($step instanceof PipelineStepBatchInterface) {
+      $this->initialiseBatch($step);
+    }
+
     if ($step instanceof PipelineStepWithFormInterface) {
       $form_state = new FormState();
       $data = $this->buildForm($step, $form_state, $data);
@@ -224,7 +229,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     // Advance to the next state.
-    $this->pipeline->next();
+    if ($step instanceof PipelineStepBatchInterface) {
+      $this->handleBatchProcess($step);
+    }
+    else {
+      $this->pipeline->next();
+    }
 
     // The pipeline execution finished with success.
     if (!$this->pipeline->valid()) {
@@ -307,6 +317,78 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     $plugin = $this->pipelinePluginManager->createInstance($pipeline);
     // Ask the plugin to act on reset.
     $plugin->reset();
+  }
+
+  /**
+   * Renders a batch progress screen.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepBatchInterface $step
+   *   The active pipeline step.
+   *
+   * @return array
+   *   The render array of the batch process.
+   */
+  protected function batchResponse(PipelineStepBatchInterface $step) {
+    $arguments = [
+      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+      '%step' => $step->getPluginDefinition()['label'],
+    ];
+    $total_count = $step->getProgress()->getTotalBatchIterations();
+    $current_count = $step->getProgress()->getBatchIteration();
+    $message = $this->t('We got some work to do for the "%step" step. Please bear with us...', $arguments);
+    return [
+      '#theme' => 'progress_bar',
+      '#percent' => $total_count ? (int) (100 * $current_count / $total_count) : 100,
+      '#message' => [
+        '#markup' => $message,
+      ],
+      '#label' => $this->t('%pipeline - %step', $arguments),
+      '#attached' => [
+        'html_head' => [
+          [
+            [
+              // Redirect through a 'Refresh' meta tag.
+              '#tag' => 'meta',
+              '#attributes' => [
+                'http-equiv' => 'Refresh',
+                'content' => '0; URL=' . \Drupal::service('path.current')->getPath(),
+              ],
+            ],
+            'batch_progress_meta_refresh',
+          ],
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Handle progressing the batch process.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepBatchInterface $step
+   *   Current pipeline step.
+   */
+  protected function handleBatchProcess(PipelineStepBatchInterface $step): void {
+    // The current step finished its batch operation.
+    if ($step->getProgress()->getCompleted()) {
+      $this->stateManager->resetBatchProgress($this->pipeline->getPluginId());
+      $this->pipeline->next();
+    }
+    // The current step has more work to, so reload the page.
+    else {
+      $this->stateManager->setBatchProgress($this->pipeline->getPluginId(), $step->getProgress());
+      $this->response = $this->batchResponse($step);
+    }
+  }
+
+  /**
+   * Set the batch progress on the batch step.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepBatchInterface $step
+   *   Current pipeline step.
+   */
+  protected function initialiseBatch(PipelineStepBatchInterface $step): void {
+    $batch_progress = $this->stateManager->getBatchProgress($this->pipeline->getPluginId());
+    $step->setProgress($batch_progress);
   }
 
 }
