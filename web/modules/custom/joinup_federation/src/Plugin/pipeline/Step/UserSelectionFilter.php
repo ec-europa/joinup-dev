@@ -12,6 +12,8 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -30,9 +32,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("User selection"),
  * )
  */
-class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepBatchInterface {
 
   use PipelineStepWithFormTrait;
+
+  use PipelineStepWithBatchTrait;
 
   /**
    * The entity type manager service.
@@ -153,34 +157,56 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $user_selection = $data['user_selection'];
-    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
-      // Build a list of all whitelisted entities.
-      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    if ($this->progress->needsInitialisation()) {
+      $user_selection = $data['user_selection'];
+
+      if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
+        // Build a list of all whitelisted entities.
+        $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+      }
+      // If no solution was selected, exit the pipeline here.
+      else {
+        return [
+          '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
+        ];
+      }
+
+      $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
+      // Remove the blacklisted entities, if any.
+      if ($blacklist = array_diff($all_imported_ids, $this->progress->getData()['whitelist'])) {
+        $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+      }
+      $data = $this->progress->getData();
+      $data['imported_ids'] = $all_imported_ids;
+      $this->progress->setData($data);
+      $this->progress->setTotalBatchIterations(count($all_imported_ids));
+    }
+    $data = $this->progress->getData();
+    $all_imported_ids = $data['imported_ids'];
+    if (empty($all_imported_ids)) {
+      $this->progress->setCompleted();
+      return NULL;
+    }
+    $count = 0;
+    while (count($all_imported_ids) && $count <= 25) {
+      $count++;
+      $this->progress->setBatchIteration($this->progress->getBatchIteration() + 1);
+      $imported_id = array_pop($all_imported_ids);
+
+      $activity = $this->provenanceHelper->loadOrCreateEntityActivity($imported_id);
+      if ($activity) {
+        $activity
+          // Set the last user that federated this entity as owner.
+          ->setOwnerId($this->currentUser->id())
+          // Update the provenance based on user input.
+          ->set('provenance_enabled', in_array($activity->id(), $this->progress->getData()['whitelist']))
+          ->save();
+      }
     }
 
-    $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
-    // Remove the blacklisted entities, if any.
-    if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
-      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
-    }
-
-    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($all_imported_ids);
-    foreach ($activities as $id => $activity) {
-      $activity
-        // Set the last user that federated this entity as owner.
-        ->setOwnerId($this->currentUser->id())
-        // Update the provenance based on user input.
-        ->set('provenance_enabled', in_array($id, $this->whitelist))
-        ->save();
-    }
-
-    // If no solution was selected, exit the pipeline here.
-    if ($user_selection_is_empty) {
-      return [
-        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
-      ];
-    }
+    $data['imported_ids'] = $all_imported_ids;
+    $this->progress->setData($data);
+    return NULL;
   }
 
   /**
@@ -276,15 +302,20 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   is not from $bundle bundle.
    */
   protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
+    $data = $this->progress->getData();
+    if (!isset($data['whitelist'])) {
+      $data['whitelist'] = [];
+    }
     static $reference_fields = [];
 
     // Compute the whitelist of IDs not already added but exit early if empty.
-    if (!$new_whitelist_ids = array_diff($whitelist_ids, $this->whitelist)) {
+    if (!$new_whitelist_ids = array_diff($whitelist_ids, $data['whitelist'])) {
       return;
     }
 
     // Add new whitelisted IDs.
-    $this->whitelist = array_merge($this->whitelist, $new_whitelist_ids);
+    $data['whitelist'] = array_merge($data['whitelist'], $new_whitelist_ids);
+    $this->progress->setData($data);
 
     // Store once the top level whitelisted solutions.
     if (!$whitelisted_solution_ids) {
