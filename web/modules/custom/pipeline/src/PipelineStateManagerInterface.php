@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\pipeline;
 
 /**
@@ -17,7 +19,7 @@ interface PipelineStateManagerInterface {
    *
    * @return $this
    */
-  public function setState($pipeline_id, $step_id);
+  public function setState(string $pipeline_id, string $step_id): self;
 
   /**
    * Returns the current state for a given pipeline.
@@ -28,7 +30,7 @@ interface PipelineStateManagerInterface {
    * @return string|null
    *   The step plugin ID or NULL.
    */
-  public function getState($pipeline_id);
+  public function getState(string $pipeline_id): ?string;
 
   /**
    * Persists the batch progress between requests.
@@ -59,7 +61,7 @@ interface PipelineStateManagerInterface {
    *
    * @return $this
    */
-  public function reset($pipeline_id);
+  public function reset(string $pipeline_id): self;
 
   /**
    * Clears the persisted state of the batch process.
@@ -79,6 +81,6 @@ interface PipelineStateManagerInterface {
    *   An object with the owner and updated time if the key has a value, or
    *   NULL otherwise.
    */
-  public function getStateMetadata($pipeline_id);
+  public function getStateMetadata(string $pipeline_id): ?\stdClass;
 
 }
