@@ -198,5 +198,6 @@ Feature: Add distribution through the UI
       | Quality Yard | Boost Software License | Solution random x name |
 
     When I go to the homepage of the "Solution random x name" solution
-    Then I should not see the text "WTFPL"
-    And I should not see the text "Boost Software License"
+    # Distributions are still shown in the solution page and so the License text will be visible in the page.
+    Then I should not see the text "WTFPL" in the "Header" region
+    And I should not see the text "Boost Software License" in the "Header" region
