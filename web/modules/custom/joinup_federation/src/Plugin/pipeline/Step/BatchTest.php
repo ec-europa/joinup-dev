@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\PipelineStepBatchProgressInterface;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 
 /**
@@ -18,12 +19,7 @@ use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
  */
 class BatchTest extends JoinupFederationStepPluginBase implements PipelineStepBatchInterface {
 
-  /**
-   * The object keeping track of the progress in the batch operation.
-   *
-   * @var \Drupal\pipeline\PipelineStepBatchProgressInterface
-   */
-  protected $progress;
+  use PipelineStepWithBatchTrait;
 
   /**
    * {@inheritdoc}
@@ -39,20 +35,6 @@ class BatchTest extends JoinupFederationStepPluginBase implements PipelineStepBa
       $this->progress->setCompleted();
     }
 
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setProgress(PipelineStepBatchProgressInterface $progress) {
-    $this->progress = $progress;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getProgress(): PipelineStepBatchProgressInterface {
-    return $this->progress;
   }
 
 }
