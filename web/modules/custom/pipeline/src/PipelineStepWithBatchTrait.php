@@ -2,8 +2,6 @@
 
 namespace Drupal\pipeline;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Reusable code for pipeline step plugins with form.
  */

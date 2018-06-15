@@ -173,7 +173,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
       $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
       // Remove the blacklisted entities, if any.
-
       if ($blacklist = array_diff($all_imported_ids, $this->progress->getData()['whitelist'])) {
         $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
       }
@@ -204,8 +203,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
           ->save();
       }
     }
-
-
 
     $data['imported_ids'] = $all_imported_ids;
     $this->progress->setData($data);

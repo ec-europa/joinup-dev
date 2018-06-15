@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
-use Drupal\pipeline\PipelineStepBatchProgressInterface;
 use Drupal\pipeline\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 
