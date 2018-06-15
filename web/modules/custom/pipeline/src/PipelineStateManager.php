@@ -51,7 +51,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setBatchProgress($pipeline_id, PipelineStepBatchProgressInterface $batch_progress) {
+  public function setBatchProgress(string $pipeline_id, PipelineStepBatchProgressInterface $batch_progress) {
     $this->getPrivateTempStore()->set($this->getBatchProgressKey($pipeline_id), $batch_progress);
     return $this;
   }
@@ -59,7 +59,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBatchProgress($pipeline_id) {
+  public function getBatchProgress(string $pipeline_id): PipelineStepBatchProgressInterface {
     $progress = $this->getPrivateTempStore()->get($this->getBatchProgressKey($pipeline_id));
     if (!$progress) {
       $progress = new PipelineStepBatchProgress();
