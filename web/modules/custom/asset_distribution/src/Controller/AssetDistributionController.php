@@ -113,6 +113,7 @@ class AssetDistributionController extends ControllerBase {
 
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_distribution',
+      'parent' => $rdf_entity->id(),
       OgGroupAudienceHelperInterface::DEFAULT_FIELD => $solution->id(),
     ]);
   }

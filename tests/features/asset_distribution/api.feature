@@ -22,19 +22,18 @@ Feature: Distribution API
       | elibrary creation | facilitators                          |
       | affiliates        | Asset distribution solution           |
       | state             | validated                             |
-    And the following distribution:
-      | title       | Asset distribution entity foo         |
-      | description | Asset distribution sample description |
-      | access url  | test.zip                              |
-      | solution    | Asset distribution solution           |
     And the following release:
       | title          | Asset distribution asset release   |
       | description    | Asset distribution sample solution |
       | documentation  | text.pdf                           |
       | release number | 1                                  |
       | release notes  | Changed release                    |
-      | distribution   | Asset distribution entity foo      |
       | is version of  | Asset distribution solution        |
+    And the following distribution:
+      | title       | Asset distribution entity foo         |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | parent      | Asset distribution solution           |
     Then I should have 1 solution
     And I should have 1 release
     And I should have 1 distribution
@@ -52,18 +51,17 @@ Feature: Distribution API
       | elibrary creation | facilitators                      |
       | affiliates        | AD first solution mandatory short |
       | state             | validated                         |
+    And the following release:
+      | title          | AD first release                   |
+      | description    | Asset distribution sample solution |
+      | release number | 1                                  |
+      | release notes  | Changed release                    |
+      | is version of  | AD first solution mandatory short  |
     And the following distribution:
       | title       | Asset distribution entity foo short   |
       | description | Asset distribution sample description |
       | access url  | test.zip                              |
-      | solution    | AD first solution mandatory short     |
-    And the following release:
-      | title          | AD first release                    |
-      | description    | Asset distribution sample solution  |
-      | distribution   | Asset distribution entity foo short |
-      | release number | 1                                   |
-      | release notes  | Changed release                     |
-      | is version of  | AD first solution mandatory short   |
+      | parent      | AD first release                      |
     Then I should have 1 solution
     And I should have 1 release
     And I should have 1 distribution
