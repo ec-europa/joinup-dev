@@ -130,7 +130,7 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Check that provenance activity records are not indexed.
     When I am at "/search"
-    Then the "Activities" content tab is not displayed
+    Then I should not see the following facet items "Activities"
 
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
