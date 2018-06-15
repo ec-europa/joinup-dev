@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\pipeline;
 
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
@@ -36,7 +38,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setState($pipeline_id, $step_id) {
+  public function setState(string $pipeline_id, string $step_id): PipelineStateManagerInterface {
     $this->getPrivateTempStore()->set($this->getStateKey($pipeline_id), $step_id);
     return $this;
   }
@@ -44,7 +46,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getState($pipeline_id) {
+  public function getState(string $pipeline_id): ?string {
     return $this->getPrivateTempStore()->get($this->getStateKey($pipeline_id));
   }
 
@@ -70,7 +72,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function reset($pipeline_id) {
+  public function reset(string $pipeline_id): PipelineStateManagerInterface {
     $this->getPrivateTempStore()->delete($this->getStateKey($pipeline_id));
     $this->resetBatchProgress($pipeline_id);
     return $this;
@@ -87,7 +89,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStateMetadata($pipeline_id) {
+  public function getStateMetadata(string $pipeline_id): ?\stdClass {
     return $this->getPrivateTempStore()->getMetadata($this->getStateKey($pipeline_id));
   }
 
