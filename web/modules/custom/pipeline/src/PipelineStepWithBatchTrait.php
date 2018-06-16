@@ -6,6 +6,7 @@ namespace Drupal\pipeline;
  * Reusable code for pipeline step plugins with form.
  */
 trait PipelineStepWithBatchTrait {
+
   /**
    * The object keeping track of the progress in the batch operation.
    *

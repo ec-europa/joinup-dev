@@ -10,14 +10,11 @@ namespace Drupal\pipeline;
 class PipelineStepBatchProgress implements PipelineStepBatchProgressInterface {
 
   protected $data;
-
   protected $totalSteps = 1;
-
   protected $currentStep = 0;
-
   protected $completed = FALSE;
-
   protected $needsInitialisation = TRUE;
+  protected $statusMessage = '';
 
   /**
    * {@inheritdoc}
@@ -87,6 +84,20 @@ class PipelineStepBatchProgress implements PipelineStepBatchProgressInterface {
    */
   public function __wakeup() {
     $this->needsInitialisation = FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatusMessage(): string {
+    return $this->statusMessage;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStatusMessage(string $message): void {
+    $this->statusMessage = $message;
   }
 
 }
