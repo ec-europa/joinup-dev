@@ -186,23 +186,22 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->getProgress()->setCompleted();
       return;
     }
-    $count = 0;
-    while (count($all_imported_ids) && $count < self::BATCH_SIZE) {
-      $count++;
-      $imported_id = array_pop($all_imported_ids);
 
-      $activity = $this->provenanceHelper->loadOrCreateEntityActivity($imported_id);
-      if ($activity) {
-        $activity
-          // Set the last user that federated this entity as owner.
-          ->setOwnerId($this->currentUser->id())
-          // Update the provenance based on user input.
-          ->set('provenance_enabled', in_array($activity->id(), $batch_data['whitelist']))
-          ->save();
-      }
+    $ids_to_process = array_splice($all_imported_ids, 0, self::BATCH_SIZE);
+    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($ids_to_process);
+
+    // The $id is the id of the referenced entity, not the activity entity.
+    // @see \Drupal\rdf_entity_provenance\ProvenanceHelperInterface::loadOrCreateEntitiesActivity.
+    foreach ($activities as $id => $activity) {
+      $activity
+        // Set the last user that federated this entity as owner.
+        ->setOwnerId($this->currentUser->id())
+        // Update the provenance based on user input.
+        ->set('provenance_enabled', in_array($id, $batch_data['whitelist']))
+        ->save();
     }
 
-    $this->getProgress()->setBatchIteration($this->getProgress()->getBatchIteration() + $count);
+    $this->getProgress()->setBatchIteration($this->getProgress()->getBatchIteration() + count($ids_to_process));
     $batch_data['whitelist'] = $all_imported_ids;
     $this->getProgress()->setData($batch_data);
   }
