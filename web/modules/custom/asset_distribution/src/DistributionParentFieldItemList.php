@@ -53,9 +53,11 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function postSave($update): bool {
-    // Set the parent only for new distributions.
+    // Set the reverse connection to the parent only if the parent is not in
+    // a staging graph. In a staging graph, the parent should already have the
+    // connection to the distribution.
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    if (!$update && ($parent = $this->list[0]->entity)) {
+    if (!$update && ($parent = $this->list[0]->entity) && $parent->get('graph')->target_id !== 'staging') {
       $parent->skip_notification = TRUE;
       $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
       $parent->get($field_name)->appendItem(['target_id' => $this->getEntity()->id()]);
