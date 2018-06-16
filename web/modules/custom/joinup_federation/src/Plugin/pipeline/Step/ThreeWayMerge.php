@@ -8,6 +8,8 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -24,7 +26,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("3-way merge"),
  * )
  */
-class ThreeWayMerge extends JoinupFederationStepPluginBase {
+class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepBatchInterface {
+
+  use PipelineStepWithBatchTrait;
+
+  const BATCH_SIZE = 5;
 
   /**
    * The current user.
@@ -125,17 +131,24 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    // Get the incoming entities.
-    $incoming_ids = $this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->execute();
-    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
-    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
+    if ($this->progress->needsInitialisation()) {
+      $this->initializeBatch($data);
+    }
 
-    // Get the incoming entities that are stored also locally.
+    $progress_data = $this->progress->getData();
+    $incoming_ids = $progress_data['incoming_ids'];
+    if (empty($incoming_ids)) {
+      return NULL;
+    }
+    $ids_to_process = array_splice($incoming_ids, 0, self::BATCH_SIZE);
+
+    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
+    $incoming_entities = $ids_to_process ? $this->getRdfStorage()->loadMultiple($ids_to_process, ['staging']) : [];
+
+    // Load the corresponding local entities if any.
     $local_ids = $this->getSparqlQuery()
       ->graphs(['default', 'draft'])
-      ->condition('id', array_values($incoming_ids), 'IN')
+      ->condition('id', array_values($ids_to_process), 'IN')
       ->execute();
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
@@ -188,6 +201,38 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $local_entity->save();
       }
     }
+
+    // Now that all entities have been processed, update the remaining incoming
+    // ids to the progress data and update the iteration number.
+    $progress_data['incoming_ids'] = $incoming_ids;
+    $this->progress->setData($progress_data);
+    $this->progress->setBatchIteration($this->progress->getBatchIteration() + count($ids_to_process));
+    return NULL;
+  }
+
+  /**
+   * Executes the batch process for the user selection filter form submission.
+   *
+   * @param array $data
+   *   An array of data.
+   */
+  protected function executeBatch(array &$data): void {
+
+  }
+
+  /**
+   * Initializes the batch process.
+   *
+   * @param array $data
+   *   The batch data array.
+   */
+  protected function initializeBatch(array &$data): void {
+    $all_imported_ids = $this->getSparqlQuery()->graphs(['staging'])->execute();
+    $data = $this->progress->getData();
+    $data['incoming_ids'] = $all_imported_ids;
+    $this->progress->setData($data);
+    $this->progress->setBatchIteration(0);
+    $this->progress->setTotalBatchIterations(count($all_imported_ids));
   }
 
   /**
