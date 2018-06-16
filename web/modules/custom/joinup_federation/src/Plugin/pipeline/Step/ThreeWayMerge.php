@@ -131,13 +131,14 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    if ($this->progress->needsInitialisation()) {
+    if ($this->getProgress()->needsInitialisation()) {
       $this->initializeBatch($data);
     }
 
-    $progress_data = $this->progress->getData();
+    $progress_data = $this->getProgress()->getData();
     $incoming_ids = $progress_data['incoming_ids'];
     if (empty($incoming_ids)) {
+      $this->getProgress()->setCompleted();
       return NULL;
     }
     $ids_to_process = array_splice($incoming_ids, 0, self::BATCH_SIZE);
@@ -205,19 +206,9 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
     // Now that all entities have been processed, update the remaining incoming
     // ids to the progress data and update the iteration number.
     $progress_data['incoming_ids'] = $incoming_ids;
-    $this->progress->setData($progress_data);
-    $this->progress->setBatchIteration($this->progress->getBatchIteration() + count($ids_to_process));
+    $this->getProgress()->setData($progress_data);
+    $this->getProgress()->setBatchIteration($this->getProgress()->getBatchIteration() + count($ids_to_process));
     return NULL;
-  }
-
-  /**
-   * Executes the batch process for the user selection filter form submission.
-   *
-   * @param array $data
-   *   An array of data.
-   */
-  protected function executeBatch(array &$data): void {
-
   }
 
   /**
@@ -228,11 +219,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    */
   protected function initializeBatch(array &$data): void {
     $all_imported_ids = $this->getSparqlQuery()->graphs(['staging'])->execute();
-    $data = $this->progress->getData();
+    $data = $this->getProgress()->getData();
     $data['incoming_ids'] = $all_imported_ids;
-    $this->progress->setData($data);
-    $this->progress->setBatchIteration(0);
-    $this->progress->setTotalBatchIterations(count($all_imported_ids));
+    $this->getProgress()->setData($data);
+    $this->getProgress()->setBatchIteration(0);
+    $this->getProgress()->setTotalBatchIterations(count($all_imported_ids));
   }
 
   /**
