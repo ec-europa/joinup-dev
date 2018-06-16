@@ -8,6 +8,8 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -24,7 +26,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("3-way merge"),
  * )
  */
-class ThreeWayMerge extends JoinupFederationStepPluginBase {
+class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepBatchInterface {
+
+  use PipelineStepWithBatchTrait;
 
   /**
    * The current user.
@@ -125,10 +129,28 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    // Get the incoming entities.
-    $incoming_ids = $this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->execute();
+    if ($this->progress->needsInitialisation()) {
+      // Get the incoming entities.
+      $incoming_ids = $this->getSparqlQuery()
+        ->graphs(['staging'])
+        ->execute();
+
+      $incoming_id_chunks = array_chunk($incoming_ids, 25);
+      $data = $this->progress->getData();
+      $data['id_chunks'] = $incoming_id_chunks;
+      $this->progress->setData($data);
+      $this->progress->setTotalBatchIterations(count($incoming_id_chunks));
+    }
+
+    $data = $this->progress->getData();
+    if (empty($data['id_chunks'])) {
+      $this->progress->setCompleted();
+      return NULL;
+    }
+    $incoming_ids = array_pop($data['id_chunks']);
+    $this->progress->setData($data);
+    $this->progress->setBatchIteration($this->progress->getBatchIteration() + 1);
+
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
 
