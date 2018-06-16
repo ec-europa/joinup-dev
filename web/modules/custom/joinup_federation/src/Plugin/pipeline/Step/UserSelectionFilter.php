@@ -38,6 +38,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
   use PipelineStepWithBatchTrait;
 
+  const BATCH_SIZE = 25;
+
   /**
    * The entity type manager service.
    *
@@ -157,40 +159,36 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    if ($this->progress->needsInitialisation()) {
-      $user_selection = $data['user_selection'];
-
-      if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
-        // Build a list of all whitelisted entities.
-        $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
-      }
-      // If no solution was selected, exit the pipeline here.
-      else {
+    if ($this->getProgress()->needsInitialisation()) {
+      // If this is the first time this method is fired, check if the user has
+      // not selected anything to import.
+      if (empty(array_filter($data['user_selection']))) {
         return [
           '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
         ];
       }
-
-      $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
-      // Remove the blacklisted entities, if any.
-      if ($blacklist = array_diff($all_imported_ids, $this->progress->getData()['whitelist'])) {
-        $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
-      }
-      $data = $this->progress->getData();
-      $data['imported_ids'] = $all_imported_ids;
-      $this->progress->setData($data);
-      $this->progress->setTotalBatchIterations(count($all_imported_ids));
+      $this->initializeBatch($data);
     }
-    $data = $this->progress->getData();
-    $all_imported_ids = $data['imported_ids'];
+    $this->executeBatch($data);
+    return NULL;
+  }
+
+  /**
+   * Executes the batch process for the user selection filter form submission.
+   *
+   * @param array $data
+   *   An array of data.
+   */
+  protected function executeBatch(array &$data): void {
+    $batch_data = $this->getProgress()->getData();
+    $all_imported_ids = $batch_data['whitelist'];
     if (empty($all_imported_ids)) {
-      $this->progress->setCompleted();
-      return NULL;
+      $this->getProgress()->setCompleted();
+      return;
     }
     $count = 0;
-    while (count($all_imported_ids) && $count <= 25) {
+    while (count($all_imported_ids) && $count < self::BATCH_SIZE) {
       $count++;
-      $this->progress->setBatchIteration($this->progress->getBatchIteration() + 1);
       $imported_id = array_pop($all_imported_ids);
 
       $activity = $this->provenanceHelper->loadOrCreateEntityActivity($imported_id);
@@ -199,14 +197,39 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
           // Set the last user that federated this entity as owner.
           ->setOwnerId($this->currentUser->id())
           // Update the provenance based on user input.
-          ->set('provenance_enabled', in_array($activity->id(), $this->progress->getData()['whitelist']))
+          ->set('provenance_enabled', in_array($activity->id(), $batch_data['whitelist']))
           ->save();
       }
     }
 
-    $data['imported_ids'] = $all_imported_ids;
-    $this->progress->setData($data);
-    return NULL;
+    $this->getProgress()->setBatchIteration($this->getProgress()->getBatchIteration() + $count);
+    $batch_data['whitelist'] = $all_imported_ids;
+    $this->getProgress()->setData($batch_data);
+  }
+
+  /**
+   * Initializes the batch process.
+   *
+   * @param array $data
+   *   The batch data array.
+   */
+  protected function initializeBatch(array &$data): void {
+    $user_selection = $data['user_selection'];
+    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
+      // Build a list of all whitelisted entities and stores it in the batch
+      // progress data array.
+      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    }
+
+    // Remove the blacklisted entities, if any.
+    $batch_data = $this->getProgress()->getData();
+    $all_incoming_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
+    if ($blacklist = array_diff($all_incoming_ids, $batch_data['whitelist'])) {
+      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+    }
+
+    $this->getProgress()->setBatchIteration(0);
+    $this->getProgress()->setTotalBatchIterations(count($batch_data['whitelist']));
   }
 
   /**
@@ -302,7 +325,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   is not from $bundle bundle.
    */
   protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
-    $data = $this->progress->getData();
+    $data = $this->getProgress()->getData();
     if (!isset($data['whitelist'])) {
       $data['whitelist'] = [];
     }
@@ -315,7 +338,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
     // Add new whitelisted IDs.
     $data['whitelist'] = array_merge($data['whitelist'], $new_whitelist_ids);
-    $this->progress->setData($data);
+    $this->getProgress()->setData($data);
 
     // Store once the top level whitelisted solutions.
     if (!$whitelisted_solution_ids) {
