@@ -87,4 +87,20 @@ interface PipelineStepBatchProgressInterface {
    */
   public function needsInitialisation(): bool;
 
+  /**
+   * Returns a status message.
+   *
+   * @return string
+   *   The status message.
+   */
+  public function getStatusMessage(): string;
+
+  /**
+   * Sets a batch status message.
+   *
+   * @param string $message
+   *   The status message.
+   */
+  public function setStatusMessage(string $message): void;
+
 }

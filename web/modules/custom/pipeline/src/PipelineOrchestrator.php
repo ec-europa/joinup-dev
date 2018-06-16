@@ -353,13 +353,18 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The render array of the batch process.
    */
   protected function batchResponse(PipelineStepBatchInterface $step) {
+    $total_count = $step->getProgress()->getTotalBatchIterations();
+    $current_count = $step->getProgress()->getBatchIteration();
     $arguments = [
       '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
       '%step' => $step->getPluginDefinition()['label'],
+      '%count' => $current_count,
+      '%total' => $total_count,
     ];
-    $total_count = $step->getProgress()->getTotalBatchIterations();
-    $current_count = $step->getProgress()->getBatchIteration();
-    $message = $this->t('We got some work to do for the "%step" step. Please bear with us...', $arguments);
+    $message = $step->getProgress()->getStatusMessage();
+    if (empty($message)) {
+      $message = $this->t('Step "%step": %count/%total processed..', $arguments);
+    }
     return [
       '#theme' => 'progress_bar',
       '#percent' => $total_count ? (int) (100 * $current_count / $total_count) : 100,
