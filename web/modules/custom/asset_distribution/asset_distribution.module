@@ -7,10 +7,10 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\asset_distribution\AssetDistributionRelations;
+use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\file_url\FileUrlHandler;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -18,20 +18,30 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function asset_distribution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'asset_distribution') {
+    return;
+  }
+
+  // Computed field that represents the parent of the distribution.
+  $fields['parent'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Parent'))
+    ->setName('parent')
+    ->setDescription(t('The distribution parent. Could be a solutions or a releases.'))
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setTargetBundle('asset_distribution')
+    ->setSetting('target_type', 'rdf_entity')
+    ->setCardinality(1)
+    ->setComputed(TRUE)
+    ->setClass(DistributionParentFieldItemList::class);
+
   // Make sure a distribution's title is unique in its release.
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_distribution' && !empty($fields['label'])) {
+  if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueAssetDistributionTitle', []);
   }
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
- * Asset distributions are always created in the context of a solution or an
- * asset release. Retrieve the solution or the asset release from the route
- * context and save it in the form state.
- *
- * @see \Drupal\asset_distribution\Controller\AssetDistributionController::add()
  */
 function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form, FormStateInterface $form_state) {
   $rdf = \Drupal::routeMatch()->getParameter('rdf_entity');
@@ -40,35 +50,12 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
   // Since this form is only intended to be used in the context of a solution or
   // release, there is no field provided for it. Without a solution or a release
   // the asset distribution will be dangling and won't be reachable.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4581
+  // @todo Implement this by subscribing to RDF entity rdf_entity.rdf_add route
+  // and deny the access for asset_distribution, in ISAICP-4581.
   if (!$rdf || !$rdf instanceof RdfInterface || !in_array($rdf->bundle(), ['asset_release', 'solution'])) {
     throw new AccessDeniedHttpException('Distributions can only be created in context of a solution or an asset release.');
   }
-
-  $form_state->set('context_rdf_entity_id', $rdf->id());
-
-  // Add a submit handler so we can add the distribution relation to the
-  // solution.
-  $form['actions']['submit']['#submit'][] = 'asset_distribution_form_rdf_entity_asset_distribution_form_submit';
-}
-
-/**
- * Submit handler for rdf_entity_asset_distribution_form.
- *
- * When creating a new asset distribution, add the relation to the solution or
- * the asset release. Usually this relation would point in the reverse way, but
- * this is how the data model has been designed.
- *
- * @see asset_distribution_form_rdf_entity_asset_distribution_form_alter()
- */
-function asset_distribution_form_rdf_entity_asset_distribution_form_submit(&$form, FormStateInterface $form_state) {
-  $parent = Rdf::load($form_state->get('context_rdf_entity_id'));
-  /** @var \Drupal\rdf_entity\Entity\RdfInterface $distribution */
-  $distribution = $form_state->getFormObject()->getEntity();
-
-  asset_distribution_add_parent_relation($distribution, $parent);
-
-  // Redirect to the parent solution or asset release from where we started.
-  $form_state->setRedirectUrl($parent->toUrl());
 }
 
 /**
@@ -129,7 +116,8 @@ function asset_distribution_rdf_entity_update(EntityInterface $entity) {
     // Solutions show the licence of their releases in the solution header.
     // Clear the cache of the solution this release belongs to so any licence
     // change is picked up.
-    $solution = AssetDistributionRelations::getDistributionSolution($entity);
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    $solution = $entity->get('og_audience')->entity;
 
     if ($solution) {
       /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
@@ -167,33 +155,6 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
     // Provide a flag if this is a standalone distribution.
     $variables['is_standalone'] = !empty($rdf_entity->standalone);
   }
-}
-
-/**
- * Adds relation between an asset distribution and a parent solution or release.
- *
- * In the data model the relation is placed on the parent instead of on the
- * child.
- *
- * @param \Drupal\rdf_entity\RdfInterface $distribution
- *   The asset distribution to relate.
- * @param \Drupal\rdf_entity\RdfInterface $parent
- *   The parent entity, this can be either an asset release or an
- *   interoperability solution.
- */
-function asset_distribution_add_parent_relation(RdfInterface $distribution, RdfInterface $parent) {
-  // Only add the relation if it doesn't yet exist.
-  $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
-  $related_distributions = $parent->get($field_name)->getValue();
-  foreach ($related_distributions as $related_distribution) {
-    if ($related_distribution['target_id'] === $distribution->id()) {
-      return;
-    }
-  }
-
-  $related_distributions[]['target_id'] = $distribution->id();
-  $parent->set($field_name, $related_distributions);
-  $parent->save();
 }
 
 /**
@@ -251,10 +212,10 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
     }
     // This distribution is being added to a release.
     elseif ($rdf->bundle() == 'asset_release') {
-      $solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf);
+      $solution = $rdf->get('field_isr_is_version_of')->entity;
     }
     elseif ($rdf->bundle() == 'asset_distribution') {
-      $solution = AssetDistributionRelations::getDistributionSolution($rdf);
+      $solution = $rdf->get('og_audience')->entity;
     }
   }
   // During update.
@@ -263,7 +224,7 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
     $form_object = $form_state->getFormObject();
     /** @var \Drupal\rdf_entity\RdfInterface $distribution */
     $distribution = $form_object->getEntity();
-    $solution = AssetDistributionRelations::getDistributionSolution($distribution);
+    $solution = $distribution->get('og_audience')->entity;
   }
 
   if (!$solution) {
@@ -281,54 +242,4 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
       $form['field_ad_gitb_compliant']['#access'] = TRUE;
     }
   }
-}
-
-/**
- * Returns the parent of the distribution.
- *
- * If the distribution is already created, the parent will be retrieved from the
- * database.
- * If the distribution is new, it is created though the only allowed route and
- * the parent can be retrieved from there.
- * In any other case, skip the parent retrieval.
- *
- * @param \Drupal\rdf_entity\RdfInterface $asset_distribution
- *   The distribution entity.
- *
- * @return \Drupal\rdf_entity\Entity\RdfInterface|null
- *   The solution or release that this distribution belongs to.
- *
- * @throws \Exception
- *    Thrown when more than one parents are found.
- */
-function asset_distribution_get_distribution_parent(RdfInterface $asset_distribution) {
-  if (!$asset_distribution->isNew()) {
-    $query = \Drupal::entityQuery('rdf_entity', 'OR')
-      ->condition('field_is_distribution', $asset_distribution->id())
-      ->condition('field_isr_distribution', $asset_distribution->id());
-    $parents = $query->execute();
-    if (count($parents) > 1) {
-      throw new Exception("More than one parent was found for distribution {$asset_distribution->label()}");
-    }
-    elseif (!empty($parents)) {
-      $rdf_entity_id = reset($parents);
-      return \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($rdf_entity_id);
-    }
-  }
-
-  // If the distribution is now added, get the parent from the route.
-  // @todo The parent is only present on the route when creating distributions
-  //   through the UI. Also support distributions created through the API.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3747
-  else {
-    if (\Drupal::routeMatch()->getRouteName() === 'asset_distribution.asset_release_asset_distribution.add') {
-      $parent = \Drupal::routeMatch()->getParameter('rdf_entity');
-      if ($parent instanceof RdfInterface && in_array($parent->bundle(), ['solution', 'asset_release'])) {
-        return $parent;
-      }
-    }
-    throw new \Exception('Retrieving the parent entity from a new distribution that is not created through the add form is not yet supported.');
-  }
-
-  return NULL;
 }

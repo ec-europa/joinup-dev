@@ -84,23 +84,12 @@ Feature: Creating a test (solution) in the TRR collection.
       | title       | TRR solution bar    |
       | description | The test repository |
       | state       | validated           |
-    And the following distribution:
-      | title       | TRR Distribution foo                  |
-      | description | Asset distribution sample description |
-      | access url  | test.zip                              |
-      | solution    | TRR solution foo                      |
-    And the following distribution:
-      | title       | TRR Distribution bar                  |
-      | description | Asset distribution sample description |
-      | access url  | test.zip                              |
-      | solution    | TRR solution bar                      |
     And the following release:
       | title          | TRR release foo         |
       | description    | TRR release description |
       | documentation  | text.pdf                |
       | release number | 1                       |
       | release notes  | Changed release         |
-      | distribution   | TRR Distribution foo    |
       | is version of  | TRR solution foo        |
     And the following release:
       | title          | TRR release bar         |
@@ -108,8 +97,17 @@ Feature: Creating a test (solution) in the TRR collection.
       | documentation  | text.pdf                |
       | release number | 1                       |
       | release notes  | Changed release         |
-      | distribution   | TRR Distribution bar    |
       | is version of  | TRR solution bar        |
+    And the following distribution:
+      | title       | TRR Distribution foo                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | parent      | TRR release foo                       |
+    And the following distribution:
+      | title       | TRR Distribution bar                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | parent      | TRR release bar                       |
 
     # The GITB compliant field is only shown when the solution has a certain solution type.
     When I am logged in as a "facilitator" of the "TRR solution foo" solution

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba08d5c664ff97a62737da0402607592",
+    "content-hash": "b2e35f67532acb4ccb34c0b796c9b3a6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4061,7 +4061,8 @@
                     "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch",
                     "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch",
                     "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
-                    "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch"
+                    "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch",
+                    "Set a redirect on RDF entity form only if no previous redirect was not set @see https://github.com/ec-europa/rdf_entity/pull/36": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/36.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
