@@ -33,7 +33,7 @@ Feature: Distribution API
       | title       | Asset distribution entity foo         |
       | description | Asset distribution sample description |
       | access url  | test.zip                              |
-      | parent      | Asset distribution solution           |
+      | parent      | Asset distribution asset release      |
     Then I should have 1 solution
     And I should have 1 release
     And I should have 1 distribution

@@ -53,7 +53,8 @@ class AssetDistributionController extends ControllerBase {
    */
   public function add(RdfInterface $rdf_entity) {
     $distribution = $this->createNewAssetDistribution($rdf_entity);
-    return $this->entityFormBuilder()->getForm($distribution, 'default');
+    $form_state_additions = ['redirect' => $rdf_entity->toUrl()];
+    return $this->entityFormBuilder()->getForm($distribution, 'default', $form_state_additions);
   }
 
   /**
