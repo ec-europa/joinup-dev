@@ -47,15 +47,15 @@ function asset_release_rdf_entity_insert(RdfInterface $release) {
   if ($release->bundle() === 'asset_release') {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     if ($parent = $release->get('field_isr_is_version_of')->entity) {
-      $has_version = FALSE;
+      $parent_is_set = FALSE;
       foreach ($parent->get('field_is_has_version') as $field_item) {
         if ($field_item->target_id === $release->id()) {
-          $has_version = TRUE;
+          $parent_is_set = TRUE;
           break;
         }
       }
-      if (!$has_version) {
-        $release->get('field_isr_is_version_of')->appendItem(['target_id' => $release->id()]);
+      if (!$parent_is_set) {
+        $release->get('field_isr_is_version_of')->appendItem(['target_id' => $parent->id()]);
         // Avoid triggering notification e-mails during this update.
         $parent->skip_notification = TRUE;
         $parent->save();
