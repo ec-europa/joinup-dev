@@ -13,22 +13,17 @@ Feature: As a site owner
     And the following collection:
       | title | An owned collection |
       | state | validated           |
-    And the following collection user memberships:
-      | collection          | user          | roles |
-      | An owned collection | Group owner 1 | owner |
-      | An owned collection | Group owner 2 | owner |
-      | An owned collection | Group member  |       |
     And the following solution:
       | title | An owned solution |
       | state | validated         |
-    And the following solution user memberships:
-      | solution          | user          | roles |
-      | An owned solution | Group owner 1 | owner |
-      | An owned solution | Group owner 2 | owner |
-      | An owned solution | Group member  |       |
 
   Scenario Outline: A privileged user cannot remove all owners of a group.
-    Given I am logged in as "Site moderator"
+    Given the following <type> user memberships:
+      | <type>          | user          | roles |
+      | An owned <type> | Group owner 1 | owner |
+      | An owned <type> | Group owner 2 | owner |
+      | An owned <type> | Group member  |       |
+    And I am logged in as "Site moderator"
     And I go to the homepage of the "<title>" <type>
     And I click "Members"
     And I select the "Group owner 1" row
