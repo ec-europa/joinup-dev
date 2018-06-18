@@ -50,7 +50,7 @@ function asset_release_rdf_entity_insert(RdfInterface $release) {
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     if (!$is_version_of->isEmpty() && ($solution = $is_version_of->entity)) {
       if ($solution->bundle() !== 'solution') {
-        throw new \Exception("Entity '{$solution->label()}' ({$solution->id()}) was set as parent of '{$release->label()}' ({$release->id()}) but is a '{$solution->bundle()}' (should be 'solution').");
+        throw new \Exception("Entity '{$solution->label()}' ({$solution->id()}) is a '{$solution->bundle()}' but it should be 'solution' to be set as parent of release '{$release->label()}' ({$release->id()}).");
       }
 
       $parent_is_set = FALSE;
