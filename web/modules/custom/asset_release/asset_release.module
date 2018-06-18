@@ -40,29 +40,28 @@ function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
 /**
  * Implements hook_ENTITY_TYPE_insert().
  *
- * This takes care of the reverse reference.
- * When a release is created, it has its isVersionOf pre-filled
- * and is connected to its parent. But the parent needs to have the hasVersion
- * field filled as well.
+ * This takes care of the reverse reference. When a release is created, it has
+ * its isVersionOf pre-filled and is connected to its parent. But the parent
+ * needs to have the hasVersion field filled as well.
  */
-function asset_release_rdf_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
+function asset_release_rdf_entity_insert(RdfInterface $release) {
+  if ($release->bundle() === 'asset_release') {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
-    // If the graph is staging it means that the only graph that the entity is
-    // available in, is in the federation graph. In that case, the parent does
-    // not have a status yet since it has not been imported yet. It is safe to
-    // skip assigning the reverse connection since the imported data should
-    // have the values already assigned to the solutions.
-    if ($parent->get('graph')->target_id == 'staging') {
-      return;
+    if ($parent = $release->get('field_isr_is_version_of')->entity) {
+      $has_version = FALSE;
+      foreach ($parent->get('field_is_has_version') as $field_item) {
+        if ($field_item->target_id === $release->id()) {
+          $has_version = TRUE;
+          break;
+        }
+      }
+      if (!$has_version) {
+        $release->get('field_isr_is_version_of')->appendItem(['target_id' => $release->id()]);
+        // Avoid triggering notification e-mails during this programmatic update.
+        $parent->skip_notification = TRUE;
+        $parent->save();
+      }
     }
-    $releases = $parent->get('field_is_has_version')->getValue();
-    $releases[] = ['target_id' => $entity->id()];
-    $parent->get('field_is_has_version')->setValue($releases);
-    // Avoid triggering notification e-mails during this programmatic update.
-    $parent->skip_notification = TRUE;
-    $parent->save();
   }
 }
 
