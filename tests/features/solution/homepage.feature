@@ -129,7 +129,7 @@ Feature: Solution homepage
       | state       | validated             |
       | owner       | Chiricahua Foundation |
     And the following distributions:
-      | title               | description   | parent         |
+      | title               | description   | parent          |
       | Solr distribution 1 | Description 1 | Chiricahua Solr |
     When I go to the homepage of the "Chiricahua Solr" solution
     Then I should not see the "Pager" region
