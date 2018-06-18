@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6622c2ae6f00f33bc80f0c4157d3c18",
+    "content-hash": "0d7e3c2f363ff1ea579cff2810c0e22f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4059,7 +4059,8 @@
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
                     "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch",
-                    "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch"
+                    "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
+                    "Set a redirect on RDF entity form only if any previous redirect was not set @see https://github.com/ec-europa/rdf_entity/pull/36": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/36.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5765,7 +5766,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -6116,7 +6117,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
+            "time": "2018-05-24T16:39:27+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
