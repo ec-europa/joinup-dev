@@ -1093,7 +1093,8 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
   $memberships_to_be_deleted = array_map('joinup_core_extract_bulk_form_entity_id', array_filter($options));
   $left_owners = array_diff($owner_membership_ids, $memberships_to_be_deleted);
   if (empty($left_owners)) {
-    $form_state->setError($form, "You cannot delete all owners of the {$group->bundle()}.");
+    $message = \Drupal::translation()->formatPlural(count($owner_membership_ids), 'You cannot delete the sole owner of the @type.', 'You cannot delete all owners of the @type.', ['@type' => $group->bundle()]);
+    $form_state->setError($form, $message);
   }
 }
 
@@ -1113,7 +1114,7 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
  * @return string
  *   The entity's id.
  */
-function joinup_core_extract_bulk_form_entity_id($bulk_form_key) {
+function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
   $key = base64_decode($bulk_form_key);
   $key_parts = json_decode($key);
 

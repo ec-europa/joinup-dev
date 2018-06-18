@@ -1,6 +1,6 @@
 @api
 Feature: As a site owner
-  In order to always have an owner assigned to a group
+  In order to avoid orphaned groups
   I should be able to prevent moderators from deleting all owners of a group.
 
   Background:
@@ -49,7 +49,7 @@ Feature: As a site owner
     And I select the "Group member" row
     And I select "Delete the selected membership(s)" from "Action"
     When I press "Apply to selected items"
-    Then I should see the error message "You cannot delete all owners of the <type>."
+    Then I should see the error message "You cannot delete the sole owner of the <type>."
 
     # Normal memberships can be deleted without an issue.
     Given I deselect the "Group owner 1" row
