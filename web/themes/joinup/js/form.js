@@ -147,4 +147,24 @@
     }
   };
 
+  // Fix table select all behaviour for MDL checkboxes.
+  Drupal.behaviors.tableSelectCustom = {
+    attach: function (context, settings) {
+      $(context).find('th.select-all input[type="checkbox"]').once('tableSelectCustom').each(function () {
+        $(this).wrap('<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"></label>');
+        $(this).addClass('mdl-checkbox__input');
+        $(this).on('change', function () {
+          $('table .mdl-js-checkbox').each(function (index, element) {
+            if ($(this).find('input').prop('checked') && !$(this).hasClass('is-checked')) {
+              element.MaterialCheckbox.check();
+            }
+            else if (!$(this).find('input').prop('checked') && $(this).hasClass('is-checked')) {
+              element.MaterialCheckbox.uncheck();
+            }
+          });
+        });
+      });
+    }
+  };
+
 })(jQuery, Drupal);
