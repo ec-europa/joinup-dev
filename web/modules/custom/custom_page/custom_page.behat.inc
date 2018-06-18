@@ -14,6 +14,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
@@ -30,6 +31,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgTrait;
   use RdfEntityTrait;
   use UtilityTrait;
+  use TraversingTrait;
 
   /**
    * Handles the attachment field for custom page nodes.
@@ -44,7 +46,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \stdClass $node */
     $node = $scope->getEntity();
 
-    if ($node->type !== 'custom_page' || empty($node->attachments)) {
+    if ($node->type !== 'custom_page') {
       return;
     }
 
@@ -57,8 +59,17 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \CustomPageSubContext $context */
     $context = $environment->getContext(self::class);
 
-    foreach ($context->explodeCommaSeparatedStepArgument($node->attachments) as $filename) {
-      $context->createFile($filename);
+    if (!empty($node->attachments)) {
+      foreach ($context->explodeCommaSeparatedStepArgument($node->attachments) as $filename) {
+        /** @var \Drupal\file\FileInterface $file */
+        $context->createFile($filename);
+      }
+    }
+
+    if (!empty($node->logo)) {
+      /** @var \Drupal\file\FileInterface $file */
+      $file = $context->createFile($node->logo);
+      $node->logo = $file->getFileUri();
     }
   }
 
@@ -294,6 +305,36 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $group = $this->getRdfEntityByLabel($group_label, $group_type);
     $menu_instance = $this->getOgMenuInstance($group->id(), $menu_name);
     return $this->getOgMenuTree($menu_instance);
+  }
+
+  /**
+   * Asserts that a custom page tile has the logo properly set.
+   *
+   * @param string $title
+   *   The document title.
+   *
+   * @throws \Exception
+   *   Thrown when the logo is not found or not correct.
+   *
+   * @Then the logo should be shown in the :title custom page tile
+   */
+  public function assertCustomPageTileHasLogo($title) {
+    $tile = $this->getTileByHeading($title);
+
+    $file_url_service = \Drupal::service('file_url.handler');
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, 'custom_page');
+    /** @var \Drupal\file\FileInterface $file */
+    $file = $file_url_service::urlToFile($node->get('field_custom_page_logo')->first()->target_id);
+
+    $link = $tile->find('xpath', '//img/@src')->getText();
+    if (!$link) {
+      throw new \Exception("No logo link found in the '$title' tile.");
+    }
+
+    // @see \Drupal\file_url\Plugin\Field\FieldFormatter\FileUrlFormatter::viewElements()
+    $expected_href = file_url_transform_relative(file_create_url($file->getFileUri()));
+    Assert::assertEquals($expected_href, $link, 'The logo shown is not the correct one.');
   }
 
 }
