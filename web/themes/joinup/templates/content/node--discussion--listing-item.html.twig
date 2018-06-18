@@ -89,7 +89,7 @@
         {{ title_suffix }}
       </div>
       <div class="listing__field">
-        <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
+        <p class="listing__teaser">{{ content.body|render|striptags|raw }}</p>
       </div>
     </div>
     {% if content.field_keywords|render %}
