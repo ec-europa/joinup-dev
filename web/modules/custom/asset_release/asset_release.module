@@ -45,17 +45,22 @@ function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
  */
 function asset_release_rdf_entity_insert(RdfInterface $release) {
   if ($release->bundle() === 'asset_release') {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    if ($parent = $release->get('field_isr_is_version_of')->entity) {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $is_version_of */
+    $is_version_of = $release->get('field_isr_is_version_of');
+    if (!$is_version_of->isEmpty()) {
+      /** @var \Drupal\rdf_entity\RdfInterface $parent */
+      $parent = $is_version_of->entity;
       $parent_is_set = FALSE;
-      foreach ($parent->get('field_is_has_version') as $field_item) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
+      $has_version = $parent->get('field_is_has_version');
+      foreach ($has_version as $field_item) {
         if ($field_item->target_id === $release->id()) {
           $parent_is_set = TRUE;
           break;
         }
       }
       if (!$parent_is_set) {
-        $release->get('field_isr_is_version_of')->appendItem(['target_id' => $parent->id()]);
+        $has_version->appendItem(['target_id' => $release->id()]);
         // Avoid triggering notification e-mails during this update.
         $parent->skip_notification = TRUE;
         $parent->save();
