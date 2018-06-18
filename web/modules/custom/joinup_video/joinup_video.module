@@ -20,7 +20,7 @@ function joinup_video_form_video_embed_dialog_alter(&$form, FormStateInterface $
   // fixed.
   // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4573
   $form['video_url']['#description'] = 'Youtube and EC videos are allowed.'
-    . '<br />Youtube example: https://www.youtube.com/watch?v=123456789abcd'
+    . '<br />Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     . '<br />EC url example: http://europa.eu/123abc!123'
     . '<br />EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345';
 }
