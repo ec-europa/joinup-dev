@@ -20,7 +20,7 @@ Feature: Embed of videos into the page.
       | Kicker   | Brexit                             |
     And I fill in "Content" with:
       """
-      <h2>All bellow videos have 'autoplay' set to TRUE</h2>
+      <h2>All below videos have 'autoplay' set to TRUE</h2>
       European Commission videos are allowed.
       <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&videolang=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
       European Commission videos (with short URL that will be resolved) are allowed.
