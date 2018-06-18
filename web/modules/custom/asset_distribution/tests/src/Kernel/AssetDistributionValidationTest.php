@@ -4,6 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\asset_distribution\Kernel;
 
+use Drupal\Core\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 
 /**
@@ -33,6 +38,20 @@ class AssetDistributionValidationTest extends RdfEntityValidationTestBase {
     parent::setUp();
 
     $this->installConfig('asset_distribution');
+    RdfEntityType::create(['rid' => 'solution'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
+    RdfEntityMapping::create($mapping)->save();
+    $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/field.storage.rdf_entity.field_is_distribution.yml'));
+    FieldStorageConfig::create($field_storage)->save();
+    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/field.field.rdf_entity.solution.field_is_distribution.yml'));
+    FieldConfig::create($field_config)->save();
+    RdfEntityType::create(['rid' => 'asset_release'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../asset_release/config/install/rdf_entity.mapping.rdf_entity.asset_release.yml'));
+    RdfEntityMapping::create($mapping)->save();
+    $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../asset_release/config/install/field.storage.rdf_entity.field_isr_distribution.yml'));
+    FieldStorageConfig::create($field_storage)->save();
+    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../asset_release/config/install/field.field.rdf_entity.asset_release.field_isr_distribution.yml'));
+    FieldConfig::create($field_config)->save();
   }
 
   /**
