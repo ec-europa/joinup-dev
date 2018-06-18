@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -57,7 +56,7 @@ function asset_release_rdf_entity_insert(RdfInterface $release) {
       }
       if (!$has_version) {
         $release->get('field_isr_is_version_of')->appendItem(['target_id' => $release->id()]);
-        // Avoid triggering notification e-mails during this programmatic update.
+        // Avoid triggering notification e-mails during this update.
         $parent->skip_notification = TRUE;
         $parent->save();
       }
