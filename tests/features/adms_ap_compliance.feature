@@ -26,8 +26,8 @@ Feature: Joinup should be ADMS-AP compliant.
       | title  | documentation | release number | release notes | creation date    | is version of | state     | status    | spatial coverage | keywords | language             |
       | Omega3 | text.pdf      | 3.0.0          | New 3.0       | 2017-11-11T11:11 | Early Omega   | validated | Completed | Andorra          | food     | Athapascan languages |
     And the following distributions:
-      | title      | description                    | creation date    | access url                        | solution    | parent | downloads | licence     | format | status            | representation technique |
-      | Omega3.zip | The zipped version of Omega 3. | 2017-11-11T11:20 | http://www.example.org/omega3.zip | Early Omega | Omega3 | 232       | Foo licence | HTML   | Under development | Datalog                  |
+      | title      | description                    | creation date    | access url                        | parent | downloads | licence     | format | status            | representation technique |
+      | Omega3.zip | The zipped version of Omega 3. | 2017-11-11T11:20 | http://www.example.org/omega3.zip | Omega3 | 232       | Foo licence | HTML   | Under development | Datalog                  |
     And the following collection:
       | title               | Morbid Scattered Microphone    |
       | author              | Andre Munson                   |
