@@ -20,7 +20,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
    */
   protected function computeValue(): void {
     $distribution = $this->getEntity();
-    if ($parent_id = $this->getParentId($distribution)) {
+    if ($distribution->id() && ($parent_id = $this->getParentId($distribution))) {
       $this->list[0] = $this->createItem(0, ['target_id' => $parent_id]);
     }
   }
