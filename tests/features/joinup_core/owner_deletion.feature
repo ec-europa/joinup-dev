@@ -1,6 +1,7 @@
 @api
-Feature: As a site owner
-  In order to avoid orphaned groups
+Feature: Deletion of collection and solution owners
+  As a site owner
+  In order to avoid my groups becoming orphaned
   I should be able to prevent moderators from deleting all owners of a group.
 
   Background:
