@@ -92,4 +92,3 @@ config_devel:
   - taxonomy.vocabulary.themes
   - tour.tour.joinup_collections_overview
   - tour.tour.joinup_homepage
-  - tour.tour.joinup_homepage_anonymous
