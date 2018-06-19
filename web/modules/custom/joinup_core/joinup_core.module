@@ -639,10 +639,10 @@ function joinup_core_entity_extra_field_info() {
 }
 
 /**
- * Returns an array of form ids that should have a motivation field.
+ * Returns an array of form IDs that should have a motivation field.
  *
  * @return array
- *   An array of form ids.
+ *   An array of form IDs.
  */
 function joinup_core_get_motivation_form_ids() {
   return [
@@ -727,11 +727,11 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
  * Returns whether the transition requires a motivation.
  *
  * @param string $entity_type_id
- *   The entity type id.
+ *   The entity type ID.
  * @param string $workflow_id
- *   The workflow id.
+ *   The workflow ID.
  * @param string $transition_id
- *   The transition id.
+ *   The transition ID.
  *
  * @return bool
  *   Whether the transition requires a motivation.
@@ -961,7 +961,7 @@ function joinup_core_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_node().
  *
- * Adds the group id and label as data attributes in tiles.
+ * Adds the group ID and label as data attributes in tiles.
  */
 function joinup_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] !== 'view_mode_tile') {
@@ -1107,12 +1107,12 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
  * to match the original method.
  *
  * @param string $bulk_form_key
- *   The bulk form key representing the entity's id, language.
+ *   The bulk form key representing the entity's ID, language.
  *
  * @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey
  *
  * @return string
- *   The entity's id.
+ *   The entity's ID.
  */
 function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
   $key = base64_decode($bulk_form_key);
