@@ -12,6 +12,25 @@ use EasyRdf\Sparql\Result;
  */
 class AdmsValidationResult {
 
+  /**
+   * The graph URI.
+   *
+   * @var string
+   */
+  protected $graphUri;
+
+  /**
+   * The SPARQL connection.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   */
+  protected $sparqlConnection;
+
+  /**
+   * List of errors.
+   *
+   * @var array
+   */
   protected $errors = [];
 
   /**
@@ -28,6 +47,9 @@ class AdmsValidationResult {
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
   public function __construct(Result $result, $graph_uri, Connection $sparql) {
+    $this->sparqlConnection = $sparql;
+    $this->graphUri = $graph_uri;
+
     $skipped_rules = [100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
@@ -36,7 +58,8 @@ class AdmsValidationResult {
         $this->errors[] = new SchemaError($error);
       }
     }
-    $this->applyRules100To103($graph_uri, $sparql);
+    $this->applyRules100To103();
+    $this->applyDuplicateDistributionReferencesRule();
   }
 
   /**
@@ -45,7 +68,7 @@ class AdmsValidationResult {
    * @return array
    *   Renderable data.
    */
-  public function toRows() : array {
+  public function toRows(): array {
     return array_map(function ($error) {
       return (array) $error;
     }, $this->errors);
@@ -57,7 +80,7 @@ class AdmsValidationResult {
    * @return int
    *   Error count.
    */
-  public function errorCount() : int {
+  public function errorCount(): int {
     return count($this->errors);
   }
 
@@ -96,17 +119,12 @@ class AdmsValidationResult {
   }
 
   /**
-   * Fix rules 100, 101, 102, 103.
-   *
-   * @param string $graph_uri
-   *   The graph URI.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
-   *   The SPARQL endpoint.
+   * Works-around rules 100, 101, 102, 103.
    *
    * @todo Remove this hack in ISAICP-4296.
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
-  protected function applyRules100To103($graph_uri, Connection $sparql) {
+  protected function applyRules100To103(): void {
     $rules = [
       100 => [
         'prefix' => 'dcat:Dataset',
@@ -116,21 +134,19 @@ class AdmsValidationResult {
         'prefix' => 'skos:Concept',
         'uri' => 'http://www.w3.org/2004/02/skos/core#Concept',
       ],
-      102 => [
-        'prefix' => 'v:Kind',
-        'uri' => 'http://www.w3.org/2006/vcard/ns#Kind',
-      ],
-      103 => [
-        'prefix' => 'foaf:Agent',
-        'uri' => 'http://xmlns.com/foaf/0.1/Agent',
-      ],
+//      102 => [
+//        'prefix' => 'v:Kind',
+//        'uri' => 'http://www.w3.org/2006/vcard/ns#Kind',
+//      ],
+//      103 => [
+//        'prefix' => 'foaf:Agent',
+//        'uri' => 'http://xmlns.com/foaf/0.1/Agent',
+//      ],
     ];
 
     foreach ($rules as $rule_id => $rule) {
-
-      $query = "ASK WHERE { GRAPH <$graph_uri> { ?s a <{$rule['uri']}> } }";
-      if (!$sparql->query($query)->isTrue()) {
-
+      $query = "ASK WHERE { GRAPH <{$this->graphUri}> { ?s a <{$rule['uri']}> } }";
+      if (!$this->sparqlConnection->query($query)->isTrue()) {
         $error = (object) [
           'Class_Name' => $rule['prefix'],
           'Message' => "The mandatory class {$rule['prefix']} does not exist.",
@@ -140,6 +156,33 @@ class AdmsValidationResult {
         ];
         $this->errors[] = new SchemaError($error);
       }
+    }
+  }
+
+  /**
+   * Checks for duplicate references to distributions.
+   */
+  protected function applyDuplicateDistributionReferencesRule(): void {
+    $query = <<<Query
+SELECT ?distribution (COUNT(?asset) AS ?number_of_assets)
+WHERE {
+  ?distribution a <http://www.w3.org/ns/adms#AssetDistribution> .
+  ?asset a <http://www.w3.org/ns/adms#Asset> .
+  ?asset <http://www.w3.org/ns/dcat#distribution> ?distribution .
+}
+GROUP BY ?distribution
+HAVING (COUNT(?asset) > 1)
+Query;
+
+    foreach ($this->sparqlConnection->query($query) as $result) {
+      $error = (object) [
+        'Class_Name' => 'dcat:distribution',
+        'Message' => "Distribution {$result->distribution->getUri()} referred from more than one asset",
+        'Rule_Description' => "Distribution {$result->distribution->getUri()} is referred from more than one asset.",
+        'Rule_ID' => 10000,
+        'Rule_Severity' => 'error',
+      ];
+      $this->errors[] = new SchemaError($error);
     }
   }
 
