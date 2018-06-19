@@ -46,15 +46,19 @@ interface JoinupRelationManagerInterface {
   public function getParentState(EntityInterface $entity);
 
   /**
-   * Retrieves the eLibrary settings of the parent.
+   * Retrieves the eLibrary creation option of the parent.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The group content entity.
    *
-   * @return string
-   *   The state of the parent entity.
+   * @return int
+   *   The eLibrary creation option. Can be one of the following values:
+   *   - \Drupal\joinup_core\ELibraryCreationOptions::FACILITATORS
+   *   - \Drupal\joinup_core\ELibraryCreationOptions::MEMBERS
+   *   - \Drupal\joinup_core\ELibraryCreationOptions::REGISTERED_USERS
    */
-  public function getParentElibrary(EntityInterface $entity);
+  // @codingStandardsIgnoreLine
+  public function getParentELibraryCreationOption(EntityInterface $entity): int;
 
   /**
    * Retrieves all the users that have the administrator role in a group.
