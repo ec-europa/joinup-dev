@@ -33,7 +33,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
 
     $distribution = $this->getEntity();
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    if ($distribution->get('og_audience')->isEmpty() && $distribution->isNew() && ($parent = $this->list[0]->entity)) {
+    if ($distribution->get('og_audience')->isEmpty() && $distribution->isNew() && isset($this->list[0]) && ($parent = $this->list[0]->entity)) {
       if ($parent->bundle() === 'solution') {
         $audience = $parent->id();
       }
@@ -55,7 +55,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
   public function postSave($update): bool {
     // Set the parent only for new distributions.
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    if (!$update && !$this->isEmpty() && ($parent = $this->list[0]->entity)) {
+    if (!$update && isset($this->list[0]) && ($parent = $this->list[0]->entity)) {
       $parent->skip_notification = TRUE;
       $field_name = $parent->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
       $parent->get($field_name)->appendItem(['target_id' => $this->getEntity()->id()]);
