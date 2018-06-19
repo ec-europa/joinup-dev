@@ -35,21 +35,20 @@ Feature: In order to avoid users changing federated values
       | elibrary creation   | facilitators             |
       | affiliates          | A federated solution     |
       | state               | validated                |
-    And the following distribution:
-      | title       | A federated distribution         |
-      | description | This is a federated distribution |
-      | access url  | test.zip                         |
-      | solution    | A federated solution             |
-      | licence     | A federated licence              |
     And the following release:
       | title          | A federated release         |
       | description    | This is a federated release |
       | documentation  | text.pdf                    |
       | release number | 1                           |
       | release notes  | Changed release             |
-      | distribution   | A federated distribution    |
       | is version of  | A federated solution        |
       | state          | validated                   |
+    And the following distribution:
+      | title       | A federated distribution         |
+      | description | This is a federated distribution |
+      | access url  | test.zip                         |
+      | parent      | A federated release              |
+      | licence     | A federated licence              |
     And the following provenance activities:
       | associated with    | entity                   | enabled |
       | http://example.com | A federated solution     | yes     |
