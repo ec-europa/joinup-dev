@@ -74,7 +74,7 @@ Feature: Solution homepage
 
     # The pager should only appear when there are more than 12 items.
     Given the following distributions:
-      | title           | description    | solution          |
+      | title           | description    | parent            |
       | Distribution 1  | Description 1  | Chiricahua Server |
       | Distribution 2  | Description 2  | Chiricahua Server |
       | Distribution 3  | Description 3  | Chiricahua Server |
@@ -96,7 +96,7 @@ Feature: Solution homepage
     Given the cache has been cleared
 
     Given the following distributions:
-      | title           | description    | solution          |
+      | title           | description    | parent            |
       | Distribution 13 | Description 13 | Chiricahua Server |
     When I go to the homepage of the "Chiricahua Server" solution
     Then I should see the following links:
@@ -129,7 +129,7 @@ Feature: Solution homepage
       | state       | validated             |
       | owner       | Chiricahua Foundation |
     And the following distributions:
-      | title               | description   | solution        |
+      | title               | description   | parent          |
       | Solr distribution 1 | Description 1 | Chiricahua Solr |
     When I go to the homepage of the "Chiricahua Solr" solution
     Then I should not see the "Pager" region

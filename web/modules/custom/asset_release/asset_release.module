@@ -49,7 +49,14 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
   if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
     $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
-
+    // If the graph is staging it means that the only graph that the entity is
+    // available in, is in the federation graph. In that case, the parent does
+    // not have a status yet since it has not been imported yet. It is safe to
+    // skip assigning the reverse connection since the imported data should
+    // have the values already assigned to the solutions.
+    if ($parent->get('graph')->target_id == 'staging') {
+      return;
+    }
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);

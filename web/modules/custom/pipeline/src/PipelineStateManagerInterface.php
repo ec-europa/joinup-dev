@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\pipeline;
 
 /**
@@ -17,7 +19,7 @@ interface PipelineStateManagerInterface {
    *
    * @return $this
    */
-  public function setState($pipeline_id, $step_id);
+  public function setState(string $pipeline_id, string $step_id): self;
 
   /**
    * Returns the current state for a given pipeline.
@@ -28,7 +30,28 @@ interface PipelineStateManagerInterface {
    * @return string|null
    *   The step plugin ID or NULL.
    */
-  public function getState($pipeline_id);
+  public function getState(string $pipeline_id): ?string;
+
+  /**
+   * Persists the batch progress between requests.
+   *
+   * @param string $pipeline_id
+   *   The active pipeline.
+   * @param \Drupal\pipeline\PipelineStepBatchProgressInterface $batch_progress
+   *   The batch progress object.
+   */
+  public function setBatchProgress(string $pipeline_id, PipelineStepBatchProgressInterface $batch_progress);
+
+  /**
+   * Retrieves the persisted batch progress.
+   *
+   * @param string $pipeline_id
+   *   The active pipeline.
+   *
+   * @return \Drupal\pipeline\PipelineStepBatchProgressInterface
+   *   The batch progress object.
+   */
+  public function getBatchProgress(string $pipeline_id): PipelineStepBatchProgressInterface;
 
   /**
    * Deletes the persisted state for a given pipeline.
@@ -38,7 +61,15 @@ interface PipelineStateManagerInterface {
    *
    * @return $this
    */
-  public function reset($pipeline_id);
+  public function reset(string $pipeline_id): self;
+
+  /**
+   * Clears the persisted state of the batch process.
+   *
+   * @param string $pipeline_id
+   *   The pipeline plugin ID.
+   */
+  public function resetBatchProgress(string $pipeline_id);
 
   /**
    * Returns metadata about the persisted state.
@@ -50,6 +81,6 @@ interface PipelineStateManagerInterface {
    *   An object with the owner and updated time if the key has a value, or
    *   NULL otherwise.
    */
-  public function getStateMetadata($pipeline_id);
+  public function getStateMetadata(string $pipeline_id): ?\stdClass;
 
 }
