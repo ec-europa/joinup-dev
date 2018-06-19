@@ -121,7 +121,7 @@ class NodeGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $e_library = $this->relationManager->getParentElibrary($entity);
+    $e_library = (string) $this->relationManager->getParentELibraryCreationOption($entity);
 
     if (!isset($permission_scheme[$workflow_id][$e_library][$transition->getId()])) {
       return FALSE;
