@@ -90,5 +90,6 @@ config_devel:
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
   - taxonomy.vocabulary.themes
+  - tour.tour.account
   - tour.tour.joinup_collections_overview
   - tour.tour.joinup_homepage

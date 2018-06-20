@@ -23,3 +23,4 @@ Feature: Tours
       | path                | role          |
       | /                   | authenticated |
       | collections         | moderator     |
+      | user                | authenticated |
