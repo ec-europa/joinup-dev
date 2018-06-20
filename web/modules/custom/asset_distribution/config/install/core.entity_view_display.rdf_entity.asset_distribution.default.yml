@@ -3,112 +3,190 @@ status: true
 dependencies:
   config:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
-    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
-    - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
-    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - datetime
-    - file
-    - link
-    - options
+    - asset_distribution
+    - digital_size_formatter
+    - ds
+    - field_group
     - text
+    - user
+third_party_settings:
+  field_group:
+    group_categorisation:
+      children:
+        - field_ad_format
+        - field_status
+        - field_ad_repr_technique
+      parent_name: ''
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Categorisation
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
 bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    weight: 2
-    label: above
+    type: tracked_hosted_file_download
+    weight: 4
+    region: content
+    label: hidden
     settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  field_ad_creation_date:
-    weight: 3
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
+      hosted_files_title: Download
+      show_remote_files: true
+      remote_files_title: External
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
   field_ad_description:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: text_default
-  field_ad_file:
-    weight: 9
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
+    region: content
   field_ad_file_size:
-    weight: 10
-    label: above
+    type: digital_size
+    weight: 3
+    label: hidden
     settings: {  }
-    third_party_settings: {  }
-    type: number_unformatted
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    region: content
   field_ad_format:
-    weight: 7
+    type: entity_reference_label
+    weight: 0
+    region: content
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  field_ad_gitb_compliant:
-    type: list_key
-    weight: 11
-    label: above
-    settings: {  }
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_ad_licence:
-    weight: 5
-    label: above
+    weight: 2
+    label: hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
     type: entity_reference_label
-  field_ad_modification_date:
-    weight: 4
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
+    region: content
   field_ad_repr_technique:
-    weight: 8
+    type: entity_reference_label
+    weight: 2
+    region: content
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   field_status:
-    weight: 6
+    type: entity_reference_label
+    weight: 1
+    region: content
     label: above
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset
   label:
     label: hidden
     type: string
     weight: 0
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-hidden: {  }
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    region: content
+hidden:
+  changed: true
+  created: true
+  field_ad_creation_date: true
+  field_ad_gitb_compliant: true
+  field_ad_modification_date: true
+  field_download_count: true
+  langcode: true
+  og_audience: true

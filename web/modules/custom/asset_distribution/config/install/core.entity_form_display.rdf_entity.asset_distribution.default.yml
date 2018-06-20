@@ -3,21 +3,19 @@ status: true
 dependencies:
   config:
     - field.field.rdf_entity.asset_distribution.field_ad_access_url
-    - field.field.rdf_entity.asset_distribution.field_ad_creation_date
     - field.field.rdf_entity.asset_distribution.field_ad_description
-    - field.field.rdf_entity.asset_distribution.field_ad_file
     - field.field.rdf_entity.asset_distribution.field_ad_file_size
     - field.field.rdf_entity.asset_distribution.field_ad_format
     - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
     - field.field.rdf_entity.asset_distribution.field_ad_licence
-    - field.field.rdf_entity.asset_distribution.field_ad_modification_date
     - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
     - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
     - rdf_entity.rdfentity.asset_distribution
   module:
-    - asset_distribution
-    - file
-    - rdf_entity
+    - allowed_formats
+    - file_url
     - text
 id: rdf_entity.asset_distribution.default
 targetEntityType: rdf_entity
@@ -25,85 +23,67 @@ bundle: asset_distribution
 mode: default
 content:
   field_ad_access_url:
-    weight: 4
-    settings:
-      file_fields:
-        - field_ad_file
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: url_file_synchronizer_widget
-  field_ad_creation_date:
-    type: datetime_create_update
-    weight: 9
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-  field_ad_description:
-    weight: 3
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-  field_ad_file:
-    weight: 5
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
-  field_ad_file_size:
-    type: file_size_calculator_widget
-    weight: 0
-    settings:
-      file_fields:
-        - field_ad_file
-        - field_test
-      size_type: '1048576'
-    third_party_settings: {  }
-  field_ad_format:
-    weight: 7
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_ad_gitb_compliant:
-    type: options_select
-    weight: 11
-    settings: {  }
-    third_party_settings: {  }
-  field_ad_licence:
-    weight: 6
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-  field_ad_modification_date:
-    type: datetime_create_update
-    weight: 10
-    settings:
-      behaviour: create
-    third_party_settings: {  }
-  field_ad_repr_technique:
-    weight: 8
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-  label:
-    type: string_textfield
     weight: 2
     settings:
+      progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
+    third_party_settings: {  }
+    type: file_url_generic
+    region: content
+  field_ad_description:
+    weight: 1
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
+    type: text_textarea
+    region: content
+  field_ad_format:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_ad_gitb_compliant:
+    type: options_select
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_ad_licence:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_ad_repr_technique:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_status:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  label:
+    type: string_textfield
+    weight: 0
+    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
+  current_workflow_state: true
   field_ad_file_size: true
-  field_status: true
+  field_download_count: true
+  langcode: true
+  og_audience: true
+  translation: true
+  uid: true

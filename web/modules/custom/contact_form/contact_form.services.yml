@@ -1,0 +1,6 @@
+services:
+  contact_form.event_subscriber:
+    class: Drupal\contact_form\EventSubscriber\NotificationSubscriber
+    parent: joinup_notification.notification_subscriber_base
+    tags:
+      - { name: event_subscriber }

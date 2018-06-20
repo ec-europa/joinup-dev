@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ *
+ * Available variables:
+ * - releases: An array of releseases render arrays.
+ */
+#}
+
+<div class="timeline">
+{% if releases %}
+    {{ releases }}
+{% else %}
+    <div class="page__content">
+      {{ 'No releases yet'|t }}
+    </div>
+{% endif %}
+</div>

@@ -1,0 +1,262 @@
+<?php
+
+/**
+ * @file
+ * Contains install, update, uninstall functionality for Joinup Migrate module.
+ */
+
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_install().
+ */
+function joinup_migrate_install() {
+  // Create intermediary tables we need for migration. The tables will be
+  // created on the source database because they will provide source data.
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+    $db->schema()->createTable($table, joinup_migrate_source_db_schema($table));
+  }
+
+  // Install MySQL helper views.
+  $views = file_scan_directory(__DIR__ . '/fixture', '/\.sql$/', ['key' => 'name']);
+  // Sort by priority. Some MySQL views depend on others, meaning that the
+  // install order matters. The priority is an ASCII character, followed by a
+  // dot character, that prefixes the file name. For example files 0.*.sql will
+  // be installed before 1.*.sql.
+  ksort($views);
+  foreach ($views as $view) {
+    $db->query(file_get_contents($view->uri))->execute();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function joinup_migrate_uninstall() {
+  $db = Database::getConnection('default', 'migrate');
+  foreach (['d8_mapping', 'd8_prepare'] as $table) {
+    $db->schema()->dropTable($table);
+  }
+
+  // Remove MySQL helper views.
+  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
+    // Replace the priority prefix the 'd8_' prefix. Each file is prefixed with
+    // a single ASCII character representing the priority and a dot.
+    $view = 'd8_' . Unicode::substr($file->name, 2);
+    $db->query("DROP VIEW IF EXISTS $view")->execute();
+  }
+}
+
+/**
+ * Gets the schema definition for a specific table.
+ *
+ * @param string $table
+ *   The table for which to get the schema definition.
+ *
+ * @return array[]
+ *   The table schema definition.
+ */
+function joinup_migrate_source_db_schema($table) {
+  $schema = [
+    'd8_mapping' => [
+      'description' => 'Keeps migration mapping data',
+      'fields' => [
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+        'type' => [
+          'description' => 'Source node-type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '',
+        ],
+        'collection' => [
+          'description' => 'Collection',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy' => [
+          'description' => 'Policy domain 1',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'logo' => [
+          'description' => 'Logo',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'banner' => [
+          'description' => 'Banner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'owner' => [
+          'description' => 'Owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'owner_name' => [
+          'description' => 'Owner name',
+          'type' => 'varchar',
+          'length' => 2048,
+          'not null' => FALSE,
+        ],
+        'owner_type' => [
+          'description' => 'Owner type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'content_item_state' => [
+          'description' => 'Content item state',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'row_index' => [
+          'description' => 'The Excel row position on last import',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+      ],
+      'primary key' => ['nid'],
+      'indexes' => [
+        'collection' => ['collection'],
+      ],
+    ],
+    'd8_prepare' => [
+      'fields' => [
+        'collection' => [
+          'description' => 'Collection',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'type' => [
+          'description' => 'Source node-type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'nid' => [
+          'description' => 'The node ID from of the source item',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => FALSE,
+        ],
+        'policy' => [
+          'description' => 'Policy domain',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'policy2' => [
+          'description' => 'Policy domain 2',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ],
+        'description' => [
+          'description' => 'Description',
+          'type' => 'text',
+        ],
+        'abstract' => [
+          'description' => 'Abstract',
+          'type' => 'text',
+        ],
+        'logo' => [
+          'description' => 'Logo',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'banner' => [
+          'description' => 'Banner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'elibrary' => [
+          'description' => 'Elibrary creation',
+          'type' => 'int',
+          'size' => 'tiny',
+          'not null' => FALSE,
+        ],
+        'publisher' => [
+          'description' => 'Publisher NIDs',
+          'type' => 'varchar',
+          'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'owner_text_name' => [
+          'description' => 'Text owner name',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'owner_text_type' => [
+          'description' => 'Text owner type',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'contact' => [
+          'description' => 'Contact NIDs',
+          'type' => 'varchar',
+          'length' => 1024,
+          'not null' => FALSE,
+        ],
+        'contact_email' => [
+          'description' => 'Contact E-mail',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'state' => [
+          'description' => 'Collection state',
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => FALSE,
+        ],
+        'collection_owner' => [
+          'description' => 'Collection owner',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
+        'url' => [
+          'description' => 'Collection ID as URL',
+          'type' => 'varchar',
+          'length' => 3048,
+          'not null' => FALSE,
+        ],
+      ],
+      'indexes' => [
+        'collection' => ['collection'],
+        'nid' => ['nid'],
+        'type' => ['type'],
+      ],
+    ],
+  ];
+
+  return $schema[$table];
+}

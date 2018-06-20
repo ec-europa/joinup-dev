@@ -1,0 +1,25 @@
+id: policy_domain
+label: 'Policy domain'
+migration_tags:
+  - taxonomy_term
+source:
+  plugin: policy_domain
+  cache_counts: true
+  track_changes: true
+  file: ../resources/migrate/mapping-production.xlsx
+  worksheet: '3. Policy Domains'
+  origin: A3
+  columns:
+    - A
+    - B
+  row_index_column: row_index
+process:
+  name: name
+  parent:
+    plugin: term_reference
+    source: parent
+    vocabulary: policy_domain
+    top_level_only: true
+destination:
+  plugin: entity:taxonomy_term
+  default_bundle: policy_domain

@@ -1,23 +1,89 @@
 .mdl-card
   width: 100% !important
 
+.mdl-cell--12-col-tablet
+  +breakpoint(mobile, tablet)
+    width: 100%
 
-.mdl-textfield--floating-label.is-invalid .mdl-textfield__label
-  color: #a0a1a2
-  font-size: 20px
+.mdl-layout__header-row
+  height: 64px !important
+  +breakpoint(tablet)
+    padding: 0 20px
+  &.mdl-layout__header-row--maintenance
+    padding: 0 20px
 
-.mdl-textfield--floating-label.is-invalid .mdl-textfield__input
-  border-color: #a0a1a2
+.mdl-menu
+  .mdl-menu__item
+    height: auto
+    padding: 0
+    a
+      display: block
+      padding: 16px
+      white-space: normal
 
-.form-wrapper
-  margin-bottom: 25px
+.mdl-layout__drawer
+  +z-index(max+1)
 
-.section--sidebar-left #edit-join
-  margin-left: -100px
+.mdl-layout__obfuscator
+  +z-index(max)
 
-form .description
-  color: #a0a1a2
-  font-size: 12px
+.mdl-layout__drawer-button
+  top: 4px
+  +hidden-print
+  +breakpoint(tablet)
+    display: none
+  .material-icons
+    font-size: 40px
+    color: #fff
+    +centered
 
-.messages
-  background-image: none
+.mdl-textfield--floating-label
+  .field-prefix
+    display: none
+
+.mdl-spinner
+  position: fixed
+  top: 48.5%
+  left: 49%
+  +z-index(max)
+
+.mdl-grid--center
+  justify-content: center
+
+.join-collection-form,
+#block-joinup-theme-local-tasks
+  .mdl-menu__item a
+    white-space: nowrap
+    color: $color-blue-default
+  .mdl-menu__container
+    margin-top: $field-margin
+
+// Fix for iOS overflow issue caused by not respecting % height value
+.mdl-layout__container
+  height: auto
+
+.mdl-layout
+  min-height: 100vh
+
+// Fix for Internet Explorer unstretched content section (once empty) and footer overflow issues caused by not respecting the min-height value
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active)
+  .mdl-layout__container
+    height: 100vh
+    .section--header,
+    .section--footer
+      flex-shrink: 0
+    .section--featured,
+    .section--content
+      flex-grow: 1
+      flex-shrink: 0
+
+.filters
+  .mdl-menu__container
+    max-height: 400px
+    &.is-upgraded
+      .mdl-menu
+        position: relative
+  .mdl-menu
+    overflow-x: hidden
+    overflow-y: auto
+    max-height: 400px

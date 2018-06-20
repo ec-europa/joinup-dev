@@ -1,0 +1,104 @@
+// Component
+// --------------------------------------------------
+// .form-table
+
+// Elements
+// --------------------------------------------------
+.form-table__row
+  width: auto
+
+.form-table__button
+  margin-top: 15px
+  margin-left: 25px
+
+.form-table__cell
+  position: relative
+  display: table-cell
+  width: auto
+  margin: 0
+  padding: 25px 15px
+
+.form-table__header
+  margin: 0
+  padding: 20px 10px
+
+.form-table__label
+  font-weight: normal
+  color: $color-grey-input
+
+.form-table_link-icon
+  +icon-size(40px)
+
+.form-table__link-content
+  width: 100%
+  padding-left: 0
+
+// Modifiers
+// --------------------------------------------------
+.form-table__cell--icon-container
+  width: 40px
+  padding: 0
+
+.form-table--formatter-table
+  margin-bottom: $table-margin
+
+// Dependencies
+// --------------------------------------------------
+.form-table
+  .form-table__row
+    .dropbutton-multiple
+      min-height: auto
+      margin: 0
+      padding: 0
+    .dropbutton
+      display: flex
+    .dropbutton-widget
+      position: static
+    .dropbutton-toggle
+      display: none
+    .dropbutton-action
+      position: static
+      display: block
+      margin-right: 10px
+      &:last-child
+        margin-right: 0
+    &.draggable
+      .form-table__cell
+        .tabledrag-handle,
+        .tabledrag-changed,
+        .form-managed-file,
+        .menu-item__link
+          display: table-cell
+          vertical-align: middle
+        .form-managed-file
+          width: 100%
+        .checkbox
+          margin: 0
+      .tabledrag-handle
+        height: auto
+        margin: 0 10px 0 0
+        .handle
+          width: 20px
+          height: 20px
+          margin: 0
+          padding: 0
+          background-position: 50% 50%
+      .tabledrag-changed
+        padding-left: 5px
+  .indentation
+    height: 24px
+    margin: 0
+    padding: 0
+
+.table-operations
+  .form-table
+    margin-bottom: 25px
+  .form-table__cell
+    padding-top: 25px
+    padding-bottom: 25px
+
+.adms-validator-form
+  .form-table
+    display: block
+    overflow-x: auto
+    margin-top: $form-margin

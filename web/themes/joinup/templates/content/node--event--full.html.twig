@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Theme override to display a node of bundle event.
+ *
+ * Available variables:
+ * - node: the node entity.
+ */
+#}
+<article{{ attributes }}>
+    <div class="page__content">
+        {{ content.body }}
+        {% if content.field_event_web_url|render or content.field_event_contact_email|render %}
+            <div class="fieldset fieldset--box">
+                <h3 class="fieldset__title ">{{ 'References'|t }}</h3>
+                {{ content.field_event_web_url }}
+                {{ content.field_event_contact_email }}
+            </div>
+        {% endif %}
+        {% if content.field_event_agenda|render %}
+            <div class="fieldset fieldset--box">
+                <h3 class="fieldset__title ">{{ 'Details'|t }}</h3>
+                {{ content.field_event_agenda }}
+            </div>
+        {% endif %}
+        <div class="action-link__wrapper right">
+            {{ content.report }}
+            {{ content.share_link }}
+        </div>
+    </div>
+    {{ content.field_shared_in }}
+    <div id="event-location--{{ node.id }}" class="fieldset--separated">
+        <img src="/themes/joinup/images/location-image.jpg">
+        <div class="page__content">
+            {{ content.field_location }}
+            {{ content.field_event_adtl_address_info }}
+        </div>
+    </div>
+    {% if content.field_attachment|render %}
+        <div class="fieldset--separated">
+            <div class="page__content">
+                <h3 class="fieldset__title">
+                    {{ 'Attachments'|t }}
+                </h3>
+                {{ content.field_attachment }}
+            </div>
+        </div>
+    {% endif %}
+    {{ content.field_comments }}
+</article>

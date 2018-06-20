@@ -1,9 +1,4 @@
 services:
-  collection.collection_route_context:
-    class: Drupal\collection\ContextProvider\CollectionRouteContext
-    arguments: ['@current_route_match']
-    tags:
-      - { name: 'context_provider' }
   cache_context.collection:
     class: Drupal\collection\Cache\CollectionCacheContext
     arguments: ['@request_stack']
@@ -13,3 +8,11 @@ services:
     class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
     tags:
       - { name: 'event_subscriber' }
+  collection.fulfillment_guard:
+    class: Drupal\collection\Guard\CollectionFulfillmentGuard
+    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
+    tags:
+      - { name: state_machine.guard, group: collection }
+  collection.lazy_builders:
+    class: Drupal\collection\CollectionLazyBuilders
+    arguments: ['@entity_type.manager', '@form_builder', '@current_user']

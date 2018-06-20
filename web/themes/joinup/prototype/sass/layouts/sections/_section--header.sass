@@ -6,6 +6,14 @@
 // --------------------------------------------------
 .section--header
   background-color: $color-blue-default
+  +hidden-print
 
 // Elements
 // --------------------------------------------------
+
+// Dependiencies
+// --------------------------------------------------
+.section--header
+  nav
+    position: relative
+    +z-index(navigation)

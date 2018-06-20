@@ -1,0 +1,58 @@
+joinup_notification.notifications.community_content:
+  type: config_object
+  label: 'Notification settings'
+  mapping:
+    create:
+      label: 'Notifications for the create operation'
+      type: joinup_notification.workflow.transition.settings
+    update:
+      label: 'Notifications for the update operation'
+      type: joinup_notification.workflow.transition.settings
+    delete:
+      label: 'Notifications for the delete operation'
+      type: joinup_notification.workflow.state.settings
+
+joinup_notification.workflow.transition.settings:
+  label: 'Transition settings'
+  type: sequence
+  sequence:
+    label: 'Workflow id'
+    type: sequence
+    sequence:
+      label: 'Transition id'
+      type: joinup_notification.user_role.settings
+
+joinup_notification.workflow.state.settings:
+  label: 'Transition settings'
+  type: sequence
+  sequence:
+    label: 'Workflow id'
+    type: sequence
+    sequence:
+      label: 'State id'
+      type: joinup_notification.user_role.settings
+
+joinup_notification.user_role.settings:
+  label: 'User role settings'
+  type: mapping
+  mapping:
+    owner:
+      type: joinup_notification.messages
+    roles:
+      type: joinup_notification.role.settings
+    og_roles:
+      type: joinup_notification.role.settings
+
+joinup_notification.messages:
+  label: 'Messages'
+  type: sequence
+  sequence:
+    label: 'Message id'
+    type: string
+
+joinup_notification.role.settings:
+  label: 'Role settings'
+  type: sequence
+  sequence:
+    label: 'Role id'
+    type: joinup_notification.messages

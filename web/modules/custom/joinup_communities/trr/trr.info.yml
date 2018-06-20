@@ -1,0 +1,5 @@
+name: TRR
+type: module
+description: Specificities for the TRR GITB community.
+core: 8.x
+package: Joinup communities

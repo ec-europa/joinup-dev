@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+id: administrator
+label: Administrator
+weight: 4
+is_admin: false
+permissions:
+  - 'administer account settings'
+  - 'administer redirects'
+  - 'edit collection rdf entity'
+  - 'view the administration theme'

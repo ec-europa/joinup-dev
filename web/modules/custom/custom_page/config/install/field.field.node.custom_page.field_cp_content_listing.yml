@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cp_content_listing
+    - node.type.custom_page
+  module:
+    - search_api_field
+id: node.custom_page.field_cp_content_listing
+field_name: field_cp_content_listing
+entity_type: node
+bundle: custom_page
+label: 'Enable community content listing'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value:
+      fields:
+        field_cp_content_listing_content_type:
+          weight: 0
+          region: top
+      enabled: 0
+      query_presets: ''
+      limit: 12
+default_value_callback: ''
+settings: {  }
+field_type: search_api_field

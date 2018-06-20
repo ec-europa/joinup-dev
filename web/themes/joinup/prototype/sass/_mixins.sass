@@ -1,3 +1,41 @@
+// Breakpoints
+=breakpoint($min: null, $max: null)
+  // Declare breakpoint value variables
+  $min-width: null !default
+  $max-width: null !default
+
+  // Always interpret min value since it is cardinal.
+  @if $min == lg or $min == lg-desktop
+    $min-width: $screen-lg-min
+  @else if $min == md or $min == desktop
+    $min-width: $screen-md-min
+  @else if $min == sm or $min == tablet
+    $min-width: $screen-sm-min
+  @else if $min == xs or $min == mobile
+    $min-width: $screen-xs-min
+  @else if $min == xxs or $min == sm-mobile
+    $min-width: $screen-xxs-min
+
+  // Interpret also max value if defined.
+  @if $max
+    @if $max == md or $max == desktop
+      $max-width: $screen-md-max
+    @else if $max == sm or $max == tablet
+      $max-width: $screen-sm-max
+    @else if $max == xs or $max == mobile
+      $max-width: $screen-xs-max
+    @else if $max == xxs or $max == sm-mobile
+      $max-width: $screen-xxs-max
+
+    // Render min and max breakpoint if both are defined
+    @media (min-width: $min-width) and (max-width: $max-width)
+      @content
+
+  @else
+    // Else render only min breakpoint.
+    @media (min-width: $min-width)
+      @content
+
 // Border radius
 =border-radius($radius)
   -webkit-border-radius: $radius
@@ -10,3 +48,142 @@
   height: $size
   line-height: $size
   font-size: $size
+
+// Centering
+=centered($horizontal: true, $vertical: true)
+  position: absolute
+  @if ($horizontal and $vertical)
+    top: 50%
+    left: 50%
+    -webkit-transform: translate(-50%, -50%)
+    -moz-transform: translate(-50%, -50%)
+    -ms-transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%)
+  @else if ($horizontal)
+    left: 50%
+    -webkit-transform: translate(-50%, 0)
+    -moz-transform: translate(-50%, 0)
+    -ms-transform: translate(-50%, 0)
+    transform: translate(-50%, 0)
+  @else if ($vertical)
+    top: 50%
+    -webkit-transform: translate(0, -50%)
+    -moz-transform: translate(0, -50%)
+    -ms-transform: translate(0, -50%)
+    transform: translate(0, -50%)
+
+// Hidden print
+=hidden-print()
+  @media print
+    display: none !important
+
+// Flexbox
+// Defines a block flex container; enables a flex context for all its direct children.
+=flex
+  display: -webkit-box
+  display: -webkit-flex
+  display: -moz-flex
+  display: -ms-flexbox
+  display: flex
+
+// Inline flex
+// Defines an inline flex container; enables a flex context for all its direct children.
+=inline-flex
+  display: -webkit-inline-box
+  display: -webkit-inline-flex
+  display: -moz-inline-flex
+  display: -ms-inline-flexbox
+  display: inline-flex
+
+// Flex flow direction
+// Defines the main axis around which the items are placed in the flex container.
+=flex-direction($value: row)
+  -webkit-flex-direction: $value
+  -moz-flex-direction: $value
+  -ms-flex-direction: $value
+  flex-direction: $value
+  @if $value == row
+    -webkit-box-direction: normal
+    -webkit-box-orient: horizontal
+  @else if $value == column
+    -webkit-box-direction: normal
+    -webkit-box-orient: vertical
+
+// Flex wrap
+// Defines whether flex items will be wrap.
+=flex-wrap($value: nowrap)
+  -webkit-flex-wrap: $value
+  -moz-flex-wrap: $value
+  flex-wrap: $value
+  @if $value == nowrap
+    -ms-flex-wrap: none
+  @else
+    -ms-flex-wrap: $value
+
+// Justify content
+// Defines the alignment along the main axis.
+=justify-content($value: flex-start)
+  -webkit-justify-content: $value
+  -moz-justify-content: $value
+  justify-content: $value
+  @if $value == flex-start
+    -webkit-box-pack: start
+    -ms-flex-pack: start
+  @else if $value == flex-end
+    -webkit-box-pack: end
+    -ms-flex-pack: end
+  @else if $value == space-between
+    -webkit-box-pack: justify
+    -ms-flex-pack: justify
+  @else if $value == space-around
+    -ms-flex-pack: distribute
+  @else
+    -webkit-box-pack: $value
+    -ms-flex-pack: $value
+
+// Align items
+// Defines the default behaviour of the flex items along the cross axis on the current line.
+=align-items($value: stretch)
+  -webkit-align-items: $value
+  -moz-align-items: $value
+  align-items: $value
+  @if $value == flex-start
+    -webkit-box-align: start
+    -ms-flex-align: start
+  @else if $value == flex-end
+    -webkit-box-align: end
+    -ms-flex-align: end
+  @else
+    -webkit-box-align: $value
+    -ms-flex-align: $value
+
+// Z-indexes map-get
+$z-index: (auto: auto, zero: 0, highlight: 1, highlight+1: 2, highlight+2: 3, navigation: 10, dropdown: 15, modal: 20, max: 999, max+1: 1000) !default
+
+@function z-index($key)
+  @if map-has-key($z-index, $key)
+    @return map-get($z-index, $key)
+   
+  @warn "The key '#{$key}' is not in the map '$z-index'"
+  @return null
+
+=z-index($key)
+  z-index: z-index($key)
+
+// Maximum number of rows
+// Defines maximum number of rows allowed in a field
+=number-rows($number, $row-height, $fixed: false)
+  max-height: $number * $row-height
+  line-height: $row-height
+  overflow: hidden
+  @if ($fixed)
+    +breakpoint(tablet)
+      height: $number * $row-height
+
+// Calculates height for text container in tiles
+=calc-space($number, $row-height, $margin, $number-small: 0, $row-height-small: 0, $margin-small: 0)
+  max-height: $number * $row-height + $number-small * $row-height-small + $margin + $margin-small
+  &.listing__text-container--tags
+    max-height: ($number - 1) * $row-height + $number-small * $row-height-small + $margin + $margin-small
+
+

@@ -1,0 +1,29 @@
+id: og_user_role
+label: 'OG user-roles'
+migration_tags:
+  - og
+  - collection
+source:
+  plugin: og_user_role
+  track_changes: true
+process:
+  id: id
+  uid: uid
+  entity_type:
+    plugin: default_value
+    default_value: rdf_entity
+  entity_id:
+    plugin: migration
+    source: collection
+    migration: collection
+    default_value: rdf_entity
+    no_stub: true
+  state: state
+  created: created
+  roles: roles
+destination:
+  plugin: entity:og_membership
+  default_bundle: default
+migration_dependencies:
+  required:
+    - collection

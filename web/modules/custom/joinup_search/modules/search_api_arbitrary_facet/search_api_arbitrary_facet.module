@@ -1,0 +1,234 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup search arbitrary facet.
+ */
+
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
+use Drupal\search_api\Query\ResultSetInterface;
+use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
+use Solarium\QueryType\Select\Result\Result;
+
+/**
+ * Implements hook_search_api_solr_query_alter().
+ */
+function search_api_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, SearchApiQueryInterface $query) {
+  /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetManager $arbitrary_facet_manager */
+  $arbitrary_facet_manager = \Drupal::getContainer()
+    ->get('plugin.manager.arbitrary_facet');
+
+  /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+  $facet_set = $solarium_query->getFacetSet();
+
+  foreach ($query->getOption('search_api_arbitrary_facet', []) as $facet_name => $options) {
+    $facet = $facet_set->createFacetMultiQuery($facet_name);
+
+    /** @var \Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetInterface $plugin_id */
+    $plugin = $arbitrary_facet_manager->createInstance($options['arbitrary_facet_plugin']);
+    $definition = $plugin->getFacetDefinition();
+    $solr_field_names = joinup_search_fieldnames_from_index($query->getIndex());
+
+    foreach ($definition as $facet_identifier => $facet_attribute) {
+      // Translate the field name to the index field name.
+      $solr_field_name = $solr_field_names[$facet_attribute['field_name']];
+      $filter = search_api_arbitrary_facet_create_filter_query($solr_field_name, $facet_attribute['field_condition'], isset($facet_attribute['field_operator']) ? $facet_attribute['field_operator'] : NULL);
+      $facet->createQuery($facet_identifier, $filter);
+    }
+
+    // For "OR" facets, add the expected tag for exclusion.
+    if (isset($options['operator']) && strtolower($options['operator']) === 'or') {
+      $facet->setExcludes(['arbitrary:' . $facet_name]);
+    }
+  }
+}
+
+/**
+ * Converts condition data into a normal query.
+ *
+ * Mimics the solr's filter creation. Formatting values is not supported yet.
+ *
+ * @param string $field
+ *   The solr field.
+ * @param mixed $value
+ *   The value.
+ * @param string $operator
+ *   The operator.
+ *
+ * @return string
+ *   A solr query string.
+ *
+ * @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery
+ */
+function search_api_arbitrary_facet_create_filter_query($field, $value, $operator = '=') {
+  if (!is_array($value)) {
+    $value = [$value];
+  }
+
+  if (1 == count($value)) {
+    $value = array_shift($value);
+
+    switch ($operator) {
+      case 'IN':
+        $operator = '=';
+        break;
+
+      case 'NOT IN':
+        $operator = '<>';
+        break;
+    }
+  }
+
+  switch ($operator) {
+    case '<>':
+      if (is_null($value)) {
+        return "$field:[* TO *]";
+      }
+      else {
+        return "(*:* -$field:$value)";
+      }
+
+    case '<':
+      return "$field:{* TO $value}";
+
+    case '<=':
+      return "$field:[* TO $value]";
+
+    case '>=':
+      return "$field:[$value TO *]";
+
+    case '>':
+      return "$field:{{$value} TO *}";
+
+    case 'BETWEEN':
+      return "$field:[" . array_shift($value) . ' TO ' . array_shift($value) . ']';
+
+    case 'NOT BETWEEN':
+      return "(*:* -$field:[" . array_shift($value) . ' TO ' . array_shift($value) . '])';
+
+    case 'IN':
+      $parts = [];
+      $null = FALSE;
+      foreach ($value as $v) {
+        if (is_null($v)) {
+          $null = TRUE;
+        }
+        else {
+          $parts[] = "$field:$v";
+        }
+      }
+      if ($null) {
+        // @see https://stackoverflow.com/questions/4238609/how-to-query-solr-for-empty-fields/28859224#28859224
+        return "(*:* -$field:[* TO *])";
+      }
+      return '(' . implode(" ", $parts) . ')';
+
+    case 'NOT IN':
+      $parts = [];
+      $null = FALSE;
+      foreach ($value as $v) {
+        if (is_null($v)) {
+          $null = TRUE;
+        }
+        else {
+          $parts[] = "-$field:$v";
+        }
+      }
+      return '(' . ($null ? "$field:[* TO *]" : '*:*') . ' ' . implode(" ", $parts) . ')';
+
+    case '=':
+    default:
+      if (is_null($value)) {
+        // @see https://stackoverflow.com/questions/4238609/how-to-query-solr-for-empty-fields/28859224#28859224
+        return "(*:* -$field:[* TO *])";
+      }
+      else {
+        return "$field:$value";
+      }
+  }
+}
+
+/**
+ * Helper to translate field names to their Solr counterpart.
+ *
+ * @param \Drupal\search_api\IndexInterface $index
+ *   The search api index entity.
+ *
+ * @return array
+ *   Mapping of field names to Solr field names.
+ */
+function joinup_search_fieldnames_from_index(IndexInterface $index) {
+  $server = $index->getServerInstance();
+  /** @var \Drupal\search_api_solr\SolrBackendInterface $backend */
+  $backend = $server->getBackend();
+  return $backend->getSolrFieldNames($index);
+}
+
+/**
+ * Implements hook_search_api_solr_search_results_alter().
+ */
+function search_api_arbitrary_facet_search_api_solr_search_results_alter(ResultSetInterface $result_set, SearchApiQueryInterface $query, Result $result) {
+  /** @var \Solarium\QueryType\Select\Query\Query $result */
+  if ($result->getFacetSet() && $result->getFacetSet()->getFacets()) {
+    /** @var \Solarium\QueryType\Select\Result\Facet\Field[] $response_facets */
+    $response_facets = $result->getFacetSet()->getFacets();
+    $extracted_facets = [];
+
+    // Our facets don't match the ones added by the facets module, that works
+    // only on fields. Here we need to mimic the behaviour by working on our
+    // custom facets.
+    // @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::extractFacets()
+    foreach ($query->getOption('search_api_arbitrary_facet', []) as $facet_name => $options) {
+      if (!empty($response_facets[$facet_name])) {
+        $min_count = $options['min_count'];
+        foreach ($response_facets[$facet_name]->getValues() as $term => $count) {
+          if ($count >= $min_count) {
+            $extracted_facets[$facet_name][] = [
+              'filter' => $term,
+              'count' => $count,
+            ];
+          }
+        }
+      }
+    }
+
+    if (!empty($extracted_facets)) {
+      // Add the results of our arbitrary query facets back together with the
+      // other results, so the facets will be built properly.
+      $result_set->setExtraData('search_api_facets', array_merge($result_set->getExtraData('search_api_facets', []), $extracted_facets));
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function search_api_arbitrary_facet_widget_plugin_info_alter(array &$info) {
+  foreach ($info as $widget_name => &$widget_info) {
+    // Decorate all widgets with the arbitrary facet decorator.
+    $widget_info['decorated_class'] = $widget_info['class'];
+    $widget_info['class'] = '\Drupal\search_api_arbitrary_facet\ArbitraryFacetWidgetDecorator';
+  }
+}
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function search_api_arbitrary_facet_config_schema_info_alter(array &$definitions) {
+  // As the decoration adds keys to the configuration,
+  // we have to add these keys to the schema.
+  $definitions['facet.widget.default_config']['mapping']['arbitrary_facet_plugin'] = [
+    'label' => 'The arbitrary facet plugin',
+    'type' => 'string',
+  ];
+}
+
+/**
+ * Implements hook_facets_search_api_query_type_mapping_alter().
+ */
+function search_api_arbitrary_facet_facets_search_api_query_type_mapping_alter($backend_plugin_id, array &$query_types) {
+  if ($backend_plugin_id === 'search_api_solr') {
+    $query_types['facet_query'] = 'facet_query';
+  }
+}

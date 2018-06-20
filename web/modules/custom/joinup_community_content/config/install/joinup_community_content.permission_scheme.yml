@@ -1,0 +1,705 @@
+# View operation permission scheme.
+view:
+  node:pre_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    deletion_request:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:post_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    deletion_request:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:discussion:post_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    deletion_request:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    archived:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+# Create operation permission scheme.
+create:
+  node:pre_moderated:
+    # eLibrary value: Only collection facilitators can create new content.
+    0:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      propose:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Only members can create new content.
+    1:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      propose:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Any registered user can create new content.
+    2:
+      save_as_draft:
+        roles:
+          - authenticated
+      propose:
+        roles:
+          - authenticated
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:post_moderated:
+    # eLibrary value: Only collection facilitators can create new content.
+    0:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Only members can create new content.
+    1:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Any registered user can create new content.
+    2:
+      save_as_draft:
+        roles:
+          - authenticated
+      publish:
+        roles:
+          - authenticated
+  node:discussion:post_moderated:
+    # eLibrary value: Only collection facilitators can create new content.
+    0:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Only members can create new content.
+    1:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    # eLibrary value: Any registered user can create new content.
+    2:
+      save_as_draft:
+        roles:
+          - authenticated
+      publish:
+        roles:
+          - authenticated
+# Update operation permission scheme.
+update:
+  node:pre_moderated:
+    save_as_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+    save_new_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    propose:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    publish:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_published:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_changes:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_deletion:
+      own:
+        roles:
+          - authenticated
+    reject_deletion:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:post_moderated:
+    save_as_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    save_new_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    publish:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_published:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_changes:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_deletion:
+      own:
+        roles:
+          - authenticated
+    reject_deletion:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:discussion:post_moderated:
+    save_as_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    save_new_draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    publish:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    propose_from_reported:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    approve_proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    update_published:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    report:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_changes:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    request_deletion:
+      own:
+        roles:
+          - authenticated
+    reject_deletion:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    disable:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+# Delete operation permission scheme.
+delete:
+  node:pre_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+    proposed:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    needs_update:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    deletion_request:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:post_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+  node:discussion:post_moderated:
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    validated:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    archived:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator

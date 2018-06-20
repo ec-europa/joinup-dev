@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: reply
+label: Reply
+target_entity_type_id: node
+description: 'A reply to a discussion topic.'

@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Base template for the tallin entry field.
+ *
+ * Available variables:
+ * - title: The title of the details container.
+ * - attributes: HTML attributes for the containing element.
+ * - status: The status renderable array.
+ * - status_classes: The classes for the status.
+ * - explanation: The explanation renderable array.
+ * - uri: The uri renderable array.
+ */
+#}
+<details{{ attributes.addClass(['fieldset', 'fieldset--box', 'tallinn-box']) }} open=''>
+  <summary{{ title_attributes.addClass('form__label') }}>{{ title }}</summary>
+  {% if status %}
+    <div class='{{ status_classes }}'>
+      {{ status }}
+    </div>
+  {% endif %}
+  {% if explanation %}
+    <div>
+      <h3>{{ explanation['#title'] }}</h3>
+      {{ explanation }}
+    </div>
+  {% endif %}
+  {% if uri %}
+    <div>
+      <h3>{{ "Related website"|title }}</h3>
+      {{ uri }}
+    </div>
+  {% endif %}
+</details>

@@ -40,67 +40,72 @@
  * @see html.html.twig
  */
 #}
-<div class="layout-container mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<div class="mdl-layout__container">
+  <div class="mdl-layout mdl-js-layout" {{ attributes|without('class') }}>
 
-  <header class="section section--header" role="banner">
-    <div class="container-fluid">
+    {% if not is_front or logged_in %}
       {% include directory ~ '/templates/parts/header.html.twig' %}
-      {{ page.header }}
-    </div>
-  </header>
-
-  {% if page.featured %}
-    {% if is_collection %}
-      {% include directory ~ '/templates/parts/featured--collection.html.twig' %}
-    {% elseif is_blue_header %}
-      {% include directory ~ '/templates/parts/featured--title.html.twig' %}
     {% endif %}
 
-  {% endif %}
-
-  <main class="main-container mdl-grid" role="main">
-    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-
-    {% if page.sidebar_left %}
-      <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
-        <div class="container-fluid">
-          {{ page.sidebar_left }}
-        </div>
-      </aside>
+    {% if is_front and not logged_in %}
+      {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
+    {% elseif page.featured and is_navy_header %}
+      {% include directory ~ '/templates/parts/featured--navy-blue.html.twig' %}
+    {% elseif page.featured or is_blue_header %}
+      <div class="section section--featured">
+        {% if is_blue_header %}
+          {% include directory ~ '/templates/parts/featured--title.html.twig' %}
+        {% else %}
+          {{ page.featured }}
+        {% endif %}
+      </div>
     {% endif %}
 
-    <div class="content-container mdl-cell--8-col">
-      {% if page.content_top %}
-        <div class="section section--content-top">
-          <div class="container-fluid">
-            {{ page.content_top }}
+    {%
+    set main_classes = [
+      not page.sidebar_left ? 'mdl-grid--center',
+    ]
+    %}
+    <main class="section section--content" role="main">
+      <div class="main-container">
+        <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+        <div class="row">
+          <div class="mdl-grid {{ main_classes|join(' ') }}">
+            {% if page.sidebar_left and not has_vertical_tabs %}
+              <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
+                {{ page.sidebar_left }}
+              </aside>
+            {% endif %}
+
+            <div class="section section--main mdl-cell {{ container_class }} {{ has_vertical_tabs ? 'mdl-cell--12-col mdl-grid--no-spacing' : 'mdl-cell--8-col' }}">
+              {% if page.content_top %}
+                <div class="section section--content-top {{ has_vertical_tabs ? 'mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop form__cell'}}">
+                  {{ page.content_top }}
+                </div>
+              {% endif %}
+
+              {% if page.filters %}
+                <div class="section section--filters facet-region facet-region--inline-facets filters filters--horizontal">
+                  {{ page.filters }}
+                </div>
+              {% endif %}
+
+              <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+                {{ page.content }}
+              </div>
+
+              {% if page.content_bottom %}
+                <div class="section section--content-bottom">
+                  {{ page.content_bottom }}
+                </div>
+              {% endif %}
+            </div>{# /.mdl-grid #}
           </div>
         </div>
-      {% endif %}
+      </div>{# /.section--content #}
+    </main>
 
-      <div class="section section--content">
-        <div class="container-fluid">
-          {{ page.content }}
-        </div>
-      </div>
+    {% include directory ~ '/templates/parts/footer.html.twig' %}
 
-      {% if page.content_bottom %}
-        <div class="section section--content-bottom">
-          <div class="container-fluid">
-            {{ page.content_bottom }}
-          </div>
-        </div>
-      {% endif %}
-    </div>{# /.content-container #}
-
-  </main>{# /.main-container #}
-
-  {% if page.footer %}
-    <footer class="section section--footer" role="contentinfo">
-      <div class="container-fluid">
-        {{ page.footer }}
-      </div>
-    </footer>
-  {% endif %}
-
-</div>{# /.layout-container #}
+  </div>{# /.mdl-layout #}
+</div>{# /.mdl-layout__container #}

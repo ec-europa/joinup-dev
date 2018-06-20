@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings: {  }
+name: Owner
+rid: owner
+description: ''
+label_singular: owner
+label_plural: owners
+label_count:
+  no_count_capitalize: "Owner\x03Owners"

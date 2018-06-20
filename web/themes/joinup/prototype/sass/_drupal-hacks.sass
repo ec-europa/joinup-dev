@@ -1,0 +1,299 @@
+.draggable
+  .field-multiple-drag
+    width: 45px
+    padding-right: 0
+
+.tabledrag-toggle-weight-wrapper
+  display: none
+
+// @todo Remove this hack as part of ISAICP-3021.
+// @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+.joinup-nodrag
+  a.tabledrag-handle,
+  .field-multiple-drag
+    display: none !important
+
+#edit-field-ar-owner-actions.container-inline
+  width: 100%
+  display: block
+  div
+    display: inline-block
+
+textarea
+  max-width: 100%
+
+.messages
+  background-image: none
+
+// Fix wrapper width in forms with vertical tabs.
+.field-group-tabs-wrapper
+  width: 100%
+
+// Inline entity from styles.
+.ief-entity-table
+  margin-bottom: 20px
+  .form-table__cell
+    height: 70px
+    padding: 0 15px
+  .ief-entity-operations
+    margin-bottom: 0
+
+// Styles for multiple field table.
+.field--widget-inline-entity-form-complex
+  .form-type-select
+    display: inline-block
+    vertical-align: middle
+    margin-right: 30px
+    select
+      height: 25px
+      width: auto
+      font-size: 14px
+      color: $color-grey-medium
+  .button__no-bg-wrapper
+    margin-right: 30px
+
+.ief-entity-table>.form-table__body>.form-table__row:nth-child(2)>.form-table__cell
+  padding-top: 15px
+
+#block-navigation
+  p
+    padding-top: 10px
+    padding-right: 35px
+
+// Contextual region changes
+// Default icon is replaced
+.contextual
+  +z-index(navigation)
+  button.trigger
+    font-family: 'WAAT Icons'
+    font-size: 0
+    font-weight: normal
+    font-style: normal
+    font-variant: normal
+    line-height: 100%
+    position: relative !important
+    display: inline-block
+    width: 30px !important
+    height: 30px !important
+    padding: 0
+    text-indent: 0
+    text-transform: none
+    color: $color-base
+    border: none !important
+    border-radius: 30px !important
+    background: none
+    speak: none
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    &:hover,
+    &:focus
+      background: $color-grey-light
+    &:before
+      content: '\e8ab'
+      +icon-size(15px)
+
+// Change contextual button color
+// on dark backgrounds
+.section--featured,
+.section--header,
+.section--footer
+  .contextual
+    button.trigger
+      color: #fff
+      &:hover,
+      &:focus
+        background-image: none
+        background: $color-grey-medium
+
+// Contextual links behaviour in tiles.
+.listing__card--corner
+  .contextual
+    button.trigger
+      // Restore the default absolute positioning applied by .visually-hidden class.
+      position: absolute !important
+
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card--corner
+  .contextual
+    right: auto
+    left: 6px
+    .trigger
+      right: auto
+      left: 0
+      float: left
+    .contextual-links
+      right: auto
+      left: 0
+      border-radius: 0 4px 4px 4px
+
+ul.contextual-links
+  +z-index(highlight+2)
+  position: relative
+  padding-left: 0
+  margin: 0
+  li::before
+    display: none
+
+.contextual-region.focus
+  outline: none
+  outline-offset: 0
+
+// Fixes dropdown button for main menu.
+// It is needed only for admin.
+#block-joinup-theme-main-menu
+  .contextual
+    +z-index(dropdown)
+
+// Fix password policy table
+#password-policy-status
+  margin-bottom: $form-margin
+  table
+    th:first-child, td:first-child
+      display: none
+
+.form-type-password-confirm
+  margin-bottom: $form-margin
+  input.password-confirm
+    margin-bottom: $form-margin
+
+.is-only-placeholder
+  background: repeating-linear-gradient(-45deg, red, red 25px, rgba(255,255,255,1) 25px, rgba(255,255,255,1) 50px)
+
+.block-local-tasks-block
+  +hidden-print
+
+.block-facet--links-inline
+  display: inline-block
+
+form .description
+  @extend .form__description
+
+// Fix facets in search header
+.block-facets
+  position: relative
+
+// jQuery ui hacks
+.ui-dialog
+  width: calc(100% - 30px) !important
+  max-width: 840px
+  margin-left: 15px
+  margin-right: 15px
+  padding: 20px
+  +z-index(modal)
+  +breakpoint(sm)
+    width: auto !important
+  .ui-dialog-buttonpane
+    border: none
+    padding: 0 !important
+    margin: 0
+    .button
+      margin: 0
+      font-weight: $font-weight-medium
+      @extend .button--blue-light
+
+  .ui-widget-content
+    padding: 0
+    color: $color-base
+
+  .ui-dialog-content
+    padding: 0
+    font-weight: $font-weight-thin
+    color: $color-grey-medium
+    font-size: $font-size-small
+    .form-actions, .button
+      margin: 0
+    .form__actions_inner
+      display: block
+
+  .ui-dialog-title
+    float: none
+    padding-right: 30px
+    white-space: normal
+    margin: 0
+    font-size: $font-size-h2
+
+  .ui-dialog-titlebar-close
+    height: 15px !important
+    width: 15px !important
+    background: none !important
+    border: none !important
+    top: 10px
+    right: 0
+    .ui-icon
+      @extend .icon
+      color: $color-blue-dark
+      background: none
+      border: none !important
+      text-indent: 0
+      font-size: 0
+      padding: 0
+      &:before
+        +icon-size(15px)
+        content: '\e617'
+
+  .ui-dialog-buttonset
+    float: none !important
+    margin-top: $form-margin
+    +breakpoint(sm)
+      display: flex
+      justify-content: space-between
+    .button
+      width: 100%
+      margin-bottom: 10px
+      +breakpoint(sm)
+        width: auto
+        margin-right: 15px
+        margin-bottom: 0
+      &:last-of-type
+        margin-bottom: 0
+        +breakpoint(sm)
+          margin-right: 0
+
+  .ui-widget-header
+    font-size: $font-size-h3
+    margin-bottom: $field-margin
+    padding: 0
+    background: none
+    color: $color-blue-dark
+    border: none
+    font-weight: $font-weight-medium
+
+// Hide select formats in a comment field for anonymous users
+// Remove margin for textarea
+.comment-form-anonymous
+  margin-bottom: 0
+  .filter-wrapper
+    display: none
+
+// Prevent overlapping contextal button and local tasks button.
+.section--featured .contextual
+  top: 50px
+
+#block-joinup-theme-local-tasks
+  position: absolute
+  top: 10px
+  right: 10px
+  +z-index(dropdown)
+  a
+    text-decoration: none
+  .icon
+    +icon-size(15px)
+    color: #fff
+  &:first-child
+    .icon
+      color: $color-base
+
+// Remove border for iframes
+article
+  iframe
+    border: none
+
+// Fix the feed icon styling.
+.feed-icon
+  background: url(../../../../core/misc/feed.svg) no-repeat
+  overflow: hidden
+  text-indent: -9999px
+  display: block
+  width: 16px
+  height: 16px

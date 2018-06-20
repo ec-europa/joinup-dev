@@ -1,0 +1,12 @@
+drupal.search_api_field:
+  version: VERSION
+  js:
+    search_api_field.js: {}
+  css:
+    theme:
+      css/field_ui.admin.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery
+    - core/jquery.once

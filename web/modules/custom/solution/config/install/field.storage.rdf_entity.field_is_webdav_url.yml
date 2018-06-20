@@ -6,9 +6,16 @@ dependencies:
     - rdf_entity
 third_party_settings:
   rdf_entity:
-    mapping_uri: 'http://joinup.eu/solution/webdav_url'
-    mapping_title: ''
-    mapping_options: ''
+    mapping:
+      uri:
+        predicate: 'http://joinup.eu/solution/webdav_url'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_is_webdav_url
 field_name: field_is_webdav_url
 entity_type: rdf_entity
@@ -17,7 +24,7 @@ settings: {  }
 module: link
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

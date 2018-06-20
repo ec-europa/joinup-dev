@@ -1,0 +1,49 @@
+entity_comment_edit_form:
+  title: 'Edit comment'
+  route_name: 'entity.comment.edit_form'
+  group: comment
+
+entity_comment_delete_form:
+  title: 'Delete comment'
+  route_name: 'entity.comment.delete_form'
+  group: comment
+
+comment_approve:
+  title: 'Approve comment'
+  route_name: 'comment.approve'
+  group: comment
+
+group_header_block.moderate_content:
+  title: 'Moderate content'
+  route_name: 'moderation.content_moderation_overview'
+  group: group_header_block
+
+joinup.site_feature:
+  title: Feature
+  route_name: joinup.site_feature
+  group: entity
+
+joinup.site_unfeature:
+  title: 'Remove from featured'
+  route_name: joinup.site_unfeature
+  group: entity
+
+joinup.site_pin:
+  title: 'Pin site-wide'
+  route_name: joinup.site_pin
+  group: entity
+
+joinup.site_unpin:
+  title: 'Unpin site-wide'
+  route_name: joinup.site_unpin
+  group: entity
+
+joinup.pin_entity:
+  route_name: joinup.pin_entity
+  title: Pin
+  group: collection_context
+
+joinup.unpin_entity:
+  route_name: joinup.unpin_entity
+  title: Unpin
+  group: collection_context

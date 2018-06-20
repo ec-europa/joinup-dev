@@ -1,0 +1,50 @@
+id: mapping
+label: 'Mapping'
+migration_tags:
+  - excel
+source:
+  plugin: mapping
+  cache_counts: true
+  track_changes: true
+  worksheet: '1. Content items'
+  origin: A2
+  header_row: 1
+  columns:
+    - 'Type of content item'
+    - Collection_Name
+    - 'Policy domain 1'
+    - 'Policy domain 2'
+    - Migrate
+    - Logo
+    - Banner
+    - Owner
+    - 'Owner name'
+    - 'Owner type'
+    - 'Content item state'
+  row_index_column: row_index
+  keys:
+    Nid:
+      type: integer
+process:
+  nid: Nid
+  type: type
+  collection: Collection_Name
+  policy: 'Policy domain 1'
+  policy2: 'Policy domain 2'
+  logo: Logo
+  banner: Banner
+  owner: Owner
+  owner_name:
+    plugin: callback
+    callable: trim
+    source: 'Owner name'
+  owner_type:
+    plugin: callback
+    callable: trim
+    source: 'Owner type'
+  content_item_state: 'Content item state'
+  row_index: row_index
+destination:
+  plugin: mapping
+  fast_rollback: true
+  fast_rollback_batch_size: 0

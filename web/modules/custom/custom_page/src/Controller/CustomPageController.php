@@ -2,94 +2,75 @@
 
 namespace Drupal\custom_page\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
-use Drupal\og\OgAccessInterface;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\Controller\CommunityContentController;
+use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CustomPageController.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\custom_page\Controller
  */
-class CustomPageController extends ControllerBase {
+class CustomPageController extends CommunityContentController {
 
   /**
-   * The OG access handler.
+   * {@inheritdoc}
    *
-   * @var \Drupal\og\OgAccessInterface
+   * The custom pages are only allowed to be created for collections.
    */
-  protected $ogAccess;
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if (empty($account)) {
+      $account = $this->currentUser();
+    }
 
-  /**
-   * Constructs a CustomPageController.
-   *
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The OG access handler.
-   */
-  public function __construct(OgAccessInterface $og_access) {
-    $this->ogAccess = $og_access;
+    if ($rdf_entity->bundle() !== 'collection') {
+      return AccessResult::forbidden();
+    }
+
+    // The user is not allowed to create custom pages for archived collections.
+    if ($rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
+    // Grant access depending on whether the user has permission to create a
+    // custom page according to their OG role.
+    return $this->ogAccess->userAccessGroupContentEntityOperation('create', $rdf_entity, $this->createContentEntity($rdf_entity), $account);
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('og.access')
-    );
+  protected function getBundle() {
+    return 'custom_page';
   }
 
   /**
-   * Controller for the base form.
+   * Altered title callback for the navigation menu edit form.
    *
-   * We need to override the functionality of the create form for pages
-   * that include the rdf_entity id in the url so that the og audience field
-   * is auto completed.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection rdf_entity.
+   * @param \Drupal\og_menu\OgMenuInstanceInterface $ogmenu_instance
+   *   The OG Menu instance that is being edited.
    *
    * @return array
-   *   Return the form array to be rendered.
+   *   The title as a render array.
+   *
+   * @see \Drupal\custom_page\Routing\RouteSubscriber::alterRoutes()
    */
-  public function add(RdfInterface $rdf_entity) {
-    $node = $this->createNewCustomPage($rdf_entity);
-    $form = $this->entityFormBuilder()->getForm($node);
-
-    return $form;
-  }
-
-  /**
-   * Handles access to the custom page add form through collection pages.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF entity for which the custom page is created.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   The access result object.
-   */
-  public function createCustomPageAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessGroupContentEntityOperations('create', $rdf_entity, $this->createNewCustomPage($rdf_entity), $this->currentUser());
-  }
-
-  /**
-   * Creates a new custom page entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the custom page will be associated.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The unsaved custom page entity.
-   */
-  protected function createNewCustomPage(RdfInterface $rdf_entity) {
-    return $this->entityTypeManager()->getStorage('node')->create([
-      'type' => 'custom_page',
-      'og_group_ref' => $rdf_entity->id(),
-    ]);
+  public function editFormTitle(OgMenuInstanceInterface $ogmenu_instance) {
+    // Provide a custom title for the OG Menu instance edit form. The default
+    // menu is suitable for webmasters, but we need a simpler title since this
+    // form is exposed to regular visitors.
+    $group = $ogmenu_instance->og_audience->entity;
+    return [
+      '#markup' => t('Edit navigation menu of the %group @type', [
+        '%group' => $ogmenu_instance->label(),
+        '@type' => $group->bundle(),
+      ]),
+      '#allowed_tags' => Xss::getHtmlTagList(),
+    ];
   }
 
 }

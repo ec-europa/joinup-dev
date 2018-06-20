@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_url
+    - message.template.contact_form_submission
+  module:
+    - link
+id: message.contact_form_submission.field_contact_url
+field_name: field_contact_url
+entity_type: message
+bundle: contact_form_submission
+label: 'Page URL'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 1
+  title: 0
+field_type: link

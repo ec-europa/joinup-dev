@@ -7,75 +7,200 @@
 .featured
   position: relative
   margin: 0 auto
-  padding: 20px 0
-  background: url('../images/featured-bg.png') no-repeat center center fixed
+
+// Elements
+// --------------------------------------------------
+.featured__outer-wrapper
+  background: url('../images/featured-bg.jpg') no-repeat center top
+  position: relative
+  margin: 0 auto
   -webkit-background-size: cover
   -moz-background-size: cover
   -o-background-size: cover
   background-size: cover
 
-// Elements
-// --------------------------------------------------
-.featured__center
+.featured__inner-wrapper
   position: relative
-  z-index: 2
+  max-width: 1200px
+  margin: 0 auto
   text-align: center
+  padding: 20px 0
+  +z-index(highlight+1)
+  a
+    text-decoration: none
+  @media print
+    padding: 0
+    padding-bottom: 20px
+
+.featured__menu-wrapper
+  position: relative
+  max-width: 1200px
+  margin: 0 auto
+  text-align: center
+  +z-index(dropdown)
+  +hidden-print
 
 .featured__overlay
   position: absolute
-  z-index: 1
   top: 0
   left: 0
   width: 100%
   height: 100%
   opacity: .6
   background-color: $color-blue-default
+  +z-index(highlight)
+
+.featured__link-wrapper
+  color: inherit
+  text-decoration: none
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  +z-index(highlight+2)
+
+.featured__link-wrapper--outer
+  +z-index(highlight+1)
 
 .featured__text
   position: relative
-  margin: 0 0 30px 0
-  padding: 25px 0
+  margin: 0 0 20px 0
+  padding: 0
   text-align: center
   letter-spacing: 2px
-  text-transform: uppercase
   color: #fff
-  &:after
-    position: absolute
-    right: 0
-    bottom: 0
-    left: 0
-    display: block
-    width: 40px
-    height: 3px
-    margin: 0 auto
-    content: ''
-    background-color: $color-blue-lighter
+  font-size: $font-size-h2
+  +breakpoint(mobile)
+    font-size: $font-size-h1
+    margin: 0
+    text-align: left
+
+.featured__logo
+  margin: 0 0 10px 0
+  +breakpoint(mobile)
+    margin: 0 20px 0 0
+
+.featured__title-wrapper
+  margin: 0
+  padding: 0
+  +breakpoint(mobile)
+    margin: 0 0 20px 0
+    padding: 0 20px
+    display: flex
+    align-items: center
+    justify-content: center
+
+.featured__text-small
+  font-size: $font-size-xsmall
+  text-transform: none
+  word-wrap: break-word
+
+.featured__text--double
+  margin: 0 0 30px 0
+  text-transform: none
+  +breakpoint(mobile)
+    margin-bottom: 20px
+  h1
+    margin: 0
+
+.featured__text-upper
+  text-transform: uppercase
 
 .featured__stats
   display: inline-block
-  margin-right: 20px
-  padding: 15px 30px
+  margin-bottom: 10px
   text-align: left
   vertical-align: middle
   background-color: #fff
+  padding: 0 15px
   +border-radius(3px)
-
+  color: $color-base
+  a
+    color: $color-base
+    display: inline-block
+    vertical-align: middle
+  +breakpoint(mobile)
+    margin: 0 10px
   .stats__column
-    float: left
-    &:first-of-type
-      margin-right: 40px
-
+    display: inline-block
+    vertical-align: middle
+    padding: 15px
+    min-width: 0
+  .stats__wrapper
+    margin-bottom: 4px
+    &:last-child
+      margin-bottom: 0
   .stats__icon,
   .stats__text
     display: inline-block
     vertical-align: middle
-
   .stats__icon
-    +icon-size(30px)
+    margin-right: 4px
+    +icon-size(20px)
+  .stats__row
+    .stats__column
+      padding-top: 0
+    &:first-child
+      .stats__column
+        padding-top: 15px
+  .stats__text a
+    text-decoration: underline
 
 .featured__action
   display: inline-block
   vertical-align: middle
 
+.featured__form-button
+  position: relative
+  display: inline-block
+  margin: 10px
+  +z-index(max)
+  +hidden-print
+
+// Style social media links for user
+.featured__container
+  margin-bottom: 20px
+
 // Modifiers
 // --------------------------------------------------
+.featured__stats
+  .stats__wrapper--centered
+    text-align: center
+  .stats__column--border
+    border-right: 1px solid $color-grey-light
+  +breakpoint(desktop)
+    .stats__column--wide
+      min-width: 165px
+    .stats__column--icons
+      padding-left: 30px
+    .stats__column--border
+      padding-right: 30px
+
+.featured--navy-blue
+  max-width: 1200px
+  justify-content: center
+
+
+// Dependiencies
+// --------------------------------------------------
+.featured__menu-wrapper
+  .button--default
+    +breakpoint(sm-mobile, mobile)
+      display: block
+      margin: 0 auto
+  .circle-menu
+    position: fixed
+    right: 40px
+    bottom: 40px
+    +breakpoint(mobile)
+      position: absolute
+      bottom: -40px
+      width: 80px
+      height: 80px
+      border-radius: 50%
+      background-color: $color-grey-bg
+    +breakpoint(lg-desktop)
+      right: 0
+  .circle-menu__button
+    +centered

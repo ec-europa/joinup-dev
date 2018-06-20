@@ -1,0 +1,23 @@
+sign_in_destination:
+  js:
+    js/sign_in_destination.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+timeago:
+  remote: http://timeago.yarp.com
+  version: v1.6.1
+  license:
+    name: MIT
+    url: https://github.com/rmm5t/jquery-timeago/blob/master/LICENSE.txt
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.1/jquery.timeago.min.js:
+      type: external
+      minified: true
+timestamp_timeago:
+  js:
+    js/timestamp_timeago.js: {  }
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

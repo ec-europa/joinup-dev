@@ -1,14 +1,11 @@
 langcode: en
 status: true
 dependencies: {  }
-third_party_settings:
-  rdf_entity:
-    mapping_rid:
-      target_id: 'http://www.w3.org/2006/vcard/ns#Kind'
-    mapping_label:
-      value: 'http://purl.org/dc/terms/title'
+third_party_settings: {  }
 name: 'Contact information'
 rid: contact_information
 description: ''
-rdftype: ''
-rdf_label: ''
+label_singular: 'contact information entry'
+label_plural: 'contact information entries'
+label_count:
+  no_count_capitalize: "Contact information entry\x03Contact information entries"

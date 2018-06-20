@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_visit_count
+    - node.type.news
+  module:
+    - cached_computed_field
+id: node.news.field_visit_count
+field_name: field_visit_count
+entity_type: node
+bundle: news
+label: 'Visit count'
+description: 'The number of visits this page has had. This is updated periodically with data from the Piwik web analytics platform.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+  cache-max-age: 86400
+field_type: cached_computed_integer

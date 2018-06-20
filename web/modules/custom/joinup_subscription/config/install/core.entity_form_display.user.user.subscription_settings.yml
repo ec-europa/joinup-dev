@@ -37,6 +37,6 @@ hidden:
   field_user_organisation: true
   field_user_photo: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
+  field_user_business_title: true
   language: true
   timezone: true

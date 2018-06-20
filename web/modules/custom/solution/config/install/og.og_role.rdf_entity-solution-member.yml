@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.solution
+id: rdf_entity-solution-member
+label: Member
+weight: 1
+is_admin: null
+group_type: rdf_entity
+group_bundle: solution
+group_id: null
+permissions:
+  - 'access comments'
+  - 'delete own comments'
+  - 'post comments'
+role_type: required

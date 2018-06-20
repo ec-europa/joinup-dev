@@ -35,11 +35,11 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['collections'] = array(
+    $form['collections'] = [
       '#title' => $this->t('Show on Collection pages'),
       '#type' => 'checkbox',
       '#default_value' => $this->configuration['collections'],
-    );
+    ];
     return parent::buildConfigurationForm($form, $form_state);
   }
 
@@ -72,7 +72,7 @@ class Collection extends ConditionPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return array('collections' => FALSE) + parent::defaultConfiguration();
+    return ['collections' => FALSE] + parent::defaultConfiguration();
   }
 
 }

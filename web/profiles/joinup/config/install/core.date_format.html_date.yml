@@ -4,4 +4,4 @@ dependencies: {  }
 id: html_date
 label: 'HTML Date'
 locked: true
-pattern: d-m-Y
+pattern: Y-m-d

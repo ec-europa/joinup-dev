@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: col_arc_del_members
+label: 'Collection archive/delete members'
+description: 'Template id 14 - Sent to all members when a collection is archived/deleted'
+text:
+  -
+    value: "<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>\r\n"
+    format: full_html
+  -
+    value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\r\n<p>@transition:archive:extra:members</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

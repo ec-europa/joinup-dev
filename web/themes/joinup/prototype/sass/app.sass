@@ -1,3 +1,6 @@
+// Font declarations
+@import "base/fontfaces"
+
 // Variables
 @import "variables/variables"
 
@@ -5,37 +8,38 @@
 @import "mixins"
 
 // Base
-@import "base/blockquote"
+//
+// Basic html elements
+//
+// Styleguide 1
+@import "base/body"
+@import "base/paragraph"
 @import "base/heading"
-@import "base/list"
-@import "base/table"
+@import "base/blockquote"
 @import "base/link"
-
-// Sections
-@import "layouts/sections/section"
-@import "layouts/sections/section--header"
-@import "layouts/sections/section--content"
-@import "layouts/sections/section--featured"
-
-// Layouts
-@import "layouts/layout"
-@import "layouts/grid"
-
-@import "mdl-hacks"
+@import "base/ordered_list"
+@import "base/unordered_list"
+@import "base/table"
+@import "base/radio"
+@import "base/checkbox"
+@import "base/input"
+@import "base/shared"
 
 // Components
+//
+// Joinup components
+//
+// Styleguide 2
 @import "components/search-bar"
+@import "components/header"
 @import "components/header-logo"
 @import "components/header-menu"
 @import "components/login-menu"
-@import "components/tile"
 @import "components/icons-bar"
 @import "components/sidebar-menu"
 @import "components/listing"
 @import "components/featured"
-@import "components/input"
-@import "components/checkbox"
-@import "components/radio"
+@import "components/featured-lg"
 @import "components/icon"
 @import "components/background"
 @import "components/button"
@@ -43,3 +47,48 @@
 @import "components/editor-area"
 @import "components/tab"
 @import "components/alert"
+@import "components/tallinn"
+@import "components/slider"
+@import "components/form-table"
+@import "components/file-upload"
+@import "components/draggable"
+@import "components/vertical-tabs"
+@import "components/anonymous-menu"
+@import "components/circle-menu"
+@import "components/filters"
+@import "components/details"
+@import "components/action-link"
+@import "components/etiquette"
+@import "components/timeline"
+@import "components/announcement"
+@import "components/avatar"
+@import "components/comment"
+@import "components/load-more"
+@import "components/fieldset"
+@import "components/pager"
+@import "components/share-box"
+@import "components/footer"
+@import "components/footer-ec-menu"
+@import "components/footer-social-media"
+@import "components/vertical-menu"
+@import "components/page"
+@import "components/block"
+@import "components/icon-card"
+@import "components/inline-social-media"
+@import "components/chip"
+@import "components/invite-form"
+
+// Sections
+@import "layouts/sections/section"
+@import "layouts/sections/section--footer"
+@import "layouts/sections/section--header"
+@import "layouts/sections/section--content"
+@import "layouts/sections/section--featured"
+@import "layouts/sections/section--sidebar-left"
+
+// Layouts
+@import "layouts/layout"
+@import "layouts/grid"
+
+@import "mdl-hacks"
+@import "drupal-hacks"

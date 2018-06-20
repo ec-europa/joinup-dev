@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Template to render the join and leave collection form.
+ *
+ * Available variables:
+ * - form: the form build array.
+ *
+ * @ingroup themeable
+ */
+#}
+{{ form|without('leave') }}
+
+{# Dropdown menu for leave link. #}
+{% if form.leave %}
+  <button id="you-are-member-button" class="button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="button">
+    {{ "You're a member"|t }}
+  </button>
+
+  <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="you-are-member-button">
+    <li class="mdl-menu__item">{{ form.leave }}</li>
+  </ul>
+{% endif %}

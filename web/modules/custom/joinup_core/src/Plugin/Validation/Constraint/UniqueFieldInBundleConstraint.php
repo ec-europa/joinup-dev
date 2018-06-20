@@ -44,7 +44,7 @@ class UniqueFieldInBundleConstraint extends Constraint {
    * {@inheritdoc}
    */
   public function getRequiredOptions() {
-    return array('bundles');
+    return ['bundles'];
   }
 
 }

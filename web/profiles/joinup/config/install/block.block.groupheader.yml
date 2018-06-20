@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+  theme:
+    - joinup_theme
+id: groupheader
+theme: joinup_theme
+region: featured
+weight: -9
+provider: null
+plugin: group_header_block
+settings:
+  id: group_header_block
+  label: 'Group header'
+  provider: joinup
+  label_display: '0'
+  context_mapping:
+    og: '@og.context:og'
+visibility: {  }

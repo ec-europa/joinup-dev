@@ -7,8 +7,8 @@ id: node.custom_page.status
 field_name: status
 entity_type: node
 bundle: custom_page
-label: 'Publishing status'
-description: 'A boolean indicating whether the node is published.'
+label: Published
+description: ''
 required: false
 translatable: true
 default_value:

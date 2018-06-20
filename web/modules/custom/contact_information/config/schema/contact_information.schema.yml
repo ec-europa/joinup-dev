@@ -1,0 +1,16 @@
+contact_information.settings:
+  type: config_object
+  label: 'Contact information workflow permission settings'
+  mapping:
+    transitions:
+      type: sequence
+      label: 'Allowed transitions'
+      sequence:
+        type: sequence
+        label: 'Transition ID'
+        sequence:
+          type: sequence
+          label: 'Source state'
+          sequence:
+            type: string
+            label: 'Roles'

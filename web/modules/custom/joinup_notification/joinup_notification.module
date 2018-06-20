@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * @file
+ * Module handling notifications in joinup.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\NotificationEvents;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_node_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * It is really hard to keep track of the from_state since state_machine does
+ * not give us access to the initialValue protected property of the StateItem
+ * class.
+ *
+ * Load the unchanged latest version and get the source state and save it to the
+ * entity.
+ *
+ * This workaround comes because the $entity->original property points to the
+ * latest published version instead of the latest revision.
+ *
+ * @see: https://www.drupal.org/node/2833084
+ */
+function joinup_notification_node_presave(EntityInterface $entity) {
+  $bundles = ['document', 'discussion', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $bundles)) {
+    return;
+  }
+  $entity->field_state_initial_value = $entity->get('field_state')->first()->getInitialValue();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_node_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * For nodes, the predelete is used instead of the delete hook because the
+ * state of the latest revision has to be examined and the revisions are deleted
+ * already before the active revision. In the end, the active revision is passed
+ * into the delete hooks which can lead into false data e.g. wrong state.
+ */
+function joinup_notification_node_predelete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_rdf_entity_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_rdf_entity_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_notification_rdf_entity_predelete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::RDF_ENTITY_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_comment_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_notification_comment_update(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_notification_comment_delete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMENT_CRUD, $entity);
+}
+
+/**
+ * Dispatches a generic notification event.
+ *
+ * @param string $operation
+ *   The CRUD operation string.
+ * @param string $event_name
+ *   The event name.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity object.
+ */
+function joinup_notification_dispatch_notification($operation, $event_name, EntityInterface $entity) {
+  // @todo Replace this direct access of a custom entity property with the
+  //   temporary entity data API once it lands in core.
+  // @see https://www.drupal.org/node/2896474
+  if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
+    return;
+  }
+  $event = new NotificationEvent($operation, $entity);
+  $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
+  $event_dispatcher->dispatch($event_name, $event);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Converts in HTML the mails sent by the user and joinup_user modules.
+ *
+ * For emails sent by the message_notify module, add a prefix and a suffix.
+ */
+function joinup_notification_mail_alter(&$message) {
+  if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
+    // Convert new lines to paragraphs and line breaks. Also transform the body
+    // to markup.
+    // @see swiftmailer_mail()
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    $message['body'] = array_map(function ($text) {
+      return Markup::create(_filter_autop($text));
+    }, $message['body']);
+  }
+
+  // Mails sent by the message_notify module are already HTML ready.
+  if ($message['module'] === 'message_notify') {
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    // Some notifications such as the 'contact_form_submission' are not being
+    // sent to users of the platform, but to an automated helpdesk service. In
+    // this case the message will be read by cold, soulless machines so we can
+    // omit the formalities of attaching a warm greeting and signature to the
+    // email.
+    $user = user_load_by_mail($message['to']);
+    if ($user) {
+      $first_name = !empty($user->get('field_user_first_name')->value) ? $user->get('field_user_first_name')->value : 'Joinup user';
+      $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
+      $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
+      $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_notification_og_membership_insert(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('create', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_notification_og_membership_presave(EntityInterface $entity) {
+  if ($entity->isNew()) {
+    return;
+  }
+  joinup_notification_dispatch_notification('update', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_notification_og_membership_predelete(EntityInterface $entity) {
+  joinup_notification_dispatch_notification('delete', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}

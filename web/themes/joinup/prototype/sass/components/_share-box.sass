@@ -1,0 +1,98 @@
+// Share box
+//
+
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.share-box__row
+  position: relative
+  min-height: 50px
+  margin-bottom: 20px
+  &:last-child
+    border-bottom: none
+    min-height: auto
+    margin-bottom: 0
+
+.share-box__item
+  text-decoration: none
+
+.share-box__label
+  margin-left: 14px
+  color: $color-base
+  font-size: $font-size-base
+  font-weight: $font-weight
+
+.share-box__image img
+  max-width: 50px
+  max-height: 50px
+
+.share-box__social-icon
+  color: $color-blue-dark
+  +icon-size(50px)
+
+.share-box__container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  max-width: $screen-sm
+  overflow-y: hidden
+  +breakpoint(sm)
+    flex-direction: row
+    min-width: $screen-sm / 2
+
+.share-box__title
+  margin-top: 0
+  color: $color-base
+
+.share-box__social
+  margin-bottom: 20px
+  +breakpoint(sm)
+    margin-right: 40px
+    margin-bottom: 0
+  .share-box__item
+    display: flex
+    align-items: center
+    margin-right: 5px
+    margin-left: 5px
+    padding-right: 10px
+
+.share-box__collections
+  .share-box__row
+    margin-left: 10px
+    padding-left: 30px
+    +breakpoint(sm)
+      margin-left: 0
+  .share-box__item
+    display: flex
+    align-items: flex-start
+
+// Modifiers
+// --------------------------------------------------
+.share-box__container--single-column
+  justify-content: center
+  .share-box__social
+    margin-right: 0
+    .share-box__title
+      text-align: center
+
+// Dependiencies
+// --------------------------------------------------
+.share-box__container
+  fieldset
+    margin-bottom: 0
+  .form-type-checkbox
+    position: absolute
+    top: 0
+    left: 0
+    .form__label
+      display: none
+
+.share-content-form
+  .form__legend
+    margin: 0
+
+.ajax-progress-throbber
+  .message
+    display: none

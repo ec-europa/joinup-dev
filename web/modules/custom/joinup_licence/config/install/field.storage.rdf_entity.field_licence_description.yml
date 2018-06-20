@@ -6,8 +6,13 @@ dependencies:
     - text
 third_party_settings:
   rdf_entity:
-    mapping_value: 'dct:description'
-    mapping_format: ''
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_licence_description
 field_name: field_licence_description
 entity_type: rdf_entity
@@ -16,7 +21,7 @@ settings: {  }
 module: text
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

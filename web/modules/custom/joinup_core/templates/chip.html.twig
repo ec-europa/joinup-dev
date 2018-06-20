@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a chip component from Material Design library.
+ *
+ * Available variables:
+ * - text: the text of the chip.
+ * - element: the button of the chip.
+ *
+ * @see template_preprocess_chip()
+ *
+ * @ingroup themeable
+ */
+#}
+<span class="mdl-chip mdl-chip--deletable">
+    <span class="mdl-chip__text">{{ text }}</span>
+    {{ element }}
+</span>

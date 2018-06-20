@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: sol_deletion_approved
+label: 'Solution deletion approved'
+description: 'Template 11: Approve deletion request/Delete'
+text:
+  -
+    value: 'Joinup: Your deletion request has been approved'
+    format: full_html
+  -
+    value: "<p>You recently requested that the interoperability solution @entity:title be deleted.</p>\r\n<p>Your request was accepted by @actor:full_name.</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

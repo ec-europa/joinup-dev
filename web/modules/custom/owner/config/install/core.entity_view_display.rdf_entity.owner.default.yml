@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.owner.field_owner_name
+    - field.field.rdf_entity.owner.field_owner_state
+    - field.field.rdf_entity.owner.field_owner_type
+    - rdf_entity.rdfentity.owner
+  module:
+    - user
+id: rdf_entity.owner.default
+targetEntityType: rdf_entity
+bundle: owner
+mode: default
+content:
+  field_owner_name:
+    type: string
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_owner_type:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_owner_state: true

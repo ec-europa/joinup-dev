@@ -1,0 +1,162 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.reply.default
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_site_pinned
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_visit_count
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - comment
+    - ds
+    - file
+    - link
+    - options
+    - text
+    - user
+id: node.discussion.default
+targetEntityType: node
+bundle: discussion
+mode: default
+content:
+  body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_attachment:
+    type: file_table
+    weight: 9
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: with_label
+  field_policy_domain:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+    type: entity_reference_label
+    region: content
+  field_replies:
+    weight: 4
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    type: comment_default
+    region: content
+  field_shared_in:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tile
+  field_state:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  flag_subscribe_discussions:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  invite_link:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  og_audience:
+    label: hidden
+    type: entity_reference_label
+    settings:
+      link: true
+    weight: 2
+    third_party_settings: {  }
+    region: content
+  report:
+    label: hidden
+    weight: 6
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: link
+  share_link:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_keywords: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_visit_count: true
+  langcode: true

@@ -14,7 +14,7 @@ class ActiveFormSubmit {
    * Set the form_id being submitted.
    *
    * @param string $form_id
-   *    The form id.
+   *   The form id.
    */
   public function setFormId($form_id) {
     $this->formId = $form_id;

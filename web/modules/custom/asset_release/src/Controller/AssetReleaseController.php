@@ -3,17 +3,21 @@
 namespace Drupal\asset_release\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\Query\QueryFactory;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class AssetReleaseController.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\asset_release\Controller
  */
 class AssetReleaseController extends ControllerBase {
 
@@ -25,13 +29,23 @@ class AssetReleaseController extends ControllerBase {
   protected $ogAccess;
 
   /**
+   * The entity query factory service.
+   *
+   * @var \Drupal\Core\Entity\Query\QueryInterface
+   */
+  protected $queryFactory;
+
+  /**
    * Constructs a AssetReleaseController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
+   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
+   *   The entity query factory service.
    */
-  public function __construct(OgAccessInterface $og_access) {
+  public function __construct(OgAccessInterface $og_access, QueryFactory $query_factory) {
     $this->ogAccess = $og_access;
+    $this->queryFactory = $query_factory;
   }
 
   /**
@@ -39,20 +53,10 @@ class AssetReleaseController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('og.access')
+      $container->get('og.access'),
+      $container->get('entity.query')
     );
   }
-
-  protected $fieldsToCopy = [
-    'field_is_description' => 'field_isr_description',
-    'field_is_solution_type' => 'field_isr_solution_type',
-    'field_is_contact_information' => 'field_isr_contact_information',
-    'field_is_owner' => 'field_isr_owner',
-    'field_is_related_solutions' => 'field_isr_related_solutions',
-    'field_is_included_asset' => 'field_isr_included_asset',
-    'field_is_translation' => 'field_isr_translation',
-    'field_policy_domain' => 'field_policy_domain',
-  ];
 
   /**
    * Controller for the base form.
@@ -68,25 +72,7 @@ class AssetReleaseController extends ControllerBase {
    *   Return the form array to be rendered.
    */
   public function add(RdfInterface $rdf_entity) {
-    // Setup the values for the release.
-    $values = [
-      'rid' => 'asset_release',
-      'field_isr_is_version_of' => $rdf_entity->id(),
-    ];
-
-    foreach ($this->fieldsToCopy as $solution_field => $release_field) {
-      if (!empty($rdf_entity->get($solution_field)->getValue())) {
-        $values[$release_field] = $rdf_entity->get($solution_field)->getValue();
-      }
-    }
-
-    $asset_release = $this->entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->create($values);
-
-    $form = $this->entityFormBuilder()->getForm($asset_release);
-
-    return $form;
+    return $this->entityFormBuilder()->getForm($this->createNewAssetRelease($rdf_entity));
   }
 
   /**
@@ -94,12 +80,130 @@ class AssetReleaseController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the custom page is created.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The RDF entity for which the custom page is created.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity) {
-    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $this->currentUser());
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $this->ogAccess->userAccessEntity('create', $this->createNewAssetRelease($rdf_entity), $account);
+  }
+
+  /**
+   * Returns a build array for the solution releases overview page.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return array
+   *   The build array for the page.
+   */
+  public function overview(RdfInterface $rdf_entity) {
+    // Retrieve all releases for this solution.
+    $ids = $this->queryFactory->get('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->condition('field_isr_is_version_of', $rdf_entity->id())
+      // @todo: This is a temporary fix. We need to implement the sort in the
+      // rdf entity module in order to be able to handle paging.
+      // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
+      // ->sort('created', 'DESC')
+      ->execute();
+
+    /** @var \Drupal\rdf_entity\Entity\Rdf[] $releases */
+    $releases = Rdf::loadMultiple($ids);
+
+    // Filter out any release that the current user cannot access.
+    // @todo Filter out any unpublished release. See ISAICP-3393.
+    $releases = array_filter($releases, function ($release) {
+      return $release->access('view');
+    });
+
+    // Retrieve all standalone distributions for this solution. These are
+    // downloads that are not associated with a release.
+    // The standalone distributions are not flagged in any way, and the relation
+    // between releases and distributions is backwards (the relation is present
+    // on the parent entity). We work around this by retrieving all
+    // distributions excluding the ones that are associated with a release.
+    $release_distribution_ids = [];
+    foreach ($releases as $release) {
+      foreach ($release->get('field_isr_distribution')->getValue() as $distribution_reference) {
+        $release_distribution_ids[] = $distribution_reference['target_id'];
+      }
+    }
+
+    $query = $this->queryFactory->get('rdf_entity');
+    $query
+      ->condition('rid', 'asset_distribution')
+      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id());
+    if (!empty($release_distribution_ids)) {
+      $query->condition('id', $release_distribution_ids, 'NOT IN');
+    }
+    $standalone_distribution_ids = $query->execute();
+    $standalone_distributions = Rdf::loadMultiple($standalone_distribution_ids);
+
+    // Put a flag on the standalone distributions so they can be identified for
+    // theming purposes.
+    foreach ($standalone_distributions as $standalone_distribution) {
+      $standalone_distribution->standalone = TRUE;
+    }
+
+    $entities = $this->sortEntitiesByCreationDate(array_merge($releases, $standalone_distributions));
+
+    // Mark the first release as the latest.
+    // @see asset_release_preprocess_rdf_entity()
+    foreach ($entities as $entity) {
+      if ($entity->bundle() === 'asset_release') {
+        $entity->is_latest_release = TRUE;
+        break;
+      }
+    }
+
+    return [
+      '#theme' => 'asset_release_releases_download',
+      '#releases' => $entities,
+    ];
+  }
+
+  /**
+   * Page title callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The page title.
+   */
+  public function overviewPageTitle(RdfInterface $rdf_entity) {
+    return $this->t('Releases for %solution solution', ['%solution' => $rdf_entity->label()]);
+  }
+
+  /**
+   * Access callback for the solution releases overview.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+   *   The solution rdf entity.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+   *   Thrown when the rdf entity is not a solution.
+   */
+  public function overviewAccess(RdfInterface $rdf_entity, RouteMatchInterface $route_match, AccountInterface $account) {
+    if ($rdf_entity->bundle() !== 'solution') {
+      throw new NotFoundHttpException();
+    }
+
+    return $rdf_entity->access('view', $account, TRUE);
   }
 
   /**
@@ -116,6 +220,32 @@ class AssetReleaseController extends ControllerBase {
       'rid' => 'asset_release',
       'field_isr_is_version_of' => $rdf_entity->id(),
     ]);
+  }
+
+  /**
+   * Sorts a list of releases and distributions by date.
+   *
+   * @param \Drupal\rdf_entity\Entity\Rdf[] $entities
+   *   The RDF entities to sort.
+   *
+   * @return \Drupal\rdf_entity\Entity\Rdf[]
+   *   The sorted RDF entities.
+   */
+  protected function sortEntitiesByCreationDate(array $entities) {
+    usort($entities, function ($entity1, $entity2) {
+      // Sort entries without a creation date on the bottom so they don't
+      // stick to the top for all eternity.
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity1 */
+      $ct1 = $entity1->getCreatedTime() ?: 0;
+      /** @var \Drupal\rdf_entity\Entity\Rdf $entity2 */
+      $ct2 = $entity2->getCreatedTime() ?: 0;
+      if ($ct1 == $ct2) {
+        return 0;
+      }
+      return ($ct1 < $ct2) ? 1 : -1;
+    });
+
+    return $entities;
   }
 
 }

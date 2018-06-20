@@ -1,0 +1,20 @@
+plugin.plugin_configuration.facets_processor.aggregated_entity_bundle_label:
+  type: mapping
+  label: 'Aggregated bundle entity label'
+  mapping:
+    plural_count_label:
+      type: mapping
+      label: 'Plural count label'
+      mapping:
+        enabled:
+          type: boolean
+          label: 'Show bundle label as plural'
+        context:
+          type: string
+          label: 'Plural count label context'
+
+plugin.plugin_configuration.facets_processor.aggregated_entity_reference_label:
+  type: sequence
+  label: 'Aggregated entity label'
+  sequence:
+    type: string

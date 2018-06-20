@@ -1,0 +1,10 @@
+name: Organic Groups Comment
+description: Define comment permissions on a per group level.
+package: Organic Groups
+
+core: 8.x
+type: module
+
+dependencies:
+  - og
+  - comment

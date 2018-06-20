@@ -2,15 +2,142 @@
 # profile rather than in the Collection module to avoid a circular dependency.
 # This route depends on the JoinupController, but Joinup already depends on the
 # Collection module.
-collection.propose_form:
-  path: '/collection/propose'
+rdf_entity.propose_form:
+  path: '/propose/{rdf_type}'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::proposeRdfEntity'
-    _title: 'Propose a Collection'
-    rdf_type: 'collection'
+    _title: 'Propose an Rdf entity'
   requirements:
-    _permission: 'propose collection rdf entity'
+    _custom_access: '\Drupal\joinup\Controller\JoinupController::createAssetReleaseAccess'
   options:
     parameters:
       rdf_type:
         type: entity:rdf_type
+homepage.content:
+  path: '/homepage'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::homepageContent'
+  requirements:
+    _permission: 'access content'
+
+joinup.collection_tca_form:
+  path: '/joinup/tca/collection'
+  defaults:
+    _form: '\Drupal\joinup\Form\TcaForm'
+    _title: 'Why create a Collection?'
+  requirements:
+    _permission: 'propose collection rdf entity'
+
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
+  requirements:
+    _access: 'TRUE'
+
+joinup.eligibility_criteria:
+  path: '/joinup/eligibility-criteria'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::eligibilityCriteria'
+    _title: 'Eligibility criteria'
+  requirements:
+    _access: 'TRUE'
+
+joinup.site_feature:
+  path: '/feature/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Feature'
+    field_name: field_site_featured
+    value: true
+    message: '@bundle %title has been set as featured content.'
+  requirements:
+    _permission: 'feature entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unfeature:
+  path: '/feature/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Remove from featured'
+    field_name: field_site_featured
+    value: false
+    message: '@bundle %title has been removed from the featured contents.'
+  requirements:
+    _permission: 'unfeature entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_pin:
+  path: '/pin/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Pin'
+    field_name: field_site_pinned
+    value: true
+    message: '@bundle %title has been set as pinned content.'
+  requirements:
+    _permission: 'pin entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.site_unpin:
+  path: '/pin/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Remove from pinned'
+    field_name: field_site_pinned
+    value: false
+    message: '@bundle %title has been removed from the pinned contents.'
+  requirements:
+    _permission: 'unpin entity'
+    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup.pin_entity:
+  path: '/pin/group/{entity_type}/{entity}/add/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::pinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity
+
+joinup.unpin_entity:
+  path: '/pin/group/{entity_type}/{entity}/remove/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::unpinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity

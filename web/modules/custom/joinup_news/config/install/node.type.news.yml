@@ -1,5 +1,5 @@
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - menu_ui
@@ -11,6 +11,10 @@ name: News
 type: news
 description: ''
 help: ''
-new_revision: false
-preview_mode: 1
+new_revision: true
+preview_mode: 0
 display_submitted: false
+label_singular: news
+label_plural: news
+label_count:
+  no_count_capitalize: "News\x03News"

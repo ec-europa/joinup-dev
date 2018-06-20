@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - state_machine
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/contact_information/workflow_status'
+        format: 'xsd:string'
+id: rdf_entity.field_ci_state
+field_name: field_ci_state
+entity_type: rdf_entity
+type: state
+settings: {  }
+module: state_machine
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

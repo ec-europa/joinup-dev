@@ -1,0 +1,92 @@
+id: event
+label: 'Event'
+migration_tags:
+  - node
+  - event
+  - og
+source:
+  plugin: event
+  track_changes: true
+process:
+  nid: nid
+  title: title
+  created: created
+  changed: changed
+  body/value:
+    plugin: file_inline
+    source: body
+  body/format:
+    plugin: default_value
+    default_value: content_editor
+  uid:
+    - plugin: migration
+      migration: user
+      source: uid
+      no_stub: true
+    - plugin: default_value
+      default_value: 1
+  field_keywords: keywords
+  field_event_logo:
+    plugin: migration
+    source: file_id
+    migration: file:event_logo
+    no_stub: true
+  field_event_date/value: start_date
+  field_event_date/end_value: end_date
+  field_location: location
+  field_organisation: organisation
+  field_event_web_url: website
+  field_event_contact_email: mail
+  field_event_agenda/value:
+    plugin: file_inline
+    source: agenda
+  field_event_agenda/format:
+    plugin: default_value
+    default_value: content_editor
+  field_scope:
+    plugin: static_map
+    source: scope
+    default_value: null
+    map:
+      'Cross-border': cross_border
+      European: european
+      International: international
+      'Local (city or municipality)': local
+      National: national
+      'Pan-European': pan_european
+      'Regional (sub-national)': regional
+  field_organisation_type:
+    plugin: static_map
+    source: organisation_type
+    default_value: null
+    map:
+      Academia: academia
+      'Non-profit': non_profit
+      Other: other
+      'Private (Contractor on behalf of Public Organisation)': private_on_behalf_of_public_organisation
+      'Private (large enterprise)': private_enterprise
+      'Private (SME or independent)': private_sme
+      Public: public
+  field_state: state
+  field_attachment:
+    plugin: migration
+    migration: file:event_attachment
+    source: fids
+    no_stub: true
+  field_event_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  og_audience:
+    plugin: migration
+    source: collection
+    migration: collection
+destination:
+  plugin: entity:node
+  default_bundle: event
+migration_dependencies:
+  required:
+    - collection
+    - file:event_logo
+    - file:event_attachment
+    - file:inline

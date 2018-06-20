@@ -3,12 +3,14 @@ Feature: Owner API
   As a backend developer
   I need to be able to use the Owner API
 
-  Scenario: Programmatically create a person
-    Given the following person:
-      | name             | Owner API person |
-    Then I should have 1 person
+  Scenario: Create a person
+    Given owner:
+      | name             | type                  |
+      | Owner API person | Private Individual(s) |
+    Then I should have 1 owner
 
-  Scenario: Programmatically create a organisation
-    Given the following organisation:
-      | name             | Owner API organisation |
-    Then I should have 1 organisation
+  Scenario: Create an organisation
+    Given owner:
+      | name                   | type                             |
+      | Owner API organisation | Academia/Scientific organisation |
+    Then I should have 1 owner

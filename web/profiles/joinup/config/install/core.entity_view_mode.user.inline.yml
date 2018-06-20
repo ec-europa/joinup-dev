@@ -1,0 +1,9 @@
+langcode: en
+status: false
+dependencies:
+  module:
+    - user
+id: user.inline
+label: 'User inline'
+targetEntityType: user
+cache: true

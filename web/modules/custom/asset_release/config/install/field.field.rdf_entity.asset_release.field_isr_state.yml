@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_state
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - state_machine
+id: rdf_entity.asset_release.field_isr_state
+field_name: field_isr_state
+entity_type: rdf_entity
+bundle: asset_release
+label: State
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  workflow: asset_release_workflow
+  workflow_callback: ''
+field_type: state

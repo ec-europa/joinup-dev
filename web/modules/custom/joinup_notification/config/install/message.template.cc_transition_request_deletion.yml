@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+template: cc_transition_request_deletion
+label: 'Community content on Request deletion'
+description: 'Template id 7'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has requested to delete the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title", with the following motivation: "@transition:motivation".</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

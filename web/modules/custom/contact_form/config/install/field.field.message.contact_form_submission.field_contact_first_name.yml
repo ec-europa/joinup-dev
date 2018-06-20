@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_first_name
+    - message.template.contact_form_submission
+id: message.contact_form_submission.field_contact_first_name
+field_name: field_contact_first_name
+entity_type: message
+bundle: contact_form_submission
+label: 'First name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

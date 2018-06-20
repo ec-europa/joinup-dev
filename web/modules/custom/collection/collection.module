@@ -5,19 +5,34 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+declare(strict_types = 1);
+
+use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\views\Views;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\node\NodeInterface;
+use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelper;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
-use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Query\QueryInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -26,6 +41,106 @@ function collection_form_block_form_alter(&$form, FormStateInterface $form_state
   // Hide the 'negation' option for collection block visibility. There are no
   // good use cases to show a block on all pages, except on collection pages.
   $form['visibility']['collection']['negate']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the RDF entity form for collections:
+ * - Changes the available options for the eLibrary creation field depending on
+ *   whether a collection is closed or open:
+ *   - Open collection: eLibrary content can be created either only by
+ *     collection members, or by all registered users.
+ *   - Closed collection: eLibrary content can be created either only by
+ *     collection facilitators, or by members of the collection.
+ *   When the collection changes between closed and open we will use AJAX to
+ *   update the eLibrary creation field to contain the correct options.
+ */
+function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only alter collection forms.
+  if ($form_state->getFormObject()->getEntity()->bundle() !== 'collection') {
+    return;
+  }
+
+  // Retrieve the entity from the form.
+  $entity = $form_state->getFormObject()->getEntity();
+
+  // Get the current values for the 'Closed collection' and 'eLibrary creation'
+  // fields. If the form has not yet been submitted, use the defaults from the
+  // loaded or newly created entity.
+  // We are accessing directly the raw, unvalidated user input because when
+  // "#limit_validation_errors" is set on the triggering element (for example
+  // when an "add_more" button is clicked) the full form state values are not
+  // present.
+  // @see \Drupal\Core\Form\FormValidator::handleErrorsWithLimitedValidation()
+  // @todo Maybe check the triggering element and use the default values instead?
+  $closed = !$form_state->isProcessingInput() ? $entity->field_ar_closed->value : (int) $form_state->getUserInput()['field_ar_closed']['value'];
+  $elibrary = !$form_state->isProcessingInput() ? $entity->field_ar_elibrary_creation->value : (int) $form_state->getUserInput()['field_ar_elibrary_creation'];
+
+  // Define the allowed options.
+  $allowed_options = [
+    // In open collections content can be made by members (option 1) and
+    // authenticated users (option 2).
+    0 => [
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+      ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::REGISTERED_USERS,
+    ],
+    // In closed collections content can be made by facilitators (option 0) and
+    // members (option 1).
+    1 => [
+      ELibraryCreationOptions::FACILITATORS => ELibraryCreationOptions::FACILITATORS,
+      ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    ],
+  ];
+  // Take the options as defined in the field storage, and filter them using the
+  // allowed options.
+  $elibrary_creation_options = array_intersect_key(FieldStorageConfig::load('rdf_entity.field_ar_elibrary_creation')->getSetting('allowed_values'), $allowed_options[$closed]);
+
+  // According to specification, the 'member' option (option 1) should always
+  // appear as the first option, at the left.
+  if (array_key_exists(ELibraryCreationOptions::MEMBERS, $elibrary_creation_options)) {
+    // Since this is a numerically ordered array we cannot use array_unshift().
+    $member_options = $elibrary_creation_options[ELibraryCreationOptions::MEMBERS];
+    unset($elibrary_creation_options[ELibraryCreationOptions::MEMBERS]);
+    $elibrary_creation_options = [ELibraryCreationOptions::MEMBERS => $member_options] + $elibrary_creation_options;
+  }
+
+  // Define the option that should be taken in case the originally selected
+  // option is no longer available.
+  // This can be hardcoded as `$default = 1` but using a transition table makes
+  // it easier to maintain and understand.
+  $option_transitions = [
+    // If the option 'Only collection facilitators' was selected before, then
+    // take the option 'Only members'.
+    ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    // If the option 'Any registered user' was selected before, then take the
+    // option 'Only members'.
+    ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::MEMBERS,
+  ];
+
+  $elibrary_creation_default_value = array_key_exists($elibrary, $elibrary_creation_options) ? $elibrary : $option_transitions[$elibrary];
+
+  // Provide an identifier on the wrapper for the eLibrary Creation field so we
+  // can target it with AJAX.
+  $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
+  $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
+  $form['field_ar_elibrary_creation']['widget']['#default_value'][0] = $elibrary_creation_default_value;
+
+  // Add an AJAX callback that refreshes the eLibrary field when the Closed
+  // collection field changes.
+  $form['field_ar_closed']['widget']['value']['#ajax'] = [
+    'callback' => 'collection_form_elibrary_creation_callback',
+    'wrapper' => 'field-ar-elibrary-creation-wrapper',
+  ];
+}
+
+/**
+ * AJAX callback that returns the eLibrary creation field.
+ *
+ * @see collection_form_rdf_entity_form_alter()
+ */
+function collection_form_elibrary_creation_callback($form, FormStateInterface $form_state) {
+  return $form['field_ar_elibrary_creation'];
 }
 
 /**
@@ -39,29 +154,18 @@ function collection_entity_bundle_field_info_alter(&$fields, EntityTypeInterface
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  */
-function collection_entity_insert(EntityInterface $entity) {
+function collection_rdf_entity_insert(EntityInterface $entity) {
   if ($entity->bundle() !== 'collection') {
     return;
   }
-  collection_entity_update($entity);
-
-  // Create a new navigation menu and associate it with the new collection. This
-  // menu can be used to link to custom pages for the collection.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && $entity->bundle() === 'collection') {
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelper::DEFAULT_FIELD => $entity->id(),
-    ];
-    $og_menu_instance = OgMenuInstance::create($values);
-    $og_menu_instance->save();
-  }
+  collection_rdf_entity_update($entity);
 
   // When a new collection is proposed, give the user the 'group owner' role.
   // This will not occur if the user is the anonymous, i.e. the entity was
   // created by some batch process or some importing.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && !\Drupal::currentUser()->isAnonymous()) {
+  if (!empty($entity->getOwner()) && !$entity->getOwner()->isAnonymous()) {
     // The group owner inherits all roles of a collection member, facilitator
     // and administrator.
     $roles = [
@@ -71,36 +175,107 @@ function collection_entity_insert(EntityInterface $entity) {
     ];
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = OgMembership::create(['type' => OgMembershipInterface::TYPE_DEFAULT]);
-    $membership
-      ->setUser(\Drupal::currentUser()->id())
-      ->setEntityId($entity->id())
-      ->setGroupEntityType($entity->getEntityTypeId())
-      ->setFieldName($membership->getFieldName())
-      ->setRoles($roles)
-      ->save();
+    $membership = Og::createMembership($entity, $entity->getOwner());
+    $membership->setRoles(array_values(OgRole::loadMultiple($roles)));
+    $membership->save();
   }
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_access().
  *
- * Invalidate the og_content cache tag of the groups this entity belongs to.
+ * Interrupts the permissions for updating a collection. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
  */
-function collection_entity_update(EntityInterface $entity) {
-  // @todo Fix cache invalidating.
-  // @see ISAICP-2475.
-  if (TRUE) {
+function collection_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'collection' || $account->isAnonymous() || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $membership = Og::getMembership($entity, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
+      return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
+
+    default:
+      break;
+
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function collection_rdf_entity_presave(RdfInterface $entity) {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
-  $entity_type_id = $entity->getEntityTypeId();
-  $bundle = $entity->bundle();
-  if (Og::isGroupContent($entity_type_id, $bundle)) {
-    foreach (Og::getGroupIds($entity) as $entity_type => $ids) {
-      foreach ($ids as $id) {
-        Cache::invalidateTags(['og_group_content:' . $id]);
+
+  // Provide default values for date/time fields if were missed.
+  foreach (['created', 'changed'] as $field_name) {
+    if ($entity->get($field_name)->isEmpty()) {
+      if (!isset($request_time)) {
+        $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());
       }
+      $entity->set($field_name, $request_time);
     }
+  }
+
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
+    return;
+  }
+
+  $state = $entity->field_ar_state->value;
+  if (in_array($state, ['draft', 'proposed'])) {
+    $entity->set('graph', 'draft');
+  }
+  elseif (in_array($state, [
+    'validated',
+    'archival_request',
+    'deletion_request',
+    'archived',
+  ])) {
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Performs the following actions:
+ * - When the entity is saved into the default graph, the draft must be deleted.
+ */
+function collection_rdf_entity_update(EntityInterface $entity) {
+  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
+    return;
+  }
+
+  if ($entity->field_ar_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
   }
 }
 
@@ -108,7 +283,7 @@ function collection_entity_update(EntityInterface $entity) {
  * Implements hook_module_implements_alter().
  */
 function collection_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'entity_insert') {
+  if ($hook === 'rdf_entity_insert') {
     // Make sure collection_entity_insert() runs after og_entity_insert(). The
     // latter creates an OgMembership entry for the collection owner when a new
     // collection is proposed, and collection_entity_insert() needs to modify
@@ -124,13 +299,32 @@ function collection_module_implements_alter(&$implementations, $hook) {
  */
 function collection_entity_extra_field_info() {
   $fields = [];
-  // Create a 'collection content' field, available on the collection display.
   $collection = RdfEntityType::load('collection');
-  $fields['rdf_entity'][$collection->id()]['display']['collection_content'] = [
-    'label' => t('Collection content'),
-    'description' => t('Content in this collection'),
-    'weight' => 100,
-    'visible' => TRUE,
+  // Add the join/leave collection form as field.
+  // @todo will be removed in ISAICP-2743
+  $display = &$fields['rdf_entity'][$collection->id()]['display'];
+  $display['join_collection'] = [
+    'label' => t('Join collection'),
+    'description' => t('Shows the join/leave collection form'),
+    'visible' => FALSE,
+  ];
+
+  $display['members'] = [
+    'label' => t('Amount of members'),
+    'description' => t('Amount of members of the collection'),
+    'visible' => FALSE,
+  ];
+
+  $display['solutions'] = [
+    'label' => t('Amount of solutions'),
+    'description' => t('Amount of solutions of the collection'),
+    'visible' => FALSE,
+  ];
+
+  $display['read_more'] = [
+    'label' => t('Read more'),
+    'description' => t('Shows a link to the about page of the collection'),
+    'visible' => FALSE,
   ];
 
   return $fields;
@@ -139,25 +333,404 @@ function collection_entity_extra_field_info() {
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
- * Attach the 'collection content' as a field to the collection entity.
+ * Shows extra fields for the collection bundle.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if (!$display->getComponent('collection_content')) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  if ($entity->bundle() !== 'collection') {
     return;
   }
-  $view_name = 'collection_content';
-  $display_id = 'default';
-  $view = Views::getView($view_name);
-  if (!$view || !$view->access($display_id)) {
+
+  if ($display->getComponent('join_collection')) {
+    $build['join_collection'] = [
+      '#lazy_builder' => [
+        'collection.lazy_builders:renderJoinCollectionForm',
+        [$entity->id()],
+      ],
+      '#create_placeholder' => TRUE,
+      // This form varies by the role a user has inside the collection. Set the
+      // applicable cache context.
+      '#cache' => ['contexts' => ['og_role']],
+    ];
+  }
+  // Member count.
+  if ($display->getComponent('members')) {
+    $member_count = collection_member_count($entity);
+    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
+    // @see collection_og_membership_presave()
+    $tags = Cache::buildTags('joinup-membership', [$tag]);
+    $build['members'] = [
+      '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
+      '#cache' => [
+        'tags' => $tags,
+      ],
+    ];
+  }
+  // Solution count.
+  if ($display->getComponent('solutions')) {
+    $solution_count = collection_solution_count($entity);
+    $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
+    $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
+    $build['solutions'] = [
+      '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
+      '#cache' => [
+        // Invalidate when community content is saved.
+        'tags' => $tags,
+      ],
+    ];
+  }
+
+  // Read more link to the about page.
+  if ($display->getComponent('read_more')) {
+    $build['read_more'] = $entity->toLink(t('Read more'), 'about-page', [
+      'attributes' => [
+        'class' => ['about-page', 'read-more', 'fieldset__read-more'],
+      ],
+    ])->toRenderable();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  if ($entity->bundle() !== 'collection' || $display->getMode() !== 'default') {
     return;
   }
-  $build['collection_content'] = [
-    '#type' => 'view',
-    '#name' => $view_name,
-    '#display_id' => $display_id,
-    '#arguments' => [
-      // Use the entity id as a contextual filter.
-      $entity->id(),
+
+  // Hide the description when the abstract is available.
+  if (Element::children($build['field_ar_abstract'])) {
+    $build['field_ar_description']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Amount of members of a collection.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $entity
+ *   The collection.
+ *
+ * @return int
+ *   Amount of members.
+ */
+function collection_member_count(RdfInterface $entity) {
+  return \Drupal::entityQuery('og_membership')
+    ->condition('entity_type', 'rdf_entity')
+    ->condition('entity_id', $entity->id())
+    ->condition('state', OgMembershipInterface::STATE_ACTIVE)
+    ->count()
+    ->execute();
+}
+
+/**
+ * Amount of validated solutions in the collection.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $entity
+ *   The collection.
+ *
+ * @return int
+ *   Amount of validated solutions.
+ */
+function collection_solution_count(RdfInterface $entity) {
+  $solutions = $entity->get('field_ar_affiliates');
+  $solution_ids = [];
+  foreach ($solutions as $solution) {
+    $solution_ids[] = $solution->getValue()['target_id'];
+  }
+  $results = 0;
+  if ($solution_ids) {
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $solution_count */
+    $solution_count = \Drupal::entityQuery('rdf_entity');
+    // @todo Chain the query methods.
+    // @see https://github.com/ec-europa/rdf_entity/issues/26
+    $solution_count->setGraphType(['default']);
+    $results = $solution_count->condition('rid', 'solution')
+      ->condition('id', $solution_ids, 'IN')
+      ->count()
+      ->execute();
+  }
+  return $results;
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API queries for the collection content on the collection
+ * homepage:
+ * - Only show content related to the collection.
+ * - Do not show the collection itself in the search results.
+ * - Exclude custom pages.
+ */
+function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+
+  $or = $query->createConditionGroup('OR');
+  // Show content that is related to this collection through the aggregated
+  // field. This makes sure that other related entities (such as the collection
+  // owner) do not show up as collection content tiles.
+  $or->addCondition('entity_groups', [$entity->id()], 'IN');
+  // Or show content that has been shared in this collection.
+  $or->addCondition('field_shared_in', [$entity->id()], 'IN');
+  $query->addConditionGroup($or);
+
+  // Remove the collection itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+
+  // Exclude custom pages from the collection overview.
+  $query->addCondition('entity_bundle', 'custom_page', '<>');
+}
+
+/**
+ * Implements hook_search_api_solr_query_alter().
+ *
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
+ * to sort the results with the following cascade of criteria:
+ * - entities pinned in the context of the collection;
+ * - the score (relevancy) in the Solr index. The most relevant are on top.
+ * - newer entities go first.
+ */
+function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
+  if (!$query->hasTag('search_api_field_field_collection_content')) {
+    return;
+  }
+
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  if (!$entity = $query->getOption('search_api_field entity')) {
+    return;
+  }
+
+  // In order to sort by the pinned status of the entity, we need to create a
+  // sort function query. The values that are used for sort are evaluated at
+  // runtime instead of being retrieved from the index.
+  // An entity is pinned when:
+  // - for nodes, when they are belong to the current collection and the sticky
+  //   field is set to true;
+  // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function query is a good candidate for doing custom sorts,
+  // but it will return the score of the subquery. The score can be different
+  // between single results and can range from a small fraction above zero to
+  // infinite.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // @codingStandardsIgnoreEnd
+  // The and() operator will return false when the subquery score is lower than
+  // 1, so both of the above will fail the sorting.
+  // Solr 6.x has the gt(x,y) function, that will return true if x is greater
+  // than y. By using gt(), any positive score can be transformed to true.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // @codingStandardsIgnoreEnd
+  // Unfortunately, Solr 5.x doesn't support the gt() function.
+  // Both Solr versions support the termfreq() function, which will return the
+  // number of occurrences of a term in a field of the document.
+  // Alternatively, also the exists() function could be used in conjunction with
+  // the query() function, but it looks more expensive.
+  // Example:
+  // @codingStandardsIgnoreLine
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
+  // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
+  $computed_sort = sprintf(
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    $solarium_query->getHelper()->escapePhrase($entity->id())
+  );
+  $solarium_query->setSorts([
+    $computed_sort => 'desc',
+    'score' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function collection_og_membership_presave(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Disallow anonymous users to post comments on closed collections content.
+ */
+function collection_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($op !== 'post comments') {
+    return AccessResult::neutral();
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if (!$parent || $parent->bundle() !== 'collection') {
+    return AccessResult::neutral();
+  }
+
+  return AccessResult::forbiddenIf($parent->get('field_ar_closed')->value && $account->isAnonymous())->addCacheableDependency($parent);
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function collection_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'collection') {
+    return [
+      'last_update' => BaseFieldDefinition::create('timestamp')
+        ->setLabel(t('Last updated'))
+        ->setDescription(t('The last updated time considering also compounding entities.'))
+        ->setComputed(TRUE)
+        ->setClass(LastUpdatedFieldItemList::class)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setCardinality(1),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_node_delete(NodeInterface $node) {
+  if (!$node->hasField('og_audience') || !$node->isPublished()) {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  if (($group = $node->og_audience->entity) && $group->bundle() === 'collection') {
+    // Touch the parent collection in order to update its changed timestamp.
+    $group->skip_notification = TRUE;
+    $group->setChangedTime(\Drupal::time()->getRequestTime())->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_rdf_entity_delete(RdfInterface $solution) {
+  if (($solution->bundle() !== 'solution') || ($solution->field_is_state->value !== 'validated')) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $ids = $storage->getQuery()
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+  if ($ids) {
+    // Touch the parent collections in order to update their changed timestamp.
+    $request_time = \Drupal::time()->getRequestTime();
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    foreach ($storage->loadMultiple($ids) as $collection) {
+      $collection->skip_notification = TRUE;
+      $collection->setChangedTime($request_time)->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * In the member administration bulk operation view we are formatting the
+ * username column as full names, but Views still sorts by username. Make sure
+ * we sort by first name + last name instead of by username.
+ */
+function collection_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Skip if this is not the member administration view.
+  if ($view->id() !== 'og_members_overview' || !$query instanceof Sql) {
+    return;
+  }
+  // Skip if we're not ordering by username.
+  if (empty($query->orderby[0]['field'])) {
+    return;
+  }
+  $field = $query->orderby[0]['field'];
+  if ($field !== 'users_field_data_og_membership.name') {
+    return;
+  }
+
+  $display = $view->getDisplay();
+
+  // Keep track of the direction of the sort.
+  $order = $query->orderby[0]['direction'] ?: 'ASC';
+
+  // Get rid of the original sort handlers and order by clauses that may be
+  // present in the view.
+  $query->orderby = [];
+  foreach ($display->getHandlers('sort') as $sort_handler) {
+    $sort_handler->destroy();
+  }
+
+  // Inject freshly initialized sort handlers for the first name and last name
+  // into the display.
+  $display->handlers['sort'] = array_map(function ($info) use ($view, $display) {
+    $handler = Views::handlerManager('sort')->getHandler($info, NULL);
+    $handler->init($view, $display, $info);
+    return $handler;
+  }, collection_get_og_members_overview_sort_handlers_info($order));
+
+  // Make sure the sort handlers are "built". This is making sure that the
+  // various references to objects and arrays are present at the places that
+  // Views expects them to be.
+  $view->_build('sort');
+}
+
+/**
+ * Returns info for Views sort handlers in the member administration form.
+ *
+ * We are overriding the username column in the member administration view so
+ * that the full name (first name + last name) is shown. This means that we need
+ * to override the sorting as well, since the usernames are not necessarily in
+ * the same alphabetical order as the full names. This function returns the info
+ * that can be used to create the Views sort handlers for the user's first and
+ * last name.
+ *
+ * @param string $order
+ *   The order in which to sort, either 'ASC' or 'DESC'.
+ *
+ * @return array
+ *   An associative array of Views sort handler configuration options, keyed by
+ *   field name.
+ *
+ * @see collection_views_query_alter()
+ */
+function collection_get_og_members_overview_sort_handlers_info(string $order): array {
+  return [
+    'field_user_first_name_value' => [
+      'id' => 'field_user_first_name_value',
+      'table' => 'user__field_user_first_name',
+      'field' => 'field_user_first_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+    'field_user_family_name_value' => [
+      'id' => 'field_user_family_name_value',
+      'table' => 'user__field_user_family_name',
+      'field' => 'field_user_family_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
     ],
   ];
 }

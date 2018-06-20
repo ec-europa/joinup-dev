@@ -4,170 +4,88 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.news.body
-    - field.field.node.news.field_news_kicker
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
-    - field.field.node.news.field_news_state
-    - field.field.node.news.og_group_ref
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
+    - field.field.node.news.field_state
+    - field.field.node.news.field_visit_count
+    - field.field.node.news.og_audience
     - node.type.news
   module:
     - ds
-    - link
-    - text
+    - smart_trim
     - user
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - node_title
-        - body
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: ''
-          class: ''
-        ft:
-          id: expert
-          settings:
-            lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: 'listing__field listing__field--top-padding'
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
-            lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
 id: node.news.view_mode_tile
 targetEntityType: node
 bundle: news
 mode: view_mode_tile
 content:
   body:
+    type: smart_trim
+    weight: 0
     label: hidden
-    type: text_summary_or_trimmed
-    weight: 1
     settings:
       trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-  field_news_kicker:
-    weight: 2
-    label: above
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+  field_keywords:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings:
       ds:
+        ds_limit: ''
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow-el: ''
-            ow-cl: ''
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: ''
-            fi-cl: test_class
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-    type: string
-  field_news_source_url:
-    weight: 5
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-  links:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-  og_group_ref:
-    type: entity_reference_label
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
 hidden:
-  field_news_state: true
+  field_attachment: true
+  field_comments: true
+  field_news_headline: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
+  field_policy_domain: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_state: true
+  field_visit_count: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

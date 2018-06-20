@@ -1,14 +1,11 @@
 langcode: en
 status: true
 dependencies: {  }
-third_party_settings:
-  rdf_entity:
-    mapping_rid:
-      target_id: 'http://www.w3.org/ns/adms#AssetRepository'
-    mapping_label:
-      value: 'http://purl.org/dc/terms/title'
+third_party_settings: {  }
 name: Collection
 rid: collection
 description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
-rdftype: 'http://www.w3.org/ns/adms#AssetRepository'
-rdf_label: 'http://purl.org/dc/terms/title'
+label_singular: collection
+label_plural: collections
+label_count:
+  no_count_capitalize: "Collection\x03Collections"

@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Field template where each value is separated by comma.
+ */
+#}
+{% if label_hidden %}
+  {% for item in items -%}
+    {{ item.content }}{% if not loop.last %}, {% endif %}
+  {%- endfor %}
+{% else %}
+    <div{{ title_attributes }}>{{ label }}</div>
+    {% for item in items -%}
+      {{ item.content }}{% if not loop.last %}, {% endif %}
+    {%- endfor %}
+{% endif %}

@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ */
+#}
+<article{{ attributes }}>
+  <div class="page__content">
+    {{ content.field_ad_description }}
+    {{ content.group_categorisation }}
+    {% if content.field_ad_access_url|render %}
+      <div class="action-link__wrapper right">
+        {{ content.field_ad_access_url }}
+      </div>
+    {% endif %}
+  </div>
+</article>

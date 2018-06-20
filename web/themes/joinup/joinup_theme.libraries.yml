@@ -12,13 +12,27 @@ global-components:
       css/style.min.css: {}
   js:
     js/script.js: {}
+  dependencies:
+    - core/jquery
 
-fonts:
-  css:
-    theme:
-      '//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic': { type: external, minified: true }
+form-components:
+  Version: 1.x
+  js:
+    js/form.js: {}
+    vendor/autosize/dist/autosize.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.ui.slider
+    - core/drupal
+    - core/drupalSettings
 
-icons:
-  css:
-    theme:
-      '//fonts.googleapis.com/icon?family=Material+Icons': { type: external, minified: true }
+fieldset-show-more:
+  Version: 1.x
+  js:
+    js/fieldset-show-more.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/jquery.ui.accordion

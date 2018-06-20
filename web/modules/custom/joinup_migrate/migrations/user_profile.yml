@@ -1,0 +1,37 @@
+id: user_profile
+label: 'User profiles'
+migration_tags:
+  - user
+source:
+  plugin: user_profile
+process:
+  uid:
+    plugin: migration
+    migration: user
+    source: uid
+    no_stub: true
+  field_user_first_name: first_name
+  field_user_family_name: last_name
+  field_user_nationality:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_user_professional_profile/value:
+    plugin: file_inline
+    source: professional_profile
+  field_user_professional_profile/format:
+    plugin: default_value
+    default_value: content_editor
+  field_user_organisation: company_name
+  field_user_photo:
+    plugin: migration
+    migration: file:user_photo
+    source: photo_id
+    no_stub: true
+  field_social_media/platform_values: social_media
+destination:
+  plugin: entity:user
+migration_dependencies:
+  required:
+    - file:user_photo
+    - og_user_role

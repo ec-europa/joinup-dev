@@ -6,7 +6,8 @@ dependencies:
 third_party_settings:
   rdf_entity:
     rdf_mapping: 'dct:publisher'
-    mapping_target_id: 'http://purl.org/dc/terms/publisher'
+    mapping:
+      target_id: 'http://purl.org/dc/terms/publisher'
 id: rdf_entity.field_publisher
 field_name: field_publisher
 entity_type: rdf_entity
@@ -16,7 +17,7 @@ settings:
 module: core
 locked: false
 cardinality: 1
-translatable: true
+translatable: false
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

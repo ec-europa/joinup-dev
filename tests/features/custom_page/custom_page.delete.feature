@@ -6,13 +6,14 @@ Feature: "Custom page" deleteing.
 
   Background:
     Given users:
-      | name         | mail                     |
+      | Username     | E-mail                   |
       | Mickey Mouse | mickey.mouse@example.com |
       | Pluto        | pluto@example.com        |
     And the following collection:
       | title       | Dumbo Collective                                                            |
       | description | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo". |
       | logo        | logo.png                                                                    |
+      | state       | validated                                                                   |
     And the following collection user memberships:
       | collection       | user         | roles       |
       | Dumbo Collective | Mickey Mouse | facilitator |

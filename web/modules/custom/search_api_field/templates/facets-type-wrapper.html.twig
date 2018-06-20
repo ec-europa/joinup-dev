@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a list of tabs.
+ *
+ * Available variables:
+ * - items: A list of items. Each item contains:
+ *   - attributes: HTML attributes to be applied to each list item.
+ *   - value: The content of the list element.
+ * - attributes: HTML attributes to be applied to the list.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if items  %}
+<div class="tabs--content-type">
+    {%- for item in items -%}
+        {{ item }}
+    {%- endfor -%}
+</div>
+{%- endif %}

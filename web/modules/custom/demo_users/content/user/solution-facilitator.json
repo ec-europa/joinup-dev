@@ -1,0 +1,75 @@
+{
+    "_links": {
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uuid": [
+        {
+            "value": "d82ced40-255d-445f-9e31-38445aadca7c"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "name": [
+        {
+            "value": "solution_facilitator"
+        }
+    ],
+    "pass": [
+        {
+            "value": "solution_facilitator"
+        }
+    ],
+    "mail": [
+        {
+            "value": "solution_facilitator@example.com"
+        }
+    ],
+    "created": [
+        {
+            "value": "1473770036"
+        }
+    ],
+    "changed": [
+        {
+            "value": "1473770036",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": "1",
+            "lang": "en"
+        }
+    ],
+    "field_user_family_name": [
+        {
+            "value": "Facilitator"
+        }
+    ],
+    "field_user_first_name": [
+        {
+            "value": "Solution"
+        }
+    ],
+    "field_user_frequency": [
+        {
+            "value": "weekly"
+        }
+    ],
+    "field_user_subscription_events": [
+        {
+            "value": "1"
+        }
+    ]
+}

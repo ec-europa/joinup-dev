@@ -1,0 +1,37 @@
+// Radio
+//
+// Markup: html/radio.html
+//
+// Styleguide 1.9
+
+// Component
+// --------------------------------------------------
+.radio
+  display: block
+  margin: 15px 0
+
+// Elements
+// --------------------------------------------------
+.mdl-radio__inner-circle
+  background: $color-blue-medium
+
+// Modifiers
+// --------------------------------------------------
+.radio--inline
+  display: inline-block
+  vertical-align: middle
+  margin-right: 15px
+  &:last-of-type
+    margin-right: 0
+
+// Dependiencies
+// --------------------------------------------------
+.mdl-radio__ripple-container
+  .mdl-ripple
+    background: $color-blue-medium
+
+// States
+// --------------------------------------------------
+.mdl-radio.is-checked
+  .mdl-radio__outer-circle
+    border-color: $color-blue-medium

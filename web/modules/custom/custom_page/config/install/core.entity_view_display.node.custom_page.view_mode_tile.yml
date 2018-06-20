@@ -4,70 +4,14 @@ dependencies:
   config:
     - core.entity_view_mode.node.view_mode_tile
     - field.field.node.custom_page.body
-    - field.field.node.custom_page.og_group_ref
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
     - ds
-    - text
+    - smart_trim
     - user
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      path: modules/contrib/ds
-      library: ''
-      disable_css: false
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
-    regions:
-      ds_content:
-        - node_title
-        - body
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: ''
-          class: ''
-        ft:
-          id: expert
-          settings:
-            lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: h2
-            fi-cl: listing__title
-            fi-at: ''
-            suffix: ''
-            lbw: false
-            lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
 id: node.custom_page.view_mode_tile
 targetEntityType: node
 bundle: custom_page
@@ -75,48 +19,34 @@ mode: view_mode_tile
 content:
   body:
     label: hidden
-    type: text_trimmed
-    weight: 1
+    type: smart_trim
+    weight: 0
     settings:
       trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
     third_party_settings:
       ds:
         ft:
-          id: expert
+          id: default
           settings:
             lb: ''
-            prefix: ''
-            lbw-el: ''
-            lbw-cl: ''
-            lbw-at: ''
-            ow: true
-            ow-el: div
-            ow-cl: listing__field
-            ow-at: ''
-            fis-el: ''
-            fis-cl: ''
-            fis-at: ''
-            fi: true
-            fi-el: div
-            fi-cl: listing__teaser
-            fi-at: ''
-            suffix: ''
-            lbw: false
             lb-col: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
-            fi-def-at: false
-  links:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-  og_group_ref:
-    type: entity_reference_label
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-hidden: {  }
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  field_attachment: true
+  field_cp_content_listing: true
+  langcode: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true
+  report: true

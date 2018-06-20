@@ -1,5 +1,17 @@
+// Header menu
+//
+// Markup: html/header-menu.html
+// 
+// Menu placed in the header with active Collection item
+// 
+// Styleguide 2.7.2
+
 // Component
 // --------------------------------------------------
+.header-menu
+  display: none
+  +breakpoint(tablet)
+    +flex
 
 // Elements
 // --------------------------------------------------
@@ -8,7 +20,7 @@
   position: relative
   display: block
   width: 170px
-  padding: 0 12px 0 0 !important
+  padding: 0 !important
   text-align: center
   text-decoration: none
   text-transform: uppercase
@@ -21,7 +33,8 @@
 .header-menu__icon
   display: inline-block
   vertical-align: middle
-  +icon-size(50px)
+  margin-right: 8px
+  +icon-size(30px)
 
 .header-menu__text
   font-weight: $font-weight-medium
@@ -32,9 +45,12 @@
 // Modifiers
 // --------------------------------------------------
 
+// Dependiencies
+// --------------------------------------------------
+
 // States
 // --------------------------------------------------
-.header-menu__link.active-trail
+.header-menu__link.active-trail, .header-menu__link.is-active
   color: $color-blue-default
   background: #fff
   border-top: 2px solid $color-orange

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_20
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_20
+field_name: field_tallinn_action_20
+entity_type: node
+bundle: tallinn_report
+label: 'Action 20'
+description: 'Take steps to increase the digital leadership skills among top civil and public servants and digital skills more widely within the public administration at all levels, as a necessary precondition to any successful digital transformation of public administrations.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

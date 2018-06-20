@@ -1,31 +1,162 @@
 // Search bar
-//
-// Search bar component
+// 
+// Markup: html/search-bar.html
+// 
+// .search-bar                   - Default
+// .search-bar--white            - White colored
+// 
+// 
 
 // Component
 // --------------------------------------------------
-.search-bar
+// .search-bar
+  
 
 // Elements
 // --------------------------------------------------
+.search-bar__wrapper
+  margin-bottom: 40px
+  text-align: center
+
 .search-bar__label
-  position: absolute
-  top: 17px
+  width: 40px
+  height: 40px
 
 .search-bar__icon
-  background: url('../images/search-icon.png') center no-repeat
-  width: 23px
-  height: 23px
+  padding: 0
+  color: lighten($color-grey-medium, 10%)
+  +icon-size(25px)
+  +border-radius(50%)
+  +centered
+
+.search-bar__input
+  font-weight: $font-weight-thin
+  color: lighten($color-grey-medium, 10%)
+  border-bottom-color: lighten($color-grey-medium, 10%)
+  &::-webkit-input-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &:-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &::-moz-placeholder
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
+  &:-ms-input-placeholder 
+    font-size: $font-size-base
+    font-weight: $font-weight-thin
+    font-style: italic
+    color: lighten($color-grey-medium, 10%)
 
 .search-bar__input-container
-  padding-top: 7px
+  margin-left: 0
+  padding: 10px 0
 
+.search-bar__block
+  position: relative
+  max-width: 570px
+  margin: 20px auto
+  +breakpoint(tablet)
+    margin-top: 40px
+    margin-bottom: 40px
 
 // Modifiers
 // --------------------------------------------------
 .search-bar--header
   position: absolute
   top: 0
-  right: 100px
-  width: 200px
+  right: 75px
+  overflow: hidden
+  height: 64px
   padding: 0
+  +z-index(highlight)
+
+.search-bar--section
+  width: 85%
+  margin-left: -40px
+  padding: 0
+  +breakpoint(tablet)
+    width: 570px
+
+// Dependiencies
+// --------------------------------------------------
+.search-bar--header
+  .search-bar__label
+    position: relative
+    bottom: auto
+    display: inline-block
+    vertical-align: middle
+  .search-bar__input
+    font-weight: $font-weight-thin
+    display: inline-block
+    vertical-align: middle
+    border-bottom: 1px solid #fff
+
+.search-bar--section
+  .search-bar__label
+    top: 0
+    left: 0
+  .search-bar__input
+    font-weight: $font-weight-thin
+    padding-left: 45px
+    border-bottom: 2px solid lighten($color-grey-medium, 10%)
+
+.search-bar--white
+  .search-bar__icon
+    color: #fff
+  .search-bar__input
+    color: #fff
+    border-bottom-color: #fff
+    &::-webkit-input-placeholder
+      color: #fff
+    &:-moz-placeholder
+      color: #fff
+    &::-moz-placeholder
+      color: #fff
+    &:-ms-input-placeholder
+      color: #fff
+
+.search-bar__block
+  .search-bar__button-container
+    position: relative
+    left: 20px
+    width: 25px
+    height: 25px
+    padding: 0
+    +border-radius(50%)
+    +centered($horizontal: false, $vertical: true)
+    +breakpoint(tablet)
+      left: -10px
+  .search-bar__button
+    font-size: 0
+    width: 25px
+    height: 25px
+    padding: 0
+    cursor: pointer
+    border: none
+    background: none
+    +z-index(navigation)
+    +centered
+  label
+    display: none
+
+// States
+// --------------------------------------------------
+.search-bar--header
+  &.is-focused,
+  &.is-dirty
+    width: calc(100% - 130px)
+    background-color: $color-blue-default
+    +z-index(navigation)
+    +breakpoint(tablet)
+      width: calc(100% - 200px)
+    .search-bar__input-container
+      width: calc(100% - 50px)
+      max-width: 100%
+

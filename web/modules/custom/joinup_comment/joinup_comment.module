@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Joinup comment logic.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function joinup_comment_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  // Add contextual links to comments.
+  $build['#contextual_links']['comment'] = [
+    'route_parameters' => ['comment' => $entity->id()],
+    'metadata' => ['changed' => $entity->getChangedTime()],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Change the submit button label for the comment form.
+ */
+function joinup_comment_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Post comment');
+}

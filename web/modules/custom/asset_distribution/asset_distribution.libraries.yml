@@ -1,0 +1,6 @@
+download_tracking:
+  js:
+    js/download_tracking.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal.ajax

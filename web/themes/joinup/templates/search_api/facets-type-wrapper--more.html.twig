@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a list of tabs.
+ *
+ * Available variables:
+ * - items: A list of items. Each item contains:
+ *   - attributes: HTML attributes to be applied to each list item.
+ *   - value: The content of the list element.
+ * - attributes: HTML attributes to be applied to the list.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if items|length > 2 %}
+  {% set class='tab__container tab__container--wide' %}
+{% else %}
+  {% set class='tab__container tab__container--narrow' %}
+{% endif %}
+{% if items %}
+<div class="{{ class }}">
+    {%- for item in items -%}
+        {{ item }}
+    {%- endfor -%}
+
+    <a id="filters__dropdown-button" class="filters__dropdown-button tab--more">
+      <div class="tab__text">{{ 'More'|t }}</div>
+      <div class="tab__icon icon icon--arrow-down"></div>
+    </a>
+</div>
+{%- endif %}

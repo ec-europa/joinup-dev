@@ -1,0 +1,104 @@
+id: solution
+label: 'Solutions'
+migration_tags:
+  - solution
+  - og
+source:
+  plugin: solution
+  track_changes: true
+process:
+  id: uri
+  label: title
+  uid:
+    plugin: migration
+    migration: user
+    source: uid
+    no_stub: true
+  field_is_banner:
+    plugin: migration
+    source: banner
+    migration: file:solution_banner
+    no_stub: true
+  contact_from_node:
+    plugin: migration
+    source: contact
+    migration: contact
+    no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_is_contact_information:
+    plugin: merge
+    source:
+      - "@contact_from_node"
+      - "@contact_from_email"
+    unique: true
+  created: created_time
+  field_is_description/value:
+    plugin: file_inline
+    source: body
+  field_is_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_is_distribution:
+    plugin: migration
+    source: distribution
+    migration: distribution
+    no_stub: true
+  field_is_documentation: documentation
+  field_keywords: keywords
+  field_is_landing_page: landing_page
+  field_is_logo:
+    plugin: migration
+    source: logo_id
+    migration: file:solution_logo
+    no_stub: true
+  field_is_metrics_page: metrics_page
+  changed: changed_time
+  owner_from_publisher:
+    plugin: migration
+    source: owner
+    migration: owner
+    no_stub: true
+  owner_from_text:
+    plugin: migration
+    source:
+      - owner_name
+      - owner_type
+    migration: owner_text
+    no_stub: true
+  field_is_owner:
+    plugin: merge
+    source:
+      - "@owner_from_publisher"
+      - "@owner_from_text"
+    unique: true
+  field_policy_domain:
+    plugin: policy_domain
+    source: policy2
+
+  # Follow-up @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3020
+  # field_is_solution_type:
+
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_is_state: state
+  field_status: status_field
+  i18n: i18n
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: solution
+migration_dependencies:
+  required:
+    - file:solution_banner
+    - file:solution_logo
+    - distribution
+    - owner
+    - contact
+    - contact_email
+    - file:documentation
+    - file:inline

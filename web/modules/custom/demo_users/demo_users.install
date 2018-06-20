@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Demo users module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function demo_users_uninstall() {
+  // Deletes demo users.
+  $path = drupal_get_path('module', 'demo_content') . '/content/user';
+  foreach (array_keys(file_scan_directory($path, '|\.json$|')) as $uri) {
+    $content = file_get_contents($uri);
+    $decoded = \Drupal::service('serializer')->decode($content, 'hal_json');
+    $name = $decoded['name'][0]['value'];
+    if ($user = user_load_by_name($name)) {
+      user_delete($user->id());
+    }
+  }
+}

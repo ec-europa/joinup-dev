@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Default theme implementation of the social share links.
+ *
+ * Available variables:
+ * - entity: the entity being shared.
+ * - url: the absolute url of the entity.
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div class="share-box__row">
+  <a class="share-box__item" href="http://www.facebook.com/sharer/sharer.php?u={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--facebook"></div>
+    <div class="share-box__label">{{ 'Facebook'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://twitter.com/intent/tweet?url={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--twitter"></div>
+    <div class="share-box__label">{{ 'Twitter'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://plus.google.com/share?url={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--gplus"></div>
+    <div class="share-box__label">{{ 'Google +'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://www.linkedin.com/shareArticle?mini=true&url={{ encoded_url }}&title={{ encoded_title }}" target="_blank">
+    <div class="share-box__social-icon icon icon--linkedin"></div>
+    <div class="share-box__label">{{ 'Linkedin'|t }}</div>
+  </a>
+</div>

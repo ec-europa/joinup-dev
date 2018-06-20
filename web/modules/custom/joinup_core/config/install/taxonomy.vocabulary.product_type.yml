@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings: {  }
+name: 'Product type'
+vid: product_type
+description: ''
+hierarchy: 0
+weight: 0

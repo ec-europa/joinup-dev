@@ -1,0 +1,8 @@
+name: ADMS-AP validator
+type: module
+description: Validates ADMS-AP data.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - rdf_entity

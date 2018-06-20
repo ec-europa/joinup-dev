@@ -6,8 +6,13 @@ dependencies:
     - text
 third_party_settings:
   rdf_entity:
-    mapping_value: 'http://purl.org/dc/terms/description'
-    mapping_format: ''
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: t_literal
+      format:
+        predicate: ''
+        format: ''
 id: rdf_entity.field_ar_description
 field_name: field_ar_description
 entity_type: rdf_entity

@@ -5,24 +5,43 @@
  * Contains hooks regarding the asset_release rdf entity bundle.
  */
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Adds the solution releases overview page as link template so the OG context
+ * can be resolved automatically.
+ */
+function asset_release_entity_type_alter(array &$entity_types) {
+  $entity_types['rdf_entity']->setLinkTemplate('solution-releases', '/rdf_entity/{rdf_entity}/releases');
+}
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  // Make sure a release's title and version number is unique in its solution.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
-    $fields['label']->addConstraint('UniqueSolutionTitle', []);
+    $fields['label']->addConstraint('UniqueAssetReleaseTitleVersion', []);
   }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_create().
+ * Implements hook_ENTITY_TYPE_insert().
  *
  * This takes care of the reverse reference.
- * When a release is created, it has it's isVersionOf pre-filled
+ * When a release is created, it has its isVersionOf pre-filled
  * and is connected to its parent. But the parent needs to have the hasVersion
  * field filled as well.
  */
@@ -34,6 +53,264 @@ function asset_release_rdf_entity_insert(EntityInterface $entity) {
     $releases = $parent->get('field_is_has_version')->getValue();
     $releases[] = ['target_id' => $entity->id()];
     $parent->get('field_is_has_version')->setValue($releases);
+    // Avoid triggering notification e-mails during this programmatic update.
+    $parent->skip_notification = TRUE;
     $parent->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function asset_release_rdf_entity_update(EntityInterface $entity) {
+  if ($entity->bundle() !== 'solution') {
+    return;
+  }
+
+  $release_relations = \Drupal::service('asset_release.relations');
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
+  $has_version = $entity->get('field_is_has_version');
+  foreach ($has_version->referencedEntities() as $release) {
+    // Synchronize common fields of child release from parent solution.
+    if ($release_relations->syncFieldsFromParentSolution($release)) {
+      // Do not send emails for this change.
+      $release->skip_notification = TRUE;
+      $release->save();
+      unset($release->skip_notification);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function asset_release_preprocess_rdf_entity(&$variables) {
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf_entity */
+  $rdf_entity = $variables['rdf_entity'];
+  if ($rdf_entity->bundle() !== 'asset_release') {
+    return;
+  }
+  $variables['full_label'] = new TranslatableMarkup('@label @ver', ['@label' => $rdf_entity->label(), '@ver' => $rdf_entity->field_isr_release_number->value]);
+
+  /** @var \Drupal\rdf_entity\Entity\Rdf $parent_solution */
+  $parent_solution = \Drupal::service('asset_release.relations')->getReleaseSolution($rdf_entity);
+
+  // Mark the release as latest.
+  $is_latest_release = FALSE;
+  if ($variables['view_mode'] === 'compact') {
+    // @see \Drupal\asset_release\Controller\AssetReleaseController::overview()
+    $is_latest_release = !empty($rdf_entity->is_latest_release);
+  }
+  elseif ($parent_solution) {
+    // @todo Find a better way of marking the latest release that doesn't
+    //   involve performing a database query in the theme layer.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3101
+    $latest_release = solution_get_latest_release($parent_solution);
+    if ($latest_release && $latest_release->id() === $rdf_entity->id()) {
+      $is_latest_release = TRUE;
+    }
+  }
+
+  $variables['is_latest_release'] = $is_latest_release;
+
+  // Whenever a new release gets created, the parent solution gets updated.
+  // Invalidate the rendered template cache of the latest release in that case,
+  // so the latest release flag gets updated.
+  if ($parent_solution && $is_latest_release) {
+    $cache_tags = isset($variables['#cache']['tags']) ? $variables['#cache']['tags'] : [];
+    $cache_tags = Cache::mergeTags($cache_tags, $parent_solution->getCacheTags());
+
+    // Add the group content tag belonging to the parent too. We need to
+    // invalidate the cache also when a release is first saved as draft and then
+    // published. In that case the solution won't be updated, so we need to
+    // manually take care of this.
+    $group_tag = Cache::buildTags('og-group-content', $parent_solution->getCacheTagsToInvalidate());
+    $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function asset_release_theme($existing, $type, $theme, $path) {
+  return [
+    'asset_release_releases_download' => [
+      'variables' => ['releases' => []],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ *
+ * Interrupts the permissions for updating a release. The permission is not
+ * granted if there are no transitions allowed for the current state of the
+ * node.
+ */
+function asset_release_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() != 'asset_release' || $account->hasPermission($entity->getEntityType()->getAdminPermission())) {
+    return AccessResult::neutral();
+  }
+
+  switch ($operation) {
+    case 'view':
+      $parent = \Drupal::service('asset_release.relations')->getReleaseSolution($entity);
+
+      // If for any reason access is requested to an entity without a parent,
+      // deny that access.
+      if (empty($parent)) {
+        return AccessResult::forbidden();
+      }
+
+      /** @var \Drupal\Core\Entity\EntityAccessControlHandlerInterface $access_handler */
+      $access_handler = \Drupal::service('entity_type.manager')->getAccessControlHandler('rdf_entity');
+      if (!$access_handler->access($parent, 'view', $account)) {
+        return AccessResult::forbidden();
+      }
+
+      $membership = Og::getMembership($parent, $account);
+      if (empty($membership)) {
+        return AccessResult::neutral();
+      }
+      if (!$entity->isPublished() && $membership->hasPermission('view unpublished rdf entity')) {
+        return AccessResult::allowed();
+      }
+      if ($entity->isPublished() && $membership->hasPermission('view rdf entity')) {
+        return AccessResult::allowed();
+      }
+      break;
+
+    case 'edit':
+      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
+      return AccessResult::forbiddenIf(empty($allowed_transitions));
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Default graph is published. Draft graph is draft.
+ */
+function asset_release_rdf_entity_presave(EntityInterface $entity) {
+  if ($entity->bundle() !== 'asset_release') {
+    // Act only on releases.
+    return;
+  }
+
+  if (!$entity->get('field_isr_is_version_of')->isEmpty()) {
+    // Synchronize common fields from parent solution.
+    \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution($entity);
+  }
+
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
+    return;
+  }
+
+  $state = $entity->field_isr_state->value;
+  if (in_array($state, ['draft', 'needs_update'])) {
+    $entity->set('graph', 'draft');
+  }
+  elseif (in_array($state, ['validated'])) {
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
+  }
+  elseif (empty($state)) {
+    throw new \Exception("State field not found while trying to get the appropriate graph.");
+  }
+  else {
+    throw new \Exception("State field value is invalid. Current value found: " . $state);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * Performs the following actions:
+ * - When the entity is saved into the default graph, the draft must be deleted.
+ */
+function asset_release_entity_update(EntityInterface $entity) {
+  // Quick escape check to avoid unnecessary loadings.
+  if ($entity->bundle() !== 'asset_release' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
+    return;
+  }
+
+  if ($entity->field_isr_state->value === 'validated') {
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+  }
+}
+
+/**
+ * Prepares variables for the 'asset_release_releases_download' template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - releases: a list of releases and distributions to be rendered.
+ */
+function template_preprocess_asset_release_releases_download(array &$variables) {
+  $releases = $variables['releases'];
+
+  $variables['releases'] = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity')->viewMultiple($releases, 'compact');
+}
+
+/**
+ * Checks if the given release has a unique combination of title and version.
+ *
+ * A solution might have releases of different software packages associated with
+ * it, and some of these might have duplicate version numbers, but to avoid
+ * confusion we should avoid having releases with identical names and versions
+ * within the same solution.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $asset_release
+ *   The release to check.
+ * @param bool $check_unaffiliated_solutions
+ *   Whether or not to check if the release title and version are unique in
+ *   solutions that are not related to the release.
+ *   - When this is TRUE the function will return TRUE if any other release has
+ *     the same title and version as the given release, regardless of the
+ *     solutions they are affiliated with.
+ *   - When this is FALSE the function will only return TRUE if the solution
+ *     that is affiliated with this release contains a release with a duplicate
+ *     title and version. Releases that belong to unaffiliated solutions will be
+ *     ignored.
+ *
+ * @return bool
+ *   TRUE if the title and version are unique.
+ *
+ * @throws \Exception
+ *   Thrown when anything but an asset release entity is passed in.
+ */
+function asset_release_title_version_is_unique(RdfInterface $asset_release, $check_unaffiliated_solutions = FALSE) {
+  if ($asset_release->bundle() !== 'asset_release') {
+    throw new \Exception('Title and version uniqueness within a solution can only be checked for asset releases.');
+  }
+
+  $query = \Drupal::entityQuery('rdf_entity')
+    ->condition('label', $asset_release->label())
+    ->condition('field_isr_release_number', $asset_release->get('field_isr_release_number')->first()->getValue()['value'])
+    ->condition('rid', 'asset_release');
+  if (!empty($asset_release->id())) {
+    $query->condition('id', $asset_release->id(), '<>');
+  }
+
+  // Filter all releases that do not belong to the same solution.
+  if (!$check_unaffiliated_solutions) {
+    $query->condition('field_isr_is_version_of', $asset_release->get('field_isr_is_version_of')->first()->getValue()['target_id']);
+  }
+
+  $result = $query->execute();
+
+  return empty($result);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * For releases, put a permission control on who can edit the creation date.
+ * This applies in edit forms only.
+ */
+function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['created'])) {
+    $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
   }
 }

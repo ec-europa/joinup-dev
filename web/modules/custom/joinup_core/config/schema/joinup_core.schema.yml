@@ -1,0 +1,139 @@
+field.formatter.third_party.joinup:
+  type: mapping
+  label: 'Theme settings for Joinup project.'
+  mapping:
+    template_suggestion:
+      type: string
+
+field.formatter.settings.image_url_formatter:
+  type: mapping
+  label: 'Image field display format settings'
+  mapping:
+    image_link:
+      type: string
+      label: 'Link image to'
+    image_style:
+      type: string
+      label: 'Image style'
+
+field.formatter.settings.daterange_condensed:
+  type: field.formatter.settings.datetime_base
+  label: 'Condensed date range formatter settings'
+  mapping:
+    separator:
+      type: string
+      label: 'Date separator'
+    default_format:
+      type: date_format
+      label: 'Default format'
+    day_diff_format:
+      type: date_format
+      label: 'Different days format'
+    month_diff_format:
+      type: date_format
+      label: 'Different months format'
+    year_diff_format:
+      type: date_format
+      label: 'Different years format'
+
+field.widget.settings.current_workflow_state_widget:
+  type: mapping
+  label: 'Field widget format settings for the current workflow state field.'
+  mapping:
+    title:
+      type: string
+      label: 'The title to use for the field widget.'
+    title_display:
+      type: string
+      label: 'The setting that determines how the field widget title is displayed.'
+    show_for_new_entities:
+      type: boolean
+      label: 'The setting that allows to show the widget on entity creation forms.'
+
+field.widget.settings.email_legacy_multicardinality:
+  type: field.widget.settings.email_default
+
+field.widget.settings.link_legacy_multicardinality:
+  type: field.widget.settings.link_default
+
+field.widget.settings.state_machine_buttons:
+  type: mapping
+  label: 'Theme settings for Joinup project.'
+  mapping:
+    use_transition_label:
+      type: integer
+
+field.widget.settings.string_textfield_legacy_multicardinality:
+  type: field.widget.settings.string_textfield
+
+facet.widget.config.type:
+  type: facet.widget.default_config
+  label: 'Search API content listing'
+  mapping:
+    tabs:
+      type: integer
+      label: 'Number of tabs'
+
+condition.plugin.request_route:
+  type: condition.plugin
+  mapping:
+    routes:
+      type: string
+
+plugin.plugin_configuration.search_api_processor.joinup_entity_status:
+  type: search_api.default_processor_configuration
+  label: 'Joinup entity status processor'
+  mapping:
+    inverse:
+      type: boolean
+      label: 'Inverse'
+    roles:
+
+joinup_core.piwik_settings:
+  type: config_object
+  label: 'Piwik integration settings'
+  mapping:
+    visit_counts:
+      type: sequence
+      sequence:
+        type: joinup_core.piwik_settings.visit_counts.[%key]
+    download_counts:
+      type: sequence
+      sequence:
+        type: joinup_core.piwik_settings.download_counts.[%key]
+    launch_date:
+      type: string
+      label: 'The date when the website was launched, in ISO-8601 extended format.'
+
+joinup_core.piwik_settings.*.*:
+  type: mapping
+  mapping:
+    period:
+      type: integer
+      label: 'Time period, in days.'
+    type:
+      type: string
+      label: 'The type of metric to use.'
+
+entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
+  type: entity_reference_selection.default
+  label: 'RDF taxonomy term selection handler settings'
+
+# Schema for 'joinup_timestamp_timeago' formatter settings.
+field.formatter.settings.joinup_timestamp_timeago:
+  type: field.formatter.settings.timestamp
+  label: 'Joinup Timestamp Timeago display format settings'
+  mapping:
+    tooltip_format:
+      type: string
+      label: 'Tooltip date format'
+    tooltip_format_custom:
+      type: string
+      label: 'Tooltip custom date format'
+    timeago_settings:
+      type: ignore
+      label: 'Timeago plugin settings'
+
+action.configuration.joinup_transfer_group_ownership:
+  type: action_configuration_default
+  label: 'Transfer the ownership of the group to the selected member'

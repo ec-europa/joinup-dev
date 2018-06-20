@@ -1,0 +1,25 @@
+# Route to create a discussion entity that belongs to an rdf_entity.
+joinup_discussion.rdf_entity_discussion.add:
+  path: 'rdf_entity/{rdf_entity}/discussion/add'
+  defaults:
+    _controller: '\Drupal\joinup_discussion\Controller\DiscussionController::add'
+    _title: 'Add discussion'
+  requirements:
+    _custom_access: '\Drupal\joinup_discussion\Controller\DiscussionController::createAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+
+joinup_discussion.invite_form:
+  path: 'node/{node}/invite-to-discussion'
+  defaults:
+    _form: '\Drupal\joinup_discussion\Form\InviteToDiscussionForm'
+    _title: 'Invite to discussion'
+  requirements:
+    node: \d+
+    _custom_access: '\Drupal\joinup_discussion\Form\InviteToDiscussionForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node

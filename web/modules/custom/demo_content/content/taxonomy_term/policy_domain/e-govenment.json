@@ -1,0 +1,36 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/taxonomy\/term\/http%3A%5C%5Cjoinup.eu%5Contology%5Cpolicy-domain%5Ccategory%23e-govenment?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+        }
+    },
+    "tid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain\/category#e-govenment"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/joinup.eu\/ontology\/policy-domain\/category#e-govenment"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "policy_domain"
+        }
+    ],
+    "name": [
+        {
+            "value": "E-govenment",
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ]
+}

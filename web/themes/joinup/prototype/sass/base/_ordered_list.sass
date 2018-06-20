@@ -1,0 +1,31 @@
+// Ordered list
+//
+// Markup: html/ordered-list.html
+//
+// Styleguide 1.6
+
+article
+  ol
+    padding-left: 15px
+    list-style-type: none
+    counter-reset: step-counter
+    li
+      margin-bottom: 4px
+      &:before
+        margin-right: 5px
+        counter-increment: step-counter
+        content: counters(step-counter, ".") "."
+
+    // Indent
+    li
+      &:before
+        width: 4px
+        height: 4px
+
+    ol, ul
+      padding-left: 15px
+      counter-reset: step-counter
+      li
+        &:before
+          width: 2px
+          height: 2px

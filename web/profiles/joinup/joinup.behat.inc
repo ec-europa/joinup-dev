@@ -2,43 +2,62 @@
 
 /**
  * @file
- * Contains \UserSubContext.
+ * Contains \JoinupSubContext.
  */
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\Traits\ContextualLinksTrait;
+use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup\Traits\WysiwygTrait;
+use Drupal\node\Entity\Node;
 use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
+use Drupal\User\Entity\User;
+use GuzzleHttp\Client;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
+use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\StaleElementReference;
 
 /**
- * Behat step definitions for testing users.
+ * Behat step definitions that are generally useful for the Joinup project.
  */
 class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use ContextualLinksTrait;
+  use EntityTrait;
+  use FileTrait;
+  use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
-
-  /**
-   * Test files.
-   *
-   * @var \Drupal\file\Entity\File[]
-   */
-  protected $files = [];
-
-  /**
-   * Test users.
-   *
-   * @var \Drupal\user\Entity\User[]
-   */
-  protected $registeredUsers = [];
+  use TraversingTrait;
+  use UserTrait;
+  use UtilityTrait;
+  use WorkflowTrait;
+  use WysiwygTrait;
 
   /**
    * Creates a user with data provided in a table.
@@ -48,7 +67,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * | Password   | Bond007            |
    * | E-mail     | james.bond@mi5.org |
    *
-   * @param TableNode $user_table
+   * @param \Behat\Gherkin\Node\TableNode $user_table
    *   The user data.
    *
    * @throws \Exception
@@ -57,21 +76,23 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given (the following )user:
    */
   public function givenUser(TableNode $user_table) {
-    $values = [];
-    $aliases = self::userFieldAliases();
-    // Replace the column aliases with the actual field names.
-    foreach ($user_table->getRowsHash() as $key => $value) {
-      if (array_key_exists($key, $aliases)) {
-        $values[$aliases[$key]] = $value;
-      }
-      else {
-        throw new \Exception("Unknown column '$key' in user table.");
-      }
-    }
-    $this->handleFileFields($values, 'user', 'user');
+    $this->createUser($user_table->getRowsHash());
+  }
 
-    $user = (object) $values;
-    $this->userCreate($user);
+  /**
+   * Asserts that the given html exists in the page.
+   *
+   * @param string $text
+   *   The html that is expected to be found.
+   *
+   * @Then the page should contain the html text :text
+   */
+  public function assertHtmlText($text) {
+    $actual = $this->getSession()->getPage()->getHtml();
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
+
+    Assert::assertRegExp($regex, $actual, $message);
   }
 
   /**
@@ -79,32 +100,108 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * Multiple roles can be passed separated with comma.
    *
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user.
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
    * @Given I am logged in as a user with the :role role(s) of the :rdf_entity :rdf_entity_bundle
    * @Given I am logged in as a/an :role of the :rdf_entity :rdf_entity_bundle
    *
    * @see \Drupal\DrupalExtension\Context\DrupalContext::assertAuthenticatedByRole()
    */
-  public function assertAuthenticatedByOgRole($role, $rdf_entity, $rdf_entity_bunlde) {
-    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bunlde);
-    $roles = explode(',', $role);
-    $roles = array_map('trim', $roles);
-    $roles = $this->convertOgRoleNamesToIds($roles, $entity);
+  public function assertAuthenticatedByOgRole($roles, $rdf_entity, $rdf_entity_bundle) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
+    $roles = $this->getOgRoles($roles, $entity);
 
     // Check if a user with this role is already logged in.
-    if (!$this->loggedInWithOgRole($roles, $entity)) {
+    if (!$this->loggedInWithOgRoles($roles, $entity)) {
       $random = $this->getRandom()->name(8);
       // Create user (and project)
-      $user = (object) array(
+      $user = (object) [
         'name' => $random,
         'pass' => $random,
-      );
+      ];
       $user->mail = "{$user->name}@example.com";
       $this->userCreate($user);
-      $this->subscribeUserToGroup($user->uid, $entity, $roles);
+
+      // Load the actual user account.
+      $account = User::load($user->uid);
+      $this->subscribeUserToGroup($account, $entity, $roles);
 
       // Login.
-      $this->login();
+      $this->login($user);
     }
+  }
+
+  /**
+   * Changes the role of a user within a collection or solution.
+   *
+   * Use this to e.g. test promotion or demotion of facilitators.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $roles
+   *   A comma separated list of roles to assign to the user. All previously
+   *   assigned roles will be discarded.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my role(s) in the :rdf_entity :rdf_entity_bundle change(s) to :roles
+   */
+  public function updateGroupRoles($rdf_entity, $rdf_entity_bundle, $roles) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+    $roles = $this->explodeCommaSeparatedStepArgument($roles);
+    $roles = $this->getOgRoles($roles, $entity);
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, $roles);
+  }
+
+  /**
+   * Changes the membership state of a user within a collection or solution.
+   *
+   * Use this to e.g. test approval of pending memberships, or blocking users.
+   *
+   * @param string $rdf_entity
+   *   The label of the collection or solution of which the user is a member.
+   * @param string $rdf_entity_bundle
+   *   The RDF entity bundle, either 'collection' or 'solution'.
+   * @param string $state
+   *   The new membership state, one of 'active', 'pending' or 'blocked'.
+   *
+   * @throws \Exception
+   *   Thrown when a collection or solution with the given label doesn't exist.
+   *
+   * @Given my membership state in the :rdf_entity :rdf_entity_bundle changes to :state
+   */
+  public function updateGroupState($rdf_entity, $rdf_entity_bundle, $state) {
+    $entity = $this->getRdfEntityByLabel($rdf_entity, $rdf_entity_bundle);
+    if (!$entity) {
+      throw new \Exception("No entity found with label $rdf_entity");
+    }
+
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($current_user->uid);
+
+    $this->subscribeUserToGroup($account, $entity, [], $state);
   }
 
   /**
@@ -114,7 +211,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
-   * @param array $roles
+   * @param \Drupal\og\Entity\OgRole[] $roles
    *   An array of roles to check.
    * @param \Drupal\Core\Entity\EntityInterface $group
    *   The group that is checked if the user has the role.
@@ -124,12 +221,13 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::loggedInWithRole
    */
-  protected function loggedInWithOgRole(array $roles, EntityInterface $group) {
-    if (!$this->loggedIn() || !$this->user) {
+  protected function loggedInWithOgRoles(array $roles, EntityInterface $group) {
+    if ($this->getUserManager()->currentUserIsAnonymous() || !$this->loggedIn()) {
       return FALSE;
     }
-    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($this->user->uid);
-    $membership = Og::getMembership($user, $group);
+    $current_user = $this->getUserManager()->getCurrentUser();
+    $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($current_user->uid);
+    $membership = Og::getMembership($group, $user);
     if (empty($membership)) {
       return FALSE;
     }
@@ -138,42 +236,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     return TRUE;
-  }
-
-  /**
-   * Save files and change filename into a file ID.
-   */
-  private function handleFileFields(&$values, $entity_type, $bundle) {
-    $entity_manager = \Drupal::entityManager();
-    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fields */
-    $fields = $entity_manager->getFieldDefinitions($entity_type, $bundle);
-
-    foreach ($values as $field_name => $value) {
-      if (!isset($fields[$field_name])) {
-        throw new \Exception("Field $field_name is not set on entity $entity_type  : $bundle");
-      }
-      if (empty($value)) {
-        continue;
-      }
-      /** @var \Drupal\Core\Field\FieldDefinitionInterface $field_info */
-      $field_info = $fields[$field_name];
-      if (in_array($field_info->getType(), ['image', 'file'])) {
-        $files_path = $this->getMinkParameter('files_path');
-        $path = rtrim(realpath($files_path), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $value;
-        if (!is_file($path)) {
-          throw new \Exception("File '$value' was not found in file path '$files_path'.");
-        }
-        // Copy the image into the public files folder and turn it into a File
-        // entity before linking it.
-        $uri = 'public://' . $value;
-        file_unmanaged_copy($path, $uri);
-        $file = File::create(['uri' => $uri]);
-        $file->save();
-        $values[$field_name] = $file->get('uri')->value;
-
-        $this->files[$file->id()] = $file;
-      }
-    }
   }
 
   /**
@@ -195,14 +257,16 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
-    $results = \Drupal::entityManager()->getStorage('user')
-        ->loadByProperties(['name' => $username]);
+    $results = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $username]);
     /** @var \Drupal\user\UserInterface $user */
     $user = reset($results);
 
     if ($user) {
       // Track user for auto delete in tear-down.
-      $this->registeredUsers[$user->id()] = $user;
+      $this->getUserManager()->addUser((object) [
+        'name' => $username,
+        'uid' => $user->id(),
+      ]);
     }
     else {
       throw new Exception('User not registered.');
@@ -210,66 +274,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Remove any created registered users.
-   *
-   * @AfterScenario
-   */
-  public function cleanRegisteredUsers() {
-    // Remove any users that were created.
-    if (!empty($this->registeredUsers)) {
-      /** @var \Drupal\user\Entity\User $user */
-      foreach ($this->registeredUsers as $user) {
-        $user->delete();
-      }
-    }
-  }
-
-  /**
-   * Mapping of human readable names to machine names.
-   *
-   * @return array
-   *    Field mapping.
-   */
-  private static function userFieldAliases() {
-    return [
-      'Username' => 'name',
-      'Password' => 'pass',
-      'E-mail' => 'mail',
-      'Status' => 'status',
-      'First name' => 'field_user_first_name',
-      'Family name' => 'field_user_family_name',
-      'Photo' => 'field_user_photo',
-      'Professional profile' => 'field_user_professional_profile',
-      'Organisation' => 'field_user_organisation',
-      'Nationality' => 'field_user_nationality',
-      'Professional domain' => 'field_user_professional_domain',
-      // @todo Social network
-    ];
-  }
-
-  /**
    * Checks that the given select field has the given options.
    *
-   * To do this we extract the field text which contains the values expected
-   * to be found in the select box as a concatenated string.
-   * Then we check if the value is contained in the extracted value.
-   *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma. Only labels are accepted.
+   *   The options to be checked separated by comma. Only labels are accepted.
    *
-   * @throws Exception
-   *    Throws an exception when a value does not exists.
-   *
-   * @Given (the ):select field has the :options option(s)
+   * @Then (the ):select field should contain the :options option(s)
    */
-  public function checkSelectOptions($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) === FALSE) {
-        throw new \Exception("The option {$option} should exist in the {$select} field but was not found.");
-      }
+  public function checkSelectContainsOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    if (array_intersect($options, $available_options) !== $options) {
+      throw new \Exception("Options are not included in select.");
     }
   }
 
@@ -277,22 +297,84 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if the given select field does not contain any of the given values.
    *
    * @param string $select
-   *    The name of the field element.
+   *   The name of the field element.
    * @param string $options
-   *    The options to be checked separated by comma.
+   *   The options to be checked separated by comma.
    *
    * @throws Exception
    *    Throws an exception when a value exists.
    *
-   * @Given (the ):select field does not have the :options option(s)
+   * @Then (the ):select field should not contain the :options option(s)
    */
-  public function checkSelectOptionsInverse($select, $options) {
-    $values = $this->getSession()->getPage()->findField($select)->getText();
-    foreach (explode(',', $options) as $option) {
-      if (strpos($values, trim($option)) !== FALSE) {
-        throw new \Exception("The option {$option} should not exist in the {$select} field but was found.");
-      }
+  public function checkSelectDoesNotContainOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    $intersection = array_intersect($available_options, $options);
+
+    if (!empty($intersection)) {
+      throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Checks that a select field has exclusively the provided options.
+   *
+   * @param string $select
+   *   The name of the select element.
+   * @param string $options
+   *   A comma-separated list of options to be present.
+   *
+   * @Then the available options in the :select select should be :options
+   */
+  public function assertSelectOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = $this->getSelectOptions($field);
+    sort($available_options);
+
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+    sort($options);
+
+    // The PHPUnit assertion will allow to understand easily which values are
+    // missing and which one are extra.
+    Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
+  }
+
+  /**
+   * Checks that a select field does not have any of the given options.
+   *
+   * @param string $select
+   *   The name of the select element.
+   * @param string $options
+   *   A comma separated list of items to check.
+   *
+   * @Then the available options in the :select select should not include the :options( options)
+   */
+  public function assertSelectOptionNotAvailable($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = $this->getSelectOptions($field);
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
+  }
+
+  /**
+   * Checks that the given select field has the given optgroups.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param string $optgroups
+   *   The optgroups to be checked separated by comma.
+   *
+   * @Then (the ):select field should contain the :optgroups option group(s)
+   */
+  public function assertSelectContainsOptgroups($select, $optgroups) {
+    $field = $this->findSelect($select);
+    $available_optgroups = array_values($this->getSelectOptgroups($field));
+    $options = $this->explodeCommaSeparatedStepArgument($optgroups);
+
+    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
   }
 
   /**
@@ -310,37 +392,66 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       }
       /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $backend */
       $backend = $search_server->getBackend();
-
-      /** @var \Solarium\Client $solarium_client */
-      $solarium_client = $backend->getSolrConnection();
-      $update = $solarium_client->createUpdate();
+      /** @var \Drupal\search_api_solr\SolrConnectorInterface $connector */
+      $connector = $backend->getSolrConnector();
+      $update = $connector->getUpdateQuery();
       $update->addCommit(TRUE, TRUE);
-      $solarium_client->update($update);
+      $connector->update($update);
     }
   }
 
   /**
-   * Navigates to the canonical page display of a node entity.
+   * Navigates to the edit page display of a node entity.
    *
    * @param string $bundle
-   *   The type of the node page.
+   *   The type of the node entity.
    * @param string $title
    *   The title of the node.
    *
    * @When (I )go to the :bundle (content ) :title edit screen
    * @When (I )visit the :bundle (content ) :title edit screen
    */
-  public function visitCollection($bundle, $title) {
+  public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     $this->visitPath($node->url('edit-form'));
   }
 
   /**
+   * Navigates to the canonical page display of a node page.
+   *
+   * This step is only to be used in scenario outlines.
+   * If possible, use a specific page selector.
+   *
+   * @param string $type
+   *   The type of the node entity.
+   * @param string $title
+   *   The name of the news page.
+   *
+   * @When (I )go to the content page of the type :type with the title :title
+   * @When (I )visit the content page of the type :type with the title :title
+   */
+  public function visitNodePage($type, $title) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, $type);
+    $this->visitPath($node->url());
+  }
+
+  /**
+   * Navigates to the dashboard page of the user.
+   *
+   * @When I go to the dashboard
+   * @When I go to my dashboard
+   */
+  public function visitDashboard() {
+    $this->visitPath('/dashboard');
+  }
+
+  /**
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -349,7 +460,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should be published
    */
-  public function nodePublished($bundle, $title) {
+  public function assertNodePublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if (!$node->isPublished()) {
@@ -361,7 +472,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Checks if a content entity is published.
    *
    * @param string $bundle
-   *   The node bunlde.
+   *   The node bundle.
    * @param string $title
    *   The node title.
    *
@@ -370,7 +481,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @Then the :title :bundle (content )should not be published
    */
-  public function nodeNotPublished($bundle, $title) {
+  public function assertNodeNotPublished($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
     if ($node->isPublished()) {
@@ -379,12 +490,52 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks if the given content entity has the correct number of revisions.
+   *
+   * @param string $bundle
+   *   The node bundle.
+   * @param string $title
+   *   The node title.
+   * @param int $count
+   *   The expected number of revisions.
+   *
+   * @Then the :title :bundle (content )should have :count revision(s)
+   */
+  public function assertNodeRevisionCount($bundle, $title, $count) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title, $bundle);
+
+    $revision_count = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->allRevisions()
+      ->condition('nid', $node->id())
+      ->count()
+      ->execute();
+
+    Assert::assertEquals($count, $revision_count);
+  }
+
+  /**
+   * Checks if the given node has the correct publication state.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $state
+   *   The expected publication state, either 'published' or 'unpublished'.
+   *
+   * @Then the community content with title :title should have the publication state :state
+   */
+  public function assertPublicationState($title, $state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getEntityByLabel('node', $title);
+    Assert::assertSame($node->isPublished(), $state === 'published');
+  }
+
+  /**
    * Replaces human readable labels and values with their real counterparts.
    *
    * This allows us to:
-   * - use human readable labels like 'short title' and 'collection' in test
-   *   scenarios, and map them to the actual field names like
-   *   'field_document_short_title' and 'og_group_ref'.
+   * - use human readable labels like 'short title' in test scenarios, and map
+   *   them to the actual field names like 'field_short_title'.
    * - use human readable values such as a collection name instead of the URL
    *   that is actually used in the OG reference field.
    *
@@ -392,17 +543,27 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *   An object containing the entity properties and fields that are to be used
    *   for creating the node as properties on the object.
    *
+   * @throws \Exception
+   *   Thrown when the term "sticky" is used instead of "pinned" in test data.
+   * @throws \UnexpectedValueException
+   *   Thrown when the values for the status and sticky fields are not correct.
+   *
    * @BeforeNodeCreate
    */
-  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
     foreach (get_object_vars($node) as $alias => $value) {
-      $name = $this->getNodeFieldNameFromAlias($node->type, $alias);
+      $name = self::getNodeFieldNameFromAlias($node->type, $alias);
       if ($name !== $alias) {
-        unset($node->alias);
-        $node->$name = $value;
+        unset($node->$alias);
+        // Don't set empty values, since we can have multiple aliases that point
+        // to the same field (e.g. 'collection' and 'solution' both use the same
+        // 'og_audience' field).
+        if (!empty($value)) {
+          $node->$name = $value;
+        }
       }
     }
 
@@ -410,10 +571,40 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
     // end users of the site so they should not be used in BDD scenarios.
-    if (!empty($node->og_group_ref)) {
-      $entity = $this->getRdfEntityByLabel($node->og_group_ref);
-      $node->og_group_ref = $entity->id();
+    if (!empty($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD})) {
+      $entity = self::getRdfEntityByLabel($node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD});
+      $node->{OgGroupAudienceHelperInterface::DEFAULT_FIELD} = $entity->id();
     }
+
+    // Replace the human readable publication statuses with the boolean values
+    // that are expected by the Node module.
+    self::convertObjectPropertyValues($node, 'status', [
+      'unpublished' => 0,
+      'published' => 1,
+    ]);
+
+    // Replace human readable workflow states with machine names.
+    if (!empty($node->field_state)) {
+      $node->field_state = self::translateWorkflowStateAlias($node->field_state);
+    }
+
+    if (isset($node->sticky)) {
+      throw new \Exception('Please use "pinned" instead of "sticky".');
+    }
+
+    // Replace the human-readable values for multiple fields.
+    self::convertObjectPropertyValues($node, 'pinned', [
+      'yes' => 1,
+      'no' => 0,
+    ], 'sticky');
+    self::convertObjectPropertyValues($node, 'field_site_featured', [
+      'yes' => 1,
+      'no' => 0,
+    ]);
+    self::convertObjectPropertyValues($node, 'field_site_pinned', [
+      'yes' => 1,
+      'no' => 0,
+    ]);
   }
 
   /**
@@ -427,22 +618,50 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @return string
    *   The actual field name, or the original string if the alias is not known.
    */
-  protected function getNodeFieldNameFromAlias($type, $alias) {
+  protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
+      'custom_page' => [
+        'attachments' => 'field_attachment',
+      ],
+      'discussion' => [
+        'content' => 'body',
+        'state' => 'field_state',
+      ],
       'document' => [
-        'short title' => 'field_document_short_title',
+        'document type' => 'field_type',
+        'file' => 'field_file',
+        'keywords' => 'field_keywords',
+        'licence' => 'field_licence',
+        'short title' => 'field_short_title',
+        'spatial coverage' => 'field_document_spatial_coverage',
+        'state' => 'field_state',
       ],
       'event' => [
-        'short title' => 'field_event_short_title',
-        'start date' => 'field_start_date',
+        'keywords' => 'field_keywords',
+        'short title' => 'field_short_title',
+        'start date' => 'field_event_date:value',
+        'end date' => 'field_event_date:end_value',
+        'agenda' => 'field_event_agenda',
+        'location' => 'field_location',
+        'additional info address' => 'field_event_adtl_address_info',
+        'organisation' => 'field_organisation',
+        'scope' => 'field_scope',
+        'state' => 'field_state',
       ],
       'news' => [
-        'kicker' => 'field_news_kicker',
-        'state' => 'field_news_state',
+        'headline' => 'field_news_headline',
+        'keywords' => 'field_keywords',
+        'spatial coverage' => 'field_news_spatial_coverage',
+        'state' => 'field_state',
       ],
       'shared' => [
-        'collection' => 'og_group_ref',
-        'solution' => 'og_group_ref',
+        'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+        'policy domain' => 'field_policy_domain',
+        'shared in' => 'field_shared_in',
+        'visits' => 'field_visit_count',
+        'featured' => 'field_site_featured',
+        'pinned site-wide' => 'field_site_pinned',
       ],
     ];
 
@@ -459,16 +678,1684 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Presses button with specified id|name|title|alt|value at a widget.
    *
-   * Example: When I press "Log In" at "Fieldset"
-   * Example: And I press "Log In" at "Custom widget".
+   * Example: When I press "Sign In" at "Fieldset"
+   * Example: And I press "Sign In" at "Custom widget".
    *
-   * @When I press :button at( the) :fieldset( field)
+   * @When I press :button at( the) :field( field)
    */
-  public function pressButtonInFieldset($button, $fieldset) {
+  public function pressButtonInWidget($button, $field) {
     // Fixes a step argument (with \\" replaced back to ")
     // @see: Behat\MinkExtension\Context\MinkContext::fixStepArgument
     $button = str_replace('\\"', '"', $button);
-    $this->getSession()->getPage()->find('named', array('fieldset', $fieldset))->pressButton($button);
+
+    // First check if a fieldset exists containing the given field name. This
+    // is used for inline entity forms.
+    $element = $this->getSession()->getPage()->find('named', [
+      'fieldset',
+      $field,
+    ]);
+
+    // If this doesn't exist, search for a multivalue entity reference field
+    // containing a label for the given field name.
+    if (empty($element)) {
+      $xpath = '//table[contains(concat(" ", normalize-space(@class), " "), " field-multiple-table ") and //label[text()="' . $field . '"]]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-wrapper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    }
+
+    $element->pressButton($button);
+  }
+
+  /**
+   * Prints system message from the page for debugging.
+   *
+   * @Then /^print messages$/
+   */
+  public function printMessages() {
+    $selector = $this->getDrupalSelector('message_selector');
+    /** @var \Behat\Mink\Element\NodeElement $message */
+    foreach ($this->getSession()->getPage()->findAll("css", $selector) as $message) {
+      echo $message->getText() . "\n\n";
+    }
+  }
+
+  /**
+   * Fills a date or time field at a datetime widget.
+   *
+   * Example: When I fill in "Start date" with the date "29-08-2016".
+   * Example: When I fill in "Start date" with the time "26:59:00".
+   *
+   * @param string $field_group
+   *   The field component's label.
+   * @param string $date_component
+   *   The field to be filled.
+   * @param string $value
+   *   The value of the field.
+   *
+   * @throws \Exception
+   *    Thrown when more than one elements match the given field in the given
+   *    field group.
+   *
+   * @When I fill in :field_group with the :date_component :value
+   */
+  public function fillDateField($field_group, $date_component, $value) {
+    $field_selectors = $this->findDateFields($field_group);
+    if (count($field_selectors) > 1) {
+      throw new \Exception("More than one elements were found.");
+    }
+    $field_selector = reset($field_selectors);
+    $field_selector->fillField(ucfirst($date_component), $value);
+  }
+
+  /**
+   * Fills the date or time component of a date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I fill the :date :component of the :field widget with :value
+   */
+  public function fillDateRangeField($field, $date, $component, $value) {
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue($value);
+  }
+
+  /**
+   * Clears the date or time component of date sub-field in a date range field.
+   *
+   * @param string $field
+   *   The date range field name.
+   * @param string $date
+   *   The sub-field name. Either "start" or "end".
+   * @param string $component
+   *   The sub-field component. Either "date" or "time".
+   *
+   * @throws \Exception
+   *   Thrown when the date range field is not found.
+   *
+   * @When I clear the :date :component of the :field widget
+   */
+  public function clearDateRangeField($field, $date, $component) {
+    $element = $this->findDateRangeComponent($field, $date, $component);
+    $element->setValue('');
+  }
+
+  /**
+   * Finds a datetime field.
+   *
+   * First, get the fields that use a datetime widget. Fields of type 'created'
+   * also use the timestamp widget so this method must be able to handle them
+   * too. Datetime fields have use a complex widget and render their title as a
+   * simple header, not as a label for the field.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements found.
+   *
+   * @throws \Exception
+   *   Thrown when the field was not found.
+   */
+  public function findDateFields($field) {
+    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--widget-datetime-timestamp');
+    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field) {
+      return $field_selector->has('named', ['content', $field]);
+    });
+    if (empty($field_selectors)) {
+      throw new \Exception("Date field {$field} was not found.");
+    }
+    return $field_selectors;
+  }
+
+  /**
+   * Checks, that the given date time field contains the requested text.
+   *
+   * Example: Then the "date" date field should contain the datetime
+   * "31-1-1222 22:22:22".
+   *
+   * The format of the datetime is "DD-MM-YYYY HH:mm:ii"
+   *
+   * @param string $field
+   *   The field name.
+   * @param string $value
+   *   The value that is checked to be found.
+   *
+   * @throws \Exception
+   *   Thrown when more than one fields were found or when the field does not
+   *   contain the required text.
+   *
+   * @Then the :field date field should contain the datetime :value
+   */
+  public function assertDateFieldContains($field, $value) {
+    $elements = $this->findDateFields($field);
+    if (count($elements) > 1) {
+      throw new \Exception("More than one elements were found.");
+    }
+    $element = reset($elements);
+    $date = $element->findField('Date')->getValue();
+    $time = $element->findField('Time')->getValue();
+    Assert::assertEquals(trim($date . ' ' . $time), $value);
+  }
+
+  /**
+   * Checks that the given node has the expected workflow state.
+   *
+   * @param string $title
+   *   The title of the node to check.
+   * @param string $type
+   *   The node type.
+   * @param string $state
+   *   The expected state.
+   *
+   * @Then the :title :type content should have the :state state
+   */
+  public function assertNodeWorkflowState($title, $type, $state) {
+    $node = $this->getNodeByTitle($title, $type);
+    $actual = $this->getEntityStateField($node)->get('value')->getString();
+    Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
+   * Checks if the given content belongs to the given parent rdf entity.
+   *
+   * If there are multiple entities or parents with the same title, then
+   * only the first one is checked.
+   *
+   * @param string $parent
+   *   The name of the parent.
+   * @param string $parent_bundle
+   *   The bundle of the parent.
+   * @param string $content_bundle
+   *   The bundle of the content.
+   * @param string $content
+   *   The title of the content.
+   *
+   * @Then the :parent :parent_bundle has a :content_bundle titled :content
+   */
+  public function assertContentOgMembership($parent, $parent_bundle, $content_bundle, $content) {
+    $this->assertOgMembership($parent, $parent_bundle, $content, $content_bundle);
+  }
+
+  /**
+   * Asserts the presence of a tile element with a certain heading.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected tile is not found.
+   *
+   * @Then I (should )see the :heading tile
+   */
+  public function assertTilePresent($heading) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        return;
+      }
+    }
+
+    throw new \Exception("The tile '$heading' was not found on the page");
+  }
+
+  /**
+   * Count the tiles on the page.
+   *
+   * @param string $number
+   *   The expected number of tiles.
+   *
+   * @throws \Exception
+   *   Thrown when the expected number of tiles is not found.
+   *
+   * @Then I (should )see :number tile(s)
+   */
+  public function assertTileCount($number) {
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile .listing__title');
+    $nr_found = count($results);
+    if ($nr_found != $number) {
+      throw new \Exception("Found $nr_found tiles, expected $number");
+    }
+  }
+
+  /**
+   * Asserts that there are no tile elements with a certain heading.
+   *
+   * @param string $heading
+   *   The heading to search.
+   *
+   * @throws \Exception
+   *   Thrown when a tile with the unwanted heading is found.
+   *
+   * @Then I (should )not see the :heading tile
+   */
+  public function assertTileNotPresent($heading) {
+    // We target the heading with "h2" instead of ".listing__title" because both
+    // unstyled and styled tiles use h2 as element for their titles.
+    $results = $this->getSession()->getPage()->findAll('css', '.listing__item--tile h2');
+    foreach ($results as $result) {
+      /** @var \Behat\Mink\Element\Element $result */
+      if ($result->getText() === $heading) {
+        throw new \Exception("The tile '$heading' was found on the page");
+      }
+    }
+  }
+
+  /**
+   * Asserts that only the expected tiles are found in the page.
+   *
+   * @param string $headings
+   *   A comma-separated list of tile headings.
+   *
+   * @Then the page should show( only) the tiles :headings
+   */
+  public function assertUnorderedTilesPresent($headings) {
+    $tiles_in_page = array_keys($this->getTiles());
+    $headings = $this->explodeCommaSeparatedStepArgument($headings);
+
+    sort($headings);
+    sort($tiles_in_page);
+    Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
+  }
+
+  /**
+   * Checks that the given tiles are found in the given block.
+   *
+   * The weight of the tiles are also taken into account.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the :region region:
+   */
+  public function assertTilesInBlock(TableNode $titles_table, $region) {
+    $headings_in_page = array_keys($this->getTiles($region));
+    $headings_expected = $titles_table->getColumn(0);
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
+  }
+
+  /**
+   * Checks that non of the given tiles are available on the page.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) not see the( following) tiles in the :region region:
+   */
+  public function assertTilesNotPresentInBlock(TableNode $titles_table, $region) {
+    try {
+      // This will fail if the region does not exist. The region does not exist
+      // if there is no content rendered inside.
+      $headings_in_page = array_keys($this->getTiles($region));
+    }
+    catch (Exception $e) {
+      return;
+    }
+
+    $headings_not_expected = $titles_table->getColumn(0);
+    Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
+  }
+
+  /**
+   * Assert that the text is visible in a given region.
+   *
+   * @Then I see the text :text in the :region region
+   */
+  public function assertTextVisible($text, $region) {
+    $actual = $this->getRegion($region)->getText();
+    $actual = preg_replace('/\s+/u', ' ', $actual);
+    $regex = '/' . preg_quote($text, '/') . '/ui';
+    $message = sprintf('The text "%s" was not found anywhere in the text of the region "%s".', $text, $region);
+
+    if (!(bool) preg_match($regex, $actual)) {
+      throw new \Exception($message);
+    }
+  }
+
+  /**
+   * Assert that the input element is visible in a given region.
+   *
+   * @Then I (should )see the button :text in the :region region
+   */
+  public function assertInputElementVisible($text, $region) {
+    $region_element = $this->getRegion($region);
+    $actual = $region_element->findButton($text);
+    $message = sprintf('The button "%s" was not found anywhere in the region "%s".', $text, $region);
+    if (empty($actual)) {
+      throw new \Exception($message);
+    }
+  }
+
+  /**
+   * Checks that the given tiles are found in the correct order.
+   *
+   * Table format:
+   * | Tile title 1 |
+   * | Tile title 2 |
+   *
+   * @Then I( should) see the( following) tiles in the correct order:
+   */
+  public function assertOrderedTilesPresent(TableNode $titles_table) {
+    $headings_in_page = array_keys($this->getTiles());
+    $headings_expected = $titles_table->getColumn(0);
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+  }
+
+  /**
+   * Asserts that a certain text is present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text to search.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is not found in the tile.
+   *
+   * @Then I( should) see the text :text in the :heading tile
+   */
+  public function assertTileContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (strpos(trim($element->getText()), $text) === FALSE) {
+      throw new \Exception("The text '$text' was not found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Asserts that a certain text is not present in a tile.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   * @param string $text
+   *   The text that should not be present.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not found or the text is found in the tile.
+   *
+   * @Then I( should) not see the text :text in the :heading tile
+   */
+  public function assertTileDoesNotContainsText($heading, $text) {
+    $element = $this->getTileByHeading($heading);
+
+    if (strpos(trim($element->getText()), $text) !== FALSE) {
+      throw new \Exception("The text '$text' was found in the tile '$heading'.");
+    }
+  }
+
+  /**
+   * Asserts the presence of contextual links in a specific tile.
+   *
+   * @param string $links
+   *   A comma separated list of link texts.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual links are not found in the tile.
+   *
+   * @Then I (should )see the contextual link(s) :links in the :heading tile
+   */
+  public function assertContextualLinkPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
+    $element = $this->getTileByHeading($heading);
+    $found_links = array_keys($this->findContextualLinkPaths($element));
+
+    $not_found = array_diff($links, $found_links);
+    if (!empty($not_found)) {
+      throw new \Exception(sprintf("Contextual links '%s' not found in the tile '%s'", implode(', ', $not_found), $heading));
+    }
+  }
+
+  /**
+   * Asserts the absence of contextual links in a specific tile.
+   *
+   * @param string $links
+   *   A comma separated list of link texts.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual links are not found in the tile.
+   *
+   * @Then I should not see the contextual link(s) :links in the :heading tile
+   */
+  public function assertContextualLinkNotPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
+    $element = $this->getTileByHeading($heading);
+    $found_links = array_keys($this->findContextualLinkPaths($element));
+
+    $found = array_intersect($found_links, $links);
+    if (!empty($found)) {
+      throw new \Exception(sprintf("Unexpected contextual link '%s' found in the tile '%s'", implode(', ', $found), $heading));
+    }
+  }
+
+  /**
+   * Clicks a specific contextual link in a tile.
+   *
+   * The click is simulated by visiting the URL of the link route.
+   *
+   * @param string $link
+   *   The text of the contextual link.
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the expected contextual link is not found in the tile.
+   *
+   * @Then I click the contextual link :link in the :heading tile
+   */
+  public function iClickTheContextualLinkInTile($link, $heading) {
+    $element = $this->getTileByHeading($heading);
+    $this->clickContextualLink($element, $link);
+  }
+
+  /**
+   * Assert that the given form submission buttons are present on the page.
+   *
+   * @param string $buttons
+   *   A comma separated list of button labels.
+   * @param int $count
+   *   Optional number of buttons that are expected to be present. Use this to
+   *   verify that no unexpected additional buttons are present on the page. If
+   *   omitted the number of buttons will not be verified.
+   *
+   * @throws \Exception
+   *   Thrown when an expected button is not present or when the number of
+   *   buttons is wrong.
+   *
+   * @Then (the following )button(s) should be present :buttons
+   * @Then the following :count button(s) should be present :buttons
+   */
+  public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
+
+    $page = $this->getSession()->getPage();
+    $not_found = [];
+    foreach ($buttons as $button) {
+      if (!$page->findButton($button)) {
+        $not_found[] = $button;
+      }
+    }
+
+    if (!empty($not_found)) {
+      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    }
+
+    if (!empty($count)) {
+      // Only check the actual form submit buttons, ignore other buttons that
+      // might be present in wysiwygs or are used to add multiple values to a
+      // field.
+      $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
+      Assert::assertEquals($count, $actual);
+    }
+  }
+
+  /**
+   * Assert that certain buttons are not present on the page.
+   *
+   * @param string $buttons
+   *   A comma separated list of button labels.
+   *
+   * @throws \Exception
+   *   Thrown when an unexpected button is present.
+   *
+   * @Then (the following )buttons should not be present :buttons
+   */
+  public function assertButtonsNotVisible($buttons) {
+    $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
+
+    $page = $this->getSession()->getPage();
+    $found = [];
+    foreach ($buttons as $button) {
+      if ($page->findButton($button)) {
+        $found[] = $button;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new \Exception('Button(s) should not be present, but were found: ' . implode(', ', $found));
+    }
+  }
+
+  /**
+   * Checks that the plus button menu is shown on the page.
+   *
+   * @Then I should see the plus button menu
+   */
+  public function assertPlusButtonMenuPresent() {
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
+    Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Checks that the plus button menu is not shown on the page.
+   *
+   * @Then I should not see the plus button menu
+   */
+  public function assertPlusButtonMenuNotPresent() {
+    $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
+    Assert::assertEmpty($element);
+  }
+
+  /**
+   * Click the given link in the plus button menu.
+   *
+   * On JavaScript enabled browsers this will first click the plus button to
+   * open the menu.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   *
+   * @When I click :link in the plus button menu
+   */
+  public function clickLinkInPlusButtonMenu($link) {
+    // Check if we are running in an environment that supports JavaScript like
+    // Selenium or PhantomJS. If this is the case the plus button menu will be
+    // closed by default and needs to be opened first.
+    $this->openPlusButtonMenu();
+    $this->getSession()->getPage()->clickLink($link);
+  }
+
+  /**
+   * Opens the plus button menu on JS-enabled browsers.
+   *
+   * @When I open the plus button menu
+   */
+  public function openPlusButtonMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.add-content-menu'));
+  }
+
+  /**
+   * Opens a specific MDL dropdown menu on JS-enabled browsers.
+   *
+   * @When I open the header local tasks menu
+   */
+  public function iOpenTheMdlDropdown() {
+    $element = $this->getSession()->getPage()->findById('block-joinup-theme-local-tasks');
+    $this->openMaterialDesignMenu($element);
+  }
+
+  /**
+   * Opens the account menu on JS-enabled browsers.
+   *
+   * @When I open the account menu
+   */
+  public function iOpenTheAccountMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.login-menu'));
+  }
+
+  /**
+   * Asserts that the current url is the same as the parameter.
+   *
+   * The difference with the steps "Then I should be on" and "Then the url
+   * should match" is that the later two strip off the query string and keep
+   * only the path to compare.
+   *
+   * @When the( current) relative url should be :url
+   */
+  public function relativeUrlMatches($url) {
+    $current_url = $this->getSession()->getCurrentUrl();
+    $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
+    if ($current_url !== $url) {
+      $message = t('Url "@current" does not match expected "@expected".', [
+        '@current' => $current_url,
+        '@expected' => $url,
+      ]);
+      throw new Exception($message);
+    }
+  }
+
+  /**
+   * Asserts that the plus button menu is empty.
+   *
+   * @When the plus button menu should be empty
+   */
+  public function assertEmptyPlusButtonMenu() {
+    if ($this->browserSupportsJavascript()) {
+      if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
+        throw new \Exception("The plus button menu is not empty.");
+      }
+    }
+  }
+
+  /**
+   * Enters the given text in the given WYSIWYG editor.
+   *
+   * If this is running on a JavaScript enabled browser it will first click the
+   * 'Source' button so the text can be entered as normal HTML.
+   *
+   * @param string $text
+   *   The text to enter in the WYSIWYG editor.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @When I enter :text in the :label wysiwyg editor
+   */
+  public function enterTextInWysiwyg($text, $label) {
+    // If we are running in a JavaScript enabled browser, first click the
+    // 'Source' button so we can enter the text as HTML and get the same result
+    // as in a non-JS browser.
+    if ($this->browserSupportsJavascript()) {
+      $this->pressWysiwygButton($label, 'Source');
+      $this->setWysiwygText($label, $text);
+    }
+    else {
+      $this->getSession()->getPage()->fillField($label, $text);
+    }
+  }
+
+  /**
+   * Checks that a given field label is associated with a WYSIWYG editor.
+   *
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I should see the :label wysiwyg editor
+   */
+  public function assertWysiwyg($label) {
+    Assert::assertTrue($this->hasWysiwyg($label));
+  }
+
+  /**
+   * Checks that a given field label is not associated with a WYSIWYG editor.
+   *
+   * @param string $label
+   *   The label of the field uncontaining the WYSIWYG editor.
+   *
+   * @Then the :label field should not have a wysiwyg editor
+   */
+  public function assertNoWysiwyg($label) {
+    Assert::assertFalse($this->hasWysiwyg($label));
+  }
+
+  /**
+   * Create comment entities.
+   *
+   * Table format:
+   * | message      | author   | parent      | created                   |
+   * | Comment body | Jane Dow | Parent node | 2017-08-21T09:08:36+02:00 |
+   * | Comment body | John Doe | Parent node |                           |
+   *
+   * The author and parent fields are mandatory.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The comment data.
+   *
+   * @throws \Exception
+   *   Thrown when the parent node cannot be found, or when the author cannot
+   *   be found.
+   *
+   * @Given comments:
+   */
+  public function createComments(TableNode $table) {
+    foreach ($table->getColumnsHash() as $comment_values) {
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $comment_values['parent'])
+        ->range(0, 1);
+      $result = $query->execute();
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException('Unable to load parent of comment.');
+      }
+
+      // Reload from database to avoid caching issues and get latest version.
+      $id = reset($result);
+      $node = Node::load($id);
+
+      // Discussion node-type uses its own field and comment type.
+      if ($node->bundle() === 'discussion') {
+        $field_name = 'field_replies';
+        $comment_type = 'reply';
+      }
+      else {
+        $field_name = 'field_comments';
+        $comment_type = 'comment';
+      }
+
+      $query = \Drupal::entityQuery('user')
+        ->condition('name', $comment_values['author'])
+        ->range(0, 1);
+      $result = $query->execute();
+      $uid = reset($result);
+
+      if (empty($result)) {
+        throw new \InvalidArgumentException('Unable to load author of comment.');
+      }
+
+      // Replace field_body alias if present.
+      if (isset($comment_values['message'])) {
+        $comment_values['field_body'] = $comment_values['message'];
+        unset($comment_values['message']);
+      }
+
+      unset($comment_values['parent']);
+      unset($comment_values['author']);
+      $comment_values['uid'] = $uid;
+      $values = [
+        'comment_type' => $comment_type,
+        'status' => CommentInterface::PUBLISHED,
+        'uid' => $uid,
+        'field_name' => $field_name,
+        'entity_type' => 'node',
+        'entity_id' => $id,
+      ];
+      $comment_values += $values;
+      $comment = Comment::create($comment_values);
+
+      // Set creation date if provided.
+      if (!empty($comment_values['created'])) {
+        // Convert creation date to UNIX time if needed.
+        if (!is_int($comment_values['created'])) {
+          $comment_values['created'] = strtotime($comment_values['created']);
+        }
+        $comment->setCreatedTime($comment_values['created']);
+      }
+
+      $comment->save();
+    }
+  }
+
+  /**
+   * Checks the current workflow state on an entity edit form.
+   *
+   * @param string $state
+   *   The expected workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the current workflow state field is not shown on the page.
+   *
+   * @Then the current workflow state should be :state
+   */
+  public function assertCurrentWorkflowState($state) {
+    $element = $this->getSession()->getPage()->find('css', 'div.current-workflow-state');
+    if (empty($element)) {
+      throw new \Exception('The current workflow state field is not present on the page.');
+    }
+    Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Emulates closing and re-opening of the browser.
+   *
+   * @When I close and reopen the browser
+   */
+  public function restartSession() {
+    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    // We are going to keep all the cookies with a valid expire time. The
+    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
+    // expired cookies, so we need to strip the ones with a null expire time.
+    // A null expire time means that the cookie is going to be deleted when the
+    // browser is closed.
+    $persistent = [];
+    foreach ($cookie_jar->all() as $cookie) {
+      if (!is_null($cookie->getExpiresTime())) {
+        $persistent[] = $cookie;
+      }
+    }
+
+    $this->getSession()->restart();
+    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
+
+    foreach ($persistent as $cookie) {
+      $cookie_jar->set($cookie);
+    }
+  }
+
+  /**
+   * Checks that the description of the field with given label is as expected.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The expected description.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   * @throws \PHPUnit\Framework\ExpectationFailedException
+   *   Thrown when none of the field's descriptions match the given text.
+   *
+   * @Then I should see the description :description for (the ):label( field)
+   */
+  public function assertFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    if (empty($elements)) {
+      throw new \Exception("The $label field does not have a description.");
+    }
+    foreach ($elements as $element) {
+      try {
+        Assert::assertContains($description, $element->getText());
+        // The description was found, stop searching.
+        return;
+      }
+      catch (ExpectationFailedException $e) {
+        // The description did not match the expected string, keep searching.
+      }
+    }
+    throw new ExpectationFailedException("The description $description was not found for the $label field.");
+  }
+
+  /**
+   * Checks that the description of the field with given label is not present.
+   *
+   * @param string $label
+   *   The label of the field to check.
+   * @param string $description
+   *   The description that is expected to be absent.
+   *
+   * @throws \Exception
+   *   Thrown when the field does not have a description.
+   *
+   * @Then I should not see the description :description for (the ):label( field)
+   */
+  public function assertNoFieldDescription($label, $description) {
+    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
+    $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    foreach ($elements as $element) {
+      Assert::assertNotEquals($description, trim($element->getText()));
+    }
+  }
+
+  /**
+   * Asserts that a logo exists in the header.
+   *
+   * @Then I should see a logo on the header
+   */
+  public function assertExistingLogo() {
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " featured__logo ")]//img';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Asserts that a banner exists in the header.
+   *
+   * @Then I should see a banner on the header
+   */
+  public function assertExistingBanner() {
+    $xpath = '//div[@class="featured__outer-wrapper"]/@style';
+    $results = $this->getSession()->getPage()->find('xpath', $xpath);
+    // If the preg_match get a match, it means that the background image is
+    // empty.
+    $match = preg_match('/background\-image\: url\([\'"][\'"]\)/', $results->getText());
+    if ($match !== 0) {
+      throw new \Exception("The banner is empty.");
+    }
+  }
+
+  /**
+   * Asserts that the current user's profile picture is shown in the header.
+   *
+   * @Then my user profile picture should be shown in the page header
+   */
+  public function assertCurrentUserProfilePictureVisible() {
+    if ($this->getUserManager()->currentUserIsAnonymous()) {
+      throw new ExpectationFailedException('No user is currently logged in.');
+    }
+    $user = User::load($this->getUserManager()->getCurrentUser()->uid);
+    if ($user->field_user_photo->isEmpty()) {
+      throw new ExpectationFailedException('The currently logged in user does not have a profile picture.');
+    }
+    /** @var \Drupal\file\FileInterface $photo */
+    $photo = File::load($user->field_user_photo->target_id);
+    $url = ImageStyle::load('profile_icon')->buildUrl($photo->getFileUri());
+    $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " login-menu ")]//img[@src="' . $url . '"]';
+    $this->assertSession()->elementsCount('xpath', $xpath, 1);
+  }
+
+  /**
+   * Programmatically creates node revisions.
+   *
+   * Table format:
+   * | current title            | title            | body            |
+   * | <the current node title> | Revisioned title | Revisioned body |
+   *
+   * @param string $bundle
+   *   The bundle of the node.
+   * @param \Behat\Gherkin\Node\TableNode $updates_table
+   *   The table with the changes to insert in the revision.
+   *
+   * @Given (the following ):bundle (content )revisions:
+   */
+  public function createNodeRevisions($bundle, TableNode $updates_table) {
+    foreach ($updates_table->getColumnsHash() as $data) {
+      $node = $this->getNodeByTitle($data['current title'], $bundle);
+      unset($data['current title']);
+
+      // Crete a fake node object to be able to reuse hooks that help with
+      // preparing the field values.
+      $fake_node = (object) $data;
+      $fake_node->type = $bundle;
+      $this->dispatchHooks('BeforeNodeCreateScope', $fake_node);
+      $this->parseEntityFields('node', $fake_node);
+      // Remove the type property as we cannot change that.
+      unset($fake_node->type);
+
+      // The author is handled in \Drupal\Driver\Cores\Drupal8::nodeCreate(),
+      // so we have to do it manually.
+      if (isset($fake_node->author)) {
+        $user = user_load_by_name($fake_node->author);
+        if ($user) {
+          $node->uid = $user->id();
+        }
+        unset($fake_node->author);
+      }
+
+      // Update all fields. Magic setters will take care of everything.
+      foreach (get_object_vars($fake_node) as $name => $value) {
+        $node->{$name} = $value;
+      }
+
+      // Create a new revision.
+      $node->setNewRevision();
+      // Finally save the node.
+      $node->save();
+    }
+  }
+
+  /**
+   * Checks if a field contains a link to a community content page.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param string $title
+   *   The title of the community content page.
+   *
+   * @Then the :field field should contain the link to the :title page
+   */
+  public function assertFieldContainsLinkToPage($field, $title) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $this->getNodeByTitle($title);
+    $uri = $node->toUrl()->toString();
+    $this->assertSession()->fieldValueEquals($field, $uri);
+  }
+
+  /**
+   * Asserts that the default Drupal modal is opened.
+   *
+   * @throws \Exception
+   *   Thrown when the modal doesn't open within 5 seconds.
+   *
+   * @Then a modal should/will open
+   */
+  public function waitForDrupalModalToOpen() {
+    // A modal can be opened only in a Javascript-enabled browser.
+    self::assertJavaScriptEnabledBrowser();
+
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      // Retrieve again a fresh copy of the page element at each cycle.
+      $modal = $this->getSession()->getPage()->find('css', '#drupal-modal');
+
+      return $modal && $modal->isVisible();
+    });
+
+    if (!$result) {
+      throw new \Exception('The modal did not open.');
+    }
+  }
+
+  /**
+   * Asserts that the default Drupal modal is closed.
+   *
+   * @throws \Exception
+   *   Thrown when the modal doesn't close within 5 seconds.
+   *
+   * @Then the modal should be closed
+   */
+  public function waitForDrupalModalToClose() {
+    // A modal can be opened only in a Javascript-enabled browser.
+    self::assertJavaScriptEnabledBrowser();
+
+    $result = $this->getSession()->getPage()->waitFor(5, function () {
+      try {
+        // Normally the modal should be completely removed from the DOM,
+        // but sometimes the markup is kept in the DOM as hidden.
+        // @see Drupal.AjaxCommands.prototype.closeDialog()
+        return !$this->getSession()->getDriver()->isVisible('//*[@id = "drupal-modal"]');
+      }
+      catch (NoSuchElement $e) {
+        // The modal has been completely removed from the DOM.
+        return TRUE;
+      }
+      catch (StaleElementReference $e) {
+        // The element went stale in the time between fetching it and actually
+        // checking its visibility. The next check should launch a NoSuchElement
+        // exception.
+        return FALSE;
+      }
+    });
+
+    if (!$result) {
+      throw new \Exception('The modal did not close.');
+    }
+  }
+
+  /**
+   * Checks the numbers in the 'statistics block' on the homepage.
+   *
+   * Table format:
+   * | Solutions | Collections | Content |
+   * | 89        | 41          | 25      |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $statistics_table
+   *   The table containing the expected values for the statistics.
+   *
+   * @throws \UnexpectedValueException
+   *   Thrown when at least one of the expected values is not found.
+   *
+   * @Then I should see the following statistics:
+   */
+  public function assertHomepageStatistics(TableNode $statistics_table) {
+    foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
+      $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
+      $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
+      $element = $this->getSession()->getPage()->find('xpath', $xpath);
+      Assert::assertEquals($expected_value, $element->getText());
+    }
+  }
+
+  /**
+   * Asserts that the small header is present in the page.
+   *
+   * @throws \Exception
+   *   Thrown when the small header is not found.
+   *
+   * @Then I should see the small header
+   */
+  public function assertSmallHeaderIsPresent() {
+    $element = $this->getSession()->getPage()->find('css', '.section--header');
+
+    if (!$element) {
+      throw new \Exception('The small header was not found in the page.');
+    }
+  }
+
+  /**
+   * Asserts that the small header is not present in the page.
+   *
+   * @throws \Exception
+   *   Thrown when the small header is found.
+   *
+   * @Then I should not see the small header
+   */
+  public function assertSmallHeaderIsNotPresent() {
+    $element = $this->getSession()->getPage()->find('css', '.section--header');
+
+    if ($element) {
+      throw new \Exception('The small header was fount in the page, but it should not.');
+    }
+  }
+
+  /**
+   * Asserts that a certain link contains the unaliased path of a node.
+   *
+   * @param string $link
+   *   The link text.
+   * @param string $title
+   *   The node title.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not in the page.
+   *
+   * @Then the share link :link should point to the :title content
+   */
+  public function assertLinkContainsNodeUnaliasedUrl($link, $title) {
+    $node = $this->getNodeByTitle($title);
+    $link_element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$link_element) {
+      throw new \Exception("Link '{$link}' was not found in the page.");
+    }
+
+    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
+    $href = $link_element->getAttribute('href');
+
+    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+  }
+
+  /**
+   * Forces a cleanup to run for og queue worker.
+   *
+   * Og enqueues items to be deleted instead of deleting them directly in order
+   * to counter cases like when an entity has a big amount of memberships. This
+   * causes behat to bubble all memberships to the end of the suite and attempt
+   * to delete them all together which causes memory issues. Thus, the following
+   * method processes the queue manually after every scenario. This turns every
+   * scenario to a pseudo request when it comes to og.
+   *
+   * @AfterScenario
+   */
+  public function ogCleanup(AfterScenarioScope $event) {
+    /** @var \Drupal\Core\Queue\QueueWorkerInterface $worker */
+    $worker = \Drupal::service('plugin.manager.queue_worker')->createInstance('og_orphaned_group_content_cron');
+    $queue = \Drupal::queue('og_orphaned_group_content');
+
+    while ($item = $queue->claimItem()) {
+      $worker->processItem($item->data);
+      $queue->deleteItem($item);
+    }
+  }
+
+  /**
+   * Assert that a given attribute is not set for a given element in a region.
+   *
+   * @Then I( should) not see the :tag element with the :attribute attribute set to :value in the :region( region)
+   */
+  public function assertRegionElementAttribute($tag, $attribute, $value, $region) {
+    $regionObj = $this->getRegion($region);
+    $elements = $regionObj->findAll('css', $tag);
+    if (empty($elements)) {
+      return;
+    }
+    if (!empty($attribute)) {
+      foreach ($elements as $element) {
+        $attr = $element->getAttribute($attribute);
+        if (!empty($attr)) {
+          if (strpos($attr, "$value") !== FALSE) {
+            throw new \Exception(sprintf('The "%s" attribute is equal to "%s" on the element "%s" in the "%s" region on the page %s', $attribute, $value, $tag, $region, $this->getSession()->getCurrentUrl()));
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Assert that the persistent url link follows a given pattern.
+   *
+   * @Then the persistent url should contain :pattern
+   */
+  public function thePersistentUrlShouldContain($pattern) {
+    $field_selector = $this->getSession()->getPage()->find('css', '.permalink');
+    $href = $field_selector->getAttribute('href');
+    Assert::assertContains($pattern, $href);
+  }
+
+  /**
+   * Waits for a few moments to bypass spam bot validation.
+   *
+   * The Honeypot module is intended to block spam bots and detect if actual
+   * humans are entering forms. One of its checks is that it assumes a human
+   * takes at least 5 seconds to fill in a form.
+   *
+   * Use this on forms that are protected by Honeypot before submitting the
+   * form.
+   *
+   * @Then I wait for the honeypot validation to pass
+   */
+  public function iWaitForHoneypot() {
+    sleep(5);
+  }
+
+  /**
+   * Wait until a running batch job has finished.
+   *
+   * This will periodically check if the progress bar is still visible on the
+   * page. When this is no longer shown, it means that the batch process either
+   * finished or failed.
+   *
+   * @Given I wait for the batch job to finish
+   */
+  public function iWaitForTheBatchJobToFinish() {
+    // The progress bar has the CSS ID '#updateprogress'.
+    $this->getSession()->wait(180000, 'jQuery("#updateprogress").length === 0');
+  }
+
+  /**
+   * Simulates picking of an autosuggestion value from a field.
+   *
+   * @param string $value
+   *   The value to select from suggestions.
+   * @param string $field
+   *   The field name.
+   *
+   * @throws \Exception
+   *   Thrown when the field is not found, the field is not an autocomplete
+   *   field, when there was a failure retrieving the autocomplete suggestions
+   *   or if the wanted suggestion is not found.
+   *
+   * @When I pick :value from the :field autocomplete suggestions
+   */
+  public function fillFieldWithNormalisedEntityReference($value, $field) {
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("The field '$field' not found in the page.");
+    }
+
+    if (!$element->hasAttribute('data-autocomplete-path')) {
+      throw new \Exception("The field '$field' is not an entity reference autocomplete field.");
+    }
+
+    // Use the Mink base uri.
+    // @see ::locatePath()
+    $client = new Client(['base_uri' => $this->getMinkParameter('base_url')]);
+    $uri = $element->getAttribute('data-autocomplete-path') . '?' . UrlHelper::buildQuery([
+      'q' => $value,
+    ]);
+    $response = $client->get($uri);
+
+    if ($response->getStatusCode() !== 200) {
+      throw new \Exception("Failed to obtain suggestions for field '$field'.");
+    }
+
+    $suggestions = json_decode($response->getBody()->getContents());
+    if ($suggestions === NULL) {
+      throw new \Exception("Failed to decode suggestions for field '$field'.");
+    }
+
+    if (!count($suggestions)) {
+      throw new \Exception("No suggestions for value '$value' found in field '$field'.");
+    }
+
+    foreach ($suggestions as $suggestion) {
+      if ($suggestion->label === $value) {
+        $element->setValue($suggestion->value);
+        return;
+      }
+    }
+
+    throw new \Exception("The value '$value' was not found in the autocomplete suggestions.");
+  }
+
+  /**
+   * Asserts that a certain link points to a specific path.
+   *
+   * Example: Then the link "Login" should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link should point to :href
+   */
+  public function assertLinkHref($link, $href) {
+    $element = $this->getSession()->getPage()->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the page.");
+    }
+
+    $attribute = trim($element->getAttribute('href'), '/');
+    Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
+  }
+
+  /**
+   * Asserts that a certain link in a certain region points to a specific path.
+   *
+   * Example: Then the link "Login" in the "Header" region
+   *          should point to "user/login"
+   *
+   * @param string $link
+   *   The text of the link.
+   * @param string $region
+   *   The name of the region.
+   * @param string $href
+   *   The expected path the link should point to, without trailing slashes.
+   *
+   * @throws \Exception
+   *   Thrown when the link is not found.
+   *
+   * @Then the link :link in the :region region should point to :href
+   */
+  public function assertRegionLinkHref($link, $region, $href) {
+    $element = $this->getRegion($region)->findLink($link);
+
+    if (!$element) {
+      throw new \Exception("The link '$link' was not found in the region $region.");
+    }
+
+    $attribute = trim($element->getAttribute('href'), '/');
+    Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
+  }
+
+  /**
+   * Assert that fields are present in the given region in the given order.
+   *
+   * @param string $fields
+   *   Fields.
+   * @param string $region
+   *   Region.
+   *
+   * @throws \Exception
+   *   Thrown when an expected field is not present.
+   *
+   * @Then the fields :fields should be correctly ordered in the region :region
+   */
+  public function assertFieldsPresentInOrder($fields, $region) {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    /** @var \Behat\Mink\Element\Element $regionObj */
+    $regionObj = $this->getRegion($region);
+    $labels = $regionObj->findAll('xpath', "/.//*[contains(@class, 'form-wrapper')]//label");
+    $labels_on_page = [];
+    /** @var \Behat\Mink\Element\NodeElement $label */
+    foreach ($labels as $label) {
+      $labels_on_page[] = $label->getText();
+    }
+    $previous = -1;
+    foreach ($fields as $field) {
+      $key = array_search($field, $labels_on_page);
+      if ($key === FALSE) {
+        throw new \Exception("Could not find expected field $field in the page");
+      }
+      if (!($key > $previous)) {
+        throw new \Exception("Field out of order: $field");
+      }
+      $previous = $key;
+    }
+  }
+
+  /**
+   * Asserts that no links marked as active are found in a certain region.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when active links are found.
+   *
+   * @Then no menu items should be active in the :region menu
+   * @Then no menu items should be active in the :region region
+   */
+  public function assertNoActiveLinksInRegion($region) {
+    $links = $this->findLinksMarkedAsActive($region);
+
+    if (!empty($links)) {
+      $labels = array_map(function ($link) {
+        /** @var \Behat\Mink\Element\NodeElement $link */
+        return $link->getText() . ' (' . $link->getAttribute('href') . ')';
+      }, $links);
+      throw new \Exception("No active links were expected in the '$region' region, but the following were found: " . implode(', ', $labels));
+    }
+  }
+
+  /**
+   * Asserts that a specific link is marked as active in a certain region.
+   *
+   * @param string $text
+   *   The link text.
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when multiple or no links at all are found in the region.
+   *
+   * @Then :text should be the active item in the :region menu
+   * @Then :text should be the active item in the :region region
+   */
+  public function assertActiveLinkInRegion($text, $region) {
+    $links = $this->findLinksMarkedAsActive($region);
+
+    if (empty($links)) {
+      throw new \Exception("No active links found in the '$region' region.");
+    }
+
+    /** @var \Behat\Mink\Element\NodeElement[] $links */
+    if (count($links) > 1) {
+      $labels = array_map(function ($link) {
+        /** @var \Behat\Mink\Element\NodeElement $link */
+        return $link->getText() . ' (' . $link->getAttribute('href') . ')';
+      }, $links);
+      throw new \Exception("More than one active link found in '$region' region: " . implode(', ', $labels));
+    }
+
+    $link = reset($links);
+    Assert::assertEquals($text, $link->getText());
+  }
+
+  /**
+   * Asserts that a tile is marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as featured.
+   *
+   * @Then the :tile tile should be marked as featured
+   */
+  public function assertTileMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is not marked as featured, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as featured.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as featured.
+   *
+   * @Then the :tile tile should not be marked as featured
+   */
+  public function assertTileNotMarkedAsFeatured($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.listing__card.is-featured')) {
+      throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
+    }
+  }
+
+  /**
+   * Asserts that an tag with the given text exists in the given region.
+   *
+   * This completes the assertNotRegionElementText of Markup context.
+   *
+   * @param string $tag
+   *   The HTML tag that is being checked.
+   * @param string $text
+   *   The text that should be present in the HTML tag.
+   * @param string $region
+   *   The region to which to confine the search for the HTML tag.
+   *
+   * @throws \Exception
+   *   Thrown when the given tag with the given text was not found in the given
+   *   region.
+   *
+   * @see \Drupal\DrupalExtension\Context\MarkupContext::assertNotRegionElementText()
+   *
+   * @Then I( should) see a(n) :tag element with the text :text in the :region( region)
+   */
+  public function assertRegionElementText($tag, $text, $region) {
+    $regionObj = $this->getRegion($region);
+    $results = $regionObj->findAll('css', $tag);
+    if (!empty($results)) {
+      foreach ($results as $result) {
+        if ($result->getText() === $text) {
+          return;
+        }
+      }
+    }
+    throw new \Exception(sprintf('The text "%s" was not found in the "%s" element in the "%s" region on the page %s', $text, $tag, $region, $this->getSession()->getCurrentUrl()));
+  }
+
+  /**
+   * Asserts that a ckeditor list contains an element.
+   *
+   * CKeditor stores the lists available in the header of the editor pane in an
+   * iframe with a role tag. The dropdown "Format" has to be clicked prior to
+   * having the iframe available.
+   *
+   * @param string $field
+   *   The name of the field that contains the Wysiwyg editor to check.
+   * @param string $format_tags
+   *   Comma-separated list of paragraph formats to check.
+   *
+   * @throws \Exception
+   *   Thrown when the formats were found in the format list.
+   *
+   * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
+   */
+  public function assertNotFormatInCkeditorExists($field, $format_tags) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires javascript to run.');
+    }
+    $element = $this->getSession()->getPage()->findField($field);
+    $element_id = $element->getAttribute('id');
+    $format_tags = $this->explodeCommaSeparatedStepArgument($format_tags);
+    $has_tags_condition = <<<JS
+      return CKEDITOR.instances["$element_id"].config.format_tags;
+JS;
+    $found_tags = $this->getSession()->getDriver()->evaluateScript($has_tags_condition);
+    $found_tags_array = explode(';', $found_tags);
+    $invalid_tags = array_intersect($format_tags, $found_tags_array);
+    if (!empty($invalid_tags)) {
+      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+        '@found' => implode(', ', $invalid_tags),
+      ]));
+    }
+  }
+
+  /**
+   * Press the enter key in the keyboard.
+   *
+   * Works only in Javascript-enabled browsers.
+   *
+   * @param string $field
+   *   The field where to press the enter key.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   not found.
+   *
+   * @When I hit enter( in the keyboard) on the field :field
+   */
+  public function hitEnterKeyboard($field) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires Javascript to run.');
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("Could not find field '$field'");
+    }
+
+    $element->keyDown("\r");
+    $element->keyUp("\r");
+  }
+
+  /**
+   * Asserts that a tile is marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as pinned.
+   *
+   * @Then the :tile tile should be marked as pinned
+   */
+  public function assertTileMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is not marked as pinned, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as pinned.
+   *
+   * @Then the :tile tile should not be marked as pinned
+   */
+  public function assertTileNotMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
+    }
+  }
+
+  /**
+   * Asserts that a user is subscribed to specific bundles in a collection.
+   *
+   * @param string $user
+   *   The user name.
+   * @param string $bundles
+   *   A list of bundles separated by commas.
+   * @param string $type
+   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
+   *   entity types respectively.
+   * @param string $group_label
+   *   The group name.
+   * @param string $group_bundle
+   *   The group bundle.
+   *
+   * @throws \Exception
+   *   Throws exception if invalid data passed as arguments or if the subscribed
+   *   bundles for the given type do not match the expected ones.
+   *
+   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
+   */
+  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
+    if ($type === 'content') {
+      $type = 'node';
+    }
+    elseif ($type === 'rdf') {
+      $type = 'rdf_entity';
+    }
+    else {
+      throw new Exception("Unsupported type {$type}.");
+    }
+
+    $user = $this->getUserByName($user);
+    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
+    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
+
+    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
+    $bundles = array_map(function ($bundle) use ($type) {
+      return $type . ':' . trim($bundle);
+    }, $bundles);
+
+    // This can also be accessed with:
+    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
+    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
+    $og_bundles = array_map(function ($row) {
+      return $row['entity_type'] . ':' . $row['bundle'];
+    }, $og_bundles);
+
+    sort($bundles);
+    sort($og_bundles);
+    Assert::assertEquals($bundles, $og_bundles);
+  }
+
+  /**
+   * Clears a field (input, textarea, select) value.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @Then I clear (the content of )the field :field
+   */
+  public function clearField($field) {
+    $this->getSession()->getPage()->fillField($field, '');
   }
 
 }

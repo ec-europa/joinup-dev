@@ -1,31 +1,42 @@
+// Alert
+//
+// Alert messages.
+//
+// Markup: html/alert.html
+//
+// .alert--error           - #eb5b5c
+// .alert--warning         - #ee8917
+// .alert--info            - #2875cf
+// .alert--success         - #98c04c
+//
+// Styleguide 2.1
+
 // Component
 // --------------------------------------------------
 .alert
   position: relative
-  padding: 20px 60px
   margin-bottom: 40px
+  padding: 20px 60px
   +border-radius(4px)
 
 // Elements
 // --------------------------------------------------
 .alert__icon
-  position: absolute
-  top: 50%
-  left: 5px
-  transform: translateY(-50%)
+  left: 15px
   color: #fff
-  +icon-size(50px)
+  +icon-size(30px)
+  +centered($horizontal: false, $vertical: true)
 
-.alert__message
+.alert__message, .alert__message a
   color: #fff
 
 .alert__close
   position: absolute
   top: 0
   right: 0
+  opacity: .4
   color: #000
-  opacity: 0.4
-  +icon-size(50px)
+  +icon-size(30px)
 
 // Modifiers
 // --------------------------------------------------
@@ -38,5 +49,17 @@
 .alert--info
   background-color: $color-info
 
-.alert--success
+.alert--success,
+.alert--status
   background-color: $color-success
+
+// Drupal hacks
+.form-managed-file
+  .messages
+    color: #fff
+    position: relative
+    margin-bottom: 20px
+    padding: 20px 60px
+    +border-radius(4px)
+  .messages--error
+    background-color: $color-error

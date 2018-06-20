@@ -12,8 +12,6 @@ use Drupal\rdf_entity\RdfInterface;
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
- *
- * @package Drupal\solution\Controller
  */
 class SolutionController extends ControllerBase {
 
@@ -33,8 +31,10 @@ class SolutionController extends ControllerBase {
   public function add(RdfInterface $rdf_entity) {
     $solution = $this->createNewSolution($rdf_entity);
 
-    $form = $this->entityFormBuilder()->getForm($solution);
-
+    // Pass the collection to the form state so that the parent connection is
+    // established.
+    // @see solution_add_form_parent_submit()
+    $form = $this->entityFormBuilder()->getForm($solution, 'default', ['collection' => $rdf_entity->id()]);
     return $form;
   }
 
@@ -48,27 +48,39 @@ class SolutionController extends ControllerBase {
    *   The access result object.
    */
   public function createSolutionAccess(RdfInterface $rdf_entity) {
+    // If the collection is archived, content creation is not allowed.
+    if ($rdf_entity->bundle() === 'collection' && $rdf_entity->field_ar_state->first()->value === 'archived') {
+      return AccessResult::forbidden();
+    }
+
     $user = $this->currentUser();
     if (empty($rdf_entity) && !$user->isAnonymous()) {
       return AccessResult::neutral();
     }
-    $membership = Og::getMembership($user, $rdf_entity);
+
+    // Users with 'administer group' permission should have access since this
+    // page can only be called from within a group.
+    if ($user->hasPermission('administer group')) {
+      return AccessResult::allowed();
+    }
+
+    $membership = Og::getMembership($rdf_entity, $user);
     return (!empty($membership) && $membership->hasPermission('create solution rdf_entity')) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
-   * Creates a new solution entity.
+   * Creates a new solution entity that is affiliated with the given collection.
    *
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The collection with which the solution will be associated.
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The collection to affiliate with the new solution.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The unsaved solution entity.
    */
-  protected function createNewSolution(RdfInterface $rdf_entity) {
+  protected function createNewSolution(RdfInterface $collection) {
     return $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'solution',
-      'field_is_affiliations_requests' => $rdf_entity->id(),
+      'collection' => [$collection->id()],
     ]);
   }
 

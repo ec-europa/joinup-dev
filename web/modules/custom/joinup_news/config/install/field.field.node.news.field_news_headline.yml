@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_news_headline
+    - node.type.news
+id: node.news.field_news_headline
+field_name: field_news_headline
+entity_type: node
+bundle: news
+label: Headline
+description: 'Headline of the news.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

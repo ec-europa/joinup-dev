@@ -1,0 +1,32 @@
+joinup_invite.update_invitation:
+  path: 'invitation/{invitation}/{action}/{hash}'
+  defaults:
+    _controller: '\Drupal\joinup_invite\Controller\InvitationController::updateInvitation'
+  requirements:
+    invitation: \d+
+    action: '^accept|reject$'
+    _custom_access: '\Drupal\joinup_invite\Controller\InvitationController::access'
+  options:
+    parameters:
+      invitation:
+        type: entity:invitation
+
+entity.rdf_entity.members.invite:
+  path: 'rdf_entity/{rdf_entity}/members/invite'
+  defaults:
+    _form: '\Drupal\joinup_invite\Form\InviteToGroupForm'
+    _title: 'Add members'
+  requirements:
+    _og_user_access_group: 'manage members'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+    _og_entity_type_id: rdf_entity
+
+joinup_invite.user_auto_complete:
+  path: 'joinup_invite/user_auto_complete'
+  defaults:
+    _controller: '\Drupal\joinup_invite\Controller\UserAutoCompleteController::userAutoComplete'
+  requirements:
+    _permission: 'access user profiles'

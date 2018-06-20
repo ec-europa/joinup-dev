@@ -7,7 +7,7 @@
 
 <article{{ attributes }}>
   {{ title_prefix }}
-  {% if not page %}
+  {% if not page and not is_label_hidden %}
     <h2{{ title_attributes }}>
       <a href="{{ url }}" rel="bookmark">{{ label }}</a>
     </h2>

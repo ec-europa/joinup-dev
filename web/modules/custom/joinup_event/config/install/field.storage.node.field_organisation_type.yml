@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_organisation_type
+field_name: field_organisation_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: academia
+      label: Academia
+    -
+      value: non_profit
+      label: Non-profit
+    -
+      value: other
+      label: Other
+    -
+      value: private_on_behalf_of_public_organisation
+      label: 'Private (Contractor on behalf of Public Organisation)'
+    -
+      value: private_enterprise
+      label: 'Private (large enterprise)'
+    -
+      value: private_sme
+      label: 'Private (SME or independent)'
+    -
+      value: public
+      label: Public
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.file_url.field_file_url
+    - rdf_entity.rdfentity.file_url
+  module:
+    - rdf_entity
+id: rdf_entity.file_url.default
+targetEntityType: rdf_entity
+bundle: file_url
+mode: default
+content:
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_file_url:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_url_default
+    region: content
+hidden: { }

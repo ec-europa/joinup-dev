@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Themeing for rdf entities.
+ */
+#}
+{%
+  set classes = [
+    'listing__card',
+    'mdl-card',
+    'listing__card--stats-container',
+    view_mode == 'view_mode_featured' ? 'listing__card--inline-container',
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  <div class="listing__image">{{ content.field_ar_logo }}</div>
+  <div class="listing__metadata">
+    <div class="listing__field">
+      {{ title_prefix }}<h2 class="listing__title">{{ label }}</h2>{{ title_suffix }}
+    </div>
+    {% if view_mode == 'view_mode_featured' %}
+      <div class="listing__field">
+        <p class="listing__teaser">{{ content.field_ar_abstract|render|striptags('<a>')|raw }}</p>
+      </div>
+    {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ member_count }}</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+      <div class="listing__stat">
+        <span class="listing__text">{{ rdf_entity.bundle }}</span>
+        <span class="listing__icon icon icon--{{ rdf_entity.bundle }}"></span>
+      </div>
+    </div>
+  </div>
+</div>

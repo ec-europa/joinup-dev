@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Theme implementation of the container wrapping facet regions of the search_api_field module.
+ *
+ * This is a variant of the container for the inline facet region that also
+ * includes an 'Advanced search' link. It is used on the collection and solution
+ * homepages.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - children: The rendered child elements of the container.
+ * - has_parent: A flag to indicate that the container has one or more parent
+ *   containers.
+ *
+ * @see template_preprocess_container()
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'filters',
+    'filters--horizontal',
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
+    {{ children }}
+    {{ advanced_search }}
+</div>

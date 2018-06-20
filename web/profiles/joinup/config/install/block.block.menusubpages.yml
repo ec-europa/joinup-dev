@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_page
+    - node
+    - og
+  theme:
+    - joinup_theme
+id: menusubpages
+theme: joinup_theme
+region: content_bottom
+weight: -9
+provider: null
+plugin: menu_sub_pages
+settings:
+  id: menu_sub_pages
+  label: 'Sub pages'
+  provider: custom_page
+  label_display: visible
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

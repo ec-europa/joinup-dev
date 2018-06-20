@@ -5,15 +5,72 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
+use Drupal\file\Entity\File;
+use Drupal\joinup_core\Element\Datetime;
+use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\NodeInterface;
+use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\UriEncoder;
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Utility\Utility;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
+
 /**
  * Implements hook_theme().
  */
 function joinup_core_theme($existing, $type, $theme, $path) {
-  return array(
-    'joinup_tiles' => array(
+  return [
+    'joinup_tiles' => [
       'path' => drupal_get_path('module', 'joinup_core') . '/templates',
-    ),
-  );
+    ],
+    'facet_widget_links_inline' => [
+      'variables' => [
+        'active' => [],
+        'items' => [],
+        'attributes' => [],
+        'prefix_text' => '',
+        'suffix_text' => '',
+      ],
+    ],
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
+    '404_not_found' => [
+      'variables' => [
+        'search' => [],
+        'front' => [],
+      ],
+    ],
+    'chip' => [
+      'render element' => 'element',
+    ],
+    'input__chip_button' => [
+      'render element' => 'element',
+    ],
+  ];
 }
 
 /**
@@ -26,6 +83,1072 @@ function joinup_core_theme($existing, $type, $theme, $path) {
  *   - view: The view object.
  *   - rows: An array of row items. Each row is an array of content.
  */
-function template_preprocess_joinup_tiles(&$variables) {
+function template_preprocess_joinup_tiles(array &$variables) {
   template_preprocess_views_view_unformatted($variables);
+}
+
+/**
+ * Prepares variables for the facet widget "links inline" template.
+ *
+ * Default template: facet-widget-links-inline.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - active: an array of active facet items.
+ *   - items: an array of inactive facet items.
+ *   - attributes: HTML attributes for the main facet wrapper.
+ */
+function template_preprocess_facet_widget_links_inline(array &$variables) {
+  $variables['button_attributes'] = new Attribute([
+    'id' => Html::getUniqueId('filter-button'),
+    'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
+  ]);
+}
+
+/**
+ * Prepares variables for the "chip" template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #text.
+ */
+function template_preprocess_chip(array &$variables) {
+  $element = $variables['element'];
+  $variables['text'] = $element['#text'];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * @todo Remove this hack as part of ISAICP-3021.
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3021
+ *
+ * Hide the table drag handlers on multivalue fields for RDF entities. These are
+ * useless since weights are currently not stored and the ordering of the values
+ * is not retained after submitting the form.
+ */
+function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
+  $rdf = $form_object->getEntity();
+
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
+  $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
+  // Keep only fields that are on the form.
+  $field_definitions = array_intersect_key($field_definitions, $form);
+  foreach ($field_definitions as $field_name => $field_definition) {
+    if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+      // We are questioning only multi-value fields.
+      $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
+    }
+  }
+
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ *
+ * The state_machine forces the current value to be available in the options.
+ * However, there are cases where the user cannot keep the node in the same
+ * state when editing it.
+ * Since we are already checking for the allowed states and we are blocking the
+ * access if there are no available transitions, it is safe to simply remove
+ * the default value if it is not included in the allowed transitions.
+ *
+ * @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem::getAllowedStates
+ * @see https://www.drupal.org/node/2746091
+ */
+function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $fieldType = $context['items']->getFieldDefinition()->getType();
+  if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
+    return;
+  }
+
+  $form = $context['form'];
+  // Inline entity forms have the related entity directly in the form, as the
+  // form state is the one of the main form.
+  if (isset($form['#type']) && $form['#type'] === 'inline_entity_form') {
+    $entity = $form['#entity'];
+  }
+  else {
+    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
+  }
+
+  if (!($entity instanceof ContentEntityInterface)) {
+    return;
+  }
+
+  // Get the field name.
+  $field_name = $context['items']->getFieldDefinition()->getName();
+  $default_value = reset($element['#default_value']);
+  $allowed_transitions = $entity->get($field_name)->first()->getTransitions();
+  $allowed_states = array_map(function ($transition) {
+    return $transition->getToState()->getId();
+  }, $allowed_transitions);
+
+  if (!in_array($default_value, $allowed_states)) {
+    unset($element['#options'][$default_value], $element['#default_value']);
+    // Re-set a default because otherwise the 'empty' value will be available.
+    $default_value = array_keys($allowed_transitions);
+    $element['#default_value'] = reset($default_value);
+  }
+}
+
+/**
+ * Implements hook_entity_graph_access().
+ *
+ * The same procedure as the global access check is followed here. The purpose
+ * is to override the results of the global access check if the user has the
+ * appropriate OG permissions.
+ *
+ * @todo: hook api definition is needed.
+ */
+function joinup_core_entity_graph_access(EntityInterface $entity, $operation, AccountInterface $account, $graph_name) {
+  if (!$entity || (!in_array($entity->bundle(), ['collection', 'solution'])) || $operation != 'view' || $graph_name == 'default') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+
+  // Following the same logic as the global access check.
+  $map = ['view' => 'view all graphs'];
+  $entity_type_id = $entity->getEntityTypeId();
+  $type_map = ['view' => "view $entity_type_id $graph_name graph"];
+
+  // If the operation is not supported, do not allow access.
+  if (!isset($map[$operation]) || !isset($type_map[$operation])) {
+    return FALSE;
+  }
+
+  $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
+  return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // @todo: when all bundles are in, remove the first check.
+  if (!in_array($entity->bundle(), ['document', 'discussion', 'news', 'event'])) {
+    return AccessResult::neutral();
+  }
+  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * - Provides a base field that displays the current workflow state on nodes and
+ *   RDF entities. This field is intended to be used on edit forms which use the
+ *   set of buttons to perform the workflow state transitions. When these
+ *   buttons are used the current workflow state is not indicated, so this field
+ *   can be used to expose this information.
+ * - Provides a 'report' field on community content pages that can be used to
+ *   report inappropriate content.
+ * - Provides a 'path' field only for the 'rdf_entity' entities.
+ */
+function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
+    $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
+      ->setLabel(new TranslatableMarkup('Current workflow state'))
+      ->setDisplayOptions('form', ['type' => 'hidden'])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setComputed(TRUE);
+  }
+
+  // Add a 'report' field to community content entities. Currently all node
+  // types are community content.
+  if ($entity_type->id() === 'node') {
+    $fields['report'] = BaseFieldDefinition::create('report_link')
+      ->setName('report')
+      ->setLabel(t('Report'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\joinup_core\ReportLinkFieldItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 50,
+        'settings' => [
+          'trim_length' => 80,
+          'url_only' => FALSE,
+          'url_plain' => FALSE,
+          'rel' => '',
+          'target' => '',
+        ],
+      ]);
+  }
+
+  // Allow alias features for RDF entities.
+  if (($entity_type->id() === 'rdf_entity') && \Drupal::moduleHandler()->moduleExists('path')) {
+    $fields['path'] = BaseFieldDefinition::create('path')
+      ->setLabel(t('URL alias'))
+      ->setTranslatable(TRUE)
+      ->setComputed(TRUE);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_core_entity_type_alter(array &$entity_types) {
+  // Provides a workaround for asset_release and solution RDF entity bundles.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
+  // @todo Remove when ISAICP-3126 gets in.
+  $entity_types['rdf_entity']->setListBuilderClass(JoinupRdfListBuilder::class);
+
+  // Add the about page and member overview as link templates, so the OG context
+  // will be automatically solved.
+  $link_templates = [
+    'about-page' => '/rdf_entity/{rdf_entity}/about',
+    'member-overview' => '/rdf_entity/{rdf_entity}/members',
+    'add-facilitator' => '/rdf_entity/{rdf_entity}/members/invite',
+  ];
+  foreach ($link_templates as $key => $path) {
+    $entity_types['rdf_entity']->setLinkTemplate($key, $path);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_storage_load().
+ *
+ * Fill $term->extension and $term->mime_type fields from 'file_type' vocabulary
+ * by a direct query as, due to their RDF representation, this cannot be done by
+ * a simple RDF field mapping. Because we do this at storage level, the values
+ * get cached in the 'cache_entity' bin, avoiding performance issues.
+ */
+function joinup_core_taxonomy_term_storage_load(array $terms) {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  $sparql = \Drupal::service('sparql_endpoint');
+
+  $query = <<<QUERY
+SELECT ?extension ?mime_type
+WHERE {
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_extension .
+  ?op_extension <http://purl.org/dc/elements/1.1/source> "file-extension" .
+  ?op_extension <http://publications.europa.eu/ontology/authority/legacy-code> ?extension .
+  <%s> <http://publications.europa.eu/ontology/authority/op-mapped-code> ?op_mime_type .
+  ?op_mime_type <http://purl.org/dc/elements/1.1/source> "manifestation-type-cellar" .
+  ?op_mime_type <http://publications.europa.eu/ontology/authority/legacy-code> ?mime_type .
+}
+QUERY;
+
+  /** @var \Drupal\taxonomy\TermInterface[] $terms */
+  foreach ($terms as $term) {
+    if ($term->bundle() === 'file_type') {
+      $term_id = $term->id();
+      $results = $sparql->query(sprintf($query, $term_id, $term_id));
+      if ($results->count()) {
+        $result = &$results[0];
+        // A file type might have more than one extension separated by space.
+        $extensions = array_filter(explode(' ', trim($result->extension->getValue())));
+        foreach ($extensions as $extension) {
+          $term->get('extension')->appendItem(['value' => $extension]);
+        }
+        $term->set('mime_type', trim($result->mime_type->getValue()));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_links_alter().
+ */
+function joinup_core_node_links_alter(array &$links, NodeInterface $entity, array &$context) {
+  if (isset($links['comment__field_comments']['#links']['comment-add'])) {
+    unset($links['comment__field_comments']['#links']['comment-add']);
+  }
+  if (isset($links['comment__field_replies']['#links']['comment-add'])) {
+    unset($links['comment__field_replies']['#links']['comment-add']);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * Shows an information message to users who have access to the draft version
+ * of the rdf entity if the user is viewing the published version.
+ */
+function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Show only in full mode views.
+  if ($view_mode !== 'full') {
+    return;
+  }
+  $graph = $entity->get('graph')->first()->value;
+  if ($graph !== 'default' || !$entity->hasGraph('draft')) {
+    return;
+  }
+
+  // The draft link is already set in the list of the link templates of the rdf
+  // entity as 'rdf-draft-{$graph_name}'.
+  $url = $entity->toUrl('rdf-draft-draft');
+  if (!$url->access()) {
+    return;
+  }
+
+  $link = Link::fromTextAndUrl(t('here'), $url)->toString();
+  drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
+    '@here' => $link,
+  ]), 'warning');
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * In Joinup, solutions and releases share the same bundle uri. The distinction
+ * between these two is that the releases always have the field
+ * 'field_isr_is_version_of' filled, while solutions do not have this field.
+ * This alter performs the following:
+ * 1. If there is a filter on both the release and solution bundles, do nothing.
+ * 2. If there is a filter on the solution, set the field
+ * 'field_isr_is_version_of' as a field required to be absent.
+ * 3. If there is a filter on the asset release, set the field
+ * 'field_isr_is_version_of' as a required field.
+ * 4. If there is a negative case on the bundles, perform cases 2 and 3 on
+ * reverse.
+ * 5. If none of these exist, as a filter, ignore it.
+ */
+function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+  $conditions = $query->conditions();
+  // If only one of the following are true, then add a condition on their
+  // corresponding field. If both are set, then do not bother.
+  $solution = FALSE;
+  $release = FALSE;
+
+  $entity_type = $query->getMetaData('entity_type');
+  $bundle_key = $entity_type->getKey('bundle');
+  foreach ($conditions as $condition) {
+    if ($condition['field'] === $bundle_key) {
+      $bundles = array_intersect(['solution', 'asset_release'], $condition['value']);
+      if (empty($bundles) || count($bundles) !== 1) {
+        continue;
+      }
+      $bundle = reset($bundles);
+      if ($bundle === 'solution') {
+        $solution = TRUE;
+      }
+      elseif ($bundle === 'asset_release') {
+        $release = TRUE;
+      }
+    }
+  }
+
+  if ($solution && !$release) {
+    $query->notExists('field_isr_is_version_of');
+  }
+  elseif (!$solution && $release) {
+    $query->exists('field_isr_is_version_of');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ *
+ * - Make sure the standard formatter for links can be used for the link that is
+ *   used to report inappropriate content.
+ */
+function joinup_core_field_formatter_info_alter(array &$info) {
+  $info['link']['field_types'][] = 'report_link';
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function joinup_core_entity_create(EntityInterface $entity) {
+  // Set the publication state when creating an entity that uses workflow.
+  if ($entity instanceof EntityPublishedInterface) {
+    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
+      $state_field = $workflow_helper->getEntityStateField($entity);
+      $workflow = $state_field->getWorkflow();
+      $state_id = $state_field->getValue()['value'];
+      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Override the validate handler for the datetime widget.
+ */
+function joinup_core_element_info_alter(array &$info) {
+  if (isset($info['datetime'])) {
+    $info['datetime']['#element_validate'] = [
+      [
+        Datetime::class,
+        'validateDatetime',
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for RDF entities.
+ */
+function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+  // When a collection or solution is created, create a new navigation menu and
+  // associate it with the new collection or solution. This menu can be used to
+  // link to custom pages, member overviews, an about page etc.
+  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
+    $values = [
+      'type' => 'navigation',
+      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
+    ];
+    $og_menu_instance = OgMenuInstance::create($values);
+    $og_menu_instance->save();
+
+    // Automatically add a link to the overview and about pages of the
+    // collection entity.
+    $menu_name = 'ogmenu-' . $og_menu_instance->id();
+    $link = MenuLinkContent::create([
+      'title' => t('Overview'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => 'entity:rdf_entity/' . $entity->id()],
+      'weight' => -10,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('Members'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
+      'weight' => -9,
+    ]);
+    $link->save();
+
+    $link = MenuLinkContent::create([
+      'title' => t('About'),
+      'menu_name' => $menu_name,
+      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
+      'weight' => -8,
+    ]);
+    $link->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ *
+ * Also, provide default images for collections and solutions in case they are
+ * empty.
+ */
+function joinup_core_rdf_entity_presave(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['solution', 'collection'])) {
+    return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
+  }
+
+  $field_data = [
+    'logo' => ['field_ar_logo', 'field_is_logo'],
+    'banner' => ['field_ar_banner', 'field_is_banner'],
+  ];
+
+  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  foreach ($field_data as $field_type => $fields) {
+    foreach ($fields as $field) {
+      if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
+        // Get files without the . and .. directories.
+        $files = array_slice(scandir($fixtures_path . $field_type), 2);
+        $random = array_rand($files);
+        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file = File::create(['uri' => $file_path]);
+        $file->save();
+        $entity->set($field, $file->id());
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * File entities might have file system redirects coming from previous platform
+ * versions, following this pattern (relative to files directory):
+ * @code
+ * legacy/path/to/image.png -> actual/path/to/image.png
+ * @endcode
+ * Such redirects are not cleared automatically by the Redirect module, when the
+ * source file entity is deleted, thus we're fulfilling this task here.
+ */
+function joinup_core_file_delete(EntityInterface $entity) {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+
+  /** @var \Drupal\file\FileInterface $entity */
+  $uri = $entity->getFileUri();
+  $scheme = $file_system->uriScheme($uri);
+  if ($scheme !== 'public') {
+    return;
+  }
+
+  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . file_uri_target($uri);
+
+  // Delete all redirects targeting this path.
+  redirect_delete_by_path($path);
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function joinup_core_entity_extra_field_info() {
+  $motivation_bundles = [
+    'node' => ['discussion', 'document', 'event', 'news'],
+    'rdf_entity' => ['collection', 'solution', 'asset_release'],
+  ];
+  $fields = [];
+  foreach ($motivation_bundles as $entity_type_id => $bundles) {
+    foreach ($bundles as $bundle) {
+      $fields[$entity_type_id][$bundle]['form']['transition_motivation'] = [
+        'label' => t('Motivation'),
+        'description' => t('The motivation for the action.'),
+        'weight' => 10,
+        'display' => TRUE,
+      ];
+    }
+  }
+
+  return $fields;
+}
+
+/**
+ * Returns an array of form IDs that should have a motivation field.
+ *
+ * @return array
+ *   An array of form IDs.
+ */
+function joinup_core_get_motivation_form_ids() {
+  return [
+    'rdf_entity_collection_edit_form',
+    'rdf_entity_solution_edit_form',
+    'rdf_entity_asset_release_edit_form',
+    'node_discussion_edit_form',
+    'node_document_edit_form',
+    'node_event_edit_form',
+    'node_news_edit_form',
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form_id, joinup_core_get_motivation_form_ids())) {
+    return;
+  }
+
+  $form['transition_motivation'] = [
+    '#type' => 'textarea',
+    '#title' => t('Motivation'),
+    '#description' => t('Description of the reason of this operation.'),
+  ];
+  $form['#validate'][] = 'joinup_core_motivation_form_validate';
+}
+
+/**
+ * Validation function for the forms with a motivation field.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\node\NodeForm $test */
+  $entity = $form_state->getFormObject()->getEntity();
+  $to_state = $form_state->getTriggeringElement()['#state_id'];
+  // If $to_state is empty, it means that another button was clicked, like
+  // "Add new" in the contact information field.
+  if (empty($to_state)) {
+    return;
+  }
+
+  /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
+  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
+  /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
+  $workflow = $workflow_helper->getWorkflow($entity, $state_field);
+  $from_state = $entity->get($state_field)->first()->value;
+
+  $transition = $workflow->findTransition($from_state, $to_state);
+  $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
+  // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
+  //   rdf_entities are separate transitions.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
+  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
+    $required = FALSE;
+  }
+  // @todo Remove this when the 'reject_deletion' and 'proposed_from_validated'
+  //   for rdf_entities are separate transitions.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3840
+  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'solution') {
+    $user_roles = \Drupal::currentUser()->getRoles();
+    $reject_deletion = $transition->getId() === 'validate' && $from_state === 'deletion_request';
+    $propose_changes = $transition->getId() === 'propose' && $from_state === 'validated' && in_array('moderator', $user_roles);
+    if ($reject_deletion || $propose_changes) {
+      $required = TRUE;
+    }
+  }
+
+  if ($required && empty($form_state->getValue('transition_motivation'))) {
+    $form_state->setErrorByName('transition_motivation', t('This action requires you to fill in the motivation field.'));
+  }
+  $entity->motivation = $form_state->getValue('transition_motivation');
+}
+
+/**
+ * Returns whether the transition requires a motivation.
+ *
+ * @param string $entity_type_id
+ *   The entity type ID.
+ * @param string $workflow_id
+ *   The workflow ID.
+ * @param string $transition_id
+ *   The transition ID.
+ *
+ * @return bool
+ *   Whether the transition requires a motivation.
+ */
+function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $transition_id) {
+  $required_transitions = [
+    'node' => [
+      'node:pre_moderated' => [
+        'report',
+        'request_changes',
+        'report',
+        'reject_deletion',
+        'request_deletion',
+      ],
+      'node:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+      'node:discussion:post_moderated' => [
+        'report',
+        'request_changes',
+      ],
+    ],
+    'rdf_entity' => [
+      'collection_workflow' => [
+        'validate',
+        'archive',
+      ],
+      'solution_workflow' => [
+        'needs_update',
+      ],
+      'asset_release_workflow' => [
+        'request_changes',
+      ],
+    ],
+  ];
+
+  return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
+}
+
+/**
+ * Only index English content.
+ *
+ * Implements hook_search_api_index_items_alter().
+ */
+function joinup_core_search_api_index_items_alter(IndexInterface $index, array &$items) {
+  foreach ($items as $item_id => $item) {
+    list($datasource_id, $raw_id) = Utility::splitCombinedId($item_id);
+    list($id, $langcode) = Utility::splitPropertyPath($raw_id);
+    // Unset non-english content from the index.
+    if ($langcode != 'en') {
+      unset($items[$item_id]);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Re-index all group content when a group is saved with a changed status.
+ *
+ * The hasPublished flag ensures that this will occur only when an entity is
+ * published for the first time.
+ *
+ * @see \joinup_core_rdf_entity_presave()
+ */
+function joinup_core_rdf_entity_update(EntityInterface $entity) {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
+    return;
+  }
+
+  if ($entity->isPublished() && isset($entity->hasPublished) && $entity->hasPublished === FALSE) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
+    $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
+    foreach ($entities as $entity_item) {
+      $entity_item->original = $entity_item;
+      search_api_entity_update($entity_item);
+    }
+  }
+
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During saving a node, if the entity never had a published version and is now
+ * published, the creation date is updated with the current datetime.
+ */
+function joinup_core_node_presave(EntityInterface $entity) {
+  // Documents do not show the created date in the UI as they have the document
+  // publication date to show instead. However, since the listing screens sort
+  // by created date, the documents are updated just as the rest of the
+  // community content.
+  $community_bundles = ['discussion', 'document', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished()) {
+    return;
+  }
+  // Set the update time as the created time only if this is the first time this
+  // entity is published.
+  $published_revisions = \Drupal::entityQuery('node')
+    ->condition('type', $entity->bundle())
+    ->condition('status', 1)
+    ->condition('nid', $entity->id())
+    ->count()
+    ->execute();
+  if ($published_revisions != 0) {
+    return;
+  }
+
+  $entity->set('created', \Drupal::time()->getRequestTime());
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Sign in');
+  $form['#title'] = t('Sign in');
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.logout'])) {
+    $links['user.logout']['class'] = '\Drupal\joinup_core\Plugin\Menu\LoginLogoutMenuLink';
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ *
+ * Change instances of 'Log' to 'Sign'.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3659
+ */
+function joinup_core_local_tasks_alter(&$local_tasks) {
+  if (isset($local_tasks['user.login'])) {
+    $local_tasks['user.login']['title'] = t('Sign in');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * Mimic the og_entity_predelete function to delete the memberships of the user
+ * before the user is deleted. The goal is to skip all notification attempts
+ * related to the membership deletion.
+ *
+ * This workaround will prevent extra side loading and saving of entities.
+ */
+function joinup_core_user_predelete(EntityInterface $entity) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
+    $membership->skip_notification = TRUE;
+    $membership->delete();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds result counts to the role options on the membership overview for
+ * collections and solutions.
+ */
+function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  if ($view->id() !== 'members_overview') {
+    return;
+  }
+
+  // Bail out if we are executing the views queries that get the result counts.
+  if (!empty($view->do_not_recurse)) {
+    return;
+  }
+
+  // Retrieve the collection or solution for which the membership overview is
+  // being built.
+  $group = \Drupal::entityTypeManager()->getStorage($view->args[0])->load($view->args[1]);
+
+  // Define a function that gets the result count for a given exposed filter
+  // option.
+  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = Views::getView('members_overview');
+    // Make sure we do not get into an endless loop when building the view,
+    // since it will try to build the exposed form again.
+    $view->do_not_recurse = TRUE;
+    // When the exposed input is not set then Views will take the values from
+    // the request arguments. If we want to override them with "there is no
+    // exposed input" then we need to pass a value that is not considered empty,
+    // hence we use "[TRUE]" instead of "[]".
+    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $view->setExposedInput($exposed_input);
+    $view->executeDisplay($display_id, $arguments);
+    // Apparently it is not guaranteed that the `total_rows` will be populated.
+    // @see \Drupal\views\Plugin\views\area\Result::render()
+    return isset($view->total_rows) ? $view->total_rows : count($view->result);
+  };
+
+  /** @var \Drupal\views\Plugin\views\filter\StringFilter $filter */
+  $filter = $view->filter['roles_target_id'];
+  $group_items = $filter->options['group_info']['group_items'];
+
+  // Check all options, as well as the "- Any -" option.
+  $exposed_options = array_merge([NULL], array_keys($group_items));
+
+  foreach ($exposed_options as $exposed_option) {
+    // We have different roles for collections and solutions, only keep the
+    // relevant ones.
+    if (!empty($exposed_option) && strpos($group_items[$exposed_option]['value'], $group->bundle()) === FALSE) {
+      unset($form['roles_target_id']['#options'][$exposed_option]);
+    }
+    else {
+      $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+      $key = $exposed_option ?: 'All';
+      $option_text = (string) $form['roles_target_id']['#options'][$key];
+      $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds a destination parameter to the 'Sign in' menu item on every page towards
+ * the current page.
+ * Adds the current og group context as attribute on the page wrapper.
+ */
+function joinup_core_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'joinup_core/sign_in_destination';
+
+  /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+
+    if (
+      $group &&
+      $group->getEntityTypeId() === 'rdf_entity' &&
+      $group->bundle() === 'collection'
+    ) {
+      $variables['attributes']['data-drupal-collection-context'] = $group->id();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds the group ID and label as data attributes in tiles.
+ */
+function joinup_core_preprocess_node(&$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if ($parent) {
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ *
+ * Strip off the h1, h5, h6 tag format options from the 'Format' dropdown.
+ * This does not remove the ability of the user to enter or render these tags.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3682
+ */
+function joinup_core_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['content_editor']) && $settings['editor']['formats']['content_editor']['format'] === 'content_editor') {
+    $options = explode(';', $settings['editor']['formats']['content_editor']['editorSettings']['format_tags']);
+    $options = array_diff($options, ['h1', 'h5', 'h6']);
+    $settings['editor']['formats']['content_editor']['editorSettings']['format_tags'] = implode(';', $options);
+  }
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function joinup_core_ckeditor_css_alter(array &$css) {
+  $css[] = drupal_get_path('module', 'joinup_core') . '/css/wysiwyg.css';
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * RDF Entity ID is encoded when is used in the URL, thus we will receive an
+ * encoded ID as contextual filter. We cannot decode it upstream because the
+ * path display plugin, \Drupal\views\Plugin\views\display\PathPluginBase, is
+ * using the arguments to build the page route and will fail. For this reason,
+ * we have to decode just before the query is about to run.
+ *
+ * @see \Drupal\views\Plugin\views\display\PathPluginBase
+ * @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
+ */
+function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'group_content_management' || $view->current_display !== 'manage') {
+    return;
+  }
+
+  foreach ($query->where as &$group) {
+    foreach ($group['conditions'] as &$condition) {
+      if ($condition['field'] === 'node__og_audience.og_audience_target_id') {
+        $condition['value'] = UriEncoder::decodeUrl($condition['value']);
+        break 2;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function joinup_core_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!$group = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+    throw new \RuntimeException('Called from a wrong page.');
+  }
+
+  /** @var \Drupal\Core\Action\ActionManager $action_manager */
+  $action_manager = \Drupal::service('plugin.manager.action');
+  /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $plugin */
+  $plugin = $action_manager->createInstance('joinup_transfer_group_ownership');
+
+  // Allow the ownership to be transferred only by users with proper permission.
+  if (!$plugin->canTransferOwnership($group, \Drupal::currentUser())) {
+    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership']);
+    return;
+  }
+
+  // Alter the action label in order to reflect the bundle of the group.
+  $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
+  $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
+  $form['#validate'][] = 'joinup_core_form_views_form_og_members_overview_default_validate';
+}
+
+/**
+ * Validation callback for the og_members_overview form.
+ *
+ * Prevents the deletion of memberships from a group if no owners will remain
+ * after the deletion.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+    return;
+  }
+
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
+  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+
+  // Calculate current owners.
+  $owner_memberships = $storage->loadByProperties([
+    'entity_type' => $group->getEntityTypeId(),
+    'entity_id' => $group->id(),
+    'roles' => $admin_role,
+  ]);
+  if (empty($owner_memberships)) {
+    return;
+  }
+  $owner_membership_ids = array_keys($owner_memberships);
+
+  // Calculate memberships to be deleted.
+  $options = $form_state->getValue('og_membership_bulk_form');
+  if (empty($options)) {
+    return;
+  }
+  $memberships_to_be_deleted = array_map('joinup_core_extract_bulk_form_entity_id', array_filter($options));
+  $left_owners = array_diff($owner_membership_ids, $memberships_to_be_deleted);
+  if (empty($left_owners)) {
+    $message = \Drupal::translation()->translate('You cannot delete the owner of a @type.', ['@type' => $group->bundle()]);
+    $form_state->setError($form, $message);
+  }
+}
+
+/**
+ * Loads an entity based on a bulk form key.
+ *
+ * This derives from bulk form's way of loading row entities. Currently, it
+ * exists in its simplified form as there is no need to deal with revisions or
+ * languages. In the future, if the need emerges, this function can be extended
+ * to match the original method.
+ *
+ * @param string $bulk_form_key
+ *   The bulk form key representing the entity's ID, language.
+ *
+ * @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey
+ *
+ * @return string
+ *   The entity's ID.
+ */
+function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
+  $key = base64_decode($bulk_form_key);
+  $key_parts = json_decode($key);
+
+  // The first two items will always be langcode and ID.
+  $id = array_pop($key_parts);
+  return $id;
 }

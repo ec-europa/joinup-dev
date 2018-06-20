@@ -5,3 +5,7 @@ name: 'Software package'
 rid: software_package
 description: ''
 rdftype: 'admssw:SoftwarePackage'
+label_singular: 'software package'
+label_plural: 'software packages'
+label_count:
+  - "1 software package\x03@count software packages"

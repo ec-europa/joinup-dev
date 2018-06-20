@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.newsletter.body
+    - field.field.node.newsletter.og_audience
+    - field.field.node.newsletter.simplenews_issue
+    - node.type.newsletter
+  module:
+    - ds
+    - smart_trim
+    - user
+id: node.newsletter.view_mode_tile
+targetEntityType: node
+bundle: newsletter
+mode: view_mode_tile
+content:
+  body:
+    type: smart_trim
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  og_audience: true
+  report: true
+  simplenews_issue: true

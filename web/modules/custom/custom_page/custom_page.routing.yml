@@ -5,7 +5,7 @@ custom_page.collection_custom_page.add:
     _controller: '\Drupal\custom_page\Controller\CustomPageController::add'
     _title: 'Add custom page'
   requirements:
-    _custom_access: '\Drupal\custom_page\Controller\CustomPageController::createCustomPageAccess'
+    _custom_access: '\Drupal\custom_page\Controller\CustomPageController::createAccess'
   options:
     parameters:
       rdf_entity:

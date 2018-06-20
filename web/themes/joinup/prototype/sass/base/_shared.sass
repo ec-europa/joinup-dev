@@ -1,0 +1,70 @@
+.bold, .bold a
+  font-weight: $font-weight-bold
+
+.italic
+  font-style: italic
+
+.underline
+  text-decoration: underline
+
+.uppercase
+  text-transform: uppercase
+
+.gray
+  color: $color-grey-medium
+
+.blue
+  color: $color-blue-slider
+
+.color-base, .color-base a
+  color: $color-base
+
+.left
+  text-align: left
+
+.center
+  text-align: center
+
+.right
+  text-align: right
+
+.small
+  font-size: $font-size-small
+
+.truncated
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+  width: 100%
+
+.hide--phone
+  +breakpoint(sm-mobile, mobile)
+    display: none !important
+
+.hide--tablet
+  +breakpoint(mobile, tablet)
+    display: none !important
+
+.hide--desktop
+  +breakpoint(tablet, desktop)
+    display: none !important
+
+.row
+  margin-left: -16px
+  margin-right: -16px
+
+hr
+  margin: 0
+
+// Abstract classes
+.white-box
+  padding: 20px
+  background-color: #fff
+  +breakpoint(tablet)
+    padding: 40px 30px
+  +breakpoint(desktop)
+    padding: 40px 60px
+
+.button-inline
+  justify-content: space-between
+  margin: 15px 15px 0 0

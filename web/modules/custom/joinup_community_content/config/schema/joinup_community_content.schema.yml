@@ -1,0 +1,71 @@
+joinup_community_content.permission_scheme:
+  label: 'Community content role permissions'
+  type: config_object
+  mapping:
+    view:
+      label: 'View permissions'
+      type: sequence
+      sequence:
+        label: 'Workflow id'
+        type: sequence
+        sequence:
+          label: 'State'
+          type: joinup_community_content.workflow_ownership_settings
+    create:
+      label: 'Create permissions'
+      type: sequence
+      sequence:
+        label: 'Workflow id'
+        type: sequence
+        sequence:
+          label: 'eLibrary value'
+          type: sequence
+          sequence:
+            label: 'Transition id'
+            type: joinup_community_content.workflow_role_settings
+    update:
+      label: 'Update permissions'
+      type: sequence
+      sequence:
+        label: 'Workflow id'
+        type: sequence
+        sequence:
+          label: 'Transition id'
+          type: joinup_community_content.workflow_ownership_settings
+    delete:
+      label: 'Delete permissions'
+      type: sequence
+      sequence:
+        label: 'Workflow id'
+        type: sequence
+        sequence:
+          label: 'State'
+          type: joinup_community_content.workflow_ownership_settings
+
+joinup_community_content.workflow_ownership_settings:
+  label: 'Ownership settings'
+  type: mapping
+  mapping:
+    own:
+      label: 'Own content'
+      type: joinup_community_content.workflow_role_settings
+    any:
+      label: 'Any content'
+      type: joinup_community_content.workflow_role_settings
+
+joinup_community_content.workflow_role_settings:
+  label: 'Role settings'
+  type: mapping
+  mapping:
+    roles:
+      label: 'System roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string
+    og_roles:
+      label: 'Og roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string

@@ -1,0 +1,100 @@
+# The array of allowed conditions for solution workflow transitions.
+# Format of array:
+# @code
+# [
+#   <target state> => [
+#     <source state> => [
+#       <role1>
+#       <role2>
+#       .
+#       .
+#     ]
+#   ]
+# ]
+# @endcode
+#
+# The array is a three dimensions array. The first level is the
+# target state the entity transits to. Each target
+# state is an array of allowed source states which in every check, is the
+# current state of the entity. Finally, the source states are arrays
+# of roles that are allowed to perform this action.
+#
+# The reverse indexing here (source states
+# keyed by the target state) is to follow the state_machines module logic
+# of indexing states.
+#
+# For creating a solution, we also allow the role rdf_entity-collection-facilitator
+# which we will filter in the Guard class to be the facilitator of the current
+# collection. For all the other states, the solution facilitator is responsible.
+# For example, a user who is a collection facilitator, can create a solution and
+# put it either in draft, or in proposed state. But if he selects 'draft', then
+# he can move it to a 'proposed' state only as a solution facilitator.
+transitions:
+  draft:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
+  proposed:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
+  validated:
+    __new__:
+      - moderator
+    draft:
+      - moderator
+    proposed:
+      - moderator
+    validated:
+      - moderator
+    blacklisted:
+      - moderator
+    needs_update:
+      - moderator
+    deletion_request:
+      - moderator
+  deletion_request:
+    validated:
+      - rdf_entity-solution-administrator
+  needs_update:
+    validated:
+      - moderator
+    proposed:
+      - moderator
+  blacklisted:
+    validated:
+      - moderator

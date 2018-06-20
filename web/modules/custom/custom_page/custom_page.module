@@ -5,13 +5,17 @@
  * Main functions and hook implementations of the custom page module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
-use Drupal\og\OgGroupAudienceHelper;
+use Drupal\og\Og;
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -49,45 +53,146 @@ function custom_page_og_membership_insert(OgMembership $og_membership) {
 }
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_ENTITY_TYPE_insert().
  *
- * Create menu link when a custom page gets saved.
- *
- * @todo This will become obsolete when ISAICP-2369 is in.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2369
+ * Create a menu link when a custom page gets saved.
  */
-function custom_page_entity_insert(EntityInterface $entity) {
-  if (!$entity instanceof Node) {
+function custom_page_node_insert(EntityInterface $entity) {
+  if ($entity->bundle() === 'custom_page') {
+    \Drupal::service('custom_page.og_menu_links_manager')->addLink($entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function custom_page_node_update(NodeInterface $entity) {
+  if ($entity->bundle() !== 'custom_page') {
     return;
   }
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $entity;
-  if ($node->getType() != 'custom_page') {
-    return;
+
+  /** @var \Drupal\node\NodeInterface $original */
+  $original = $entity->original;
+
+  // Update all links that point to this custom page if the title has changed,
+  // or if the entity becomes (un)published.
+  if ($entity->isPublished() !== $original->isPublished() || $entity->getTitle() !== $original->getTitle()) {
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
+
+    if (!empty($result)) {
+      foreach ($result as $id => $instance) {
+        $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
+      }
+    }
   }
-  /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-  $group = $node->get('og_group_ref')->first();
+
+  // Update the OG menu link only if the group has changed.
+  if ($entity->og_audience->target_id !== $original->og_audience->target_id) {
+    \Drupal::service('custom_page.og_menu_links_manager')
+      ->moveLinks($original, $entity->og_audience->target_id);
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ *
+ * Replaces the standard OG Menu Instance form with a customized one that is
+ * suitable for use in the front end.
+ */
+function custom_page_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  $entity_types['ogmenu_instance']->setFormClass('edit', 'Drupal\custom_page\Form\OgMenuInstanceForm');
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function custom_page_menu_local_actions_alter(&$local_actions) {
+  // Remove the 'Add link' local action from the custom page navigation menu
+  // edit form. In default Drupal this is intended for webmasters, but we expose
+  // this form to end users which do not interact directly with menu links.
+  // Instead of this our users have an 'Add page' local action which leads to a
+  // node add form. The menu link itself is created behind the scenes.
+  foreach ($local_actions as &$local_action) {
+    if ($local_action['route_name'] === 'entity.ogmenu_instance.add_link') {
+      if (($key = array_search('entity.ogmenu_instance.edit_form', $local_action['appears_on'])) !== FALSE) {
+        unset($local_action['appears_on'][$key]);
+      }
+      break;
+    }
+  }
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ */
+function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $query->getOption('search_api_field entity');
+  /** @var \Drupal\Core\Entity\EntityInterface $group */
+  $group = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->first()->entity;
   if (!$group) {
     return;
   }
-  $value = $group->getValue();
-  // Fetch the menu.
-  $values = [
-    'type' => 'navigation',
-    OgGroupAudienceHelper::DEFAULT_FIELD => $value['target_id'],
-  ];
-  $storage = \Drupal::entityManager()->getStorage('ogmenu_instance');
-  $instances = $storage->loadByProperties($values);
-  if (!$instances) {
-    return;
+
+  // Show only content belonging to the same group.
+  $query->addCondition('entity_groups', [$group->id()], 'IN');
+
+  // Remove the page itself from the results.
+  $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
+}
+
+/**
+ * Implements hook_field_widget_search_api_field_default_form_alter().
+ *
+ * Customize the search_api_field widget for custom pages.
+ */
+function custom_page_field_widget_search_api_field_default_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\FieldItemListInterface $items */
+  $items = $context['items'];
+  $field_name = $items->getFieldDefinition()->getName();
+
+  if ($field_name === 'field_cp_content_listing') {
+    // Swap the default label with one that better represents our functionality.
+    $element['enabled']['#title'] = t('Display a community content listing');
+
+    // There is no need to allow customizing the facets. For now.
+    foreach (['fields', 'refresh_rows', 'refresh'] as $key) {
+      $element['wrapper'][$key]['#access'] = FALSE;
+    }
   }
-  /** @var \Drupal\og_menu\Entity\OgMenuInstance $instance */
-  $instance = array_pop($instances);
-  $menu_link_content = MenuLinkContent::create([
-    'title' => $node->getTitle(),
-    'menu_name' => 'ogmenu-' . $instance->id(),
-    'link' => ['uri' => 'internal:/node/' . $node->id()],
-  ]);
-  $menu_link_content->save();
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Prevent custom page view access to unprivileged users when the parent entity
+ * is not published.
+ */
+function custom_page_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($op !== 'view' || $node->bundle() !== 'custom_page') {
+    return AccessResult::neutral();
+  }
+
+  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $parent = $relation_manager->getParent($node);
+  // Let parentless nodes (e.g. newsletters) be handled by the core access.
+  if (empty($parent)) {
+    return AccessResult::neutral();
+  }
+  if (!$parent->access('view', $account)) {
+    // Anonymous users do not have access to content of non published groups.
+    return AccessResult::forbiddenIf($account->isAnonymous() || $node->getOwnerId() !== $account->id());
+  }
+  $membership = Og::getMembership($parent, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+  if (!$node->isPublished() && $membership->hasPermission("view any unpublished content")) {
+    return AccessResult::allowed();
+  }
+  return AccessResult::neutral();
 }

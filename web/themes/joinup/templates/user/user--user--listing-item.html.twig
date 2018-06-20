@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+{%
+  set classes = [
+    'listing__card',
+    'listing__card--user',
+    'mdl-card',
+    'listing__card--stats-container',
+    elements['#view_mode'] == 'view_mode_featured' ? 'listing__card--inline-container',
+  ]
+%}
+<div class="{{ classes|join(' ') }}">
+  <div class="listing__image">{{ content.field_user_photo }}</div>
+  <div class="listing__metadata">
+    <div class="listing__field">
+      <h2 class="listing__title"><a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{- full_name -}}</a></h2>
+    </div>
+    {% if short_business_title %}
+      <div class="listing__field">
+        <p class="listing__teaser">{{ short_business_title }}</p>
+      </div>
+    {% endif %}
+    <div class="listing__field listing__stats mdl-card__actions">
+      <div class="listing__stat">
+        <span class="listing__text">{{ 'user'|t }}</span>
+        <span class="listing__icon icon icon--user"></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+id: collection
+label: 'Collection'
+migration_tags:
+  - og
+  - collection
+source:
+  plugin: collection
+  track_changes: true
+process:
+  id: uri
+  label: collection
+  uid: uid
+  field_ar_abstract: abstract
+  field_ar_access_url: access_url
+  field_ar_affiliates:
+    plugin: migration
+    source: affiliates
+    migration: solution
+    no_stub: true
+  field_ar_banner:
+    plugin: migration
+    source: banner
+    migration: file:collection_banner
+    no_stub: true
+  contact_from_node:
+    - plugin: explode
+      source: contact
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: contact
+      no_stub: true
+  contact_from_email:
+    plugin: migration
+    source: contact_email
+    migration: contact_email
+    no_stub: true
+  field_ar_contact_information:
+    plugin: merge
+    source:
+      - "@contact_from_node"
+      - "@contact_from_email"
+    unique: true
+  created: created_time
+  field_ar_description/value:
+    plugin: file_inline
+    source: body
+  field_ar_description/format:
+    plugin: default_value
+    default_value: content_editor
+  field_ar_elibrary_creation: elibrary
+  field_ar_logo:
+    plugin: migration
+    source: logo_id
+    migration: file:collection_logo
+    no_stub: true
+  field_ar_moderation:
+    plugin: default_value
+    default_value: true
+  changed: changed_time
+  owner_from_publisher:
+    - plugin: explode
+      source: owner
+      delimiter: ','
+      strict: false
+    - plugin: migration
+      migration: owner
+      no_stub: true
+  owner_from_text:
+    plugin: migration
+    migration: owner_text
+    source:
+      - owner_text_name
+      - owner_text_type
+    no_stub: true
+  field_ar_owner:
+    plugin: merge
+    source:
+      - "@owner_from_publisher"
+      - "@owner_from_text"
+  field_policy_domain:
+    plugin: policy_domain
+    source: policy2
+  field_spatial_coverage:
+    plugin: term_reference
+    source: country
+    vocabulary: spatial
+  field_ar_state: state
+  i18n: i18n
+destination:
+  plugin: entity:rdf_entity
+  default_bundle: collection
+migration_dependencies:
+  required:
+    - file:collection_logo
+    - file:collection_banner
+    - file:inline
+    - solution

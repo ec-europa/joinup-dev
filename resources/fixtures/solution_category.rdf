@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <skos:ConceptScheme rdf:about="http://joinup.eu/taxonomy/solutionCategory#">
+  </skos:ConceptScheme>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#1">
+    <skos:prefLabel xml:lang="en">Specification or standard</skos:prefLabel>
+    <skos:definition xml:lang="en">Specification or standard</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/solutionCategory#"/>
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://joinup.eu/taxonomy/solutionCategory#2">
+    <skos:prefLabel xml:lang="en">Test resource</skos:prefLabel>
+    <skos:definition xml:lang="en">Test resource</skos:definition>
+    <skos:inScheme rdf:resource="http://joinup.eu/taxonomy/solutionCategory#"/>
+  </skos:Concept>
+
+</rdf:RDF>

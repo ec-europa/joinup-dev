@@ -1,0 +1,41 @@
+# The workflow of the contact_information entity.
+contact_information_workflow:
+  id: contact_information_workflow
+  label: "Default"
+  group: contact_information
+  states:
+    # The first state is used as the initial state when creating a new entity.
+    __new__:
+      label: - New -
+    validated:
+      label: Validated
+    # State used to flag content that is being reviewed.
+    needs_update:
+      label: Needs update
+    deletion_request:
+      label: Deletion request
+  transitions:
+    validate:
+      label: Publish
+      from: [__new__, deletion_request]
+      to: validated
+    update_published:
+      label: Update
+      from: [validated]
+      to: validated
+    request_changes:
+      label: Request changes
+      from: [validated]
+      to: needs_update
+    update_changes:
+      label: Update
+      from: [needs_update]
+      to: needs_update
+    approve_changes:
+      label: Approve changes
+      from: [needs_update]
+      to: validated
+    request_deletion:
+      label: Request deletion
+      from: [validated]
+      to: deletion_request
