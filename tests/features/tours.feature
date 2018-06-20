@@ -12,7 +12,6 @@ Feature: Tours
     Examples:
       | path                |
       | /                   |
-      | collections         |
 
   Scenario Outline: Various user roles can access tours
     Given I am logged in as a user with the "<role>" role
@@ -22,4 +21,3 @@ Feature: Tours
     Examples:
       | path                | role          |
       | /                   | authenticated |
-      | collections         | moderator     |
