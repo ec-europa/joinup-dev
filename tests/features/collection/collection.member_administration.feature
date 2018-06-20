@@ -255,10 +255,12 @@ Feature: Collection membership administration
       | Gregory House     |
       | Kathie Cumbershot |
       | Lisa Cuddy        |
+      | Turkey Ham        |
     # By clicking the header of the name column the ordering should be reversed.
     When I click "Name"
     Then the "member administration" table should contain the following column:
       | Name              |
+      | Turkey Ham        |
       | Lisa Cuddy        |
       | Kathie Cumbershot |
       | Gregory House     |
