@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\solution;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -35,22 +36,50 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function postSave($update) {
-    // Add the affiliation for new solutions.
-    if (!$update) {
+    $solution_id = $this->getEntity()->id();
+
+    if (!empty($this->list)) {
       $collection_ids = array_map(function (EntityReferenceItem $field_item): string {
         return $field_item->target_id;
       }, $this->list);
+      // Ensure no duplicates.
+      $collection_ids = array_values(array_unique($collection_ids));
+    }
+    else {
+      // It's possible we land here without the field being computed. If this is
+      // en existing entity, get affiliation from the backend.
+      $collection_ids = $solution_id ? $this->getAffiliation() : [];
+    }
 
-      $field_value = ['target_id' => $this->getEntity()->id()];
+    // Optimize when the solution doesn't have yet an ID.
+    $existing_collection_ids = $solution_id ? $this->getAffiliation() : [];
+
+    // Update collections where this solution is no more affiliate.
+    if ($removed_collection_ids = array_diff($existing_collection_ids, $collection_ids)) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      foreach (Rdf::loadMultiple($collection_ids) as $id => $collection) {
+      foreach (Rdf::loadMultiple($removed_collection_ids) as $collection) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $affiliates */
+        $affiliates = $collection->get('field_ar_affiliates');
+        $this->removeFieldItemByTargetId($affiliates, $this->getEntity()->id());
+        $collection->skip_notification = TRUE;
+        $collection->save();
+      }
+    }
+
+    // Update collections where this solution is newly affiliated.
+    if ($new_collection_ids = array_diff($collection_ids, $existing_collection_ids)) {
+      $field_value = ['target_id' => $solution_id];
+      /** @var \Drupal\rdf_entity\RdfInterface $collection */
+      foreach (Rdf::loadMultiple($new_collection_ids) as $id => $collection) {
         if ($collection->bundle() !== 'collection') {
           throw new \Exception('Only collections can be referenced in affiliation requests.');
         }
         $collection->get('field_ar_affiliates')->appendItem($field_value);
+        $collection->skip_notification = TRUE;
         $collection->save();
       }
     }
+
     return parent::postSave($update);
   }
 
@@ -65,6 +94,23 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $this->getEntity()->id())
       ->execute());
+  }
+
+  /**
+   * Removes a field item given a target ID.
+   *
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field_item_list
+   *   An entity reference field item list.
+   * @param string $target_id
+   *   The target ID for which the field item should be removed.
+   */
+  protected function removeFieldItemByTargetId(EntityReferenceFieldItemListInterface $field_item_list, string $target_id): void {
+    foreach ($field_item_list as $delta => $field_item) {
+      if ($field_item->target_id === $target_id) {
+        $field_item_list->removeItem($delta);
+        return;
+      }
+    }
   }
 
 }

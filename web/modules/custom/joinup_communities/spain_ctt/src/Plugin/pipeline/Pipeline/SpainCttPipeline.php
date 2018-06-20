@@ -17,9 +17,10 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "user_selection_filter",
- *     "3_way_merge" = {
+ *     "empty_fields_values" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },
+ *     "3_way_merge",
  *   },
  * )
  */

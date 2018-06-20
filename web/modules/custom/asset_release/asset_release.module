@@ -227,6 +227,11 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     return;
   }
 
+  // Set the graph only for new releases or those loaded from the main graphs.
+  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
+    return;
+  }
+
   $state = $entity->field_isr_state->value;
   if (in_array($state, ['draft', 'needs_update'])) {
     $entity->set('graph', 'draft');
