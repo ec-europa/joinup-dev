@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.file_type
-third_party_settings: {  }
 id: taxonomy_term.file_type
 entity_type_id: taxonomy_term
 bundle: file_type
