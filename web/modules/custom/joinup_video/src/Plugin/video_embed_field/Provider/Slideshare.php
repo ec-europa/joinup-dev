@@ -28,7 +28,13 @@ class Slideshare extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'slideshare',
-      '#url' => sprintf('https://www.slideshare.net/slideshow/embed_code/key/%s', $this->getVideoId()),
+      '#url' => $this->getInput(),
+      '#attributes' => [
+        'width' => $width,
+        'height' => $height,
+        'frameborder' => '0',
+        'allowfullscreen' => 'allowfullscreen',
+      ],
     ];
 
     return $iframe;
@@ -38,7 +44,7 @@ class Slideshare extends ProviderPluginBase {
    * {@inheritdoc}
    */
   public static function getIdFromInput($input) {
-    preg_match('#^(?:(?:https?:)?//)?(www\.)slideshare\.net/slideshow/embed_code/key/(?<id>[^&\?/]+)#i', $input, $matches);
+    preg_match('#^(?:(?:https?:)?//)?(www\.)?slideshare\.net/slideshow/embed_code/key/(?<id>[^&\?/\#]+)#i', $input, $matches);
     return isset($matches['id']) ? $matches['id'] : FALSE;
   }
 

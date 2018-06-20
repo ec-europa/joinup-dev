@@ -56,7 +56,7 @@
         "drupal/subpathauto": "^1.0@beta",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",
-        "drupal/video_embed_field": "~1.5",
+        "drupal/video_embed_field": "dev-1.x#037b6d4529a501ce4f2cb9f4312929524956fc3d",
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^1.0",
         "drupal/views_data_export": "1.x-dev#124b526d65c48661587cb19b37674cda6573c7bd",
@@ -215,7 +215,8 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch",
+                "Support multiple Vimeo formats. @see https://www.drupal.org/node/2908828": "https://www.drupal.org/files/issues/2908828-7.patch"
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",

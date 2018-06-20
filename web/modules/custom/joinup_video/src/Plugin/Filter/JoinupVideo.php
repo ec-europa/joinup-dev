@@ -7,7 +7,6 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
@@ -46,13 +45,6 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
   protected $renderer;
 
   /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
    * VideoEmbedWysiwyg constructor.
    *
    * @param array $configuration
@@ -65,14 +57,11 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
    *   The video provider manager.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->providerManager = $provider_manager;
     $this->renderer = $renderer;
-    $this->currentUser = $current_user;
   }
 
   /**
@@ -84,8 +73,7 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
       $plugin_id,
       $plugin_definition,
       $container->get('video_embed_field.provider_manager'),
-      $container->get('renderer'),
-      $container->get('current_user')
+      $container->get('renderer')
     );
   }
 
@@ -121,22 +109,21 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
    */
   public function process($text, $langcode) {
     $response = new FilterProcessResult($text);
+    $settings = $this->getConfiguration()['settings'];
 
-    foreach ($this->getValidMatches($text) as $source_text => $data) {
-      if (!$provider = $this->getProvider($data['video_url'])) {
+    foreach ($this->getValidMatches($text) as $source_text => $video) {
+      if (!$provider = $this->getProvider($video['url'])) {
         // No enabled provider knows to handle this URL. Strip out the <iframe>.
         $text = str_replace($source_text, '', $text);
         continue;
       }
 
-      $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $data['settings']['autoplay'];
-      $embed_code = $provider->renderEmbedCode($data['settings']['width'], $data['settings']['height'], $autoplay);
+      $embed_code = $provider->renderEmbedCode($video['width'], $video['height'], $settings['autoplay']);
 
-      // Add the container to make the video responsive if it's been
-      // configured as such. This usually is attached to field output in the
-      // case of a formatter, but a custom container must be used where one is
-      // not present.
-      if ($data['settings']['responsive']) {
+      // Add the container to make the video responsive if it's been configured
+      // as such. This usually is attached to field output in the case of a
+      // formatter, but a custom container must be used where one isn't present.
+      if ($settings['responsive']) {
         $embed_code = [
           '#type' => 'container',
           '#attributes' => [
@@ -146,13 +133,11 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
         ];
       }
 
-      // Replace the JSON settings with a video.
+      // Replace the source <iframe> with the generate one video.
       $text = str_replace($source_text, $this->renderer->render($embed_code), $text);
 
-      // Add the required responsive video library only when at least one match
-      // is present.
+      // Add the required responsive video library.
       $response->setAttachments(['library' => ['video_embed_field/responsive-video']]);
-      $response->setCacheContexts(['user.permissions']);
     }
 
     $response->setProcessedText($text);
@@ -165,7 +150,6 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
    */
   protected function getValidMatches($text) {
     $matches = [];
-    $plugin_settings = $this->getConfiguration()['settings'];
     $document = Html::load($text);
     foreach ($document->getElementsByTagName('iframe') as $iframe) {
       /** @var \DOMElement $iframe */
@@ -178,13 +162,9 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
       ]);
       $url = $this->getAbsoluteUrl($options);
       $matches[$document->saveHTML($iframe)] = [
-        'video_url' => $url,
-        'settings' => [
-          'width' => $iframe->getAttribute('width'),
-          'height' => $iframe->getAttribute('height'),
-          'autoplay' => $plugin_settings['autoplay'],
-          'responsive' => $plugin_settings['responsive'],
-        ],
+        'url' => $url,
+        'width' => $iframe->getAttribute('width'),
+        'height' => $iframe->getAttribute('height'),
       ];
     }
 
