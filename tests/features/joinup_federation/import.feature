@@ -78,6 +78,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Blacklisted asset" row
 
     Given I press "Next"
+    Given I wait for the pipeline batch job to finish
     Then I should see the following success messages:
       | success messages                                                                |
       | The Spain - Center for Technology Transfer execution has finished with success. |

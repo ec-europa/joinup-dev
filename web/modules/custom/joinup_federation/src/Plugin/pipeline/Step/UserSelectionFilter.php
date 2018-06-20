@@ -480,8 +480,15 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    */
   protected function getInfo(string $id, string $category): MarkupInterface {
     $activity = $this->provenanceHelper->loadOrCreateEntityActivity($id);
+    $last_user = $this->t('[unknown]');
+    if ($activity->getOwnerId()) {
+      $owner = $activity->getOwner();
+      if ($owner) {
+        $last_user = $owner->getDisplayName();
+      }
+    }
     $arguments = [
-      '%last_user' => $activity->getOwnerId() ? $activity->getOwner()->getDisplayName() : $this->t('[unknown]'),
+      '%last_user' => $last_user,
       '%last_date' => !$activity->get('provenance_started')->isEmpty() ? $this->dateFormatter->format($activity->get('provenance_started')->value, 'short') : $this->t('[unknown]'),
     ];
     switch ($category) {
