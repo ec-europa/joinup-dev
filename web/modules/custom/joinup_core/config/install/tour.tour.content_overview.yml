@@ -1,0 +1,33 @@
+id: content_overview
+module: joinup_core
+label: Tour for the content overview.
+langcode: en
+status: true
+dependencies: { }
+routes:
+  - route_name: 'view.content_overview.page_1'
+tips:
+  content:
+    id: content
+    plugin: text
+    body: 'The content area displays Joinup events, documents, news, and discussions that have been created or updated recently.'
+    weight: 1
+    location: left
+    attributes:
+      data-class: 'listing .listing__item:first-of-type'
+  filters:
+    id: filters
+    plugin: text
+    body: 'By clicking on these icons, you can view specific content types in the content area.'
+    weight: 2
+    location: bottom
+    attributes:
+      data-class: 'facet-region .tab__container a:first-of-type'
+  search:
+    id: search
+    plugin: text
+    body: 'Search through the entire Joinup platform and its supported content items.'
+    weight: 3
+    location: left
+    attributes:
+      data-class: 'search-bar'
