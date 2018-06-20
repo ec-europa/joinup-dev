@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -1112,7 +1113,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the row :text is selected/checked
    */
   public function assertRowIsChecked($text) {
-    if (!$this->findCheckboxInRow($text)->isChecked()) {
+    if (!$this->getRowCheckboxByText($text)->isChecked()) {
       throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
     }
   }
@@ -1132,7 +1133,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the row :text is not selected/checked
    */
   public function assertRowIsNotChecked($text) {
-    if ($this->findCheckboxInRow($text)->isChecked()) {
+    if ($this->getRowCheckboxByText($text)->isChecked()) {
       throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
     }
   }
@@ -1149,8 +1150,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I select/check the :text row
    */
-  public function assertSelectRow($text) {
-    $this->findCheckboxInRow($text)->check();
+  public function assertSelectRow(string $text): void {
+    $this->getRowCheckboxByText($text)->check();
   }
 
   /**
@@ -1163,14 +1164,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
    *
-   * @Given I unselect/uncheck the :text row
+   * @Given I deselect/uncheck the :text row
    */
-  public function assertUnSelectRow($text) {
-    $this->findCheckboxInRow($text)->uncheck();
+  public function assertDeselectRow(string $text): void {
+    $this->getRowCheckboxByText($text)->uncheck();
   }
 
   /**
-   * Finds a checkbox in table row containing a given text.
+   * Attempts to fetch a checkbox in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
@@ -1182,7 +1183,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
    */
-  protected function findCheckboxInRow($text) {
+  protected function getRowCheckboxByText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {

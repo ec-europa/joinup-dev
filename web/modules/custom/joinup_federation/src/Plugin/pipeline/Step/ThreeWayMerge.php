@@ -311,7 +311,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       // content entity that was not created via Drupal API. As an effect,
       // empty fields didn't receive their default values. We have to
       // explicitly do this before saving.
-      if ($field->isEmpty()) {
+      // The check if the field is a computed field - that occurs first, is due
+      // to the fact that we want to avoid the computation of the field in case
+      // the field is indeed a computed field. Method "::isEmpty" triggers
+      // the computation.
+      if (!$field->getFieldDefinition()->isComputed() && $field->isEmpty()) {
         $field->applyDefaultValue();
       }
     }
