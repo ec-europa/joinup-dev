@@ -102,9 +102,9 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getParentElibrary(\Drupal\Core\Entity\EntityInterface $entity)
+        public function getParentELibraryCreationOption(\Drupal\Core\Entity\EntityInterface $entity) : int
         {
-            return $this->lazyLoadItself()->getParentElibrary($entity);
+            return $this->lazyLoadItself()->getParentELibraryCreationOption($entity);
         }
 
         /**
