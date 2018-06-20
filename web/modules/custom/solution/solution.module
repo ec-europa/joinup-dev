@@ -52,6 +52,7 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  /** @var \Drupal\Core\Field\FieldConfigInterface[] $fields */
   if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'solution') {
     return;
   }
@@ -70,6 +71,11 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
+  }
+
+  // A distribution can be referenced only by a single parent.
+  if (!empty($fields['field_is_distribution'])) {
+    $fields['field_is_distribution']->addConstraint('DistributionSingleParent');
   }
 }
 
