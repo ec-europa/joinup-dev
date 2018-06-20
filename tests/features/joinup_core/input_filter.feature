@@ -98,6 +98,21 @@ Feature: Input filter
     And the response should not contain "autoplay=1"
 
   @javascript
+  Scenario: The video embed button should display information to the user about allowed providers.
+    Given I am logged in as a "facilitator" of the "Netflix group" collection
+    And I go to the homepage of the "Netflix group" collection
+    When I open the plus button menu
+    And I click "Add news"
+    And I press the button "Video Embed" in the "Content" wysiwyg editor
+    Then a modal should open
+    And I should see the text "The following providers are allowed:"
+    And I should see the text "Youtube [e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ]"
+    And I should see the text "EC url [e.g. http://europa.eu/123abc!123]"
+    And I should see the text "EC video [e.g. https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345]"
+    And I should see the text "Prezi presentation [e.g. https://prezi.com/embed/somepretziid]"
+    And I should see the text "Google docs [e.g. https://docs.google.com/forms/d/someembeddedid1234/viewform?embedded=true]"
+
+  @javascript
   Scenario Outline: A video embed button should be shown to community content editors.
     Given I am logged in as a "facilitator" of the "Netflix group" collection
     And I go to the homepage of the "Netflix group" collection
@@ -108,10 +123,6 @@ Feature: Input filter
       | Kicker   | Some test video |
     And I press the button "Video Embed" in the "Content" wysiwyg editor
     Then a modal should open
-    And I should see the text "Youtube and EC videos are allowed."
-    And I should see the text "Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    And I should see the text "EC url example: http://europa.eu/123abc!123"
-    And I should see the text "EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345"
     When I fill in "Video URL" with "<url>"
     And I press "Save" in the "Modal buttons" region
     Then the modal should be closed

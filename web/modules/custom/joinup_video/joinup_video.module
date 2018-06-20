@@ -17,11 +17,10 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function joinup_video_form_video_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['settings']['#access'] = FALSE;
-  // @todo: The description should be updated when the rest of the providers are
-  // fixed.
-  // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4573
-  $form['video_url']['#description'] = 'Youtube and EC videos are allowed.'
-    . '<br />Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-    . '<br />EC url example: http://europa.eu/123abc!123'
-    . '<br />EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345';
+  $form['video_url']['#description'] = 'The following providers are allowed:'
+    . '<br />Youtube [e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ]'
+    . '<br />EC url [e.g. http://europa.eu/123abc!123]'
+    . '<br />EC video [e.g. https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345]'
+    . '<br />Prezi presentation [e.g. https://prezi.com/embed/somepretziid]'
+    . '<br />Google docs [e.g. https://docs.google.com/forms/d/someembeddedid1234/viewform?embedded=true]';
 }
