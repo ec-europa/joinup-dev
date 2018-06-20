@@ -364,8 +364,13 @@ function solution_build_related_solutions_list(array $ids) {
  *
  * Default graph is published. Draft graph is draft.
  */
-function solution_rdf_entity_presave(EntityInterface $entity) {
+function solution_rdf_entity_presave(RdfInterface $entity) {
   if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
+    return;
+  }
+
+  // Set the graph only for new solutions or those loaded from the main graphs.
+  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
     return;
   }
 
