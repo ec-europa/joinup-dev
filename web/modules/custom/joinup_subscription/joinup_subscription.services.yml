@@ -1,0 +1,4 @@
+services:
+  joinup_subscription.subscription:
+    class: Drupal\joinup_subscription\JoinupSubscription
+    arguments: ['@entity_type.manager', '@flag']

@@ -453,12 +453,17 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave() for OG Membership entities.
+ * Implements hook_ENTITY_TYPE_presave().
  */
 function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
 
   if ($entity->isNew()) {
+    return;
+  }
+
+  // Allow the API to override and skip notifications.
+  if (isset($entity->skip_notification) && $entity->skip_notification === TRUE) {
     return;
   }
 
@@ -470,8 +475,8 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
     return;
   }
 
-  /** @var \Drupal\user\Entity\User $account */
-  $account = $entity->getUser();
+  /** @var \Drupal\user\UserInterface $account */
+  $account = $entity->getOwner();
 
   $params = [
     'account' => $account,
@@ -533,6 +538,7 @@ function joinup_user_form_user_cancel_form_alter(&$form, FormStateInterface $for
   $form['user_cancel_confirm']['#access'] = FALSE;
   $form['user_cancel_notify']['#default_value'] = TRUE;
   $form['user_cancel_notify']['#access'] = FALSE;
+  $form['actions']['cancel']['#title'] = t('Go back');
 }
 
 /**

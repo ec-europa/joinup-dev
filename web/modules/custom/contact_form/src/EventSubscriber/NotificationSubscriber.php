@@ -4,13 +4,10 @@ namespace Drupal\contact_form\EventSubscriber;
 
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
-use Drupal\message\Entity\Message;
-use Drupal\message_notify\MessageNotifier;
-use Exception;
+use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -46,16 +43,13 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     }
 
     // If it is not a report category, follow the normal process.
-    $user_ids = $this->getRecipientIdsByRole('moderator');
+    $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $message->save();
-
-    foreach ($this->entityTypeManager->getStorage('user')->loadMultiple(array_filter($user_ids)) as $user_id => $user) {
-      /** @var \Drupal\user\Entity\User $user */
-      $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
-      $this->messageNotifier->send($message, $options);
-    }
+    $this->messageDelivery
+      ->setMessage($message)
+      ->setRecipientsAsEmails([$recipient])
+      ->sendMail();
   }
 
   /**
@@ -71,7 +65,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     try {
       $url = Url::fromUri($uri);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return NULL;
     }
 
@@ -130,22 +124,16 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) {
+  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+    $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $values = ['template' => $template_id, 'arguments' => $arguments];
-      $message = Message::create($values);
-      $message->save();
-
-      foreach ($user_ids as $user_id) {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = $this->entityTypeManager->getStorage('user')->load($user_id);
-        if ($user->isAnonymous()) {
-          continue;
-        }
-        $options = ['save on success' => FALSE, 'mail' => $user->getEmail()];
-        $this->messageNotifier->send($message, $options);
-      }
+      $success = $success && $this->messageDelivery
+        ->createMessage($template_id)
+        ->setArguments($arguments)
+        ->setRecipients(User::loadMultiple($user_ids))
+        ->sendMail();
     }
+    return $success;
   }
 
   /**

@@ -11,8 +11,11 @@ dependencies:
   - asset_distribution
   - asset_release
   - block
+  - changed_fields
   - ckeditor
   - collection
+  - config_readonly
+  - config_sync
   - contact_form
   - content_translation
   - contextual
@@ -23,8 +26,10 @@ dependencies:
   - dynamic_page_cache
   - editor
   - editor_file
+  - email_registration
   - field_group
   - file
+  - flag
   - help
   - honeypot
   - image
@@ -68,28 +73,37 @@ dependencies:
   - rdf_export
   - rdf_taxonomy
   - search_api
+  - search_api_arbitrary_facet
   - search_api_db
   - semic
   - social_media_links_field
   - solution
   - state_machine
   - state_machine_revisions
+  - subpathauto
   - swiftmailer
+  - tallinn
   - text
   - toolbar
   - tour
   - trr
   - user
-  - view_unpublished
   - views
+  - views_bulk_operations
+  - views_data_export
+  - view_unpublished
 
 themes:
   - seven
   - joinup_theme
 
 config_devel:
+  - block.block.authoredon
+  - block.block.changed
   - block.block.entity_bundle_facet
+  - block.block.eventdate
   - block.block.exposed_form_search_page
+  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader
@@ -102,7 +116,11 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
+  - block.block.mycontentcollection
+  - block.block.mycontent
+  - block.block.mycontentsolution
   - block.block.navigation
+  - block.block.overviewmessage
   - block.block.pagetitle
   - block.block.policy_domain_facet
   - block.block.primaryadminactions
@@ -117,6 +135,7 @@ config_devel:
   - block.block.seven_page_title
   - block.block.seven_primary_local_tasks
   - block.block.seven_secondary_local_tasks
+  - block.block.solutiontype
   - block.block.spatial_coverage_facet
   - block.block.statistics
   - block.block.unpublished_content_of_group
@@ -140,6 +159,7 @@ config_devel:
   - core.entity_form_display.user.user.default
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
   - core.entity_view_display.user.user.default
@@ -157,6 +177,18 @@ config_devel:
   - editor.editor.content_editor
   - editor.editor.restricted_html
   - editor.editor.simple_html
+  - email_registration.settings
+  - facets.facet.aggregated_changed
+  - facets.facet.authoredon
+  - facets.facet.collection_event_type
+  - facets.facet.collection_my_content
+  - facets.facet.content_my_content
+  - facets.facet.csv_authoredon
+  - facets.facet.csv_changed
+  - facets.facet.csv_solution_type
+  - facets.facet.event_date
+  - facets.facet.solution_my_content
+  - facets.facet.solution_type
   - field.field.ogmenu_instance.navigation.og_audience
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
@@ -186,6 +218,8 @@ config_devel:
   - pathauto.pattern.rdf_entities_releases
   - piwik.settings
   - r4032login.settings
+  - rdf_entity.graph.default
+  - subpathauto.settings
   - swiftmailer.message
   - swiftmailer.transport
   - system.date
@@ -196,6 +230,9 @@ config_devel:
   - views.view.collection_content
   - views.view.collections
   - views.view.content_overview
+  - views.view.group_content_management
   - views.view.members_overview
+  - views.view.moderator_solutions_by_type
+  - views.view.og_members_overview
   - views.view.solutions
   - views.view.user_admin_people

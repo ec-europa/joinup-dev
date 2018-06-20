@@ -37,6 +37,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_keywords
     - field.field.rdf_entity.solution.field_policy_domain
     - field.field.rdf_entity.solution.field_site_featured
+    - field.field.rdf_entity.solution.field_site_pinned
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
@@ -301,11 +302,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     region: content
-  licence:
-    weight: 35
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   changed: true
   collections: true
@@ -319,6 +315,8 @@ hidden:
   field_is_logo: true
   field_is_related_solutions: true
   field_is_state: true
+  field_site_featured: true
+  field_site_pinned: true
   langcode: true
   og_group: true
   rdf_entity_field_is_content_inline_facets: true

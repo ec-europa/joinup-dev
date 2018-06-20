@@ -124,9 +124,7 @@ Feature: Add distribution through the UI
     And I should see the link "WTFPL"
     And I should see the text "The full source code."
 
-    # The licence label should be shown also in the solution UI.
     And I go to the homepage of the "Solution random x name" solution
-    Then I should see the text "WTFPL"
     # Clean up the asset distribution that was created through the UI.
     Then I delete the "Source tarball" asset distribution
 
@@ -137,7 +135,7 @@ Feature: Add distribution through the UI
     Then I should see the heading "Add Distribution"
 
     Given I select the radio button "Upload file"
-    Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp htm html jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql svg swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
+    Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
 
   Scenario: Adding a distribution with a duplicate title
     Given the following solution:
@@ -190,7 +188,7 @@ Feature: Add distribution through the UI
     And I press "Save"
     Then I should see the error message "A distribution with title Windows - source already exists in this solution. Please choose a different title."
 
-  Scenario: Licences shown in the solution header should be comma separated.
+  Scenario: Licences are not shown in the solution header.
     Given the following licence:
       | title       | Boost Software License                                                         |
       | description | It is a permissive license in the style of the BSD license and the MIT license |
@@ -200,4 +198,5 @@ Feature: Add distribution through the UI
       | Quality Yard | Boost Software License | Solution random x name |
 
     When I go to the homepage of the "Solution random x name" solution
-    Then I should see the text "WTFPL, Boost Software License"
+    Then I should not see the text "WTFPL"
+    And I should not see the text "Boost Software License"

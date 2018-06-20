@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
+
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\user\UserInterface;
 
 /**
  * Helper methods for dealing with users created in Behat tests.
@@ -107,17 +112,26 @@ trait UserTrait {
    * @return \Drupal\user\UserInterface
    *   The loaded user entity.
    *
-   * @throws \Exception
+   * @throws \RuntimeException
    *   Thrown when a user with the provided name is not found.
    */
-  protected function getUserByName($name) {
+  protected function getUserByName($name): UserInterface {
     $user = user_load_by_name($name);
 
     if (!$user) {
-      throw new \Exception("The user with name '$name' was not found.");
+      throw new \RuntimeException("The user with name '$name' was not found.");
     }
 
-    /** @var \Drupal\user\Entity\User $user */
+    // The user object might be cached, make sure to return it straight from the
+    // data storage.
+    try {
+      /** @var \Drupal\user\UserInterface $user */
+      $user = \Drupal::entityTypeManager()->getStorage('user')->loadUnchanged($user->id());
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      throw new \RuntimeException('The user entity storage is not defined.', 0, $e);
+    }
+
     return $user;
   }
 

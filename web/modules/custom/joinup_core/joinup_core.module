@@ -16,7 +16,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
@@ -28,8 +27,11 @@ use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
@@ -61,6 +63,12 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'search' => [],
         'front' => [],
       ],
+    ],
+    'chip' => [
+      'render element' => 'element',
+    ],
+    'input__chip_button' => [
+      'render element' => 'element',
     ],
   ];
 }
@@ -95,6 +103,19 @@ function template_preprocess_facet_widget_links_inline(array &$variables) {
     'id' => Html::getUniqueId('filter-button'),
     'class' => ['filter__icon', 'icon', 'icon--arrow-down'],
   ]);
+}
+
+/**
+ * Prepares variables for the "chip" template.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #text.
+ */
+function template_preprocess_chip(array &$variables) {
+  $element = $variables['element'];
+  $variables['text'] = $element['#text'];
 }
 
 /**
@@ -497,7 +518,7 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('Overview'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl()->toString()],
+      'link' => ['uri' => 'entity:rdf_entity/' . $entity->id()],
       'weight' => -10,
     ]);
     $link->save();
@@ -505,7 +526,7 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('Members'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl('member-overview')->toString()],
+      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
       'weight' => -9,
     ]);
     $link->save();
@@ -513,7 +534,7 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('About'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'internal:' . $entity->toUrl('about-page')->toString()],
+      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
       'weight' => -8,
     ]);
     $link->save();
@@ -564,61 +585,6 @@ function joinup_core_rdf_entity_presave(EntityInterface $entity) {
       }
     }
   }
-}
-
-/**
- * Implements hook_token_info().
- */
-function joinup_core_token_info() {
-  return [
-    'types' => [
-      'joinup-current-page' => [
-        'name' => t('Joinup current page'),
-        'description' => t('Custom tokens that can be derived from the context of the current page.'),
-      ],
-    ],
-    'tokens' => [
-      'joinup-current-page' => [
-        'group-context' => [
-          'name' => t('Group context'),
-          'description' => t('The collection or solution a page belongs to.'),
-        ],
-        'page-type' => [
-          'name' => t('Page type'),
-          'description' => t('Human readable page type. Intended for analytics.'),
-        ],
-      ],
-    ],
-  ];
-}
-
-/**
- * Implements hook_tokens().
- */
-function joinup_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $replacements = [];
-
-  switch ($type) {
-    case 'joinup-current-page':
-      foreach ($tokens as $name => $original) {
-        switch ($name) {
-          case 'group-context':
-            /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
-            if ($group = \Drupal::service('og.context')->getGroup()) {
-              $replacements[$original] = $group->label();
-            }
-            break;
-
-          case 'page-type':
-            $replacements[$original] = \Drupal::service('joinup_core.page_type_determiner')->getType();
-            break;
-        }
-      }
-      break;
-
-  }
-
-  return $replacements;
 }
 
 /**
@@ -673,10 +639,10 @@ function joinup_core_entity_extra_field_info() {
 }
 
 /**
- * Returns an array of form ids that should have a motivation field.
+ * Returns an array of form IDs that should have a motivation field.
  *
  * @return array
- *   An array of form ids.
+ *   An array of form IDs.
  */
 function joinup_core_get_motivation_form_ids() {
   return [
@@ -761,11 +727,11 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
  * Returns whether the transition requires a motivation.
  *
  * @param string $entity_type_id
- *   The entity type id.
+ *   The entity type ID.
  * @param string $workflow_id
- *   The workflow id.
+ *   The workflow ID.
  * @param string $transition_id
- *   The transition id.
+ *   The transition ID.
  *
  * @return bool
  *   Whether the transition requires a motivation.
@@ -848,6 +814,36 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
     }
   }
 
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During saving a node, if the entity never had a published version and is now
+ * published, the creation date is updated with the current datetime.
+ */
+function joinup_core_node_presave(EntityInterface $entity) {
+  // Documents do not show the created date in the UI as they have the document
+  // publication date to show instead. However, since the listing screens sort
+  // by created date, the documents are updated just as the rest of the
+  // community content.
+  $community_bundles = ['discussion', 'document', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished()) {
+    return;
+  }
+  // Set the update time as the created time only if this is the first time this
+  // entity is published.
+  $published_revisions = \Drupal::entityQuery('node')
+    ->condition('type', $entity->bundle())
+    ->condition('status', 1)
+    ->condition('nid', $entity->id())
+    ->count()
+    ->execute();
+  if ($published_revisions != 0) {
+    return;
+  }
+
+  $entity->set('created', \Drupal::time()->getRequestTime());
 }
 
 /**
@@ -995,7 +991,7 @@ function joinup_core_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_node().
  *
- * Adds the group id and label as data attributes in tiles.
+ * Adds the group ID and label as data attributes in tiles.
  */
 function joinup_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] !== 'view_mode_tile') {
@@ -1027,4 +1023,132 @@ function joinup_core_editor_js_settings_alter(array &$settings) {
     $options = array_diff($options, ['h1', 'h5', 'h6']);
     $settings['editor']['formats']['content_editor']['editorSettings']['format_tags'] = implode(';', $options);
   }
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function joinup_core_ckeditor_css_alter(array &$css) {
+  $css[] = drupal_get_path('module', 'joinup_core') . '/css/wysiwyg.css';
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * RDF Entity ID is encoded when is used in the URL, thus we will receive an
+ * encoded ID as contextual filter. We cannot decode it upstream because the
+ * path display plugin, \Drupal\views\Plugin\views\display\PathPluginBase, is
+ * using the arguments to build the page route and will fail. For this reason,
+ * we have to decode just before the query is about to run.
+ *
+ * @see \Drupal\views\Plugin\views\display\PathPluginBase
+ * @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
+ */
+function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'group_content_management' || $view->current_display !== 'manage') {
+    return;
+  }
+
+  foreach ($query->where as &$group) {
+    foreach ($group['conditions'] as &$condition) {
+      if ($condition['field'] === 'node__og_audience.og_audience_target_id') {
+        $condition['value'] = UriEncoder::decodeUrl($condition['value']);
+        break 2;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function joinup_core_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!$group = \Drupal::routeMatch()->getParameter('rdf_entity')) {
+    throw new \RuntimeException('Called from a wrong page.');
+  }
+
+  /** @var \Drupal\Core\Action\ActionManager $action_manager */
+  $action_manager = \Drupal::service('plugin.manager.action');
+  /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $plugin */
+  $plugin = $action_manager->createInstance('joinup_transfer_group_ownership');
+
+  // Allow the ownership to be transferred only by users with proper permission.
+  if (!$plugin->canTransferOwnership($group, \Drupal::currentUser())) {
+    unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership']);
+    return;
+  }
+
+  // Alter the action label in order to reflect the bundle of the group.
+  $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
+  $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
+  $form['#validate'][] = 'joinup_core_form_views_form_og_members_overview_default_validate';
+}
+
+/**
+ * Validation callback for the og_members_overview form.
+ *
+ * Prevents the deletion of memberships from a group if no owners will remain
+ * after the deletion.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+    return;
+  }
+
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
+  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+
+  // Calculate current owners.
+  $owner_memberships = $storage->loadByProperties([
+    'entity_type' => $group->getEntityTypeId(),
+    'entity_id' => $group->id(),
+    'roles' => $admin_role,
+  ]);
+  if (empty($owner_memberships)) {
+    return;
+  }
+  $owner_membership_ids = array_keys($owner_memberships);
+
+  // Calculate memberships to be deleted.
+  $options = $form_state->getValue('og_membership_bulk_form');
+  if (empty($options)) {
+    return;
+  }
+  $memberships_to_be_deleted = array_map('joinup_core_extract_bulk_form_entity_id', array_filter($options));
+  $left_owners = array_diff($owner_membership_ids, $memberships_to_be_deleted);
+  if (empty($left_owners)) {
+    $message = \Drupal::translation()->translate('You cannot delete the owner of a @type.', ['@type' => $group->bundle()]);
+    $form_state->setError($form, $message);
+  }
+}
+
+/**
+ * Loads an entity based on a bulk form key.
+ *
+ * This derives from bulk form's way of loading row entities. Currently, it
+ * exists in its simplified form as there is no need to deal with revisions or
+ * languages. In the future, if the need emerges, this function can be extended
+ * to match the original method.
+ *
+ * @param string $bulk_form_key
+ *   The bulk form key representing the entity's ID, language.
+ *
+ * @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey
+ *
+ * @return string
+ *   The entity's ID.
+ */
+function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
+  $key = base64_decode($bulk_form_key);
+  $key_parts = json_decode($key);
+
+  // The first two items will always be langcode and ID.
+  $id = array_pop($key_parts);
+  return $id;
 }

@@ -14,7 +14,7 @@ Feature: Submit the contact form
     # There should be a link to the contact form in the footer.
     Given I am not logged in
     When I am on the homepage
-    And I click "Contact" in the "Footer" region
+    And I click "Contact Joinup Support" in the "Footer" region
     Then I should see the heading "Contact"
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
@@ -34,15 +34,15 @@ Feature: Submit the contact form
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
-      | template  | Contact form submission          |
-      | recipient | Valentína Řezník                 |
-      | subject   | Joinup - Contact form submission |
-      | body      | Dear sir, madam, ...             |
-    And the following email should have been sent:
-      | template  | Contact form submission          |
-      | recipient | Oluwakanyinsola Opeyemi          |
-      | subject   | Joinup - Contact form submission |
-      | body      | Dear sir, madam, ...             |
+      | template           | Contact form submission          |
+      | from               | digit-joinup@ec.europa.eu        |
+      | recipient          | digit-joinup@ec.europa.eu        |
+      | subject            | Joinup - Contact form submission |
+      | body               | Dear sir, madam, ...             |
+      | signature_required | no                               |
+    And I should see the following success messages:
+      | success messages                                              |
+      | Your message has been submitted. Thank you for your feedback. |
 
   Scenario: Check required fields
     When I am on the contact form

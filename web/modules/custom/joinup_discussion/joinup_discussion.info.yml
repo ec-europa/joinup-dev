@@ -6,34 +6,57 @@ package: Joinup
 
 dependencies:
   - cached_computed_field
+  - changed_fields
   - comment
   - joinup_community_content
   - joinup_core
+  - joinup_invite
+  - joinup_notification
+  - joinup_subscription
   - joinup_user
   - language
+  - message
+  - smart_trim
 
 config_devel:
   - comment.type.reply
   - core.base_field_override.node.discussion.status
   - core.entity_form_display.comment.reply.default
+  - core.entity_form_display.message.discussion_invite.default
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.comment.reply.default
-  - core.entity_view_display.node.discussion.default
+  - core.entity_view_display.comment.reply.default
+  - core.entity_view_display.message.discussion_comment_new.mail_body
+  - core.entity_view_display.message.discussion_comment_new.mail_subject
+  - core.entity_view_display.message.discussion_delete.mail_body
+  - core.entity_view_display.message.discussion_delete.mail_subject
+  - core.entity_view_display.message.discussion_invite.default
+  - core.entity_view_display.message.discussion_invite.mail_body
+  - core.entity_view_display.message.discussion_invite.mail_subject
+  - core.entity_view_display.message.discussion_updated.mail_body
+  - core.entity_view_display.message.discussion_updated.mail_subject
   - core.entity_view_display.node.discussion.moderation
   - core.entity_view_display.node.discussion.view_mode_featured
   - core.entity_view_display.node.discussion.view_mode_tile
   - field.field.comment.reply.field_attachment
   - field.field.comment.reply.field_body
-  - field.field.node.discussion.field_replies
+  - field.field.message.discussion_invite.field_invitation
   - field.field.node.discussion.body
   - field.field.node.discussion.field_attachment
   - field.field.node.discussion.field_keywords
   - field.field.node.discussion.field_policy_domain
+  - field.field.node.discussion.field_replies
   - field.field.node.discussion.field_shared_in
   - field.field.node.discussion.field_site_featured
+  - field.field.node.discussion.field_site_pinned
   - field.field.node.discussion.field_state
   - field.field.node.discussion.field_visit_count
   - field.field.node.discussion.og_audience
-  - field.storage.node.field_replies
   - field.storage.comment.field_attachment
+  - field.storage.node.field_replies
+  - joinup_invite.invitation_type.discussion
+  - message.template.discussion_comment_new
+  - message.template.discussion_delete
+  - message.template.discussion_invite
+  - message.template.discussion_updated
   - node.type.discussion

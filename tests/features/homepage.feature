@@ -12,10 +12,9 @@ Feature: Homepage
       | Solutions   | 0 |
       | Collections | 0 |
       | Content     | 0 |
-    # Test that the page is successfully cached. When we assert that the user is
-    # not logged in at the start of the test the homepage is already probed and
-    # subsequently cached.
-    And the page should be cached
+    # Test that the page is successfully cached.
+    When I reload the page
+    Then the page should be cached
 
     Given the following collections:
       | title               | state            |
@@ -121,7 +120,8 @@ Feature: Homepage
     # This shows collections in the states "validated', 'deletion request',
     # 'archival request', and 'archived'.
     When I go to the homepage
-    And I click "Collections" in the "Header" region
+    Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
+    When I click "Collections" in the "Header" region
     Then I should see the heading "Collections"
     And I should see the following lines of text:
       | Social classes  |
@@ -204,8 +204,16 @@ Feature: Homepage
 
     When I am logged in as a user with the "authenticated" role
     And I go to the homepage
-    Then I should see the small header
+    Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
+    And I should see the small header
 
     # The header should still be shown in the other pages.
     When I click "Collections"
     Then I should see the small header
+
+  Scenario: Only specific social network links are available in the footer.
+    When I am on the homepage
+    Then I should see the link "LinkedIn" in the Footer region
+    And I should see the link "Twitter" in the Footer region
+    But I should not see the link "Facebook" in the Footer region
+    And I should not see the link "Google+" in the Footer region

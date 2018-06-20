@@ -61,7 +61,7 @@ Feature: Global search
     Given I am at "/search"
 
     # Select link in the 'type' facet.
-    When I click the Solution content tab
+    When I click the Solutions content tab
     Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
     And I should not see the "Molecular cooking collection" tile
@@ -129,7 +129,7 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha 1, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
@@ -140,7 +140,7 @@ Feature: Global search
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha 1, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
@@ -151,7 +151,7 @@ Feature: Global search
 
     # "Alphabet" is used in all the keywords fields.
     When I enter "Alphabet" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha 1, News omega, Event Omega, Document omega"
+    Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
@@ -178,11 +178,11 @@ Feature: Global search
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
     When I enter "responsible" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha 1"
+    Then the page should show the tiles "Solution alpha, Release Alpha"
     # Visit the homepage to be sure that the test fetches the correct updated page.
     When I go to the homepage
     And I enter "contact" in the header search bar and hit enter
-    Then the page should show the tiles "Solution alpha, Release Alpha 1"
+    Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
     When I enter "Jenessa" in the header search bar and hit enter

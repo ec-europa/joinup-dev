@@ -7,6 +7,6 @@ weight: 4
 is_admin: false
 permissions:
   - 'administer account settings'
-  - 'administer group'
-  - 'administer nodes'
+  - 'administer redirects'
   - 'edit collection rdf entity'
+  - 'view the administration theme'

@@ -31,6 +31,10 @@ Feature: Asset distribution overview on solution.
     When I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the heading "Releases for Lovely Butterfly solution"
+
+    # Check that clean URLs are being applied to the "releases" subpage.
+    And I should be on "/solution/lovely-butterfly/releases"
+
     And I should see the heading "Lovely Butterfly" in the Header region
     # Only the published releases should be shown.
     # The release titles include the version as a suffix.

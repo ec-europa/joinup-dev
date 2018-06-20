@@ -8,7 +8,7 @@ Feature: User authentication
     When I visit "user"
     Then I should see the text "Sign in"
     And I should see the text "Reset your password"
-    And I should see the text "Username"
+    And I should see the text "E-mail or username"
     And I should see the text "Password"
     But I should not see the text "Sign out"
     And I should not see the text "My account"
@@ -34,6 +34,7 @@ Feature: User authentication
       | path                               |
       | admin                              |
       | admin/config                       |
+      | admin/config/search/redirect       |
       | admin/content                      |
       | admin/content/rdf                  |
       | admin/people                       |
@@ -68,7 +69,6 @@ Feature: User authentication
       | path                |
       | propose/collection  |
       | collections         |
-      | dashboard           |
       | user                |
       | joinup/legal-notice |
 
@@ -87,6 +87,7 @@ Feature: User authentication
       | admin/people                       |
       | admin/structure                    |
       | admin/structure/views              |
+      | dashboard                          |
       | propose/solution                   |
       | licence                            |
       | licence/add                        |
@@ -130,6 +131,7 @@ Feature: User authentication
       | path                               |
       | admin                              |
       | admin/config                       |
+      | admin/config/search/redirect       |
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
@@ -156,9 +158,9 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path        |
-      | collections |
-      | dashboard   |
+      | path                         |
+      | admin/config/search/redirect |
+      | collections                  |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development

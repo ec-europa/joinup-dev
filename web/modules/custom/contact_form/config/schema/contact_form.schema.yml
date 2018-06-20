@@ -1,0 +1,10 @@
+contact_form.settings:
+  type: config_object
+  label: 'Settings related to the contact form.'
+  mapping:
+    default_recipient:
+      label: 'Default recipient'
+      type: string
+    contact_form_from:
+      label: 'Default sender for contact form (except from reports)'
+      type: string

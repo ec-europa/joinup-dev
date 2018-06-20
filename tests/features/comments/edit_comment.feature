@@ -24,6 +24,7 @@ Feature: Edit a comment
     # Sons' comment is the only comment available.
     And I click the contextual link "Edit comment" in the "Comment" region
     And I fill in "Create comment" with "Cracking the web."
+    And I wait for the honeypot validation to pass
     Then I press "Post comment"
     And the following email should have been sent:
       | recipient | Comment edit moderator                                  |

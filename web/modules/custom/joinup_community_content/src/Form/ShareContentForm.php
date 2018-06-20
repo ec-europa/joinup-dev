@@ -3,13 +3,13 @@
 namespace Drupal\joinup_community_content\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
@@ -24,7 +24,7 @@ class ShareContentForm extends ShareContentFormBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -39,10 +39,10 @@ class ShareContentForm extends ShareContentFormBase {
    *   The OG membership manager.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user account.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManager $relation_manager) {
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($rdf_storage, $rdf_builder, $membership_manager, $current_user);
 
     $this->relationManager = $relation_manager;
@@ -115,7 +115,7 @@ class ShareContentForm extends ShareContentFormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => empty($collections) ? $this->t('Close') : $this->t('Save'),
+      '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
     ];
 
     if ($this->isModal() || $this->isAjaxForm()) {
@@ -142,7 +142,7 @@ class ShareContentForm extends ShareContentFormBase {
     }
 
     // Show a message if the content was shared in at least one collection.
-    if (!$this->isAjaxForm() && !empty($collections)) {
+    if (!empty($collections)) {
       drupal_set_message('Sharing updated.');
     }
 
@@ -162,7 +162,7 @@ class ShareContentForm extends ShareContentFormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
-    $response->addCommand(new CloseModalDialogCommand());
+    $response->addCommand(new RedirectCommand((string) $this->node->toUrl()->toString()));
 
     return $response;
   }

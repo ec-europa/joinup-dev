@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - search_api.index.published
+    - system.menu.main
   module:
     - joinup_core
     - search_api
@@ -192,7 +193,7 @@ display:
           decimal: .
           separator: ','
           format_plural: false
-          format_plural_string: "1\x03@count"
+          format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
           plugin_id: numeric
@@ -472,6 +473,18 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts:
+        site_pinned:
+          id: site_pinned
+          table: search_api_index_published
+          field: site_pinned
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
         entity_created:
           id: entity_created
           table: search_api_index_published
@@ -485,20 +498,7 @@ display:
             label: ''
           plugin_id: search_api
       title: Solutions
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: '<p>A solution on Joinup is a framework, tool, or service either hosted directly on Joinup or federated from third-party repositories.</p>'
-            format: content_editor
-          plugin_id: text
+      header: {  }
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -521,6 +521,15 @@ display:
     display_options:
       display_extenders: {  }
       path: solutions
+      menu:
+        type: normal
+        title: Solutions
+        description: ''
+        expanded: false
+        parent: ''
+        weight: -48
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

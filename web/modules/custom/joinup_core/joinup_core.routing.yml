@@ -54,3 +54,29 @@ joinup_core.id_redirect:
     _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
   requirements:
     _access: 'TRUE'
+
+joinup_core.rdf_entity_uri_web_converter_page:
+  path: '/rdf'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\RdfEntityUriWebConverterForm'
+    _title: 'Convert a RDF entity ID'
+  requirements:
+    _permission: 'access uri converter'
+  options:
+    _admin_route: TRUE
+
+joinup_core.admin_reporting:
+  path: '/admin/reporting'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Reporting'
+  requirements:
+    _permission: 'access joinup reports'
+
+joinup_core.transfer_group_ownership_confirm:
+  path: '/group/transfer/ownership'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm'
+    _title: Transfer
+  requirements:
+    _custom_access: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm::access'

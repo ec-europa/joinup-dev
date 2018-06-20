@@ -11,8 +11,9 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
-use Drupal\joinup\Controller\SiteFeatureController;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -29,13 +30,15 @@ use Drupal\rdf_entity\Entity\Rdf;
  */
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use ConfigReadOnlyTrait;
+  use EntityTrait;
   use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
-  use WorkflowTrait;
   use UtilityTrait;
+  use WorkflowTrait;
 
   /**
    * Test solutions.
@@ -214,7 +217,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // As each given step is executed in the same request
     // we need to reset the mapping.
     $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -291,6 +293,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       foreach ($values['field_ar_affiliates'] as $collection_label) {
         $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
         solution_update_collection_affiliation($solution->id(), $collection->id());
+        // Reindex the solution, so that the value of the "collection" computed
+        // field will be populated and indexed correctly.
+        $this->forceSearchApiReindex($solution);
       }
     }
 
@@ -455,8 +460,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected static function solutionFieldAliases() {
     // Mapping alias - field name.
     return [
-      'uri' => 'id',
       'author' => 'uid',
+      'uri' => 'id',
       'title' => 'label',
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
@@ -487,7 +492,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
       'collection' => 'field_ar_affiliates',
-      'featured' => SiteFeatureController::FEATURED_FIELD,
+      'featured' => 'field_site_featured',
+      'pinned site-wide' => 'field_site_pinned',
+      'pinned in' => 'field_is_pinned_in',
     ];
   }
 
@@ -520,7 +527,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         'needs update' => 'needs_update',
         'blacklisted' => 'blacklisted',
       ],
-      SiteFeatureController::FEATURED_FIELD => ['no' => 0, 'yes' => 1],
+      'field_site_featured' => ['no' => 0, 'yes' => 1],
+      'field_site_pinned' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
@@ -588,7 +596,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Create the needed language.
     $language_manager = \Drupal::languageManager();
     if (!$language_manager->getLanguage($langcode)) {
+      // Temporarily bypass the read only config functionality so that we can
+      // enable the language for testing.
+      $this->bypassReadOnlyConfig();
       ConfigurableLanguage::createFromLangcode($langcode)->save();
+      $this->restoreReadOnlyConfig();
     }
   }
 

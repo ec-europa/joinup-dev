@@ -11,12 +11,12 @@ dependencies:
 id: group_facet
 theme: joinup_theme
 region: filters
-weight: -12
+weight: -15
 provider: null
 plugin: 'facet_block:group'
 settings:
   id: 'facet_block:group'
-  label: 'Group facet'
+  label: 'Search page - Group facet'
   provider: facets
   label_display: '0'
 visibility:

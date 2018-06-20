@@ -1,8 +1,16 @@
 .hex-list {
-  float: left;
-  width: 100%;
-  margin-bottom: 45px;
+  float: none;
+  clear: both;
+  width: auto;
+  display: inline-block;
+  padding-bottom: 45px;
 }
+
+.hex-list-wrapper {
+  text-align: center;
+  width: 100%;
+}
+
 .hex-list .hex-row {
   clear: left;
   line-height: 0px;

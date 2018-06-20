@@ -9,12 +9,16 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\message\Entity\MessageTemplate;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing notifications.
  */
 class JoinupNotificationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use ConfigReadOnlyTrait;
 
   /**
    * The mail system storage settings.
@@ -34,18 +38,20 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Asserts that an email has been sent.
    *
    * Table format:
-   * | template  | Comment deletion |
-   * | recipient | username0123     |
-   * | subject   | The mail subject |
-   * | body      | The message body |
-   * | html      | yes/no           |
+   * | template           | Comment deletion |
+   * | recipient          | username0123     |
+   * | subject            | The mail subject |
+   * | body               | The message body |
+   * | html               | yes/no           |
+   * | signature_required | yes/no           |
    *
-   * The 'template' can be either the name or the description of the message
-   * template. If the template row is not present, no matching on template will
-   * be done. This is needed for system mails (like the ones sent by the user
-   * module).
-   * The 'body' is a partial text based match.
-   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
+   * - The 'template' can be either the name or the description of the message
+   *   template. If the template row is not present, no matching on template
+   *   will be done. This is needed for system mails (like the ones sent by the
+   *   user module).
+   * - The 'body' is a partial text based match.
+   * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
+   *   When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -56,33 +62,44 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
+    /** @var string $from */
     /** @var string $body */
     /** @var string $recipient */
     /** @var string $subject */
     /** @var string $template */
+    /** @var string $signature_required */
     extract($table->getRowsHash());
+
+    // Translate the human readable value for the requirement of the signature
+    // to a boolean. This defaults to TRUE.
+    $signature_required = !isset($signature_required) || $signature_required !== 'no';
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
     $html = empty($html) || $html === 'yes';
 
     $user = user_load_by_name($recipient);
-    if (empty($user)) {
-      throw new \Exception("User $recipient was not found.");
+    if (!empty($user)) {
+      $recipient = $user->getEmail();
     }
-    if (empty($user->getEmail())) {
-      throw new \Exception("User $recipient does not have an e-mail address.");
+    elseif (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
     }
 
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception('No mail was sent.');
     }
 
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $user->getEmail()) {
+      if ($mail['to'] !== $recipient) {
+        continue;
+      }
+
+      // Check the sender email if it is set.
+      if (!empty($from) && $mail['from'] !== $from) {
         continue;
       }
 
@@ -109,15 +126,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception('There were arguments found in the subject or the body of the email that were not replaced.');
+        throw new \Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
-      // Ensure that the signature is always placed.
-      // In non user emails, html p tags are used for new lines and these are
-      // stripped instead of replaced. Thus, a regex will be used to properly
-      // identify the signature regardless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was not found or is not correct.');
+      // Check the existence or absence of the signature.
+      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
+      if ($signature_required && !$signature_present) {
+        throw new \Exception('The signature of the email was not found or is not correct.');
+      }
+      elseif (!$signature_required && $signature_present) {
+        throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -141,24 +159,58 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
+    Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
     /** @var array $mail */
     if ($html) {
-      PHPUnit_Framework_Assert::assertEquals(
-        SWIFTMAILER_FORMAT_HTML,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as HTML.'
-      );
+      Assert::assertEquals(SWIFTMAILER_FORMAT_HTML, $mail['headers']['Content-Type'], 'The mail is not sent as HTML.');
     }
     else {
-      PHPUnit_Framework_Assert::assertStringStartsWith(
-        SWIFTMAILER_FORMAT_PLAIN,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as plain text.'
-      );
+      Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
+    }
+  }
+
+  /**
+   * Asserts that an email has not been sent.
+   *
+   * See ::assertEmailSent() for the structure of the table node argument.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
+   *
+   * @throws \Exception
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @see self::assertEmailSent()
+   *
+   * @Then the following email should not have been sent:
+   */
+  public function assertEmailNotSent(TableNode $table) {
+    $hash = $table->getRowsHash();
+    $recipient = $hash['recipient'];
+    $user = user_load_by_name($recipient);
+    if (!empty($user)) {
+      $recipient = $user->getEmail();
+    }
+    if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
+    }
+
+    try {
+      // Reusing ::assertEmailSent().
+      $this->assertEmailSent($table);
+      $email_was_sent = TRUE;
+    }
+    catch (\Exception $e) {
+      $email_was_sent = FALSE;
+    }
+
+    if ($email_was_sent) {
+      // Allow pass if an exception was throw, meaning the expected E-mail was
+      // not sent.
+      throw new \Exception('E-mail was sent.');
     }
   }
 
@@ -166,14 +218,15 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Asserts that a system email has been sent.
    *
    * Table format:
-   * | recipient      | username0123     |
-   * | recipient_mail | user@example.com |
-   * | subject        | The mail subject |
-   * | body           | The message body |
-   * | html           | yes/no           |
+   * | recipient          | username0123     |
+   * | subject            | The mail subject |
+   * | body               | The message body |
+   * | html               | yes/no           |
+   * | signature_required | yes/no           |
    *
-   * The 'body' is a partial text based match.
-   * The 'html' can be 'yes' or 'no'. When not present, 'yes' is assumed.
+   * - The 'body' is a partial text based match.
+   * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
+   *   When not present, 'yes' is assumed.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The mail data table.
@@ -186,9 +239,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   public function assertSystemEmailSent(TableNode $table) {
     /** @var string $body */
     /** @var string $recipient */
-    /** @var string $recipient_mail */
     /** @var string $subject */
+    /** @var string $template */
+    /** @var string $signature_required */
     extract($table->getRowsHash());
+
+    // Translate the human readable value for the requirement of the signature
+    // to a boolean. This defaults to TRUE.
+    $signature_required = !isset($signature_required) || $signature_required !== 'no';
 
     // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
     // and 'no' to FALSE.
@@ -208,7 +266,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception('No mail was sent.');
     }
 
     $email_found = FALSE;
@@ -240,15 +298,22 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
       if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new Exception('There were arguments found in the mail or the body that were not replaced.');
+        throw new \Exception('There were arguments found in the mail or the body that were not replaced.');
       }
 
-      // Ensure that the signature is always placed.
-      // In non user emails, html p tags are used for new lines and these are
-      // stripped instead of replaced. Thus, a regex will be used to properly
-      // identify the signature regardless of spaces.
-      if (!preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body)) {
-        throw new Exception('The signature of the email was not found or is not correct.');
+      // In the previous steps all whitespace has been converted to spaces and
+      // HTML tags were removed, but this might cause double spaces to appear.
+      // Replace all double spaces with single spaces.
+      $body = preg_replace("/\s+/", ' ', $body);
+      $mail_body = preg_replace("/\s+/", ' ', $mail_body);
+
+      // Check the existence or absence of the signature.
+      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
+      if ($signature_required && !$signature_present) {
+        throw new \Exception('The signature of the email was not found or is not correct.');
+      }
+      elseif (!$signature_required && $signature_present) {
+        throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
       // Since the body field has url tokens, we cannot provide a full body text
@@ -263,24 +328,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       break;
     }
 
-    PHPUnit_Framework_Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
+    Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
 
     // If the previous assertion passed, the $mail variable contains the correct
     // mail.
     /** @var array $mail */
     if ($html) {
-      PHPUnit_Framework_Assert::assertEquals(
-        SWIFTMAILER_FORMAT_HTML,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as HTML.'
-      );
+      Assert::assertEquals(SWIFTMAILER_FORMAT_HTML, $mail['headers']['Content-Type'], 'The mail is not sent as HTML.');
     }
     else {
-      PHPUnit_Framework_Assert::assertStringStartsWith(
-        SWIFTMAILER_FORMAT_PLAIN,
-        $mail['headers']['Content-Type'],
-        'The mail is not sent as plain text.'
-      );
+      Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
     }
   }
 
@@ -323,12 +380,19 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @BeforeScenario @email
    */
   public function beforeEmailScenario() {
+    // Temporarily bypass read only config so that we can set up the testing
+    // mail system.
+    $this->bypassReadOnlyConfig();
+
     $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
     $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
     $this->mailConfig
       ->set('defaults.sender', 'test_mail_collector')
       ->save();
     \Drupal::state()->set('system.test_mail_collector', []);
+    \Drupal::state()->resetCache();
+
+    $this->restoreReadOnlyConfig();
   }
 
   /**
@@ -337,7 +401,13 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @AfterScenario @email
    */
   public function afterEmailScenario() {
+    // Temporarily bypass read only config so that we can restore the original
+    // mail handler.
+    $this->bypassReadOnlyConfig();
+
     $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+
+    $this->restoreReadOnlyConfig();
   }
 
 }

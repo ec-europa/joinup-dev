@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Update hooks for joinup_subscription module.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\field\FieldStorageConfigInterface;
+
+/**
+ * Install the field storage definition for 'subscription_bundles' field.
+ */
+function joinup_subscription_update_8100() {
+  // Clear the field type cache to make sure the new EntityBundlePairItem
+  // field type will be available for use.
+  \Drupal::service('plugin.manager.field.field_type')->clearCachedDefinitions();
+
+  // Update the entity definitions so that the subscription_bundles field is
+  // installed.
+  $storage_definition = BaseFieldDefinition::create('entity_bundle_pair')
+    ->setLabel(t('Subscribed bundles'))
+    ->setDescription(t('Holds the bundles that the user is subscribed to for notifications keyed by their entity type.'))
+    ->setCardinality(FieldStorageConfigInterface::CARDINALITY_UNLIMITED)
+    ->setRequired(FALSE)
+    // By default, the new member gets subscribed to all community content of
+    // the group.
+    ->setDefaultValue([
+      ['entity_type' => 'node', 'bundle' => 'discussion'],
+      ['entity_type' => 'node', 'bundle' => 'document'],
+      ['entity_type' => 'node', 'bundle' => 'event'],
+      ['entity_type' => 'node', 'bundle' => 'news'],
+    ]);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('subscription_bundles', 'og_membership', 'og_membership', $storage_definition);
+}
+
+/**
+ * Implements hook_update_dependencies().
+ *
+ * Rdf entity has gone through a major API upgrade. Its upgrade path provides
+ * some new config entities that have the highest priority.
+ *
+ * Set the rdf_entity and rdf_draft updates as a dependency to the
+ * joinup_subscription update.
+ */
+function joinup_subscription_update_dependencies() {
+  $dependencies['joinup_subscription'][8100] = [
+    'rdf_entity' => 8001,
+    'rdf_draft' => 8001,
+  ];
+
+  return $dependencies;
+}

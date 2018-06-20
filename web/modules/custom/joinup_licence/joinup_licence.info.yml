@@ -4,6 +4,9 @@ description: Licence entity for Joinup
 core: 8.x
 package: Joinup
 
+dependencies:
+  - smart_trim
+
 config_devel:
   - core.base_field_override.rdf_entity.licence.label
   - core.entity_form_display.rdf_entity.licence.default
@@ -13,4 +16,5 @@ config_devel:
   - field.field.rdf_entity.licence.field_licence_type
   - field.storage.rdf_entity.field_licence_description
   - field.storage.rdf_entity.field_licence_type
+  - rdf_entity.mapping.rdf_entity.licence
   - rdf_entity.rdfentity.licence

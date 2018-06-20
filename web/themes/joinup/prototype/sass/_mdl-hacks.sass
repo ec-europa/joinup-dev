@@ -9,6 +9,8 @@
   height: 64px !important
   +breakpoint(tablet)
     padding: 0 20px
+  &.mdl-layout__header-row--maintenance
+    padding: 0 20px
 
 .mdl-menu
   .mdl-menu__item
@@ -78,8 +80,10 @@
 .filters
   .mdl-menu__container
     max-height: 400px
+    &.is-upgraded
+      .mdl-menu
+        position: relative
   .mdl-menu
-    position: relative
     overflow-x: hidden
     overflow-y: auto
     max-height: 400px

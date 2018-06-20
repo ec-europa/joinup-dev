@@ -9,60 +9,57 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing custom pages.
  */
 class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use FileTrait;
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
-   * Checks if the given custom page belongs to the given collection.
+   * Handles the attachment field for custom page nodes.
    *
-   * If there are multiple custom pages or collections with the same name, then
-   * only the first one is checked.
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the node as properties on the object.
    *
-   * @param string $title
-   *   The title of the custom page to check.
-   * @param string $collection
-   *   The name of the collection to check.
-   *
-   * @throws \Exception
-   *   Thrown when a custom page with the given title doesn't exist.
-   *
-   * @Then the :collection collection should have a custom page titled :title
+   * @BeforeNodeCreate
    */
-  public function assertOgMembership($title, $collection) {
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
+  public static function massageCustomPageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+    /** @var \stdClass $node */
+    $node = $scope->getEntity();
 
-    $custom_pages = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties(['title' => $title]);
-    /** @var \Drupal\node\NodeInterface $custom_page */
-    $custom_page = reset($custom_pages);
-
-    if (empty($custom_page)) {
-      throw new \Exception("The custom page titled '$title' was not found.");
+    if ($node->type !== 'custom_page' || empty($node->attachments)) {
+      return;
     }
 
-    /** @var \Drupal\og\Plugin\Field\FieldType\OgStandardReferenceItem $group */
-    foreach ($custom_page->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD) as $group) {
-      if ($group->getValue()['target_id'] == $collection->id()) {
-        // Test passes.
-        return;
-      }
-    }
+    // We want to copy it from the fixtures into the file system and register it
+    // in the DocumentSubContext so it can be cleaned up after the scenario
+    // ends. Perform a small dance to get access to the context class from
+    // inside this static callback.
+    /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+    $environment = $scope->getEnvironment();
+    /** @var \CustomPageSubContext $context */
+    $context = $environment->getContext(self::class);
 
-    throw new \Exception("The custom page '$title' is not associated with collection '{$collection->label()}'.");
+    foreach ($context->explodeCommaSeparatedStepArgument($node->attachments) as $filename) {
+      $context->createFile($filename);
+    }
   }
 
   /**
@@ -198,7 +195,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     $build = $link_tree_service->build($tree);
     $actual = !empty($build['#items']) ? count($build['#items']) : 0;
 
-    PHPUnit_Framework_Assert::assertEquals($count, $actual);
+    Assert::assertEquals($count, $actual);
   }
 
   /**
@@ -217,7 +214,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertItemsInMenuForm($menu, $label, $type, $count) {
     $tree = $this->getOgMenuTreeByNameLabelAndType($menu, $label, $type);
-    PHPUnit_Framework_Assert::assertEquals($count, count($tree));
+    Assert::assertEquals($count, count($tree));
   }
 
   /**

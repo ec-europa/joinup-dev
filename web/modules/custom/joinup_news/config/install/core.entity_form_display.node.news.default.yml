@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.news.field_policy_domain
     - field.field.node.news.field_shared_in
     - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
@@ -43,7 +44,7 @@ content:
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 12
+    weight: 13
     region: content
     settings:
       title: 'Current workflow state'
@@ -112,7 +113,7 @@ content:
     type: options_select
     region: content
   field_state:
-    weight: 13
+    weight: 14
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -134,7 +135,21 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
     weight: 11
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -142,10 +157,10 @@ hidden:
   created: true
   field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_visit_count: true
   og_audience: true
   path: true
   promote: true
   status: true
   sticky: true
-  uid: true

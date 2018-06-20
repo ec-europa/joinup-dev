@@ -18,6 +18,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
+    - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
     - rdf_entity.rdfentity.collection
@@ -28,7 +30,6 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
-    - rdf_entity
     - text
 third_party_settings:
   field_group:
@@ -233,7 +234,10 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  created: true
   current_workflow_state: true
   field_ar_affiliates: true
   field_collection_content: true
+  field_site_featured: true
+  field_site_pinned: true
   uid: true

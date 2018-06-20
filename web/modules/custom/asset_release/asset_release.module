@@ -9,10 +9,12 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -122,7 +124,7 @@ function asset_release_preprocess_rdf_entity(&$variables) {
     // invalidate the cache also when a release is first saved as draft and then
     // published. In that case the solution won't be updated, so we need to
     // manually take care of this.
-    $group_tag = Cache::buildTags('og-group-content', [$parent_solution->getEntityTypeId() . ':' . $parent_solution->id()]);
+    $group_tag = Cache::buildTags('og-group-content', $parent_solution->getCacheTagsToInvalidate());
     $variables['#cache']['tags'] = Cache::mergeTags($cache_tags, $group_tag);
   }
 }
@@ -202,17 +204,16 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     \Drupal::service('asset_release.relations')->syncFieldsFromParentSolution($entity);
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
     return;
   }
 
   $state = $entity->field_isr_state->value;
   if (in_array($state, ['draft', 'needs_update'])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, ['validated'])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -230,12 +231,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
  */
 function asset_release_entity_update(EntityInterface $entity) {
   // Quick escape check to avoid unnecessary loadings.
-  if ($entity->bundle() != 'asset_release') {
-    return;
-  }
-
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'asset_release' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
     return;
   }
 
@@ -305,4 +301,16 @@ function asset_release_title_version_is_unique(RdfInterface $asset_release, $che
   $result = $query->execute();
 
   return empty($result);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * For releases, put a permission control on who can edit the creation date.
+ * This applies in edit forms only.
+ */
+function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['created'])) {
+    $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
+  }
 }

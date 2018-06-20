@@ -10,6 +10,7 @@ dependencies:
   - joinup_community_content
   - joinup_core
   - language
+  - smart_trim
 
 config_devel:
   - core.entity_form_display.node.event.default
@@ -35,6 +36,7 @@ config_devel:
   - field.field.node.event.field_short_title
   - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_site_featured
+  - field.field.node.event.field_site_pinned
   - field.field.node.event.field_state
   - field.field.node.event.field_visit_count
   - field.field.node.event.og_audience

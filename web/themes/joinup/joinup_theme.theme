@@ -17,6 +17,7 @@ use Drupal\Core\Url;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\node\NodeInterface;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -45,17 +46,25 @@ function _joinup_form_meta_by_route(RouteMatchInterface $route_match) {
 
     if (in_array($route_name, $tabs_routes)) {
 
+      // Entity type form with tabs.
+      $tabs_types = ['collection', 'solution', 'tallinn_report'];
+
       // Get entity type on edit form.
       if ($entity = $route_match->getParameter('rdf_entity')) {
-        $rdf_type = $entity->getType();
+        $entity_type = $entity->getType();
       }
 
       // Get entity type on create form.
       elseif ($entity = $route_match->getParameter('rdf_type')) {
-        $rdf_type = $entity->id();
+        $entity_type = $entity->id();
       }
 
-      if (isset($rdf_type) && in_array($rdf_type, ['collection', 'solution'], TRUE)) {
+      // Get entity type on node edit form.
+      elseif ($entity = $route_match->getParameter('node')) {
+        $entity_type = $entity->bundle();
+      }
+
+      if (isset($entity_type) && in_array($entity_type, $tabs_types, TRUE)) {
         $form_meta['has_tabs'] = TRUE;
       }
     }
@@ -104,6 +113,7 @@ function _joinup_horizontal_tabs_routes() {
  */
 function _joinup_vertical_tabs_routes() {
   return [
+    'entity.node.edit_form',
     'entity.rdf_entity.edit_form',
     'rdf_entity.propose_form',
     'solution.collection_solution.add',
@@ -214,6 +224,24 @@ function _joinup_is_create_form_route($route_name) {
   }
 
   return FALSE;
+}
+
+/**
+ * Get an inline autor.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node, where we get the author.
+ *
+ * @return array
+ *   Renderable array contains the author.
+ */
+function _joinup_theme_get_author(NodeInterface $node) {
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  $author = $node->get('uid')->entity;
+  $author_inline = $viewBuilder->view($author, 'inline');
+
+  return $author_inline;
 }
 
 /**
@@ -644,6 +672,31 @@ function joinup_theme_preprocess_field__comma_separated(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field.html.twig.
+ */
+function joinup_theme_preprocess_field(&$variables) {
+  // View modes displayed as full page.
+  $full_pages_modes = [
+    'about',
+    'full',
+  ];
+
+  if (in_array($variables['element']['#view_mode'], $full_pages_modes)) {
+    // Field types for textarea.
+    $textarea_types = [
+      'text_long',
+      'text_with_summary',
+    ];
+
+    // Add fieldset modifier for textarea.
+    if (in_array($variables['field_type'], $textarea_types)) {
+      $variables['attributes']['class'][] = 'fieldset';
+      $variables['attributes']['class'][] = 'fieldset--textarea';
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field--comment.html.twig.
  */
 function joinup_theme_preprocess_field__comment(&$variables) {
@@ -811,10 +864,7 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
-  $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -828,10 +878,7 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
-  $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -845,10 +892,7 @@ function joinup_theme_preprocess_page_title__node__video(&$variables) {
   $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   $variables['additional_content']['created'] = $created;
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
-  $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -868,10 +912,7 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
-  $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -948,8 +989,14 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
   $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
 
+  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+
+  $author_inline = _joinup_theme_get_author($node);
+
   $variables['additional_content']['field_event_date'] = $field_event_date;
   $variables['additional_content']['field_location'] = $field_event_location;
+  $variables['additional_content']['created'] = $created;
+  $variables['additional_content']['author'] = $author_inline;
 }
 
 /**
@@ -988,7 +1035,7 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
   foreach ($variables['rows'] as &$row) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = $row['content']['#og_membership'];
-    $row['content'] = $view_builder->view($membership->getUser(), 'view_mode_tile');
+    $row['content'] = $view_builder->view($membership->getOwner(), 'view_mode_tile');
   }
 }
 
@@ -1348,6 +1395,7 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
     'rdf_entity_solution_edit_form',
     'rdf_entity_collection_add_form',
     'rdf_entity_solution_add_form',
+    'node_tallinn_report_edit_form',
   ];
 
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
@@ -1369,6 +1417,12 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 function joinup_theme_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
+
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
+  }
 
   // Getting the node creation from the node object.
   if ($node->bundle() == 'news') {
@@ -1399,6 +1453,12 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_rdf_entity(&$variables) {
   if ($variables['view_mode'] == 'about') {
     $variables['is_label_hidden'] = TRUE;
+  }
+
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $variables['rdf_entity']->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
   }
 }
 

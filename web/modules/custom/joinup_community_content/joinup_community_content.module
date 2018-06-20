@@ -5,12 +5,13 @@
  * Main functions and hook implementations of the community content module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 
@@ -43,9 +44,9 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     'node' => $entity->id(),
   ]);
   $build['share_link'] = [
-    '#type' => 'link',
-    // Tech lead forced me to do this.
-    '#title' => Markup::create('<span class="action-link__icon icon icon--share"></span><span class="action-link__link">' . t('Share') . '</span>'),
+    '#theme' => 'link_icon',
+    '#title' => t('Share'),
+    '#icon' => 'share',
     '#url' => $url,
     '#attributes' => [
       'class' => ['use-ajax', 'action-link'],
@@ -56,7 +57,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
       ]),
     ],
     '#access' => $url->access(),
-
+    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
   ];
   $build['#cache'] = [
     'contexts' => [
@@ -152,11 +153,6 @@ function joinup_community_content_preprocess_node(&$variables) {
   if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
     $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
   }
-
-  if ($node->isSticky()) {
-    $variables['attributes']['class'][] = 'is-sticky';
-    $variables['#attached']['library'][] = 'joinup_community_content/pinned_content';
-  }
 }
 
 /**
@@ -164,10 +160,18 @@ function joinup_community_content_preprocess_node(&$variables) {
  */
 function joinup_community_content_theme($existing, $type, $theme, $path) {
   return [
-    'social_share' => [
+    'advanced_search_pseudo_facet' => [
       'variables' => ['entity' => NULL],
     ],
-    'advanced_search_pseudo_facet' => [
+    'link_icon' => [
+      'variables' => [
+        'attributes' => [],
+        'icon' => NULL,
+        'title' => NULL,
+        'url' => NULL,
+      ],
+    ],
+    'social_share' => [
       'variables' => ['entity' => NULL],
     ],
   ];
@@ -179,6 +183,9 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
  * @param array $variables
  *   An associative array containing:
  *   - entity: the entity being shared.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ *   Thrown when the entity being shared does not support generating a URL.
  */
 function template_preprocess_social_share(array &$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
@@ -189,6 +196,7 @@ function template_preprocess_social_share(array &$variables) {
   ])->setAbsolute()->setOption('alias', TRUE);
 
   $variables['encoded_url'] = urlencode($variables['url']->toString());
+  $variables['encoded_title'] = urlencode($entity->label());
 }
 
 /**
@@ -222,6 +230,7 @@ function template_preprocess_advanced_search_pseudo_facet(array &$variables) {
     '#type' => 'link',
     '#title' => t('Advanced search'),
     '#url' => Url::fromRoute('view.search.page_1', [], $options),
+    '#attributes' => ['rel' => 'nofollow'],
   ];
 }
 

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.content_my_content
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: mycontent
+theme: joinup_theme
+region: filters
+weight: -6
+provider: null
+plugin: 'facet_block:content_my_content'
+settings:
+  id: 'facet_block:content_my_content'
+  label: 'Content overview - My content'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }

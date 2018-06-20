@@ -5,17 +5,20 @@ dependencies:
     - core.entity_view_mode.node.moderation
     - field.field.node.discussion.body
     - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
     - field.field.node.discussion.field_policy_domain
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
+    - ds
     - options
-    - text
+    - smart_trim
     - user
 id: node.discussion.moderation
 targetEntityType: node
@@ -27,8 +30,25 @@ content:
     label: hidden
     settings:
       trim_length: 600
-    third_party_settings: {  }
-    type: text_summary_or_trimmed
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: smart_trim
     region: content
   field_state:
     weight: 1
@@ -39,11 +59,14 @@ content:
     region: content
 hidden:
   field_attachment: true
+  field_keywords: true
   field_policy_domain: true
   field_replies: true
   field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_visit_count: true
+  invite_link: true
   langcode: true
   links: true
   og_audience: true

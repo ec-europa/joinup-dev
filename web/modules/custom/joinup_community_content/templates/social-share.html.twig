@@ -10,25 +10,28 @@
  * @ingroup themeable
  */
 #}
-<div class="form-wrapper">
-  <div class="fieldset-wrapper">
-    <div class="share-box__row">
-      <a class="share-box__item" href="http://www.facebook.com/sharer/sharer.php?u={{ url }}" target="_blank">
-        <div class="share-box__item-social-icon icon icon--facebook"></div>
-        <div class="share-box__item-label">{{ 'Facebook'|t }}</div>
-      </a>
-    </div>
-    <div class="share-box__row">
-      <a class="share-box__item" href="https://twitter.com/intent/tweet?url={{ url }}" target="_blank">
-        <div class="share-box__item-social-icon icon icon--twitter"></div>
-        <div class="share-box__item-label">{{ 'Twitter'|t }}</div>
-      </a>
-    </div>
-    <div class="share-box__row">
-      <a class="share-box__item" href="https://plus.google.com/share?url={{ url }}" target="_blank">
-        <div class="share-box__item-social-icon icon icon--gplus"></div>
-        <div class="share-box__item-label">{{ 'Google +'|t }}</div>
-      </a>
-    </div>
-  </div>
+
+<div class="share-box__row">
+  <a class="share-box__item" href="http://www.facebook.com/sharer/sharer.php?u={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--facebook"></div>
+    <div class="share-box__label">{{ 'Facebook'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://twitter.com/intent/tweet?url={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--twitter"></div>
+    <div class="share-box__label">{{ 'Twitter'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://plus.google.com/share?url={{ encoded_url }}" target="_blank">
+    <div class="share-box__social-icon icon icon--gplus"></div>
+    <div class="share-box__label">{{ 'Google +'|t }}</div>
+  </a>
+</div>
+<div class="share-box__row">
+  <a class="share-box__item" href="https://www.linkedin.com/shareArticle?mini=true&url={{ encoded_url }}&title={{ encoded_title }}" target="_blank">
+    <div class="share-box__social-icon icon icon--linkedin"></div>
+    <div class="share-box__label">{{ 'Linkedin'|t }}</div>
+  </a>
 </div>
