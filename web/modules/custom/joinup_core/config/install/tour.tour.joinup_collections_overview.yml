@@ -1,9 +1,11 @@
 id: joinup_collections_overview
 module: joinup_core
-label: Joinup collections overview tour
+label: 'Joinup collections overview tour'
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - joinup_core
 routes:
   - route_name: 'view.collections.page_1'
 tips:

@@ -1,9 +1,11 @@
 id: joinup_homepage
 module: joinup_core
-label: Joinup homepage tour.
+label: 'Joinup homepage tour.'
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - joinup_core
 routes:
   - route_name: 'homepage.content'
 tips:
