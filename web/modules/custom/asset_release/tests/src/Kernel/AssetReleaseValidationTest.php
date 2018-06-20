@@ -17,6 +17,8 @@ class AssetReleaseValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'asset_distribution',
+    'asset_release',
     'file',
     'file_url',
   ];
@@ -26,8 +28,6 @@ class AssetReleaseValidationTest extends RdfEntityValidationTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
-    $this->installModule('asset_release');
     $this->installConfig('asset_release');
   }
 

@@ -22,6 +22,7 @@ class SolutionValidationTest extends RdfEntityValidationTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'asset_distribution',
     'facets',
     'field_group',
     'file',
