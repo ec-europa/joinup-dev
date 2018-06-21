@@ -224,7 +224,12 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $batch_data = $this->getProgress()->getData();
     $all_incoming_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
     if ($blacklist = array_diff($all_incoming_ids, $batch_data['whitelist'])) {
-      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+      // Persist the provenance records of blacklisted items.
+      $blacklisted_provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($blacklist);
+      foreach ($blacklisted_provenance_records as $blacklisted_provenance_record) {
+        $blacklisted_provenance_record->save();
+      }
+      $this->getRdfStorage()->deleteFromGraph($this->getRdfStorage()->loadMultiple($blacklist), 'staging');
     }
 
     $this->getProgress()->setBatchIteration(0);
@@ -328,7 +333,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     if (!isset($data['whitelist'])) {
       $data['whitelist'] = [];
     }
-    static $reference_fields = [];
 
     // Compute the whitelist of IDs not already added but exit early if empty.
     if (!$new_whitelist_ids = array_diff($whitelist_ids, $data['whitelist'])) {
@@ -347,32 +351,18 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $whitelisted_solution_ids = $whitelist_ids;
     }
 
-    // Build and statically cache a list of reference fields, part of ADMS-AP,
-    // for this bundle.
-    if (!isset($reference_fields[$bundle])) {
-      $reference_fields[$bundle] = [];
-      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
-        if (
-          $field_definition->getType() === 'entity_reference'
-          && $field_definition->getFieldStorageDefinition()->getSetting('target_type') === 'rdf_entity'
-          && !$field_definition->isComputed()
-          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
-        ) {
-          $reference_fields[$bundle][] = $field_name;
-        }
-      }
-    }
+    $bundle_reference_fields = $this->referenceFields($bundle);
     // This bundle has no entity reference fields.
-    if (!$reference_fields[$bundle]) {
+    if (!$bundle_reference_fields) {
       return;
     }
 
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach (Rdf::loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
+    foreach ($this->getRdfStorage()->loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
       if ($entity->bundle() !== $bundle) {
         throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
       }
-      foreach ($reference_fields[$bundle] as $field_name) {
+      foreach ($bundle_reference_fields as $field_name) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
         foreach ($this->getReferencedEntityIdsByBundle($field) as $referenced_bundle => $referenced_entity_ids) {
@@ -609,6 +599,36 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->rdfEntityQuery = $this->getRdfStorage()->getQuery();
     }
     return $this->rdfEntityQuery;
+  }
+
+  /**
+   * Builds a list of reference fields for a bundle.
+   *
+   * @param string $bundle
+   *   The bundle name.
+   *
+   * @return array
+   *   The list of field names.
+   */
+  protected function referenceFields(string $bundle): array {
+    static $reference_fields = [];
+    // Build and statically cache a list of reference fields, part of ADMS-AP,
+    // for this bundle.
+    if (!isset($reference_fields[$bundle])) {
+      $reference_fields[$bundle] = [];
+      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
+        if (
+          $field_definition->getType() === 'entity_reference'
+          && $field_definition->getFieldStorageDefinition()
+            ->getSetting('target_type') === 'rdf_entity'
+          && !$field_definition->isComputed()
+          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
+        ) {
+          $reference_fields[$bundle][] = $field_name;
+        }
+      }
+    }
+    return $reference_fields[$bundle];
   }
 
 }
