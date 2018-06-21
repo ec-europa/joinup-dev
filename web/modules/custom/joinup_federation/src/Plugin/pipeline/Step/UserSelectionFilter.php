@@ -133,6 +133,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    */
   public function execute() {
     $user_selection = $this->getPersistentDataValue('user_selection');
+    $this->unsetPersistentDataValue('user_selection');
     if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
       // Build a list of all whitelisted entities.
       $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));

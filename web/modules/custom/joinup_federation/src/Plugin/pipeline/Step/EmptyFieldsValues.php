@@ -93,6 +93,9 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
 
+    // Collect here entity IDs that are about to be saved.
+    $entities = [];
+
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
       $entity_exists = isset($local_entities[$id]);
@@ -122,8 +125,12 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
         $this->handleAffiliation($incoming_entity, $entity_exists);
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->save();
+        $entities[$incoming_entity->id()] = $entity_exists;
       }
     }
+
+    // Persist the list so we can reuse it in the next steps.
+    $this->setPersistentDataValue('entities', $entities);
   }
 
   /**
