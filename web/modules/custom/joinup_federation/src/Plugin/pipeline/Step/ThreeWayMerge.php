@@ -6,11 +6,10 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,6 +24,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ThreeWayMerge extends JoinupFederationStepPluginBase {
 
   use SparqlEntityStorageTrait;
+
+  /**
+   * Bundle priority on import.
+   *
+   * @var string[]
+   */
+  const PRIORITY = [
+    'contact_information',
+    'licence',
+    'owner',
+    'solution',
+    'asset_release',
+    'asset_distribution',
+  ];
 
   /**
    * The entity field manager service.
@@ -84,198 +97,64 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute() {
-    // Get the incoming entities.
-    $incoming_ids = $this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->execute();
-    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
-    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
+    $entities_by_bundle = array_fill_keys(static::PRIORITY, []);
 
-    // Get the incoming entities that are stored also locally.
-    $local_ids = $this->getSparqlQuery()
-      ->graphs(['default', 'draft'])
-      ->condition('id', array_values($incoming_ids), 'IN')
-      ->execute();
+    // Retrieve the list of entities from the persistent data store as an
+    // associative array keyed by entity ID and having a boolean as value,
+    // signaling if the entity already exists in Joinup.
+    $entities = $this->getPersistentDataValue('entities');
+    $ids = array_keys($entities);
+
+    // Build a list of local entities that are about to be updated.
+    $local_entity_ids = array_keys(array_filter($entities));
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
-    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
+    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
-    /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
-    foreach ($incoming_entities as $id => $incoming_entity) {
-      $bundle = $incoming_entity->bundle();
-
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
       // The entity already exists.
-      if (isset($local_entities[$id])) {
-        $local_entity = $local_entities[$id];
-
-        // Check for bundle mismatch between the local and the incoming entity.
-        if ($local_entity->bundle() !== $bundle) {
-          $arguments = [
-            '%id' => $id,
-            '%incoming' => $incoming_entity->get('rid')->entity->getSingularLabel(),
-            '%local' => $local_entity->get('rid')->entity->getSingularLabel(),
-          ];
-          return [
-            '#markup' => $this->t("The imported @incoming with the ID '%id' tries to override a local %local with the same ID.", $arguments),
-          ];
+      if ($entities[$id]) {
+        $graph_ids = [];
+        foreach ([RdfEntityGraphInterface::DEFAULT, 'draft'] as $graph_id) {
+          if ($local_entities[$id]->hasGraph($graph_id)) {
+            $graph_ids[$graph_id] = $graph_id;
+          }
         }
 
-        $needs_save = $this->updateAdmsFields($local_entity, $incoming_entity);
+        // Pick up first graph to be set.
+        $graph_id = key($graph_ids);
+        $local_entity = clone $entity;
+        $local_entity->set('graph', $graph_id);
 
+        // If the local entity exists in both, 'default' and 'draft', graphs, we
+        // remove the 'draft' version. This is needed because the federated
+        // fields cannot be edited locally anymore and a potential publish of
+        // the draft could override the federated fields values.
+        if (count($graph_ids) > 1) {
+          $this->getRdfStorage()->deleteFromGraph([$local_entity], 'draft');
+        }
         // Cleanup the entity from the 'staging' graph.
-        $this->getRdfStorage()->deleteFromGraph([$incoming_entity], 'staging');
+        $this->getRdfStorage()->deleteFromGraph([$entity], 'staging');
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
-        $local_entity = (clone $incoming_entity)
+        $local_entity = (clone $entity)
           ->enforceIsNew()
-          ->setOwnerId($this->currentUser->id());
-
-        $this->ensureFieldDefaults($local_entity);
-
-        // A new entity needs to be saved.
-        $needs_save = TRUE;
-
+          ->set('graph', RdfEntityGraphInterface::DEFAULT);
         // Delete the incoming entity from the staging graph.
-        $incoming_entity->skip_notification = TRUE;
-        $incoming_entity->delete();
-        // @todo Call $local_entity->validate() to catch also Drupal violations.
+        $entity->skip_notification = TRUE;
+        $entity->delete();
       }
+      // Group entities by bundle.
+      $entities_by_bundle[$local_entity->bundle()][] = $local_entity;
+    }
 
-      if ($needs_save) {
-        $this->handleAffiliation($local_entity);
+    // Save the entities.
+    foreach ($entities_by_bundle as $bundle => $entities_from_bundle) {
+      /** @var \Drupal\rdf_entity\RdfInterface $local_entity */
+      foreach ($entities_from_bundle as $local_entity) {
         $local_entity->skip_notification = TRUE;
         $local_entity->save();
-      }
-    }
-  }
-
-  /**
-   * Updates the ADMS field values from the incoming to the local entity.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $local_entity
-   *   The local entity.
-   * @param \Drupal\rdf_entity\RdfInterface $incoming_entity
-   *   The imported entity.
-   *
-   * @return bool
-   *   If the local entity has been changed and needs to be saved.
-   */
-  protected function updateAdmsFields(RdfInterface $local_entity, RdfInterface $incoming_entity): bool {
-    $changed = FALSE;
-
-    foreach ($local_entity->getFieldDefinitions() as $field_name => $field_definition) {
-      // Bypass fields without mapping or fields we don't want to override.
-      if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
-        continue;
-      }
-      // Only stored fields are allowed.
-      if ($field_definition->isComputed()) {
-        continue;
-      }
-
-      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-      foreach ($columns as $column_name => $column_schema) {
-        // Check if the field is an ADMS-AP field.
-        if ($this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $local_entity->bundle(), $field_name, $column_name)) {
-          $incoming_field = $incoming_entity->get($field_name);
-          $local_field = $local_entity->get($field_name);
-          // Assign only if the incoming and local fields are different.
-          if (!$local_field->equals($incoming_field)) {
-            $local_field->setValue($incoming_field->getValue());
-            $changed = TRUE;
-            // Don't check the rest of the columns because the whole field has
-            // been already assigned.
-            break;
-          }
-        }
-      }
-    }
-
-    return $changed;
-  }
-
-  /**
-   * Handles the incoming solution affiliation.
-   *
-   * For existing solutions, we only check if the configured collection ID
-   * matches the solution affiliation. For new solutions, we affiliate the
-   * solution to the configured collection.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $local_solution
-   *   The local solution.
-   *
-   * @throws \Exception
-   *   If the configured collection is different than the collection of the
-   *   local solution.
-   */
-  protected function handleAffiliation(RdfInterface $local_solution): void {
-    // Check only solutions.
-    if ($local_solution->bundle() !== 'solution') {
-      return;
-    }
-
-    // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getConfiguration()['collection']) {
-      return;
-    }
-
-    if ($local_solution->isNew()) {
-      $local_solution->set('collection', $collection_id);
-      return;
-    }
-
-    // Check for collection mismatch when federating an existing solution.
-    $match = FALSE;
-    foreach ($local_solution->get('collection') as $item) {
-      if ($item->target_id === $collection_id) {
-        $match = TRUE;
-        break;
-      }
-    }
-
-    if (!$match) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$local_solution->id()}' has '{$local_solution->collection->target_id}' as collection.");
-    }
-    // For an existing solution we don't make any changes to its affiliation.
-  }
-
-  /**
-   * Sets default values for fields.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $local_entity
-   *   The local entity.
-   */
-  protected function ensureFieldDefaults(RdfInterface $local_entity): void {
-    // Determine the state field for this bundle, if any.
-    $state_field_name = NULL;
-    $state_field_map = $this->entityFieldManager->getFieldMapByFieldType('state');
-    if (!empty($state_field_map['rdf_entity'])) {
-      foreach ($state_field_map['rdf_entity'] as $field_name => $field_info) {
-        if (isset($field_info['bundles'][$local_entity->bundle()])) {
-          $state_field_name = $field_name;
-          break;
-        }
-      }
-    }
-
-    // There are also entities without a state field.
-    if ($state_field_name) {
-      $local_entity->set($state_field_name, 'validated');
-    }
-    $local_entity->set('graph', 'default');
-
-    /** @var \Drupal\Core\Field\FieldItemListInterface $field */
-    foreach ($local_entity as $field_name => &$field) {
-      // Populate empty fields with their default value. This is a Drupal
-      // content entity that was not created via Drupal API. As an effect,
-      // empty fields didn't receive their default values. We have to
-      // explicitly do this before saving.
-      // The check if the field is a computed field - that occurs first, is due
-      // to the fact that we want to avoid the computation of the field in case
-      // the field is indeed a computed field. Method "::isEmpty" triggers
-      // the computation.
-      if (!$field->getFieldDefinition()->isComputed() && $field->isEmpty()) {
-        $field->applyDefaultValue();
       }
     }
   }
