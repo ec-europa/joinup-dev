@@ -66,7 +66,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
         'rdf_entity-collection-administrator' => [
           $template_id,
         ],
-        'rdf_entity-solution-administrator' => [
+        'rdf_entity-collection-facilitator' => [
           $template_id,
         ],
       ],
