@@ -33,14 +33,14 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
    *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
+   * @param array $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AdmsValidatorInterface $adms_validator) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, AdmsValidatorInterface $adms_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->admsValidator = $adms_validator;
   }
