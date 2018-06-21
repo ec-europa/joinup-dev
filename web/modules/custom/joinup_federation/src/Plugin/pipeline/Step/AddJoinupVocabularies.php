@@ -40,14 +40,14 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase {
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
    *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
+   * @param array $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    * @param \Drupal\rdf_entity\RdfGraphHandlerInterface $graph_handler
    *   The SPARQL graph handler service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, RdfGraphHandlerInterface $graph_handler) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, RdfGraphHandlerInterface $graph_handler) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->graphHandler = $graph_handler;
   }
