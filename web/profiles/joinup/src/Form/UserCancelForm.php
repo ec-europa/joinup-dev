@@ -65,6 +65,9 @@ class UserCancelForm extends CoreUserCancelForm {
     $collections = $this->relationManager->getCollectionsWhereSoleOwner($this->entity);
 
     if (!empty($collections)) {
+      // No access to the 'Cancel' button should be given if the user is the
+      // sole owner of a collection.
+      $form['actions']['submit']['#access'] = FALSE;
       $form = [
         'collections' => [
           '#theme' => 'item_list',
