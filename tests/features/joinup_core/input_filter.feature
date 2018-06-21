@@ -60,7 +60,7 @@ Feature: Input filter
   into the content field. European Commission videos short URLs are resolved
   and videos from providers that are not in the 'allowed providers' are
   stripped out.
-    Given I am logged in as a "facilitator" of the "Metal fans" collection
+    Given I am logged in as a "facilitator" of the "Netflix group" collection
     And I go to the homepage of the "Netflix group" collection
     And I click "Add news" in the plus button menu
 
