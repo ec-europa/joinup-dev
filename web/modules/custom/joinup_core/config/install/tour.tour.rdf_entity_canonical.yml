@@ -38,7 +38,7 @@ tips:
     weight: 4
     location: right
     attributes:
-      data-class: 'join-collection-form'
+      data-class: 'join-collection-form input.button'
   search:
     id: search
     plugin: text
