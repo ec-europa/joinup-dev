@@ -8,9 +8,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,12 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class EmptyFieldsValues extends JoinupFederationStepPluginBase {
 
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+  use SparqlEntityStorageTrait;
 
   /**
    * The entity field manager service.
@@ -37,20 +30,6 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
    * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
   protected $entityFieldManager;
-
-  /**
-   * The RDF entity SPARQL storage.
-   *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   */
-  protected $rdfStorage;
-
-  /**
-   * The cached SPARQL entity query.
-   *
-   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   */
-  protected $sparqlQuery;
 
   /**
    * Creates a new pipeline step plugin instance.
@@ -274,32 +253,6 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
       throw new \Exception("Plugin 'empty_fields_values' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
     }
     // For an existing solution we don't make any changes to its affiliation.
-  }
-
-  /**
-   * Returns the RDF storage.
-   *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   *   The RDF storage.
-   */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
-    if (!isset($this->rdfStorage)) {
-      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
-    }
-    return $this->rdfStorage;
-  }
-
-  /**
-   * Returns the SPARQL entity query.
-   *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   *   The entity query.
-   */
-  protected function getSparqlQuery(): SparqlQueryInterface {
-    if (!isset($this->sparqlQuery)) {
-      $this->sparqlQuery = $this->getRdfStorage()->getQuery();
-    }
-    return $this->sparqlQuery;
   }
 
 }

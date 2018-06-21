@@ -9,9 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,19 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ThreeWayMerge extends JoinupFederationStepPluginBase {
 
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+  use SparqlEntityStorageTrait;
 
   /**
    * The entity field manager service.
@@ -46,20 +32,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
   protected $entityFieldManager;
-
-  /**
-   * The RDF entity SPARQL storage.
-   *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   */
-  protected $rdfStorage;
-
-  /**
-   * The cached SPARQL entity query.
-   *
-   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   */
-  protected $sparqlQuery;
 
   /**
    * The RDF schema field validator service.
@@ -79,8 +51,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    *   The plugin implementation definition.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
@@ -88,9 +58,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
    *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
@@ -105,20 +74,10 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
-      $container->get('current_user'),
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function defaultConfiguration() {
-    return [
-      'collection' => NULL,
-    ] + parent::defaultConfiguration();
   }
 
   /**
@@ -319,32 +278,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $field->applyDefaultValue();
       }
     }
-  }
-
-  /**
-   * Returns the RDF storage.
-   *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   *   The RDF storage.
-   */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
-    if (!isset($this->rdfStorage)) {
-      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
-    }
-    return $this->rdfStorage;
-  }
-
-  /**
-   * Returns the SPARQL entity query.
-   *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   *   The entity query.
-   */
-  protected function getSparqlQuery(): SparqlQueryInterface {
-    if (!isset($this->sparqlQuery)) {
-      $this->sparqlQuery = $this->getRdfStorage()->getQuery();
-    }
-    return $this->sparqlQuery;
   }
 
 }
