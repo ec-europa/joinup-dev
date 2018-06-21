@@ -35,13 +35,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   use SparqlEntityStorageTrait;
 
   /**
-   * The RDF entity provenance helper service.
-   *
-   * @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface
-   */
-  protected $provenanceHelper;
-
-  /**
    * The date/time formatter service.
    *
    * @var \Drupal\Core\Datetime\DateFormatterInterface
@@ -142,20 +135,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $all_imported_ids = $this->getSparqlQuery()->graphs(['staging'])->execute();
     // Remove the blacklisted entities, if any.
     if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
-      // Create/update provenance activity records only for the blacklisted
-      // entities. The imported entities activity will be handled in the step
-      // where they are actually federated.
-      $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($blacklist);
-      foreach ($activities as $id => $activity) {
-        $activity
-          // Set the last user that federated this entity as owner.
-          ->setOwnerId($this->currentUser->id())
-          ->set('provenance_enabled', FALSE)
-          ->save();
-      }
       // Delete blacklisted entities from 'staging' graph.
       $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
     }
+    $this->setPersistentDataValue('blacklist', $blacklist);
 
     // If no solution was selected, exit the pipeline here.
     if ($user_selection_is_empty) {

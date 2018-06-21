@@ -22,6 +22,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     },
  *     "drupal_validation",
  *     "3_way_merge",
+ *     "provenance_activity",
  *   },
  * )
  */
