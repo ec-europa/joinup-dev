@@ -639,10 +639,10 @@ function joinup_core_entity_extra_field_info() {
 }
 
 /**
- * Returns an array of form ids that should have a motivation field.
+ * Returns an array of form IDs that should have a motivation field.
  *
  * @return array
- *   An array of form ids.
+ *   An array of form IDs.
  */
 function joinup_core_get_motivation_form_ids() {
   return [
@@ -727,11 +727,11 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
  * Returns whether the transition requires a motivation.
  *
  * @param string $entity_type_id
- *   The entity type id.
+ *   The entity type ID.
  * @param string $workflow_id
- *   The workflow id.
+ *   The workflow ID.
  * @param string $transition_id
- *   The transition id.
+ *   The transition ID.
  *
  * @return bool
  *   Whether the transition requires a motivation.
@@ -814,6 +814,36 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
     }
   }
 
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During saving a node, if the entity never had a published version and is now
+ * published, the creation date is updated with the current datetime.
+ */
+function joinup_core_node_presave(EntityInterface $entity) {
+  // Documents do not show the created date in the UI as they have the document
+  // publication date to show instead. However, since the listing screens sort
+  // by created date, the documents are updated just as the rest of the
+  // community content.
+  $community_bundles = ['discussion', 'document', 'event', 'news'];
+  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished()) {
+    return;
+  }
+  // Set the update time as the created time only if this is the first time this
+  // entity is published.
+  $published_revisions = \Drupal::entityQuery('node')
+    ->condition('type', $entity->bundle())
+    ->condition('status', 1)
+    ->condition('nid', $entity->id())
+    ->count()
+    ->execute();
+  if ($published_revisions != 0) {
+    return;
+  }
+
+  $entity->set('created', \Drupal::time()->getRequestTime());
 }
 
 /**
@@ -961,7 +991,7 @@ function joinup_core_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_node().
  *
- * Adds the group id and label as data attributes in tiles.
+ * Adds the group ID and label as data attributes in tiles.
  */
 function joinup_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] !== 'view_mode_tile') {
@@ -1051,4 +1081,74 @@ function joinup_core_form_views_form_og_members_overview_default_alter(&$form, F
   // Alter the action label in order to reflect the bundle of the group.
   $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
   $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
+  $form['#validate'][] = 'joinup_core_form_views_form_og_members_overview_default_validate';
+}
+
+/**
+ * Validation callback for the og_members_overview form.
+ *
+ * Prevents the deletion of memberships from a group if no owners will remain
+ * after the deletion.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+    return;
+  }
+
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
+  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+
+  // Calculate current owners.
+  $owner_memberships = $storage->loadByProperties([
+    'entity_type' => $group->getEntityTypeId(),
+    'entity_id' => $group->id(),
+    'roles' => $admin_role,
+  ]);
+  if (empty($owner_memberships)) {
+    return;
+  }
+  $owner_membership_ids = array_keys($owner_memberships);
+
+  // Calculate memberships to be deleted.
+  $options = $form_state->getValue('og_membership_bulk_form');
+  if (empty($options)) {
+    return;
+  }
+  $memberships_to_be_deleted = array_map('joinup_core_extract_bulk_form_entity_id', array_filter($options));
+  $left_owners = array_diff($owner_membership_ids, $memberships_to_be_deleted);
+  if (empty($left_owners)) {
+    $message = \Drupal::translation()->translate('You cannot delete the owner of a @type.', ['@type' => $group->bundle()]);
+    $form_state->setError($form, $message);
+  }
+}
+
+/**
+ * Loads an entity based on a bulk form key.
+ *
+ * This derives from bulk form's way of loading row entities. Currently, it
+ * exists in its simplified form as there is no need to deal with revisions or
+ * languages. In the future, if the need emerges, this function can be extended
+ * to match the original method.
+ *
+ * @param string $bulk_form_key
+ *   The bulk form key representing the entity's ID, language.
+ *
+ * @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey
+ *
+ * @return string
+ *   The entity's ID.
+ */
+function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
+  $key = base64_decode($bulk_form_key);
+  $key_parts = json_decode($key);
+
+  // The first two items will always be langcode and ID.
+  $id = array_pop($key_parts);
+  return $id;
 }
