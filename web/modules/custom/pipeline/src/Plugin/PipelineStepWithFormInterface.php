@@ -12,15 +12,24 @@ use Drupal\Core\Plugin\PluginFormInterface;
 interface PipelineStepWithFormInterface extends PluginFormInterface, PluginInspectionInterface {
 
   /**
-   * Extracts data from the form submitted values.
+   * Returns data to be injected in the persistent data store.
    *
-   * Relevant form values can be returned to be passed in the $data parameter to
-   * the step plugin ::execute() method:
+   * Relevant form values can be returned to be added to the persistent data
+   * store. These values could be retrieved later, in the pipeline step plugin
+   * ::execute() method:
    * @code
-   * return [
+   * // If this method returns:
+   * [
    *   'foo' => $form_state->getValue('foo'),
    *   'bar' => $form_state->getValue('bar'),
    * ];
+   *
+   * // In the pipeline step plugin execution method:
+   * public function execute() {
+   *   $foo = $this->getPersistentDataValue('foo');
+   *   $bar = $this->getPersistentDataValue('bar');
+   *   ...
+   * }
    * @endcode
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
@@ -29,6 +38,6 @@ interface PipelineStepWithFormInterface extends PluginFormInterface, PluginInspe
    * @return array
    *   Data extracted from form submitted values
    */
-  public function extractDataFromSubmit(FormStateInterface $form_state);
+  public function getAdditionalPersistentDataStore(FormStateInterface $form_state);
 
 }

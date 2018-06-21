@@ -68,7 +68,7 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
+  public function execute() {
     $query = [
       "ADD <{$this->getGraphUri('sink')}> TO <{$this->getGraphUri('sink_plus_taxo')}>;",
     ];

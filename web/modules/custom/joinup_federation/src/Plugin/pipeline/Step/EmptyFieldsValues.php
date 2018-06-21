@@ -98,7 +98,7 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
+  public function execute() {
     // Get the incoming entities.
     $incoming_ids = $this->getSparqlQuery()
       ->graphs(['staging'])

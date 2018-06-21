@@ -62,8 +62,8 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$data) {
-    if ($error = parent::prepare($data)) {
+  public function prepare() {
+    if ($error = parent::prepare()) {
       return $error;
     }
 

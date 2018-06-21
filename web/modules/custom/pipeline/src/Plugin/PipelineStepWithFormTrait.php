@@ -13,10 +13,9 @@ trait PipelineStepWithFormTrait {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $build_info = $form_state->getBuildInfo();
-    $data = &$build_info['data'];
-    $data += $this->extractDataFromSubmit($form_state);
-    $form_state->setBuildInfo($build_info);
+    if ($data = $this->getAdditionalPersistentDataStore($form_state)) {
+      $form_state->set('pipeline_data', $data);
+    }
   }
 
   /**

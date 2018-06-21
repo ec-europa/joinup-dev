@@ -3,6 +3,7 @@
 namespace Drupal\pipeline\Plugin;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\pipeline\PipelineStateInterface;
 
 /**
  * Defines an interface for pipeline plugins.
@@ -12,10 +13,30 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   /**
    * Sets steps iterator pointer to a given step.
    *
-   * @param string $step_plugin_id
-   *   The step plugin ID.
+   * @param \Drupal\pipeline\PipelineStateInterface $state
+   *   The current state object.
+   *
+   * @return $this
+   *
+   * @throws \InvalidArgumentException
+   *   If the state step ID is invalid.
    */
-  public function setCurrent($step_plugin_id);
+  public function setCurrentState(PipelineStateInterface $state);
+
+  /**
+   * The current pipeline state.
+   *
+   * @return \Drupal\pipeline\PipelineStateInterface
+   *   The pipeline state object.
+   */
+  public function getCurrentState();
+
+  /**
+   * Persists the pipeline current state.
+   *
+   * @return $this
+   */
+  public function saveCurrentState();
 
   /**
    * Creates a step plugin instance in this pipeline.
