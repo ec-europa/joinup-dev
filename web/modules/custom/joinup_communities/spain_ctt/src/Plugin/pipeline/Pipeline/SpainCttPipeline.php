@@ -20,6 +20,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "empty_fields_values" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },
+ *     "drupal_validation",
  *     "3_way_merge",
  *   },
  * )
