@@ -58,3 +58,11 @@ tips:
     location: left
     attributes:
       data-class: 'user-anonymous .anonymous-menu'
+  contact:
+    id: contact
+    plugin: text
+    body: 'If you have any questions or suggestions regarding the Joinup platform, you can contact us through this link.'
+    weight: 13
+    location: top
+    attributes:
+      data-class: 'section--footer .vertical-menu .vertical-menu__item:nth-child(2)'
