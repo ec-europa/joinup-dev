@@ -30,20 +30,6 @@ class PipelineOrchestratorForm extends FormBase {
   protected $stepPluginManager;
 
   /**
-   * The current pipeline plugin instance.
-   *
-   * @var \Drupal\pipeline\Plugin\PipelinePipelineInterface
-   */
-  protected $currentPipeline;
-
-  /**
-   * The current step plugin instance.
-   *
-   * @var \Drupal\pipeline\Plugin\PipelineStepInterface
-   */
-  protected $currentStep;
-
-  /**
    * Builds a new form object.
    *
    * @param \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager
@@ -158,19 +144,9 @@ class PipelineOrchestratorForm extends FormBase {
    *
    * @return \Drupal\pipeline\Plugin\PipelinePipelineInterface
    *   The current pipeline.
-   *
-   * @throws \RuntimeException
-   *   If the pipeline plugin ID is not passed in the form build info.
    */
   protected function getCurrentPipeline(FormStateInterface $form_state) {
-    if (!isset($this->currentPipeline)) {
-      if (!isset($form_state->getBuildInfo()['pipeline'])) {
-        throw new \RuntimeException('No active pipeline step.');
-      }
-      $pipeline_plugin_id = $form_state->getBuildInfo()['pipeline'];
-      $this->currentPipeline = $this->pipelinePluginManager->createInstance($pipeline_plugin_id);
-    }
-    return $this->currentPipeline;
+    return $form_state->get('pipeline_pipeline');
   }
 
   /**
@@ -179,21 +155,11 @@ class PipelineOrchestratorForm extends FormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state object.
    *
-   * @return \Drupal\pipeline\Plugin\PipelineStepInterface
+   * @return \Drupal\pipeline\Plugin\PipelineStepWithFormInterface
    *   An instance of the current pipeline step plugin.
-   *
-   * @throws \RuntimeException
-   *   When no active step has been passed.
    */
   protected function getCurrentStep(FormStateInterface $form_state) {
-    if (!isset($this->currentStep)) {
-      if (!isset($form_state->getBuildInfo()['step'])) {
-        throw new \RuntimeException('No active pipeline step.');
-      }
-      $step_plugin_id = $form_state->getBuildInfo()['step'];
-      $this->currentStep = $this->stepPluginManager->createInstance($step_plugin_id);
-    }
-    return $this->currentStep;
+    return $form_state->get('pipeline_step');
   }
 
 }

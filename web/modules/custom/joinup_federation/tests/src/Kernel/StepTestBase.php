@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\pipeline\PipelineState;
+use Drupal\pipeline\PipelineStateInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
@@ -61,14 +63,20 @@ abstract class StepTestBase extends KernelTestBase {
    *
    * @param string $step_plugin_id
    *   The pipeline step.
+   * @param \Drupal\pipeline\PipelineStateInterface $state
+   *   (optional) The pipeline state object. If missed a brand new will be
+   *   created from the passed step.
    *
    * @return array|null
    *   NULL on success, a render array on error.
    */
-  protected function runPipelineStep(string $step_plugin_id) {
+  protected function runPipelineStep(string $step_plugin_id, PipelineStateInterface $state = NULL) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
-    $data = [];
-    return $step_plugin_instance->execute($data);
+    if (!$state) {
+      $state = (new PipelineState())->setStepId($step_plugin_id);
+    }
+    $this->pipeline->setCurrentState($state);
+    return $step_plugin_instance->execute();
   }
 
   /**

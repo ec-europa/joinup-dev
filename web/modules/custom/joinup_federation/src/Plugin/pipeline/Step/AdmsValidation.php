@@ -61,7 +61,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
+  public function execute() {
     $graph_uri = $this->getGraphUri('sink_plus_taxo');
     $validation = $this->admsValidator->validateByGraphUri($graph_uri);
 

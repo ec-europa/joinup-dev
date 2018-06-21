@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineOrchestrator;
+use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
@@ -117,7 +118,7 @@ class PipelineOrchestratorTest extends UnitTestCase {
     \Drupal::setContainer($container);
 
     $state_manager = $this->stateManager;
-    $state_manager->getState('demo_pipe')->willReturn('test_step');
+    $state_manager->getState('demo_pipe')->willReturn((new PipelineState())->setStepId('test_step'));
     $state_manager->reset('demo_pipe')->shouldBeCalled();
 
     $this->stepPluginManager->hasDefinition('test_step')->willReturn(TRUE);
@@ -161,7 +162,7 @@ class TestStep extends PipelineStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {}
+  public function execute() {}
 
 }
 

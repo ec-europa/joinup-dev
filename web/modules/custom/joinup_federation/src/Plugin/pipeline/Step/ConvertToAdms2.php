@@ -59,13 +59,12 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
-    $data += ['sink_graph' => $this->getGraphUri('sink')];
+  public function execute() {
     // @todo There are ~75 passes, need to use batch processing?
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
       $this->adms2ConverPassPluginManager
         ->createInstance($plugin_id)
-        ->convert($data);
+        ->convert(['sink_graph' => $this->getGraphUri('sink')]);
     }
   }
 
