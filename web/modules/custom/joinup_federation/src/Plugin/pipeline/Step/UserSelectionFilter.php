@@ -16,7 +16,6 @@ use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
@@ -33,13 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
 
   use PipelineStepWithFormTrait;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+  use SparqlEntityStorageTrait;
 
   /**
    * The RDF entity provenance helper service.
@@ -75,20 +68,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
    */
   protected $rdfSchemaFieldValidator;
-
-  /**
-   * The RDF entity storage.
-   *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   */
-  protected $rdfStorage;
-
-  /**
-   * The RDF entity query.
-   *
-   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   */
-  protected $rdfEntityQuery;
 
   /**
    * The incoming entities whitelist.
@@ -159,7 +138,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
     }
 
-    $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
+    $all_imported_ids = $this->getSparqlQuery()->graphs(['staging'])->execute();
     // Remove the blacklisted entities, if any.
     if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
       // Create/update provenance activity records only for the blacklisted
@@ -368,7 +347,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    $ids = $this->getRdfEntityQuery()
+    $ids = $this->getSparqlQuery()
       ->graphs(['staging'])
       ->condition('rid', 'solution')
       ->execute();
@@ -520,32 +499,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $element['#rows'] = $new_rows;
 
     return $element;
-  }
-
-  /**
-   * Returns the RDF entity storage.
-   *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
-   *   The RDF entity storage.
-   */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
-    if (!isset($this->rdfStorage)) {
-      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
-    }
-    return $this->rdfStorage;
-  }
-
-  /**
-   * Returns the statically cached RDF entity query.
-   *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
-   *   The RDF entity query.
-   */
-  protected function getRdfEntityQuery() {
-    if (!isset($this->rdfEntityQuery)) {
-      $this->rdfEntityQuery = $this->getRdfStorage()->getQuery();
-    }
-    return $this->rdfEntityQuery;
   }
 
 }
