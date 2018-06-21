@@ -18,6 +18,7 @@ Feature: Add distribution through the UI
       | title         | 1.0.0 Authoritarian Alpaca |
       | description   | First public release.      |
       | is version of | Solution random x name     |
+      | state         | validated                  |
     And the following licence:
       | title       | WTFPL                                    |
       | description | The WTFPL is a rather permissive licence |
@@ -117,7 +118,7 @@ Feature: Add distribution through the UI
 
     # Check if the asset distribution is accessible as an anonymous user
     When I am an anonymous user
-      When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
+    When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     Then I should see the text "Distribution"
     And I should see the link "Source tarball"
     When I click "Source tarball"
