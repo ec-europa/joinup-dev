@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/rdf_entity\/http%3A%5C%5CplaceHolder%5C4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb?_format=hal_json"
+            "href": "http:\/\/administracionelectronica.gob.es\/ctt?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
@@ -19,7 +19,7 @@
     },
     "id": [
         {
-            "value": "http:\/\/placeHolder\/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb"
+            "value": "http:\/\/administracionelectronica.gob.es\/ctt"
         }
     ],
     "rid": [
@@ -29,7 +29,7 @@
     ],
     "label": [
         {
-            "value": "Open source observatory",
+            "value": "Spain - Center for Technology Transfer",
             "lang": "en"
         }
     ],
@@ -45,12 +45,12 @@
     ],
     "uuid": [
         {
-            "value": "http:\/\/placeHolder\/4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb"
+            "value": "http:\/\/administracionelectronica.gob.es\/ctt"
         }
     ],
     "field_ar_abstract": [
         {
-            "value": "<p>Open Source Observatory<\/p>",
+            "value": "<p>Spain - Center for Technology Transfer<\/p>",
             "format": "content_editor"
         }
     ],
