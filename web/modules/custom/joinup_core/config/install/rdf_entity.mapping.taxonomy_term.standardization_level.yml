@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.standardization_level
-third_party_settings: {  }
 id: taxonomy_term.standardization_level
 entity_type_id: taxonomy_term
 bundle: standardization_level
