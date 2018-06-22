@@ -191,7 +191,8 @@
                 "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
                 "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch",
                 "Set a redirect on RDF entity form only if no previous redirect was not set @see https://github.com/ec-europa/rdf_entity/pull/36": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/36.patch",
-                "Translatable literal to be casted to the primitive type from field definition @see https://github.com/ec-europa/rdf_entity/pull/38": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/38.patch"
+                "Translatable literal to be casted to the primitive type from field definition @see https://github.com/ec-europa/rdf_entity/pull/38": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/38.patch",
+                "Allow to reset the cache only for given graphs @see https://github.com/ec-europa/rdf_entity/pull/40": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/40.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
