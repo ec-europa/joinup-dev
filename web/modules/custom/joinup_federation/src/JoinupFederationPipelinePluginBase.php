@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TempStore\SharedTempStore;
@@ -50,6 +51,13 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   protected $sharedTempStore;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
    *
    * @param array $configuration
@@ -68,14 +76,17 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
    *   The shared temp store factory service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql, SharedTempStoreFactory $shared_tempstore_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, PipelineStepPluginManager $step_plugin_manager, PipelineStateManager $state_manager, AccountProxyInterface $current_user, Connection $sparql, SharedTempStoreFactory $shared_tempstore_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->currentUser = $current_user;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $step_plugin_manager, $state_manager);
 
     $this->sparql = $sparql;
     $this->sharedTempStoreFactory = $shared_tempstore_factory;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -90,7 +101,8 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $container->get('pipeline.state_manager'),
       $container->get('current_user'),
       $container->get('sparql_endpoint'),
-      $container->get('joinup_federation.tempstore.shared')
+      $container->get('joinup_federation.tempstore.shared'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -123,6 +135,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
     }
     // This is an extra-precaution to ensure that there's no existing data in
     // the pipeline graphs, left there after a potential failed previous run.
+    $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     return NULL;
   }
@@ -131,6 +144,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function onSuccess(): JoinupFederationPipelineInterface {
+    $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     $this->lockRelease();
     return parent::onSuccess();
@@ -140,6 +154,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function onError(): JoinupFederationPipelineInterface {
+    $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     $this->lockRelease();
     return parent::onError();
@@ -203,6 +218,24 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
       $this->sharedTempStore = $this->sharedTempStoreFactory->get('joinup_federation', $this->currentUser->id());
     }
     return $this->sharedTempStore;
+  }
+
+  /**
+   * Clears entity cache from the 'staging' graph.
+   */
+  protected function clearStagingEntitiesCache(): void {
+    // Get all entity IDs from the graph.
+    $result = $this->sparql->query("SELECT DISTINCT(?id) WHERE { GRAPH <{$this->getGraphUri('sink')}> { ?id ?p ?o . } }");
+    $ids = [];
+    foreach ($result as $item) {
+      $ids[] = $item->id->getUri();
+    }
+
+    if ($ids) {
+      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      $storage = $this->entityTypeManager->getStorage('rdf_entity');
+      $storage->resetCache($ids, ['staging']);
+    }
   }
 
 }
