@@ -93,3 +93,4 @@ config_devel:
   - tour.tour.account
   - tour.tour.joinup_collections_overview
   - tour.tour.joinup_homepage
+  - tour.tour.rdf_entity_canonical
