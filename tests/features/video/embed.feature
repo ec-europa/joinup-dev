@@ -54,7 +54,7 @@ Feature: Embed of videos into the page.
     And I press the button "Video Embed" in the "Content" wysiwyg editor
     Then a modal should open
     And I should see the text "Youtube and EC videos are allowed."
-    And I should see the text "Youtube example: https://www.youtube.com/watch?v=123456789abcd"
+    And I should see the text "Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     And I should see the text "EC url example: http://europa.eu/123abc!123"
     And I should see the text "EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345"
     When I fill in "Video URL" with "<url>"
