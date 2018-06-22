@@ -115,6 +115,7 @@ Feature: As a site moderator I am able to import RDF files.
     Given I uncheck the "Not federated asset" row
     And I check the "Blacklisted asset" row
     When I press "Next"
+    Given I wait for the pipeline batch job to finish
 
     # Check how the provenance records were created/updated.
     Then the "Asset" entity is not blacklisted for federation

@@ -227,6 +227,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       // Persist the provenance records of blacklisted items.
       $blacklisted_provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($blacklist);
       foreach ($blacklisted_provenance_records as $blacklisted_provenance_record) {
+        $blacklisted_provenance_record->set('provenance_enabled', FALSE);
         $blacklisted_provenance_record->save();
       }
       $this->getRdfStorage()->deleteFromGraph($this->getRdfStorage()->loadMultiple($blacklist), 'staging');
