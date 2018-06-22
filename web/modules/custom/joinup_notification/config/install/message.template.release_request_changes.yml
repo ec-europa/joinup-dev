@@ -9,7 +9,7 @@ text:
     value: 'Joinup: Modification of a release of your solution has been requested'
     format: full_html
   -
-    value: "<p>the Joinup moderation team requires editing the release @entity:title, @entity:field_isr_release_number of the solution @group:title due to @transition:motivation.</p>"
+    value: '<p>the Joinup moderation team requires editing the release @entity:title, @entity:field_isr_release_number of the solution @group:title due to @transition:motivation.</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
     format: full_html
 settings:
   'token options':
