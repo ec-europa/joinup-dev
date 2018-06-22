@@ -1,7 +1,7 @@
 @api
 Feature: Add distribution through the UI
   In order to manage distributions
-  As a moderator
+  As a facilitator
   I need to be able to add "Distribution" RDF entities through the UI.
 
   Background:
@@ -18,6 +18,7 @@ Feature: Add distribution through the UI
       | title         | 1.0.0 Authoritarian Alpaca |
       | description   | First public release.      |
       | is version of | Solution random x name     |
+      | state         | validated                  |
     And the following licence:
       | title       | WTFPL                                    |
       | description | The WTFPL is a rather permissive licence |
@@ -116,6 +117,7 @@ Feature: Add distribution through the UI
     And the "Source tarball" distribution should have the link of the "test.zip" in the access URL field
 
     # Check if the asset distribution is accessible as an anonymous user
+    When I am an anonymous user
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     Then I should see the text "Distribution"
     And I should see the link "Source tarball"
