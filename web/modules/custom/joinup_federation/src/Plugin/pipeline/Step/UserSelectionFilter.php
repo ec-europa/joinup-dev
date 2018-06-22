@@ -346,7 +346,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $solution) {
       $category = $this->getCategory($activities[$id]);
-      $labels[$category][$id] = $solution->label();
+      $label = $solution->label() ?: '<' . $this->t('missing label') . '>';
+      $labels[$category][$id] = $label . ' [' . $solution->id() . ']';
     }
 
     return $labels;
