@@ -110,6 +110,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
+    $deleted_entities = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
       // The entity already exists.
@@ -133,8 +134,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         if (count($graph_ids) > 1) {
           $this->getRdfStorage()->deleteFromGraph([$local_entity], 'draft');
         }
-        // Cleanup the entity from the 'staging' graph.
-        $this->getRdfStorage()->deleteFromGraph([$entity], 'staging');
+
+        // Collect the entities to be deleted later from the 'staging' graph. We
+        // are not deleting here because, when saving the entities in the main
+        // graphs, this would lead to a null $entity->original.
+        $deleted_entities[] = $entity;
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
@@ -156,6 +160,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $local_entity->skip_notification = TRUE;
         $local_entity->save();
       }
+    }
+
+    // Cleanup the entity from the 'staging' graph.
+    if ($deleted_entities) {
+      $this->getRdfStorage()->deleteFromGraph($deleted_entities, 'staging');
     }
   }
 
