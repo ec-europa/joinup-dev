@@ -13,6 +13,7 @@ use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -143,11 +144,69 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function onSuccess(): JoinupFederationPipelineInterface {
+  public function onSuccess(): ?array {
     $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     $this->lockRelease();
-    return parent::onSuccess();
+
+    parent::onSuccess();
+
+    $build = $rows = [];
+    $entity_ids = array_keys($this->getCurrentState()->getDataValue('entities'));
+    $non_critical_violations = $this->getCurrentState()->getDataValue('non_critical_violations');
+
+    $build[] = [
+      '#markup' => $this->t('Imported entities:'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
+
+    if ($non_critical_violations) {
+      $build[] = [
+        '#markup' => $this->t("Some of the imported entities are still missing information. You can find bellow the fields that should have values. Use the user interface to edit each entity and fill the missed field values."),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    foreach (Rdf::loadMultiple($entity_ids) as $id => $entity) {
+      $rows[] = [
+        [
+          'colspan' => $non_critical_violations ? 2 : 1,
+          'data' => [
+            [
+              '#markup' => $this->t("@type: %name", [
+                '@type' => $entity->get('rid')->entity->label(),
+                '%name' => $entity->label() ? ($entity->label() . ' [' . $entity->id() . ']') : $entity->id(),
+              ]),
+              '#prefix' => '<strong>',
+              '#suffix' => '</strong>',
+            ],
+          ],
+        ],
+      ];
+    }
+
+    if (isset($non_critical_violations[$id])) {
+      foreach ($non_critical_violations[$id] as $message) {
+        $rows[] = [
+          [
+            'data' => $message['field'] ?? $this->t('N/A'),
+          ],
+          $message['message'],
+        ];
+      }
+    }
+
+    $header = $non_critical_violations ? [$this->t('Field'), $this->t('Warning')] : [$this->t('Entities')];
+    $build[] = [
+      '#theme' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+    ];
+
+    return $build;
   }
 
   /**
