@@ -62,7 +62,9 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   /**
    * Runs specific code after the pipeline is executed with success.
    *
-   * @return $this
+   * @return array|null
+   *   A render array could be returned to be displayed as content of the
+   *   success page.
    */
   public function onSuccess();
 

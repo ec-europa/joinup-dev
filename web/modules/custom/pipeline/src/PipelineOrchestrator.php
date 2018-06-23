@@ -235,8 +235,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
 
     // The pipeline execution finished with success.
     if (!$this->pipeline->valid()) {
-      $this->setSuccessResponse();
-      $this->pipeline->onSuccess();
+      $success_message = $this->pipeline->onSuccess();
+      $this->setSuccessResponse($success_message);
       return FALSE;
     }
 
@@ -295,14 +295,18 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
 
   /**
    * Sets the success response.
+   *
+   * @param array|null $success_message
+   *   (optional) An optional success message as a render array.
    */
-  protected function setSuccessResponse() {
+  protected function setSuccessResponse(array $success_message = NULL) {
     $arguments = [
       '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
     ];
     $message = $this->t('The %pipeline execution has finished with success.', $arguments);
     $this->messenger->addStatus($message);
-    $this->response = ['#title' => $this->t('Successfully executed %pipeline import pipeline', $arguments)];
+
+    $this->response = (array) $success_message + ['#title' => $this->t('Successfully executed %pipeline import pipeline', $arguments)];
     // @todo Add a list of executed steps as page content.
   }
 

@@ -109,7 +109,6 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
     }
     // Reset the state manager.
     $this->stateManager->reset($this->getPluginId());
-    return $this;
   }
 
   /**
