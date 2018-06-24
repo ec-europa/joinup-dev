@@ -132,7 +132,13 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
     }
 
-    $all_imported_ids = $this->getSparqlQuery()->graphs(['staging'])->execute();
+    // Get all imported entity IDs by running a SPARQL query.
+    /** @var \EasyRdf\Sparql\Result $results */
+    $results = $this->sparql->query("SELECT DISTINCT(?entityId) WHERE { GRAPH <{$this->getGraphUri('sink')}> { ?entityId ?p ?o . } }");
+    $all_imported_ids = array_map(function (\stdClass $item): string {
+      return $item->entityId->getUri();
+    }, $results->getArrayCopy());
+
     // Remove the blacklisted entities, if any.
     if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
       // Delete blacklisted entities from 'staging' graph.
