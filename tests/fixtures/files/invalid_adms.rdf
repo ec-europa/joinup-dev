@@ -1,171 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Demo file including invalid entities to be imported.
-    This file has been build against the valid_adms.rdf with either some properties commented out or altered.
--->
 <rdf:RDF xmlns:dct="http://purl.org/dc/terms/"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
-         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:v="http://www.w3.org/2006/vcard/ns#"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-         xmlns:owl="http://www.w3.org/2002/07/owl#"
          xmlns:dcat="http://www.w3.org/ns/dcat#"
          xmlns:skos="http://www.w3.org/2004/02/skos/core#">
-
-    <!-- #### Solutions #### -->
-    <!-- A solution with 2 releases. -->
-    <rdf:Description rdf:about="http://example.com/solution/1">
+    <rdf:Description rdf:about="http://asset">
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <!--Drupal error: Title is missing.-->
-        <!--<dct:title>Solution 1</dct:title>-->
-        <!--Validation error: dct:description property is missing.-->
-        <!--<dct:description>This is a solution that includes 2 releases.</dct:description>-->
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-05-07T11:35:24+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-12-05T16:02:24+02:00</dc:modified>
-        <!--Validation error: dct:publisher property is missing.-->
-        <!--<dct:publisher rdf:resource="http://example.com/owner/1"/>-->
-        <!--Validation error: dcat:contactPoint property is missing.-->
-        <!--<dcat:contactPoint rdf:resource="http://example.com/contact/1"/>-->
-        <dcat:landingPage rdf:resource="http://example.com"/>
-        <!--Validation error: dct:type  version is missing.-->
-        <!--<dct:type rdf:resource="http://vocabulary/term"/>-->
-        <dc:hasVersion rdf:resource="http://example.com/release/1"/>
-        <dc:hasVersion rdf:resource="http://example.com/release/2"/>
-    </rdf:Description>
-
-    <!-- A solution with only a standalone distribution. -->
-    <rdf:Description rdf:about="http://example.com/solution/2">
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <dct:title>Solution 2</dct:title>
-        <dct:description>This solution has a standalone distribution.</dct:description>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-05-07T11:35:24+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-12-05T16:02:24+02:00</dc:modified>
-        <dct:publisher rdf:resource="http://example.com/owner/1"/>
-        <dct:publisher rdf:resource="http://example.com/owner/2"/>
-        <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
-        <dcat:landingPage rdf:resource="http://example.com/asset/empty"/>
+        <dct:title>Asset</dct:title>
+        <dct:description>This is an Asset.</dct:description>
+        <dct:publisher rdf:resource="http://publisher"/>
+        <!-- This asset breaks the validation because is missing the
+            'dcat:contactPoint' property -->
         <dct:type rdf:resource="http://vocabulary/term"/>
-        <!--Drupal error: The solution is referencing a release that is already included in another release and is
-        connected to the other release with the isVersionOf.-->
-        <dc:hasVersion rdf:resource="http://example.com/release/1"/>
-        <!--Drupal error: The solution is pointing to a distribution already pointed by another dataset (release). This
-        is a Drupal error because on the drupal side, a reverse reference is stored and like this, there is no way to
-        know which is the real parent.-->
-        <dcat:distribution rdf:resource="http://example.com/distribution/1"/>
-        <dcat:distribution rdf:resource="http://example.com/distribution/standalone"/>
     </rdf:Description>
 
-    <!-- #### Release entities #### -->
-    <!-- A release with 2 distributions. -->
-    <rdf:Description rdf:about="http://example.com/release/1">
-        <dc:title xml:lang="en">Asset release 1</dc:title>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <owl:versionInfo>1</owl:versionInfo>
-        <dc:description xml:lang="en">Changelog for v1.</dc:description>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-27T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-06-14T09:58:01+03:00</dc:modified>
-        <dc:publisher rdf:resource="http://example.com/owner/2"/>
-        <dcat:distribution rdf:resource="http://example.com/distribution/1"/>
-        <dcat:distribution rdf:resource="http://example.com/distribution/2"/>
-        <!--Drupal issue: The referenced entity is not a distribution.-->
-        <dcat:distribution rdf:resource="http://example.com/solution/1"/>
-        <dc:isVersionOf rdf:resource="http://example.com/solution/1"/>
-        <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
-    </rdf:Description>
-
-    <!-- An empty release. -->
-    <rdf:Description rdf:about="http://example.com/release/2">
-        <dc:title xml:lang="en">Asset release 2</dc:title>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-
-        <owl:versionInfo>2</owl:versionInfo>
-        <dc:description xml:lang="en">Changelog for v2.</dc:description>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-27T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-06-14T09:58:01+03:00</dc:modified>
-        <dc:publisher rdf:resource="http://example.com/owner/1"/>
-        <dc:isVersionOf rdf:resource="http://example.com/solution/1"/>
-        <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
-    </rdf:Description>
-
-    <!-- #### Distribution entities #### -->
-    <!-- A standalone distribution. -->
-    <rdf:Description rdf:about="http://example.com/distribution/standalone">
-        <dc:title xml:lang="en">A standalone distribution</dc:title>
-        <dc:description xml:lang="en">Some description of a standalone distribution</dc:description>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-27T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-06-14T09:58:01+03:00</dc:modified>
-        <dc:license rdf:resource="http://example.com/license/1"/>
-        <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">
-            http://example.com/files/distribution_standalone.zip
-        </dcat:accessURL>
-    </rdf:Description>
-
-    <!-- A distribution belonging to http://example.com/release/1. -->
-    <rdf:Description rdf:about="http://example.com/distribution/1">
-        <dc:title xml:lang="en">Windows</dc:title>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-        <dc:description xml:lang="en">A distribution for windows</dc:description>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T09:58:01+03:00</dc:modified>
-        <!--Validation error: dc:license property is missing.-->
-        <!--<dc:license rdf:resource="http://example.com/license/1"/>-->
-        <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <!--Validation error: dcat:accessURL property is missing.-->
-        <!--<dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_1.zip</dcat:accessURL>-->
-    </rdf:Description>
-
-    <!-- A second distribution belonging to http://example.com/release/1. -->
-    <rdf:Description rdf:about="http://example.com/distribution/2">
-        <dc:title xml:lang="en">Linux</dc:title>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-        <dc:description xml:lang="en">A distribution for linux</dc:description>
-        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T09:58:01+03:00</dc:modified>
-        <dc:license rdf:resource="http://example.com/license/1"/>
-        <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">
-            http://example.com/files/distribution_2.zip
-        </dcat:accessURL>
-    </rdf:Description>
-
-    <!-- #### Owner entities #### -->
-    <rdf:Description rdf:about="http://example.com/owner/1">
+    <rdf:Description rdf:about="http://publisher">
         <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
         <dct:type rdf:resource="http://purl.org/adms/publishertype/Company"/>
         <foaf:name>The Publisher</foaf:name>
     </rdf:Description>
-    <rdf:Description rdf:about="http://example.com/owner/2">
-        <rdf:type rdf:resource="http://purl.org/adms/publishertype/LocalAuthority"/>
-        <!--Validation error: foaf:name property is missing.-->
-        <!--<foaf:name>A local authority</foaf:name>-->
-    </rdf:Description>
 
-    <!-- #### Contact information entities #### -->
-    <rdf:Description rdf:about="http://example.com/contact/1">
+    <rdf:Description rdf:about="http://contact">
         <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Kind"/>
-        <!--Validation error: v:fn property is missing.-->
-        <!--<v:fn>Contact</v:fn>-->
-        <!--Validation error: v:hasEmail property is missing.-->
-        <!--<v:hasEmail rdf:datatype="v:Email">contact@example.com</v:hasEmail>-->
+        <v:fn>Contact</v:fn>
+        <v:hasEmail rdf:datatype="v:Email">contact@hexample.com</v:hasEmail>
     </rdf:Description>
 
-    <!-- #### Solution type vocabulary terms #### -->
-    <!-- Custom term of a custom vocabulary to fill in the solution type. -->
     <rdf:Description rdf:about="http://vocabulary/term">
         <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
         <skos:label>Term</skos:label>
         <skos:inScheme rdf:resource="http://vocabulary"/>
-    </rdf:Description>
-
-    <!-- #### License entities #### -->
-    <rdf:Description rdf:about="http://example.com/license/1">
-        <rdfs:label xml:lang="en">A federated licence</rdfs:label>
-        <rdf:type rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
-        <dc:description>Licence agreement details</dc:description>
-        <!--Validation error: dc:type property is missing.-->
-        <!--<dc:type rdf:resource="http://purl.org/adms/licencetype/PublicDomain"/>-->
     </rdf:Description>
 
 </rdf:RDF>
