@@ -78,7 +78,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getParent(\Drupal\Core\Entity\EntityInterface $entity)
+        public function getParent(\Drupal\Core\Entity\EntityInterface $entity) : ?\Drupal\rdf_entity\RdfInterface
         {
             return $this->lazyLoadItself()->getParent($entity);
         }
@@ -86,7 +86,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getParentModeration(\Drupal\Core\Entity\EntityInterface $entity)
+        public function getParentModeration(\Drupal\Core\Entity\EntityInterface $entity) : ?int
         {
             return $this->lazyLoadItself()->getParentModeration($entity);
         }
@@ -94,7 +94,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getParentState(\Drupal\Core\Entity\EntityInterface $entity)
+        public function getParentState(\Drupal\Core\Entity\EntityInterface $entity) : string
         {
             return $this->lazyLoadItself()->getParentState($entity);
         }
@@ -110,47 +110,47 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getGroupOwners(\Drupal\Core\Entity\EntityInterface $entity, array $state = array (
+        public function getGroupOwners(\Drupal\Core\Entity\EntityInterface $entity, array $states = array (
           0 => 'active',
-        ))
+        )) : array
         {
-            return $this->lazyLoadItself()->getGroupOwners($entity, $state);
+            return $this->lazyLoadItself()->getGroupOwners($entity, $states);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function getGroupUsers(\Drupal\Core\Entity\EntityInterface $entity, array $state = array (
+        public function getGroupUsers(\Drupal\Core\Entity\EntityInterface $entity, array $states = array (
           0 => 'active',
-        ))
+        )) : array
         {
-            return $this->lazyLoadItself()->getGroupUsers($entity, $state);
+            return $this->lazyLoadItself()->getGroupUsers($entity, $states);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function getGroupMemberships(\Drupal\Core\Entity\EntityInterface $entity, array $state = array (
+        public function getGroupMemberships(\Drupal\Core\Entity\EntityInterface $entity, array $states = array (
           0 => 'active',
-        ))
+        )) : array
         {
-            return $this->lazyLoadItself()->getGroupMemberships($entity, $state);
+            return $this->lazyLoadItself()->getGroupMemberships($entity, $states);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, $role, array $state = array (
+        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
           0 => 'active',
-        ))
+        )) : array
         {
-            return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $state);
+            return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $states);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function getCollectionsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user)
+        public function getCollectionsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user) : array
         {
             return $this->lazyLoadItself()->getCollectionsWhereSoleOwner($user);
         }

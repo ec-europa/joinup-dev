@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -128,10 +129,10 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
     throw new Exception('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
+  /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
   $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == 1 ? 'node:pre_moderated' : 'node:post_moderated';
+  return $moderation == NodeWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }
 
 /**
