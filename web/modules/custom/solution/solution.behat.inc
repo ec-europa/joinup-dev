@@ -287,17 +287,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution = $this->createRdfEntity('solution', $values);
     $this->solutions[$solution->id()] = $solution;
 
-    // If a collection is affiliated, update the collection. In ADMS-AP the
-    // reference between a solution and a collection is backwards.
-    if (!empty($values['field_ar_affiliates'])) {
-      foreach ($values['field_ar_affiliates'] as $collection_label) {
-        $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
-        solution_update_collection_affiliation($solution->id(), $collection->id());
-        // Reindex the solution, so that the value of the "collection" computed
-        // field will be populated and indexed correctly.
-        $this->forceSearchApiReindex($solution);
-      }
-    }
+    $this->forceSearchApiReindex($solution);
 
     return $solution;
   }
@@ -491,7 +481,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => 'field_ar_affiliates',
+      'collection' => 'collections',
       'featured' => 'field_site_featured',
       'pinned site-wide' => 'field_site_pinned',
       'pinned in' => 'field_is_pinned_in',
@@ -539,6 +529,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
         $fields[$field] = $mapped_values[$field][$value];
       }
+    }
+
+    if (isset($fields['collections'])) {
+      $fields['collections'] = [$fields['collections']];
     }
 
     // Convert any entity reference field label value with the entity ID.
