@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -1202,7 +1203,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
       throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
-    $checkbox->check();
+
+    return $checkbox;
   }
 
   /**
