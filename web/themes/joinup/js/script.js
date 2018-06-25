@@ -10,7 +10,7 @@
     });
 
     // Add classes to tour button.
-    $('.block-tour-button-block .toolbar-icon-help').each(function () {
+    $('.block-tour-button-block .tour-button').each(function () {
       $(this).addClass('mdl-button mdl-js-button mdl-button--icon');
       $(this).html('<span class="icon icon--help"></span>');
       $(this).attr('title', 'Tour');

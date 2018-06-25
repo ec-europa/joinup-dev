@@ -390,7 +390,7 @@ article
 
 // Style tour button
 .block-tour-button-block
-  .toolbar-icon
+  .tour-button
     width: 40px
     height: 40px
     color: #fff
@@ -399,6 +399,11 @@ article
     +z-index(navigation)
     .icon
       +centered
+
+.user-anonymous .block-tour-button-block
+  position: absolute
+  top: 5px
+  right: 65px
 
 // Fix the feed icon styling.
 .feed-icon
