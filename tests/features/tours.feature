@@ -21,3 +21,4 @@ Feature: Tours
     Examples:
       | path                | role          |
       | /                   | authenticated |
+      | user                | authenticated |

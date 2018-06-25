@@ -1,0 +1,49 @@
+id: rdf_entity_canonical
+module: joinup_core
+label: Canonical RDF entity page.
+langcode: en
+status: true
+dependencies: { }
+routes:
+  - route_name: 'entity.rdf_entity.canonical'
+tips:
+  collection_content:
+    id: collection_content
+    plugin: text
+    body: 'The content area displays items that have been created or shared within a collection. This is the default view when entering a collection.'
+    weight: 1
+    location: left
+    attributes:
+      data-class: 'canonical-entity-page--rdf-entity--collection .listing .listing__item'
+  collection_menu:
+    id: collection_menu
+    plugin: text
+    body: 'The navigation menu provides access to a collection''s main sections, such as the members list, its description, etc.'
+    weight: 2
+    location: right
+    attributes:
+      data-class: 'canonical-entity-page--rdf-entity--collection .sidebar-menu .menu:first-child'
+  filters:
+    id: filters
+    plugin: text
+    body: 'By clicking on these icons, you can view specific content types in the content area.'
+    weight: 3
+    location: bottom
+    attributes:
+      data-class: 'facet-region .tab__container a:first-of-type'
+  join:
+    id: join
+    plugin: text
+    body: 'By joining a collection you become a member, with the ability to create content for it.'
+    weight: 4
+    location: right
+    attributes:
+      data-class: 'join-collection-form input.button'
+  search:
+    id: search
+    plugin: text
+    body: 'Search through the entire Joinup platform and its supported content items.'
+    weight: 5
+    location: left
+    attributes:
+      data-class: 'search-bar'
