@@ -1,33 +1,68 @@
 id: joinup_homepage
 module: joinup_core
-label: Joinup homepage tour
+label: 'Joinup homepage tour.'
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - joinup_core
 routes:
   - route_name: 'homepage.content'
 tips:
-  welcome:
-    id: welcome
+  anonymous_welcome:
+    id: anonymous_welcome
     plugin: text
     label: 'Welcome to Joinup'
-    body: 'Joinup is the collaborative platform of the European Commission for e-Government professionals.'
+    body: 'On this page you can find all the content published on the platform such as news, documents, collections, etc.'
     weight: 1
-  buzzwords:
-    id: buzzwords
+    location: left
+    attributes:
+      data-class: 'user-anonymous .block-recommended-content .listing .listing__item:first-child'
+  anonymous_collections:
+    id: anonymous_collections
     plugin: text
-    body: 'You will find here services to share experiences, as well as to discover, choose, re-use, develop and implement interoperability solutions.'
+    body: 'Lists all Joinup collections, which are the main collaborative spaces organised around a common topic.'
     weight: 2
-  next:
-    id: next
+    location: left
+    attributes:
+      data-class: 'user-anonymous .stats__wrapper__collections'
+  anonymous_solutions:
+    id: anonymous_solutions
     plugin: text
-    body: 'You may click on &lt;next&gt; to start a tour of the platform and to proceed at each step.'
+    body: 'Lists all Joinup solutions, which are the main collaborative spaces organised around a collection''s sub-topic.'
     weight: 3
-  collections:
-    id: collections
+    location: left
+    attributes:
+      data-class: 'user-anonymous .stats__wrapper__solutions'
+  anonymous_content:
+    id: anonymous_content
     plugin: text
-    body: 'You may use Joinup first of all as a collaborative environment to work together with other e-Government professionals regardless of your respective geographical locations. The spaces to do so are the collections. <a href="[site:url]collections?tour=1">Let''s have a look at them</a>.'
+    body: 'Find all the latest Joinup updates concerning events, documents, news, and discussions.'
     weight: 4
     location: right
     attributes:
-      data-class: 'stats__wrapper__collections'
+      data-class: 'user-anonymous .stats__wrapper__content'
+  anonymous_search:
+    id: anonymous_search
+    plugin: text
+    body: 'Search through the entire Joinup platform and its supported content items.'
+    weight: 5
+    location: left
+    attributes:
+      data-class: 'user-anonymous .search-bar__input'
+  anonymous_account:
+    id: anonymous_account
+    plugin: text
+    body: 'Sign in or out, and manage your user account.'
+    weight: 6
+    location: left
+    attributes:
+      data-class: 'user-anonymous .anonymous-menu'
+  contact:
+    id: contact
+    plugin: text
+    body: 'If you have any questions or suggestions regarding the Joinup platform, you can contact us through this link.'
+    weight: 13
+    location: top
+    attributes:
+      data-class: 'section--footer .vertical-menu .vertical-menu__item:nth-child(2)'

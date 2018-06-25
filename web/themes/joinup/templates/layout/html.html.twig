@@ -31,7 +31,7 @@
 #}
 {%
   set body_classes = [
-    logged_in ? 'user-logged-in',
+    logged_in ? 'user-logged-in' : 'user-anonymous',
     canonical_entity_page ? 'canonical-entity-page',
     canonical_entity_page ? 'canonical-entity-page--' ~ entity_type|clean_class,
     canonical_entity_page ? 'canonical-entity-page--' ~ entity_type|clean_class ~ '--' ~ bundle|clean_class,

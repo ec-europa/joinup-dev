@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.business_process
-third_party_settings: {  }
 id: taxonomy_term.business_process
 entity_type_id: taxonomy_term
 bundle: business_process
