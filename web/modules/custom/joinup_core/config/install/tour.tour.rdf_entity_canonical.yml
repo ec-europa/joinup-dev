@@ -15,19 +15,35 @@ tips:
     location: left
     attributes:
       data-class: 'canonical-entity-page--rdf-entity--collection .listing .listing__item'
+  solution_content:
+    id: solution_content
+    plugin: text
+    body: 'The content area displays items that have been created or shared within a solution. This is the default view when entering a solution.'
+    weight: 2
+    location: left
+    attributes:
+      data-class: 'canonical-entity-page--rdf-entity--solution .listing .listing__item'
   collection_menu:
     id: collection_menu
     plugin: text
     body: 'The navigation menu provides access to a collection''s main sections, such as the members list, its description, etc.'
-    weight: 2
+    weight: 3
     location: right
     attributes:
       data-class: 'canonical-entity-page--rdf-entity--collection .sidebar-menu .menu:first-child'
+  solution_menu:
+    id: solution_menu
+    plugin: text
+    body: 'The navigation menu provides access to a solution''s main sections, such as the members list, its description, etc.'
+    weight: 4
+    location: right
+    attributes:
+      data-class: 'canonical-entity-page--rdf-entity--solution .sidebar-menu .menu:first-child'
   filters:
     id: filters
     plugin: text
     body: 'By clicking on these icons, you can view specific content types in the content area.'
-    weight: 3
+    weight: 5
     location: bottom
     attributes:
       data-class: 'facet-region .tab__container a:first-of-type'
@@ -35,15 +51,23 @@ tips:
     id: join
     plugin: text
     body: 'By joining a collection you become a member, with the ability to create content for it.'
-    weight: 4
+    weight: 6
     location: right
     attributes:
       data-class: 'join-collection-form input.button'
+  download:
+    id: download
+    plugin: text
+    body: 'Download a solution''s release content, such as a standard, specification or software.'
+    weight: 7
+    location: right
+    attributes:
+      data-class: 'canonical-entity-page--rdf-entity--solution .block-group-header-block a.button'
   search:
     id: search
     plugin: text
     body: 'Search through the entire Joinup platform and its supported content items.'
-    weight: 5
+    weight: 8
     location: left
     attributes:
       data-class: 'search-bar'

@@ -37,7 +37,8 @@ Feature: Solution homepage
       | title            | body                                       | solution        |
       | Maintenance page | Jira is re-indexing. Go and drink a coffee | Jira restarters |
     When I go to the homepage of the "Jira restarters" solution
-    Then I should see the "Jira will be down for maintenance" tile
+    Then a tour should be available
+    And I should see the "Jira will be down for maintenance" tile
     And I should not see the "Maintenance page" tile
 
   Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
