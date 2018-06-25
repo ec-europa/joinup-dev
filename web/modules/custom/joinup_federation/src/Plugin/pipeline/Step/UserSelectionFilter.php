@@ -127,10 +127,16 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   public function execute() {
     $user_selection = $this->getPersistentDataValue('user_selection');
     $this->unsetPersistentDataValue('user_selection');
-    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
-      // Build a list of all whitelisted entities.
-      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+
+    // If no solution was selected, exit the pipeline here.
+    if (!$selected_solution_ids = array_keys(array_filter($user_selection))) {
+      return [
+        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
+      ];
     }
+
+    // Build a list of all whitelisted entities.
+    $this->buildWhitelist('solution', $selected_solution_ids);
 
     // Get all imported entity IDs by running a SPARQL query.
     /** @var \EasyRdf\Sparql\Result $results */
@@ -144,14 +150,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       // Delete blacklisted entities from 'staging' graph.
       $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
     }
-    $this->setPersistentDataValue('blacklist', $blacklist);
 
-    // If no solution was selected, exit the pipeline here.
-    if ($user_selection_is_empty) {
-      return [
-        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
-      ];
-    }
+    // Persist data for next steps.
+    $this->setPersistentDataValue('whitelist', $this->whitelist);
+    $this->setPersistentDataValue('blacklist', $blacklist);
   }
 
   /**
