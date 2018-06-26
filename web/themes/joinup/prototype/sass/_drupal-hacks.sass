@@ -92,6 +92,30 @@ textarea
       content: '\e8ab'
       +icon-size(15px)
 
+// Contextual links behaviour in tiles.
+.listing__card
+  .contextual
+    button.trigger.visually-hidden
+      // Restore the default absolute positioning applied by .visually-hidden class.
+      position: absolute !important
+
+
+// Move contextual button to the left
+// on pinned tiles.
+.listing__card
+  .contextual
+    right: auto
+    left: 6px
+    top: 6px !important
+    .trigger
+      right: auto
+      left: 0
+      float: left
+    .contextual-links
+      right: auto
+      left: 0
+      border-radius: 0 4px 4px 4px
+
 // Change contextual button color
 // on dark backgrounds
 .section--featured,
@@ -104,28 +128,6 @@ textarea
       &:focus
         background-image: none
         background: $color-grey-medium
-
-// Contextual links behaviour in tiles.
-.listing__card--corner
-  .contextual
-    button.trigger
-      // Restore the default absolute positioning applied by .visually-hidden class.
-      position: absolute !important
-
-// Move contextual button to the left
-// on pinned tiles.
-.listing__card--corner
-  .contextual
-    right: auto
-    left: 6px
-    .trigger
-      right: auto
-      left: 0
-      float: left
-    .contextual-links
-      right: auto
-      left: 0
-      border-radius: 0 4px 4px 4px
 
 ul.contextual-links
   +z-index(highlight+2)
