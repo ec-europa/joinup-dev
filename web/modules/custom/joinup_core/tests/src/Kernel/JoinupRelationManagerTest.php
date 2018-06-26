@@ -6,6 +6,7 @@ namespace Drupal\Tests\joinup_core\Kernel;
 
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 use PHPUnit\Framework\Assert;
@@ -152,9 +153,15 @@ class JoinupRelationManagerTest extends KernelTestBase {
       return $entity->id();
     }, $this->testRdfEntities[$bundle_id]);
 
+    foreach ($ids as $id) {
+      $entity = Rdf::load($id);
+      var_dump($id, $entity->label()); ob_flush();
+    }
+
     sort($ids);
     sort($expected_ids);
     Assert::assertEquals($expected_ids, $ids);
+
   }
 
 }
