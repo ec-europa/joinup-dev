@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\pipeline\PipelineState;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityGraph;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
@@ -54,6 +55,8 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
 
     // Create the 'default' and 'staging' graphs.
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.default.yml'));
+    RdfEntityGraph::create($graph)->save();
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.draft.yml'));
     RdfEntityGraph::create($graph)->save();
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/rdf_entity.graph.staging.yml'));
     RdfEntityGraph::create($graph)->save();
@@ -151,7 +154,10 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('empty_fields_values');
+    $state = (new PipelineState())
+      ->setStepId('empty_fields_values')
+      ->setBatchValue('remaining_incoming_ids', ['http://asset' => TRUE]);
+    $result = $this->runPipelineStep('empty_fields_values', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);
@@ -186,7 +192,10 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('empty_fields_values');
+    $state = (new PipelineState())
+      ->setStepId('empty_fields_values')
+      ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
+    $result = $this->runPipelineStep('empty_fields_values', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);
