@@ -224,8 +224,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
     catch (\Exception $exception) {
       // Catching any exception from the step execution just to reset the
-      // pipeline and allowing a future run. Otherwise, on a new pipeline run,
-      // the orchestrator will jump again to this step and might get stuck here.
+      // pipeline and allow a future run. Otherwise, on a new pipeline run, the
+      // orchestrator will jump again to this step and might get stuck here.
       $this->stateManager->reset($this->pipeline->getPluginId());
       // Propagate the exception.
       throw $exception;

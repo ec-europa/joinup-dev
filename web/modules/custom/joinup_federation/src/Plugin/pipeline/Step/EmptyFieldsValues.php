@@ -11,6 +11,7 @@ use Drupal\pipeline\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -93,6 +94,8 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase implements Pipeli
 
     // Get the incoming entities that are stored also locally.
     $local_ids = $this->getSparqlQuery()
+      // @todo Remove call to ::graphs() in ISAICP-4497.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
       ->graphs(['default', 'draft'])
       ->condition('id', array_values($whitelist), 'IN')
       ->execute();
@@ -129,6 +132,8 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase implements Pipeli
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
+    // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
     // Collect here entity IDs that are about to be saved.
