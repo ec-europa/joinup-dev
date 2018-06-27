@@ -36,13 +36,17 @@ Feature: Collection membership administration
     And I press the "Join this collection" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
     And the following email should have been sent:
-      | recipient | Lisa Cuddy                                                                                                                     |
-      | subject   | Joinup: A user has requested to join your collection                                                                           |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
+      | recipient | Lisa Cuddy                                           |
+      | subject   | Joinup: A user has requested to join your collection |
+    And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your collection" contains the following lines of text:
+      | text                                                                               |
+      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
+      | To approve or reject this request, click on                                        |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
     And the following email should have been sent:
-      | recipient | Turkey Ham                                                                                                                     |
-      | subject   | Joinup: A user has requested to join your collection                                                                           |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
+      | recipient | Turkey Ham                                                                         |
+      | subject   | Joinup: A user has requested to join your collection                               |
+      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
