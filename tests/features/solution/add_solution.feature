@@ -86,6 +86,10 @@ Feature: "Add solution" visibility options.
       | recipient | Ruth Lee                                                                                          |
       | subject   | Joinup: A new solution has been proposed                                                          |
       | body      | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on Joinup. |
+    And the email sent to "Ruth Lee" with subject "Joinup: A new solution has been proposed" contains the following lines of text:
+      | text                                                                                              |
+      | Wendell Silva has proposed a new Interoperability solution: "Espresso is the solution" on Joinup. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                |
 
     # Regression test for non required fields 'Banner' and 'Logo'.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3328
