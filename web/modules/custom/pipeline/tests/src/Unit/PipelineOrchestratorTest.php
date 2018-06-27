@@ -10,6 +10,7 @@ namespace Drupal\Tests\pipeline\Unit;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Form\FormBuilder;
 use Drupal\Core\Messenger\Messenger;
+use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\pipeline\PipelineOrchestrator;
 use Drupal\pipeline\PipelineState;
@@ -19,6 +20,7 @@ use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
 use Drupal\pipeline\Plugin\PipelineStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
 use Drupal\Tests\UnitTestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Tests the data pipeline processor.
@@ -72,6 +74,20 @@ class PipelineOrchestratorTest extends UnitTestCase {
   protected $currentUser;
 
   /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -82,6 +98,8 @@ class PipelineOrchestratorTest extends UnitTestCase {
     $this->formBuilder = $this->prophesize(FormBuilder::class);
     $this->messenger = $this->prophesize(Messenger::class);
     $this->currentUser = $this->prophesize(AccountProxyInterface::class);
+    $this->requestStack = $this->prophesize(RequestStack::class);
+    $this->renderer = $this->prophesize(Renderer::class);
   }
 
   /**
@@ -132,7 +150,9 @@ class PipelineOrchestratorTest extends UnitTestCase {
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
       $this->messenger->reveal(),
-      $this->currentUser->reveal()
+      $this->currentUser->reveal(),
+      $this->requestStack->reveal(),
+      $this->renderer->reveal()
     ))->run('demo_pipe');
   }
 
@@ -148,7 +168,9 @@ class PipelineOrchestratorTest extends UnitTestCase {
       $this->stateManager->reveal(),
       $this->formBuilder->reveal(),
       $this->messenger->reveal(),
-      $this->currentUser->reveal()
+      $this->currentUser->reveal(),
+      $this->requestStack->reveal(),
+      $this->renderer->reveal()
     );
   }
 
