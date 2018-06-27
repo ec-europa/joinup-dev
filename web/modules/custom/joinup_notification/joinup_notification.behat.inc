@@ -86,24 +86,11 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
     }
 
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
-
+    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $recipient) {
-        continue;
-      }
-
       // Check the sender email if it is set.
       if (!empty($from) && $mail['from'] !== $from) {
-        continue;
-      }
-
-      if ($subject !== trim($mail['subject'])) {
         continue;
       }
 
@@ -205,8 +192,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
       $email_was_sent = TRUE;
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       $email_was_sent = FALSE;
     }
 
@@ -222,6 +208,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    *
    * Table format:
    * | recipient          | username0123     |
+   * | recipient_mail     | username@t.com   |
    * | subject            | The mail subject |
    * | body               | The message body |
    * | html               | yes/no           |
@@ -266,22 +253,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       $recipient_mail = $user->getEmail();
     }
 
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
 
+    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient_mail);
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $recipient_mail) {
-        continue;
-      }
-
-      if ($subject !== trim($mail['subject'])) {
-        continue;
-      }
-
       // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
@@ -344,6 +319,100 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     else {
       Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
     }
+  }
+
+  /**
+   * Asserts that an email has been sent and contains some pieces of text.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
+   * @param string $user
+   *   The user name.
+   * @param string $subject
+   *   The subject of the email.
+   *
+   * @throws \Exception
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @Then the email sent to :user with subject :subject contains the( following lines of) text:
+   */
+  public function assertEmailSentAndContainsText(string $user, string $subject, TableNode $table) {
+    $lines_of_text = $table->getColumnsHash();
+    $user = user_load_by_name($user);
+    $recipient = $user->getEmail();
+    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
+    $email_found = FALSE;
+    foreach ($mails as $mail) {
+      // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
+      // mail body line to a certain amount of characters (77 by default).
+      // Spaces are also removed.
+      // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
+      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
+      $mail_body = trim($mail_body);
+
+      // If the original mail body is markup, we need to:
+      // - undo the encoding done by Twig to quotes;
+      // - remove the HTML to simplify the matching on the body text.
+      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
+      if ($mail['body'] instanceof MarkupInterface) {
+        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
+        $mail_body = strip_tags($mail_body);
+      }
+
+      foreach ($lines_of_text as $line_of_text) {
+        $text = $line_of_text['text'];
+        if (strpos($mail_body, $text) === FALSE) {
+          continue 2;
+        }
+      }
+
+      // We found a match. Stop searching.
+      $email_found = TRUE;
+      break;
+    }
+
+    Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
+  }
+
+  /**
+   * Fetches the emails sent given criteria.
+   *
+   * @param string $subject
+   *   The subject of the email sent.
+   * @param string $recipient_mail
+   *   The email of the recipient.
+   *
+   * @return array
+   *   An array of emails found.
+   *
+   * @throws \Exception
+   *   Thrown if no emails are found or no user exists with the given data.
+   */
+  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
+    \Drupal::state()->resetCache();
+    $mails = \Drupal::state()->get('system.test_mail_collector');
+    if (empty($mails)) {
+      throw new \Exception('No mail was sent.');
+    }
+
+    $emails_found = [];
+    foreach ($mails as $mail) {
+      if ($mail['to'] !== $recipient_mail) {
+        continue;
+      }
+
+      if ($subject !== trim($mail['subject'])) {
+        continue;
+      }
+
+      $emails_found[] = $mail;
+    }
+
+    if (empty($emails_found)) {
+      throw new Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
+    }
+
+    return $emails_found;
   }
 
   /**
