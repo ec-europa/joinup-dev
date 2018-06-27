@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\PluginFormInterface;
 /**
  * Provides an interface for pipeline steps that are exposing a form.
  */
-interface PipelineStepWithFormInterface extends PluginFormInterface, PluginInspectionInterface {
+interface PipelineStepWithFormInterface extends PluginFormInterface, PluginInspectionInterface, PipelineStepInterface {
 
   /**
    * Returns data to be injected in the persistent data store.
