@@ -153,15 +153,19 @@ class JoinupRelationManagerTest extends KernelTestBase {
       return $entity->id();
     }, $this->testRdfEntities[$bundle_id]);
 
-    foreach ($ids as $id) {
-      $entity = Rdf::load($id);
-      var_dump($id, $entity->label()); ob_flush();
-    }
-
     sort($ids);
     sort($expected_ids);
-    Assert::assertEquals($expected_ids, $ids);
 
+    try {
+      Assert::assertEquals($expected_ids, $ids);
+    }
+    catch (\Exception $e) {
+      foreach ($ids as $id) {
+        $entity = Rdf::load($id);
+        var_dump($id, $entity->label()); ob_flush();
+      }
+      throw new \Exception('meh', 0, $e);
+    }
   }
 
 }
