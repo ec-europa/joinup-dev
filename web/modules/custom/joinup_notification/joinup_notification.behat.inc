@@ -138,11 +138,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
-      // Since the body field has url tokens, we cannot provide a full body text
-      // because we don't have the url available. Because of this, we just
-      // match partial text.
-      if (strpos($mail_body, $body) === FALSE) {
-        continue;
+      if (isset($body)) {
+        // Since the body field has url tokens, we cannot provide a full body text
+        // because we don't have the url available. Because of this, we just
+        // match partial text.
+        $body = preg_replace("/\s+/", ' ', $body);
+        if (strpos($mail_body, $body) === FALSE) {
+          continue;
+        }
       }
 
       // If the template is present, try to load the related message template
@@ -304,7 +307,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // In the previous steps all whitespace has been converted to spaces and
       // HTML tags were removed, but this might cause double spaces to appear.
       // Replace all double spaces with single spaces.
-      $body = preg_replace("/\s+/", ' ', $body);
       $mail_body = preg_replace("/\s+/", ' ', $mail_body);
 
       // Check the existence or absence of the signature.
@@ -316,11 +318,14 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         throw new \Exception('The signature of the email was found in the email but should not be present.');
       }
 
-      // Since the body field has url tokens, we cannot provide a full body text
-      // because we don't have the url available. Because of this, we just
-      // match partial text.
-      if (strpos($mail_body, $body) === FALSE) {
-        continue;
+      if (isset($body)) {
+        // Since the body field has url tokens, we cannot provide a full body text
+        // because we don't have the url available. Because of this, we just
+        // match partial text.
+        $body = preg_replace("/\s+/", ' ', $body);
+        if (strpos($mail_body, $body) === FALSE) {
+          continue;
+        }
       }
 
       // We found a match. Stop searching.
