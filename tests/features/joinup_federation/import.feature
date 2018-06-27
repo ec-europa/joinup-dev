@@ -75,6 +75,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the row "<missing label> [http://example.com/solution/2]" is selected
 
     When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the following error message:
       | error messages                                                                                                                      |
@@ -116,6 +117,8 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
     Given I press "Next"
+    And I wait for the pipeline batch job to finish
+
     Then I should see the following success messages:
       | success messages                                                                |
       | The Spain - Center for Technology Transfer execution has finished with success. |
@@ -159,7 +162,9 @@ Feature: As a site moderator I am able to import RDF files.
     # Swap 'Solution 1' with 'Solution 3'.
     Given I uncheck the "Solution 1" row
     And I check the "Solution 3" row
+
     When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     # Check how the provenance records were updated.
     Then the "Solution 2" entity is not blacklisted for federation
