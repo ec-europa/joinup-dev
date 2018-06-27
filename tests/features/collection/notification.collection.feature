@@ -72,9 +72,13 @@ Feature: Notification test for the collection transitions.
     And I fill in "Owner" with "NC for all"
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                        |
-      | subject   | User NC proposed collection NC proposed new                                                         |
-      | body      | NC User has proposed collection "NC proposed new". To approve or reject this proposal, please go to |
+      | recipient | NC moderator                                |
+      | subject   | User NC proposed collection NC proposed new |
+    And the email sent to "NC moderator" with subject "User NC proposed collection NC proposed new" contains the following lines of text:
+      | text                                                                               |
+      | NC User has proposed collection "NC proposed new".                                 |
+      | To approve or reject this proposal, please go to                                   |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'propose' operation (on an existing collection)
     When all e-mails have been sent
@@ -83,9 +87,13 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                       |
-      | subject   | User NC proposed collection NC to propose                                                          |
-      | body      | NC Owner has proposed collection "NC to propose". To approve or reject this proposal, please go to |
+      | recipient | NC moderator                              |
+      | subject   | User NC proposed collection NC to propose |
+    And the email sent to "NC moderator" with subject "User NC proposed collection NC to propose" contains the following lines of text:
+      | text                                                                               |
+      | NC Owner has proposed collection "NC to propose".                                  |
+      | To approve or reject this proposal, please go to                                   |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'request archival' operation.
     When all e-mails have been sent
@@ -93,9 +101,13 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                                               |
-      | subject   | User NC requested to archive collection NC to request archival                                                             |
-      | body      | NC Owner has requested to archive the collection "NC to request archival". To approve or reject this request, please go to |
+      | recipient | NC moderator                                                   |
+      | subject   | User NC requested to archive collection NC to request archival |
+    And the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request archival" contains the following lines of text:
+      | text                                                                               |
+      | NC Owner has requested to archive the collection "NC to request archival".         |
+      | To approve or reject this request, please go to                                    |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'request deletion' operation.
     When all e-mails have been sent
@@ -103,9 +115,13 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
     Then the following email should have been sent:
-      | recipient | NC moderator                                                                                                              |
-      | subject   | User NC requested to delete collection NC to request deletion                                                             |
-      | body      | NC Owner has requested to delete the collection "NC to request deletion". To approve or reject this request, please go to |
+      | recipient | NC moderator                                                  |
+      | subject   | User NC requested to delete collection NC to request deletion |
+    And the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request deletion" contains the following lines of text:
+      | text                                                                               |
+      | NC Owner has requested to delete the collection "NC to request deletion".          |
+      | To approve or reject this request, please go to                                    |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
 
     # Test 'propose edit' operation.
     When all e-mails have been sent
