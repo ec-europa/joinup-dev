@@ -9,7 +9,7 @@ use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
 use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**
- * Conversion Pass #76 and #77.
+ * Conversion Pass #76, #77, #78 and #79.
  *
  * Namespaces for the information below:
  * - dcat = "http://www.w3.org/ns/dcat#"
@@ -44,10 +44,10 @@ use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
  * - Updated: The property url will be converted into the v:hasUrl property.
  *
  * @Adms2ConvertPass(
- *   id = "pass_76_to_77",
+ *   id = "pass_76_to_79",
  * )
  */
-class Pass76To77 extends JoinupFederationAdms2ConvertPassPluginBase {
+class Pass76To79 extends JoinupFederationAdms2ConvertPassPluginBase {
 
   /**
    * {@inheritdoc}
