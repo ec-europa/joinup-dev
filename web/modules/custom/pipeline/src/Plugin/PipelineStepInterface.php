@@ -64,6 +64,17 @@ interface PipelineStepInterface extends PluginInspectionInterface {
   public function getPersistentData();
 
   /**
+   * Checks if value exists in the persistent data store, given its key.
+   *
+   * @param string $key
+   *   The data key.
+   *
+   * @return bool
+   *   If the value exists in the persistent data store.
+   */
+  public function hasPersistentDataValue($key);
+
+  /**
    * Returns a single the persistent data entry, given its key.
    *
    * @param string $key

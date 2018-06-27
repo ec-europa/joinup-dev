@@ -105,6 +105,14 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   /**
    * {@inheritdoc}
    */
+  public function hasPersistentDataValue($key) {
+    $data = $this->getPersistentData();
+    return array_key_exists($key, $data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getPersistentDataValue($key) {
     $data = $this->getPersistentData();
     if (!array_key_exists($key, $data)) {

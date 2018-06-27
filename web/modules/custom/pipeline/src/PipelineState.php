@@ -22,6 +22,27 @@ class PipelineState implements PipelineStateInterface {
   protected $data = [];
 
   /**
+   * The sandbox data store used during one batch process.
+   *
+   * @var array
+   */
+  protected $batchData = [];
+
+  /**
+   * Batch current sequence.
+   *
+   * @var int
+   */
+  protected $batchCurrentSequence = 0;
+
+  /**
+   * Batch total estimated iterations.
+   *
+   * @var int
+   */
+  protected $batchTotalEstimatedIterations = 1;
+
+  /**
    * {@inheritdoc}
    */
   public function setStepId($step_id) {
@@ -63,11 +84,10 @@ class PipelineState implements PipelineStateInterface {
    * {@inheritdoc}
    */
   public function getDataValue($key) {
-    $data = $this->getData();
-    if (!array_key_exists($key, $data)) {
+    if (!array_key_exists($key, $this->data)) {
       throw new \InvalidArgumentException("There's no '$key' key in state data.");
     }
-    return $data[$key];
+    return $this->data[$key];
   }
 
   /**
@@ -83,6 +103,79 @@ class PipelineState implements PipelineStateInterface {
    */
   public function unsetDataValue($key) {
     unset($this->data[$key]);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasBatchValue($key) {
+    return array_key_exists($key, $this->batchData);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setBatchValue($key, $value) {
+    $this->batchData[$key] = $value;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBatchValue($key) {
+    if (!array_key_exists($key, $this->batchData)) {
+      throw new \InvalidArgumentException("There's no '$key' key in the batch sandbox.");
+    }
+    return $this->batchData[$key];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unsetBatchValue($key) {
+    unset($this->batchData[$key]);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setBatchTotalEstimatedIterations($total_estimated_iterations) {
+    $this->batchTotalEstimatedIterations = $total_estimated_iterations;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBatchTotalEstimatedIterations() {
+    return $this->batchTotalEstimatedIterations;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function advanceToNextBatch() {
+    $this->batchCurrentSequence++;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBatchCurrentSequence() {
+    return $this->batchCurrentSequence;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function resetBatch() {
+    $this->batchData = [];
+    $this->batchTotalEstimatedIterations = 1;
+    $this->batchCurrentSequence = 0;
     return $this;
   }
 

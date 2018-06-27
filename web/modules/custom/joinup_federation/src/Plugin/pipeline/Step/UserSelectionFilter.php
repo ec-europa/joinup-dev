@@ -146,7 +146,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }, $results->getArrayCopy());
 
     // Remove the blacklisted entities, if any.
-    if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
+    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
       // Delete blacklisted entities from 'staging' graph.
       $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
     }

@@ -7,6 +7,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -17,12 +19,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @PipelineStep(
  *   id = "empty_fields_values",
- *   label = @Translation("Empty fields values"),
+ *   label = @Translation("Assign default or local values to empty fields."),
  * )
  */
-class EmptyFieldsValues extends JoinupFederationStepPluginBase {
+class EmptyFieldsValues extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
+  use PipelineStepWithBatchTrait;
   use SparqlEntityStorageTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 10;
 
   /**
    * The entity field manager service.
@@ -77,23 +87,52 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute() {
-    // Get the incoming entities.
-    $incoming_ids = $this->getPersistentDataValue('whitelist');
+  public function initBatchProcess() {
+    $whitelist = $this->getPersistentDataValue('whitelist');
     $this->unsetPersistentDataValue('whitelist');
-    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
-    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
 
     // Get the incoming entities that are stored also locally.
     $local_ids = $this->getSparqlQuery()
       ->graphs(['default', 'draft'])
-      ->condition('id', array_values($incoming_ids), 'IN')
+      ->condition('id', array_values($whitelist), 'IN')
       ->execute();
-    /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
-    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
+
+    $incoming_ids = [];
+    foreach ($whitelist as $id) {
+      $incoming_ids[$id] = isset($local_ids[$id]);
+    }
+
+    $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
+
+    // Estimating the total number of iterations.
+    return ceil(count($incoming_ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_incoming_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute() {
+    $remaining_incoming_ids = $this->getBatchValue('remaining_incoming_ids');
+    $ids_to_process = array_splice($remaining_incoming_ids, 0, static::BATCH_SIZE);
+    $incoming_ids = array_keys($ids_to_process);
+    $local_ids = array_keys(array_filter($ids_to_process));
+
+    // Save the updated lists values.
+    $this->setBatchValue('remaining_incoming_ids', $remaining_incoming_ids);
+
+    /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
+    $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
+    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
     // Collect here entity IDs that are about to be saved.
-    $entities = [];
+    $entities = $this->hasPersistentDataValue('entities') ? $this->getPersistentDataValue('entities') : [];
 
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {

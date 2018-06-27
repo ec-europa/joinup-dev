@@ -6,12 +6,21 @@ pipeline.pipeline_select:
   requirements:
     _permission: 'access pipeline selector'
 
-pipeline.execute_pipeline:
+pipeline.execute_pipeline.html:
   path: '/admin/content/pipeline/{pipeline}/execute'
   defaults:
     _controller: 'Drupal\pipeline\Controller\PipelineExecutionController::execution'
     _title: 'Select pipeline'
   requirements:
+    _format: 'html'
+    _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowExecute'
+
+pipeline.execute_pipeline.json:
+  path: '/admin/content/pipeline/{pipeline}/execute'
+  defaults:
+    _controller: 'Drupal\pipeline\Controller\PipelineExecutionController::execution'
+  requirements:
+    _format: 'json'
     _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowExecute'
 
 pipeline.reset_pipeline:
