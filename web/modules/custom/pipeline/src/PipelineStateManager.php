@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\pipeline;
 
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
@@ -36,31 +38,59 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setState($pipeline_id, $step_id) {
-    $this->getPrivateTempStore()->set($this->getKey($pipeline_id), $step_id);
+  public function setState(string $pipeline_id, string $step_id): PipelineStateManagerInterface {
+    $this->getPrivateTempStore()->set($this->getStateKey($pipeline_id), $step_id);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getState($pipeline_id) {
-    return $this->getPrivateTempStore()->get($this->getKey($pipeline_id));
+  public function getState(string $pipeline_id): ?string {
+    return $this->getPrivateTempStore()->get($this->getStateKey($pipeline_id));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function reset($pipeline_id) {
-    $this->getPrivateTempStore()->delete($this->getKey($pipeline_id));
+  public function setBatchProgress(string $pipeline_id, PipelineStepBatchProgressInterface $batch_progress) {
+    $this->getPrivateTempStore()->set($this->getBatchProgressKey($pipeline_id), $batch_progress);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getStateMetadata($pipeline_id) {
-    return $this->getPrivateTempStore()->getMetadata($this->getKey($pipeline_id));
+  public function getBatchProgress(string $pipeline_id): PipelineStepBatchProgressInterface {
+    $progress = $this->getPrivateTempStore()->get($this->getBatchProgressKey($pipeline_id));
+    if (!$progress) {
+      $progress = new PipelineStepBatchProgress();
+    }
+    return $progress;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function reset(string $pipeline_id): PipelineStateManagerInterface {
+    $this->getPrivateTempStore()->delete($this->getStateKey($pipeline_id));
+    $this->resetBatchProgress($pipeline_id);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function resetBatchProgress(string $pipeline_id) {
+    $this->getPrivateTempStore()->delete($this->getBatchProgressKey($pipeline_id));
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStateMetadata(string $pipeline_id): ?\stdClass {
+    return $this->getPrivateTempStore()->getMetadata($this->getStateKey($pipeline_id));
   }
 
   /**
@@ -85,8 +115,21 @@ class PipelineStateManager implements PipelineStateManagerInterface {
    * @return string
    *   The key that identifies a particular pipeline state.
    */
-  protected function getKey($pipeline_id) {
+  protected function getStateKey($pipeline_id) {
     return "state:$pipeline_id";
+  }
+
+  /**
+   * Builds the private temp store entry key.
+   *
+   * @param string $pipeline_id
+   *   The ID of the pipeline plugin.
+   *
+   * @return string
+   *   The key that identifies a particular pipeline sandbox (batch).
+   */
+  protected function getBatchProgressKey($pipeline_id) {
+    return "state:$pipeline_id:sandbox";
   }
 
 }

@@ -78,6 +78,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Blacklisted asset" row
 
     Given I press "Next"
+    Given I wait for the pipeline batch job to finish
     Then I should see the following success messages:
       | success messages                                                                |
       | The Spain - Center for Technology Transfer execution has finished with success. |
@@ -114,6 +115,7 @@ Feature: As a site moderator I am able to import RDF files.
     Given I uncheck the "Not federated asset" row
     And I check the "Blacklisted asset" row
     When I press "Next"
+    Given I wait for the pipeline batch job to finish
 
     # Check how the provenance records were created/updated.
     Then the "Asset" entity is not blacklisted for federation

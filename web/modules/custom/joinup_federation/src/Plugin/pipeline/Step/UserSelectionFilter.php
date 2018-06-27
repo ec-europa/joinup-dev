@@ -12,6 +12,8 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -30,9 +32,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("User selection"),
  * )
  */
-class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepBatchInterface {
 
   use PipelineStepWithFormTrait;
+
+  use PipelineStepWithBatchTrait;
+
+  const BATCH_SIZE = 25;
 
   /**
    * The entity type manager service.
@@ -153,34 +159,82 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute(array &$data) {
-    $user_selection = $data['user_selection'];
-    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
-      // Build a list of all whitelisted entities.
-      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
+    if ($this->getProgress()->needsInitialisation()) {
+      // If this is the first time this method is fired, check if the user has
+      // not selected anything to import.
+      if (empty(array_filter($data['user_selection']))) {
+        return [
+          '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
+        ];
+      }
+      $this->initializeBatch($data);
+    }
+    $this->executeBatch($data);
+    return NULL;
+  }
+
+  /**
+   * Executes the batch process for the user selection filter form submission.
+   *
+   * @param array $data
+   *   An array of data.
+   */
+  protected function executeBatch(array &$data): void {
+    $batch_data = $this->getProgress()->getData();
+    $all_imported_ids = $batch_data['whitelist'];
+    if (empty($all_imported_ids)) {
+      $this->getProgress()->setCompleted();
+      return;
     }
 
-    $all_imported_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
-    // Remove the blacklisted entities, if any.
-    if ($blacklist = array_diff($all_imported_ids, $this->whitelist)) {
-      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
-    }
+    $ids_to_process = array_splice($all_imported_ids, 0, self::BATCH_SIZE);
+    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($ids_to_process);
 
-    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($all_imported_ids);
+    // The $id is the id of the referenced entity, not the activity entity.
+    // @see \Drupal\rdf_entity_provenance\ProvenanceHelperInterface::loadOrCreateEntitiesActivity.
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($this->currentUser->id())
         // Update the provenance based on user input.
-        ->set('provenance_enabled', in_array($id, $this->whitelist))
+        ->set('provenance_enabled', in_array($id, $batch_data['whitelist']))
         ->save();
     }
 
-    // If no solution was selected, exit the pipeline here.
-    if ($user_selection_is_empty) {
-      return [
-        '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
-      ];
+    $this->getProgress()->setBatchIteration($this->getProgress()->getBatchIteration() + count($ids_to_process));
+    $batch_data['whitelist'] = $all_imported_ids;
+    $this->getProgress()->setData($batch_data);
+  }
+
+  /**
+   * Initializes the batch process.
+   *
+   * @param array $data
+   *   The batch data array.
+   */
+  protected function initializeBatch(array &$data): void {
+    $user_selection = $data['user_selection'];
+    if (!$user_selection_is_empty = empty(array_filter($user_selection))) {
+      // Build a list of all whitelisted entities and stores it in the batch
+      // progress data array.
+      $this->buildWhitelist('solution', array_keys(array_filter($user_selection)));
     }
+
+    // Remove the blacklisted entities, if any.
+    $batch_data = $this->getProgress()->getData();
+    $all_incoming_ids = $this->getRdfEntityQuery()->graphs(['staging'])->execute();
+    if ($blacklist = array_diff($all_incoming_ids, $batch_data['whitelist'])) {
+      // Persist the provenance records of blacklisted items.
+      $blacklisted_provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($blacklist);
+      foreach ($blacklisted_provenance_records as $blacklisted_provenance_record) {
+        $blacklisted_provenance_record->set('provenance_enabled', FALSE);
+        $blacklisted_provenance_record->save();
+      }
+      $this->getRdfStorage()->deleteFromGraph($this->getRdfStorage()->loadMultiple($blacklist), 'staging');
+    }
+
+    $this->getProgress()->setBatchIteration(0);
+    $this->getProgress()->setTotalBatchIterations(count($batch_data['whitelist']));
   }
 
   /**
@@ -271,15 +325,19 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   is not from $bundle bundle.
    */
   protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
-    static $reference_fields = [];
+    $data = $this->getProgress()->getData();
+    if (!isset($data['whitelist'])) {
+      $data['whitelist'] = [];
+    }
 
     // Compute the whitelist of IDs not already added but exit early if empty.
-    if (!$new_whitelist_ids = array_diff($whitelist_ids, $this->whitelist)) {
+    if (!$new_whitelist_ids = array_diff($whitelist_ids, $data['whitelist'])) {
       return;
     }
 
     // Add new whitelisted IDs.
-    $this->whitelist = array_merge($this->whitelist, $new_whitelist_ids);
+    $data['whitelist'] = array_merge($data['whitelist'], $new_whitelist_ids);
+    $this->getProgress()->setData($data);
 
     // Store once the top level whitelisted solutions.
     if (!$whitelisted_solution_ids) {
@@ -289,32 +347,18 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $whitelisted_solution_ids = $whitelist_ids;
     }
 
-    // Build and statically cache a list of reference fields, part of ADMS-AP,
-    // for this bundle.
-    if (!isset($reference_fields[$bundle])) {
-      $reference_fields[$bundle] = [];
-      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
-        if (
-          $field_definition->getType() === 'entity_reference'
-          && $field_definition->getFieldStorageDefinition()->getSetting('target_type') === 'rdf_entity'
-          && !$field_definition->isComputed()
-          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
-        ) {
-          $reference_fields[$bundle][] = $field_name;
-        }
-      }
-    }
+    $bundle_reference_fields = $this->referenceFields($bundle);
     // This bundle has no entity reference fields.
-    if (!$reference_fields[$bundle]) {
+    if (!$bundle_reference_fields) {
       return;
     }
 
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach (Rdf::loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
+    foreach ($this->getRdfStorage()->loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
       if ($entity->bundle() !== $bundle) {
         throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
       }
-      foreach ($reference_fields[$bundle] as $field_name) {
+      foreach ($bundle_reference_fields as $field_name) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
         foreach ($this->getReferencedEntityIdsByBundle($field) as $referenced_bundle => $referenced_entity_ids) {
@@ -422,8 +466,15 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    */
   protected function getInfo(string $id, string $category): MarkupInterface {
     $activity = $this->provenanceHelper->loadOrCreateEntityActivity($id);
+    $last_user = $this->t('[unknown]');
+    if ($activity->getOwnerId()) {
+      $owner = $activity->getOwner();
+      if ($owner) {
+        $last_user = $owner->getDisplayName();
+      }
+    }
     $arguments = [
-      '%last_user' => $activity->getOwnerId() ? $activity->getOwner()->getDisplayName() : $this->t('[unknown]'),
+      '%last_user' => $last_user,
       '%last_date' => !$activity->get('provenance_started')->isEmpty() ? $this->dateFormatter->format($activity->get('provenance_started')->value, 'short') : $this->t('[unknown]'),
     ];
     switch ($category) {
@@ -544,6 +595,36 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $this->rdfEntityQuery = $this->getRdfStorage()->getQuery();
     }
     return $this->rdfEntityQuery;
+  }
+
+  /**
+   * Builds a list of reference fields for a bundle.
+   *
+   * @param string $bundle
+   *   The bundle name.
+   *
+   * @return array
+   *   The list of field names.
+   */
+  protected function referenceFields(string $bundle): array {
+    static $reference_fields = [];
+    // Build and statically cache a list of reference fields, part of ADMS-AP,
+    // for this bundle.
+    if (!isset($reference_fields[$bundle])) {
+      $reference_fields[$bundle] = [];
+      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
+        if (
+          $field_definition->getType() === 'entity_reference'
+          && $field_definition->getFieldStorageDefinition()
+            ->getSetting('target_type') === 'rdf_entity'
+          && !$field_definition->isComputed()
+          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
+        ) {
+          $reference_fields[$bundle][] = $field_name;
+        }
+      }
+    }
+    return $reference_fields[$bundle];
   }
 
 }

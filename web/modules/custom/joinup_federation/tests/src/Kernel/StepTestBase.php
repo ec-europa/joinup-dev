@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\pipeline\PipelineStepBatchProgress;
+use Drupal\pipeline\Plugin\PipelineStepBatchInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
@@ -68,6 +70,18 @@ abstract class StepTestBase extends KernelTestBase {
   protected function runPipelineStep(string $step_plugin_id) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
     $data = [];
+    if ($step_plugin_instance instanceof PipelineStepBatchInterface) {
+      $progress = new PipelineStepBatchProgress();
+      $all_errors = [];
+      $step_plugin_instance->setProgress($progress);
+      while (!$progress->getCompleted()) {
+        $iteration_errors = $step_plugin_instance->execute($data);
+        if ($iteration_errors) {
+          $all_errors = $all_errors + $iteration_errors;
+        }
+      }
+      return empty($all_errors) ? NULL : $all_errors;
+    }
     return $step_plugin_instance->execute($data);
   }
 

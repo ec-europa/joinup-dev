@@ -3,6 +3,7 @@
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\pipeline\PipelineStepBatchProgress;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityGraph;
 
@@ -62,6 +63,8 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
     $manager = $this->container->get('plugin.manager.pipeline_step');
     /** @var \Drupal\joinup_federation_test\Plugin\pipeline\Step\TestUserSelectionFilter $step_plugin */
     $step_plugin = $manager->createInstance('test_user_selection_filter');
+    $progress = new PipelineStepBatchProgress();
+    $step_plugin->setProgress($progress);
 
     $step_plugin->buildWhitelistWrapper('solution', [
       // Solution allowed for federation. http://solution/2 is considered

@@ -33,7 +33,8 @@ class TestUserSelectionFilter extends UserSelectionFilter {
    *   References.
    */
   public function getWhitelist(): array {
-    return $this->whitelist;
+    $data = $this->progress->getData();
+    return isset($data['whitelist']) ? $data['whitelist'] : NULL;
   }
 
 }
