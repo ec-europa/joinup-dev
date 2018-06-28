@@ -9,6 +9,8 @@ dependencies:
     - editor
     - image
     - joinup_video
+    - linkit
+    - video_embed_wysiwyg
 name: 'Content Editor'
 format: content_editor
 weight: -10
@@ -17,7 +19,7 @@ filters:
     id: filter_align
     provider: filter
     status: true
-    weight: -48
+    weight: -47
     settings: {  }
   filter_html:
     id: filter_html
@@ -51,14 +53,14 @@ filters:
     id: joinup_video
     provider: joinup_video
     status: true
-    weight: -49
+    weight: -48
     settings:
       allowed_providers:
         google_docs: google_docs
-        slideshare: slideshare
         internal_path: internal_path
         joinup_ec_video: joinup_ec_video
         prezi: prezi
+        slideshare: slideshare
         vimeo: vimeo
         youtube: youtube
         youtube_playlist: 0
@@ -68,21 +70,46 @@ filters:
     id: editor_file_reference
     provider: editor
     status: true
-    weight: 0
+    weight: -43
     settings: {  }
   filter_caption:
     id: filter_caption
     provider: filter
     status: true
-    weight: 0
+    weight: -42
     settings: {  }
   filter_image_style:
     id: filter_image_style
     provider: image
     status: true
-    weight: 0
+    weight: -41
     settings:
       allowed_styles:
         wysiwyg_full_width: wysiwyg_full_width
         wysiwyg_half_width: wysiwyg_half_width
         wysiwyg_one_third_width: wysiwyg_one_third_width
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -39
+    settings: {  }
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: false
+    weight: -40
+    settings: {  }
+  linkit:
+    id: linkit
+    provider: linkit
+    status: false
+    weight: -38
+    settings:
+      title: true
+  video_embed_wysiwyg:
+    id: video_embed_wysiwyg
+    provider: video_embed_wysiwyg
+    status: true
+    weight: -49
+    settings: {  }
