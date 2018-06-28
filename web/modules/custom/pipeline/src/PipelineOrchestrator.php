@@ -15,6 +15,7 @@ use Drupal\pipeline\Plugin\PipelinePipelinePluginManager;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -286,6 +287,17 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     $state->setStepId($this->pipeline->key());
     // And save it to be retrieved by the next step execution.
     $this->stateManager->setState($this->pipeline->getPluginId(), $state);
+
+    if ($step instanceof PipelineStepWithResponse) {
+      $response = $step->getResponse();
+
+      // Provide a fall-back page title, if the step didn't provide one.
+      if (is_array($response) && !isset($response['#title'])) {
+        $response = [$response] + ['#title' => $step->getPageTitle()];
+      }
+
+      $this->response = $response;
+    }
 
     // Let the orchestrator know that we've advanced to the next step.
     return TRUE;
