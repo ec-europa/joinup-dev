@@ -10,7 +10,7 @@ use Drupal\file\Entity\File;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
-use Drupal\pipeline\Plugin\PipelineStepWithResponse;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   label = @Translation("Manual upload"),
  * )
  */
-class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponse {
+class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface {
 
   use PipelineStepWithFormTrait;
   use RdfEntityGraphStoreTrait;
