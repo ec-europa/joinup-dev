@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\pipeline;
+namespace Drupal\pipeline\Plugin;
 
 /**
  * Reusable code for pipeline step plugins that are running in batch process.
@@ -30,6 +30,20 @@ trait PipelineStepWithBatchTrait {
   public function onBatchProcessCompleted() {
     // Ensure the method with no action for all steps.
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBatchErrorMessages() {
+    return $this->pipeline->getCurrentState()->getBatchErrorMessages();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildBatchProcessErrorMessage() {
+    return $this->getBatchErrorMessages();
   }
 
 }

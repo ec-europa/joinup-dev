@@ -6,6 +6,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -16,11 +18,20 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * Performs Drupal validation against incoming entities.
  *
  * @PipelineStep(
- *   id = "drupal_validation",
- *   label = @Translation("Drupal validation"),
+ *   id = "joinup_validation",
+ *   label = @Translation("Joinup compliance validation"),
  * )
  */
-class DrupalValidation extends JoinupFederationStepPluginBase {
+class JoinupValidation extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 30;
 
   /**
    * Non-critical violations map.
@@ -97,9 +108,29 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute() {
-    $rows = [];
+  public function initBatchProcess() {
     $ids = array_keys($this->getPersistentDataValue('entities'));
+    $this->setBatchValue('remaining_ids', $ids);
+    // Estimate the total number of iterations.
+    return ceil(count($ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute() {
+    $remaining_ids = $this->getBatchValue('remaining_ids');
+    $ids = array_splice($remaining_ids, 0, static::BATCH_SIZE);
+    $this->setBatchValue('remaining_ids', $remaining_ids);
+
+    $rows = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
       if ($messages = $this->getViolationsMessages($entity)) {
@@ -130,20 +161,33 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
       }
     }
 
-    if ($rows) {
-      return [
-        '#theme' => 'table',
-        '#header' => [
-          $this->t('Field'),
-          $this->t('Message'),
-        ],
-        '#rows' => $rows,
-      ];
-    }
-
     // Store non-critical violation metadata in the pipeline persistent data
     // store to be displayed at the end of the pipeline execution.
     $this->setPersistentDataValue('non_critical_violations', $this->nonCriticalViolations);
+
+    return $rows ?: NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildBatchProcessErrorMessage() {
+    $rows = array_reduce($this->getBatchErrorMessages(), function (array $rows, array $row_group): array {
+      return array_merge($rows, $row_group);
+    }, []);
+
+    if (!$rows) {
+      return $rows;
+    }
+
+    return [
+      '#theme' => 'table',
+      '#header' => [
+        $this->t('Field'),
+        $this->t('Message'),
+      ],
+      '#rows' => $rows,
+    ];
   }
 
   /**

@@ -173,4 +173,28 @@ interface PipelineStateInterface {
    */
   public function resetBatch();
 
+  /**
+   * Collects an error message or messages produced by a batch.
+   *
+   * If a batch, running inside a step, is producing errors, we don't stop the
+   * batch process, rather we collect them. Then, at the end of the batch
+   * process, we assemble them in a single error message render array, in
+   * PipelineStepWithBatchInterface::buildProcessErrorMessage() and we display
+   * them all together, once. This method is used to collect batch errors.
+   *
+   * @param array|null $error_message
+   *   The message as render array.
+   *
+   * @return $this
+   */
+  public function addBatchErrorMessage(array $error_message = NULL);
+
+  /**
+   * Returns the list of error messages collected across batch process run.
+   *
+   * @return array
+   *   A list of error messages, each one being a render array.
+   */
+  public function getBatchErrorMessages();
+
 }

@@ -8,7 +8,7 @@
  * @see web/core/misc/batch.js
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
   Drupal.behaviors.batch = {
     attach: function attach(context, settings) {
       var batch = settings.batch;
@@ -22,8 +22,8 @@
         }
       }
 
-      function errorCallback(pb) {
-        $progress.prepend($('<p class="error"></p>').html(batch.errorMessage));
+      function errorCallback(message) {
+        $progress.append($('<p class="error"></p>').html(message));
         $('#wait').hide();
       }
 
@@ -31,11 +31,24 @@
         progressBar = new Drupal.ProgressBar('updateprogress', updateCallback, 'GET', errorCallback);
         progressBar.setProgress(batch.percentage, batch.initMessage, batch.initLabel);
         progressBar.startMonitoring(batch.uri, 10);
-
         $progress.empty();
-
         $progress.append(progressBar.element);
       }
     }
   };
-})(jQuery, Drupal);
+
+  $.extend(Drupal.ProgressBar.prototype, {
+    // Override ProgressBar.displayError() to handle messages in our way.
+    displayError(string) {
+      $('.page-title').text(drupalSettings.batch.errorPageTitle);
+      var message = drupalSettings.batch.errorMessage;
+      var error = $('<div class="messages messages--error"></div>').html(message);
+      $(this.element).before(error).hide();
+
+      if (this.errorCallback) {
+        this.errorCallback(string);
+      }
+    }
+  });
+
+})(jQuery, Drupal, drupalSettings);

@@ -203,9 +203,9 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected function executeStep(PipelineStateInterface $state) {
     $step = $this->pipeline->createStepInstance($state->getStepId());
 
-    if ($step instanceof PipelineStepWithBatchInterface) {
+    if ($is_batch = $step instanceof PipelineStepWithBatchInterface) {
       /** @var \Drupal\pipeline\Plugin\PipelineStepWithBatchInterface $step */
-      if ($state->getBatchCurrentSequence() === 0) {
+      if (($batch_sequence = $state->getBatchCurrentSequence()) === 0) {
         // If the sequence is 0 we're initializing a new batch.
         $state->setBatchTotalEstimatedIterations($step->initBatchProcess());
       }
@@ -217,9 +217,32 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     try {
-      $error = $step->prepare();
+      $error = NULL;
+
+      // Run the step preparation only at the beginning of the step.
+      if (!$is_batch || ($batch_sequence === 0)) {
+        $error = $step->prepare();
+      }
+
       if (!$error) {
+        // Execute the step and get any error.
         $error = $step->execute();
+
+        // Collect the errors on batch processing because we want to show them
+        // at the end of the batch process.
+        if ($is_batch && $error) {
+          $state->addBatchErrorMessage($error);
+        }
+
+        // Optimization: The batch is complete after running the first step. In
+        // this case, we treat this as a non-batch step.
+        if ($is_batch && ($batch_sequence === 0) && $step->batchProcessIsCompleted()) {
+          $is_batch = FALSE;
+          $step->onBatchProcessCompleted();
+          // The error message should be rebuilt using the step logic.
+          $error = $step->buildBatchProcessErrorMessage();
+          $state->resetBatch();
+        }
       }
     }
     catch (\Exception $exception) {
@@ -243,12 +266,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // content of the persistent data store.
     $state = $this->pipeline->getCurrentState();
 
-    if ($step instanceof PipelineStepWithBatchInterface) {
-      // Advance to the next state only if batch process is completed.
-      $this->handleBatchProcess($step);
+    // Advance to the next state only if batch process is completed.
+    if ($is_batch && $this->handleBatchProcess($step)) {
+      return FALSE;
     }
-    else {
-      // Advance to the next state.
+    // Advance to the next state.
+    elseif (!$is_batch) {
       $this->pipeline->next();
     }
 
@@ -346,24 +369,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The error message as a render array.
    */
   protected function setErrorResponse(PipelineStepInterface $step, array $error) {
-    if ($this->isJsonRequest()) {
-      /** @var \Drupal\Core\Render\RendererInterface $r */
-      $this->response = new JsonResponse([
-        'status' => 0,
-        'percentage' => 100,
-        'data' => $this->renderer->renderPlain($error),
-        'label' => 'THE LABEL',
-      ]);
-      return;
-    }
-
-    $arguments = [
-      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
-      '%step' => $step->getPluginDefinition()['label'],
-    ];
-    $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
-    $this->messenger->addError($message);
-    $this->response = $error + ['#title' => $this->t('Errors executing %pipeline', ['%pipeline' => $this->pipeline->getPluginDefinition()['label']])];
+    $this->messenger->addError($this->getErrorStatusMessage($step));
+    $this->response = $error + ['#title' => $this->getErrorPageTitle()];
   }
 
   /**
@@ -393,15 +400,69 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   }
 
   /**
+   * Handles progressing the batch process.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepWithBatchInterface $step
+   *   Current pipeline step.
+   *
+   * @return bool
+   *   Signals to the caller tha he should proceed with the response output.
+   */
+  protected function handleBatchProcess(PipelineStepWithBatchInterface $step) {
+    // The current step finished its batch process.
+    if ($completed = $step->batchProcessIsCompleted()) {
+      // Give steps a chance to run their own code on batch completion.
+      $step->onBatchProcessCompleted();
+
+      $status = TRUE;
+      $message = NULL;
+
+      // Check for errors collected during batch process and aggregate them.
+      $render_array = $step->buildBatchProcessErrorMessage();
+      if ($is_error = (bool) $render_array) {
+        $status = FALSE;
+        $message = $this->renderer->renderPlain($render_array);
+      }
+
+      // Feed the progress bar with the last sequence from the batch.
+      $this->response = $this->batchResponse($step, $status, $message);
+
+      if (!$is_error) {
+        // Resets the batch sandbox and internals.
+        $this->pipeline->getCurrentState()->resetBatch();
+        // We're done with this step. Advance the pipeline.
+        $this->pipeline->next();
+        return FALSE;
+      }
+      else {
+        // Reset the pipeline, on error.
+        $this->pipeline->onError();
+        return TRUE;
+      }
+    }
+
+    // The current step has more work to do, so reload the page.
+    $this->response = $this->batchResponse($step);
+    $this->pipeline->getCurrentState()->advanceToNextBatch();
+
+    return FALSE;
+  }
+
+  /**
    * Renders a batch progress screen and subsequent Json responses.
    *
    * @param \Drupal\pipeline\Plugin\PipelineStepWithBatchInterface $step
    *   The active pipeline step.
+   * @param bool $status
+   *   (optional) FALSE for an error response, TRUE otherwise. If omitted, a
+   *   standard message is composed.
+   * @param string $error
+   *   (optional) If this response is error, provide an optional message.
    *
    * @return array|\Symfony\Component\HttpFoundation\JsonResponse
    *   The render array of the batch process.
    */
-  protected function batchResponse(PipelineStepWithBatchInterface $step) {
+  protected function batchResponse(PipelineStepWithBatchInterface $step, $status = TRUE, $error = NULL) {
     $current_count = $this->pipeline->getCurrentState()->getBatchCurrentSequence() + 1;
     // As the total iterations is an estimation, we adjust the value to cover
     // the case when there are more iterations than estimated.
@@ -417,17 +478,18 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
       '%total' => $total_count,
     ];
 
-    $label = $this->t('Running %step', $arguments);
-    // @todo Give step plugin the ability to set a custom message.
-    $message = $this->t('Iteration %count of %total', $arguments);
+    $label = $this->t('Running step %step', $arguments);
+    $error_title = $this->getErrorStatusMessage($step);
+    $message = $error ? $error_title : $this->t('Iteration %count of %total', $arguments);
 
     // This is a subsequent batch, we only feed the progress bar.
     if ($this->isJsonRequest()) {
       return new JsonResponse([
-        'status' => TRUE,
+        'status' => (int) $status,
         'percentage' => $percentage,
         'message' => $message,
         'label' => $label,
+        'data' => $error,
       ]);
     }
 
@@ -464,7 +526,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
           // Code and settings for clients where JavaScript is enabled.
           'drupalSettings' => [
             'batch' => [
-              'errorMessage' => $this->t('Errors while running %step', $arguments),
+              'errorMessage' => $error_title,
+              'errorPageTitle' => $this->getErrorPageTitle(),
               'initLabel' => $label,
               'initMessage' => $message,
               'percentage' => $percentage,
@@ -480,34 +543,6 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   }
 
   /**
-   * Handle progressing the batch process.
-   *
-   * @param \Drupal\pipeline\Plugin\PipelineStepWithBatchInterface $step
-   *   Current pipeline step.
-   */
-  protected function handleBatchProcess(PipelineStepWithBatchInterface $step): void {
-    // The current step finished its batch process.
-    if ($step->batchProcessIsCompleted()) {
-      // Give steps a chance to run their own code on batch completion.
-      $step->onBatchProcessCompleted();
-
-      // Feed the progress bar with the last sequence from the batch.
-      $this->response = $this->batchResponse($step);
-
-      // Resets the batch sandbox and internals.
-      $this->pipeline->getCurrentState()->resetBatch();
-
-      // We're done with this step. Advance the pipeline.
-      $this->pipeline->next();
-    }
-    // The current step has more work to do, so reload the page.
-    else {
-      $this->response = $this->batchResponse($step);
-      $this->pipeline->getCurrentState()->advanceToNextBatch();
-    }
-  }
-
-  /**
    * Checks if the current request is a Json request.
    *
    * @return bool
@@ -516,6 +551,32 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected function isJsonRequest() {
     $query = $this->requestStack->getCurrentRequest()->query;
     return $query->has('_format') && ($query->get('_format') === 'json');
+  }
+
+  /**
+   * Returns the status message when the pipeline exists with error.
+   *
+   * @param \Drupal\pipeline\Plugin\PipelineStepInterface $step
+   *   The pipeline step plugin instance.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   The error message.
+   */
+  protected function getErrorStatusMessage(PipelineStepInterface $step) {
+    return $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', [
+      '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
+      '%step' => $step->getPluginDefinition()['label'],
+    ]);
+  }
+
+  /**
+   * Returns the title page on error.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   The error message.
+   */
+  protected function getErrorPageTitle() {
+    return $this->t('Errors executing @pipeline', ['@pipeline' => $this->pipeline->getPluginDefinition()['label']]);
   }
 
 }

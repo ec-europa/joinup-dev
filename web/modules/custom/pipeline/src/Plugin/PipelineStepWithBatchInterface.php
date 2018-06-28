@@ -68,4 +68,25 @@ interface PipelineStepWithBatchInterface extends PipelineStepInterface {
    */
   public function getBatchValue($key);
 
+  /**
+   * Returns the list of error messages collected across batch process run.
+   *
+   * @return array
+   *   A list of error messages, each one being a render array.
+   */
+  public function getBatchErrorMessages();
+
+  /**
+   * Builds the error message.
+   *
+   * If the step is producing errors in subsequent batches, we don't exit the
+   * batch process. Rather we collect the error messages. This method is used to
+   * aggregate all the messages collected across the batches, each of them being
+   * render arrays, in a single render array.
+   *
+   * @return array
+   *   The error message as a render array.
+   */
+  public function buildBatchProcessErrorMessage();
+
 }

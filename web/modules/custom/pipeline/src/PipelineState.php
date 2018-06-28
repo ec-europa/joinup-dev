@@ -43,6 +43,13 @@ class PipelineState implements PipelineStateInterface {
   protected $batchTotalEstimatedIterations = 1;
 
   /**
+   * Errors collected across batches.
+   *
+   * @var array
+   */
+  protected $errorMessages = [];
+
+  /**
    * {@inheritdoc}
    */
   public function setStepId($step_id) {
@@ -176,7 +183,23 @@ class PipelineState implements PipelineStateInterface {
     $this->batchData = [];
     $this->batchTotalEstimatedIterations = 1;
     $this->batchCurrentSequence = 0;
+    $this->errorMessages = [];
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addBatchErrorMessage(array $error_message = NULL) {
+    $this->errorMessages[] = $error_message;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBatchErrorMessages() {
+    return $this->errorMessages;
   }
 
 }
