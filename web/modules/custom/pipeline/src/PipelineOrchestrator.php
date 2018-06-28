@@ -512,7 +512,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     $uri = $current_request->getPathInfo();
 
     return [
-      '#title' => $this->t('@pipeline: @step', ['@pipeline' => $pipeline_label, '@step' => $step_label]),
+      '#title' => $step->getPageTitle(),
       [
         '#theme' => 'progress_bar',
         '#percent' => $percentage,

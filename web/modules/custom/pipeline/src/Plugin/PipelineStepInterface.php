@@ -127,4 +127,12 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    */
   public function unsetPersistentDataValue($key);
 
+  /**
+   * Returns the generic title to be used on pages.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   The page title.
+   */
+  public function getPageTitle();
+
 }

@@ -158,6 +158,17 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getPageTitle() {
+    $this->ensurePipeline();
+    return $this->t('@pipeline: @step', [
+      '@pipeline' => $this->pipeline->getPluginDefinition()['label'],
+      '@step' => $this->getPluginDefinition()['label'],
+    ]);
+  }
+
+  /**
    * Ensures a pipeline was set.
    *
    * @throws \LogicException
