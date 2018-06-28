@@ -80,7 +80,7 @@ Feature: Sharing content between collections
     When I check "Classic Rock"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Sharing updated."
+    Then I should see the success message "Item was shared in the following collections: Classic Rock."
     # Verify that the collections where the content has already been shared are
     # not shown anymore in the list.
     When I click "Share"
@@ -126,13 +126,13 @@ Feature: Sharing content between collections
     And the following fields should not be present "Drum'n'Bass, Hip-Hop, Power ballad"
 
     # Unshare the content.
-    When I uncheck "Classic Rock"
-    And I press "Save" in the "Modal buttons" region
+    When I check "Classic Rock"
+    And I press "Submit" in the "Modal buttons" region
     And I wait for AJAX to finish
 
     # I should still be on the same page, but the collection content should be
     # changed. The "Interesting content" should no longer be visible.
-    Then I should see the success message "Sharing updated."
+    Then I should see the success message "Item was unshared from the following collections: Classic Rock."
     And I should see the "New D'n'B compilation released" tile
     And I should see the "Rockabilly is still rocking" tile
     But I should not see the "Interesting content" tile
@@ -260,7 +260,7 @@ Feature: Sharing content between collections
     When I check "Gossip"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Sharing updated."
+    Then I should see the success message "Item was shared in the following collections: Gossip."
     And I should see the heading "Shared in"
     And I should see the "Gossip" tile
 

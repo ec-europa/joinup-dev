@@ -35,7 +35,7 @@ class Pass11 extends JoinupFederationAdms2ConvertPassPluginBase {
     $query = <<<QUERY
 WITH <{$data['sink_graph']}>
 DELETE { ?owner <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/publisher> }
-INSERT { ?owner <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/agent> }
+INSERT { ?owner <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Agent> }
 WHERE { 
   ?subject a ?subject_type .
   ?subject <http://purl.org/dc/terms/publisher> ?owner .
@@ -63,9 +63,9 @@ QUERY;
       ConvertToAdms2StepTest::getTestingGraphs()['sink'],
       NULL,
       'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-      '<http://purl.org/dc/terms/agent>'
+      '<http://xmlns.com/foaf/0.1/Agent>'
     );
-    // Exactly 3 owners exist with the type <http://purl.org/dc/terms/agent>.
+    // Exactly 3 owners exist with the type <http://xmlns.com/foaf/0.1/Agent>.
     $test->assertCount(3, $results[0]);
   }
 
