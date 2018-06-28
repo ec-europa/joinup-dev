@@ -622,6 +622,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'custom_page' => [
         'attachments' => 'field_attachment',
+        'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
         'content' => 'body',
