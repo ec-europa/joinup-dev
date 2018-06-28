@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
@@ -21,7 +22,7 @@ third_party_settings:
       children:
         - field_attachment
       parent_name: ''
-      weight: 20
+      weight: 4
       format_type: html_element
       format_settings:
         label: Attachments
@@ -49,7 +50,8 @@ content:
   field_attachment:
     weight: 51
     label: hidden
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings:
       ds:
         ds_limit: ''
@@ -82,7 +84,7 @@ content:
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 50
+    weight: 5
     region: content
     settings:
       trim_length: 80
@@ -93,5 +95,6 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  field_custom_page_logo: true
   langcode: true
   og_audience: true

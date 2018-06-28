@@ -622,6 +622,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'custom_page' => [
         'attachments' => 'field_attachment',
+        'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
         'content' => 'body',
@@ -1355,6 +1356,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     else {
       $this->getSession()->getPage()->fillField($label, $text);
     }
+  }
+
+  /**
+   * Presses a button in a given WYSIWYG editor.
+   *
+   * @param string $button
+   *   The label of the button to press.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I press the button :button in the :label wysiwyg editor
+   */
+  public function pressButtonInWysiwyg($button, $label) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $this->pressWysiwygButton($label, $button);
   }
 
   /**
