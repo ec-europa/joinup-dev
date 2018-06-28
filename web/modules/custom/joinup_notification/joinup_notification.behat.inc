@@ -126,9 +126,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       if (isset($body)) {
-        // Since the body field has url tokens, we cannot provide a full body text
-        // because we don't have the url available. Because of this, we just
-        // match partial text.
+        // Since the body field has url tokens, we cannot provide a full body
+        // text because we don't have the url available. Because of this, we
+        // just match partial text.
         $body = preg_replace("/\s+/", ' ', $body);
         if (strpos($mail_body, $body) === FALSE) {
           continue;
@@ -192,7 +192,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
       $email_was_sent = TRUE;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $email_was_sent = FALSE;
     }
 
@@ -253,7 +254,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       $recipient_mail = $user->getEmail();
     }
 
-
     $mails = $this->getEmailsBySubjectAndMail($subject, $recipient_mail);
     $email_found = FALSE;
     foreach ($mails as $mail) {
@@ -294,9 +294,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       }
 
       if (isset($body)) {
-        // Since the body field has url tokens, we cannot provide a full body text
-        // because we don't have the url available. Because of this, we just
-        // match partial text.
+        // Since the body field has url tokens, we cannot provide a full body
+        // text because we don't have the url available. Because of this, we
+        // just match partial text.
         $body = preg_replace("/\s+/", ' ', $body);
         if (strpos($mail_body, $body) === FALSE) {
           continue;
@@ -324,12 +324,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   /**
    * Asserts that an email has been sent and contains some pieces of text.
    *
-   * @param \Behat\Gherkin\Node\TableNode $table
-   *   The mail data table.
    * @param string $user
    *   The user name.
    * @param string $subject
    *   The subject of the email.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
    *
    * @throws \Exception
    *   Throws an exception when a parameter is not the expected one.
