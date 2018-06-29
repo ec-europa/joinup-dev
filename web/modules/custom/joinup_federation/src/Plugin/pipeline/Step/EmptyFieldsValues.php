@@ -82,6 +82,10 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase {
     $incoming_ids = $this->getSparqlQuery()
       ->graphs(['staging'])
       ->execute();
+
+    // Reset rdf entity cache.
+    $this->getRdfStorage()->resetCache();
+
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
 

@@ -17,6 +17,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "user_selection_filter",
+ *     "fix_ctt_inconsistencies",
  *     "empty_fields_values" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },

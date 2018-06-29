@@ -142,6 +142,10 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
   public function execute() {
     $rows = [];
     $ids = array_keys($this->getPersistentDataValue('entities'));
+
+    // Reset rdf entity cache.
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache();
+
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
       if ($messages = $this->getViolationsMessages($entity)) {
