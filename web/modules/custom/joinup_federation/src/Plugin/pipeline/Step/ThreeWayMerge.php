@@ -7,6 +7,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
@@ -21,23 +23,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("3-way merge"),
  * )
  */
-class ThreeWayMerge extends JoinupFederationStepPluginBase {
+class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
+  use PipelineStepWithBatchTrait;
   use SparqlEntityStorageTrait;
 
   /**
-   * Bundle priority on import.
+   * The batch size.
    *
-   * @var string[]
+   * @var int
    */
-  const PRIORITY = [
-    'contact_information',
-    'licence',
-    'owner',
-    'solution',
-    'asset_release',
-    'asset_distribution',
-  ];
+  const BATCH_SIZE = 10;
 
   /**
    * The entity field manager service.
@@ -96,27 +92,42 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute() {
-    $entities_by_bundle = array_fill_keys(static::PRIORITY, []);
-
+  public function initBatchProcess() {
     // Retrieve the list of entities from the persistent data store as an
     // associative array keyed by entity ID and having a boolean as value,
     // signaling if the entity already exists in Joinup.
-    $entities = $this->getPersistentDataValue('entities');
-    $ids = array_keys($entities);
+    $remaining_entity_ids = $this->getPersistentDataValue('entities');
+    $this->setBatchValue('remaining_entity_ids', $remaining_entity_ids);
+    // Estimate the number of iterations.
+    return ceil(count($remaining_entity_ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_entity_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute() {
+    $ids_to_process = $this->extractNextSubset('remaining_entity_ids', static::BATCH_SIZE);
+    $ids = array_keys($ids_to_process);
 
     // Build a list of local entities that are about to be updated.
-    $local_entity_ids = array_keys(array_filter($entities));
+    $local_entity_ids = array_keys(array_filter($ids_to_process));
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
     $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
-    $deleted_entities = [];
+    $entities_to_save = $entities_to_delete = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
-      // The entity already exists.
-      if ($entities[$id]) {
+      // This entity already exists.
+      if ($ids_to_process[$id]) {
         $graph_ids = [];
         foreach ([RdfEntityGraphInterface::DEFAULT, 'draft'] as $graph_id) {
           if ($local_entities[$id]->hasGraph($graph_id)) {
@@ -140,7 +151,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         // Collect the entities to be deleted later from the 'staging' graph. We
         // are not deleting here because, when saving the entities in the main
         // graphs, this would lead to a null $entity->original.
-        $deleted_entities[] = $entity;
+        $entities_to_delete[] = $entity;
       }
       // No local entity. Copy the incoming entity as a published entity.
       else {
@@ -151,22 +162,18 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase {
         $entity->skip_notification = TRUE;
         $entity->delete();
       }
-      // Group entities by bundle.
-      $entities_by_bundle[$local_entity->bundle()][] = $local_entity;
+      $entities_to_save[] = $local_entity;
     }
 
     // Save the entities.
-    foreach ($entities_by_bundle as $bundle => $entities_from_bundle) {
-      /** @var \Drupal\rdf_entity\RdfInterface $local_entity */
-      foreach ($entities_from_bundle as $local_entity) {
-        $local_entity->skip_notification = TRUE;
-        $local_entity->save();
-      }
+    foreach ($entities_to_save as $local_entity) {
+      $local_entity->skip_notification = TRUE;
+      $local_entity->save();
     }
 
-    // Cleanup the entity from the 'staging' graph.
-    if ($deleted_entities) {
-      $this->getRdfStorage()->deleteFromGraph($deleted_entities, 'staging');
+    // Cleanup the entities from the 'staging' graph.
+    if ($entities_to_delete) {
+      $this->getRdfStorage()->deleteFromGraph($entities_to_delete, 'staging');
     }
   }
 

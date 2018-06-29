@@ -126,10 +126,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    * {@inheritdoc}
    */
   public function execute() {
-    $remaining_ids = $this->getBatchValue('remaining_ids');
-    $ids = array_splice($remaining_ids, 0, static::BATCH_SIZE);
-    $this->setBatchValue('remaining_ids', $remaining_ids);
-
+    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $rows = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {

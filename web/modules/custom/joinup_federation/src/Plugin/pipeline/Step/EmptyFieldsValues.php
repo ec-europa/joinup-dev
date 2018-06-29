@@ -122,13 +122,9 @@ class EmptyFieldsValues extends JoinupFederationStepPluginBase implements Pipeli
    * {@inheritdoc}
    */
   public function execute() {
-    $remaining_incoming_ids = $this->getBatchValue('remaining_incoming_ids');
-    $ids_to_process = array_splice($remaining_incoming_ids, 0, static::BATCH_SIZE);
+    $ids_to_process = $this->extractNextSubset('remaining_incoming_ids', static::BATCH_SIZE);
     $incoming_ids = array_keys($ids_to_process);
     $local_ids = array_keys(array_filter($ids_to_process));
-
-    // Save the updated lists values.
-    $this->setBatchValue('remaining_incoming_ids', $remaining_incoming_ids);
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
