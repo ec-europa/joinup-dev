@@ -24,7 +24,7 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->setConfiguration($configuration);
   }
@@ -32,10 +32,8 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$data) {
-    if (!isset($this->pipeline)) {
-      throw new \RuntimeException("The step cannot be executed because no pipeline is set.");
-    }
+  public function prepare() {
+    $this->ensurePipeline();
     return NULL;
   }
 
@@ -94,6 +92,73 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
    */
   public function calculateDependencies() {
     return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPersistentData() {
+    $this->ensurePipeline();
+    return $this->pipeline->getCurrentState()->getData();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPersistentDataValue($key) {
+    $data = $this->getPersistentData();
+    if (!array_key_exists($key, $data)) {
+      throw new \InvalidArgumentException("There's no '$key' key in persistent data.");
+    }
+    return $data[$key];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPersistentData(array $data) {
+    $this->ensurePipeline();
+    $this->pipeline->getCurrentState()->setData($data);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPersistentDataValue($key, $value) {
+    $this->ensurePipeline();
+    $this->pipeline->getCurrentState()->setDataValue($key, $value);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clearPersistentData() {
+    $this->ensurePipeline();
+    $this->pipeline->getCurrentState()->clearData();
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unsetPersistentDataValue($key) {
+    $this->ensurePipeline();
+    $this->pipeline->getCurrentState()->unsetDataValue($key);
+    return $this;
+  }
+
+  /**
+   * Ensures a pipeline was set.
+   *
+   * @throws \LogicException
+   *   If the pipeline was not set.
+   */
+  protected function ensurePipeline() {
+    if (empty($this->pipeline)) {
+      throw new \LogicException("This method should be called only after the pipeline was set for this step.");
+    }
   }
 
 }

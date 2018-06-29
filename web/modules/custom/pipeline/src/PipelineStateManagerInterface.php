@@ -12,12 +12,12 @@ interface PipelineStateManagerInterface {
    *
    * @param string $pipeline_id
    *   The pipeline plugin ID.
-   * @param string $step_id
-   *   The pipeline step plugin ID.
+   * @param \Drupal\pipeline\PipelineStateInterface $state
+   *   The pipeline state object.
    *
    * @return $this
    */
-  public function setState($pipeline_id, $step_id);
+  public function setState($pipeline_id, PipelineStateInterface $state);
 
   /**
    * Returns the current state for a given pipeline.
@@ -25,8 +25,8 @@ interface PipelineStateManagerInterface {
    * @param string $pipeline_id
    *   The pipeline plugin ID.
    *
-   * @return string|null
-   *   The step plugin ID or NULL.
+   * @return \Drupal\pipeline\PipelineStateInterface|null
+   *   The state object or NULL.
    */
   public function getState($pipeline_id);
 

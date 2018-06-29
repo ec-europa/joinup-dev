@@ -7,6 +7,7 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\pipeline\PipelineStateInterface;
 use Drupal\pipeline\PipelineStateManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,6 +38,13 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    * @var \Drupal\pipeline\PipelineStateManager
    */
   protected $stateManager;
+
+  /**
+   * The current pipeline state.
+   *
+   * @var \Drupal\pipeline\PipelineStateInterface
+   */
+  protected $state;
 
   /**
    * Constructs a Drupal\Component\Plugin\PluginBase object.
@@ -101,7 +109,6 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
     }
     // Reset the state manager.
     $this->stateManager->reset($this->getPluginId());
-    return $this;
   }
 
   /**
@@ -189,15 +196,30 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
   /**
    * {@inheritdoc}
    */
-  public function setCurrent($step_plugin_id) {
+  public function setCurrentState(PipelineStateInterface $state) {
     $this->rewind();
     while ($this->valid()) {
-      if ($this->key() === $step_plugin_id) {
+      if ($this->key() === $state->getStepId()) {
+        $this->state = $state;
         return $this;
       }
       $this->next();
     }
-    throw new \InvalidArgumentException("Step '$step_plugin_id' doesn't exist.");
+    throw new \InvalidArgumentException("Step '{$state->getStepId()}' doesn't exist.");
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCurrentState() {
+    return $this->state;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function saveCurrentState() {
+    $this->stateManager->setState($this->getPluginId(), $this->getCurrentState());
   }
 
   /**

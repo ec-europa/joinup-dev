@@ -100,7 +100,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    * {@inheritdoc}
    */
   public function run($pipeline_id) {
-    $current_step_id = $this->getCurrentStep($pipeline_id);
+    $state = $this->getCurrentState($pipeline_id);
 
     // Execute all consecutive steps until we reach one that has output. A step
     // produces response/output in one of the following cases:
@@ -108,9 +108,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // - It's the final step.
     // - It stops the pipeline with an error.
     while (!$this->response) {
-      if ($new_step_id = $this->executeStep($current_step_id)) {
-        $this->stateManager->setState($pipeline_id, $new_step_id);
-        $current_step_id = $new_step_id;
+      if ($this->executeStep($state)) {
+        $this->stateManager->setState($pipeline_id, $state);
       }
     }
 
@@ -123,24 +122,17 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    * @param string $pipeline_id
    *   The pipeline to be used.
    *
-   * @return string
-   *   The current step plugin ID.
+   * @return \Drupal\pipeline\PipelineStateInterface
+   *   The current pipeline state object.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    *   If the instance cannot be created, such as if the ID is invalid.
    */
-  protected function getCurrentStep($pipeline_id) {
+  protected function getCurrentState($pipeline_id) {
     $this->pipeline = $this->pipelinePluginManager->createInstance($pipeline_id);
 
-    // Resuming from a previous persisted state.
-    if ($current_step_id = $this->stateManager->getState($pipeline_id)) {
-      // Restore the active pipeline step from the persistent store.
-      $this->pipeline->setCurrent($current_step_id);
-    }
     // Starting the pipeline from the beginning.
-    else {
-      $current_step_id = $this->pipeline->key();
-
+    if (!$state = $this->stateManager->getState($pipeline_id)) {
       // Run the pipeline preparation.
       $error = $this->pipeline->prepare();
 
@@ -163,42 +155,53 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
 
         $this->response = new RedirectResponse($url->setAbsolute()->toString());
       }
+      $state = (new PipelineState())->setStepId($this->pipeline->key());
     }
 
-    return $current_step_id;
+    // Restore the active pipeline state from the persistent store.
+    $this->pipeline->setCurrentState($state);
+
+    return $state;
   }
 
   /**
    * Executes the current step and progresses the state machine with one step.
    *
-   * @param string $current_step_id
-   *   The current pipeline step plugin ID.
+   * @param \Drupal\pipeline\PipelineStateInterface $state
+   *   The current pipeline state.
    *
-   * @return string
-   *   The next step plugin ID.
+   * @return bool
+   *   If the pipeline has successfully advanced to the new step.
    *
    * @throws \Exception
    *   If errors occurred during the form build or step execution.
    */
-  protected function executeStep($current_step_id) {
-    $step = $this->pipeline->createStepInstance($current_step_id);
-    $data = [];
+  protected function executeStep(PipelineStateInterface $state) {
+    $step = $this->pipeline->createStepInstance($state->getStepId());
+
     if ($step instanceof PipelineStepWithFormInterface) {
       $form_state = new FormState();
-      $data = $this->buildForm($step, $form_state, $data);
+      $this->buildForm($step, $form_state);
+
+      // Add data extracted from the form submit to the persistent data store.
+      if ($form_data = $form_state->get('pipeline_data')) {
+        $data = $form_data + $this->pipeline->getCurrentState()->getData();;
+        $this->pipeline->setCurrentState($state->setData($data));
+      }
+
       // In case of validation errors, or a rebuild (e.g. multi step), bail out.
       if (!$form_state->isExecuted() || $form_state->getTriggeringElement()['#attributes']['data-drupal-selector'] !== 'edit-next') {
-        // Set the current state.
-        $this->stateManager->setState($this->pipeline->getPluginId(), $current_step_id);
-        return NULL;
+        $this->pipeline->saveCurrentState();
+        // The response was set as a form render array. Let's show the form.
+        return FALSE;
       }
       $this->redirectForm($form_state);
     }
 
     try {
-      $error = $step->prepare($data);
+      $error = $step->prepare();
       if (!$error) {
-        $error = $step->execute($data);
+        $error = $step->execute();
       }
     }
     catch (\Exception $exception) {
@@ -220,20 +223,30 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
       $message = $this->t('%pipeline execution stopped with errors in %step step. Please review the following errors:', $arguments);
       $this->setErrorResponse($error, $message);
       $this->pipeline->onError();
-      return NULL;
+      return FALSE;
     }
+
+    // Refresh the state object because the last step might have altered the
+    // content of the persistent data store.
+    $state = $this->pipeline->getCurrentState();
 
     // Advance to the next state.
     $this->pipeline->next();
 
     // The pipeline execution finished with success.
     if (!$this->pipeline->valid()) {
-      $this->setSuccessResponse();
-      $this->pipeline->onSuccess();
-      return NULL;
+      $success_message = $this->pipeline->onSuccess();
+      $this->setSuccessResponse($success_message);
+      return FALSE;
     }
 
-    return $this->pipeline->key();
+    // Update the state object with the new step ID.
+    $state->setStepId($this->pipeline->key());
+    // And save it to be retrieved by the next step execution.
+    $this->stateManager->setState($this->pipeline->getPluginId(), $state);
+
+    // Let the orchestrator know that we've advanced to the next step.
+    return TRUE;
   }
 
   /**
@@ -243,22 +256,15 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The step plugin instance.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
-   * @param array $data
-   *   The data array.
-   *
-   * @return array
-   *   The data array.
    *
    * @throws \Drupal\Core\Form\EnforcedResponseException
    * @throws \Drupal\Core\Form\FormAjaxException
    *   If errors occurred during the form build.
    */
-  protected function buildForm(PipelineStepWithFormInterface $step, FormStateInterface &$form_state, array $data) {
-    $form_state->addBuildInfo('step', $step->getPluginId());
-    $form_state->addBuildInfo('pipeline', $this->pipeline->getPluginId());
-    $form_state->addBuildInfo('data', $data);
+  protected function buildForm(PipelineStepWithFormInterface $step, FormStateInterface &$form_state) {
+    $form_state->set('pipeline_step', $step);
+    $form_state->set('pipeline_pipeline', $this->pipeline);
     $this->response = $this->formBuilder->buildForm(PipelineOrchestratorForm::class, $form_state);
-    return $form_state->getBuildInfo()['data'];
   }
 
   /**
@@ -289,14 +295,18 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
 
   /**
    * Sets the success response.
+   *
+   * @param array|null $success_message
+   *   (optional) An optional success message as a render array.
    */
-  protected function setSuccessResponse() {
+  protected function setSuccessResponse(array $success_message = NULL) {
     $arguments = [
       '%pipeline' => $this->pipeline->getPluginDefinition()['label'],
     ];
     $message = $this->t('The %pipeline execution has finished with success.', $arguments);
     $this->messenger->addStatus($message);
-    $this->response = ['#title' => $this->t('Successfully executed %pipeline import pipeline', $arguments)];
+
+    $this->response = (array) $success_message + ['#title' => $this->t('Successfully executed %pipeline import pipeline', $arguments)];
     // @todo Add a list of executed steps as page content.
   }
 

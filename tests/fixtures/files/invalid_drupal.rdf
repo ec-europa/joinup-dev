@@ -1,37 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Demo file including entities to be imported.
-     This file represents a remote repository file so no Drupal/Joinup properties are included.
-     After import, the following properties need to be taken care of:
-     Solution:
-       - Title. This is a federated property but there have been cases that it is missing.
-       - eLibrary creation
-       - Logo
-       - Banner
-       - Moderation
-       - hasVersion (for releases that refer to the solution through isVersionOf)
-       - Collection (Computed field)
-       - Policy domain
-       - Workflow status
-     Release:
-       - Policy domain
-       - Workflow status
-     Distribution:
-       - Parent. The parent of the distribution. Can be either a solution or a release. The entity set as parent
-         must be referencing the distribution too through the field_is_distribution or field_isr_distribution fields.
-     Owner:
-       - Workflow status
-     Contact information:
-       - Workflow status
+<!--
+    Demo file including invalid entities to be imported.
+    This file has been build against the valid_adms.rdf with either some properties commented out or altered.
 -->
-<rdf:RDF xmlns:dct="http://purl.org/dc/terms/"
-         xmlns:foaf="http://xmlns.com/foaf/0.1/"
-         xmlns:v="http://www.w3.org/2006/vcard/ns#"
+<rdf:RDF
          xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-         xmlns:owl="http://www.w3.org/2002/07/owl#"
-         xmlns:dcat="http://www.w3.org/ns/dcat#"
-         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+         xmlns:v="http://www.w3.org/2006/vcard/ns#"
+>
 
     <!-- #### Solutions #### -->
 
@@ -42,8 +23,13 @@
         <dct:description>This is a solution that includes 2 releases.</dct:description>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-05-07T11:35:24+03:00</dc:issued>
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-12-05T16:02:24+02:00</dc:modified>
+        <dct:language rdf:resource="http://publications.europa.eu/resource/authority/language/RON"/>
         <dct:publisher rdf:resource="http://example.com/owner/1"/>
+        <!-- Violation: "The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist." -->
+        <dct:publisher rdf:resource="http://example.com/owner/invalid"/>
         <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
+        <!-- Violation: "The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist." -->
+        <dcat:contactPoint rdf:resource="http://example.com/contact/invalid"/>
         <dcat:landingPage rdf:resource="http://example.com"/>
         <dc:hasVersion rdf:resource="http://example.com/release/1"/>
         <dc:hasVersion rdf:resource="http://example.com/release/2"/>
@@ -52,25 +38,23 @@
     <!-- A solution with only a standalone distribution. -->
     <rdf:Description rdf:about="http://example.com/solution/2">
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <dct:title>Solution 2</dct:title>
+        <!-- Violation: "This value should not be null." -->
+        <dc:title xml:lang="en"></dc:title>
         <dct:description>This solution has a standalone distribution.</dct:description>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-05-07T11:35:24+03:00</dc:issued>
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-12-05T16:02:24+02:00</dc:modified>
+        <!-- Violation: "The referenced entity (taxonomy_term: http://publications.europa.eu/resource/authority/language/INVALID) does not exist." -->
+        <dct:language rdf:resource="http://publications.europa.eu/resource/authority/language/INVALID"/>
         <dct:publisher rdf:resource="http://example.com/owner/1"/>
         <dct:publisher rdf:resource="http://example.com/owner/2"/>
         <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
         <dcat:landingPage rdf:resource="http://example.com/asset/empty"/>
+        <!--Drupal error: The solution is referencing a release that is already included in another release and is
+        connected to the other release with the isVersionOf.-->
+        <dc:hasVersion rdf:resource="http://example.com/release/1"/>
+        <!-- Violation: "The distribution Windows is linked also by the Asset release 1 release." -->
+        <dcat:distribution rdf:resource="http://example.com/distribution/1"/>
         <dcat:distribution rdf:resource="http://example.com/distribution/3"/>
-    </rdf:Description>
-
-    <!-- A 3rd solution. -->
-    <rdf:Description rdf:about="http://example.com/solution/3">
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
-        <dct:title>Solution 3</dct:title>
-        <dct:description>This solution 3.</dct:description>
-        <dct:publisher rdf:resource="http://example.com/owner/1"/>
-        <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
-        <dcat:distribution rdf:resource="http://example.com/distribution/4"/>
     </rdf:Description>
 
     <!-- #### Releases #### -->
@@ -92,7 +76,8 @@
 
     <!-- An empty release. -->
     <rdf:Description rdf:about="http://example.com/release/2">
-        <dc:title xml:lang="en">Asset release 2</dc:title>
+        <!-- Violation: "This value should not be null." -->
+        <dc:title xml:lang="en"></dc:title>
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
         <owl:versionInfo>2</owl:versionInfo>
         <dc:description xml:lang="en">Changelog for v2.</dc:description>
@@ -126,7 +111,9 @@
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T09:58:01+03:00</dc:modified>
         <dc:license rdf:resource="http://example.com/license/1"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_2.zip</dcat:accessURL>
+        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">
+            http://example.com/files/distribution_2.zip
+        </dcat:accessURL>
     </rdf:Description>
 
     <!-- A standalone distribution. -->
@@ -138,17 +125,9 @@
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-06-14T09:58:01+03:00</dc:modified>
         <dc:license rdf:resource="http://example.com/license/1"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_standalone.zip</dcat:accessURL>
-    </rdf:Description>
-
-    <!-- A 4th distribution -->
-    <rdf:Description rdf:about="http://example.com/distribution/4">
-        <dc:title xml:lang="en">MacOS</dc:title>
-        <dc:description xml:lang="en">4th distro.</dc:description>
-        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-        <dc:license rdf:resource="http://example.com/license/1"/>
-        <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
-        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_4.zip</dcat:accessURL>
+        <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">
+            http://example.com/files/distribution_standalone.zip
+        </dcat:accessURL>
     </rdf:Description>
 
     <!-- #### Owners #### -->
@@ -158,13 +137,12 @@
         <dct:type rdf:resource="http://purl.org/adms/publishertype/Company"/>
         <foaf:name>The Publisher</foaf:name>
     </rdf:Description>
-
     <rdf:Description rdf:about="http://example.com/owner/2">
         <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
         <foaf:name>A local authority</foaf:name>
     </rdf:Description>
 
-    <!-- #### Contact information  #### -->
+    <!-- #### Contact information #### -->
 
     <rdf:Description rdf:about="http://example.com/contact/1">
         <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Kind"/>
@@ -179,13 +157,6 @@
         <rdf:type rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
         <dc:description>Licence agreement details</dc:description>
         <dc:type rdf:resource="http://purl.org/adms/licencetype/PublicDomain"/>
-    </rdf:Description>
-
-    <!-- Custom term of a custom vocabulary to fill in the solution type. -->
-    <rdf:Description rdf:about="http://vocabulary/term">
-        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-        <skos:label>Term</skos:label>
-        <skos:inScheme rdf:resource="http://vocabulary"/>
     </rdf:Description>
 
 </rdf:RDF>

@@ -17,7 +17,7 @@ use EasyRdf\Graph;
  * Defines a manual data upload step plugin.
  *
  * @PipelineStep(
- *   id = "manual_upload_step",
+ *   id = "manual_upload",
  *   label = @Translation("Manual upload"),
  * )
  */
@@ -29,10 +29,14 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
+  public function execute() {
     try {
-      $this->createGraphStore()->replace($data['graph'], $this->getGraphUri('sink'));
-      $data['adms_file']->delete();
+      $this->createGraphStore()->replace($this->getPersistentDataValue('graph'), $this->getGraphUri('sink'));
+      $this->getPersistentDataValue('adms_file')->delete();
+      // We don't persist these values in the persistent data store.
+      $this
+        ->unsetPersistentDataValue('adms_file')
+        ->unsetPersistentDataValue('graph');
     }
     catch (\Exception $exception) {
       return [
@@ -72,22 +76,17 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
       return;
     }
 
-    try {
-      $form_state->set('adms_file', $file);
-      $form_state->set('graph', $this->fileToGraph($file));
-    }
-    catch (\Exception $e) {
-      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
-    }
+    $form_state->setValue('adms_file', $file);
+    $form_state->setValue('graph', $this->fileToGraph($file));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function extractDataFromSubmit(FormStateInterface $form_state): array {
+  public function getAdditionalPersistentDataStore(FormStateInterface $form_state): array {
     return [
-      'adms_file' => $form_state->get('adms_file'),
-      'graph' => $form_state->get('graph'),
+      'adms_file' => $form_state->getValue('adms_file'),
+      'graph' => $form_state->getValue('graph'),
     ];
   }
 

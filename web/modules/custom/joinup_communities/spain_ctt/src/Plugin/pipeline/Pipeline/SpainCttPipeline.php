@@ -11,15 +11,18 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   id = "spain",
  *   label = @Translation("Spain - Center for Technology Transfer"),
  *   steps = {
- *     "manual_upload_step",
+ *     "manual_upload",
  *     "convert_to_adms2",
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "user_selection_filter",
- *     "3_way_merge" = {
+ *     "empty_fields_values" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },
+ *     "drupal_validation",
+ *     "3_way_merge",
+ *     "provenance_activity",
  *   },
  * )
  */

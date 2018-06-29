@@ -31,14 +31,14 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase {
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
    *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
+   * @param array $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
    *   The SPARQL database connection.
    * @param \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager
    *   The ADMS v1 to v2 transformation plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $sparql, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->adms2ConverPassPluginManager = $adms2_conver_pass_plugin_manager;
   }
@@ -59,13 +59,12 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
-    $data += ['sink_graph' => $this->getGraphUri('sink')];
+  public function execute() {
     // @todo There are ~75 passes, need to use batch processing?
     foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
       $this->adms2ConverPassPluginManager
         ->createInstance($plugin_id)
-        ->convert($data);
+        ->convert(['sink_graph' => $this->getGraphUri('sink')]);
     }
   }
 

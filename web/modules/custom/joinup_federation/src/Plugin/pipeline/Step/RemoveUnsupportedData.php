@@ -28,7 +28,7 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(array &$data) {
+  public function execute() {
     $graph_uri = $this->getGraphUri('sink');
 
     $rdf_entity_bundle_uris = [];

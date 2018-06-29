@@ -81,11 +81,6 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
       ->condition('field_is_distribution', $distribution->id())
       ->condition('field_isr_distribution', $distribution->id())
       ->execute();
-
-    if (count($ids) > 1) {
-      throw new \Exception("More than one parent was found for distribution '{$distribution->label()}'.");
-    }
-
     return reset($ids) ?: NULL;
   }
 

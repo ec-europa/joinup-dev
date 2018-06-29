@@ -15,11 +15,11 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
 /**
- * Tests the '3_way_merge' process step plugin.
+ * Tests the 'empty_fields_values' process step plugin.
  *
  * @group joinup_federation
  */
-class ThreeWayMergeStepTest extends StepTestBase {
+class EmptyFieldsValuesStepTest extends StepTestBase {
 
   /**
    * {@inheritdoc}
@@ -28,7 +28,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      '3_way_merge' => [
+      'empty_fields_values' => [
         'collection' => 'http://catalog',
       ],
     ];
@@ -101,6 +101,11 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'bundle' => 'solution',
       'field_name' => 'field_status',
       'label' => 'Status',
+      'default_value' => [
+        [
+          'target_id' => 'http://example.com/default-status',
+        ],
+      ],
     ])->save();
 
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
@@ -115,20 +120,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
     FieldStorageConfig::create($field_storage_config)->save();
     $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
     FieldConfig::create($field_config)->save();
-
-    // Create the owner bundle.
-    RdfEntityType::create(['rid' => 'owner', 'name' => 'Owner'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../owner/config/install/rdf_entity.mapping.rdf_entity.owner.yml'));
-    RdfEntityMapping::create($mapping)->save();
-
-    // Create the contact information bundle.
-    RdfEntityType::create(['rid' => 'contact_information', 'name' => 'Contact info'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../contact_information/config/install/rdf_entity.mapping.rdf_entity.contact_information.yml'));
-    RdfEntityMapping::create($mapping)->save();
   }
 
   /**
-   * Test the 3-way merge with an existing solution.
+   * Test values assignment with an existing solution.
    */
   public function testExistingSolution() {
     // Create a local entity whose values will be overwritten.
@@ -149,12 +144,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
     $this->createGraphStore()->replace($graph);
 
-    // Check that 'http://asset' exists before import, in the default graph.
-    $this->assertNotNull(Rdf::load('http://asset', ['default']));
-    // Check that the publisher and contact info are missed from default graph.
-    $this->assertNull(Rdf::load('http://publisher', ['default']));
-    $this->assertNull(Rdf::load('http://contact', ['default']));
-
     $this->runPipelineStep('remove_unsupported_data');
     $this->runPipelineStep('add_joinup_vocabularies');
     // Cleanup the 'sink_plus_taxo' graph left after the last step. Normally
@@ -162,32 +151,23 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('3_way_merge');
+    $result = $this->runPipelineStep('empty_fields_values');
 
     // Check that the step ran without any error.
     $this->assertNull($result);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = Rdf::load('http://asset');
+    $solution = Rdf::load('http://asset', ['staging']);
 
-    // Check that an existing entity values are overridden.
+    // Check that incoming values are preseved over local ones.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
-    $this->assertTrue($solution->get('field_status')->isEmpty());
-    // Check that the solution has been assigned to the configured collection.
-    $collection = Rdf::load('http://catalog');
-    $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
-
-    // Check that new entities were created in the 'default' graph and were
-    // removed from the staging graph.
-    $this->assertNotNull(Rdf::load('http://publisher', ['default']));
-    $this->assertNotNull(Rdf::load('http://contact', ['default']));
-    $this->assertNull(Rdf::load('http://publisher', ['staging']));
-    $this->assertNull(Rdf::load('http://contact', ['staging']));
+    // Check that a missed incoming value is copied from the local entity.
+    $this->assertEquals('http://example.com/status', $solution->get('field_status')->target_id);
   }
 
   /**
-   * Test the 3-way merge with a new solution.
+   * Test values assignment with a new solution.
    */
   public function testNewSolution() {
     Rdf::create([
@@ -199,12 +179,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
     $this->createGraphStore()->replace($graph);
 
-    // Check that 'http://asset' doesn't exists in the default graph.
-    $this->assertNull(Rdf::load('http://asset', ['default']));
-    // Check that the publisher and contact info are missed from default graph.
-    $this->assertNull(Rdf::load('http://publisher', ['default']));
-    $this->assertNull(Rdf::load('http://contact', ['default']));
-
     $this->runPipelineStep('remove_unsupported_data');
     $this->runPipelineStep('add_joinup_vocabularies');
     // Cleanup the 'sink_plus_taxo' graph left after the last step. Normally
@@ -212,7 +186,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('3_way_merge');
+    $result = $this->runPipelineStep('empty_fields_values');
 
     // Check that the step ran without any error.
     $this->assertNull($result);
@@ -220,6 +194,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // Check that the solution has been assigned to the configured collection.
     $collection = Rdf::load('http://catalog');
     $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
+
+    // Check that, for an empty field, the default value is assigned.
+    $solution = Rdf::load('http://asset', ['staging']);
+    $this->assertEquals('http://example.com/default-status', $solution->get('field_status')->target_id);
   }
 
   /**
@@ -230,8 +208,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $storage->delete($storage->loadMultiple([
       'http://asset',
       'http://catalog',
-      'http://publisher',
-      'http://contact',
     ]));
     parent::tearDown();
   }
