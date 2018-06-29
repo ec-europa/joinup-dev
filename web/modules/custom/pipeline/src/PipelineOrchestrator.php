@@ -582,7 +582,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   }
 
   /**
-   * Returns the title page on error.
+   * Returns the page title on error.
    *
    * @return \Drupal\Component\Render\MarkupInterface
    *   The error message.
