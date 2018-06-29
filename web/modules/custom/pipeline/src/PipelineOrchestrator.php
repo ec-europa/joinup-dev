@@ -524,7 +524,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
           'html_head' => [
             [
               [
-                // Redirect through a 'Refresh' meta tag.
+                // Redirect through a 'Refresh' meta tag for non-Javascript
+                // browsers.
                 '#tag' => 'meta',
                 '#noscript' => TRUE,
                 '#attributes' => [
@@ -561,8 +562,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   If the current request is a batch process subsequent Json request.
    */
   protected function isJsonRequest() {
-    $query = $this->requestStack->getCurrentRequest()->query;
-    return $query->has('_format') && ($query->get('_format') === 'json');
+    return $this->requestStack->getCurrentRequest()->getRequestFormat() === 'json';
   }
 
   /**
