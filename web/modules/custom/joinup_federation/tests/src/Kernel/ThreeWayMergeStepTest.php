@@ -16,11 +16,11 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
 /**
- * Tests the 'empty_fields_values' process step plugin.
+ * Tests the '3_way_merge' process step plugin.
  *
  * @group joinup_federation
  */
-class EmptyFieldsValuesStepTest extends StepTestBase {
+class ThreeWayMergeStepTest extends StepTestBase {
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      'empty_fields_values' => [
+      '3_way_merge' => [
         'collection' => 'http://catalog',
       ],
     ];
@@ -155,9 +155,9 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
     $state = (new PipelineState())
-      ->setStepId('empty_fields_values')
+      ->setStepId('3_way_merge')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => TRUE]);
-    $result = $this->runPipelineStep('empty_fields_values', $state);
+    $result = $this->runPipelineStep('3_way_merge', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);
@@ -193,9 +193,9 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
     $state = (new PipelineState())
-      ->setStepId('empty_fields_values')
+      ->setStepId('3_way_merge')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
-    $result = $this->runPipelineStep('empty_fields_values', $state);
+    $result = $this->runPipelineStep('3_way_merge', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);
