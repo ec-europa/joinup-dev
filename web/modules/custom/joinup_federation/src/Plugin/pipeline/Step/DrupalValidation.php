@@ -46,48 +46,6 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
         'field_policy_domain',
       ],
     ],
-    'BrokenReferences' => [
-      'solution' => [
-        'field_is_affiliations_requests',
-        'field_is_related_solutions',
-      ],
-      'asset_release' => [
-        'field_isr_related_solutions',
-      ],
-    ],
-    'OptionalToMandatory' => [
-      'solution' => [
-        'field_is_contact_information',
-      ],
-      'asset_release' => [
-        // Changelog entry #17. Cardinality change from 0..n to 1..n.
-        'field_isr_contact_information',
-      ],
-      'asset_distribution' => [
-        // Changelog entry #40. Cardinality change from 0..n to 1..n.
-        'field_ad_licence',
-      ],
-      'owner' => [
-        // Changelog entry #15. Cardinality change from 0..n to 1..n.
-        'label',
-      ],
-      'contact_information' => [
-        // Changelog entry #54. Changed from recommended to mandatory.
-        // In our conversion, the property 'formattedName' is converted into the
-        // 'fn' property which is the predicate of the label so we cover some
-        // cases and we might avoid having to provide workarounds for that.
-        'label',
-      ],
-    ],
-    'NonDocumented' => [
-      'contact_information' => [
-        // While this is not documented in the changelog, it was discovered that
-        // in ADMS v1, the contact information entity has an email property that
-        // had a cardinality of 0..n. The corresponding 'hasEmail' property in
-        // ADMS v2 has a cardinality of 1..n.
-        'field_ci_email',
-      ],
-    ],
   ];
 
   /**
