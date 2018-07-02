@@ -144,16 +144,22 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
-  public function onSuccess(): ?array {
+  public function onSuccess(): JoinupFederationPipelineInterface {
     $this->clearStagingEntitiesCache();
     $this->clearGraphs();
     $this->lockRelease();
-
     parent::onSuccess();
+    return $this;
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getSuccessMessage() {
     $build = $rows = [];
-    $entity_ids = array_keys($this->getCurrentState()->getDataValue('entities'));
-    $non_critical_violations = $this->getCurrentState()->getDataValue('non_critical_violations');
+    $state = $this->getCurrentState();
+    $entity_ids = array_keys($state->getDataValue('entities'));
+    $non_critical_violations = $state->hasDataValue('non_critical_violations') ? $state->getDataValue('non_critical_violations') : [];
 
     $build[] = [
       '#markup' => $this->t('Imported entities:'),
