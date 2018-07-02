@@ -130,7 +130,7 @@ Feature: Collection membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Add the facilitator role to the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Gregory House                                                                                 |
       | subject   | Your role has been change to Medical diagnosis                                                |
       | body      | A collection moderator has changed your role in this group to Member, Collection facilitator. |

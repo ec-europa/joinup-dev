@@ -40,6 +40,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * Table format:
    * | template           | Comment deletion |
    * | recipient          | username0123     |
+   * | recipient_mail     | usertest@ex.com  |
    * | subject            | The mail subject |
    * | body               | The message body |
    * | html               | yes/no           |
@@ -49,6 +50,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    *   template. If the template row is not present, no matching on template
    *   will be done. This is needed for system mails (like the ones sent by the
    *   user module).
+   * - The recipient and recipient_mail are not both mandatory. If a
+   *   recipient_mail is not used, the user will be loaded and his email will be
+   *   used.
    * - The 'body' is a partial text based match.
    * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
    *   When not present, 'yes' is assumed.
@@ -62,11 +66,12 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
+    /** @var string $template */
+    /** @var string $recipient */
+    /** @var string $recipient_mail */
     /** @var string $from */
     /** @var string $body */
-    /** @var string $recipient */
     /** @var string $subject */
-    /** @var string $template */
     /** @var string $signature_required */
     extract($table->getRowsHash());
 
@@ -78,12 +83,21 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
     // and 'no' to FALSE.
     $html = empty($html) || $html === 'yes';
 
-    $user = user_load_by_name($recipient);
-    if (!empty($user)) {
-      $recipient = $user->getEmail();
+    if (!empty($recipient_mail)) {
+      if (!filter_var($recipient_mail, FILTER_VALIDATE_EMAIL)) {
+        throw new \Exception("Recipient {$recipient_mail} is not a valid e-mail address.");
+      }
+      $recipient = $recipient_mail;
     }
-    elseif (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
+    else {
+      $user = user_load_by_name($recipient);
+      if (empty($user)) {
+        throw new \Exception("User $recipient was not found.");
+      }
+      if (empty($user->getEmail())) {
+        throw new \Exception("User $recipient does not have an e-mail address.");
+      }
+      $recipient = $user->getEmail();
     }
 
     $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
@@ -201,123 +215,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // Allow pass if an exception was throw, meaning the expected E-mail was
       // not sent.
       throw new \Exception('E-mail was sent.');
-    }
-  }
-
-  /**
-   * Asserts that a system email has been sent.
-   *
-   * Table format:
-   * | recipient          | username0123     |
-   * | recipient_mail     | username@t.com   |
-   * | subject            | The mail subject |
-   * | body               | The message body |
-   * | html               | yes/no           |
-   * | signature_required | yes/no           |
-   *
-   * - The 'body' is a partial text based match.
-   * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
-   *   When not present, 'yes' is assumed.
-   *
-   * @param \Behat\Gherkin\Node\TableNode $table
-   *   The mail data table.
-   *
-   * @throws \Exception
-   *   Throws an exception when a parameter is not the expected one.
-   *
-   * @Then the following system email should have been sent:
-   */
-  public function assertSystemEmailSent(TableNode $table) {
-    /** @var string $body */
-    /** @var string $recipient */
-    /** @var string $subject */
-    /** @var string $template */
-    /** @var string $signature_required */
-    extract($table->getRowsHash());
-
-    // Translate the human readable value for the requirement of the signature
-    // to a boolean. This defaults to TRUE.
-    $signature_required = !isset($signature_required) || $signature_required !== 'no';
-
-    // If the 'html' row is not present, assume a 'yes'. Convert 'yes' to TRUE
-    // and 'no' to FALSE.
-    $html = (isset($html) ? $html : 'yes') === 'yes';
-
-    if (empty($recipient_mail)) {
-      $user = user_load_by_name($recipient);
-      if (empty($user)) {
-        throw new \Exception("User $recipient was not found.");
-      }
-      if (empty($user->getEmail())) {
-        throw new \Exception("User $recipient does not have an e-mail address.");
-      }
-      $recipient_mail = $user->getEmail();
-    }
-
-    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient_mail);
-    $email_found = FALSE;
-    foreach ($mails as $mail) {
-      // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
-      // mail body line to a certain amount of characters (77 by default).
-      // Spaces are also removed.
-      // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
-      $mail_body = trim($mail_body);
-
-      // If the original mail body is markup, we need to:
-      // - undo the encoding done by Twig to quotes;
-      // - remove the HTML to simplify the matching on the body text.
-      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
-      if ($mail['body'] instanceof MarkupInterface) {
-        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
-        $mail_body = strip_tags($mail_body);
-      }
-
-      // Ensure that there are no un-replaced arguments in the mail subject and
-      // body.
-      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
-        throw new \Exception('There were arguments found in the mail or the body that were not replaced.');
-      }
-
-      // In the previous steps all whitespace has been converted to spaces and
-      // HTML tags were removed, but this might cause double spaces to appear.
-      // Replace all double spaces with single spaces.
-      $mail_body = preg_replace("/\s+/", ' ', $mail_body);
-
-      // Check the existence or absence of the signature.
-      $signature_present = preg_match('/Kind regards,\s{0,2}The Joinup Support Team/', $mail_body);
-      if ($signature_required && !$signature_present) {
-        throw new \Exception('The signature of the email was not found or is not correct.');
-      }
-      elseif (!$signature_required && $signature_present) {
-        throw new \Exception('The signature of the email was found in the email but should not be present.');
-      }
-
-      if (isset($body)) {
-        // Since the body field has url tokens, we cannot provide a full body
-        // text because we don't have the url available. Because of this, we
-        // just match partial text.
-        $body = preg_replace("/\s+/", ' ', $body);
-        if (strpos($mail_body, $body) === FALSE) {
-          continue;
-        }
-      }
-
-      // We found a match. Stop searching.
-      $email_found = TRUE;
-      break;
-    }
-
-    Assert::assertTrue($email_found, "Did not find expected email to '$recipient_mail' with subject '$subject'.");
-
-    // If the previous assertion passed, the $mail variable contains the correct
-    // mail.
-    /** @var array $mail */
-    if ($html) {
-      Assert::assertEquals(SWIFTMAILER_FORMAT_HTML, $mail['headers']['Content-Type'], 'The mail is not sent as HTML.');
-    }
-    else {
-      Assert::assertStringStartsWith(SWIFTMAILER_FORMAT_PLAIN, $mail['headers']['Content-Type'], 'The mail is not sent as plain text.');
     }
   }
 
