@@ -124,7 +124,7 @@ Feature: Collections Overview
     But I should not see the text "purus. Integer nec enim facilisis mi fermentum mollis sed vitae lacus"
     And I should not see the text "This collection is intended to show ways of being fit while working"
 
-    # The 'Read more'-link leads to the About page.
+    # The 'Read more' link leads to the About page.
     When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"
 

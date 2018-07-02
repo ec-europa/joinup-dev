@@ -20,7 +20,7 @@ Feature: Solution homepage
     And I should see the link "Read more"
     # The abstract itself should be stripped of unsightly links.
     But I should not see the link "mathematical"
-    # The 'Read more'-link leads to the About page.
+    # The 'Read more' link leads to the About page.
     When I click "Read more"
     Then I should see the heading "About Petri net"
 
