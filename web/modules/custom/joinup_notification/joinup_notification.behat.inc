@@ -112,8 +112,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
-      $mail_body = trim($mail_body);
+      $mail_body = trim($mail['body']);
+      $mail_body = preg_replace("/[\r\n\t]+/", ' ', $mail_body);
 
       // If the original mail body is markup, we need to:
       // - undo the encoding done by Twig to quotes;
@@ -144,6 +144,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
         // text because we don't have the url available. Because of this, we
         // just match partial text.
         $body = preg_replace("/\s+/", ' ', $body);
+        $mail_body = preg_replace("/\s+/", ' ', $mail_body);
         if (strpos($mail_body, $body) === FALSE) {
           continue;
         }
@@ -192,30 +193,17 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should not have been sent:
    */
   public function assertEmailNotSent(TableNode $table) {
-    $hash = $table->getRowsHash();
-    $recipient = $hash['recipient'];
-    $user = user_load_by_name($recipient);
-    if (!empty($user)) {
-      $recipient = $user->getEmail();
-    }
-    if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-      throw new \Exception("Recipient {$recipient} is not a valid e-mail address.");
-    }
-
     try {
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
-      $email_was_sent = TRUE;
     }
     catch (\Exception $e) {
-      $email_was_sent = FALSE;
+      // If the assertion above throws an exception, it means that the email
+      // was not sent, so we can return.
+      return;
     }
 
-    if ($email_was_sent) {
-      // Allow pass if an exception was throw, meaning the expected E-mail was
-      // not sent.
-      throw new \Exception('E-mail was sent.');
-    }
+    throw new \Exception('E-mail was sent.');
   }
 
   /**
