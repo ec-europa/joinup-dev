@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.themes
-third_party_settings: {  }
 id: taxonomy_term.themes
 entity_type_id: taxonomy_term
 bundle: themes

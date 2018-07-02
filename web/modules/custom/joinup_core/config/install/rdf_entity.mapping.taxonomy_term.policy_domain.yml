@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.policy_domain
-third_party_settings: {  }
 id: taxonomy_term.policy_domain
 entity_type_id: taxonomy_term
 bundle: policy_domain
