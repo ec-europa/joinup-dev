@@ -71,10 +71,7 @@ Feature: Notification test for the collection transitions.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"
     And I press "Propose"
-    Then the following email should have been sent:
-      | recipient | NC moderator                                |
-      | subject   | User NC proposed collection NC proposed new |
-    And the email sent to "NC moderator" with subject "User NC proposed collection NC proposed new" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed collection NC proposed new" contains the following lines of text:
       | text                                                                               |
       | NC User has proposed collection "NC proposed new".                                 |
       | To approve or reject this proposal, please go to                                   |
@@ -89,10 +86,7 @@ Feature: Notification test for the collection transitions.
     And I go to the homepage of the "NC to propose" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the following email should have been sent:
-      | recipient | NC moderator                              |
-      | subject   | User NC proposed collection NC to propose |
-    And the email sent to "NC moderator" with subject "User NC proposed collection NC to propose" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed collection NC to propose" contains the following lines of text:
       | text                                                                               |
       | NC Owner has proposed collection "NC to propose".                                  |
       | To approve or reject this proposal, please go to                                   |
@@ -103,10 +97,7 @@ Feature: Notification test for the collection transitions.
     And I go to the homepage of the "NC to request archival" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request archival"
-    Then the following email should have been sent:
-      | recipient | NC moderator                                                   |
-      | subject   | User NC requested to archive collection NC to request archival |
-    And the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request archival" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC requested to archive collection NC to request archival" contains the following lines of text:
       | text                                                                               |
       | NC Owner has requested to archive the collection "NC to request archival".         |
       | To approve or reject this request, please go to                                    |
@@ -117,10 +108,7 @@ Feature: Notification test for the collection transitions.
     And I go to the homepage of the "NC to request deletion" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
-    Then the following email should have been sent:
-      | recipient | NC moderator                                                  |
-      | subject   | User NC requested to delete collection NC to request deletion |
-    And the email sent to "NC moderator" with subject "User NC requested to delete collection NC to request deletion" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC requested to delete collection NC to request deletion" contains the following lines of text:
       | text                                                                               |
       | NC Owner has requested to delete the collection "NC to request deletion".          |
       | To approve or reject this request, please go to                                    |
@@ -133,16 +121,10 @@ Feature: Notification test for the collection transitions.
     And I click "Edit" in the "Entity actions" region
     And I fill in "Title" with "NC to propose edit proposed"
     And I press "Propose"
-    Then the following email should have been sent:
-      | recipient | NC moderator                                                    |
-      | subject   | User NC proposed to edit collection NC to propose edit proposed |
-    And the email sent to "NC moderator" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
+    Then the email sent to "NC moderator" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
       | text                                                                          |
       | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
       | To approve or reject this proposal, please go to                              |
-    And the following email should have been sent:
-      | recipient | NC owner                                                        |
-      | subject   | User NC proposed to edit collection NC to propose edit proposed |
     And the email sent to "NC owner" with subject "User NC proposed to edit collection NC to propose edit proposed" contains the following lines of text:
       | text                                                                          |
       | NC Facilitator has proposed to edit collection "NC to propose edit proposed". |
@@ -164,10 +146,7 @@ Feature: Notification test for the collection transitions.
     And I go to the homepage of the "NC to propose edit proposed" collection
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
-    Then the following email should have been sent:
-      | recipient | NC owner                                                                       |
-      | subject   | Your request to edit collection NC to propose edit proposed has been approved. |
-    And the email sent to "NC owner" with subject "Your request to edit collection NC to propose edit proposed has been approved." contains the following lines of text:
+    Then the email sent to "NC owner" with subject "Your request to edit collection NC to propose edit proposed has been approved." contains the following lines of text:
       | text                                                                                  |
       | Your proposal to edit the collection "NC to propose edit proposed" has been accepted. |
       | You can verify the edited version of the collection at                                |
@@ -181,10 +160,7 @@ Feature: Notification test for the collection transitions.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "It will not be archived."
     And I press "Publish"
-    Then the following email should have been sent:
-      | recipient | NC owner                                                                   |
-      | subject   | Your request to archive collection NC to reject archival has been rejected |
-    And the email sent to "NC owner" with subject "Your request to archive collection NC to reject archival has been rejected" contains the following lines of text:
+    Then the email sent to "NC owner" with subject "Your request to archive collection NC to reject archival has been rejected" contains the following lines of text:
       | text                                                                                      |
       | NC Moderator has rejected your request to archive the collection "NC to reject archival". |
       | The reason for rejection is: It will not be archived.                                     |
@@ -198,10 +174,7 @@ Feature: Notification test for the collection transitions.
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "It will not be deleted."
     And I press "Publish"
-    Then the following email should have been sent:
-      | recipient | NC owner                                                                  |
-      | subject   | Your request to delete collection NC to reject deletion has been rejected |
-    And the email sent to "NC owner" with subject "Your request to delete collection NC to reject deletion has been rejected" contains the following lines of text:
+    Then the email sent to "NC owner" with subject "Your request to delete collection NC to reject deletion has been rejected" contains the following lines of text:
       | text                                                                                     |
       | NC Moderator has rejected your request to delete the collection "NC to reject deletion". |
       | The reason for rejection is: It will not be deleted.                                     |

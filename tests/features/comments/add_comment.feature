@@ -32,9 +32,6 @@ Feature: Add comments
     Then I should see the following success messages:
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should not see "I've heard this story..."
-    And the following email should have been sent:
-      | recipient | Comment moderator                       |
-      | subject   | Joinup: A new comment has been created. |
     And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
       | text                                                                               |
       | an anonymous user posted a comment in collection "Gossip collection".              |
@@ -84,9 +81,6 @@ Feature: Add comments
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
-    And the following email should have been sent:
-      | recipient | Comment moderator                       |
-      | subject   | Joinup: A new comment has been created. |
     And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
       | text                                                                               |
       | Miss Tales posted a comment in collection "Gossip collection".                     |

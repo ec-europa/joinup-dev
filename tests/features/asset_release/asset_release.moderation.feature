@@ -96,9 +96,6 @@ Feature: Asset release moderation
     Then I should see the heading "Release of the dark ship v1"
     And I should see the following warning messages:
       | You are viewing the published version. To view the latest draft version, click here. |
-    And the following email should have been sent:
-      | recipient | Bonnie Holloway                                                       |
-      | subject   | Joinup: Modification of a release of your solution has been requested |
     And the email sent to "Bonnie Holloway" with subject "Joinup: Modification of a release of your solution has been requested" contains the following lines of text:
       | text                                                                                                                  |
       | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |

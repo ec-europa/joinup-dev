@@ -25,11 +25,8 @@ Feature: Edit a comment
     And I click the contextual link "Edit comment" in the "Comment" region
     And I fill in "Create comment" with "Cracking the web."
     And I wait for the honeypot validation to pass
-    Then I press "Post comment"
-    And the following email should have been sent:
-      | recipient | Comment edit moderator                                  |
-      | subject   | Joinup: A comment has been updated.                     |
-    And the email sent to "Comment edit moderator" with subject "Joinup: A comment has been updated." contains the following lines of text:
+    And I press "Post comment"
+    Then the email sent to "Comment edit moderator" with subject "Joinup: A comment has been updated." contains the following lines of text:
       | text                                                                               |
       | Sons Anarchy updated the comment in "Paying with cash".                            |
       | If you think this action is not clear or not due, please contact Joinup Support at |

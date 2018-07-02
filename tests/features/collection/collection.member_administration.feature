@@ -35,9 +35,6 @@ Feature: Collection membership administration
     And I go to the "Medical diagnosis" collection
     And I press the "Join this collection" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
-    And the following email should have been sent:
-      | recipient | Lisa Cuddy                                           |
-      | subject   | Joinup: A user has requested to join your collection |
     And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your collection" contains the following lines of text:
       | text                                                                               |
       | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
