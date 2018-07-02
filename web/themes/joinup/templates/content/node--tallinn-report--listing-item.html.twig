@@ -83,7 +83,7 @@
       <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
       {{ title_suffix }}
       <h5 class="listing__subtitle listing__author">{{ author_name|striptags }}</h5>
-      <h5 class="listing__subtitle listing__date">Last update: {{ last_update }}</h5>
+      <h5 class="listing__subtitle listing__date">{{ "Last update"|t }}: {{ last_update }}</h5>
     </div>
     <div class="listing__field">
       <p class="listing__teaser">{{ content.body|render|striptags('<a>')|raw }}</p>
