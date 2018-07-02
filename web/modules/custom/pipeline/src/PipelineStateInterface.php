@@ -56,6 +56,17 @@ interface PipelineStateInterface {
   public function getData();
 
   /**
+   * Checks if a value exists in the persistent data store.
+   *
+   * @param string $key
+   *   The key to be checked.
+   *
+   * @return bool
+   *   If the persistent data store contains a value with $key key.
+   */
+  public function hasDataValue($key);
+
+  /**
    * Returns a value from the persistent data store given its key.
    *
    * @param string $key

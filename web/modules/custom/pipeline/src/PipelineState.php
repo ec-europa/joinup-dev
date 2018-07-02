@@ -90,6 +90,13 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
+  public function hasDataValue($key) {
+    return array_key_exists($key, $this->data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDataValue($key) {
     if (!array_key_exists($key, $this->data)) {
       throw new \InvalidArgumentException("There's no '$key' key in state data.");
