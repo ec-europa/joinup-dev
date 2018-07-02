@@ -1526,6 +1526,19 @@ function joinup_theme_preprocess_node__event__listing_item(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for node--tallinn-report--listing-item.html.twig.
+ */
+function joinup_theme_preprocess_node__tallinn_report__listing_item(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $variables['last_update']['#markup'] = '-';
+  if (!$node->get('created')->equals($node->get('changed'))) {
+    $date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+    $variables['last_update'] = $date;
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Add theme suggestions directly to the comment body field.
