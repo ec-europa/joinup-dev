@@ -433,33 +433,6 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter().
- *
- * Allows to reuse a shared field group template in solutions and collections.
- */
-function solution_theme_suggestions_field_group_html_element_alter(array &$suggestions, array $variables): void {
-  $element = $variables['element'];
-
-  // Add a theme suggestion pointing to the collection abstract field group for
-  // solutions. Each field group has a unique machine name on which the theme
-  // suggestions are generated. These cannot be shared between different view
-  // modes of different bundles. By adding the theme suggestion of the abstract
-  // field group this allows us to reuse the template without duplicating it.
-  $conditions = [
-    '#entity_type' => 'rdf_entity',
-    '#bundle' => 'solution',
-    '#group_name' => 'group_solution_abstract_wrapper',
-  ];
-  foreach ($conditions as $key => $value) {
-    if (empty($element[$key]) || $element[$key] !== $value) {
-      return;
-    }
-  }
-
-  $suggestions[] = 'field_group_html_element__group_abstract_wrapper';
-}
-
-/**
  * Builds a list of entity ids of related solutions.
  *
  * @param \Drupal\Core\Entity\EntityInterface $entity
