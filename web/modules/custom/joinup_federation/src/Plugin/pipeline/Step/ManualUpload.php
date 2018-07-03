@@ -5,15 +5,14 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Defines a manual data upload step plugin.
@@ -26,6 +25,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface {
 
   use PipelineStepWithFormTrait;
+  use PipelineStepWithRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
 
   /**
@@ -83,19 +83,6 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    */
   public function getAdditionalPersistentDataStore(FormStateInterface $form_state): array {
     return ['fid' => (int) $form_state->getValue('adms_file')[0]];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getResponse() {
-    // This step is an intensive process. We trigger a redirect to end the PHP
-    // request, so that we overcome a PHP max execution time overflow.
-    return new RedirectResponse(
-      Url::fromRoute('pipeline.execute_pipeline.html', [
-        'pipeline' => $this->pipeline->getPluginId(),
-      ])->toString()
-    );
   }
 
   /**
