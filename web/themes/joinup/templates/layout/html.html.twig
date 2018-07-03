@@ -19,13 +19,22 @@
  * - db_offline: A flag indicating if the database is offline.
  * - placeholder_token: The token for generating head, css, js and js-bottom
  *   placeholders.
+ * - canonical_entity_page: Will be set for a select number of canonical entity
+ *   pages. See joinup_theme_preprocess_html().
+ * - entity_type: If canonical_entity_page is set this will contain the entity
+ *   type ID of the entity that is the main subject of the page.
+ * - bundle: If canonical_entity_page is set this will contain the bundle ID of
+ *   the entity that is the main subject of the page.
  *
  * @see template_preprocess_html()
  */
 #}
 {%
   set body_classes = [
-    logged_in ? 'user-logged-in',
+    logged_in ? 'user-logged-in' : 'user-anonymous',
+    canonical_entity_page ? 'canonical-entity-page',
+    canonical_entity_page ? 'canonical-entity-page--' ~ entity_type|clean_class,
+    canonical_entity_page ? 'canonical-entity-page--' ~ entity_type|clean_class ~ '--' ~ bundle|clean_class,
   ]
 %}
 <!DOCTYPE html>

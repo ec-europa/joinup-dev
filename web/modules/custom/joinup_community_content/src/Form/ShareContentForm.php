@@ -133,17 +133,18 @@ class ShareContentForm extends ShareContentFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Keep only the checked entries.
     $collections = array_filter($form_state->getValue('collections'));
-
+    $collection_labels = [];
     // We can safely loop through these ids, as unvalid options are handled
     // already by Drupal.
     foreach ($collections as $id => $value) {
       $collection = $this->rdfStorage->load($id);
       $this->shareInCollection($collection);
+      $collection_labels[] = $collection->label();
     }
 
     // Show a message if the content was shared in at least one collection.
     if (!empty($collections)) {
-      drupal_set_message('Sharing updated.');
+      drupal_set_message('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->node->toUrl());

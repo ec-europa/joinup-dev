@@ -8,7 +8,7 @@ dependencies:
 id: userheader
 theme: joinup_theme
 region: featured
-weight: -8
+weight: -16
 provider: null
 plugin: user_header_block
 settings:

@@ -159,13 +159,13 @@ Feature: Navigation menu for custom pages
       | banner | banner.jpg  |
       | state  | validated   |
     And custom_page content:
-      | title                       | body      | collection  | status      |
-      | The Burning Angel           | Test body | Hidden Ship | published   |
-      | Snake of Pleasure           | Test body | Hidden Ship | published   |
-      | The Slaves of the Shores    | Test body | Hidden Ship | published   |
-      | The Slaves of the Sea       | Test body | Hidden Ship | published   |
-      | The Slaves of the Mountains | Test body | Hidden Ship | published   |
-      | The Slaves of the Air       | Test body | Hidden Ship | unpublished |
+      | title                       | body      | collection  | status      | logo     |
+      | The Burning Angel           | Test body | Hidden Ship | published   | logo.png |
+      | Snake of Pleasure           | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Shores    | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Sea       | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Mountains | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Air       | Test body | Hidden Ship | unpublished | logo.png |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
       | title                       | parent            | weight |
@@ -196,6 +196,9 @@ Feature: Navigation menu for custom pages
       | The Slaves of the Sea    |
       # The Slaves of the Air is unpublished and the facilitator can see it.
       | The Slaves of the Air    |
+    And the logo should be shown in the "The Slaves of the Shores" custom page tile
+    And the logo should be shown in the "Snake of Pleasure" custom page tile
+    And the logo should be shown in the "The Slaves of the Air" custom page tile
     But I should not see the "The Slaves of the Mountains" tile
 
     When I am not logged in

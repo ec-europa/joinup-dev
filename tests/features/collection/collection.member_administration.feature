@@ -18,12 +18,14 @@ Feature: Collection membership administration
       | Gregory House     |       | gregory_house@example.com     | Gregory    | House       |
       | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
       | Donald Duck       |       | donald_duck@example.com       | Donald     | Duck        |
+      | Turkey Ham        |       | turkey_ham@example.com        | Turkey     | Ham         |
     And the following collections:
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
     And the following collection user memberships:
       | collection        | user              | roles                      | state   |
       | Medical diagnosis | Lisa Cuddy        | administrator, facilitator | active  |
+      | Medical diagnosis | Turkey Ham        | facilitator                | active  |
       | Medical diagnosis | Gregory House     |                            | active  |
       | Medical diagnosis | Kathie Cumbershot |                            | pending |
 
@@ -37,19 +39,29 @@ Feature: Collection membership administration
       | recipient | Lisa Cuddy                                                                                                                     |
       | subject   | Joinup: A user has requested to join your collection                                                                           |
       | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
+    And the following email should have been sent:
+      | recipient | Turkey Ham                                                                                                                     |
+      | subject   | Joinup: A user has requested to join your collection                                                                           |
+      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
 
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
-    When I am logged in as "Kathie Cumbershot"
-    And I go to the "Medical diagnosis" collection
+    Given I am logged in as "Kathie Cumbershot"
+    When I go to the "Medical diagnosis" collection
     Then I should not see the plus button menu
     And I should not see the link "Add news"
 
-    # Approve a membership.
-    When I am logged in as "Lisa Cuddy"
-    And all e-mails have been sent
+    # Check that the facilitator can also see the approve action.
+    Given I am logged in as "Turkey Ham"
     And I go to the "Medical diagnosis" collection
     Then I click "Members" in the "Left sidebar"
+    Then I select "Approve the pending membership(s)" from "Action"
+
+    # Approve a membership.
+    Given I am logged in as "Lisa Cuddy"
+    When all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"
@@ -243,10 +255,12 @@ Feature: Collection membership administration
       | Gregory House     |
       | Kathie Cumbershot |
       | Lisa Cuddy        |
+      | Turkey Ham        |
     # By clicking the header of the name column the ordering should be reversed.
     When I click "Name"
     Then the "member administration" table should contain the following column:
       | Name              |
+      | Turkey Ham        |
       | Lisa Cuddy        |
       | Kathie Cumbershot |
       | Gregory House     |

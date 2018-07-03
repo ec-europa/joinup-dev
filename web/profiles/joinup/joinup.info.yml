@@ -138,6 +138,8 @@ config_devel:
   - block.block.solutiontype
   - block.block.spatial_coverage_facet
   - block.block.statistics
+  - block.block.tourbutton
+  - block.block.tourbutton_2
   - block.block.unpublished_content_of_group
   - block.block.unpublished_content_of_user
   - block.block.userheader
