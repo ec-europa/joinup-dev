@@ -265,6 +265,27 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function joinup_theme_preprocess_html(&$variables) {
+  /** @var \Drupal\Core\Routing\CurrentRouteMatch $route_match */
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Some of our canonical entity pages have tours on them that vary by the
+  // entity bundle. If we are on such a page, add a body class that indicates
+  // the entity type and bundle.
+  $route_mapping = ['entity.rdf_entity.canonical' => 'rdf_entity'];
+  if (array_key_exists($route_name, $route_mapping)) {
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $route_match->getParameter($route_mapping[$route_name]);
+    $variables['canonical_entity_page'] = TRUE;
+    $variables['entity_type'] = $entity->getEntityTypeId();
+    $variables['bundle'] = $entity->bundle();
+  }
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function joinup_theme_preprocess_page(&$variables) {

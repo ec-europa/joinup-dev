@@ -2,21 +2,21 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
     - system
+    - tour
     - user
   theme:
     - joinup_theme
-id: statistics
+id: tourbutton_2
 theme: joinup_theme
 region: featured
-weight: -13
+weight: -18
 provider: null
-plugin: statistics
+plugin: tour_button_block
 settings:
-  id: broken
-  label: 'Statistics block'
-  provider: joinup_core
+  id: tour_button_block
+  label: 'Tour button (homepage)'
+  provider: tour
   label_display: '0'
 visibility:
   request_path:

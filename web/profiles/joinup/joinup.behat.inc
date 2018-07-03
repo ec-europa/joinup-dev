@@ -2245,6 +2245,37 @@ JS;
   }
 
   /**
+   * Asserts that a tour is available on the current page.
+   *
+   * @Then a tour should be available
+   */
+  public function assertTourAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    if (empty($element_help) && empty($element_button)) {
+      throw new \Exception("No tour is available on the page.");
+    }
+  }
+
+  /**
+   * Asserts that a tour is not available on the current page.
+   *
+   * @Then a tour should not be available
+   */
+  public function assertTourNotAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    PHPUnit_Framework_Assert::assertEmpty($element_help);
+    PHPUnit_Framework_Assert::assertEmpty($element_button);
+  }
+
+  /**
    * Press the enter key in the keyboard.
    *
    * Works only in Javascript-enabled browsers.
