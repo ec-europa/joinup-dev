@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
@@ -21,8 +23,9 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  *   label = @Translation("Remove data not supported by Joinup"),
  * )
  */
-class RemoveUnsupportedData extends JoinupFederationStepPluginBase {
+class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
+  use PipelineStepWithRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
 
   /**
