@@ -429,7 +429,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // the case when there are more iterations than estimated.
     $total = max($this->pipeline->getCurrentState()->getBatchTotalEstimatedIterations(), $current);
     $percentage = (int) (100 * $current / $total);
-
+    $step_label = $step->getPluginDefinition()['label'];
     $strings = [
       'label' => $this->pipeline->getCurrentState()->getBatchCurrentSequence() === 0 ? $this->t("Starting %step", ['%step' => $step_label]) : $this->t('Running step %step', ['%step' => $step_label]),
       'page_title' => $step->getPageTitle(),
