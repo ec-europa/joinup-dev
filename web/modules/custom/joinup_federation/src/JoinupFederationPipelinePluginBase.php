@@ -186,16 +186,16 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
           ],
         ],
       ];
-    }
 
-    if (isset($non_critical_violations[$id])) {
-      foreach ($non_critical_violations[$id] as $message) {
-        $rows[] = [
-          [
-            'data' => $message['field'] ?? $this->t('N/A'),
-          ],
-          $message['message'],
-        ];
+      if (isset($non_critical_violations[$id])) {
+        foreach ($non_critical_violations[$id] as $message) {
+          $rows[] = [
+            [
+              'data' => $message['field'] ?? $this->t('N/A'),
+            ],
+            $message['message'],
+          ];
+        }
       }
     }
 
