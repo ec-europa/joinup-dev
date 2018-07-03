@@ -223,8 +223,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * whitelisted.
    *
    * The caller will take care to delete from the 'staging' graph the entities
-   * that are not in the `$this->whitelist` and to create/update disabled
-   * provenance activity records.
+   * that are not in the `$this->whitelist`.
    *
    * @param string $bundle
    *   The bundle of the passed whitelisted entity IDs. As this method is called
