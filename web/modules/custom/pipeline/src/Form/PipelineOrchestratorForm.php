@@ -63,18 +63,14 @@ class PipelineOrchestratorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $pipeline = $this->getCurrentPipeline($form_state);
-    $form['#title'] = $this->t('@pipeline: @step', [
-      '@pipeline' => $pipeline->getPluginDefinition()['label'],
-      '@step' => $this->getCurrentStep($form_state)->getPluginDefinition()['label'],
-    ]);
+    $form['#title'] = $this->getCurrentStep($form_state)->getPageTitle();
     $form = $this->buildProgressIndicator($form, $form_state);
     $form['data'] = $this->buildSubForm($form, $form_state);
     $form['next'] = [
       '#type' => 'submit',
       '#value' => $this->t('Next'),
     ];
-    $pipeline_id = $pipeline->getPluginId();
+    $pipeline_id = $this->getCurrentPipeline($form_state)->getPluginId();
     $form['cancel'] = [
       '#type' => 'link',
       '#title' => $this->t('Cancel'),

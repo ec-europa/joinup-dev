@@ -6,6 +6,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,10 +17,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @PipelineStep(
  *   id = "provenance_activity",
- *   label = @Translation("Provenance activity"),
+ *   label = @Translation("Register the federation activity"),
  * )
  */
-class ProvenanceActivity extends JoinupFederationStepPluginBase {
+class ProvenanceActivity extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 30;
 
   /**
    * The RDF entity provenance helper service.
@@ -73,28 +84,35 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function initBatchProcess() {
+    $black_list = array_fill_keys($this->getPersistentDataValue('blacklist'), FALSE);
+    $entities = array_fill_keys(array_keys($this->getPersistentDataValue('entities')), TRUE);
+    $remaining_ids = $black_list + $entities;
+    $this->setBatchValue('remaining_ids', $remaining_ids);
+    // Estimate the total number of iterations.
+    return ceil(count($remaining_ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
+    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $current_user_id = $this->currentUser->id();
-
-    // Create or update provenance activity records for blacklisted entities.
-    $blacklist = $this->getPersistentDataValue('blacklist');
-    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($blacklist);
+    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
+    // Create or update provenance activity records for all entities.
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', FALSE)
-        ->save();
-    }
-
-    // Create or update provenance activity records for saved entities.
-    $entities = array_keys($this->getPersistentDataValue('entities'));
-    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($entities);
-    foreach ($activities as $id => $activity) {
-      $activity
-        // Set the last user that federated this entity as owner.
-        ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', TRUE)
+        ->set('provenance_enabled', $ids[$id])
         ->save();
     }
   }

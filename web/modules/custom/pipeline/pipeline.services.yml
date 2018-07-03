@@ -16,3 +16,5 @@ services:
       - '@form_builder'
       - '@messenger'
       - '@current_user'
+      - '@request_stack'
+      - '@renderer'

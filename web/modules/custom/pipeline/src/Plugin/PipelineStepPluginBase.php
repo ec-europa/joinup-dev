@@ -105,6 +105,14 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
   /**
    * {@inheritdoc}
    */
+  public function hasPersistentDataValue($key) {
+    $data = $this->getPersistentData();
+    return array_key_exists($key, $data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getPersistentDataValue($key) {
     $data = $this->getPersistentData();
     if (!array_key_exists($key, $data)) {
@@ -147,6 +155,17 @@ abstract class PipelineStepPluginBase extends PluginBase implements PipelineStep
     $this->ensurePipeline();
     $this->pipeline->getCurrentState()->unsetDataValue($key);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPageTitle() {
+    $this->ensurePipeline();
+    return $this->t('@pipeline: @step', [
+      '@pipeline' => $this->pipeline->getPluginDefinition()['label'],
+      '@step' => $this->getPluginDefinition()['label'],
+    ]);
   }
 
   /**

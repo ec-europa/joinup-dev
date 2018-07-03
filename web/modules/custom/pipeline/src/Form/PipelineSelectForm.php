@@ -74,7 +74,7 @@ class PipelineSelectForm extends FormBase {
     // If this user has unfinished pipelines, jump to the most recent one.
     if ($unfinished_pipelines) {
       arsort($unfinished_pipelines);
-      return $this->redirect('pipeline.execute_pipeline', ['pipeline' => key($unfinished_pipelines)]);
+      return $this->redirect('pipeline.execute_pipeline.html', ['pipeline' => key($unfinished_pipelines)]);
     }
 
     $form['pipeline'] = [
@@ -95,7 +95,7 @@ class PipelineSelectForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect('pipeline.execute_pipeline', ['pipeline' => $form_state->getValue('pipeline')]);
+    $form_state->setRedirect('pipeline.execute_pipeline.html', ['pipeline' => $form_state->getValue('pipeline')]);
   }
 
 }

@@ -6,10 +6,11 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
-use Drupal\file\FileInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
 
@@ -21,9 +22,10 @@ use EasyRdf\Graph;
  *   label = @Translation("Manual upload"),
  * )
  */
-class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface {
 
   use PipelineStepWithFormTrait;
+  use PipelineStepWithRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
 
   /**
@@ -31,12 +33,11 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    */
   public function execute() {
     try {
-      $this->createGraphStore()->replace($this->getPersistentDataValue('graph'), $this->getGraphUri('sink'));
-      $this->getPersistentDataValue('adms_file')->delete();
-      // We don't persist these values in the persistent data store.
-      $this
-        ->unsetPersistentDataValue('adms_file')
-        ->unsetPersistentDataValue('graph');
+      $fid = $this->getPersistentDataValue('fid');
+      $this->unsetPersistentDataValue('fid');
+      $this->createGraphStore()->replace($this->fileToGraph($fid));
+      // We don't persist this value in the persistent data store.
+      $this->unsetPersistentDataValue('fid');
     }
     catch (\Exception $exception) {
       return [
@@ -71,55 +72,34 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
-    if (!$file = $this->getFile($form_state)) {
+    if (!isset($form_state->getValue('adms_file')[0])) {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
-
-    $form_state->setValue('adms_file', $file);
-    $form_state->setValue('graph', $this->fileToGraph($file));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getAdditionalPersistentDataStore(FormStateInterface $form_state): array {
-    return [
-      'adms_file' => $form_state->getValue('adms_file'),
-      'graph' => $form_state->getValue('graph'),
-    ];
+    return ['fid' => (int) $form_state->getValue('adms_file')[0]];
   }
 
   /**
-   * Builds a RDF graph from a file object.
+   * Builds a RDF graph from a file.
    *
-   * @param \Drupal\file\FileInterface $file
-   *   The to be validated file.
+   * @param int $fid
+   *   The file ID.
    *
    * @return \EasyRdf\Graph
    *   A collection of triples.
    */
-  protected function fileToGraph(FileInterface $file): Graph {
-    $graph = new Graph();
+  protected function fileToGraph(int $fid): Graph {
+    $file = File::load($fid);
+    $graph = new Graph($this->getGraphUri('sink'));
     $graph->parseFile($file->getFileUri());
+    $file->delete();
     return $graph;
-  }
-
-  /**
-   * Returns the file entity from the form state.
-   *
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
-   *
-   * @return \Drupal\file\FileInterface|null
-   *   The uploaded file entity.
-   */
-  protected function getFile(FormStateInterface $form_state): ?FileInterface {
-    $adms_files = $form_state->getValue('adms_file');
-    if (!isset($adms_files[0]) || !$file = File::load($adms_files[0])) {
-      return NULL;
-    }
-    return $file;
   }
 
 }

@@ -1932,6 +1932,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Wait until a running pipeline batch job has finished.
+   *
+   * @Given I wait for the pipeline batch job to finish
+   */
+  public function iWaitForThePipelineBatchJobToFinish() {
+    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+      $this->getSession()->reload();
+    }
+  }
+
+  /**
    * Simulates picking of an autosuggestion value from a field.
    *
    * @param string $value

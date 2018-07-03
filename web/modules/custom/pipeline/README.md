@@ -12,7 +12,6 @@ step is a plugin of type `pipeline_step`.
 * Improve testing:
   * Unit-test the pipeline as iterator.
   * Browser test the entire flow.
-* Feature: Steps that are running as batch processes.
 * Show a summary on success.
 * Extend this README.md with more API docs.
 * Cutting edge: Make the pipeline iterator really smart, allowing next() result

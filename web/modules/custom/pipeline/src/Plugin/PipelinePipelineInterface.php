@@ -76,6 +76,14 @@ interface PipelinePipelineInterface extends PluginInspectionInterface, \Iterator
   public function onError();
 
   /**
+   * Builds a success message to be showed then the pipeline ends with success.
+   *
+   * @return array
+   *   A render array.
+   */
+  public function getSuccessMessage();
+
+  /**
    * Acts when a reset action occurs.
    */
   public function reset();
