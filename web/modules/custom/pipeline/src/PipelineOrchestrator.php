@@ -429,8 +429,6 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     $percentage = (int) (100 * $current / $total);
 
     $strings = [
-      'pipeline' => $this->pipeline->getPluginDefinition()['label'],
-      'step' => $step_label = $step->getPluginDefinition()['label'],
       'label' => $this->pipeline->getCurrentState()->getBatchCurrentSequence() === 0 ? $this->t("Starting %step", ['%step' => $step_label]) : $this->t('Running step %step', ['%step' => $step_label]),
       'page_title' => $step->getPageTitle(),
       'error_status_message' => $this->getErrorStatusMessage($step),
