@@ -45,6 +45,7 @@ Feature: Collection homepage
 
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
+    Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
     # Test caching of the metrics: Members.

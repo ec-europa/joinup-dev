@@ -622,6 +622,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $aliases = [
       'custom_page' => [
         'attachments' => 'field_attachment',
+        'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
         'content' => 'body',
@@ -1355,6 +1356,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     else {
       $this->getSession()->getPage()->fillField($label, $text);
     }
+  }
+
+  /**
+   * Presses a button in a given WYSIWYG editor.
+   *
+   * @param string $button
+   *   The label of the button to press.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I press the button :button in the :label wysiwyg editor
+   */
+  public function pressButtonInWysiwyg($button, $label) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $this->pressWysiwygButton($label, $button);
   }
 
   /**
@@ -2225,6 +2242,37 @@ JS;
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
+  }
+
+  /**
+   * Asserts that a tour is available on the current page.
+   *
+   * @Then a tour should be available
+   */
+  public function assertTourAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    if (empty($element_help) && empty($element_button)) {
+      throw new \Exception("No tour is available on the page.");
+    }
+  }
+
+  /**
+   * Asserts that a tour is not available on the current page.
+   *
+   * @Then a tour should not be available
+   */
+  public function assertTourNotAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    PHPUnit_Framework_Assert::assertEmpty($element_help);
+    PHPUnit_Framework_Assert::assertEmpty($element_button);
   }
 
   /**

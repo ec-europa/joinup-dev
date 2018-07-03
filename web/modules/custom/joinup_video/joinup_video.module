@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup video module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_video_embed_dialog_alter().
+ *
+ * - Hides autoplay and responsive settings in the video embed dialog.
+ * - Provides a description with examples of valid video URLs.
+ */
+function joinup_video_form_video_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['settings']['#access'] = FALSE;
+  // @todo: The description should be updated when the rest of the providers are
+  // fixed.
+  // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4573
+  $form['video_url']['#description'] = 'Youtube and EC videos are allowed.'
+    . '<br />Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    . '<br />EC url example: http://europa.eu/123abc!123'
+    . '<br />EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345';
+}
