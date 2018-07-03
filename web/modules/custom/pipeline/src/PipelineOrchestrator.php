@@ -207,6 +207,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    * - Step with form.
    * - Step with response.
    * - Step running in batch process.
+   * @todo Group contiguous steps that are running in batch processes so that we
+   * are not refreshing the page between such steps.
    */
   protected function executeStep(PipelineStateInterface $state) {
     $step = $this->pipeline->createStepInstance($state->getStepId());
