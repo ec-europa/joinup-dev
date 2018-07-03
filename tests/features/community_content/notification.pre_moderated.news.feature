@@ -61,8 +61,9 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
     Then the following email should have been sent:
-      | recipient | Notify moderator                  |
-      | subject   | Joinup: Content has been proposed |
+      | recipient | Notify moderator                                                                                                             |
+      | subject   | Joinup: Content has been proposed                                                                                            |
+      | body      | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
     And the email sent to "CC owner" with subject "Joinup: Content has been proposed" contains the following lines of text:
       | text                                                                                                                         |
       | CC Member has submitted an update of the news - "CCN create propose" for publication in the collection: "CC pre collection". |
