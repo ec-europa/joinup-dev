@@ -56,7 +56,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the following error messages:
       | error messages                                                                                                                    |
@@ -68,7 +70,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "invalid_drupal.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the heading "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1 [http://example.com/solution/1]" is selected
@@ -106,7 +110,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1 [http://example.com/solution/1]" is checked
@@ -152,7 +158,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1" is checked
