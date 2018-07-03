@@ -158,18 +158,11 @@ Feature: As a site moderator I am able to import RDF files.
     And the row "Solution 1" is checked
     And the row "Solution 2" is checked
     And the row "Solution 3" is not checked
-<<<<<<< HEAD
 
     # Swap 'Solution 1' with 'Solution 3'.
     Given I uncheck the "Solution 1" row
     And I check the "Solution 3" row
 
-=======
-
-    # Swap 'Solution 1' with 'Solution 3'.
-    Given I uncheck the "Solution 1" row
-    And I check the "Solution 3" row
->>>>>>> origin/ISAICP-4206
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
