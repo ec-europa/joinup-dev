@@ -123,8 +123,11 @@ Feature: Collections Overview
     # Check that later chunks of text in the abstract are not rendered.
     But I should not see the text "purus. Integer nec enim facilisis mi fermentum mollis sed vitae lacus"
     And I should not see the text "This collection is intended to show ways of being fit while working"
+
+    # The 'Read more' link leads to the About page.
     When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"
+
     And I should see the text "Fit while working is dope"
     And I should see the text "This collection is intended to show ways of being fit while working"
     And I should see the text "Tamsin Irwin"
