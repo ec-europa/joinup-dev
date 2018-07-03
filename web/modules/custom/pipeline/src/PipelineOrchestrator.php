@@ -242,12 +242,12 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
           $state->addBatchErrorMessage($error);
         }
 
-        // Optimization: The batch is completed after running the first step. In
-        // this case, we treat this as a non-batch step.
+        // Optimization: The batch process is completed after running the first
+        // batch. In this case, we treat this as a non-batch step.
         if ($is_batch && ($batch_sequence === 0) && $step->batchProcessIsCompleted()) {
           $is_batch = FALSE;
           $step->onBatchProcessCompleted();
-          // The error message should be rebuilt using the step logic.
+          // The error message should be rebuilt using the batch process logic.
           $error = $step->buildBatchProcessErrorMessage();
           $state->resetBatch();
         }
