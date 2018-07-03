@@ -4,7 +4,6 @@ dependencies:
   config:
     - rdf_entity.graph.default
     - taxonomy.vocabulary.test_resource_type
-third_party_settings: {  }
 id: taxonomy_term.test_resource_type
 entity_type_id: taxonomy_term
 bundle: test_resource_type

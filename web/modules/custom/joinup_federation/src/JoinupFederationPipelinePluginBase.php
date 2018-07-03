@@ -204,6 +204,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
         }
       }
     }
+
     $header = $non_critical_violations ? [$this->t('Field'), $this->t('Warning')] : [$this->t('Entities')];
     $build[] = [
       '#theme' => 'table',

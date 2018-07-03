@@ -242,7 +242,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
           $state->addBatchErrorMessage($error);
         }
 
-        // Optimization: The batch is complete after running the first step. In
+        // Optimization: The batch is completed after running the first step. In
         // this case, we treat this as a non-batch step.
         if ($is_batch && ($batch_sequence === 0) && $step->batchProcessIsCompleted()) {
           $is_batch = FALSE;

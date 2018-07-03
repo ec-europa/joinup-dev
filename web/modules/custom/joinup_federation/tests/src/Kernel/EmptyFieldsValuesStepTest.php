@@ -16,11 +16,11 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
 /**
- * Tests the '3_way_merge' process step plugin.
+ * Tests the 'empty_fields_values' process step plugin.
  *
  * @group joinup_federation
  */
-class ThreeWayMergeStepTest extends StepTestBase {
+class EmptyFieldsValuesStepTest extends StepTestBase {
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      '3_way_merge' => [
+      'empty_fields_values' => [
         'collection' => 'http://catalog',
       ],
     ];
