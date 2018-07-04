@@ -126,13 +126,11 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    * {@inheritdoc}
    */
   public function execute() {
-    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
-    $rows = [];
-    $ids = array_keys($this->getPersistentDataValue('entities'));
-
     // Reset rdf entity cache.
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache();
 
+    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
+    $rows = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
       if ($messages = $this->getViolationsMessages($entity)) {
