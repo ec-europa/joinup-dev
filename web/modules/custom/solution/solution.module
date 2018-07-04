@@ -5,10 +5,13 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -163,42 +166,49 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
 /**
  * Implements hook_entity_extra_field_info().
  */
-function solution_entity_extra_field_info() {
+function solution_entity_extra_field_info(): array {
   $fields = [];
 
   $solution = RdfEntityType::load('solution');
   if ($solution) {
+    $display = &$fields['rdf_entity'][$solution->id()]['display'];
     // Append some additional fields to the solution entity display containing
     // related information.
     // @see solution_rdf_entity_view()
-    $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+    $display['releases_overview'] = [
       'label' => t('Releases overview'),
-      'description' => t('A link to the releases overview page'),
+      'description' => t('A link to the releases overview page.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['related_solutions'] = [
+    $display['related_solutions'] = [
       'label' => t('Related solutions: explicit + EIRA'),
       'description' => t('Solutions either explicitly or referenced through EIRA.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['download_total'] = [
+    $display['download_total'] = [
       'label' => t('Total distribution downloads'),
       'description' => t('The total downloads of all distributions in this collection.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['collections'] = [
+    $display['collections'] = [
       'label' => t('Collections'),
       'description' => t('The collections this solution is affiliated to.'),
       'visible' => FALSE,
     ];
+    $display['read_more'] = [
+      'label' => t('Read more'),
+      'description' => t('Shows a link to the about page of the solution.'),
+      'visible' => FALSE,
+    ];
   }
+
   return $fields;
 }
 
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
   if ($entity->bundle() != 'solution') {
     return;
   }
@@ -265,6 +275,21 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       'prefix' => ['#markup' => '<span class="stats__icon icon icon--collections"></span>'],
       'link' => $collection->toLink($collection->label())->toRenderable(),
     ];
+  }
+
+  // Read more link to the about page.
+  if ($display->getComponent('read_more')) {
+    try {
+      $link = $entity->toLink(t('Read more'), 'about-page', [
+        'attributes' => [
+          'class' => ['about-page', 'read-more', 'fieldset__read-more'],
+        ],
+      ]);
+      $build['read_more'] = $link->toRenderable();
+    }
+    catch (EntityMalformedException $e) {
+      // Don't include a read more link that leads to a malformed entity.
+    }
   }
 }
 

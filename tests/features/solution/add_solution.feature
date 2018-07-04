@@ -102,9 +102,10 @@ Feature: "Add solution" visibility options.
     And I press "Publish"
     # The name of the solution should exist in the block of the relative content in a collection.
     Then I should see the heading "Espresso is the solution"
-    # The solution fields will be shown in the "about" page.
+    # The description is shown in the overview.
+    And I should see the text "This is a test text"
+    # Most solution fields are not shown in the overview but in the "about" page.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3224
-    And I should not see the text "This is a test text"
     And I should not see the link "Demography"
     And I should not see the link "Belgium"
     And I should not see the link "Flemish"
