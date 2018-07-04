@@ -86,7 +86,6 @@ Feature: As a site moderator I am able to import RDF files.
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist.                                   |
       | This value should not be null.                                                                                           |
       | The distribution Windows is linked also by the Asset release 1 release.                                                  |
-      | The referenced entity (taxonomy_term: http://publications.europa.eu/resource/authority/language/INVALID) does not exist. |
 
   Scenario: Test a successful import.
     Given solutions:
