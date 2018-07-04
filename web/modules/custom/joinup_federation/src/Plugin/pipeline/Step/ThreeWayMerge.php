@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @PipelineStep(
  *   id = "3_way_merge",
- *   label = @Translation("Assign default or local values to empty fields of imported entities"),
+ *   label = @Translation("Set default or local values to empty fields"),
  * )
  */
 class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
