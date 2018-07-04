@@ -512,7 +512,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
         'percentage' => $percentage,
         'message' => $strings['message'],
         'label' => $strings['label'],
-        'data' => $strings['error'],
+        'data' => isset($strings['error']) ? $strings['error'] : NULL,
       ]);
     }
 
