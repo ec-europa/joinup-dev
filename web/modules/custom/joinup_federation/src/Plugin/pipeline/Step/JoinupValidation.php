@@ -6,6 +6,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
@@ -16,11 +18,20 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * Performs Drupal validation against incoming entities.
  *
  * @PipelineStep(
- *   id = "drupal_validation",
- *   label = @Translation("Drupal validation"),
+ *   id = "joinup_validation",
+ *   label = @Translation("Joinup compliance validation"),
  * )
  */
-class DrupalValidation extends JoinupFederationStepPluginBase {
+class JoinupValidation extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 30;
 
   /**
    * Non-critical violations map.
@@ -44,48 +55,6 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
         'field_isr_banner',
         'field_isr_logo',
         'field_policy_domain',
-      ],
-    ],
-    'BrokenReferences' => [
-      'solution' => [
-        'field_is_affiliations_requests',
-        'field_is_related_solutions',
-      ],
-      'asset_release' => [
-        'field_isr_related_solutions',
-      ],
-    ],
-    'OptionalToMandatory' => [
-      'solution' => [
-        'field_is_contact_information',
-      ],
-      'asset_release' => [
-        // Changelog entry #17. Cardinality change from 0..n to 1..n.
-        'field_isr_contact_information',
-      ],
-      'asset_distribution' => [
-        // Changelog entry #40. Cardinality change from 0..n to 1..n.
-        'field_ad_licence',
-      ],
-      'owner' => [
-        // Changelog entry #15. Cardinality change from 0..n to 1..n.
-        'label',
-      ],
-      'contact_information' => [
-        // Changelog entry #54. Changed from recommended to mandatory.
-        // In our conversion, the property 'formattedName' is converted into the
-        // 'fn' property which is the predicate of the label so we cover some
-        // cases and we might avoid having to provide workarounds for that.
-        'label',
-      ],
-    ],
-    'NonDocumented' => [
-      'contact_information' => [
-        // While this is not documented in the changelog, it was discovered that
-        // in ADMS v1, the contact information entity has an email property that
-        // had a cardinality of 0..n. The corresponding 'hasEmail' property in
-        // ADMS v2 has a cardinality of 1..n.
-        'field_ci_email',
       ],
     ],
   ];
@@ -139,7 +108,25 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function initBatchProcess() {
+    $ids = array_keys($this->getPersistentDataValue('entities'));
+    $this->setBatchValue('remaining_ids', $ids);
+    // Estimate the total number of iterations.
+    return ceil(count($ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
+    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $rows = [];
     $ids = array_keys($this->getPersistentDataValue('entities'));
 
@@ -176,20 +163,33 @@ class DrupalValidation extends JoinupFederationStepPluginBase {
       }
     }
 
-    if ($rows) {
-      return [
-        '#theme' => 'table',
-        '#header' => [
-          $this->t('Field'),
-          $this->t('Message'),
-        ],
-        '#rows' => $rows,
-      ];
-    }
-
     // Store non-critical violation metadata in the pipeline persistent data
     // store to be displayed at the end of the pipeline execution.
     $this->setPersistentDataValue('non_critical_violations', $this->nonCriticalViolations);
+
+    return $rows ?: NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildBatchProcessErrorMessage() {
+    $rows = array_reduce($this->getBatchErrorMessages(), function (array $rows, array $row_group): array {
+      return array_merge($rows, $row_group);
+    }, []);
+
+    if (!$rows) {
+      return $rows;
+    }
+
+    return [
+      '#theme' => 'table',
+      '#header' => [
+        $this->t('Field'),
+        $this->t('Message'),
+      ],
+      '#rows' => $rows,
+    ];
   }
 
   /**

@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\pipeline\PipelineState;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityGraph;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
@@ -15,11 +16,11 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
 /**
- * Tests the 'empty_fields_values' process step plugin.
+ * Tests the '3_way_merge' process step plugin.
  *
  * @group joinup_federation
  */
-class EmptyFieldsValuesStepTest extends StepTestBase {
+class ThreeWayMergeStepTest extends StepTestBase {
 
   /**
    * {@inheritdoc}
@@ -28,7 +29,7 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      'empty_fields_values' => [
+      '3_way_merge' => [
         'collection' => 'http://catalog',
       ],
     ];
@@ -54,6 +55,8 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
 
     // Create the 'default' and 'staging' graphs.
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.default.yml'));
+    RdfEntityGraph::create($graph)->save();
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.draft.yml'));
     RdfEntityGraph::create($graph)->save();
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/rdf_entity.graph.staging.yml'));
     RdfEntityGraph::create($graph)->save();
@@ -151,7 +154,10 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('empty_fields_values');
+    $state = (new PipelineState())
+      ->setStepId('3_way_merge')
+      ->setBatchValue('remaining_incoming_ids', ['http://asset' => TRUE]);
+    $result = $this->runPipelineStep('3_way_merge', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);
@@ -186,7 +192,10 @@ class EmptyFieldsValuesStepTest extends StepTestBase {
     // avoid running that step in this test.
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
-    $result = $this->runPipelineStep('empty_fields_values');
+    $state = (new PipelineState())
+      ->setStepId('3_way_merge')
+      ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
+    $result = $this->runPipelineStep('3_way_merge', $state);
 
     // Check that the step ran without any error.
     $this->assertNull($result);

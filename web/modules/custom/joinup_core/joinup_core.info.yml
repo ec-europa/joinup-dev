@@ -22,6 +22,8 @@ dependencies:
   - search_api
   - search_api_solr
   - state_machine
+  - tour
+
 config_devel:
   - comment.type.comment
   - core.entity_form_display.comment.comment.default
@@ -88,3 +90,7 @@ config_devel:
   - taxonomy.vocabulary.spatial
   - taxonomy.vocabulary.status
   - taxonomy.vocabulary.themes
+  - tour.tour.account
+  - tour.tour.content_overview
+  - tour.tour.joinup_homepage
+  - tour.tour.rdf_entity_canonical

@@ -64,6 +64,17 @@ interface PipelineStepInterface extends PluginInspectionInterface {
   public function getPersistentData();
 
   /**
+   * Checks if value exists in the persistent data store, given its key.
+   *
+   * @param string $key
+   *   The data key.
+   *
+   * @return bool
+   *   If the value exists in the persistent data store.
+   */
+  public function hasPersistentDataValue($key);
+
+  /**
    * Returns a single the persistent data entry, given its key.
    *
    * @param string $key
@@ -115,5 +126,13 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    * @return $this
    */
   public function unsetPersistentDataValue($key);
+
+  /**
+   * Returns the generic title to be used on pages.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   The page title.
+   */
+  public function getPageTitle();
 
 }

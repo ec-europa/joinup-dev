@@ -59,6 +59,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'system',
     'taxonomy',
     'text',
+    'tour',
     'user',
   ];
 

@@ -7,6 +7,7 @@ use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\pipeline\PipelineStateInterface;
 use Drupal\pipeline\PipelineStateManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class PipelinePipelinePluginBase extends PluginBase implements PipelinePipelineInterface, ContainerFactoryPluginInterface, ConfigurablePluginInterface {
 
   use DependencySerializationTrait;
+  use StringTranslationTrait;
 
   /**
    * The pipeline steps.
@@ -109,6 +111,17 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
     }
     // Reset the state manager.
     $this->stateManager->reset($this->getPluginId());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSuccessMessage() {
+    return [
+      '#markup' => $this->t("%pipeline finished with success.", [
+        '%pipeline' => $this->getPluginDefinition()['label'],
+      ]),
+    ];
   }
 
   /**

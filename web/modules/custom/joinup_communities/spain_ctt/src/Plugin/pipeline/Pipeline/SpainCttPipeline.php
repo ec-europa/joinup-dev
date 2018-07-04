@@ -18,11 +18,11 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "adms_validation",
  *     "user_selection_filter",
  *     "fix_ctt_inconsistencies",
- *     "empty_fields_values" = {
+ *     "3_way_merge" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },
- *     "drupal_validation",
- *     "3_way_merge",
+ *     "joinup_validation",
+ *     "import",
  *     "provenance_activity",
  *   },
  * )
