@@ -58,7 +58,7 @@ function tallinn_install() {
             ],
           ],
           'enabled' => 1,
-          'query_presets' => 'sm_entity_bundle:tallinn_report',
+          'query_presets' => 'entity_bundle|tallinn_report',
           // Show all tallinn reports in one page.
           'limit' => '33',
         ],
