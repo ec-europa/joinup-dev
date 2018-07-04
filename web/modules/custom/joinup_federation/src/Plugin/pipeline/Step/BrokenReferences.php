@@ -16,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Removes the references to entities blacklisted in the previous step.
  *
  * @PipelineStep(
- *   id = "remove_references_to_blacklist",
+ *   id = "broken_references",
  *   label = @Translation("Remove references to not-imported entities"),
  * )
  */
-class RemoveReferencesToBlacklist extends JoinupFederationStepPluginBase {
+class BrokenReferences extends JoinupFederationStepPluginBase {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
   use SparqlEntityStorageTrait;
@@ -83,20 +83,30 @@ class RemoveReferencesToBlacklist extends JoinupFederationStepPluginBase {
    * {@inheritdoc}
    */
   public function execute() {
-    if ($blacklist = array_flip($this->getPersistentDataValue('blacklist'))) {
-      $ids = array_keys($this->getPersistentDataValue('entities'));
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
-        $changed = FALSE;
-        foreach ($this->getAdmsSchemaEntityReferenceFields($entity->bundle()) as $field_name) {
-          /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
-          $field = $entity->get($field_name);
+    $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
+    $ids = array_keys($this->getPersistentDataValue('entities'));
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
+      $changed = FALSE;
+      $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), ['rdf_entity', 'taxonomy_term']);
+
+      foreach ($reference_fields as $field_name => $target_entity_type_id) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
+        $field = $entity->get($field_name);
+
+        // Remove references to entities that were blacklisted by the user.
+        if ($blacklist && ($target_entity_type_id === 'rdf_entity')) {
           $changed |= $this->removeBlacklistedReferences($field, $blacklist);
         }
-        if ($changed) {
-          $entity->skip_notification = TRUE;
-          $entity->save();
+        // Remove references to non-existing taxonomy terms.
+        elseif ($target_entity_type_id === 'taxonomy_term') {
+          $changed |= $this->removeTermsBrokenReferences($field);
         }
+      }
+
+      if ($changed) {
+        $entity->skip_notification = TRUE;
+        $entity->save();
       }
     }
   }
@@ -119,6 +129,37 @@ class RemoveReferencesToBlacklist extends JoinupFederationStepPluginBase {
       $deltas_to_remove = [];
       foreach ($field as $delta => $field_item) {
         if (isset($blacklist[$field_item->target_id])) {
+          $deltas_to_remove[] = $delta;
+        }
+      }
+      if ($deltas_to_remove) {
+        foreach ($deltas_to_remove as $delta_to_remove) {
+          $field->removeItem($delta_to_remove);
+        }
+        $changed = TRUE;
+      }
+    }
+
+    return $changed;
+  }
+
+  /**
+   * Removes the references to terms that doesn't exists from a field.
+   *
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
+   *   The entity reference field item list.
+   *
+   * @return bool
+   *   If at least one field item has been removed.
+   */
+  protected function removeTermsBrokenReferences(EntityReferenceFieldItemListInterface $field): bool {
+    $changed = FALSE;
+
+    if (!$field->isEmpty()) {
+      $referenced_terms = $field->referencedEntities();
+      $deltas_to_remove = [];
+      foreach ($field as $delta => $field_item) {
+        if (!isset($referenced_terms[$delta])) {
           $deltas_to_remove[] = $delta;
         }
       }

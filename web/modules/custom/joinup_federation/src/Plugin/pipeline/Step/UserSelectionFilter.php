@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,6 +16,8 @@ use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
+use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -32,11 +35,32 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   use SparqlEntityStorageTrait;
 
   /**
+   * The RDF entity provenance helper service.
+   *
+   * @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface
+   */
+  protected $provenanceHelper;
+
+  /**
    * The date/time formatter service.
    *
    * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected $dateFormatter;
+
+  /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * The RDF schema field validator service.
+   *
+   * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
+   */
+  protected $rdfSchemaFieldValidator;
 
   /**
    * The incoming entities whitelist.
@@ -58,13 +82,22 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $rdf_entity_provenance_helper
+   *   The RDF entity provenance helper service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date/time formatter service.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager service.
+   * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
+   *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, DateFormatterInterface $date_formatter) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
+    $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->dateFormatter = $date_formatter;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }
 
   /**
@@ -77,7 +110,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $plugin_definition,
       $container->get('sparql_endpoint'),
       $container->get('entity_type.manager'),
-      $container->get('date.formatter')
+      $container->get('rdf_entity_provenance.provenance_helper'),
+      $container->get('date.formatter'),
+      $container->get('entity_field.manager'),
+      $container->get('rdf_schema_field_validation.schema_field_validator')
     );
   }
 
@@ -221,7 +257,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }
 
     // This bundle has no entity reference fields.
-    if (!$reference_fields = $this->getAdmsSchemaEntityReferenceFields($bundle)) {
+    if (!$reference_fields = array_keys($this->getAdmsSchemaEntityReferenceFields($bundle, ['rdf_entity']))) {
       return;
     }
 

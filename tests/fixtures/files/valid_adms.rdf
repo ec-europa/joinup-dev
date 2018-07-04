@@ -48,6 +48,7 @@
         <dc:hasVersion rdf:resource="http://example.com/release/1"/>
         <dc:hasVersion rdf:resource="http://example.com/release/2"/>
         <dct:relation rdf:resource="http://example.com/solution/3"/>
+        <dct:type rdf:resource="http://vocabulary/term"/>
     </rdf:Description>
 
     <!-- A solution with only a standalone distribution. -->
