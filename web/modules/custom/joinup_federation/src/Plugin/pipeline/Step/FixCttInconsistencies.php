@@ -67,6 +67,7 @@ class FixCttInconsistencies extends JoinupFederationStepPluginBase {
     foreach ($this->getQueriesToRun() as $query) {
       $this->sparql->query($query);
     }
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache();
   }
 
   /**

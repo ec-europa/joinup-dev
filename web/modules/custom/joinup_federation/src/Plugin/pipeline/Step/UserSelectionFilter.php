@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
@@ -31,8 +30,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
 
+  use AdmsSchemaEntityReferenceFieldsTrait;
   use PipelineStepWithFormTrait;
   use SparqlEntityStorageTrait;
+
+  /**
+   * The RDF entity provenance helper service.
+   *
+   * @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface
+   */
+  protected $provenanceHelper;
 
   /**
    * The date/time formatter service.
@@ -40,13 +47,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected $dateFormatter;
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
 
   /**
    * The entity field manager service.
@@ -86,19 +86,16 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The RDF entity provenance helper service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date/time formatter service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager service.
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
    *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, AccountProxyInterface $current_user, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->dateFormatter = $date_formatter;
-    $this->currentUser = $current_user;
     $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }
@@ -115,7 +112,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $container->get('entity_type.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
       $container->get('date.formatter'),
-      $container->get('current_user'),
       $container->get('entity_field.manager'),
       $container->get('rdf_schema_field_validation.schema_field_validator')
     );
@@ -152,8 +148,9 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }
 
     // Persist data for next steps.
-    $this->setPersistentDataValue('whitelist', $this->whitelist);
-    $this->setPersistentDataValue('blacklist', $blacklist);
+    $this
+      ->setPersistentDataValue('whitelist', $this->whitelist)
+      ->setPersistentDataValue('blacklist', $blacklist);
   }
 
   /**
@@ -225,8 +222,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * whitelisted.
    *
    * The caller will take care to delete from the 'staging' graph the entities
-   * that are not in the `$this->whitelist` and to create/update disabled
-   * provenance activity records.
+   * that are not in the `$this->whitelist`.
    *
    * @param string $bundle
    *   The bundle of the passed whitelisted entity IDs. As this method is called
@@ -244,8 +240,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   is not from $bundle bundle.
    */
   protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
-    static $reference_fields = [];
-
     // Compute the whitelist of IDs not already added but exit early if empty.
     if (!$new_whitelist_ids = array_diff($whitelist_ids, $this->whitelist)) {
       return;
@@ -262,23 +256,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       $whitelisted_solution_ids = $whitelist_ids;
     }
 
-    // Build and statically cache a list of reference fields, part of ADMS-AP,
-    // for this bundle.
-    if (!isset($reference_fields[$bundle])) {
-      $reference_fields[$bundle] = [];
-      foreach ($this->entityFieldManager->getFieldDefinitions('rdf_entity', $bundle) as $field_name => $field_definition) {
-        if (
-          $field_definition->getType() === 'entity_reference'
-          && $field_definition->getFieldStorageDefinition()->getSetting('target_type') === 'rdf_entity'
-          && !$field_definition->isComputed()
-          && $this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $bundle, $field_name)
-        ) {
-          $reference_fields[$bundle][] = $field_name;
-        }
-      }
-    }
     // This bundle has no entity reference fields.
-    if (!$reference_fields[$bundle]) {
+    if (!$reference_fields = array_keys($this->getAdmsSchemaEntityReferenceFields($bundle, ['rdf_entity']))) {
       return;
     }
 
@@ -287,7 +266,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       if ($entity->bundle() !== $bundle) {
         throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
       }
-      foreach ($reference_fields[$bundle] as $field_name) {
+      foreach ($reference_fields as $field_name) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
         foreach ($this->getReferencedEntityIdsByBundle($field) as $referenced_bundle => $referenced_entity_ids) {

@@ -21,6 +21,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "3_way_merge" = {
  *       "collection" = "http://administracionelectronica.gob.es/ctt",
  *     },
+ *     "broken_references",
  *     "joinup_validation",
  *     "import",
  *     "provenance_activity",
