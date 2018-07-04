@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @PipelineStep(
  *   id = "convert_to_adms2",
- *   label = @Translation("Convert imported data from ADMS-AP v1 to v2"),
+ *   label = @Translation("Convert data from ADMS-AP v1 to v2"),
  * )
  */
 class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
