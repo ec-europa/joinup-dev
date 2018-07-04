@@ -22,11 +22,11 @@ trait AdmsSchemaEntityReferenceFieldsTrait {
    * @param string $bundle
    *   The bundle.
    * @param string[]|null $target_entity_type_ids
-   *   (optional) A list of target entity types to filter on. If missed, will
+   *   (optional) A list of target entity types to filter on. If missed, it will
    *   not apply any filter based on the target entity type ID.
    *
    * @return string[]
-   *   Associative array with the list of fields, keyed by field name and having
+   *   Associative array with the list of fields keyed by field name and having
    *   the target entity type ID as value.
    */
   protected function getAdmsSchemaEntityReferenceFields(string $bundle, array $target_entity_type_ids = NULL): array {
