@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a685467c0753f80bb5633576df0226d",
+    "content-hash": "f350a1ab0bdd5c4f5310c780e1bf0779",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1851,8 +1851,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3185,57 +3185,6 @@
             }
         },
         {
-            "name": "drupal/matomo",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/matomo",
-                "reference": "8.x-1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/matomo-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "1f7faae400bb69712e2c3930c7e22b3d831f3668"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "require-dev": {
-                "drupal/php": "*",
-                "drupal/token": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1529145224",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "hass",
-                    "homepage": "https://www.drupal.org/user/85918"
-                }
-            ],
-            "description": "Adds Matomo javascript tracking code to all your site's pages.",
-            "homepage": "https://www.drupal.org/project/matomo",
-            "support": {
-                "source": "http://cgit.drupalcode.org/matomo"
-            }
-        },
-        {
             "name": "drupal/message",
             "version": "1.0.0-rc2",
             "source": {
@@ -3898,21 +3847,20 @@
         },
         {
             "name": "drupal/piwik",
-            "version": "1.4.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/piwik",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "3692831f4b3de636e90679fb052ba8f30e49ac97"
+                "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "6ba9bcdd92533ad9138b09fdada1c1d5338a23b4"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "drupal/matomo": "^1.0"
+                "drupal/core": "~8.0"
             },
             "require-dev": {
                 "drupal/php": "*",
@@ -3924,8 +3872,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1528483698",
+                    "version": "8.x-1.2",
+                    "datestamp": "1528468685",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4085,8 +4033,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/c081b0063a8d6cdb926d6995359332b7f392f61f",
-                "reference": "c081b0063a8d6cdb926d6995359332b7f392f61f",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/8.x-1.0-alpha5",
+                "reference": "8.x-1.0-alpha5",
                 "shasum": ""
             },
             "require": {
@@ -5058,8 +5006,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+1-dev",
-                    "datestamp": "1486397282",
+                    "version": "8.x-1.0-alpha4+2-dev",
+                    "datestamp": "1525107184",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5354,7 +5302,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
@@ -5780,7 +5728,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2017-07-12T23:38:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -6131,7 +6079,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2018-03-19T21:19:55+00:00"
+            "time": "2018-02-26T04:06:28+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -10066,6 +10014,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
