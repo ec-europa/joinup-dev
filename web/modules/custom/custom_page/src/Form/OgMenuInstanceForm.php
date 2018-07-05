@@ -47,7 +47,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
   /**
    * The maximum depth of a menu links tree.
    */
-  const MAX_DEPTH = 2;
+  const MAX_DEPTH = 3;
 
   /**
    * The Symfony route matcher.
