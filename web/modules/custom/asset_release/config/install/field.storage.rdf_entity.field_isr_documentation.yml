@@ -9,7 +9,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'http://xmlns.com/foaf/spec/#term_page'
+        predicate: 'http://xmlns.com/foaf/0.1/page'
         format: 'xsd:string'
       display:
         predicate: ''

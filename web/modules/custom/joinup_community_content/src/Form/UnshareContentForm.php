@@ -34,15 +34,13 @@ class UnshareContentForm extends ShareContentFormBase {
       '#type' => 'checkboxes',
       '#title' => 'Collections',
       '#options' => $options,
-      // All these collections are already shared, so all checkboxes are checked
-      // by default.
-      '#default_value' => array_keys($options),
+      '#default_value' => [],
     ];
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Save'),
+      '#value' => $this->t('Submit'),
     ];
 
     return $form;
@@ -52,17 +50,20 @@ class UnshareContentForm extends ShareContentFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // We can safely loop through these ids, as unvalid options are handled
+    $collections = [];
+    // We can safely loop through these ids, as invalid options are handled
     // already by Drupal.
     foreach ($form_state->getValue('collections') as $id => $checked) {
-      if (!$checked) {
+      if ($checked) {
         $collection = $this->rdfStorage->load($id);
         $this->removeFromCollection($collection);
+        $collections[] = $collection->label();
       }
     }
 
-    drupal_set_message('Sharing updated.');
-
+    if (!empty($collections)) {
+      drupal_set_message('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
+    }
     $form_state->setRedirectUrl($this->node->toUrl());
   }
 

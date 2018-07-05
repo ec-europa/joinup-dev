@@ -19,8 +19,8 @@ Feature: "Custom page" editing.
       | Dumbo Collective | Mickey Mouse | facilitator |
       | Dumbo Collective | Pluto        | member      |
     And "custom_page" content:
-      | title                            | collection       | body                                                                                                                      |
-      | Buena Vista Distribution Company | Dumbo Collective | Established in 1953, the unit handles distribution, marketing and promotion for films produced by the Walt Disney Studios |
+      | title                            | collection       | body                                                                                                                      | logo     |
+      | Buena Vista Distribution Company | Dumbo Collective | Established in 1953, the unit handles distribution, marketing and promotion for films produced by the Walt Disney Studios | logo.png |
 
   Scenario: Check visibility of edit button.
     # Group owner should see the button.
