@@ -7,9 +7,11 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\taxonomy\TermInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -87,7 +89,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase {
     $ids = array_keys($this->getPersistentDataValue('entities'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
-      $changed = FALSE;
+      $changed = 0;
       $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), ['rdf_entity', 'taxonomy_term']);
 
       foreach ($reference_fields as $field_name => $target_entity_type_id) {
@@ -119,25 +121,20 @@ class BrokenReferences extends JoinupFederationStepPluginBase {
    * @param array $blacklist
    *   The list of blacklisted entity IDs.
    *
-   * @return bool
-   *   If at least one field item has been removed.
+   * @return int
+   *   If at least one field item has been removed, the value is 1. 0 otherwise.
    */
-  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $blacklist): bool {
-    $changed = FALSE;
+  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $blacklist): int {
+    $changed = 0;
 
     if (!$field->isEmpty()) {
-      $deltas_to_remove = [];
-      foreach ($field as $delta => $field_item) {
+      $field->filter(function (FieldItemInterface $field_item) use ($blacklist, &$changed): bool {
         if (isset($blacklist[$field_item->target_id])) {
-          $deltas_to_remove[] = $delta;
+          $changed = 1;
+          return FALSE;
         }
-      }
-      if ($deltas_to_remove) {
-        foreach ($deltas_to_remove as $delta_to_remove) {
-          $field->removeItem($delta_to_remove);
-        }
-        $changed = TRUE;
-      }
+        return TRUE;
+      });
     }
 
     return $changed;
@@ -149,26 +146,24 @@ class BrokenReferences extends JoinupFederationStepPluginBase {
    * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The entity reference field item list.
    *
-   * @return bool
-   *   If at least one field item has been removed.
+   * @return int
+   *   If at least one field item has been removed, the value is 1. 0 otherwise.
    */
-  protected function removeTermsBrokenReferences(EntityReferenceFieldItemListInterface $field): bool {
-    $changed = FALSE;
+  protected function removeTermsBrokenReferences(EntityReferenceFieldItemListInterface $field): int {
+    $changed = 0;
 
     if (!$field->isEmpty()) {
-      $referenced_terms = $field->referencedEntities();
-      $deltas_to_remove = [];
-      foreach ($field as $delta => $field_item) {
-        if (!isset($referenced_terms[$delta])) {
-          $deltas_to_remove[] = $delta;
+      $existing_term_ids = array_map(function (TermInterface $term): string {
+        return $term->id();
+      }, $field->referencedEntities());
+
+      $field->filter(function (FieldItemInterface $field_item) use ($existing_term_ids, &$changed): bool {
+        if (!in_array($field_item->target_id, $existing_term_ids)) {
+          $changed = 1;
+          return FALSE;
         }
-      }
-      if ($deltas_to_remove) {
-        foreach ($deltas_to_remove as $delta_to_remove) {
-          $field->removeItem($delta_to_remove);
-        }
-        $changed = TRUE;
-      }
+        return TRUE;
+      });
     }
 
     return $changed;
