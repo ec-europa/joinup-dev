@@ -335,7 +335,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\file\FileInterface $file */
     $file = $file_url_service::urlToFile($node->get('field_custom_page_logo')->first()->target_id);
 
-    $link = $tile->find('xpath', '//img/@src')->getText();
+    $link = $tile->find('xpath', '//img')->getAttribute('src');
     if (!$link) {
       throw new \Exception("No logo link found in the '$title' tile.");
     }
