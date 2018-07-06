@@ -48,7 +48,11 @@
         <dc:hasVersion rdf:resource="http://example.com/release/1"/>
         <dc:hasVersion rdf:resource="http://example.com/release/2"/>
         <dct:relation rdf:resource="http://example.com/solution/3"/>
-        <dct:type rdf:resource="http://vocabulary/term"/>
+        <dct:relation rdf:resource="http://example.com/solution/2"/>
+        <dct:type rdf:resource="http://vocabulary/term/1"/>
+        <dct:language rdf:resource="http://example.com/language/invalid/1"/>
+        <dct:language rdf:resource="http://example.com/language/invalid/2"/>
+        <dct:language rdf:resource="http://publications.europa.eu/resource/authority/language/RON"/>
     </rdf:Description>
 
     <!-- A solution with only a standalone distribution. -->
@@ -184,7 +188,7 @@
     </rdf:Description>
 
     <!-- Custom term of a custom vocabulary to fill in the solution type. -->
-    <rdf:Description rdf:about="http://vocabulary/term">
+    <rdf:Description rdf:about="http://vocabulary/term/1">
         <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
         <skos:label>Term</skos:label>
         <skos:inScheme rdf:resource="http://vocabulary"/>
