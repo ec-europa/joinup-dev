@@ -173,6 +173,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
   public function buildBatchProcessErrorMessage() {
     $rows = array_reduce($this->getBatchErrorMessages(), function (array $rows, array $row_group): array {
       return array_merge($rows, $row_group);
+
     }, []);
 
     if (!$rows) {
