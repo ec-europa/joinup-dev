@@ -157,10 +157,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $state = (new PipelineState())
       ->setStepId('3_way_merge')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => TRUE]);
-    $result = $this->runPipelineStep('3_way_merge', $state);
-
-    // Check that the step ran without any error.
-    $this->assertNull($result);
+    $this->runPipelineStep('3_way_merge', $state);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = Rdf::load('http://asset', ['staging']);
@@ -195,10 +192,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $state = (new PipelineState())
       ->setStepId('3_way_merge')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
-    $result = $this->runPipelineStep('3_way_merge', $state);
-
-    // Check that the step ran without any error.
-    $this->assertNull($result);
+    $this->runPipelineStep('3_way_merge', $state);
 
     // Check that the solution has been assigned to the configured collection.
     $collection = Rdf::load('http://catalog');

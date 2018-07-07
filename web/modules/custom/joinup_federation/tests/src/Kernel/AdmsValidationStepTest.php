@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use EasyRdf\Graph;
 
 /**
@@ -41,16 +42,10 @@ class AdmsValidationStepTest extends StepTestBase {
     $graph->parseFile(__DIR__ . "/../../fixtures/$rdf_file");
     $this->createGraphStore()->replace($graph, static::getTestingGraphs()['sink_plus_taxo']);
 
-    $result = $this->runPipelineStep('adms_validation');
-
-    if ($expected_valid) {
-      // Check that no error was detected during validation.
-      $this->assertEmpty($result);
+    if (!$expected_valid) {
+      $this->expectException(PipelineStepExecutionLogicException::class);
     }
-    else {
-      // Check that errors were detected during validation.
-      $this->assertNotEmpty($result);
-    }
+    $this->runPipelineStep('adms_validation');
   }
 
   /**

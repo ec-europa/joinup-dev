@@ -59,16 +59,13 @@ abstract class StepTestBase extends KernelTestBase {
   }
 
   /**
-   * Runs a given step and returns its results.
+   * Runs a given step.
    *
    * @param string $step_plugin_id
    *   The pipeline step.
    * @param \Drupal\pipeline\PipelineStateInterface $state
    *   (optional) The pipeline state object. If missed a brand new will be
    *   created from the passed step.
-   *
-   * @return array|null
-   *   NULL on success, a render array on error.
    */
   protected function runPipelineStep(string $step_plugin_id, PipelineStateInterface $state = NULL) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
@@ -76,7 +73,7 @@ abstract class StepTestBase extends KernelTestBase {
       $state = (new PipelineState())->setStepId($step_plugin_id);
     }
     $this->pipeline->setCurrentState($state);
-    return $step_plugin_instance->execute();
+    $step_plugin_instance->execute();
   }
 
   /**

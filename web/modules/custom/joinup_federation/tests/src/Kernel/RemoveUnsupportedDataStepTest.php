@@ -28,10 +28,7 @@ class RemoveUnsupportedDataStepTest extends StepTestBase {
     $graph->parseFile(__DIR__ . '/../../fixtures/valid_adms.rdf');
     $this->createGraphStore()->replace($graph);
 
-    $result = $this->runPipelineStep('remove_unsupported_data');
-
-    // Check that the step ran without any error.
-    $this->assertNull($result);
+    $this->runPipelineStep('remove_unsupported_data');
 
     $query = <<<Query
 SELECT ?graph ?subject ?predicate ?object
