@@ -12,6 +12,7 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -130,9 +131,9 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
     // If no solution was selected, exit the pipeline here.
     if (!$selected_solution_ids = array_keys(array_filter($user_selection))) {
-      return [
+      throw (new PipelineStepExecutionLogicException())->setError([
         '#markup' => $this->t("You didn't select any solution. As a consequence, no entity has been imported."),
-      ];
+      ]);
     }
 
     // Build a list of all whitelisted entities.

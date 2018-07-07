@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -162,7 +163,9 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
     // store to be displayed at the end of the pipeline execution.
     $this->setPersistentDataValue('non_critical_violations', $this->nonCriticalViolations);
 
-    return $rows ?: NULL;
+    if ($rows) {
+      throw (new PipelineStepExecutionLogicException())->setError($rows);
+    }
   }
 
   /**
