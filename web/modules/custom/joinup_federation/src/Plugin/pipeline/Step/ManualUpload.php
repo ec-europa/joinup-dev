@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
@@ -40,13 +41,12 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
       $this->unsetPersistentDataValue('fid');
     }
     catch (\Exception $exception) {
-      return [
+      throw (new PipelineStepExecutionLogicException())->setError([
         '#markup' => $this->t('Could not store triples in triple store. Reason: @message', [
           '@message' => $exception->getMessage(),
         ]),
-      ];
+      ]);
     }
-    return NULL;
   }
 
   /**

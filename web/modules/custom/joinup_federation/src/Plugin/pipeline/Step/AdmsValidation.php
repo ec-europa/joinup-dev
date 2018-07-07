@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -73,15 +74,15 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
     $this->pipeline->clearGraph($this->getGraphUri('sink_plus_taxo'));
 
     if ($validation->isSuccessful()) {
-      return NULL;
+      return;
     }
 
-    return [
+    throw (new PipelineStepExecutionLogicException())->setError([
       [
         '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
       ],
       $validation->toTable(),
-    ];
+    ]);
   }
 
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
 use Drupal\pipeline\Plugin\PipelineStepPluginBase;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -73,11 +74,10 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     // import process that creates a new lock in his behalf. In this case we
     // have to abandon this pipeline.
     if (!$this->pipeline->lock()) {
-      return [
+      throw (new PipelineStepPrepareLogicException())->setError([
         '#markup' => $this->t("This import has timed-out. In the meantime another user has started a new import. Please come back later and retry."),
-      ];
+      ]);
     }
-    return NULL;
   }
 
   /**
