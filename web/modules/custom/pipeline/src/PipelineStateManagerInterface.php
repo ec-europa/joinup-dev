@@ -17,7 +17,7 @@ interface PipelineStateManagerInterface {
    *
    * @return $this
    */
-  public function setState($pipeline_id, PipelineStateInterface $state);
+  public function saveState($pipeline_id, PipelineStateInterface $state);
 
   /**
    * Returns the current state for a given pipeline.

@@ -232,7 +232,7 @@ abstract class PipelinePipelinePluginBase extends PluginBase implements Pipeline
    * {@inheritdoc}
    */
   public function saveCurrentState() {
-    $this->stateManager->setState($this->getPluginId(), $this->getCurrentState());
+    $this->stateManager->saveState($this->getPluginId(), $this->getCurrentState());
   }
 
   /**
