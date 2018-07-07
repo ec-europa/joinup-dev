@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
@@ -89,13 +88,6 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   protected $requestStack;
 
   /**
-   * The renderer service.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
-
-  /**
    * Constructs a new pipeline orchestrator object.
    *
    * @param \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager
@@ -110,17 +102,14 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
    *   The current user.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack service.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
    */
-  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger, AccountProxyInterface $current_user, RequestStack $request_stack, RendererInterface $renderer) {
+  public function __construct(PipelinePipelinePluginManager $pipeline_plugin_manager, PipelineStateManager $state_manager, FormBuilderInterface $form_builder, MessengerInterface $messenger, AccountProxyInterface $current_user, RequestStack $request_stack) {
     $this->pipelinePluginManager = $pipeline_plugin_manager;
     $this->stateManager = $state_manager;
     $this->formBuilder = $form_builder;
     $this->messenger = $messenger;
     $this->currentUser = $current_user;
     $this->requestStack = $request_stack;
-    $this->renderer = $renderer;
   }
 
   /**

@@ -17,4 +17,3 @@ services:
       - '@messenger'
       - '@current_user'
       - '@request_stack'
-      - '@renderer'
