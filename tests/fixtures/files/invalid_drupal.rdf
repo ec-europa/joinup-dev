@@ -49,8 +49,6 @@
         <dct:publisher rdf:resource="http://example.com/owner/2"/>
         <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
         <dcat:landingPage rdf:resource="http://example.com/asset/empty"/>
-        <!--Drupal error: The solution is referencing a release that is already included in another release and is
-        connected to the other release with the isVersionOf.-->
         <dc:hasVersion rdf:resource="http://example.com/release/1"/>
         <!-- Violation: "The distribution Windows is linked also by the Asset release 1 release." -->
         <dcat:distribution rdf:resource="http://example.com/distribution/1"/>
