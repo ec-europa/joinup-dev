@@ -156,7 +156,7 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function setBatchProcessEstimatedIterations($total_estimated_iterations) {
+  public function setBatchProcessIterations($total_estimated_iterations) {
     $this->batchTotalEstimatedIterations = $total_estimated_iterations;
     return $this;
   }
@@ -164,7 +164,7 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBatchProcessEstimatedIterations() {
+  public function getBatchProcessIterations() {
     return $this->batchTotalEstimatedIterations;
   }
 
