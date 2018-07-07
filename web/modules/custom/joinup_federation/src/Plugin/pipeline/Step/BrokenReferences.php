@@ -9,6 +9,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Drupal\taxonomy\TermInterface;
@@ -22,10 +24,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Remove references to not-imported entities"),
  * )
  */
-class BrokenReferences extends JoinupFederationStepPluginBase {
+class BrokenReferences extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
+  use PipelineStepWithBatchTrait;
   use SparqlEntityStorageTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 10;
 
   /**
    * The RDF schema field validator service.
@@ -84,9 +94,25 @@ class BrokenReferences extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function execute() {
-    $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
+  public function initBatchProcess() {
     $ids = array_keys($this->getPersistentDataValue('entities'));
+    $this->setBatchValue('remaining_ids', $ids);
+    return ceil(count($ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_ids');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function execute() {
+    $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
+    $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
       $changed = 0;

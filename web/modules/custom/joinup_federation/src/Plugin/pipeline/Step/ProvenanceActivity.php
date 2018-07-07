@@ -29,7 +29,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    *
    * @var int
    */
-  const BATCH_SIZE = 30;
+  const BATCH_SIZE = 100;
 
   /**
    * The RDF entity provenance helper service.
