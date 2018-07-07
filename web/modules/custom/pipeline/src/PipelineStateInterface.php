@@ -152,7 +152,7 @@ interface PipelineStateInterface {
    *
    * @return $this
    */
-  public function setBatchTotalEstimatedIterations($total_estimated_iterations);
+  public function setBatchProcessEstimatedIterations($total_estimated_iterations);
 
   /**
    * Returns the batch process total estimated iterations.
@@ -160,7 +160,7 @@ interface PipelineStateInterface {
    * @return int
    *   The batch total estimated iterations.
    */
-  public function getBatchTotalEstimatedIterations();
+  public function getBatchProcessEstimatedIterations();
 
   /**
    * Advances to the next batch.
@@ -175,14 +175,22 @@ interface PipelineStateInterface {
    * @return int
    *   The batch sequence.
    */
-  public function getBatchCurrentSequence();
+  public function getBatchProcessSequence();
+
+  /**
+   * Checks if the batch process has started.
+   *
+   * @return bool
+   *   If the batch process was initialized and has started.
+   */
+  public function batchProcessIsStarted();
 
   /**
    * Resets the batch internals.
    *
    * @return $this
    */
-  public function resetBatch();
+  public function resetBatchProcess();
 
   /**
    * Collects an error message or messages produced by a batch.
@@ -198,7 +206,7 @@ interface PipelineStateInterface {
    *
    * @return $this
    */
-  public function addBatchErrorMessage(array $error_message = NULL);
+  public function addBatchProcessErrorMessage(array $error_message = NULL);
 
   /**
    * Returns the list of error messages collected across batch process run.
@@ -206,6 +214,14 @@ interface PipelineStateInterface {
    * @return array
    *   A list of error messages, each one being a render array.
    */
-  public function getBatchErrorMessages();
+  public function getBatchProcessErrorMessages();
+
+  /**
+   * Checks if error were reported during the batch process.
+   *
+   * @return bool
+   *   If any logic error has been reported while running the batch process.
+   */
+  public function hasBatchProcessErrors();
 
 }

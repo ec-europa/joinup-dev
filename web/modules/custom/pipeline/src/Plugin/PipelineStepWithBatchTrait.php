@@ -35,15 +35,8 @@ trait PipelineStepWithBatchTrait {
   /**
    * {@inheritdoc}
    */
-  public function getBatchErrorMessages() {
-    return $this->pipeline->getCurrentState()->getBatchErrorMessages();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildBatchProcessErrorMessage() {
-    return $this->getBatchErrorMessages();
+    return $this->pipeline->getCurrentState()->getBatchProcessErrorMessages();
   }
 
   /**

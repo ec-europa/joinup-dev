@@ -33,7 +33,7 @@ class PipelineState implements PipelineStateInterface {
    *
    * @var int
    */
-  protected $batchCurrentSequence = 0;
+  protected $batchSequence = -1;
 
   /**
    * Batch total estimated iterations.
@@ -156,7 +156,7 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function setBatchTotalEstimatedIterations($total_estimated_iterations) {
+  public function setBatchProcessEstimatedIterations($total_estimated_iterations) {
     $this->batchTotalEstimatedIterations = $total_estimated_iterations;
     return $this;
   }
@@ -164,7 +164,7 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBatchTotalEstimatedIterations() {
+  public function getBatchProcessEstimatedIterations() {
     return $this->batchTotalEstimatedIterations;
   }
 
@@ -172,24 +172,31 @@ class PipelineState implements PipelineStateInterface {
    * {@inheritdoc}
    */
   public function advanceToNextBatch() {
-    $this->batchCurrentSequence++;
+    $this->batchSequence++;
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getBatchCurrentSequence() {
-    return $this->batchCurrentSequence;
+  public function getBatchProcessSequence() {
+    return $this->batchSequence;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function resetBatch() {
+  public function batchProcessIsStarted() {
+    return $this->batchSequence > -1;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function resetBatchProcess() {
     $this->batchData = [];
     $this->batchTotalEstimatedIterations = 1;
-    $this->batchCurrentSequence = 0;
+    $this->batchSequence = -1;
     $this->errorMessages = [];
     return $this;
   }
@@ -197,7 +204,7 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function addBatchErrorMessage(array $error_message = NULL) {
+  public function addBatchProcessErrorMessage(array $error_message = NULL) {
     $this->errorMessages[] = $error_message;
     return $this;
   }
@@ -205,8 +212,15 @@ class PipelineState implements PipelineStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function getBatchErrorMessages() {
+  public function getBatchProcessErrorMessages() {
     return $this->errorMessages;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasBatchProcessErrors() {
+    return (bool) $this->errorMessages;
   }
 
 }
