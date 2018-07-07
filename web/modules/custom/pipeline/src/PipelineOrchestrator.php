@@ -136,7 +136,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     // - It stops the pipeline with an error.
     while (!$this->response) {
       if ($this->executeStep($state)) {
-        $this->stateManager->setState($pipeline_id, $state);
+        $this->stateManager->saveState($pipeline_id, $state);
       }
     }
 
