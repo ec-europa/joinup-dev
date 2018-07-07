@@ -107,7 +107,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
 
-    // Estimating the total number of iterations.
     return ceil(count($incoming_ids) / static::BATCH_SIZE);
   }
 

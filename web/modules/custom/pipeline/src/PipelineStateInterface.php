@@ -145,22 +145,22 @@ interface PipelineStateInterface {
   public function unsetBatchValue($key);
 
   /**
-   * Sets the batch total estimated iterations value.
+   * Sets the batch total iterations value.
    *
-   * @param int $total_estimated_iterations
-   *   The batch total estimated iterations.
+   * @param int $total_iterations
+   *   The batch total iterations.
    *
    * @return $this
    */
-  public function setBatchProcessEstimatedIterations($total_estimated_iterations);
+  public function setBatchProcessIterations($total_iterations);
 
   /**
-   * Returns the batch process total estimated iterations.
+   * Returns the batch process total iterations.
    *
    * @return int
-   *   The batch total estimated iterations.
+   *   The batch total iterations.
    */
-  public function getBatchProcessEstimatedIterations();
+  public function getBatchProcessIterations();
 
   /**
    * Advances to the next batch.

@@ -73,7 +73,6 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineS
   public function initBatchProcess() {
     $plugin_ids = array_keys($this->adms2ConverPassPluginManager->getDefinitions());
     $this->setBatchValue('remaining_conversions', $plugin_ids);
-    // Estimate the total number of batches.
     return ceil(count($plugin_ids) / static::BATCH_SIZE);
   }
 

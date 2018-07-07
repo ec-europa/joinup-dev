@@ -98,7 +98,6 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     // signaling if the entity already exists in Joinup.
     $remaining_entity_ids = $this->getPersistentDataValue('entities');
     $this->setBatchValue('remaining_entity_ids', $remaining_entity_ids);
-    // Estimate the number of iterations.
     return ceil(count($remaining_entity_ids) / static::BATCH_SIZE);
   }
 

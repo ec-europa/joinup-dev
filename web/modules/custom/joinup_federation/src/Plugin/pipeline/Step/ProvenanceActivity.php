@@ -89,7 +89,6 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
     $entities = array_fill_keys(array_keys($this->getPersistentDataValue('entities')), TRUE);
     $remaining_ids = $black_list + $entities;
     $this->setBatchValue('remaining_ids', $remaining_ids);
-    // Estimate the total number of iterations.
     return ceil(count($remaining_ids) / static::BATCH_SIZE);
   }
 
