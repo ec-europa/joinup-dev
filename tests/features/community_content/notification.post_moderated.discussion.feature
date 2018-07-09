@@ -6,11 +6,11 @@ Feature: Notification test for the discussion transitions on a post moderated pa
 
   Scenario: Notifications should be sent whenever a discussion is going through a relevant transition.
     Given users:
-      | Username         | Roles     | E-mail                      | First name | Family name |
-      | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   |
-      | CC owner         |           | notify_owner@test.com       | CC         | Owner       |
-      | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
-      | CC member        |           | notify_member@test.com      | CC         | Member      |
+      | Username         | Roles     | E-mail                      | First name | Family name | Notification frequency |
+      | Notify moderator | moderator | notify_moderator@test.com   | Notify     | Moderator   | immediate              |
+      | CC owner         |           | notify_owner@test.com       | CC         | Owner       | immediate              |
+      | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator | immediate              |
+      | CC member        |           | notify_member@test.com      | CC         | Member      | immediate              |
     And collections:
       | title              | state     | elibrary creation | moderation |
       | CC post collection | validated | members           | no         |
