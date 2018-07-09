@@ -41,7 +41,7 @@
         "drupal/pathauto": "~1.1",
         "drupal/persistent_login": "^1.0-alpha4",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
-        "drupal/piwik": "~1.0",
+        "drupal/piwik": "~1.2.0",
         "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/rdf_entity": "^1.0.0-alpha5",
@@ -155,6 +155,7 @@
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                 "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
+                "Allow Tours to be taken by users that cannot access the Toolbar (e.g. anonymous users) @see https://www.drupal.org/node/2069073": "https://www.drupal.org/files/issues/2018-06-19/2069073-55.patch",
                 "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2018-06-11/2303877-27.patch",
                 "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
                 "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",

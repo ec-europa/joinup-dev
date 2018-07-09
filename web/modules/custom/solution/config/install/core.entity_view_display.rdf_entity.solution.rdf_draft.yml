@@ -22,6 +22,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
+    - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_solution_type
@@ -313,6 +314,7 @@ hidden:
   field_is_distribution: true
   field_is_has_version: true
   field_is_logo: true
+  field_is_pinned_in: true
   field_is_related_solutions: true
   field_is_state: true
   field_site_featured: true

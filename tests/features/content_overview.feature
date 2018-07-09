@@ -45,7 +45,8 @@ Feature: Content Overview
     When I am logged in as a user with the "moderator" role
     And I am on the homepage
     And I click "Keep up to date"
-    Then I should see the following facet items "Discussion, Document, News, Events" in this order
+    Then a tour should be available
+    And I should see the following facet items "Discussion, Document, News, Events" in this order
     And the "Events" content tab is displayed
     And I should not see the following facet items "Collection"
     And I should see the following tiles in the correct order:

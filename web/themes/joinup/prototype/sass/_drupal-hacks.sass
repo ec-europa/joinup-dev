@@ -291,6 +291,122 @@ article
   iframe
     border: none
 
+// Style tour popup nub
+.joyride-tip-guide
+  .joyride-nub
+    border: solid 14px $color-grey-border
+    &:after
+      content: " "
+      display: block
+      border: 14px solid #fff
+      width: 0
+      height: 0
+      +z-index(modal)
+      position: absolute
+    &.top
+      border-top-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        top: -13px
+        left: -14px
+    &.bottom
+      border-bottom-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+      &:after
+        border-bottom-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        bottom: -13px
+        left: -14px
+    &.right
+      border-top-color: transparent
+      border-right-color: transparent
+      border-bottom-color: transparent
+      &:after
+        border-top-color: transparent
+        border-right-color: transparent
+        border-bottom-color: transparent
+        top: -14px
+        right: -13px
+    &.left
+      border-top-color: transparent
+      border-left-color: transparent
+      border-bottom-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-bottom-color: transparent
+        top: -14px
+        left: -13px
+    &.top-right
+      border-top-color: transparent
+      border-left-color: transparent
+      border-right-color: transparent
+      &:after
+        border-top-color: transparent
+        border-left-color: transparent
+        border-right-color: transparent
+        top: -13px
+        right: -14px
+
+// Style tour popup content
+.joyride-tip-guide
+  border-radius: 3px
+  border: 1px solid $color-grey-border
+
+.joyride-content-wrapper
+  padding: 20px 25px 70px 20px
+  .button
+    position: absolute
+    bottom: 20px
+    left: 20px
+    padding: 5px 10px
+  .tour-progress, .button
+    font-size: 12px
+  .joyride-close-tip
+    @extend .icon
+    top: 10px
+    right: 10px
+    text-decoration: none
+    color: $color-blue-dark
+    text-indent: 0
+    font-size: 0
+    &:before
+      +icon-size(15px)
+      content: '\e617'
+  .tour-tip-label
+    margin: 0 0 10px 0
+    font-size: $font-size-h3
+    &:empty
+      margin-bottom: 0
+  .tour-tip-body
+    margin-bottom: 0
+    font-weight: $font-weight-thin
+    color: $color-grey-medium
+    font-size: $font-size-small
+
+// Style tour button
+.block-tour-button-block
+  .tour-button
+    width: 40px
+    height: 40px
+    color: #fff
+    font-size: 25px
+    margin-right: 15px
+    +z-index(navigation)
+    .icon
+      +centered
+
+.section--featured .block-tour-button-block
+  position: absolute
+  top: 5px
+  right: 65px
+
 // Fix the feed icon styling.
 .feed-icon
   background: url(../../../../core/misc/feed.svg) no-repeat
@@ -299,3 +415,15 @@ article
   display: block
   width: 16px
   height: 16px
+
+
+// Internet Explorer fix.
+details
+  display: block
+
+details .details-title
+  padding-bottom: 15px
+  text-decoration: none
+  @extend .form__label
+
+
