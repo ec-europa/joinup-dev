@@ -152,7 +152,7 @@ Feature: Navigation menu for custom pages
     Then the "Edit menu" link in the "Navigation menu block" should not be visible
     And the "Add new page" link in the "Navigation menu block" should not be visible
 
-  Scenario: The menu sub pages should be shown in a separate block.
+  Scenario: The menu sub-pages should be shown in a separate block.
     Given the following collection:
       | title  | Hidden Ship |
       | logo   | logo.png    |
@@ -205,9 +205,9 @@ Feature: Navigation menu for custom pages
     And I go to the homepage of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores    |
-      | Snake of Pleasure           |
-      | The Slaves of the Sea       |
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
+      | The Slaves of the Sea    |
 
     # Publish an entity will result in showing it to the menu if it is meant to.
     When I am logged in as a moderator
