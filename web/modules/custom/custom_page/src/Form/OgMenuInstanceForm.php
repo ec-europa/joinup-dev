@@ -216,8 +216,11 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         $form['links'][$id]['parent'] = $element['parent'];
 
         // Disable nesting of rows where the value is forced as empty.
-        if (isset($element['parent']['#value']) && $element['parent']['#value'] === '') {
+        if (!empty($element['parent']['#disable_nesting'])) {
           $form['links'][$id]['#attributes']['class'][] = 'tabledrag-root';
+          $form['links'][$id]['#attributes']['class'][] = 'tabledrag-leaf';
+          // Remove any indentation on the row.
+          unset($form['links'][$id]['title'][0]);
         }
       }
     }
@@ -289,6 +292,9 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           // be selected.
           // @see \Drupal\Core\Menu\MenuLinkInterface::getParent()
           $form[$id]['parent']['#value'] = '';
+          // Mark the element so that any nesting operation, both as parent and
+          // as children, will be prevented.
+          $form[$id]['parent']['#disable_nesting'] = TRUE;
         }
 
         // Build a list of operations. This form is shown to users that do not
