@@ -40,18 +40,6 @@ joinup_core.piwik_integration_settings:
   options:
     _admin_route: TRUE
 
-joinup_core.group_administrators_report:
-  path: '/admin/reporting/group-administrators/{entity_type_id}/{bundle_id}/{format}'
-  defaults:
-    _controller: '\Drupal\joinup_core\Controller\GroupAdministratorsController::report'
-    _title_callback: '\Drupal\joinup_core\Controller\GroupAdministratorsController::reportTitle'
-    format: 'html'
-  requirements:
-    _custom_access: '\Drupal\joinup_core\Controller\GroupAdministratorsController::access'
-    _permission: 'administer group'
-  options:
-    _admin_route: TRUE
-
 joinup_core.file_field_info:
   path: '/admin/reports/fields/file'
   defaults:
