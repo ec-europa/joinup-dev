@@ -1,6 +1,7 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  - message_digest
 id: monthly
 label: Monthly
 interval: '1 month'
