@@ -16,7 +16,7 @@ provider: null
 plugin: 'collection_menu_block:navigation'
 settings:
   id: 'collection_menu_block:navigation'
-  label: 'Table of contents'
+  label: 'Table of content'
   provider: collection
   label_display: '1'
   level: 1
