@@ -199,6 +199,14 @@ Feature: Navigation menu for custom pages
     And I should not see the link "Custom page 1-2" in the "Navigation bottom menu block"
     And I should not see the link "Custom page 2-1" in the "Navigation bottom menu block"
 
+    # Ensure that the default links are not shown.
+    And I should not see the link "Overview" in the "Navigation bottom menu block"
+    And I should not see the link "Members" in the "Navigation bottom menu block"
+    And I should not see the link "About" in the "Navigation bottom menu block"
+    But I should see the link "Overview" in the "Navigation menu block"
+    And I should see the link "Members" in the "Navigation menu block"
+    And I should see the link "About" in the "Navigation menu block"
+
     When I visit the "Custom page 1" custom page
     And I should see the link "Custom page 1" in the "Navigation bottom menu block"
     And I should see the link "Custom page 2" in the "Navigation bottom menu block"
