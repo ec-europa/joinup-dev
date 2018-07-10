@@ -55,7 +55,6 @@ default:
         Pager: 'nav.pager'
         Plus button menu: 'div.add-content-menu ul'
         Primary menu: '.region-primary-menu'
-        Subpages menu: '.block-menu-sub-pages'
         Unpublished content area: '.block-entity-unpublished'
         SevenHeader: '.region-header'
       drupal:
