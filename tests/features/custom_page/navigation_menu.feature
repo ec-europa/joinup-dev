@@ -170,3 +170,38 @@ Feature: Navigation menu for custom pages
     And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
     Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
     And I should not see the link "Tree eaters" in the "Navigation menu"
+
+  Scenario: Only active links of the table of content is expanded.
+    Given the following collections:
+      | title                       | state     |
+      | Table of content collection | validated |
+    And custom_page content:
+      | title           | collection                  |
+      | Custom page 1   | Table of content collection |
+      | Custom page 2   | Table of content collection |
+      | Custom page 1-1 | Table of content collection |
+      | Custom page 1-2 | Table of content collection |
+      | Custom page 2-1 | Table of content collection |
+    And the following custom page menu structure:
+      | title           | parent        | weight |
+      | Custom page 1   |               | 1      |
+      | Custom page 2   |               | 2      |
+      | Custom page 1-1 | Custom page 1 | 1      |
+      | Custom page 1-2 | Custom page 1 | 2      |
+      | Custom page 2-1 | Custom page 2 | 1      |
+
+    When I am logged in as a member of the "Table of content collection" collection
+    And I go to the homepage of the "Table of content collection" collection
+    Then I see the text "Table of content" in the "Navigation bottom menu block" region
+    And I should see the link "Custom page 1" in the "Navigation bottom menu block"
+    And I should see the link "Custom page 2" in the "Navigation bottom menu block"
+    But I should not see the link "Custom page 1-1" in the "Navigation bottom menu block"
+    And I should not see the link "Custom page 1-2" in the "Navigation bottom menu block"
+    And I should not see the link "Custom page 2-1" in the "Navigation bottom menu block"
+
+    When I visit the "Custom page 1" custom page
+    And I should see the link "Custom page 1" in the "Navigation bottom menu block"
+    And I should see the link "Custom page 2" in the "Navigation bottom menu block"
+    And I should see the link "Custom page 1-1" in the "Navigation bottom menu block"
+    And I should see the link "Custom page 1-2" in the "Navigation bottom menu block"
+    But I should not see the link "Custom page 2-1" in the "Navigation bottom menu block"
