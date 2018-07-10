@@ -99,6 +99,7 @@ class CollectionMenuBlock extends OgMenuBlock {
     // Improve the template suggestion.
     if (!empty($build['#items']) && $menu_instance) {
       $menu_name = $menu_instance->getType();
+      $build['#block__plugin_id'] = $this->getPluginId();
       $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
     }
     return $build;

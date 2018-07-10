@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -535,6 +536,7 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['title_attributes']['class'][] = 'block__title';
     $variables['title_tag'] = 'h3';
   }
+  $variables['content']['#attributes']['block'] = $block_id;
 }
 
 /**
@@ -1597,5 +1599,19 @@ function joinup_theme_form_views_exposed_form_alter(&$form, FormStateInterface $
     $form['keys']['#extra_suggestion'] = 'search_bar';
     $form['keys']['#attributes']['class'][] = 'search-bar__input';
     $form['keys']['#attributes']['placeholder'] = t('Start typing to search...');
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Provide a separate suggestion for menus depending on their region.
+ */
+function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  if (isset($variables['attributes']['block'])) {
+    $hook = str_replace(['block-', '-'], ['', '_'], $variables['attributes']['block']);
+    $block = Block::load($hook);
+    $region = $block->getRegion();
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $region;
   }
 }
