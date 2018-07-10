@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - og_menu.ogmenu.navigation
+  module:
+    - collection
+    - og
+  theme:
+    - joinup_theme
+id: navigation_bottom
+theme: joinup_theme
+region: content_bottom
+weight: -17
+provider: null
+plugin: 'collection_menu_block:navigation'
+settings:
+  id: 'collection_menu_block:navigation'
+  label: 'Table of contents'
+  provider: collection
+  label_display: '1'
+  level: 1
+  depth: 0
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

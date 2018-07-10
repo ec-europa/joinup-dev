@@ -120,6 +120,7 @@ config_devel:
   - block.block.mycontent
   - block.block.mycontentsolution
   - block.block.navigation
+  - block.block.navigation_bottom
   - block.block.overviewmessage
   - block.block.pagetitle
   - block.block.policy_domain_facet
