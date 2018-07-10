@@ -12,18 +12,27 @@ interface PipelineStepInterface extends PluginInspectionInterface {
   /**
    * Executes the business logic of the pipeline step.
    *
-   * @return null|array
-   *   If no errors were encountered during the step execution, nothing should
-   *   be returned. Return the error message as a render array.
+   * @throws \Drupal\pipeline\Exception\PipelineStepExecutionLogicException
+   *   By throwing this exception, the step notifies the pipeline orchestrator
+   *   that he should exit the pipeline with an error, in this step. Method
+   *   implementations should use PipelineStepLogicalException::setError() in
+   *   order to pass the error markup that will be displayed to the user when
+   *   the pipeline is exited.
+   *
+   * @see \Drupal\pipeline\Exception\PipelineStepExecutionLogicException::setError()
    */
   public function execute();
 
   /**
-   * Gives a chance to plugins to perform some tasks just before executing.
+   * Gives a chance to step plugins to perform some tasks just before executing.
    *
-   * @return null|array
-   *   If no errors were encountered during the step preparation, nothing should
-   *   be returned. Return the error message as a render array.
+   * @throws \Drupal\pipeline\Exception\PipelineStepPrepareLogicException
+   *   By throwing this exception, the step prepare method notifies the pipeline
+   *   orchestrator that he should exit the pipeline with an error, in this
+   *   step. Method implementations should pass the error markup to be displayed
+   *   to the user via PipelineStepPrepareLogicalException::setError().
+   *
+   * @see \Drupal\pipeline\Exception\PipelineStepPrepareLogicException::setError()
    */
   public function prepare();
 
@@ -62,6 +71,17 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    *   The persistent data associative array.
    */
   public function getPersistentData();
+
+  /**
+   * Checks if value exists in the persistent data store, given its key.
+   *
+   * @param string $key
+   *   The data key.
+   *
+   * @return bool
+   *   If the value exists in the persistent data store.
+   */
+  public function hasPersistentDataValue($key);
 
   /**
    * Returns a single the persistent data entry, given its key.
@@ -115,5 +135,13 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    * @return $this
    */
   public function unsetPersistentDataValue($key);
+
+  /**
+   * Returns the generic title to be used on pages.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface
+   *   The page title.
+   */
+  public function getPageTitle();
 
 }

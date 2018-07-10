@@ -66,10 +66,7 @@ Query;
     // before executing the step.
     $this->assertCount(0, $this->sparql->query($query));
 
-    $result = $this->runPipelineStep('add_joinup_vocabularies');
-
-    // Check that the step ran without any error.
-    $this->assertNull($result);
+    $this->runPipelineStep('add_joinup_vocabularies');
 
     // Check that the language vocabulary is in the 'sink_plus_taxo graph' after
     // executing the step.

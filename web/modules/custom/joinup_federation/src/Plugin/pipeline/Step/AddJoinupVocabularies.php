@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use Drupal\rdf_entity\RdfGraphHandlerInterface;
@@ -22,8 +24,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Add Joinup vocabularies"),
  * )
  */
-class AddJoinupVocabularies extends JoinupFederationStepPluginBase {
+class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
+  use PipelineStepWithRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
 
   /**

@@ -4,6 +4,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,10 +14,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @PipelineStep(
  *   id = "convert_to_adms2",
- *   label = @Translation("Convert ADMSv1 to v2"),
+ *   label = @Translation("Convert data from ADMS-AP v1 to v2"),
  * )
  */
-class ConvertToAdms2 extends JoinupFederationStepPluginBase {
+class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 2;
 
   /**
    * The ADMS v1 to v2 transformation plugin manager.
@@ -59,9 +70,25 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function initBatchProcess() {
+    $plugin_ids = array_keys($this->adms2ConverPassPluginManager->getDefinitions());
+    $this->setBatchValue('remaining_conversions', $plugin_ids);
+    return ceil(count($plugin_ids) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('remaining_conversions');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
-    // @todo There are ~75 passes, need to use batch processing?
-    foreach ($this->adms2ConverPassPluginManager->getDefinitions() as $plugin_id => $definition) {
+    $conversions_to_process = $this->extractNextSubset('remaining_conversions', static::BATCH_SIZE);
+    foreach ($conversions_to_process as $plugin_id) {
       $this->adms2ConverPassPluginManager
         ->createInstance($plugin_id)
         ->convert(['sink_graph' => $this->getGraphUri('sink')]);

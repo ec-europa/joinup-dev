@@ -56,7 +56,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the following error messages:
       | error messages                                                                                                                    |
@@ -68,17 +70,20 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "invalid_drupal.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the heading "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1 [http://example.com/solution/1]" is selected
     And the row "<missing label> [http://example.com/solution/2]" is selected
 
     When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see the following error message:
-      | error messages                                                                                                                      |
-      | Spain - Center for Technology Transfer execution stopped with errors in Drupal validation step. Please review the following errors: |
+      | error messages                                                                                                                                 |
+      | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.                                     |
@@ -104,7 +109,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1 [http://example.com/solution/1]" is checked
@@ -115,6 +122,8 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
     Given I press "Next"
+    And I wait for the pipeline batch job to finish
+
     Then I should see the following success messages:
       | success messages                                                                |
       | The Spain - Center for Technology Transfer execution has finished with success. |
@@ -148,7 +157,9 @@ Feature: As a site moderator I am able to import RDF files.
     Given I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
-    And I press "Next"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
     And the row "Solution 1" is checked
@@ -158,7 +169,9 @@ Feature: As a site moderator I am able to import RDF files.
     # Swap 'Solution 1' with 'Solution 3'.
     Given I uncheck the "Solution 1" row
     And I check the "Solution 3" row
+
     When I press "Next"
+    And I wait for the pipeline batch job to finish
 
     # Check how the provenance records were updated.
     Then the "Solution 2" entity is not blacklisted for federation

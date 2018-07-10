@@ -36,7 +36,7 @@ class PipelineStateManager implements PipelineStateManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setState($pipeline_id, PipelineStateInterface $state) {
+  public function saveState($pipeline_id, PipelineStateInterface $state) {
     $this->getPrivateTempStore()->set($this->getKey($pipeline_id), $state);
     return $this;
   }

@@ -6,6 +6,9 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,7 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("ADMS Validation"),
  * )
  */
-class AdmsValidation extends JoinupFederationStepPluginBase {
+class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
+
+  use PipelineStepWithRedirectResponseTrait;
 
   /**
    * The ADMS validator service.
@@ -69,15 +74,15 @@ class AdmsValidation extends JoinupFederationStepPluginBase {
     $this->pipeline->clearGraph($this->getGraphUri('sink_plus_taxo'));
 
     if ($validation->isSuccessful()) {
-      return NULL;
+      return;
     }
 
-    return [
+    throw (new PipelineStepExecutionLogicException())->setError([
       [
         '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
       ],
       $validation->toTable(),
-    ];
+    ]);
   }
 
 }
