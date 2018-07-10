@@ -50,6 +50,7 @@ default:
         Modal content: '#drupal-modal'
         Modal buttons: '.ui-dialog-buttonpane'
         Navigation menu block: '#block-navigation'
+        Navigation bottom menu block: '#block-navigation-bottom'
         Navigation menu: 'div.navigation-menu ul'
         Page title: 'div.page__title-wrapper'
         Pager: 'nav.pager'
