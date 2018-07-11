@@ -17,7 +17,7 @@
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "1.x-dev",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.5.4",
+        "drupal/core": "^8.5.5",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -44,7 +44,7 @@
         "drupal/piwik": "~1.2.0",
         "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "^1.0.0-alpha5",
+        "drupal/rdf_entity": "^1.0.0-alpha6",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.0@RC",
         "drupal/search_api": "1.6.0",
@@ -80,7 +80,7 @@
         "behat/gherkin": "^4.5.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
+        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
         "drupal/coder": "^8.2.9",
         "drupal/config_devel": "~1.2",
@@ -165,8 +165,7 @@
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                 "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                 "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
-                "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                "referencedEntities() doesn't work for computed fields @see https://www.drupal.org/project/drupal/issues/2978848": "https://www.drupal.org/files/issues/2018-06-11/2978848-9.patch"
+                "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch"
             },
             "drupal/email_registration": {
                 "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
@@ -186,15 +185,7 @@
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch",
-                "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch",
-                "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
-                "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch",
-                "Set a redirect on RDF entity form only if no previous redirect was not set @see https://github.com/ec-europa/rdf_entity/pull/36": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/36.patch",
-                "Translatable literal to be casted to the primitive type from field definition @see https://github.com/ec-europa/rdf_entity/pull/38": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/38.patch",
-                "Allow to reset the cache only for given graphs @see https://github.com/ec-europa/rdf_entity/pull/40": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/40.patch",
-                "Fix static cache invalidation in ::loadUnchanged() @see https://github.com/ec-europa/rdf_entity/pull/41": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/41.patch"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
