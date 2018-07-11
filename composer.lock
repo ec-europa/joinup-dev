@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bd7bd7b12bdb40c4eb7acac76c08369",
+    "content-hash": "f1fa0aa64741aa85fb4641fe2ceaf363",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.12",
+            "version": "3.62.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "53b59b0ab96c92aa6f5e52df00c4af1991c97c5d"
+                "reference": "528119675458b11f8eda2d43793cf5af3b27773c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/53b59b0ab96c92aa6f5e52df00c4af1991c97c5d",
-                "reference": "53b59b0ab96c92aa6f5e52df00c4af1991c97c5d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/528119675458b11f8eda2d43793cf5af3b27773c",
+                "reference": "528119675458b11f8eda2d43793cf5af3b27773c",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-10T00:18:49+00:00"
+            "time": "2018-07-10T21:10:32+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -6108,17 +6108,6 @@
             "time": "2017-09-04T12:26:28+00:00"
         },
         {
-            "name": "minimaxir/big-list-of-naughty-strings",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
-                "reference": "master"
-            },
-            "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
-        },
-        {
             "name": "mkalkbrenner/php-htmldiff-advanced",
             "version": "0.0.8",
             "source": {
@@ -9872,7 +9861,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-01-07T19:17:08+00:00"
+            "time": "2018-06-25T17:38:20+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -12624,7 +12613,6 @@
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/devel": 15,
