@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0968603f5494eb595f17a37af81ce21f",
+    "content-hash": "f1fa0aa64741aa85fb4641fe2ceaf363",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.10",
+            "version": "3.62.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b45b916eceb20d3c9e2b36e9e93e926a278d97ca"
+                "reference": "528119675458b11f8eda2d43793cf5af3b27773c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b45b916eceb20d3c9e2b36e9e93e926a278d97ca",
-                "reference": "b45b916eceb20d3c9e2b36e9e93e926a278d97ca",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/528119675458b11f8eda2d43793cf5af3b27773c",
+                "reference": "528119675458b11f8eda2d43793cf5af3b27773c",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-06T17:41:33+00:00"
+            "time": "2018-07-10T21:10:32+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -4024,19 +4024,20 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha5",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha5"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/8.x-1.0-alpha5",
-                "reference": "8.x-1.0-alpha5",
-                "shasum": ""
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha6.zip",
+                "reference": "8.x-1.0-alpha6",
+                "shasum": "d0ad0719ab0871054d75c2c73fdeb40db94812bf"
             },
             "require": {
+                "drupal/core": "*",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "php": ">=7.1"
             },
@@ -4045,21 +4046,58 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha6",
+                    "datestamp": "1531203521",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch"
+                    "Support Travis CI @see https://github.com/ec-europa/rdf_entity/pull/44": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/44.patch"
                 }
             },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "dublutz",
+                    "homepage": "https://www.drupal.org/user/980246"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                },
+                {
+                    "name": "sandervd",
+                    "homepage": "https://www.drupal.org/user/346775"
+                },
+                {
+                    "name": "sardara",
+                    "homepage": "https://www.drupal.org/user/2353864"
+                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "issues": "https://drupal.org/project/issues/rdf_entity",
-                "source": "https://cgit.drupalcode.org/rdf_entity"
-            },
-            "time": "2018-05-15T14:43:20+00:00"
+                "source": "https://cgit.drupalcode.org/rdf_entity",
+                "issues": "https://drupal.org/project/issues/rdf_entity"
+            }
         },
         {
             "name": "drupal/redirect",
@@ -6068,17 +6106,6 @@
                 "xml"
             ],
             "time": "2017-09-04T12:26:28+00:00"
-        },
-        {
-            "name": "minimaxir/big-list-of-naughty-strings",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
-                "reference": "master"
-            },
-            "type": "library",
-            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -9187,16 +9214,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e"
+                "reference": "63d920d1c9ebc009d860c3666593a66298727dd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/11c9c1835e60eef6f9234377a480fcec096ebd9e",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/63d920d1c9ebc009d860c3666593a66298727dd6",
+                "reference": "63d920d1c9ebc009d860c3666593a66298727dd6",
                 "shasum": ""
             },
             "require": {
@@ -9246,7 +9273,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-06-27T18:52:43+00:00"
+            "time": "2018-07-09T21:17:27+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -9834,7 +9861,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-01-07T19:17:08+00:00"
+            "time": "2018-06-25T17:38:20+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -10468,68 +10495,6 @@
                 "web"
             ],
             "time": "2018-04-17T17:48:19+00:00"
-        },
-        {
-            "name": "drupal/message_digest",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/message_digest",
-                "reference": "6d7b6a89f5d11408c0af79f8dea9ed775ad94f25"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/message_notify": "*"
-            },
-            "require-dev": {
-                "drupal/message_subscribe_email": "*",
-                "drupal/token": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta1+5-dev",
-                    "datestamp": "1519339684",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
-                    }
-                },
-                "patches_applied": {
-                    "Aggregated patch for issues #2285947 #2881263 #2933016 #2933896 #2933931 #2934111 @see https://www.drupal.org/project/issues/message_digest": "resources/patch/message_digest_aggregated.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "febbraro",
-                    "homepage": "https://www.drupal.org/user/43670"
-                },
-                {
-                    "name": "jhedstrom",
-                    "homepage": "https://www.drupal.org/user/208732"
-                },
-                {
-                    "name": "mcrittenden",
-                    "homepage": "https://www.drupal.org/user/420631"
-                },
-                {
-                    "name": "mpotter",
-                    "homepage": "https://www.drupal.org/user/616192"
-                }
-            ],
-            "description": "Message digest",
-            "homepage": "https://www.drupal.org/project/message_digest",
-            "support": {
-                "source": "http://cgit.drupalcode.org/message_digest"
-            },
-            "time": "2018-01-03T18:10:37+00:00"
         },
         {
             "name": "drupal/stage_file_proxy",
@@ -12648,7 +12613,6 @@
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "minimaxir/big-list-of-naughty-strings": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/devel": 15,
