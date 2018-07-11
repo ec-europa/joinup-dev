@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c27645c4ca7829e595b554a403625026",
+    "content-hash": "ffe96571c84b164e5bfcffc187d4297f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1593,16 +1593,12 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -1938,7 +1934,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2317,10 +2313,6 @@
                     "role": "Maintainer"
                 },
                 {
-                    "name": "joelpittet",
-                    "homepage": "https://www.drupal.org/user/160302"
-                },
-                {
                     "name": "merlinofchaos",
                     "homepage": "https://www.drupal.org/user/26979"
                 },
@@ -2596,7 +2588,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -3343,7 +3335,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -3604,7 +3596,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -3977,7 +3969,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4026,17 +4018,17 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha5",
+            "version": "1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha5"
+                "reference": "8.x-1.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha5.zip",
-                "reference": "8.x-1.0-alpha5",
-                "shasum": "541e3a9812bfd5c02006fe921624413aa62dcc03"
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha6.zip",
+                "reference": "8.x-1.0-alpha6",
+                "shasum": "d0ad0719ab0871054d75c2c73fdeb40db94812bf"
             },
             "require": {
                 "drupal/core": "*",
@@ -4052,8 +4044,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha5",
-                    "datestamp": "1527836284",
+                    "version": "8.x-1.0-alpha6",
+                    "datestamp": "1531203521",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4061,14 +4053,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "RdfFieldHandler is not aware about fields defined via hook_entity_bundle_field_info() @see https://github.com/ec-europa/rdf_entity/pull/29": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/29.patch",
-                    "Some entity types and bundles don't provide support for 'draft' graph @see https://github.com/ec-europa/rdf_entity/pull/30": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/30.patch",
-                    "Exclude computed fields when saving entities @see https://github.com/ec-europa/rdf_entity/pull/34": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/34.patch",
-                    "Switch the 'graph' field from 'uri' to 'entity_reference' @see https://github.com/ec-europa/rdf_entity/pull/35": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/35.patch",
-                    "Set a redirect on RDF entity form only if no previous redirect was not set @see https://github.com/ec-europa/rdf_entity/pull/36": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/36.patch",
-                    "Translatable literal to be casted to the primitive type from field definition @see https://github.com/ec-europa/rdf_entity/pull/38": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/38.patch",
-                    "Allow to reset the cache only for given graphs @see https://github.com/ec-europa/rdf_entity/pull/40": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/40.patch",
-                    "Fix static cache invalidation in ::loadUnchanged() @see https://github.com/ec-europa/rdf_entity/pull/41": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/41.patch"
+                    "Provide an interface for the Connection class. @see https://github.com/ec-europa/rdf_entity/pull/45": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/45.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4411,7 +4396,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4604,7 +4589,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4702,7 +4687,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4945,7 +4930,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5774,7 +5759,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2017-07-12T23:38:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -6125,7 +6110,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2018-05-24T16:39:27+00:00"
+            "time": "2017-05-26T17:09:44+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -9996,7 +9981,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527523080",
+                    "datestamp": "1527522480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10060,6 +10045,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -10188,7 +10179,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -10565,8 +10556,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1510738685",
+                    "version": "8.x-1.0-alpha2+23-dev",
+                    "datestamp": "1493538844",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
