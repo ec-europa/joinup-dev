@@ -64,7 +64,8 @@ class Connection extends BaseConnection implements ConnectionInterface {
     try {
       $results = $this->connection->update($query);
     }
-    catch (EasyRdfException $e) {// Handle the virtuoso checkpoint case.
+    catch (EasyRdfException $e) {
+      // Handle the virtuoso checkpoint case.
       if ($recurse == TRUE) {
         $recurse = FALSE;
         throw new SparqlQueryException('Execution of query failed: ' . $query);
