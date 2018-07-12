@@ -15,6 +15,8 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
   public static $modules = [
     'allowed_formats',
     'cached_computed_field',
+    'comment',
+    'ds',
     'image',
     'joinup_core',
     'link',
@@ -34,7 +36,6 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
     $this->installConfig('joinup_core');
   }
 
