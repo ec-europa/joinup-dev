@@ -1,0 +1,15 @@
+tallinn.dashboard:
+  path: '/tallinn-dashboard'
+  defaults:
+    _controller: 'Drupal\tallinn\Controller\DashboardController::getData'
+  requirements:
+    _format: 'json'
+    _custom_access: 'Drupal\tallinn\Controller\DashboardController::access'
+
+tallinn.settings:
+  path: '/admin/config/content/tallinn'
+  defaults:
+    _form: 'Drupal\tallinn\Form\DashboardPermissionsForm'
+    _title: 'Tallinn Settings'
+  requirements:
+    _permission: 'administer tallinn settings'
