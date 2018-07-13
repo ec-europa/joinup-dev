@@ -6,6 +6,7 @@
  */
 
 use Drupal\node\Entity\Node;
+use Drupal\tallinn\Tallinn;
 use Drupal\user\UserInterface;
 
 /**
@@ -16,7 +17,7 @@ function tallinn_install() {
   user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, ['edit own tallinn_report content']);
 
   // Create Tallinn reports.
-  foreach (_tallinn_get_agreement_countries() as $country_name) {
+  foreach (Tallinn::COUNTRIES as $country_name) {
     $node = Node::create([
       'title' => $country_name,
       'type' => 'tallinn_report',
@@ -65,47 +66,4 @@ function tallinn_install() {
       ],
     ],
   ])->save();
-}
-
-/**
- * Returns a list of countries that have signed the tallinn agreement.
- *
- * @return string[]
- *   A list of countries.
- */
-function _tallinn_get_agreement_countries() {
-  return [
-    "Austria",
-    "Belgium",
-    "Bulgaria",
-    "Croatia",
-    "Cyprus",
-    "Czech Republic",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "France",
-    "Germany",
-    "Greece",
-    "Hungary",
-    "Ireland",
-    "Italy",
-    "Latvia",
-    "Lithuania",
-    "Luxembourg",
-    "Malta",
-    "The Netherlands",
-    "Poland",
-    "Portugal",
-    "Romania",
-    "Slovak Republic",
-    "Slovenia",
-    "Spain",
-    "Sweden",
-    "United Kingdom",
-    "Iceland",
-    "Liechtenstein",
-    "Norway",
-    "Switzerland",
-  ];
 }
