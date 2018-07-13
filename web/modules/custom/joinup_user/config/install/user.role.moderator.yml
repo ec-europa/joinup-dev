@@ -9,6 +9,7 @@ permissions:
   - 'access dashboard'
   - 'access joinup reports'
   - 'access release create field'
+  - 'administer tallinn settings'
   - 'access toolbar'
   - 'access uri converter'
   - 'administer comments'

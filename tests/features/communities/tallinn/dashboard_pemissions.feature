@@ -1,4 +1,4 @@
-@api
+@api @tallinn
 Feature:
   As a moderator I am able to set the access permissions on dashboard data.
   As an anonymous I can access the dashboard data give the access is public.
@@ -7,16 +7,16 @@ Feature:
 Scenario: Access test.
 
   Given users:
-    | Username    | Roles     |
-    | Common      |           |
-    | Facilitator |           |
-    | Moderator   | moderator |
+    | Username | Roles     |
+    | Dinesh   |           |
+    | Gilfoyle |           |
+    | Jared    | moderator |
   And the following collection user membership:
-    | collection                      | user        | roles       |
-    | Tallinn Ministerial Declaration | Facilitator | facilitator |
+    | collection                      | user     | roles       |
+    | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
 
   Given I am an anonymous user
-  And I go to "/admin/people/tallinn"
+  And I go to "/admin/config/content/tallinn"
   Then I should see the following error message:
     | error messages                                     |
     | Access denied. You must sign in to view this page. |
@@ -25,24 +25,24 @@ Scenario: Access test.
     | error messages                                     |
     | Access denied. You must sign in to view this page. |
 
-  Given I am logged in as Common
-  And I go to "/admin/people/tallinn"
+  Given I am logged in as Dinesh
+  And I go to "/admin/config/content/tallinn"
   Then the response status code should be 403
   And I go to "/tallinn-dashboard"
   Then the response status code should be 403
 
-  Given I am logged in as Facilitator
-  And I go to "/admin/people/tallinn"
+  Given I am logged in as Gilfoyle
+  And I go to "/admin/config/content/tallinn"
   Then the response status code should be 403
   And I go to "/tallinn-dashboard"
   Then the response status code should be 200
 
-  Given I am logged in as Moderator
+  Given I am logged in as Jared
   And I go to "/tallinn-dashboard"
   Then the response status code should be 200
-  And I go to "/admin/people/tallinn"
+  And I go to "/admin/config/content/tallinn"
   Then the response status code should be 200
-  And I should see the heading "Permissions to access Tallinn dashboard data"
+  And I should see the heading "Tallinn Settings"
   And the radio button "Restricted (only moderators and Tallinn collection facilitators)" from field "Access to the dashboard data" should be selected
 
   Given I select the radio button "Public"
@@ -55,11 +55,11 @@ Scenario: Access test.
   Given I go to "/tallinn-dashboard"
   Then the response status code should be 200
 
-  Given I am logged in as Facilitator
+  Given I am logged in as Gilfoyle
   And I go to "/tallinn-dashboard"
   Then the response status code should be 200
 
-  Given I am logged in as Common
+  Given I am logged in as Dinesh
   And I go to "/tallinn-dashboard"
   Then the response status code should be 200
 
@@ -68,7 +68,7 @@ Scenario: Access test.
   Then the response status code should be 200
 
   # Restore the initial setting.
-  Given I am logged in as Moderator
-  When I go to "/admin/people/tallinn"
+  Given I am logged in as Jared
+  When I go to "/admin/config/content/tallinn"
   And I select the radio button "Restricted (only moderators and Tallinn collection facilitators)"
   Then I press "Save configuration"
