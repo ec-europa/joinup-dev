@@ -1,0 +1,617 @@
+diff --git a/modules/rdf_export/src/RdfSerializer.php b/modules/rdf_export/src/RdfSerializer.php
+index aa3eac3..b80ac34 100644
+--- a/modules/rdf_export/src/RdfSerializer.php
++++ b/modules/rdf_export/src/RdfSerializer.php
+@@ -4,7 +4,7 @@ declare(strict_types = 1);
+ 
+ namespace Drupal\rdf_export;
+ 
+-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
++use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+ use Drupal\rdf_entity\RdfInterface;
+ 
+ /**
+@@ -15,17 +15,17 @@ class RdfSerializer implements RdfSerializerInterface {
+   /**
+    * The Sparql connection object.
+    *
+-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
++   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+    */
+   protected $sparqlEndpoint;
+ 
+   /**
+    * Instantiates a new RdfSerializer object.
+    *
+-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparqlEndpoint
++   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparqlEndpoint
+    *   The Sparql connection object.
+    */
+-  public function __construct(Connection $sparqlEndpoint) {
++  public function __construct(ConnectionInterface $sparqlEndpoint) {
+     $this->sparqlEndpoint = $sparqlEndpoint;
+   }
+ 
+diff --git a/rdf_entity.drush.inc b/rdf_entity.drush.inc
+index e8bc904..3220f4f 100644
+--- a/rdf_entity.drush.inc
++++ b/rdf_entity.drush.inc
+@@ -30,7 +30,7 @@ function rdf_entity_drush_command() {
+  * Delete all data from the endpoint.
+  */
+ function drush_rdf_entity_purge() {
+-  /** @var Drupal\rdf_entity\Database\Driver\sparql\Connection $endpoint */
++  /** @var Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $endpoint */
+   $endpoint = \Drupal::service('sparql_endpoint');
+   $query = "SELECT COUNT (?s) AS ?count WHERE {?s ?p ?o}";
+ 
+diff --git a/rdf_entity.module b/rdf_entity.module
+index 4484790..ce4fe59 100755
+--- a/rdf_entity.module
++++ b/rdf_entity.module
+@@ -451,7 +451,7 @@ function rdf_entity_virtuoso_version_requirements() {
+     ],
+   ];
+ 
+-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection */
++  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection */
+   $connection = Database::getConnection('default', 'sparql_default');
+   $client = Http::getDefaultHttpClient();
+   $client->resetParameters(TRUE);
+@@ -502,7 +502,7 @@ function rdf_entity_virtuoso_permission_requirements() {
+     CLEAR GRAPH <{$uri}>
+ QUERY;
+ 
+-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection */
++  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection */
+   $connection = Database::getConnection('default', 'sparql_default');
+   $requirements = [
+     'rdf_entity_virtuoso_query' => [
+diff --git a/rdf_entity.services.yml b/rdf_entity.services.yml
+index 681f1fe..876835e 100644
+--- a/rdf_entity.services.yml
++++ b/rdf_entity.services.yml
+@@ -5,7 +5,7 @@ services:
+     tags:
+       - { name: backend_overridable }
+   sparql_endpoint:
+-    class: Drupal\rdf_entity\Database\Driver\sparql\Connection
++    class: Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+     factory: Drupal\Core\Database\Database::getConnection
+     arguments: [sparql, sparql_default]
+   webprofiler.sparql:
+diff --git a/src/DataCollector/SparqlDataCollector.php b/src/DataCollector/SparqlDataCollector.php
+index 8487ae5..645cb60 100644
+--- a/src/DataCollector/SparqlDataCollector.php
++++ b/src/DataCollector/SparqlDataCollector.php
+@@ -5,7 +5,7 @@ namespace Drupal\rdf_entity\DataCollector;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\Database\Database;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
++use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+ use Drupal\webprofiler\DataCollector\DrupalDataCollectorTrait;
+ use Drupal\webprofiler\DrupalDataCollectorInterface;
+ use Symfony\Component\HttpFoundation\Request;
+@@ -26,12 +26,12 @@ class SparqlDataCollector extends DataCollector implements DrupalDataCollectorIn
+   /**
+    * Setup DatabaseDataCollector.
+    *
+-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $database
++   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $database
+    *   Database connection.
+    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+    *   Config factory.
+    */
+-  public function __construct(Connection $database, ConfigFactoryInterface $config_factory) {
++  public function __construct(ConnectionInterface $database, ConfigFactoryInterface $config_factory) {
+     $this->database = $database;
+     $this->configFactory = $config_factory;
+   }
+diff --git a/src/Database/Driver/sparql/Connection.php b/src/Database/Driver/sparql/Connection.php
+index c0090de..c0ed3bb 100644
+--- a/src/Database/Driver/sparql/Connection.php
++++ b/src/Database/Driver/sparql/Connection.php
+@@ -1,17 +1,20 @@
+ <?php
+ 
++declare(strict_types = 1);
++
+ namespace Drupal\rdf_entity\Database\Driver\sparql;
+ 
+ use Drupal\Core\Database\Log as DatabaseLog;
+ use Drupal\rdf_entity\Exception\SparqlQueryException;
+ use EasyRdf\Http\Exception as EasyRdfException;
+ use EasyRdf\Sparql\Client;
++use EasyRdf\Sparql\Result;
+ 
+ /**
+  * @addtogroup database
+  * @{
+  */
+-class Connection {
++class Connection implements ConnectionInterface {
+ 
+   /**
+    * The database target this connection is for.
+@@ -57,15 +60,9 @@ class Connection {
+   }
+ 
+   /**
+-   * Execute the actual query against the Sparql endpoint.
+-   *
+-   * @param string $query
+-   *   The query to execute.
+-   *
+-   * @return \EasyRdf\Sparql\Result
+-   *   The query result.
++   * {@inheritdoc}
+    */
+-  public function query($query) {
++  public function query(string $query): Result {
+     if (!empty($this->logger)) {
+       // @todo Fix this. Logger should have been auto started.
+       // Probably related to the overwritten log object in $this->setLogger.
+@@ -100,9 +97,9 @@ class Connection {
+   }
+ 
+   /**
+-   * Execute the actual update query against the Sparql endpoint.
++   * {@inheritdoc}
+    */
+-  public function update($query) {
++  public function update(string $query): Result {
+     if (!empty($this->logger)) {
+       // @todo Fix this. Logger should have been auto started.
+       // Probably related to the overwritten log object in $this->setLogger.
+@@ -137,26 +134,23 @@ class Connection {
+   }
+ 
+   /**
+-   * Helper to get the query. Called from the logger.
++   * {@inheritdoc}
+    */
+-  public function getQueryString() {
++  public function getQueryString(): string {
+     return $this->query;
+   }
+ 
+   /**
+-   * Returns the database connection string.
++   * {@inheritdoc}
+    */
+-  public function getQueryUri() {
++  public function getQueryUri(): string {
+     return $this->connection->getQueryUri();
+   }
+ 
+   /**
+-   * Associates a logging object with this connection.
+-   *
+-   * @param \Drupal\Core\Database\Log $logger
+-   *   The logging object we want to use.
++   * {@inheritdoc}
+    */
+-  public function setLogger(DatabaseLog $logger) {
++  public function setLogger(DatabaseLog $logger): void {
+     // Because we're incompatible with the PDO logger,
+     // we ignore this, and create our own object.
+     // @todo Avoid doing this. It's not ok...
+@@ -164,102 +158,64 @@ class Connection {
+   }
+ 
+   /**
+-   * Gets the current logging object for this connection.
+-   *
+-   * @return \Drupal\Core\Database\Log|null
+-   *   The current logging object for this connection. If there isn't one,
+-   *   NULL is returned.
++   * {@inheritdoc}
+    */
+-  public function getLogger() {
++  public function getLogger(): ?Log {
+     return $this->logger;
+   }
+ 
+   /**
+-   * Initialize the database connection.
+-   *
+-   * @param array $connection_options
+-   *   The connection options as defined in settings.php.
+-   *
+-   * @return \EasyRdf\Sparql\Client
+-   *   The EasyRdf connection.
++   * {@inheritdoc}
+    */
+-  public static function open(array &$connection_options = []) {
++  public static function open(array &$connection_options = []): Client {
+     // @todo Get endpoint string from settings file.
+     $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql';
+     return new Client($connect_string);
+   }
+ 
+   /**
+-   * Tells this connection object what its target value is.
+-   *
+-   * This is needed for logging and auditing. It's sloppy to do in the
+-   * constructor because the constructor for child classes has a different
+-   * signature. We therefore also ensure that this function is only ever
+-   * called once.
+-   *
+-   * @param string $target
+-   *   (optional) The target this connection is for.
++   * {@inheritdoc}
+    */
+-  public function setTarget($target = NULL) {
++  public function setTarget(string $target = NULL): void {
+     if (!isset($this->target)) {
+       $this->target = $target;
+     }
+   }
+ 
+   /**
+-   * Returns the target this connection is associated with.
+-   *
+-   * @return string|null
+-   *   The target string of this connection, or NULL if no target is set.
++   * {@inheritdoc}
+    */
+-  public function getTarget() {
++  public function getTarget(): ?string {
+     return $this->target;
+   }
+ 
+   /**
+-   * Tells this connection object what its key is.
+-   *
+-   * @param string $key
+-   *   The key this connection is for.
++   * {@inheritdoc}
+    */
+-  public function setKey($key) {
++  public function setKey(string $key): void {
+     if (!isset($this->key)) {
+       $this->key = $key;
+     }
+   }
+ 
+   /**
+-   * Returns the key this connection is associated with.
+-   *
+-   * @return string|null
+-   *   The key of this connection, or NULL if no key is set.
++   * {@inheritdoc}
+    */
+-  public function getKey() {
++  public function getKey(): ?string {
+     return $this->key;
+   }
+ 
+   /**
+-   * Returns the connection information for this connection object.
+-   *
+-   * Note that Database::getConnectionInfo() is for requesting information
+-   * about an arbitrary database connection that is defined. This method
+-   * is for requesting the connection information of this specific
+-   * open connection object.
+-   *
+-   * @return array
+-   *   An array of the connection information. The exact list of
+-   *   properties is driver-dependent.
++   * {@inheritdoc}
+    */
+-  public function getConnectionOptions() {
++  public function getConnectionOptions(): array {
+     return $this->connectionOptions;
+   }
+ 
+   /**
+-   * Destroys the db connection.
++   * {@inheritdoc}
+    */
+-  public function destroy() {
+-
+-  }
++  public function destroy():void {}
+ 
+ }
+ 
+diff --git a/src/Database/Driver/sparql/ConnectionInterface.php b/src/Database/Driver/sparql/ConnectionInterface.php
+new file mode 100644
+index 0000000..2b972a8
+--- /dev/null
++++ b/src/Database/Driver/sparql/ConnectionInterface.php
+@@ -0,0 +1,138 @@
++<?php
++
++declare(strict_types = 1);
++
++namespace Drupal\rdf_entity\Database\Driver\sparql;
++
++use Drupal\Core\Database\Log as DatabaseLog;
++use EasyRdf\Sparql\Client;
++use EasyRdf\Sparql\Result;
++
++/**
++ * An interface for the rdf_entity Connection class.
++ */
++interface ConnectionInterface {
++
++  /**
++   * Executes the actual query against the Sparql endpoint.
++   *
++   * @param string $query
++   *   The query to execute.
++   *
++   * @return \EasyRdf\Sparql\Result
++   *   The query result.
++   */
++  public function query(string $query): Result;
++
++  /**
++   * Execute the actual update query against the Sparql endpoint.
++   *
++   * @param string $query
++   *   The query string.
++   *
++   * @return \EasyRdf\Sparql\Result
++   *   The response object.
++   */
++  public function update(string $query): Result;
++
++  /**
++   * Helper to get the query. Called from the logger.
++   *
++   * @return string
++   *   The query string.
++   */
++  public function getQueryString(): string;
++
++  /**
++   * Returns the database connection string.
++   *
++   * @return string
++   *   The query uri string.
++   */
++  public function getQueryUri(): string;
++
++  /**
++   * Associates a logging object with this connection.
++   *
++   * @param \Drupal\Core\Database\Log $logger
++   *   The logging object we want to use.
++   */
++  public function setLogger(DatabaseLog $logger): void;
++
++  /**
++   * Gets the current logging object for this connection.
++   *
++   * @return \Drupal\rdf_entity\Database\Driver\sparql\Log|null
++   *   The current logging object for this connection. If there isn't one,
++   *   NULL is returned.
++   */
++  public function getLogger(): ?Log;
++
++  /**
++   * Initialize the database connection.
++   *
++   * @param array $connection_options
++   *   The connection options as defined in settings.php.
++   *
++   * @return \EasyRdf\Sparql\Client
++   *   The EasyRdf connection.
++   */
++  public static function open(array &$connection_options = []): Client;
++
++  /**
++   * Tells this connection object what its target value is.
++   *
++   * This is needed for logging and auditing. It's sloppy to do in the
++   * constructor because the constructor for child classes has a different
++   * signature. We therefore also ensure that this function is only ever
++   * called once.
++   *
++   * @param string $target
++   *   (optional) The target this connection is for.
++   */
++  public function setTarget(string $target = NULL): void;
++
++  /**
++   * Returns the target this connection is associated with.
++   *
++   * @return string|null
++   *   The target string of this connection, or NULL if no target is set.
++   */
++  public function getTarget(): ?string;
++
++  /**
++   * Tells this connection object what its key is.
++   *
++   * @param string $key
++   *   The key this connection is for.
++   */
++  public function setKey(string $key): void;
++
++  /**
++   * Returns the key this connection is associated with.
++   *
++   * @return string|null
++   *   The key of this connection, or NULL if no key is set.
++   */
++  public function getKey(): ?string;
++
++  /**
++   * Returns the connection information for this connection object.
++   *
++   * Note that Database::getConnectionInfo() is for requesting information
++   * about an arbitrary database connection that is defined. This method
++   * is for requesting the connection information of this specific
++   * open connection object.
++   *
++   * @return array
++   *   An array of the connection information. The exact list of
++   *   properties is driver-dependent.
++   */
++  public function getConnectionOptions(): array;
++
++  /**
++   * Destroys the db connection.
++   */
++  public function destroy(): void;
++
++}
+diff --git a/src/Entity/Query/Sparql/Query.php b/src/Entity/Query/Sparql/Query.php
+index 33d3854..48f9249 100644
+--- a/src/Entity/Query/Sparql/Query.php
++++ b/src/Entity/Query/Sparql/Query.php
+@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Entity\Query\QueryBase;
+ use Drupal\Core\Entity\Query\Sql\ConditionAggregate;
+-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
++use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+ use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
+ use Drupal\rdf_entity\RdfFieldHandlerInterface;
+ use Drupal\rdf_entity\RdfGraphHandlerInterface;
+@@ -21,7 +21,7 @@ class Query extends QueryBase implements SparqlQueryInterface {
+   /**
+    * The connection object.
+    *
+-   * @var \Drupal\Core\Database\Connection
++   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+    */
+   protected $connection;
+ 
+@@ -91,7 +91,7 @@ class Query extends QueryBase implements SparqlQueryInterface {
+    * @param string $conjunction
+    *   - AND: all of the conditions on the query need to match.
+    *   - OR: at least one of the conditions on the query need to match.
+-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
++   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection
+    *   The database connection to run the query against.
+    * @param array $namespaces
+    *   List of potential namespaces of the classes belonging to this query.
+@@ -102,7 +102,7 @@ class Query extends QueryBase implements SparqlQueryInterface {
+    * @param \Drupal\rdf_entity\RdfFieldHandlerInterface $rdf_field_handler
+    *   The rdf mapping handler service.
+    */
+-  public function __construct(EntityTypeInterface $entity_type, $conjunction, Connection $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler) {
++  public function __construct(EntityTypeInterface $entity_type, $conjunction, ConnectionInterface $connection, array $namespaces, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler) {
+     // Assign the handlers before calling the parent so that they can be passed
+     // to the condition class properly.
+     $this->graphHandler = $rdf_graph_handler;
+diff --git a/src/Entity/Query/Sparql/QueryFactory.php b/src/Entity/Query/Sparql/QueryFactory.php
+index 01e26a0..8e3132b 100644
+--- a/src/Entity/Query/Sparql/QueryFactory.php
++++ b/src/Entity/Query/Sparql/QueryFactory.php
+@@ -6,7 +6,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Entity\Query\QueryBase;
+ use Drupal\Core\Entity\Query\QueryFactoryInterface;
+-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
++use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+ use Drupal\rdf_entity\RdfFieldHandlerInterface;
+ use Drupal\rdf_entity\RdfGraphHandlerInterface;
+ 
+@@ -18,7 +18,7 @@ class QueryFactory implements QueryFactoryInterface {
+   /**
+    * The connection object.
+    *
+-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
++   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+    */
+   protected $connection;
+ 
+@@ -53,7 +53,7 @@ class QueryFactory implements QueryFactoryInterface {
+   /**
+    * Constructs a QueryFactory object.
+    *
+-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $connection
++   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection
+    *   The connection object.
+    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+    *   The entity type manager.
+@@ -62,7 +62,7 @@ class QueryFactory implements QueryFactoryInterface {
+    * @param \Drupal\rdf_entity\RdfFieldHandlerInterface $rdf_field_handler
+    *   The rdf mapping helper service.
+    */
+-  public function __construct(Connection $connection, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler) {
++  public function __construct(ConnectionInterface $connection, EntityTypeManagerInterface $entity_type_manager, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler) {
+     $this->connection = $connection;
+     $this->namespaces = QueryBase::getNamespaces($this);
+     $this->entityTypeManager = $entity_type_manager;
+diff --git a/src/Entity/RdfEntitySparqlStorage.php b/src/Entity/RdfEntitySparqlStorage.php
+index 2c9615d..f72727e 100644
+--- a/src/Entity/RdfEntitySparqlStorage.php
++++ b/src/Entity/RdfEntitySparqlStorage.php
+@@ -17,7 +17,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Language\LanguageManagerInterface;
+-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
++use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+ use Drupal\rdf_entity\Exception\DuplicatedIdException;
+ use Drupal\rdf_entity\RdfEntityIdPluginManager;
+@@ -37,7 +37,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase implements RdfEnti
+   /**
+    * Sparql database connection.
+    *
+-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
++   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+    */
+   protected $sparql;
+ 
+@@ -88,7 +88,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase implements RdfEnti
+    *
+    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+    *   The entity type this storage is about.
+-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
++   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+    *   The connection object.
+    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+    *   The entity manager service.
+@@ -107,7 +107,7 @@ class RdfEntitySparqlStorage extends ContentEntityStorageBase implements RdfEnti
+    * @param \Drupal\rdf_entity\RdfEntityIdPluginManager $entity_id_plugin_manager
+    *   The RDF entity ID generator plugin manager.
+    */
+-  public function __construct(EntityTypeInterface $entity_type, Connection $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
++  public function __construct(EntityTypeInterface $entity_type, ConnectionInterface $sparql, EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, ModuleHandlerInterface $module_handler, RdfGraphHandlerInterface $rdf_graph_handler, RdfFieldHandlerInterface $rdf_field_handler, RdfEntityIdPluginManager $entity_id_plugin_manager) {
+     parent::__construct($entity_type, $entity_manager, $cache);
+     $this->sparql = $sparql;
+     $this->languageManager = $language_manager;
+diff --git a/tests/src/Kernel/RdfQueryExceptionTest.php b/tests/src/Kernel/RdfQueryExceptionTest.php
+index cb1c88b..068c30a 100644
+--- a/tests/src/Kernel/RdfQueryExceptionTest.php
++++ b/tests/src/Kernel/RdfQueryExceptionTest.php
+@@ -15,7 +15,7 @@ class RdfQueryExceptionTest extends RdfKernelTestBase {
+    * Exception with query in message thrown for selects.
+    */
+   public function testQuerySelectException() {
+-    /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
++    /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
+     $sparql = $this->container->get('sparql_endpoint');
+     $this->setExpectedException(SparqlQueryException::class, "Execution of query failed: SELECT ?o WHERE { ?s ?p }");
+     $sparql->query('SELECT ?o WHERE { ?s ?p }');
+@@ -25,7 +25,7 @@ class RdfQueryExceptionTest extends RdfKernelTestBase {
+    * Exception with query in message thrown for updates.
+    */
+   public function testQueryUpdateException() {
+-    /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
++    /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
+     $sparql = $this->container->get('sparql_endpoint');
+     $this->setExpectedException(SparqlQueryException::class, "Execution of query failed: INSERT DATA INTO <\malformed> {}");
+     $sparql->update('INSERT DATA INTO <\malformed> {}');
+diff --git a/tests/src/Traits/RdfDatabaseConnectionTrait.php b/tests/src/Traits/RdfDatabaseConnectionTrait.php
+index a0faf63..41d02e0 100644
+--- a/tests/src/Traits/RdfDatabaseConnectionTrait.php
++++ b/tests/src/Traits/RdfDatabaseConnectionTrait.php
+@@ -13,7 +13,7 @@ trait RdfDatabaseConnectionTrait {
+   /**
+    * The SPARQL database connection.
+    *
+-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
++   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+    */
+   protected $sparql;
+ 
