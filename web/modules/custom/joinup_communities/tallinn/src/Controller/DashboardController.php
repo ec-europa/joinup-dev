@@ -192,6 +192,9 @@ class DashboardController extends ControllerBase {
    *
    * @return string
    *   The 2 letter country code.
+   *
+   * @throws \InvalidArgumentException
+   *   If an non-existing country name has been passed.
    */
   protected static function getCountryCode(string $country_name): string {
     if (!isset(static::$countries)) {
