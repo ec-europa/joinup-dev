@@ -6,7 +6,6 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection as BaseConnection;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Exception\SparqlQueryException;
 use EasyRdf\Http\Exception as EasyRdfException;
-use EasyRdf\Http\Response;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -54,7 +53,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function update(string $query): Response {
+  public function update(string $query): Result {
     static $recurse = FALSE;
     if (!empty($this->logger)) {
       $this->logger->start('webprofiler');
