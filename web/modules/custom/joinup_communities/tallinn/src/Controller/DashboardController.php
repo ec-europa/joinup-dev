@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableResponse;
+use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -17,7 +20,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
 use Drupal\tallinn\Tallinn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a controller for the 'tallinn.dashboard' route.
@@ -82,15 +85,28 @@ class DashboardController extends ControllerBase {
   /**
    * Returns the backend data formatted as Json.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   The Json response.
+   * We return a cached serialized Json blob. The response cache have
+   * dependencies on the Tallinn collection and on each report. Any changes to
+   * these entities will invalidate the response cache.
+   *
+   * @return \Drupal\Core\Cache\CacheableResponseInterface
+   *   The cached Json response.
    */
-  public function getData(): JsonResponse {
+  public function getData(Request $request): CacheableResponseInterface {
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('node', 'tallinn_report');
     $entity_form_display = EntityFormDisplay::load("node.tallinn_report.default");
     $groups = $entity_form_display->getThirdPartySettings('field_group');
     $reports = $this->getReports();
     $status_options = TallinnEntryItem::getStatusOptions();
+
+    // Prepare the response early, so that we can add report entities and their
+    // group collection as cacheable dependencies while building the response
+    // content.
+    $response = new CacheableResponse('', 200, [
+      'Content-Type' => $request->getMimeType('json'),
+    ]);
+    // The response cache should be invalidated on any collection change.
+    $response->addCacheableDependency(Rdf::load(TALLINN_COMMUNITY_ID));
 
     $data = [];
     foreach ($groups as $group_id => $group_info) {
@@ -124,20 +140,21 @@ class DashboardController extends ControllerBase {
               'report' => check_markup($value['value'], $value['format']) ?: NULL,
               'related_website' => $value['uri'],
             ];
+            // The Json response cache depends on all the reports.
+            $response->addCacheableDependency($report);
           }
         }
       }
 
       // Remove the field name keys.
       $group['actions'] = array_values($group['actions']);
-
       $data[] = $group;
     }
 
     // Wrap data under 'JSON' key.
     $data = ['JSON' => $data];
 
-    return new JsonResponse($data);
+    return $response->setContent(Json::encode($data));
   }
 
   /**

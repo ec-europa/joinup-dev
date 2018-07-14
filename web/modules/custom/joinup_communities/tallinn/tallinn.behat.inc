@@ -12,6 +12,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Behat step definitions and related methods provided by the tallinn module.
@@ -36,11 +37,32 @@ class TallinnSubContext extends DrupalSubContextBase {
       return;
     }
 
+    // Create two policy domain terms.
+    Term::create([
+      'vid' => 'policy_domain',
+      'tid' => 'http://example.com/term/1',
+      'name' => 'Term 1',
+    ])->save();
+    Term::create([
+      'vid' => 'policy_domain',
+      'tid' => 'http://example.com/term/2',
+      'name' => 'Term 2',
+      'parent' => 'http://example.com/term/1',
+    ])->save();
+
+    // Create an owner.
+    static::createRdfEntity('owner', [
+      'id' => 'http://example.com/owner',
+      'field_owner_name' => 'Owner',
+    ]);
+
     // Create the Tallinn entity and the custom page OG menu link.
     static::createRdfEntity('collection', [
       'id' => TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
+      'field_policy_domain' => 'http://example.com/term/2',
+      'field_ar_owner' => 'http://example.com/owner',
     ]);
     \Drupal::state()->set('tallinn_testing_collection', TRUE);
     /** @var \Drupal\node\NodeInterface $custom_page */
@@ -74,6 +96,12 @@ class TallinnSubContext extends DrupalSubContextBase {
       // Restore OG policy.
       $og_config->set('delete_orphans', $delete_orphans)->save();
       static::restoreReadOnlyConfig();
+
+      // Delete related entities.
+      foreach (['http://example.com/term/2', 'http://example.com/term/1'] as $id) {
+        Term::load($id)->delete();
+      }
+      Rdf::load('http://example.com/owner')->delete();
     }
   }
 

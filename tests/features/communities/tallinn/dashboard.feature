@@ -4,7 +4,7 @@ Feature:
   As an anonymous I can access the dashboard data give the access is public.
   As a collection facilitator or moderator I can access the dashboard data.
   
-Scenario: Access test.
+Scenario: Access and cache test.
 
   Given users:
     | Username | Roles     |
@@ -67,8 +67,33 @@ Scenario: Access test.
   And I go to "/tallinn-dashboard"
   Then the response status code should be 200
 
-  # Restore the initial setting.
   Given I am logged in as Jared
+  And I go to "/tallinn-dashboard"
+
+  # Test the Json response caching.
+  Then the response should be cached
+
+  # Edit the group entity.
+  Given I go to the "Tallinn Ministerial Declaration" collection edit form
+  And I fill in "Description" with "Hooli"
+  When I press "Publish"
+  And I take a screenshot
+  And I go to "/tallinn-dashboard"
+  Then the response should not be cached
+
+  But I reload the page
+  Then the response should be cached
+
+  # Edit any report.
+  Given I go to the tallinn_report content "Malta" edit screen
+  And I press "Save"
+  When I go to "/tallinn-dashboard"
+  Then the response should not be cached
+
+  But I reload the page
+  Then the response should be cached
+
+  # Restore the initial setting.
   When I go to "/admin/config/content/tallinn"
   And I select the radio button "Restricted (only moderators and Tallinn collection facilitators)"
   Then I press "Save configuration"
