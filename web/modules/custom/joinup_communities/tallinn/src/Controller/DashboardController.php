@@ -13,7 +13,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\node\Entity\Node;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
@@ -177,13 +176,12 @@ class DashboardController extends ControllerBase {
    *   A list of Tallinn report nodes keyed by the country code.
    */
   protected function getReports(): array {
-    $nids = $this->entityTypeManager()->getStorage('node')->getQuery()
-      ->condition('type', 'tallinn_report')
-      ->execute();
+    $report_nodes = $this->entityTypeManager()->getStorage('node')
+      ->loadByProperties(['type' => 'tallinn_report']);
 
     $reports = [];
     /** @var \Drupal\node\NodeInterface $report */
-    foreach (Node::loadMultiple($nids) as $report) {
+    foreach ($report_nodes as $report) {
       $country_code = static::getCountryCode($report->label());
       $reports[$country_code] = $report;
     }
