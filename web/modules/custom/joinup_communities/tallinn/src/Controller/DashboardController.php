@@ -77,6 +77,9 @@ class DashboardController extends ControllerBase {
    * dependencies on the Tallinn collection and on each report. Any changes to
    * these entities will invalidate the response cache.
    *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The HTTP request Symfony instance.
+   *
    * @return \Drupal\Core\Cache\CacheableResponseInterface
    *   The cached Json response.
    */
