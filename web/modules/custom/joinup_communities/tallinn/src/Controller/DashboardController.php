@@ -12,7 +12,6 @@ use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\og\OgAccessInterface;
@@ -35,13 +34,6 @@ class DashboardController extends ControllerBase {
   protected $entityFieldManager;
 
   /**
-   * The module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
    * The organic groups access service.
    *
    * @var \Drupal\og\OgAccessInterface
@@ -60,14 +52,11 @@ class DashboardController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager service.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
-   *   The module handler service.
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The organic groups access service.
    */
-  public function __construct(EntityFieldManagerInterface $entity_field_manager, ModuleHandlerInterface $module_handler, OgAccessInterface $og_access) {
+  public function __construct(EntityFieldManagerInterface $entity_field_manager, OgAccessInterface $og_access) {
     $this->entityFieldManager = $entity_field_manager;
-    $this->moduleHandler = $module_handler;
     $this->ogAccess = $og_access;
   }
 
@@ -77,7 +66,6 @@ class DashboardController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_field.manager'),
-      $container->get('module_handler'),
       $container->get('og.access')
     );
   }
