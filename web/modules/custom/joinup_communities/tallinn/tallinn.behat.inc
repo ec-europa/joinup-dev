@@ -102,6 +102,12 @@ class TallinnSubContext extends DrupalSubContextBase {
         Term::load($id)->delete();
       }
       Rdf::load('http://example.com/owner')->delete();
+
+      // Cleanup Search API index.
+      $storage = \Drupal::entityTypeManager()->getStorage('node');
+      foreach ($storage->loadByProperties(['type' => 'tallinn_report']) as $report) {
+        search_api_entity_delete($report);
+      }
     }
   }
 
