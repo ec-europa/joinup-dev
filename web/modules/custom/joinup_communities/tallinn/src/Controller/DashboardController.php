@@ -4,10 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Controller;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Cache\CacheableResponse;
+use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -81,8 +80,15 @@ class DashboardController extends ControllerBase {
    *
    * @return \Drupal\Core\Cache\CacheableResponseInterface
    *   The cached Json response.
+   *
+   * @throws \LogicException
+   *   If the group entity is missing.
    */
   public function getData(Request $request): CacheableResponseInterface {
+    if (!$tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+      throw new \LogicException("The Tallinn collection entity is missing.");
+    }
+
     $field_definitions = $this->entityFieldManager->getFieldDefinitions('node', 'tallinn_report');
     $entity_form_display = EntityFormDisplay::load("node.tallinn_report.default");
     $groups = $entity_form_display->getThirdPartySettings('field_group');
@@ -92,11 +98,9 @@ class DashboardController extends ControllerBase {
     // Prepare the response early, so that we can add report entities and their
     // group collection as cacheable dependencies while building the response
     // content.
-    $response = new CacheableResponse('', 200, [
-      'Content-Type' => $request->getMimeType('json'),
-    ]);
+    $response = new CacheableJsonResponse();
     // The response cache should be invalidated on any collection change.
-    $response->addCacheableDependency(Rdf::load(TALLINN_COMMUNITY_ID));
+    $response->addCacheableDependency($tallinn_collection);
 
     $data = [];
     foreach ($groups as $group_id => $group_info) {
@@ -130,21 +134,19 @@ class DashboardController extends ControllerBase {
               'report' => check_markup($value['value'], $value['format']) ?: NULL,
               'related_website' => $value['uri'],
             ];
-            // The Json response cache depends on all the reports.
+            // The Json response cache depends on each report.
             $response->addCacheableDependency($report);
           }
         }
       }
-
       // Remove the field name keys.
       $group['actions'] = array_values($group['actions']);
+
       $data[] = $group;
     }
 
     // Wrap data under 'JSON' key.
-    $data = ['JSON' => $data];
-
-    return $response->setContent(Json::encode($data));
+    return $response->setData(['JSON' => $data]);
   }
 
   /**
