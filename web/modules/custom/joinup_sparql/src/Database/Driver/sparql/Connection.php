@@ -33,7 +33,9 @@ class Connection extends BaseConnection implements ConnectionInterface {
         $recurse = FALSE;
         throw new SparqlQueryException('Execution of query failed: ' . $query);
       }
-      $this->logger->clear('webprofiler');
+      if (!empty($this->logger)) {
+        $this->logger->clear('webprofiler');
+      }
       sleep(5);
       return $this->query($query);
     }
@@ -69,7 +71,9 @@ class Connection extends BaseConnection implements ConnectionInterface {
         $recurse = FALSE;
         throw new SparqlQueryException('Execution of query failed: ' . $query);
       }
-      $this->logger->clear('webprofiler');
+      if (!empty($this->logger)) {
+        $this->logger->clear('webprofiler');
+      }
       sleep(5);
       return $this->update($query);
     }
