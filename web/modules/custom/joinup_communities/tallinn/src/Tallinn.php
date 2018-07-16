@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\tallinn;
 
 /**
@@ -9,6 +11,8 @@ class Tallinn {
 
   /**
    * The Tallinn reports countries.
+   *
+   * @var string[]
    */
   const COUNTRIES = [
     'AT' => "Austria",
