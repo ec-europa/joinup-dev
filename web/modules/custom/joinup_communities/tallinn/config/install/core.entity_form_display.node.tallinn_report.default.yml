@@ -62,7 +62,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: open
-        description: ''
+        description: '▪ Ensure that European citizens and businesses may interact digitally with public administration, if they choose to do so and whenever feasible and appropriate from a cost-benefit and user-centricity perspective.<br />▪ Work to ensure the consistent quality of user experience in digital public services as set out in the Annex “User-centricity principles for design and delivery of digital public services” of the Tallinn Declaration.<br />▪ Work to increase the readiness of European citizens and businesses to interact digitally with the public administrations.'
         required_fields: true
       label: 'Digital-by-default, inclusiveness and accessibility'
     group_tallinn_tab_2:
@@ -78,7 +78,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: '▪ Implement for key public services, at least as an option that citizens and businesses shall supply the same information only once to a public administration.<br />▪ Public administration offices take action if permitted to internally re-use this data, in due respect of data protection rules.'
         required_fields: true
       label: 'Once Only'
     group_tallinn_tab_3:
@@ -94,7 +94,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: '▪ Ensure that information security and privacy needs are taken into consideration when designing public services and public administration information and communication technology (ICT) solutions, following a risk-based approach and using state-of-the-art solutions.<br />▪ Work to increase the uptake of national eID schemes, including to make them more user-friendly and especially more suitable for mobile platforms, while ensuring their appropriate security levels.'
         required_fields: true
       label: 'Trustworthiness and Security'
     group_tallinn_tab_4:
@@ -109,7 +109,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: '▪ Make it possible for citizens and businesses to better manage (e.g. access, check and inquire about the use of, submit corrections to, authorise (re)use of) their personal data held by public administrations, at least in base registries and/or similar databases where feasible.'
         required_fields: true
       label: 'Openness and transparency'
     group_tallinn_tab_5:
@@ -124,7 +124,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: '▪ Work on national interoperability frameworks based on the European Interoperability Framework (EIF), while respecting also the relevant national standards, and adhere to EIF for cross-border digital public services.'
         required_fields: true
       label: 'Interoperability by default'
     group_tallinn_tab_6:
@@ -142,7 +142,7 @@ third_party_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: '▪ Take steps to increase the digital leadership skills within the public administration.<br />▪ Prepare and implement initiatives to widen and deepen the use of data and analytics.<br />▪ Expand and deepen the exchange and sharing of good eGovernment practices.<br />▪ Make efforts to ensure adequate and timely funding resources for the prioritised digital transformation in the public administrations.<br />▪ Devote resources for more and faster experimentation with emerging ICT within the public administration.<br />▪ Work to modernise the design of public services.'
         required_fields: true
       label: 'Horizontal enabling policy steps'
 id: node.tallinn_report.default

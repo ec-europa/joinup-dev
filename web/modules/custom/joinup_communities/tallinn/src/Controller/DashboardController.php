@@ -112,8 +112,7 @@ class DashboardController extends ControllerBase {
 
       $group = [
         'principle' => $group_info['label'],
-        // @todo Clarify this value.
-        'description' => "WE DO NOT HAVE THIS INFO!",
+        'description' => $group_info['format_settings']['description'] ?: NULL,
         'actions' => [],
       ];
       foreach ($group_info['children'] as $field_name) {
