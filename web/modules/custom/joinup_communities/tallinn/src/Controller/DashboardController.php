@@ -145,8 +145,7 @@ class DashboardController extends ControllerBase {
       $data[] = $group;
     }
 
-    // Wrap data under 'JSON' key.
-    return $response->setData(['JSON' => $data]);
+    return $response->setData($data);
   }
 
   /**
