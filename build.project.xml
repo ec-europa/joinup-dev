@@ -236,16 +236,6 @@
         </drush>
     </target>
 
-    <target name="purge-rdf-content">
-        <drush
-            command="rdf-entity-purge"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-        </drush>
-    </target>
-
     <target name="clear-cache">
         <drush
                 command="cr"
