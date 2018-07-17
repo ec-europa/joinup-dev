@@ -31,12 +31,15 @@ content:
       trim_length: 200
       trim_type: chars
       trim_suffix: …
-      more_link: false
+      wrap_class: trimmed
       more_text: More
+      more_class: more-link
       summary_handler: trim
       trim_options:
-        text: false
-      more_class: more-link
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
     third_party_settings:
       ds:
         ft:
@@ -85,6 +88,11 @@ content:
             classes: {  }
       joinup:
         template_suggestion: comma_separated
+  flag_subscribe_discussions:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_replies: true
