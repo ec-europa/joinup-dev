@@ -87,8 +87,8 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
           $build = $block_plugin->build();
           $block_content = $this->renderer->render($build);
           $response
-            ->setCacheTags($block_plugin->getCacheTags())
-            ->setCacheContexts($block_plugin->getCacheContexts())
+            ->addCacheTags($block_plugin->getCacheTags())
+            ->addCacheContexts($block_plugin->getCacheContexts())
             ->setCacheMaxAge($block_plugin->getCacheMaxAge());
         }
         catch (\Exception $exception) {
