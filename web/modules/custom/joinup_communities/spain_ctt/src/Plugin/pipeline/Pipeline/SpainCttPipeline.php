@@ -12,7 +12,6 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   label = @Translation("Spain - Center for Technology Transfer"),
  *   steps = {
  *     "manual_upload",
- *     "convert_to_adms2",
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
