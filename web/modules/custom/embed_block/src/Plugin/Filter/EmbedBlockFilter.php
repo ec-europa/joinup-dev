@@ -5,6 +5,7 @@ namespace Drupal\embed_block\Plugin\Filter;
 use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -36,6 +37,13 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
   protected $renderer;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
    * Creates a new filter class instance.
    *
    * @param array $configuration
@@ -48,11 +56,14 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
    *   The block plugin manager service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BlockManagerInterface $block_plugin_manager, RendererInterface $renderer) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BlockManagerInterface $block_plugin_manager, RendererInterface $renderer, AccountInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->blockPluginManager = $block_plugin_manager;
     $this->renderer = $renderer;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -64,7 +75,8 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
       $plugin_id,
       $plugin_definition,
       $container->get('plugin.manager.block'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('current_user')
     );
   }
 
@@ -81,20 +93,25 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
       // A block could occur multiple times. We optimize the number of
       // replacements by keeping track on replacements already made.
       if (!isset($processed[$found['plugin_id']])) {
+        $block_content = NULL;
         try {
           /** @var \Drupal\Core\Block\BlockPluginInterface $block_plugin */
           $block_plugin = $this->blockPluginManager->createInstance($found[1]);
-          $build = $block_plugin->build();
-          $block_content = $this->renderer->render($build);
-          $response
-            ->addCacheTags($block_plugin->getCacheTags())
-            ->addCacheContexts($block_plugin->getCacheContexts())
-            ->setCacheMaxAge($block_plugin->getCacheMaxAge());
+          if ($block_plugin->access($this->currentUser)) {
+            $build = $block_plugin->build();
+            $block_content = $this->renderer->render($build);
+            $response
+              ->addCacheTags($block_plugin->getCacheTags())
+              ->addCacheContexts($block_plugin->getCacheContexts())
+              ->setCacheMaxAge($block_plugin->getCacheMaxAge());
+          }
         }
         catch (\Exception $exception) {
-          $block_content = '';
+          // Nothing to do.
         }
-        $text = str_replace($found[0], $block_content, $text);
+        if ($block_content) {
+          $text = str_replace($found[0], $block_content, $text);
+        }
         $processed[$found['plugin_id']] = TRUE;
       }
     }
