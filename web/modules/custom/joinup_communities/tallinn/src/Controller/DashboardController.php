@@ -100,6 +100,8 @@ class DashboardController extends ControllerBase {
     $response = new CacheableJsonResponse();
     // The response cache should be invalidated on any collection change.
     $response->addCacheableDependency($tallinn_collection);
+    // The response cache should be invalidated on module settings change.
+    $response->addCacheableDependency($this->config('tallinn.settings'));
 
     $data = [];
     foreach ($groups as $group_id => $group_info) {

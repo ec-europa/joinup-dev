@@ -44,7 +44,8 @@ Feature:
     Given I am logged in as Jared
     When I go to "/tallinn-dashboard"
     Then the response status code should be 200
-    And I go to "/admin/config/content/tallinn"
+    And the response should be cached
+    When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
     And the radio button "Restricted (only moderators and Tallinn collection facilitators)" from field "Access to the dashboard data" should be selected
@@ -60,8 +61,10 @@ Feature:
     Given I go to "/tallinn-dashboard"
     Then the response status code should be 200
 
-    # Test the Json response caching.
-    And the response should be cached
+    # After changing the access policy, the cache has been cleared.
+    And the response should not be cached
+    But I reload the page
+    Then the response should be cached
 
     # Edit the group entity.
     Given I go to the "Tallinn Ministerial Declaration" collection edit form
@@ -69,7 +72,6 @@ Feature:
     When I press "Publish"
     And I go to "/tallinn-dashboard"
     Then the response should not be cached
-
     But I reload the page
     Then the response should be cached
 
@@ -78,7 +80,6 @@ Feature:
     And I press "Save"
     When I go to "/tallinn-dashboard"
     Then the response should not be cached
-
     But I reload the page
     Then the response should be cached
 
