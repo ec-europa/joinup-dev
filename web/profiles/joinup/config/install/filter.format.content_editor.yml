@@ -93,19 +93,19 @@ filters:
     id: filter_html_escape
     provider: filter
     status: false
-    weight: -39
+    weight: -38
     settings: {  }
   filter_autop:
     id: filter_autop
     provider: filter
     status: false
-    weight: -38
+    weight: -37
     settings: {  }
   linkit:
     id: linkit
     provider: linkit
     status: false
-    weight: -37
+    weight: -36
     settings:
       title: true
   video_embed_wysiwyg:
@@ -118,5 +118,5 @@ filters:
     id: embed_block
     provider: embed_block
     status: true
-    weight: -50
+    weight: -39
     settings: {  }

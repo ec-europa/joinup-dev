@@ -1228,8 +1228,10 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
     'field_ar_elibrary_creation',
   ];
 
-  if (in_array($variables['element']['#name'], $slider_field_names)) {
-    $suggestions[] = 'select__slider';
+  if (isset($variables['element']['#name'])) {
+    if (in_array($variables['element']['#name'], $slider_field_names)) {
+      $suggestions[] = 'select__slider';
+    }
   }
 }
 
