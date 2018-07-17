@@ -1,0 +1,68 @@
+dashboard:
+  version: 1.0
+  css:
+    component:
+      lib/tallinn-dashboard.css: {}
+  js:
+    lib/tallinn-dashboard.js:
+      attributes:
+        defer: true
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+    - tallinn/webtools.highcharts
+    - tallinn/webtools.highcharts-more
+    - tallinn/webtools.highcharts-exporting
+    - tallinn/webtools.highcharts-export-data
+
+webtools.highcharts:
+  remote: https://webgate.ec.europa.eu/fpfis/wikis/display/webtools/Charts
+  license:
+    name: 'Creative Commons (CC) Attribution-NonCommercial licence'
+    url: https://creativecommons.org/licenses/by-nc/3.0/
+    gpl-compatible: true
+  js:
+    '//europa.eu/webtools/libs/highcharts/highcharts.js':
+      type: external
+      minified: true
+      attributes:
+        defer: true
+
+webtools.highcharts-more:
+  remote: https://webgate.ec.europa.eu/fpfis/wikis/display/webtools/Charts
+  license:
+    name: 'Creative Commons (CC) Attribution-NonCommercial licence'
+    url: https://creativecommons.org/licenses/by-nc/3.0/
+    gpl-compatible: true
+  js:
+    '//europa.eu/webtools/libs/highcharts/highcharts-more.js':
+      type: external
+      minified: true
+      attributes:
+        defer: true
+
+webtools.highcharts-exporting:
+  remote: https://webgate.ec.europa.eu/fpfis/wikis/display/webtools/Charts
+  license:
+    name: 'Creative Commons (CC) Attribution-NonCommercial licence'
+    url: https://creativecommons.org/licenses/by-nc/3.0/
+    gpl-compatible: true
+  js:
+    '//europa.eu/webtools/libs/highcharts/modules/exporting.js':
+      type: external
+      minified: true
+      attributes:
+        defer: true
+
+webtools.highcharts-export-data:
+  remote: https://webgate.ec.europa.eu/fpfis/wikis/display/webtools/Charts
+  license:
+    name: 'Creative Commons (CC) Attribution-NonCommercial licence'
+    url: https://creativecommons.org/licenses/by-nc/3.0/
+    gpl-compatible: true
+  js:
+    '//europa.eu/webtools/libs/highcharts/modules/export-data.js':
+      type: external
+      minified: true
+      attributes:
+        defer: true
