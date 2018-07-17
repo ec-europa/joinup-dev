@@ -2,6 +2,7 @@
 
 namespace Drupal\embed_block\Plugin\Filter;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Block\BlockManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -93,23 +94,29 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
       // A block could occur multiple times. We optimize the number of
       // replacements by keeping track on replacements already made.
       if (!isset($processed[$found['plugin_id']])) {
-        $block_content = NULL;
         try {
           /** @var \Drupal\Core\Block\BlockPluginInterface $block_plugin */
           $block_plugin = $this->blockPluginManager->createInstance($found[1]);
           if ($block_plugin->access($this->currentUser)) {
             $build = $block_plugin->build();
             $block_content = $this->renderer->render($build);
-            $response
-              ->addCacheTags($block_plugin->getCacheTags())
-              ->addCacheContexts($block_plugin->getCacheContexts())
-              ->setCacheMaxAge($block_plugin->getCacheMaxAge());
           }
+          // If the user cannot access the block, means that the block exists
+          // but should not be rendered, so we still have to replace the
+          // placeholder with an empty string.
+          else {
+            $block_content = '';
+          }
+          // Cache metadata applies regardless if the user can access the block.
+          $response
+            ->addCacheTags($block_plugin->getCacheTags())
+            ->addCacheContexts($block_plugin->getCacheContexts())
+            ->setCacheMaxAge($block_plugin->getCacheMaxAge());
         }
-        catch (\Exception $exception) {
-          // Nothing to do.
+        catch (PluginException $exception) {
+          $block_content = NULL;
         }
-        if ($block_content) {
+        if ($block_content !== NULL) {
           $text = str_replace($found[0], $block_content, $text);
         }
         $processed[$found['plugin_id']] = TRUE;

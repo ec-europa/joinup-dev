@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Controller;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableResponseInterface;
@@ -12,8 +11,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\tallinn\DashboardAccessInterface;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
 use Drupal\tallinn\Tallinn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,11 +31,11 @@ class DashboardController extends ControllerBase {
   protected $entityFieldManager;
 
   /**
-   * The organic groups access service.
+   * The dashboard access service.
    *
-   * @var \Drupal\og\OgAccessInterface
+   * @var \Drupal\tallinn\DashboardAccessInterface
    */
-  protected $ogAccess;
+  protected $dashboardAccess;
 
   /**
    * Static cache of country list.
@@ -50,12 +49,12 @@ class DashboardController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager service.
-   * @param \Drupal\og\OgAccessInterface $og_access
-   *   The organic groups access service.
+   * @param \Drupal\tallinn\DashboardAccessInterface $dashboard_access
+   *   The dashboard access service.
    */
-  public function __construct(EntityFieldManagerInterface $entity_field_manager, OgAccessInterface $og_access) {
+  public function __construct(EntityFieldManagerInterface $entity_field_manager, DashboardAccessInterface $dashboard_access) {
     $this->entityFieldManager = $entity_field_manager;
-    $this->ogAccess = $og_access;
+    $this->dashboardAccess = $dashboard_access;
   }
 
   /**
@@ -64,7 +63,7 @@ class DashboardController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_field.manager'),
-      $container->get('og.access')
+      $container->get('tallinn.dashbord.access')
     );
   }
 
@@ -158,16 +157,7 @@ class DashboardController extends ControllerBase {
    *   The access result object.
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    $access_type = $this->config('tallinn.settings')->get('dashboard.access_type');
-
-    return AccessResult::allowedIf(
-      // Either the access is public.
-      ($access_type === 'public') ||
-      // Or the user has site-wide access permission.
-      $account->hasPermission('administer tallinn settings') ||
-      // Or the user has group access permission.
-      $this->ogAccess->userAccess(Rdf::load(TALLINN_COMMUNITY_ID), 'administer tallinn settings')->isAllowed()
-    );
+    return $this->dashboardAccess->access($account);
   }
 
   /**

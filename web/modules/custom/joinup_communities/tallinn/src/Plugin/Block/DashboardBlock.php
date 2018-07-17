@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Plugin\Block;
 
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\tallinn\DashboardAccessInterface;
 use Drupal\tallinn\Tallinn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +34,13 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $entityTypeManager;
 
   /**
+   * The dashboard access service.
+   *
+   * @var \Drupal\tallinn\DashboardAccessInterface
+   */
+  protected $dashboardAccess;
+
+  /**
    * Constructs a new plugin class instance.
    *
    * @param array $configuration
@@ -41,10 +51,13 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\tallinn\DashboardAccessInterface $dashboard_access
+   *   The dashboard access service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, DashboardAccessInterface $dashboard_access) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
+    $this->dashboardAccess = $dashboard_access;
   }
 
   /**
@@ -55,7 +68,8 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('tallinn.dashbord.access')
     );
   }
 
@@ -82,6 +96,13 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     return $tags;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account): AccessResultInterface {
+    return $this->dashboardAccess->access($account);
   }
 
   /**
