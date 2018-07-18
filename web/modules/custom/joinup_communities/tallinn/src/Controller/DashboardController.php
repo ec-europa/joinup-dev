@@ -131,8 +131,8 @@ class DashboardController extends ControllerBase {
             $group['actions'][$field_name]['countries'][$country_code] = [
               'country_name' => $report->label(),
               'status' => $status_options[$value['status']],
-              'report' => check_markup($value['value'], $value['format']) ?: NULL,
-              'related_website' => $value['uri'],
+              'report' => check_markup($value['value'], $value['format']) ?: '',
+              'related_website' => $value['uri'] ?? NULL,
             ];
             // The Json response cache depends on each report.
             $response->addCacheableDependency($report);
