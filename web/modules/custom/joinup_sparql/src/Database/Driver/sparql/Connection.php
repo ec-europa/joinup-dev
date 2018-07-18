@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_sparql\Database\Driver\sparql;
 
 use Drupal\rdf_entity\Database\Driver\sparql\Connection as BaseConnection;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Exception\SparqlQueryException;
-use EasyRdf\Http\Exception as EasyRdfException;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -18,76 +19,34 @@ class Connection extends BaseConnection implements ConnectionInterface {
    * {@inheritdoc}
    */
   public function query(string $query): Result {
-    static $recurse = FALSE;
-    if (!empty($this->logger)) {
-      $this->logger->start('webprofiler');
-      $query_start = microtime(TRUE);
-    }
-
     try {
-      $results = $this->connection->query($query);
+      return parent::query($query);
     }
-    catch (EasyRdfException $e) {
-      // Handle the virtuoso checkpoint case.
-      if ($recurse == TRUE) {
-        $recurse = FALSE;
-        throw new SparqlQueryException('Execution of query failed: ' . $query);
-      }
-      if (!empty($this->logger)) {
-        $this->logger->clear('webprofiler');
-      }
+    catch (SparqlQueryException $e) {
+      // During a Virtuoso checkpoint, the server locks down, causing HTTP
+      // requests on the SPARQL endpoint to fail with a 404 response. We wait a
+      // reasonable amount of time and then we retry one more time.
+      // @see: http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
       return $this->query($query);
     }
-    catch (\Exception $e) {
-      throw $e;
-    }
-
-    if (!empty($this->logger)) {
-      $query_end = microtime(TRUE);
-      $this->query = $query;
-      $this->logger->log($this, [$query], $query_end - $query_start);
-    }
-
-    return $results;
   }
 
   /**
    * {@inheritdoc}
    */
   public function update(string $query): Result {
-    static $recurse = FALSE;
-    if (!empty($this->logger)) {
-      $this->logger->start('webprofiler');
-      $query_start = microtime(TRUE);
-    }
-
     try {
-      $results = $this->connection->update($query);
+      return parent::update($query);
     }
-    catch (EasyRdfException $e) {
-      // Handle the virtuoso checkpoint case.
-      if ($recurse == TRUE) {
-        $recurse = FALSE;
-        throw new SparqlQueryException('Execution of query failed: ' . $query);
-      }
-      if (!empty($this->logger)) {
-        $this->logger->clear('webprofiler');
-      }
+    catch (SparqlQueryException $e) {
+      // During a Virtuoso checkpoint, the server locks down, causing HTTP
+      // requests on the SPARQL endpoint to fail with a 404 response. We wait a
+      // reasonable amount of time and then we retry one more time.
+      // @see: http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
       return $this->update($query);
     }
-    catch (\Exception $e) {
-      throw $e;
-    }
-
-    if (!empty($this->logger)) {
-      $query_end = microtime(TRUE);
-      $this->query = $query;
-      $this->logger->log($this, [$query], $query_end - $query_start);
-    }
-
-    return $results;
   }
 
 }
