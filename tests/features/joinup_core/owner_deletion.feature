@@ -6,11 +6,11 @@ Feature: Deletion of collection and solution owners
 
   Scenario Outline: A privileged user cannot remove all owners of a group.
     Given users:
-      | Username       | Roles     |
-      | Group owner 1  |           |
-      | Group owner 2  |           |
-      | Group member   |           |
-      | Site moderator | moderator |
+      | Username       | Roles     | First name | Family name |
+      | Group owner 1  |           | Group      | owner 1     |
+      | Group owner 2  |           | Group      | owner 2     |
+      | Group member   |           | Group      | member      |
+      | Site moderator | moderator | Site       | moderator   |
     And the following <type>:
       | title | An owned group |
       | state | validated           |
