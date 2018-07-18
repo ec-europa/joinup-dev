@@ -36,7 +36,7 @@ Feature: Submit the contact form
     Then the following email should have been sent:
       | template           | Contact form submission          |
       | from               | digit-joinup@ec.europa.eu        |
-      | recipient          | digit-joinup@ec.europa.eu        |
+      | recipient_mail     | digit-joinup@ec.europa.eu        |
       | subject            | Joinup - Contact form submission |
       | body               | Dear sir, madam, ...             |
       | signature_required | no                               |

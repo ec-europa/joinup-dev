@@ -8,7 +8,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
-use Drupal\Tests\rdf_entity\Functional\RdfWebTestBase;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 
@@ -17,7 +16,7 @@ use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
  *
  * @group joinup_core
  */
-class FileUrlFieldTest extends RdfWebTestBase {
+class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
 
   use FileUrlTrait;
   use EntityUtilityTrait;
