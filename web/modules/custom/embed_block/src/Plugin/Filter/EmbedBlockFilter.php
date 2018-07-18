@@ -108,10 +108,7 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
             $block_content = '';
           }
           // Cache metadata applies regardless if the user can access the block.
-          $response
-            ->addCacheTags($block_plugin->getCacheTags())
-            ->addCacheContexts($block_plugin->getCacheContexts())
-            ->setCacheMaxAge($block_plugin->getCacheMaxAge());
+          $response->addCacheableDependency($block_plugin);
         }
         catch (PluginException $exception) {
           $block_content = NULL;
