@@ -19,7 +19,7 @@ Feature: User registration
       | First name  | Test                  |
       | Family name | User                  |
     Then I should see the success message "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | TeStUSer                                                                                                                                                                                                                                         |
       | subject   | Your Joinup account is pending approval.                                                                                                                                                                                                         |
       | body      | Thank you for registering at Joinup. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to sign in, set your password, and other details. |
@@ -30,7 +30,7 @@ Feature: User registration
     And I click "Edit" in the "Test User" row
     And I select the radio button "Active"
     And I press "Save"
-    Then the following system email should have been sent:
+    Then the following email should have been sent:
       | recipient | TeStUSer                                                                                                                        |
       | subject   | Your Joinup account has been activated.                                                                                         |
       | body      | Your account at Joinup has been activated. You may now log in by clicking this link or copying and pasting it into your browser |
@@ -55,7 +55,7 @@ Feature: User registration
       | Confirm password           | SuperSecret           |
       | Notify user of new account | 1                     |
       | Active                     | 1                     |
-    Then the following system email should have been sent:
+    Then the following email should have been sent:
       | recipient | SuperUser                                                                                                                                                                   |
       | subject   | Your Joinup account was created successfully.                                                                                                                               |
       | body      | Your account on Joinup has been created.  If you believe that a Joinup account linked to this email address was erroneously created, please contact The Joinup Support Team |

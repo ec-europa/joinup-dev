@@ -75,7 +75,7 @@ Feature: Solution membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Add the facilitator role to the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Marcia Garcia                                                                             |
       | subject   | Your role has been change to The Missing Sons                                             |
       | body      | A solution moderator has changed your role in this group to Member, Solution facilitator. |
@@ -84,7 +84,7 @@ Feature: Solution membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Remove the facilitator role from the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Marcia Garcia                                                       |
       | subject   | Your role has been change to The Missing Sons                       |
       | body      | A solution moderator has changed your role in this group to Member. |

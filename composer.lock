@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bc0ab24e72ee5e76b3cf138ed94a674",
+    "content-hash": "5fa01be92cf0cb4c9664c75f4d04cc93",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4028,25 +4028,22 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha6",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha6"
+                "reference": "8.x-1.0-alpha7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha6.zip",
-                "reference": "8.x-1.0-alpha6",
-                "shasum": "d0ad0719ab0871054d75c2c73fdeb40db94812bf"
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "d0742c0a10de7335003d1e707998e25f6673750c"
             },
             "require": {
                 "drupal/core": "*",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "php": ">=7.1"
-            },
-            "require-dev": {
-                "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
             "extra": {
@@ -4054,16 +4051,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6",
-                    "datestamp": "1531203521",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1531395521",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "Support Travis CI @see https://github.com/ec-europa/rdf_entity/pull/44": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/44.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
