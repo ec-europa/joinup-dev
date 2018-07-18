@@ -630,11 +630,11 @@ function solution_rdf_entity_update(EntityInterface $entity) {
   // transition made. This should move to an event subscriber.
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
-    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'default');
   }
   solution_invalidate_collection($entity);
 }

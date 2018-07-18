@@ -69,7 +69,7 @@ Feature:
     Then I should see the link "Go back"
     When I press "Cancel account"
     And I wait for the batch job to finish
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                                                                                                                                                                                                                            |
       | subject        | Your account has been deleted.                                                                                                                                                                                                                                      |
       | body           | Your account alicia__1997 has been deleted.This action has been done in the framework of moderation activities regularly conducted on the Joinup platform. If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
@@ -83,14 +83,14 @@ Feature:
     And I click "Edit" in the "Header" region
     And I press "Cancel account"
     And I press "Cancel account"
-    Then the following system email should have been sent:
+    Then the following email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                           |
       | subject        | Account cancellation request for alicia__1997 at Joinup            |
       | body           | by clicking this link or copying and pasting it into your browser: |
     # Click the confirmation link in the email.
     When I click the delete confirmation link for the user "alicia__1997" from the last email
     And I wait for the batch job to finish
-    Then the following system email should have been sent:
+    Then the following email should have been sent:
       | recipient_mail | AliciaPotter@example.com                                                                                 |
       | subject        | Your account has been deleted.                                                                           |
       | body           | If you believe that this action has been performed by mistake, please contact The Joinup Support Team at |
