@@ -534,6 +534,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *    Throws an exception if the parent item is not found.
    *
    * @Given (the following )custom page(s) menu structure:
+   * @Given (the following )collection menu structure:
    */
   public function givenCollectionMenuStructure(TableNode $menu_table) {
     foreach ($menu_table->getColumnsHash() as $values) {
