@@ -18,7 +18,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function query(string $query): Result {
+  public function query(string $query, array $args = [], array $options = []): Result {
     try {
       return parent::query($query);
     }
@@ -35,7 +35,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function update(string $query): Result {
+  public function update(string $query, array $args = [], array $options = []): Result {
     try {
       return parent::update($query);
     }
