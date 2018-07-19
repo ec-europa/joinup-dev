@@ -1134,15 +1134,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $text
    *   Text in the row.
    *
-   * @return \Behat\Mink\Element\NodeElement|null
+   * @return \Behat\Mink\Element\NodeElement
    *   The checkbox element.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The checkbox element.
    */
   protected function getRowCheckboxByText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
