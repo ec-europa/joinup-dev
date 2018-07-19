@@ -45,10 +45,10 @@ Feature: Solution notifications
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Please, check my updates"
     And I press "Propose"
-    Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                                           |
-      | subject   | Joinup: Changes have been proposed for your solution                                                                                                                                   |
-      | body      | The Joinup Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
+    Then the email sent to "Ramiro Myers" with subject "Joinup: Changes have been proposed for your solution" contains the following lines of text:
+      | text                                                                                                                                                                                   |
+      | The Joinup Support Team has requested you to modify the interoperability solution "Solution notification to propose changes", with the following motivation: Please, check my updates. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                                     |
 
     # Template 11. The moderation team approves a deletion request.
     When all e-mails have been sent
@@ -104,10 +104,10 @@ Feature: Solution notifications
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Can you change this?"
     And I press "Request changes"
-    Then the following email should have been sent:
-      | recipient | Ramiro Myers                                                                                                                                                              |
-      | subject   | Joinup: You are requested to update your solution                                                                                                                         |
-      | body      | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
+    Then the email sent to "Ramiro Myers" with subject "Joinup: You are requested to update your solution" contains the following lines of text:
+      | text                                                                                                                                                                      |
+      | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                                                                                        |
 
     # Template 18. The moderation team deletes a solution without prior request.
     When all e-mails have been sent
@@ -127,17 +127,17 @@ Feature: Solution notifications
     And I go to the homepage of the "Solution notification to propose from request changes" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Propose"
-    Then the following email should have been sent:
-      | recipient | Pat Harper                                                                                                                               |
-      | subject   | Joinup: An update of a solution has been proposed                                                                                        |
-      | body      | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on Joinup. |
+    Then the email sent to "Pat Harper" with subject "Joinup: An update of a solution has been proposed" contains the following lines of text:
+      | text                                                                                                                                     |
+      | Ramiro Myers has proposed an update of the Interoperability solution: "Solution notification to propose from request changes" on Joinup. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                                                       |
 
     # Template 10. The owner requests a deletion.
     When all e-mails have been sent
     And I go to the homepage of the "Solution notification to request deletion" solution
     And I click "Edit" in the "Entity actions" region
     And I press "Request deletion"
-    Then the following email should have been sent:
-      | recipient | Pat Harper                                                                                                                                              |
-      | subject   | Joinup: A solution deletion has been requested                                                                                                          |
-      | body      | Ramiro Myers requested that the Solution notification to request deletion interoperability solution, part of Collection of random solutions be deleted. |
+    Then the email sent to "Pat Harper" with subject "Joinup: A solution deletion has been requested" contains the following lines of text:
+      | text                                                                                                                                                    |
+      | Ramiro Myers requested that the Solution notification to request deletion interoperability solution, part of Collection of random solutions be deleted. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                                                                      |
