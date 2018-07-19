@@ -16,7 +16,6 @@ use Drupal\tallinn\DashboardAccessInterface;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
 use Drupal\tallinn\Tallinn;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a controller for the 'tallinn.dashboard' route.
@@ -60,7 +59,7 @@ class DashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('entity_field.manager'),
       $container->get('tallinn.dashbord.access')
@@ -74,16 +73,13 @@ class DashboardController extends ControllerBase {
    * dependencies on the Tallinn collection and on each report. Any changes to
    * these entities will invalidate the response cache.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The HTTP request Symfony instance.
-   *
    * @return \Drupal\Core\Cache\CacheableResponseInterface
    *   The cached Json response.
    *
    * @throws \LogicException
    *   If the group entity is missing.
    */
-  public function getData(Request $request): CacheableResponseInterface {
+  public function getData(): CacheableResponseInterface {
     if (!$tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
       throw new \LogicException("The Tallinn collection entity is missing.");
     }
