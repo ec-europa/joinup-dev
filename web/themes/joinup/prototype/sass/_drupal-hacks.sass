@@ -141,6 +141,15 @@ ul.contextual-links
   outline: none
   outline-offset: 0
 
+// Fix contextual button on collection and solution pages.
+.canonical-entity-page--rdf-entity--solution,
+.canonical-entity-page--rdf-entity--collection
+  article.contextual-region
+    &>.contextual
+      //right: -46px
+      top: -36px
+
+
 // Fixes dropdown button for main menu.
 // It is needed only for admin.
 #block-joinup-theme-main-menu
