@@ -31,15 +31,15 @@ Feature:
 
     Given I am logged in as Dinesh
     When I go to "/tallinn-dashboard"
-    Then the response status code should be 403
+    Then I should get an access denied error
     And I go to "/admin/config/content/tallinn"
-    Then the response status code should be 403
+    Then I should get an access denied error
 
     Given I am logged in as Gilfoyle
     When I go to "/tallinn-dashboard"
     Then the response status code should be 200
     And I go to "/admin/config/content/tallinn"
-    Then the response status code should be 403
+    Then I should get an access denied error
 
     Given I am logged in as Jared
     When I go to "/tallinn-dashboard"
