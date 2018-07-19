@@ -1110,7 +1110,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I select/check the :row_text row
    */
-  public function assertSelectRow(string $text): void {
+  public function checkTableselectRow(string $text): void {
     $checkbox = $this->getRowCheckboxByText($text);
     $checkbox->check();
   }
@@ -1123,7 +1123,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I deselect/uncheck the :row_text row
    */
-  public function assertDeselectRow(string $text): void {
+  public function uncheckTableselectRow(string $text): void {
     $checkbox = $this->getRowCheckboxByText($text);
     $checkbox->uncheck();
   }
