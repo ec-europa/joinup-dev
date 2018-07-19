@@ -107,14 +107,15 @@ class EmbedBlockFilter extends FilterBase implements ContainerFactoryPluginInter
           else {
             $block_content = '';
           }
+
+          // Replace the placeholder.
+          $text = str_replace($found[0], $block_content, $text);
+
           // Cache metadata applies regardless if the user can access the block.
           $response->addCacheableDependency($block_plugin);
         }
         catch (PluginException $exception) {
-          $block_content = NULL;
-        }
-        if ($block_content !== NULL) {
-          $text = str_replace($found[0], $block_content, $text);
+          // The plugin doesn't exist, we don't touch the placeholder.
         }
         $processed[$found['plugin_id']] = TRUE;
       }
