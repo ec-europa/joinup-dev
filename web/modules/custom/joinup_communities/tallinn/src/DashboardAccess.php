@@ -49,7 +49,7 @@ class DashboardAccess implements DashboardAccessInterface {
   public function access(AccountInterface $account): AccessResultInterface {
     return AccessResult::allowedIf(
       // Either the access is public.
-      ($this->state->get('tallinn.dashboard.access_policy') === 'public') ||
+      ($this->state->get('tallinn.dashboard.access_policy', 'restricted') === 'public') ||
       // Or the user has site-wide access permission.
       $account->hasPermission('administer tallinn settings') ||
       // Or the user has group access permission.
