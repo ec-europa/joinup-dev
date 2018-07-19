@@ -9,6 +9,7 @@ dependencies:
   - comment
   - ds
   - facets
+  - joinup_sparql
   - image
   - link
   - message

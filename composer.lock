@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c854f1e13144bb96560b818f2c39111",
+    "content-hash": "71dec1748892d0a7d7f9bc202f622323",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4059,7 +4059,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
+                    "Provide an interface for the Connection class. @see https://github.com/ec-europa/rdf_entity/pull/45": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/45.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10876,6 +10877,17 @@
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
             "time": "2017-08-01T08:02:14+00:00"
+        },
+        {
+            "name": "minimaxir/big-list-of-naughty-strings",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2018-05-24T16:39:27+00:00"
         },
         {
             "name": "myclabs/deep-copy",
