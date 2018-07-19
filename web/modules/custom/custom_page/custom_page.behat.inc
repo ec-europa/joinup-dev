@@ -329,7 +329,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function assertCustomPageTileHasLogo(string $title): void {
     // Retrieve the URL of the logo in the tile.
     $tile = $this->getTileByHeading($title);
-    $actual_url = $tile->find('xpath', '//img/@src')->getText();
+    $actual_url = $tile->find('xpath', '//img')->getAttribute('src');
     if (!$actual_url) {
       throw new \Exception("No logo link found in the '$title' tile.");
     }
