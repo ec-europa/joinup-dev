@@ -26,7 +26,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
       // During a Virtuoso checkpoint, the server locks down, causing HTTP
       // requests on the SPARQL endpoint to fail with a 404 response. We wait a
       // reasonable amount of time and then we retry one more time.
-      // @see: http://docs.openlinksw.com/virtuoso/checkpoint/
+      // @see http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
       return $this->query($query);
     }
@@ -43,7 +43,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
       // During a Virtuoso checkpoint, the server locks down, causing HTTP
       // requests on the SPARQL endpoint to fail with a 404 response. We wait a
       // reasonable amount of time and then we retry one more time.
-      // @see: http://docs.openlinksw.com/virtuoso/checkpoint/
+      // @see http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
       return $this->update($query);
     }
