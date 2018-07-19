@@ -6,8 +6,8 @@ namespace Drupal\tallinn;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -17,11 +17,11 @@ use Drupal\rdf_entity\Entity\Rdf;
 class DashboardAccess implements DashboardAccessInterface {
 
   /**
-   * The config factory service.
+   * The state service.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\Core\State\StateInterface
    */
-  protected $configFactory;
+  protected $state;
 
   /**
    * The OG access service.
@@ -33,13 +33,13 @@ class DashboardAccess implements DashboardAccessInterface {
   /**
    * Creates a new service instance.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory service.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The state service.
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, OgAccessInterface $og_access) {
-    $this->configFactory = $config_factory;
+  public function __construct(StateInterface $state, OgAccessInterface $og_access) {
+    $this->state = $state;
     $this->ogAccess = $og_access;
   }
 
@@ -47,11 +47,9 @@ class DashboardAccess implements DashboardAccessInterface {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    $access_type = $this->configFactory->get('tallinn.settings')->get('dashboard.access_type');
-
     return AccessResult::allowedIf(
       // Either the access is public.
-      ($access_type === 'public') ||
+      ($this->state->get('tallinn.dashboard.access_policy') === 'public') ||
       // Or the user has site-wide access permission.
       $account->hasPermission('administer tallinn settings') ||
       // Or the user has group access permission.

@@ -7,7 +7,6 @@ namespace Drupal\tallinn\Plugin\Block;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -42,13 +41,6 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $dashboardAccess;
 
   /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Constructs a new plugin class instance.
    *
    * @param array $configuration
@@ -61,14 +53,11 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The entity type manager service.
    * @param \Drupal\tallinn\DashboardAccessInterface $dashboard_access
    *   The dashboard access service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, DashboardAccessInterface $dashboard_access, ConfigFactoryInterface $config_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, DashboardAccessInterface $dashboard_access) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->dashboardAccess = $dashboard_access;
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -80,8 +69,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('tallinn.dashbord.access'),
-      $container->get('config.factory')
+      $container->get('tallinn.dashbord.access')
     );
   }
 
@@ -98,8 +86,10 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags(): array {
-    // Add the collection cache tags.
-    $tags = Cache::mergeTags(parent::getCacheTags(), Rdf::load(TALLINN_COMMUNITY_ID)->getCacheTags());
+    // Add the 'tallinn_dashboard' tag so that we can invalidate the cache in
+    // \Drupal\tallinn\Form\TallinnSettingsForm::submitForm().
+    // @see \Drupal\tallinn\Form\TallinnSettingsForm::submitForm()
+    $tags = Cache::mergeTags(parent::getCacheTags(), ['tallinn_dashboard']);
 
     // Merge the tags of each report.
     $storage = $this->entityTypeManager->getStorage('node');
@@ -107,8 +97,8 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $tags = Cache::mergeTags($tags, $report->getCacheTags());
     }
 
-    // Add the cache tags of 'tallinn.settings' object.
-    return Cache::mergeTags($tags, $this->configFactory->get('tallinn.settings')->getCacheTags());
+    // Add the collection cache tags.
+    return Cache::mergeTags($tags, Rdf::load(TALLINN_COMMUNITY_ID)->getCacheTags());
   }
 
   /**

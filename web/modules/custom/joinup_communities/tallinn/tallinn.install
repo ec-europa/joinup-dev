@@ -67,3 +67,10 @@ function tallinn_install() {
     ],
   ])->save();
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function tallinn_uninstall() {
+  \Drupal::state()->delete('tallinn.dashboard.access_policy');
+}

@@ -6,6 +6,7 @@ namespace Drupal\tallinn\Controller;
 
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
@@ -94,10 +95,14 @@ class DashboardController extends ControllerBase {
     // group collection as cacheable dependencies while building the response
     // content.
     $response = new CacheableJsonResponse();
+
+    // Tag the response cache with 'tallinn_dashboard' so that we can invalidate
+    // it in \Drupal\tallinn\Form\TallinnSettingsForm::submitForm().
+    // @see \Drupal\tallinn\Form\TallinnSettingsForm::submitForm()
+    $cacheable_metadata = (new CacheableMetadata())->addCacheTags(['tallinn_dashboard']);
+    $response->addCacheableDependency($cacheable_metadata);
     // The response cache should be invalidated on any collection change.
     $response->addCacheableDependency($tallinn_collection);
-    // The response cache should be invalidated on module settings change.
-    $response->addCacheableDependency($this->config('tallinn.settings'));
 
     $data = [];
     foreach ($groups as $group_id => $group_info) {
