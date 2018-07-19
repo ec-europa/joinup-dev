@@ -1139,6 +1139,10 @@ function joinup_core_get_og_members_overview_sort_handlers_info(string $order): 
       'expose' => ['label' => ''],
       'plugin_id' => 'standard',
     ],
+    // Also sort by username so that the results are displayed in a consistent
+    // order if the user has empty values for the first name and family name.
+    // Our tests were exposing that having no ordering could cause bulk
+    // operation actions to be taken on the wrong users.
     'name' => [
       'id' => 'name',
       'table' => 'users_field_data',
