@@ -1,5 +1,5 @@
 tallinn.dashboard:
-  path: '/tallinn-dashboard'
+  path: '/api/v1/communities/tallinn/report'
   defaults:
     _controller: 'Drupal\tallinn\Controller\DashboardController::getData'
   requirements:

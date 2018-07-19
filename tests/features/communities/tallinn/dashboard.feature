@@ -20,7 +20,7 @@ Feature:
       | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
 
     Given I am an anonymous user
-    When I go to "/tallinn-dashboard"
+    When I go to "/api/v1/communities/tallinn/report"
     Then I should see the following error message:
       | error messages                                     |
       | Access denied. You must sign in to view this page. |
@@ -30,19 +30,19 @@ Feature:
       | Access denied. You must sign in to view this page. |
 
     Given I am logged in as Dinesh
-    When I go to "/tallinn-dashboard"
+    When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     And I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Gilfoyle
-    When I go to "/tallinn-dashboard"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
     And I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Jared
-    When I go to "/tallinn-dashboard"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
     And the response should be cached
     When I go to "/admin/config/content/tallinn"
@@ -58,7 +58,7 @@ Feature:
       | Permissions successfully updated. |
     And the radio button "Public" from field "Access to the dashboard data" should be selected
 
-    Given I go to "/tallinn-dashboard"
+    Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     # After changing the access policy, the cache has been cleared.
@@ -70,7 +70,7 @@ Feature:
     Given I go to the "Tallinn Ministerial Declaration" collection edit form
     And I fill in "Description" with "Hooli"
     When I press "Publish"
-    And I go to "/tallinn-dashboard"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response should not be cached
     But I reload the page
     Then the response should be cached
@@ -78,19 +78,19 @@ Feature:
     # Edit any report.
     Given I go to the tallinn_report content "Malta" edit screen
     And I press "Save"
-    When I go to "/tallinn-dashboard"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response should not be cached
     But I reload the page
     Then the response should be cached
 
     Given I am logged in as Gilfoyle
-    And I go to "/tallinn-dashboard"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am logged in as Dinesh
-    And I go to "/tallinn-dashboard"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am an anonymous user
-    And I go to "/tallinn-dashboard"
+    And I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
