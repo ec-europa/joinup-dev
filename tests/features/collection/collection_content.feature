@@ -1,6 +1,8 @@
 @api @terms
-Feature: Given I am visiting the collection homepage
-  I want to see the content tabs with the proper singular/plural labels.
+Feature: Collection content
+  As a user of the website
+  I want to access the content of a collection
+  So that I can find the information I'm looking for.
 
   Background:
     Given the following collection:
@@ -29,7 +31,7 @@ Feature: Given I am visiting the collection homepage
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
 
-  Scenario: Test that publishing new solutions result in counters being properly updated.
+  Scenario: Publishing new solutions should result in counters being properly updated.
     Given owner:
       | name             | type                  |
       | Particle sweeper | Private Individual(s) |
@@ -78,7 +80,7 @@ Feature: Given I am visiting the collection homepage
     Then I delete the "Solution from draft to validated" solution
     And I delete the "Costas Papazoglou" contact information
 
-  Scenario: Test label variant based on the content count of each category.
+  Scenario: Content type facet labels should show the plural form when multiple results are available.
     Given I go to the homepage of the "Turin Egyptian Collection" collection
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
