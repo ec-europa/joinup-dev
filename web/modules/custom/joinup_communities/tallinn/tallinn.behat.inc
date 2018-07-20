@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\taxonomy\Entity\Term;
 
@@ -34,7 +35,7 @@ class TallinnSubContext extends DrupalSubContextBase {
   public static function setupTallinnData(BeforeFeatureScope $scope) {
     // The Tallinn collection might have been created for other purposes.
     if (Rdf::load(TALLINN_COMMUNITY_ID)) {
-      return;
+      throw new \LogicException("The environment is not clean before running tests.");
     }
 
     // Create two policy domain terms.
@@ -64,9 +65,37 @@ class TallinnSubContext extends DrupalSubContextBase {
       'field_policy_domain' => 'http://example.com/term/2',
       'field_ar_owner' => 'http://example.com/owner',
     ]);
-    \Drupal::state()->set('tallinn_testing_collection', TRUE);
-    /** @var \Drupal\node\NodeInterface $custom_page */
-    $custom_page = static::getEntityByLabel('node', 'Tallinn initiative', 'custom_page');
+
+    $custom_page = Node::create([
+      'type' => 'custom_page',
+      'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
+      'title' => 'Implementation monitoring',
+      'og_audience' => TALLINN_COMMUNITY_ID,
+      'body' => [
+        [
+          'value' => '{block:tallinn_dashboard}',
+          'format' => 'content_editor',
+        ],
+      ],
+      'field_cp_content_listing' => [
+        [
+          'value' => [
+            'fields' => [
+              'field_cp_content_listing_content_type' => [
+                'weight' => 0,
+                'region' => 'top',
+              ],
+            ],
+            'enabled' => 1,
+            'query_presets' => 'entity_bundle|tallinn_report',
+            // Show all tallinn reports in one page.
+            'limit' => '33',
+          ],
+        ],
+      ],
+    ]);
+    $custom_page->save();
+
     \Drupal::service('custom_page.og_menu_links_manager')->addLink($custom_page);
   }
 
@@ -79,36 +108,20 @@ class TallinnSubContext extends DrupalSubContextBase {
    * @afterFeature @tallinn
    */
   public static function cleanTallinnData(AfterFeatureScope $scope) {
-    $state = \Drupal::state();
-    if ($state->get('tallinn_testing_collection')) {
-      $state->delete('tallinn_testing_collection');
-      $collection = Rdf::load(TALLINN_COMMUNITY_ID);
-      $collection->skip_notification = TRUE;
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+    $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
 
-      // Save OG orphans policy.
-      $og_config = \Drupal::configFactory()->getEditable('og.settings');
-      $delete_orphans = $og_config->get('delete_orphans');
-      // Keep group content.
-      static::bypassReadOnlyConfig();
-      $og_config->set('delete_orphans', FALSE)->save();
-      // Delete collection.
-      $collection->delete();
-      // Restore OG policy.
-      $og_config->set('delete_orphans', $delete_orphans)->save();
-      static::restoreReadOnlyConfig();
+    $collection = Rdf::load(TALLINN_COMMUNITY_ID);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
 
-      // Delete related entities.
-      foreach (['http://example.com/term/2', 'http://example.com/term/1'] as $id) {
-        Term::load($id)->delete();
-      }
-      Rdf::load('http://example.com/owner')->delete();
-
-      // Cleanup Search API index.
-      $storage = \Drupal::entityTypeManager()->getStorage('node');
-      foreach ($storage->loadByProperties(['type' => 'tallinn_report']) as $report) {
-        search_api_entity_delete($report);
-      }
+    // Delete related entities.
+    foreach (['http://example.com/term/2', 'http://example.com/term/1'] as $id) {
+      Term::load($id)->delete();
     }
+    Rdf::load('http://example.com/owner')->delete();
+    \Drupal::state()->delete('tallinn.dashboard.access_policy');
   }
 
 }

@@ -127,7 +127,7 @@ class DashboardController extends ControllerBase {
       foreach ($reports as $country_code => $report) {
         /** @var \Drupal\Core\Field\FieldItemInterface $field */
         foreach ($report as $field_name => $field) {
-          if (isset($group['actions'][$field_name])) {
+          if (isset($group['actions'][$field_name]) && !$field->isEmpty()) {
             $value = $field->first()->getValue();
             $group['actions'][$field_name]['countries'][$country_code] = [
               'country_name' => $report->label(),
@@ -135,9 +135,9 @@ class DashboardController extends ControllerBase {
               'report' => check_markup($value['value'], $value['format']) ?: '',
               'related_website' => $value['uri'] ?? NULL,
             ];
-            // The Json response cache depends on each report.
-            $response->addCacheableDependency($report);
           }
+          // The Json response cache depends on each report.
+          $response->addCacheableDependency($report);
         }
       }
       // Remove the field name keys.

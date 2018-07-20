@@ -18,6 +18,9 @@ Feature:
     And the following collection user membership:
       | collection                      | user     | roles       |
       | Tallinn Ministerial Declaration | Gilfoyle | facilitator |
+    And tallinn_report content:
+      | title | author | collection                      |
+      | Malta | Dinesh | Tallinn Ministerial Declaration |
 
     Given I am an anonymous user
     When I go to "/api/v1/communities/tallinn/report"

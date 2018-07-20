@@ -27,6 +27,7 @@ function joinup_user_install() {
     'edit own comments',
     'edit own contact_information rdf entity',
     'edit own owner rdf entity',
+    'edit own tallinn_report content',
     'export rdf metadata',
     'flag subscribe_discussions',
     'post comments',
