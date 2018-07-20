@@ -192,27 +192,27 @@ Feature: Navigation menu for custom pages
 
     When I am logged in as a member of the "Table of content collection" collection
     And I go to the homepage of the "Table of content collection" collection
-    Then I see the text "Table of content" in the "Navigation bottom menu block" region
-    And I should see the link "Custom page 1" in the "Navigation bottom menu block"
-    And I should see the link "Custom page 2" in the "Navigation bottom menu block"
-    But I should not see the link "Custom page 1-1" in the "Navigation bottom menu block"
-    And I should not see the link "Custom page 1-2" in the "Navigation bottom menu block"
-    And I should not see the link "Custom page 2-1" in the "Navigation bottom menu block"
+    Then I see the text "Table of content" in the "Table of contents" region
+    And I should see the link "Custom page 1" in the "Table of contents"
+    And I should see the link "Custom page 2" in the "Table of contents"
+    But I should not see the link "Custom page 1-1" in the "Table of contents"
+    And I should not see the link "Custom page 1-2" in the "Table of contents"
+    And I should not see the link "Custom page 2-1" in the "Table of contents"
 
     # Ensure that the default links are not shown.
-    And I should not see the link "Overview" in the "Navigation bottom menu block"
-    And I should not see the link "Members" in the "Navigation bottom menu block"
-    And I should not see the link "About" in the "Navigation bottom menu block"
+    And I should not see the link "Overview" in the "Table of contents"
+    And I should not see the link "Members" in the "Table of contents"
+    And I should not see the link "About" in the "Table of contents"
     But I should see the link "Overview" in the "Navigation menu block"
     And I should see the link "Members" in the "Navigation menu block"
     And I should see the link "About" in the "Navigation menu block"
 
     When I visit the "Custom page 1" custom page
-    And I should see the link "Custom page 1" in the "Navigation bottom menu block"
-    And I should see the link "Custom page 2" in the "Navigation bottom menu block"
-    And I should see the link "Custom page 1-1" in the "Navigation bottom menu block"
-    And I should see the link "Custom page 1-2" in the "Navigation bottom menu block"
-    But I should not see the link "Custom page 2-1" in the "Navigation bottom menu block"
+    And I should see the link "Custom page 1" in the "Table of contents"
+    And I should see the link "Custom page 2" in the "Table of contents"
+    And I should see the link "Custom page 1-1" in the "Table of contents"
+    And I should see the link "Custom page 1-2" in the "Table of contents"
+    But I should not see the link "Custom page 2-1" in the "Table of contents"
 
   @javascript
   Scenario: Only custom page entries can be nested in the collection navigation menu.
