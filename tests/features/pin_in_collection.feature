@@ -105,10 +105,10 @@ Feature: Pinning content entities inside collections
 
   Scenario: Facilitators can pin and unpin solutions inside their collections.
     Given discussion content:
-      | title                         | collection    | state     | pinned | created    | body                                                                               |
-      | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |                                                                                    |
-      | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |                                                                                    |
-      | Multi stratus beaming         | Cloudy Beam   | validated | no     | 2017-11-05 | value: <p>See the <a href="#link">latest results</a>.</p> - format: content_editor |
+      | title                         | collection    | state     | pinned | created    |
+      | Where can I find this wrench? | Orange Wrench | validated | no     | 2017-11-20 |
+      | Any thoughts about blue?      | Orange Wrench | validated | yes    | 2017-10-03 |
+      | Multi stratus beaming         | Cloudy Beam   | validated | no     | 2017-11-05 |
     And solutions:
       | title            | collection                 | state     | pinned in     | creation date |
       | Wrench catalogue | Orange Wrench              | validated | Orange Wrench | 2017-10-12    |
@@ -157,11 +157,6 @@ Feature: Pinning content entities inside collections
     Then I should see the following tiles in the correct order:
       | Multi stratus beaming |
       | Orange estimator      |
-
-    # Since the entire tile surface is clickable, any links in the tile content cannot be clicked and should be stripped.
-    And I should see the text "See the latest results" in the "Multi stratus beaming" tile
-    And I should not see the link "latest results"
-
     And I should see the contextual link "Pin" in the "Orange estimator" tile
     And I should not see the contextual link "Unpin" in the "Orange estimator" tile
 

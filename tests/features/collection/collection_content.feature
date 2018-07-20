@@ -13,20 +13,20 @@ Feature: Collection content
       | collection | Turin Egyptian Collection   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | validated | Turin Egyptian Collection |
+      | title                                 | body                                                                                                    | state     | collection                |
+      | Bigger than Egyptian Museum of Cairo? | value: <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And document content:
-      | title           | state     | collection                |
-      | Upper Floor Map | validated | Turin Egyptian Collection |
+      | title           | body                                                                             | state     | collection                |
+      | Upper Floor Map | value: <p>A sample <a href="#link">map</a> example.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And event content:
       | title                                     | state     | collection                |
       | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
     And news content:
-      | title                          | state     | collection                |
-      | Turin Egyptian Museum Reopened | validated | Turin Egyptian Collection |
+      | title                          | body                                                                                           | state     | collection                |
+      | Turin Egyptian Museum Reopened | value: <p>After <em>more than</em> <a href="#link">two years</a>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And newsletter content:
-      | title                                                | state     | collection                |
-      | Stay informed about this year events and exhibitions | validated | Turin Egyptian Collection |
+      | title                                                | body                                                                                                                         | state     | collection                |
+      | Stay informed about this year events and exhibitions | value: <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And video content:
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
@@ -126,3 +126,23 @@ Feature: Collection content
     And I should see the link "Newsletters (2)"
     And I should see the link "Solutions (2)"
     And I should see the link "Videos (2)"
+
+  Scenario: Links and markup should be stripped from tiles abstract.
+    Given I go to the homepage of the "Turin Egyptian Collection" collection
+    # Check the discussion tile.
+    Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
+    # Check into the HTML so that we assert that actually the HTML has been stripped.
+    And the page should contain the html text "Link to the museum web site ."
+    And I should not see the link "Link to the museum"
+    # Check the document tile.
+    And I should see the "Upper Floor Map" tile
+    And the page should contain the html text "A sample map example."
+    And I should not see the link "map"
+    # Check the news tile.
+    And I should see the "Turin Egyptian Museum Reopened" tile
+    And the page should contain the html text "After more than two years ."
+    And I should not see the link "two years"
+    # Check the newsletter tile.
+    And I should see the "Stay informed about this year events and exhibitions" tile
+    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date! ."
+    And I should not see the link "Subscribe to the newsletter"
