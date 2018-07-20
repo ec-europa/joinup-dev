@@ -6,11 +6,12 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username |
-      | Frodo    |
-      | Boromir  |
-      | Legoloas |
-      | Gimli    |
+      | Username | Status |
+      | Frodo    | 1      |
+      | Boromir  | 1      |
+      | Legoloas | 1      |
+      | Gimli    | 1      |
+      | Saruman  | 0      |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -35,6 +36,7 @@ Feature: Collection homepage
       | Middle earth daily | Frodo    | facilitator |
       | Middle earth daily | Boromir  |             |
       | Middle earth daily | Legoloas |             |
+      | Middle earth daily | Saruman  |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
