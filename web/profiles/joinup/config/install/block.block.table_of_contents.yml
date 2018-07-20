@@ -8,7 +8,7 @@ dependencies:
     - og
   theme:
     - joinup_theme
-id: navigation_bottom
+id: table_of_contents
 theme: joinup_theme
 region: content_bottom
 weight: -17
