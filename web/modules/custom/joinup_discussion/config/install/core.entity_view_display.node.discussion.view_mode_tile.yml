@@ -88,11 +88,6 @@ content:
             classes: {  }
       joinup:
         template_suggestion: comma_separated
-  flag_subscribe_discussions:
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_replies: true
@@ -101,6 +96,7 @@ hidden:
   field_site_pinned: true
   field_state: true
   field_visit_count: true
+  flag_subscribe_discussions: true
   invite_link: true
   langcode: true
   links: true
