@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9715e6c1dcfd502754a362b7fabba56",
+    "content-hash": "5fa01be92cf0cb4c9664c75f4d04cc93",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4128,6 +4128,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Cannot redirect from a private file path @see https://www.drupal.org/project/redirect/issues/2985288#comment-12683792": "https://www.drupal.org/files/issues/2018-07-12/2985288-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
