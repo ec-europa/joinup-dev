@@ -5,8 +5,8 @@
  * Contains \TallinnSubContext.
  */
 
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
-use Behat\Behat\Hook\Scope\BeforeFeatureScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -25,19 +25,14 @@ class TallinnSubContext extends DrupalSubContextBase {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'Tallinn' collection.
+   * Creates the standard 'Tallinn' collection and several dependnecies.
    *
-   * @param \Behat\Behat\Hook\Scope\BeforeFeatureScope $scope
+   * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
    *   The scope of the event.
    *
-   * @beforeFeature @tallinn
+   * @beforeScenario @tallinn
    */
-  public static function setupTallinnData(BeforeFeatureScope $scope) {
-    // The Tallinn collection might have been created for other purposes.
-    if (Rdf::load(TALLINN_COMMUNITY_ID)) {
-      throw new \LogicException("The environment is not clean before running tests.");
-    }
-
+  public function setupTallinnData(BeforeScenarioScope $scope) {
     // Create two policy domain terms.
     Term::create([
       'vid' => 'policy_domain',
@@ -52,21 +47,24 @@ class TallinnSubContext extends DrupalSubContextBase {
     ])->save();
 
     // Create an owner.
-    static::createRdfEntity('owner', [
+    Rdf::create([
+      'rid' => 'owner',
       'id' => 'http://example.com/owner',
       'field_owner_name' => 'Owner',
-    ]);
+    ])->save();
 
-    // Create the Tallinn entity and the custom page OG menu link.
-    static::createRdfEntity('collection', [
+    // Create the Tallinn entity.
+    Rdf::create([
+      'rid' => 'collection',
       'id' => TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
       'field_policy_domain' => 'http://example.com/term/2',
       'field_ar_owner' => 'http://example.com/owner',
-    ]);
+    ])->save();
 
-    $custom_page = Node::create([
+    // The 'Implementation monitoring' standard custom page.
+    Node::create([
       'type' => 'custom_page',
       'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
       'title' => 'Implementation monitoring',
@@ -93,21 +91,18 @@ class TallinnSubContext extends DrupalSubContextBase {
           ],
         ],
       ],
-    ]);
-    $custom_page->save();
-
-    \Drupal::service('custom_page.og_menu_links_manager')->addLink($custom_page);
+    ])->save();
   }
 
   /**
-   * Clears the collection if it has been created by the test.
+   * Clears the content created for the purpose of this test.
    *
-   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   * @param \Behat\Behat\Hook\Scope\AfterScenarioScope $scope
    *   The scope of the event.
    *
-   * @afterFeature @tallinn
+   * @afterScenario @tallinn
    */
-  public static function cleanTallinnData(AfterFeatureScope $scope) {
+  public function cleanTallinnData(AfterScenarioScope $scope) {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
@@ -121,6 +116,8 @@ class TallinnSubContext extends DrupalSubContextBase {
       Term::load($id)->delete();
     }
     Rdf::load('http://example.com/owner')->delete();
+
+    // Clear the dashboard access policy state.
     \Drupal::state()->delete('tallinn.dashboard.access_policy');
   }
 
