@@ -11,7 +11,6 @@ Feature: Collection homepage
       | Boromir  | 1      |
       | Legoloas | 1      |
       | Gimli    | 1      |
-      | Saruman  | 0      |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -36,7 +35,6 @@ Feature: Collection homepage
       | Middle earth daily | Frodo    | facilitator |
       | Middle earth daily | Boromir  |             |
       | Middle earth daily | Legoloas |             |
-      | Middle earth daily | Saruman  |             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |
@@ -50,15 +48,8 @@ Feature: Collection homepage
     Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
-    # Test caching of the metrics: Members.
-    # Gimli is not a member yet.
-    When I am logged in as Gimli
-    And I go to the homepage of the "Middle earth daily" collection
-    And I press the "Join this collection" button
-    And I go to the homepage of the "Middle earth daily" collection
-    Then I see the text "4 Members" in the "Header" region
 
-    # see ISAICP-3599
+    # @see ISAICP-3599
     # Test caching of the metrics: Solutions.
 #    Then I delete the "Bilbo's book" solution
 #    When I am logged in as Gimli
