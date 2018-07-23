@@ -8,7 +8,7 @@ dependencies:
     - og
   theme:
     - joinup_theme
-id: navigation_bottom
+id: table_of_contents
 theme: joinup_theme
 region: content_bottom
 weight: -17
@@ -16,7 +16,7 @@ provider: null
 plugin: 'collection_menu_block:navigation'
 settings:
   id: 'collection_menu_block:navigation'
-  label: 'Table of content'
+  label: 'Table of contents'
   provider: collection
   label_display: '1'
   level: 1
