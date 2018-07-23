@@ -88,16 +88,11 @@
     </div>
   {% endif %}
   <div class="listing__metadata">
-    <div class="listing__text-container listing__text-container--custom-page">
-      <div class="listing__field">
-        <div class="listing__link"><a href="{{ url }}"></a></div>
-        {{ title_prefix }}
-        <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
-        {{ title_suffix }}
-      </div>
-      <div class="listing__field">
-        <p class="listing__teaser">{{ content.body }}</p>
-      </div>
+    <div class="listing__field">
+      <div class="listing__link"><a href="{{ url }}"></a></div>
+      {{ title_prefix }}
+      <h2 class="listing__title"><a href="{{ url }}">{{ label }}</a></h2>
+      {{ title_suffix }}
     </div>
     <div class="listing__field listing__stats mdl-card__actions">
       <div class="listing__stat">
