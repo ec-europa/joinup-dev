@@ -16,6 +16,7 @@ use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
+use Drupal\joinup\KeyboardEventKeyCodes as Key;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -35,12 +36,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
-
-  /**
-   * Define ASCII values for key presses.
-   */
-  const KEY_LEFT = 37;
-  const KEY_RIGHT = 39;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -661,7 +656,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
     }
-    $key = $direction === 'left' ? static::KEY_LEFT : static::KEY_RIGHT;
+    $key = $direction === 'left' ? Key::LEFT_ARROW : Key::RIGHT_ARROW;
 
     // Locate the slider starting from the label:
     // - Find the label with the given label text.
@@ -1150,7 +1145,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I select/check the :text row
    */
-  public function assertSelectRow(string $text): void {
+  public function checkTableselectRow(string $text): void {
     $this->getRowCheckboxByText($text)->check();
   }
 
@@ -1166,7 +1161,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I deselect/uncheck the :text row
    */
-  public function assertDeselectRow(string $text): void {
+  public function uncheckTableselectRow(string $text): void {
     $this->getRowCheckboxByText($text)->uncheck();
   }
 

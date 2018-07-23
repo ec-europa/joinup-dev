@@ -18,6 +18,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\KeyboardEventKeyCodes as Key;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -2415,6 +2416,99 @@ JS;
    */
   public function clearField($field) {
     $this->getSession()->getPage()->fillField($field, '');
+  }
+
+  /**
+   * Asserts the order and nesting of rows of a draggable menu table.
+   *
+   * It requires a Javascript browser to run as many draggable classes are set
+   * by Javascript.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The menu data.
+   *
+   * @Then the (draggable )menu table should be:
+   */
+  public function assertDraggableMenuTable(TableNode $table) {
+    self::assertJavaScriptEnabledBrowser();
+
+    /** @var \Behat\Mink\Element\NodeElement[] $rows */
+    $rows = $this->getSession()->getPage()->findAll('css', '#menu-overview tbody tr.draggable');
+    $expected = $table->getColumnsHash();
+    Assert::assertSameSize($expected, $rows);
+
+    foreach ($expected as $delta => $data) {
+      $current_row = $rows[$delta];
+      $title_element = $current_row->find('css', 'td:first-of-type a:not(.tabledrag-handle)');
+      Assert::assertEquals($data['title'], trim($title_element->getText()));
+
+      $menu_link = $this->getMenuLinkByTitle($data['title']);
+      $parent_input = $current_row->find('css', 'input[name="links[menu_plugin_id:' . $menu_link->getPluginId() . '][parent]"]');
+
+      if (!$parent_input) {
+        throw new \Exception('Cannot find parent input field.');
+      }
+
+      // When a parent is available, the line should be indented. Find all
+      // indentation elements to assert later on based on the parent value.
+      $indentation = $current_row->findAll('css', 'div.indentation');
+
+      if ($data['parent'] === '') {
+        Assert::assertEmpty($parent_input->getValue());
+        Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
+      }
+      else {
+        $parent_link = $this->getMenuLinkByTitle($data['parent']);
+        Assert::assertEquals($parent_link->getPluginId(), $parent_input->getValue());
+        Assert::assertNotCount(0, $indentation, "The menu link '{$data['title']}' should be indented but it's not.");
+      }
+    }
+  }
+
+  /**
+   * Drags a table row one position towards a direction.
+   *
+   * Instead of using the mouse, it uses the keyboard keys so that precise
+   * control can be achieved.
+   *
+   * @param string $title
+   *   The title of the menu link that belongs to the row.
+   * @param string $direction
+   *   The direction to move the row to. One of "up", "down", "left", "right".
+   *
+   * @Then I drag the :title table row( to the) :direction
+   */
+  public function dragTableRowTowardsDirection($title, $direction) {
+    self::assertJavaScriptEnabledBrowser();
+
+    if (!in_array($direction, ['left', 'right', 'up', 'down'])) {
+      throw new \Exception('Invalid direction specified.');
+    }
+
+    $handle = $this->findDraggableTableRowByTitle($title)->find('css', 'a.tabledrag-handle');
+    $handle->focus();
+
+    switch ($direction) {
+      case 'left':
+        $key = Key::LEFT_ARROW;
+        break;
+
+      case 'right':
+        $key = Key::RIGHT_ARROW;
+        break;
+
+      case 'up':
+        $key = Key::UP_ARROW;
+        break;
+
+      case 'down':
+      default:
+        $key = Key::DOWN_ARROW;
+    }
+
+    $handle->keyDown($key);
+    $handle->keyUp($key);
+    $handle->blur();
   }
 
 }
