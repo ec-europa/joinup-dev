@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\tallinn\Controller;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\CacheableJsonResponse;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -169,8 +171,22 @@ class DashboardController extends ControllerBase {
    *   A list of Tallinn report nodes keyed by the country code.
    */
   protected function getReports(): array {
-    $report_nodes = $this->entityTypeManager()->getStorage('node')
-      ->loadByProperties(['type' => 'tallinn_report']);
+    try {
+      $report_nodes = $this->entityTypeManager()->getStorage('node')
+        ->loadByProperties(['type' => 'tallinn_report']);
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      // The entity type manager might throw this if the Node entity definition
+      // is invalid. We implicitly trust that the entity types provided by core
+      // are valid, so we can turn this into an unchecked exception.
+      throw new \RuntimeException('The Node entity definition is invalid.', 0, $e);
+    }
+    catch (PluginNotFoundException $e) {
+      // We have a dependency on the Node module listed in our info file so we
+      // can reasonably assume that this entity type will be available at
+      // runtime.
+      throw new \RuntimeException('The Node entity type is not defined.', 0, $e);
+    }
 
     $reports = [];
     /** @var \Drupal\node\NodeInterface $report */
