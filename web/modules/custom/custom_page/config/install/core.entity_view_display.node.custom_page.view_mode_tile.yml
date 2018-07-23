@@ -8,33 +8,25 @@ dependencies:
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
+    - image.style.horizontal_medium_image
     - node.type.custom_page
   module:
     - ds
     - image
-    - smart_trim
     - user
 id: node.custom_page.view_mode_tile
 targetEntityType: node
 bundle: custom_page
 mode: view_mode_tile
 content:
-  body:
+  field_custom_page_logo:
+    type: image
+    weight: 0
+    region: content
     label: hidden
-    type: smart_trim
-    weight: 1
     settings:
-      trim_length: 200
-      trim_type: chars
-      trim_suffix: …
-      more_link: false
-      more_text: More
-      summary_handler: trim
-      trim_options:
-        text: false
-      more_class: more-link
-      wrap_output: false
-      wrap_class: trimmed
+      image_style: horizontal_medium_image
+      image_link: ''
     third_party_settings:
       ds:
         ft:
@@ -45,17 +37,8 @@ content:
             classes: {  }
       joinup:
         template_suggestion: ''
-    region: content
-  field_custom_page_logo:
-    type: image
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      image_style: ''
-      image_link: ''
-    third_party_settings: {  }
 hidden:
+  body: true
   field_attachment: true
   field_cp_content_listing: true
   langcode: true
