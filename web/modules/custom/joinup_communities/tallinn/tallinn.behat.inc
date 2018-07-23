@@ -23,7 +23,7 @@ class TallinnSubContext extends DrupalSubContextBase {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'Tallinn' collection and several dependnecies.
+   * Creates the standard 'Tallinn' collection and several dependencies.
    *
    * @beforeScenario @tallinn
    */
