@@ -359,6 +359,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
     // @see collection_og_membership_presave()
     $tags = Cache::buildTags('joinup-membership', [$tag]);
+    $tags = Cache::mergeTags($tags, ['user_list']);
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
       '#cache' => [

@@ -54,3 +54,18 @@ Feature: Collection homepage
     When I click "Members"
     Then the "Roles" field should contain the "- Any - (5)" option
 
+    # Block the user to ensure again tha the counters are updated.
+    Given I am logged in as a moderator
+    And I am on the homepage
+    When I click "People"
+    And I fill in "Name or email contains" with "Bilbo"
+    And I press the "Filter" button
+    Then I check "Bilbo"
+    Then I select "Block the selected user(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the success message "Block the selected user(s) was applied to 1 item."
+    When I am not logged in
+    When I go to the homepage of the "Under the mountain" collection
+    Then I should see the text "4 Members" in the "Header" region
+    When I click "Members"
+    Then the "Roles" field should contain the "- Any - (4)" option
