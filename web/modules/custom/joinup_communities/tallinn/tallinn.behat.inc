@@ -25,6 +25,10 @@ class TallinnSubContext extends DrupalSubContextBase {
   /**
    * Creates the standard 'Tallinn' collection and several dependencies.
    *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the entities could not be created, for example because
+   *   it already exists.
+   *
    * @beforeScenario @tallinn
    */
   public function setupTallinnData() {
@@ -91,6 +95,9 @@ class TallinnSubContext extends DrupalSubContextBase {
 
   /**
    * Clears the content created for the purpose of this test.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the created entities could not be deleted.
    *
    * @afterScenario @tallinn
    */
