@@ -5,8 +5,6 @@
  * Contains \TallinnSubContext.
  */
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -27,12 +25,9 @@ class TallinnSubContext extends DrupalSubContextBase {
   /**
    * Creates the standard 'Tallinn' collection and several dependnecies.
    *
-   * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
-   *   The scope of the event.
-   *
    * @beforeScenario @tallinn
    */
-  public function setupTallinnData(BeforeScenarioScope $scope) {
+  public function setupTallinnData() {
     // Create two policy domain terms.
     Term::create([
       'vid' => 'policy_domain',
@@ -97,12 +92,9 @@ class TallinnSubContext extends DrupalSubContextBase {
   /**
    * Clears the content created for the purpose of this test.
    *
-   * @param \Behat\Behat\Hook\Scope\AfterScenarioScope $scope
-   *   The scope of the event.
-   *
    * @afterScenario @tallinn
    */
-  public function cleanTallinnData(AfterScenarioScope $scope) {
+  public function cleanTallinnData() {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
