@@ -36,3 +36,28 @@
 details.tallinn-box
   margin-left: 0
   margin-right: 0
+
+// Fixes in tallinn chart.
+.tallinn-chart
+  ul
+    margin: 0
+    li
+      &:before
+        content: none
+      span
+        margin-top: 5px
+
+.tallinn-chart__legend
+  .form__legend
+    margin-bottom: 0
+
+.tallinn-chart__selector-container
+  .form-type-select
+    display: inline-flex
+    max-width: 100%
+
+.tallinn-chart__text-container
+  margin: 5px 0
+  display: block !important
+  width: auto !important
+  height: auto !important
