@@ -210,6 +210,11 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
           ],
           '1.1.3' => [
             '#type' => 'container',
+            '#attributes' => [
+              'class' => [
+                'mdl-cell mdl-cell--12-col',
+              ],
+            ],
             '1.1.3.1' => [
               '#type' => 'html_tag',
               '#tag' => 'h4',
