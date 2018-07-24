@@ -527,6 +527,11 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['is_listing'] = TRUE;
   }
 
+  // Add block separated suggestion for bottom navigation.
+  if ($block_id === 'navigation_bottom') {
+    $variables['content']['#extra_suggestion'] = 'block__separated';
+  }
+
   // Set default title tag.
   $variables['title_tag'] = 'h2';
 
