@@ -77,13 +77,13 @@ Feature: Subscribing to discussions
     And I press "Post comment"
     # Check that notification emails are not sent yet since the comment is not approved.
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     And the following email should not have been sent:
-      | recipient | hans@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
@@ -92,19 +92,19 @@ Feature: Subscribing to discussions
     And I press "Apply to selected items"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
-      | recipient | hans@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Flash Gordon is not subscribed yet. He should not retrieve the message.
     But the following email should not have been sent:
-      | recipient | flash@example.com                                                                                   |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | flash@example.com                                                                                   |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
     # Authenticated users comments are sent on comment creation.
     Given I am logged in as debater
@@ -117,20 +117,20 @@ Feature: Subscribing to discussions
     Then I press "Post comment"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                              |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
     But the following email should not have been sent:
-      | recipient | flash@example.com                                                                             |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | flash@example.com                                                                             |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
-      | recipient | hans@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                              |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
@@ -146,18 +146,18 @@ Feature: Subscribing to discussions
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should have been sent:
-      | recipient | flash@example.com                                                                 |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | flash@example.com                                                                 |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The author of the discussion update doesn't receive any notification.
     But the following email should not have been sent:
-      | recipient | hans@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | hans@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     Then 2 e-mails should have been sent
 
     # If the discussion is moved from 'validated' to any other state, no
@@ -169,13 +169,13 @@ Feature: Subscribing to discussions
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should not have been sent:
-      | recipient | flash@example.com                                                                 |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | flash@example.com                                                                 |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
 
     # Delete the discussion and check that no notifications are sent. Since the
     # discussion is not published nobody should be notified.
@@ -184,17 +184,17 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                     |
-      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the following email should not have been sent:
-      | recipient | flash@example.com                                                                                    |
-      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | recipient_mail | flash@example.com                                                                                    |
+      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the following email should not have been sent:
-      | recipient | hans@example.com                                                                                     |
-      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
@@ -212,23 +212,23 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should have been sent:
-      | recipient | dale@example.com                                                                                   |
-      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the following email should have been sent:
-      | recipient | hans@example.com                                                                                   |
-      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
     But the following email should not have been sent:
-      | recipient | ming@example.com                                                                                   |
-      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | recipient_mail | ming@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Flash Gordon is not subscribed. He should not retrieve the message.
     And the following email should not have been sent:
-      | recipient | flash@example.com                                                                                  |
-      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | recipient_mail | flash@example.com                                                                                  |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
