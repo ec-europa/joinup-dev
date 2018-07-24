@@ -130,16 +130,27 @@ class MenuSubPages extends BlockBase implements ContainerFactoryPluginInterface 
       return [];
     }
     foreach ($child_links as $link) {
-      $parameters = $link->getUrlObject()->getRouteParameters();
+      $url = $link->getUrlObject();
+      $parameters = $url->getRouteParameters();
+      // Do not process any link that doesn't point to a canonical node route.
+      if ($url->getRouteName() !== 'entity.node.canonical' || !isset($parameters['node'])) {
+        continue;
+      }
+
       $node_id = $parameters['node'];
-      $custom_page = $this->entityTypeManager->getStorage('node')->load($node_id);
-      $build = $this->entityTypeManager->getViewBuilder('node')->view($custom_page, 'view_mode_tile');
+      $node = $this->entityTypeManager->getStorage('node')->load($node_id);
+      // Bail out if node is not found.
+      if (!$node) {
+        continue;
+      }
+
+      $build = $this->entityTypeManager->getViewBuilder('node')->view($node, 'view_mode_tile');
       $items[$link->getWeight()] = [
         '#type' => 'container',
         '#extra_suggestion' => 'container__grid_item',
         '#weight' => $link->getWeight(),
         '#access' => $link->getUrlObject()->access(),
-        $custom_page->id() => $build,
+        $node->id() => $build,
       ];
     }
 

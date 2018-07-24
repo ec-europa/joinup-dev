@@ -113,10 +113,9 @@ trait EntityTrait {
       ['title' => $title]
     );
     if (empty($menu_links)) {
-      throw new \Exception("The menu parent with title '{$title}' was not found.");
+      throw new \Exception("The menu link with title '{$title}' was not found.");
     }
 
-    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link */
     return reset($menu_links);
   }
 

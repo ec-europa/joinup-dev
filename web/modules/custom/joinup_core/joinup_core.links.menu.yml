@@ -1,4 +1,11 @@
 # Add handy links to configuration forms to the administration menu.
+joinup_core.admin_reporting:
+  route_name: joinup_core.admin_reporting
+  parent: system.admin
+  description: 'Access Joinup reports.'
+  title: 'Reporting'
+  weight: 75
+
 joinup_core.piwik_integration_settings:
   title: 'Piwik integration'
   route_name: joinup_core.piwik_integration_settings
@@ -19,10 +26,3 @@ joinup_core.redirects:
   description: 'Configure redirects.'
   parent: system.admin
   weight: 0
-
-joinup_core.admin_reporting:
-  route_name: joinup_core.admin_reporting
-  parent: system.admin
-  description: 'Access Joinup reports.'
-  title: Reporting
-  weight: 75

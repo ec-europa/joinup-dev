@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -124,12 +126,12 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-administrator';
+    $memberships = $this->getGroupMembershipsByRoles($entity, ['administrator'], $states);
 
     $users = [];
-    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
+    foreach ($memberships as $membership) {
       $user = $membership->getOwner();
-      if (!empty($user) && $membership->hasRole($role_id)) {
+      if (!empty($user)) {
         $users[$user->id()] = $user;
       }
     }
@@ -197,6 +199,75 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
     }
 
     return $collections;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
+    $entity_type_id = $entity->getEntityTypeId();
+    $bundle_id = $entity->bundle();
+
+    $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
+      return implode('-', [$entity_type_id, $bundle_id, $role_name]);
+    }, $role_names);
+
+    $memberships = [];
+    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
+      foreach ($role_ids as $role_id) {
+        if ($membership->hasRole($role_id)) {
+          $memberships[$membership->id()] = $membership;
+          continue;
+        }
+      }
+    }
+
+    return $memberships;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollectionIds(): array {
+    return $this->getRdfEntityIdsByBundle('collection');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSolutionIds(): array {
+    return $this->getRdfEntityIdsByBundle('solution');
+  }
+
+  /**
+   * Returns the entity IDs of the RDF entities with the given bundle ID.
+   *
+   * @param string $bundle
+   *   The bundle ID.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  protected function getRdfEntityIdsByBundle(string $bundle): array {
+    try {
+      // Since the Joinup Core module depends on the RDF Entity module we can
+      // reasonably assume that the entity storage is defined and is valid. If
+      // it is not this is due to exceptional circumstances occuring at runtime.
+      $storage = $this->entityTypeManager->getStorage('rdf_entity');
+      $definition = $this->entityTypeManager->getDefinition('rdf_entity');
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      throw new \RuntimeException('The RDF entity storage is not valid.');
+    }
+    catch (PluginNotFoundException $e) {
+      throw new \RuntimeException('The RDF entity storage is not defined.');
+    }
+
+    $bundle_key = $definition->getKey('bundle');
+
+    $query = $storage->getQuery();
+    $query->condition($bundle_key, $bundle);
+    return $query->execute();
   }
 
 }
