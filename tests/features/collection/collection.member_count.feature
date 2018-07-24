@@ -54,7 +54,7 @@ Feature: Collection homepage
     When I click "Members"
     Then the "Roles" field should contain the "- Any - (5)" option
 
-    # Block the user to ensure again tha the counters are updated.
+    # Block the user to ensure again that the counters are updated.
     Given I am logged in as a moderator
     And I am on the homepage
     When I click "People"
