@@ -11,11 +11,13 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
+use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -37,12 +39,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
-
-  /**
-   * Define ASCII values for key presses.
-   */
-  const KEY_LEFT = 37;
-  const KEY_RIGHT = 39;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -663,7 +659,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
     }
-    $key = $direction === 'left' ? static::KEY_LEFT : static::KEY_RIGHT;
+    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
 
     // Locate the slider starting from the label:
     // - Find the label with the given label text.
@@ -1112,7 +1108,38 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I select/check the :row_text row
    */
-  public function assertSelectRow($text) {
+  public function checkTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->check();
+  }
+
+  /**
+   * Attempts to uncheck a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @Given I deselect/uncheck the :row_text row
+   */
+  public function uncheckTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->uncheck();
+  }
+
+  /**
+   * Attempts to fetch a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   */
+  protected function getRowCheckboxByText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1132,7 +1159,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
       throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
-    $checkbox->check();
+
+    return $checkbox;
   }
 
   /**

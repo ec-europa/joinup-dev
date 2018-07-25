@@ -319,7 +319,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Asserts that a custom page tile has the logo properly set.
    *
    * @param string $title
-   *   The document title.
+   *   The title of the custom page tile to inspect.
    *
    * @throws \Exception
    *   Thrown when the logo is not found or not correct.
@@ -327,22 +327,26 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then the logo should be shown in the :title custom page tile
    */
   public function assertCustomPageTileHasLogo(string $title): void {
+    // Retrieve the URL of the logo in the tile.
     $tile = $this->getTileByHeading($title);
-
-    $file_url_service = \Drupal::service('file_url.handler');
-    /** @var \Drupal\node\Entity\Node $node */
-    $node = $this->getNodeByTitle($title, 'custom_page');
-    /** @var \Drupal\file\FileInterface $file */
-    $file = $file_url_service::urlToFile($node->get('field_custom_page_logo')->first()->target_id);
-
-    $link = $tile->find('xpath', '//img/@src')->getText();
-    if (!$link) {
+    $actual_url = $tile->find('xpath', '//img')->getAttribute('src');
+    if (!$actual_url) {
       throw new \Exception("No logo link found in the '$title' tile.");
     }
 
-    // @see \Drupal\file_url\Plugin\Field\FieldFormatter\FileUrlFormatter::viewElements()
-    $expected_href = file_url_transform_relative(file_create_url($file->getFileUri()));
-    Assert::assertEquals($expected_href, $link, 'The logo shown is not the correct one.');
+    // Retrieve the image entity from the custom page logo.
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $this->getNodeByTitle($title, 'custom_page');
+    /** @var \Drupal\file\FileInterface $image */
+    $image = \Drupal::service('file_url.handler')::urlToFile($node->get('field_custom_page_logo')->first()->target_id);
+
+    // Generate the expected URL of the logo using the right image style.
+    // @see \Drupal\image\Plugin\Field\FieldFormatter\ImageUrlFormatter::viewElements()
+    /** @var \Drupal\image\ImageStyleInterface $image_style */
+    $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load('horizontal_medium_image');
+    $expected_url = file_url_transform_relative($image_style->buildUrl($image->getFileUri()));
+
+    Assert::assertEquals($expected_url, $actual_url, 'The logo shown is not the correct one.');
   }
 
 }
