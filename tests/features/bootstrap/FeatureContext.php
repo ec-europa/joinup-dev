@@ -1251,8 +1251,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I type :value in the :field autocomplete field
    */
-  public function fillAutoCompleteField(string $field, string $value): void
-  {
+  public function fillAutoCompleteField(string $field, string $value): void {
     $this->assertJavaScriptEnabledBrowser();
 
     $driver = $this->getSession()->getDriver();
