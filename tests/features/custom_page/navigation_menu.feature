@@ -271,18 +271,6 @@ Feature: Navigation menu for custom pages
       | Frameless          | Types of backpacks |
       | External frame     |                    |
       | Internal frame     | External frame     |
-    # Maximum indentation level is one.
-    When I drag the "Internal frame" table row to the right
-    Then the menu table should be:
-      | title              | parent             |
-      | Overview           |                    |
-      | Members            |                    |
-      | Bodypack           |                    |
-      | About              |                    |
-      | Types of backpacks |                    |
-      | Frameless          | Types of backpacks |
-      | External frame     |                    |
-      | Internal frame     | External frame     |
     # Links that don't refer to a node cannot be nested.
     When I drag the "Members" table row to the right
     And I drag the "About" table row to the right
@@ -322,3 +310,19 @@ Feature: Navigation menu for custom pages
       | Bodypack           | Types of backpacks |
       | External frame     |                    |
       | Internal frame     | External frame     |
+    # Maximum indentation level is two.
+    When I drag the "Bodypack" table row to the right
+    And I drag the "Internal frame" table row to the left
+    And I drag the "Internal frame" table row up
+    And I drag the "Internal frame" table row to the right
+    And I drag the "Internal frame" table row to the right
+    Then the menu table should be:
+      | title              | parent             |
+      | Members            |                    |
+      | Overview           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | Bodypack           | Frameless          |
+      | Internal frame     | Frameless          |
+      | External frame     |                    |
