@@ -5,9 +5,8 @@ dependencies:
     - og_menu.ogmenu.navigation
   module:
     - collection
+    - node
     - og
-  theme:
-    - joinup_theme
 id: table_of_contents
 theme: joinup_theme
 region: content_bottom
@@ -32,3 +31,10 @@ visibility:
     negate: false
     context_mapping:
       og: '@og.context:og'
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
