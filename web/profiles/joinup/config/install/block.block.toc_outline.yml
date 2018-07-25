@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_page
+    - node
+    - og
+id: toc_outline
+theme: joinup_theme
+region: content
+weight: -13
+provider: null
+plugin: toc_outline
+settings:
+  id: toc_outline
+  label: 'Table of contents outline'
+  provider: custom_page
+  label_display: '0'
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\custom_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -22,6 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *  id = "toc_outline",
  *  admin_label = @Translation("Table of contents outline"),
+ *  context = {
+ *    "og" = @ContextDefinition("entity", label = @Translation("Group"))
+ *  }
  * )
  */
 class TableOfContentsOutline extends BlockBase implements ContainerFactoryPluginInterface {
@@ -161,6 +165,9 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       '#links' => $links,
     ];
 
+    $og_menu_id = $this->getOgMenuName();
+    $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $og_menu_id;
+
     return $build;
   }
 
@@ -204,7 +211,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     reset($flattened_menu);
     do {
       if (($key = key($flattened_menu)) && $key === $active_link_id) {
-        return next($flattened_menu);
+        return next($flattened_menu) ? current($flattened_menu) : NULL;
       }
     } while (next($flattened_menu));
     return NULL;
@@ -267,8 +274,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function getActiveLink(): MenuLinkInterface {
     if (empty($this->activeLink)) {
-      $og_menu_instance = $this->getOgMenuInstance();
-      $og_menu_id = 'ogmenu-' . $og_menu_instance->id();
+      $og_menu_id = $this->getOgMenuName();
       $this->activeLink = $this->activeTrail->getActiveLink($og_menu_id);
     }
 
@@ -283,8 +289,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function getMenuTree(): array {
     if (empty($this->menuTree)) {
-      $og_menu_instance = $this->getOgMenuInstance();
-      $og_menu_id = 'ogmenu-' . $og_menu_instance->id();
+      $og_menu_id = $this->getOgMenuName();
       $this->menuTree = $this->menuLinkTree->load($og_menu_id, new MenuTreeParameters());
     }
 
@@ -299,8 +304,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function getFlattenedMenu(): array {
     if (empty($this->flattenedMenu)) {
-      $og_menu_instance = $this->ogMenuManager->getOgMenuInstanceByCustomPage($this->node);
-      $og_menu_id = 'ogmenu-' . $og_menu_instance->id();
+      $og_menu_id = $this->getOgMenuName();
       $tree = $this->menuLinkTree->load($og_menu_id, new MenuTreeParameters());
       $this->flatOutlineTree($tree);
 
@@ -344,6 +348,25 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
         $this->flatOutlineTree($data->subtree);
       }
     }
+  }
+
+  /**
+   * Returns the og menu name.
+   *
+   * @return string
+   *   The og menu name.
+   */
+  protected function getOgMenuName(): string {
+    $og_menu_instance = $this->getOgMenuInstance();
+    return 'ogmenu-' . $og_menu_instance->id();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    $contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($contexts, ['url.path']);
   }
 
 }
