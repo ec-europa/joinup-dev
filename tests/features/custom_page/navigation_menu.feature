@@ -217,6 +217,12 @@ Feature: Navigation menu for custom pages
     But I should not see the link "Custom page 1-1" in the "Table of contents"
     And I should not see the link "Custom page 1-2" in the "Table of contents"
 
+    # Verify that the menu only shows on the canonical route.
+    When I am logged in as a moderator
+    And I visit the "Custom page 1" custom page
+    And I click "Edit" in the "Entity actions" region
+    Then I should not see the "Table of contents" region
+
   @javascript
   Scenario: Only custom page entries can be nested in the collection navigation menu.
     Given the following collection:
