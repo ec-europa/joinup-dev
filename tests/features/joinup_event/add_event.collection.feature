@@ -61,7 +61,7 @@ Feature: "Add event" visibility options.
       | Title            | An amazing event                      |
       | Short title      | Amazing event                         |
       | Description      | This is going to be an amazing event. |
-      | Location         | Rue Belliard, 28                      |
+      | Location         | Rue Belliard 28, Brussels, Belgium    |
       | File description | Taxi discount voucher.                |
       | Spatial coverage | France                                |
     And I fill the start date of the Date widget with "2018-08-29"
@@ -77,6 +77,9 @@ Feature: "Add event" visibility options.
     Then I should not see the text "Regional"
     And I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
+    # The coordinates are going to be replaced by a map in ISAICP-3174.
+    And I should see the text "50.842271"
+    And I should see the text "4.370447"
     And the "Stream of Dreams" collection has a event titled "An amazing event"
     And I should not see the text "France"
     # Check that the link to the event is visible on the collection page.
