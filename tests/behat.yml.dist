@@ -31,6 +31,7 @@ default:
     LoversOfBehat\TableExtension:
       table_map:
         'member administration': '.og-members-overview table'
+        'collection administrator report': 'table.collection-administrator-report'
     Drupal\DrupalExtension:
       api_driver: 'drupal'
       blackbox: ~
