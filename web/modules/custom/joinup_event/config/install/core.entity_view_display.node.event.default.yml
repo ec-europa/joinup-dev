@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_event_adtl_address_info
     - field.field.node.event.field_event_agenda
     - field.field.node.event.field_event_contact_email
+    - field.field.node.event.field_event_coordinates
     - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
     - field.field.node.event.field_event_spatial_coverage
@@ -32,6 +33,7 @@ dependencies:
     - comment
     - ds
     - file
+    - geofield
     - image
     - joinup_core
     - link
@@ -123,6 +125,14 @@ content:
       joinup:
         template_suggestion: fieldset
     type: basic_string
+    region: content
+  field_event_coordinates:
+    weight: 14
+    label: above
+    settings:
+      output_format: wkt
+    third_party_settings: {  }
+    type: geofield_latlon
     region: content
   field_event_date:
     weight: 12

@@ -7,9 +7,13 @@ package: Joinup
 dependencies:
   - cached_computed_field
   - datetime_range
+  - geocoder_field
+  - geocoder_geofield
+  - geofield
   - joinup_community_content
   - joinup_core
   - language
+  - node
   - smart_trim
 
 config_devel:
