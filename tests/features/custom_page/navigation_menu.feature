@@ -389,3 +389,9 @@ Feature: Navigation menu for custom pages
     When I visit the "TOCO 1-1-2" custom page
     And I click "Up" in the "Table of contents outline"
     Then I should see the heading "TOCO 1-1"
+
+    # Verify that the menu only shows on the canonical route.
+    When I am logged in as a moderator
+    And I visit the "TOCO 1" custom page
+    And I click "Edit" in the "Entity actions" region
+    Then I should not see the "Table of contents outline" region
