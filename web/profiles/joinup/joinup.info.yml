@@ -30,6 +30,10 @@ dependencies:
   - field_group
   - file
   - flag
+  - geocoder
+  - geocoder_geofield
+  - geocoder_field
+  - geofield
   - help
   - honeypot
   - image
