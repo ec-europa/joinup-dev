@@ -28,10 +28,6 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
-use Drupal\views\Plugin\views\query\QueryPluginBase;
-use Drupal\views\Plugin\views\query\Sql;
-use Drupal\views\ViewExecutable;
-use Drupal\views\Views;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
@@ -300,6 +296,13 @@ function collection_module_implements_alter(&$implementations, $hook) {
 function collection_entity_extra_field_info() {
   $fields = [];
   $collection = RdfEntityType::load('collection');
+
+  // This hook can fire before the collection bundle config is defined, in that
+  // case we have nothing meaningful to add.
+  if (empty($collection)) {
+    return;
+  }
+
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
   $display = &$fields['rdf_entity'][$collection->id()]['display'];
@@ -638,99 +641,4 @@ function collection_rdf_entity_delete(RdfInterface $solution) {
       $collection->setChangedTime($request_time)->save();
     }
   }
-}
-
-/**
- * Implements hook_views_query_alter().
- *
- * In the member administration bulk operation view we are formatting the
- * username column as full names, but Views still sorts by username. Make sure
- * we sort by first name + last name instead of by username.
- */
-function collection_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  // Skip if this is not the member administration view.
-  if ($view->id() !== 'og_members_overview' || !$query instanceof Sql) {
-    return;
-  }
-  // Skip if we're not ordering by username.
-  if (empty($query->orderby[0]['field'])) {
-    return;
-  }
-  $field = $query->orderby[0]['field'];
-  if ($field !== 'users_field_data_og_membership.name') {
-    return;
-  }
-
-  $display = $view->getDisplay();
-
-  // Keep track of the direction of the sort.
-  $order = $query->orderby[0]['direction'] ?: 'ASC';
-
-  // Get rid of the original sort handlers and order by clauses that may be
-  // present in the view.
-  $query->orderby = [];
-  foreach ($display->getHandlers('sort') as $sort_handler) {
-    $sort_handler->destroy();
-  }
-
-  // Inject freshly initialized sort handlers for the first name and last name
-  // into the display.
-  $display->handlers['sort'] = array_map(function ($info) use ($view, $display) {
-    $handler = Views::handlerManager('sort')->getHandler($info, NULL);
-    $handler->init($view, $display, $info);
-    return $handler;
-  }, collection_get_og_members_overview_sort_handlers_info($order));
-
-  // Make sure the sort handlers are "built". This is making sure that the
-  // various references to objects and arrays are present at the places that
-  // Views expects them to be.
-  $view->_build('sort');
-}
-
-/**
- * Returns info for Views sort handlers in the member administration form.
- *
- * We are overriding the username column in the member administration view so
- * that the full name (first name + last name) is shown. This means that we need
- * to override the sorting as well, since the usernames are not necessarily in
- * the same alphabetical order as the full names. This function returns the info
- * that can be used to create the Views sort handlers for the user's first and
- * last name.
- *
- * @param string $order
- *   The order in which to sort, either 'ASC' or 'DESC'.
- *
- * @return array
- *   An associative array of Views sort handler configuration options, keyed by
- *   field name.
- *
- * @see collection_views_query_alter()
- */
-function collection_get_og_members_overview_sort_handlers_info(string $order): array {
-  return [
-    'field_user_first_name_value' => [
-      'id' => 'field_user_first_name_value',
-      'table' => 'user__field_user_first_name',
-      'field' => 'field_user_first_name_value',
-      'relationship' => 'uid',
-      'group_type' => 'group',
-      'admin_label' => '',
-      'order' => $order,
-      'exposed' => FALSE,
-      'expose' => ['label' => ''],
-      'plugin_id' => 'standard',
-    ],
-    'field_user_family_name_value' => [
-      'id' => 'field_user_family_name_value',
-      'table' => 'user__field_user_family_name',
-      'field' => 'field_user_family_name_value',
-      'relationship' => 'uid',
-      'group_type' => 'group',
-      'admin_label' => '',
-      'order' => $order,
-      'exposed' => FALSE,
-      'expose' => ['label' => ''],
-      'plugin_id' => 'standard',
-    ],
-  ];
 }
