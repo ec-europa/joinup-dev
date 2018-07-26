@@ -140,9 +140,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     if ($prev) {
       $links['prev'] = [
         'url' => $prev->getUrlObject(),
-        'title' => $this->t('Previous: :title', [
-          ':title' => $prev->getTitle(),
-        ]),
+        'title' => $prev->getTitle(),
       ];
     }
     if ($up) {
@@ -154,9 +152,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     if ($next) {
       $links['next'] = [
         'url' => $next->getUrlObject(),
-        'title' => $this->t('Next: :title', [
-          ':title' => $next->getTitle(),
-        ]),
+        'title' => $next->getTitle(),
       ];
     }
 
