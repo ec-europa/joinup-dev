@@ -38,3 +38,8 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  request_route:
+    id: request_route
+    routes: entity.node.canonical
+    negate: false
+    context_mapping: {  }
