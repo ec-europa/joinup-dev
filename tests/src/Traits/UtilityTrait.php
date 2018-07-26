@@ -31,7 +31,7 @@ trait UtilityTrait {
   /**
    * Checks that we are running on a JavaScript-enabled browser.
    *
-   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \RuntimeException
    *   Thrown when not running on a JS-enabled browser.
    */
   protected function assertJavaScriptEnabledBrowser() {
@@ -41,7 +41,7 @@ trait UtilityTrait {
     }
     catch (UnsupportedDriverActionException $e) {
       // Show a helpful error message.
-      throw new UnsupportedDriverActionException('This test needs to run on a real browser like Selenium or PhantomJS. Please add the "@javascript" tag to the scenario.', $driver);
+      throw new \RuntimeException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.', $driver);
     }
   }
 
