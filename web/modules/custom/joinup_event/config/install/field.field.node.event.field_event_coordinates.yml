@@ -12,7 +12,7 @@ third_party_settings:
     method: source
     weight: 0
     geocode_field: field_location
-    reverse_geocode_field: {  }
+    reverse_geocode_field: ''
     hidden: false
     disabled: false
     plugins:
