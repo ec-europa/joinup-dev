@@ -27,7 +27,7 @@
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
-        "drupal/geocoder": "^2.0@beta",
+        "drupal/geocoder": "dev-2825360-geocoder-php-4.x",
         "drupal/geofield": "^1.0@beta",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
@@ -67,6 +67,7 @@
         "ec-europa/infra": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "2.1.0",
+        "geocoder-php/nominatim-provider": "^5.0",
         "jacklmoore/autosize": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
@@ -232,6 +233,10 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/geocoder.git"
         },
         {
             "type": "vcs",
