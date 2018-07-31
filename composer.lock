@@ -3236,7 +3236,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/geocoder.git",
-                "reference": "5b44d00fb67f853afd947544530ace6c64257f57"
+                "reference": "778fdf1f2233b38887b127cc053cca75665a93b2"
             },
             "require": {
                 "php": ">=7.1.0",
@@ -3288,7 +3288,7 @@
                 "irc": "irc://irc.freenode.org/drupal-geo",
                 "source": "https://cgit.drupalcode.org/geocoder"
             },
-            "time": "2018-07-30T20:20:05+00:00"
+            "time": "2018-07-31T18:39:44+00:00"
         },
         {
             "name": "drupal/geofield",
@@ -5696,12 +5696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/infra.git",
-                "reference": "4c04e8620077588ec88c5623250de4366717c916"
+                "reference": "101b02788ff0dae155cbb8ce2754e2c9d74d2865"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/infra/zipball/4c04e8620077588ec88c5623250de4366717c916",
-                "reference": "4c04e8620077588ec88c5623250de4366717c916",
+                "url": "https://api.github.com/repos/ec-europa/infra/zipball/101b02788ff0dae155cbb8ce2754e2c9d74d2865",
+                "reference": "101b02788ff0dae155cbb8ce2754e2c9d74d2865",
                 "shasum": ""
             },
             "require": {
@@ -5718,7 +5718,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPLv3"
+                "GPL-3.0"
             ],
             "authors": [
                 {
@@ -5726,7 +5726,7 @@
                     "email": "gregory@siwhine.net"
                 }
             ],
-            "time": "2017-11-27T08:24:32+00:00"
+            "time": "2018-07-31T14:29:05+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -8421,16 +8421,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.11",
+            "version": "v5.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "7c6640e59cb4aa9ca06d41e937983cb20475874d"
+                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7c6640e59cb4aa9ca06d41e937983cb20475874d",
-                "reference": "7c6640e59cb4aa9ca06d41e937983cb20475874d",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/181b89f18a90f8925ef805f950d47a7190e9b950",
+                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950",
                 "shasum": ""
             },
             "require": {
@@ -8471,7 +8471,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-07-31T06:57:26+00:00"
+            "time": "2018-07-31T09:26:32+00:00"
         },
         {
             "name": "symfony-cmf/routing",
