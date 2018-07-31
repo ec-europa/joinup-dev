@@ -27,7 +27,7 @@
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
-        "drupal/geocoder": "dev-2825360-geocoder-php-4.x",
+        "drupal/geocoder": "dev-8.x-3.x",
         "drupal/geofield": "^1.0@beta",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
@@ -235,8 +235,9 @@
             "url": "https://git.drupal.org/project/redirect.git"
         },
         {
+            "_comment": "This is temporary, can be removed once the 8.x-3.x release of Geocoder is published on drupal.org.",
             "type": "vcs",
-            "url": "https://github.com/ec-europa/geocoder.git"
+            "url": "https://git.drupal.org/project/geocoder.git"
         },
         {
             "type": "vcs",

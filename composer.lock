@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e2f5f906a76b8444837f23b479510ac",
+    "content-hash": "3b60d19048eeb30f62a6a250be622be4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.64.0",
+            "version": "3.64.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6f2443e77da201ef074a2a9a608b9f2f38a49003"
+                "reference": "675481fc1bfdab312c0236f36ea93818a7c098eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6f2443e77da201ef074a2a9a608b9f2f38a49003",
-                "reference": "6f2443e77da201ef074a2a9a608b9f2f38a49003",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/675481fc1bfdab312c0236f36ea93818a7c098eb",
+                "reference": "675481fc1bfdab312c0236f36ea93818a7c098eb",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-26T21:58:51+00:00"
+            "time": "2018-07-30T20:41:52+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -3232,17 +3232,11 @@
         },
         {
             "name": "drupal/geocoder",
-            "version": "dev-2825360-geocoder-php-4.x",
+            "version": "dev-8.x-3.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/geocoder.git",
-                "reference": "8afd7bc6092a3ab9685c050b4ecc508ff79c377f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/geocoder/zipball/8afd7bc6092a3ab9685c050b4ecc508ff79c377f",
-                "reference": "8afd7bc6092a3ab9685c050b4ecc508ff79c377f",
-                "shasum": ""
+                "url": "https://git.drupal.org/project/geocoder.git",
+                "reference": "5b44d00fb67f853afd947544530ace6c64257f57"
             },
             "require": {
                 "php": ">=7.1.0",
@@ -3294,7 +3288,7 @@
                 "irc": "irc://irc.freenode.org/drupal-geo",
                 "source": "https://cgit.drupalcode.org/geocoder"
             },
-            "time": "2018-07-30T18:55:17+00:00"
+            "time": "2018-07-30T20:20:05+00:00"
         },
         {
             "name": "drupal/geofield",
@@ -8427,16 +8421,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.10",
+            "version": "v5.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "dd71cc1638ed7aebbb33f2e2b0edd2cf6ea73d97"
+                "reference": "7c6640e59cb4aa9ca06d41e937983cb20475874d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/dd71cc1638ed7aebbb33f2e2b0edd2cf6ea73d97",
-                "reference": "dd71cc1638ed7aebbb33f2e2b0edd2cf6ea73d97",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7c6640e59cb4aa9ca06d41e937983cb20475874d",
+                "reference": "7c6640e59cb4aa9ca06d41e937983cb20475874d",
                 "shasum": ""
             },
             "require": {
@@ -8477,7 +8471,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-07-27T08:58:59+00:00"
+            "time": "2018-07-31T06:57:26+00:00"
         },
         {
             "name": "symfony-cmf/routing",
