@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\file_url\Entity\RemoteFile;
 use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
 
 /**
@@ -284,7 +285,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
     /** @var \Drupal\file\FileInterface $file */
     foreach ($entity->field_ad_access_url->referencedEntities() as $file) {
-      if ($file !== NULL) {
+      if ($file !== NULL && !($file instanceof RemoteFile)) {
         return Url::fromUri(file_create_url($file->getFileUri()))
           ->setAbsolute()
           ->toString();
@@ -334,17 +335,19 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param array $parameters
    *   A list of extra parameters to pass to the array of parameters.
    *
-   * @return array|false
-   *   A list of parameters or false if the entity does not have a valid url to
+   * @return array|null
+   *   A list of parameters or NULL if the entity does not have a valid url to
    *   request.
    */
-  protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): array {
+  protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): ?array {
     $bundle = $entity->bundle();
     $period = $this->getTimePeriod($bundle);
     $type = $this->getType($bundle);
     $method = $this->getPiwikMethod($bundle);
     $url_parameter_name = $this->getUrlParameterName($bundle);
-    $url_parameter = $this->getUrlParameter($entity);
+    if (empty($url_parameter = $this->getUrlParameter($entity))) {
+      return NULL;
+    }
 
     $sub_query = $this->piwikQueryFactory->getQuery($method);
     $date_range = [
