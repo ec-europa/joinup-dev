@@ -1628,7 +1628,7 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
  *
  * Remove the default links from the table of contents.
  */
-function joinup_theme_preprocess_menu__og__navigation__content_bottom(array &$variables) {
+function joinup_theme_preprocess_menu__og__navigation__region__content_bottom(array &$variables) {
   $links_to_be_stripped = [
     'entity.rdf_entity.canonical' => 'Overview',
     'entity.rdf_entity.member_overview' => 'Members',
