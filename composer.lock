@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc2ed727e22ac3163d3412d990ba0fd1",
+    "content-hash": "11faaac47f86c24aee54a1a542e397fb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3542,8 +3542,7 @@
                 "source": "https://cgit.drupalcode.org/geocoder",
                 "issues": "https://drupal.org/project/issues/geocoder",
                 "irc": "irc://irc.freenode.org/drupal-geo"
-            },
-            "time": "2018-10-23T03:57:25+00:00"
+            }
         },
         {
             "name": "drupal/geofield",
