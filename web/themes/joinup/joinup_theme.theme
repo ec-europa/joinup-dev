@@ -1639,7 +1639,7 @@ function joinup_theme_preprocess_menu__og__navigation__region__content_bottom(ar
     /** @var \Drupal\Core\Url $url */
     $url = $menu_item['url'];
     $route_name = $url->getRouteName();
-    if (isset($links_to_be_stripped[$route_name]) && $links_to_be_stripped[$route_name] === $menu_item['title']) {
+    if (isset($links_to_be_stripped[$route_name]) && $links_to_be_stripped[$route_name] == $menu_item['title']) {
       unset($variables['items'][$menu_link_id]);
     }
   }
