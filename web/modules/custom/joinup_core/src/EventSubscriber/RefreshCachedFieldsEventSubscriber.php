@@ -118,6 +118,15 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
     }
 
+    // If all items were already updated, i.e. non of them has an internal file
+    // url, do not bother with requesting anything from the tracking service.
+    if (empty($items)) {
+      return;
+    }
+
+    // Reindex the items because unset() does not squash the keys and we need to
+    // check the queried values depending on the index.
+    $items = array_values($items);
     try {
       $response = $query->execute()->getResponse();
     }
