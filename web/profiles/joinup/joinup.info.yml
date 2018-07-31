@@ -104,10 +104,10 @@ themes:
 config_devel:
   - block.block.authoredon
   - block.block.changed
+  - block.block.contentbundle
   - block.block.entity_bundle_facet
   - block.block.eventdate
   - block.block.exposed_form_search_page
-  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader
@@ -206,6 +206,7 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - geocoder.settings
   - honeypot.settings
   - image.style.profile_icon
   - image.style.profile_icon_big

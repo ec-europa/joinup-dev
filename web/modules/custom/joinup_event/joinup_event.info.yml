@@ -7,6 +7,7 @@ package: Joinup
 dependencies:
   - cached_computed_field
   - datetime_range
+  - geocoder
   - geocoder_field
   - geocoder_geofield
   - geofield
@@ -57,5 +58,4 @@ config_devel:
   - field.storage.node.field_organisation
   - field.storage.node.field_organisation_type
   - field.storage.node.field_scope
-  - geocoder.settings
   - node.type.event
