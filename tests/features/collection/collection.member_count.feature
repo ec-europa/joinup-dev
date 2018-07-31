@@ -6,12 +6,12 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username    | Status |
-      | Thorin      | 1      |
-      | Fili        | 1      |
-      | Kili        | 1      |
-      | Bilbo       | 0      |
-      | Some goblin | 1      |
+      | Username    | Status  |
+      | Thorin      | active  |
+      | Fili        | active  |
+      | Kili        | active  |
+      | Bilbo       | blocked |
+      | Some goblin | active  |
     Given the following owner:
       | name         |
       | Hobbit owner |
