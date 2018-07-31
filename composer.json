@@ -237,8 +237,9 @@
             "url": "https://git.drupal.org/project/redirect.git"
         },
         {
+            "_comment": "This is temporary, can be removed once the 8.x-3.x release of Geocoder is published on drupal.org.",
             "type": "vcs",
-            "url": "https://github.com/ec-europa/geocoder.git"
+            "url": "https://git.drupal.org/project/geocoder.git"
         },
         {
             "type": "vcs",
