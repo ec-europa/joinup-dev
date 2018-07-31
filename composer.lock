@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b60d19048eeb30f62a6a250be622be4",
+    "content-hash": "80929a7bf7db0ec1784e2bc327e314db",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6798,6 +6798,51 @@
                 "php"
             ],
             "time": "2018-07-15T17:25:16+00:00"
+        },
+        {
+            "name": "openeuropa/webtools-geocoding-provider",
+            "version": "dev-initial-implementation",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
+                "reference": "6381e627820b993493f1a66473c2f7d694494f07"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/6381e627820b993493f1a66473c2f7d694494f07",
+                "reference": "6381e627820b993493f1a66473c2f7d694494f07",
+                "shasum": ""
+            },
+            "require": {
+                "geocoder-php/common-http": "^4.0",
+                "php": "^7.1",
+                "willdurand/geocoder": "^4.0"
+            },
+            "provide": {
+                "geocoder-php/provider-implementation": "1.0"
+            },
+            "require-dev": {
+                "geocoder-php/provider-integration-tests": "^1.0",
+                "openeuropa/code-review": "~0.2",
+                "php-http/curl-client": "^1.7",
+                "phpunit/phpunit": "~6.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
+                }
+            },
+            "license": [
+                "EUPL"
+            ],
+            "description": "Webtools Geocoding provider for Geocoder PHP.",
+            "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
+            "support": {
+                "source": "https://github.com/openeuropa/webtools-geocoding-provider/tree/initial-implementation",
+                "issues": "https://github.com/openeuropa/webtools-geocoding-provider/issues"
+            },
+            "time": "2018-07-31T13:27:24+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -13610,6 +13655,7 @@
         "ec-europa/infra": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
+        "openeuropa/webtools-geocoding-provider": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/devel": 15,
