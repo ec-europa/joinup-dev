@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -26,6 +27,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
@@ -1250,4 +1252,15 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
   // The first two items will always be langcode and ID.
   $id = array_pop($key_parts);
   return $id;
+}
+
+/**
+ * Invalidates the Joinup tags related to a group of a membership.
+ *
+ * @param \Drupal\og\OgMembershipInterface $entity
+ *   The og membership entity.
+ */
+function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }

@@ -360,7 +360,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    // @see collection_og_membership_invalidate_group_tags()
+    // @see joinup_core_og_membership_invalidate_group_tags()
     $tags = Cache::buildTags('joinup-membership', [$tag]);
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
@@ -564,25 +564,14 @@ function collection_search_api_solr_query_alter(Query $solarium_query, QueryInte
  * Implements hook_ENTITY_TYPE_presave().
  */
 function collection_og_membership_presave(OgMembershipInterface $entity) {
-  collection_og_membership_invalidate_group_tags($entity);
+  joinup_core_og_membership_invalidate_group_tags($entity);
 }
 
 /**
  * Implements hook_ENTITY_TYPE_predelete().
  */
 function collection_og_membership_predelete(OgMembershipInterface $entity) {
-  collection_og_membership_invalidate_group_tags($entity);
-}
-
-/**
- * Invalidates the Joinup tags related to a group of a membership.
- *
- * @param \Drupal\og\OgMembershipInterface $entity
- *   The og membership entity.
- */
-function collection_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
-  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+  joinup_core_og_membership_invalidate_group_tags($entity);
 }
 
 /**
