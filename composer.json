@@ -177,6 +177,9 @@
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
+            "drupal/geocoder": {
+                "Exception thrown when saving an address that cannot be geolocated. Ref. https://www.drupal.org/project/geocoder/issues/2989600": "https://www.drupal.org/files/issues/2018-07-31/2989600-2.patch"
+            },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
