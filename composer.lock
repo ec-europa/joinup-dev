@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "699fef24dec4cc73994ea3559df7d522",
+    "content-hash": "22d38570f75ec5c72e8ea5b233c7b586",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3482,6 +3482,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Convert providers from simple config to a config entity. @see https://www.drupal.org/project/geocoder/issues/3008528": "https://www.drupal.org/files/issues/2018-11-26/3008528-33.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3542,7 +3545,8 @@
                 "source": "https://cgit.drupalcode.org/geocoder",
                 "issues": "https://drupal.org/project/issues/geocoder",
                 "irc": "irc://irc.freenode.org/drupal-geo"
-            }
+            },
+            "time": "2018-10-23T03:57:25+00:00"
         },
         {
             "name": "drupal/geofield",
@@ -6285,63 +6289,6 @@
             "time": "2018-06-28T09:46:39+00:00"
         },
         {
-            "name": "geocoder-php/nominatim-provider",
-            "version": "5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/geocoder-php/nominatim-provider.git",
-                "reference": "38d9299ae3cb95cd5eb354008dc19884d00f7edc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/nominatim-provider/zipball/38d9299ae3cb95cd5eb354008dc19884d00f7edc",
-                "reference": "38d9299ae3cb95cd5eb354008dc19884d00f7edc",
-                "shasum": ""
-            },
-            "require": {
-                "geocoder-php/common-http": "^4.1",
-                "php": "^7.0",
-                "willdurand/geocoder": "^4.0"
-            },
-            "provide": {
-                "geocoder-php/provider-implementation": "1.0"
-            },
-            "require-dev": {
-                "geocoder-php/provider-integration-tests": "^1.0",
-                "nyholm/psr7": "^0.2.2",
-                "php-http/curl-client": "^1.7",
-                "php-http/message": "^1.0",
-                "phpunit/phpunit": "6.3.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Geocoder\\Provider\\Nominatim\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "William Durand",
-                    "email": "william.durand1@gmail.com"
-                }
-            ],
-            "description": "Geocoder Nominatim adapter",
-            "homepage": "http://geocoder-php.org/Geocoder/",
-            "time": "2018-07-08T11:28:45+00:00"
-        },
-        {
             "name": "grasmash/expander",
             "version": "1.0.0",
             "source": {
@@ -7297,6 +7244,51 @@
                 "php"
             ],
             "time": "2018-10-10T09:24:14+00:00"
+        },
+        {
+            "name": "openeuropa/webtools-geocoding-provider",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
+                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/22ab74bdb38754227d1428b53acd0203ae9228a7",
+                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7",
+                "shasum": ""
+            },
+            "require": {
+                "geocoder-php/common-http": "^4.0",
+                "php": "^7.1",
+                "willdurand/geocoder": "^4.0"
+            },
+            "provide": {
+                "geocoder-php/provider-implementation": "1.0"
+            },
+            "require-dev": {
+                "geocoder-php/provider-integration-tests": "^1.0",
+                "openeuropa/code-review": "dev-master",
+                "php-http/curl-client": "^1.7",
+                "phpunit/phpunit": "~6.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
+                }
+            },
+            "license": [
+                "EUPL"
+            ],
+            "description": "Webtools Geocoding provider for Geocoder PHP.",
+            "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
+            "support": {
+                "source": "https://github.com/openeuropa/webtools-geocoding-provider/tree/0.1.0",
+                "issues": "https://github.com/openeuropa/webtools-geocoding-provider/issues"
+            },
+            "time": "2018-08-31T06:51:22+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -12037,7 +12029,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
