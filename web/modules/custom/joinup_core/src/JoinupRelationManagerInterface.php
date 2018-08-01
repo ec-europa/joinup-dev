@@ -130,4 +130,35 @@ interface JoinupRelationManagerInterface {
    */
   public function getCollectionsWhereSoleOwner(AccountInterface $user): array;
 
+  /**
+   * Retrieves all the memberships of a group, filtered by role names.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group entity for which to return the memberships.
+   * @param string[] $role_names
+   *   An array of role names.
+   * @param array $states
+   *   (optional) An array of membership states to retrieve. Defaults to active.
+   *
+   * @return \Drupal\og\OgMembershipInterface[]
+   *   The memberships of the group that match the given roles and states.
+   */
+  public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
+
+  /**
+   * Returns the entity IDs of all collections.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  public function getCollectionIds(): array;
+
+  /**
+   * Returns the entity IDs of all solutions.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  public function getSolutionIds(): array;
+
 }

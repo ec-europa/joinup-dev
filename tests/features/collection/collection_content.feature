@@ -1,6 +1,8 @@
 @api @terms
-Feature: Given I am visiting the collection homepage
-  I want to see the content tabs with the proper singular/plural labels.
+Feature: Collection content
+  As a user of the website
+  I want to access the content of a collection
+  So that I can find the information I'm looking for.
 
   Background:
     Given the following collection:
@@ -11,25 +13,25 @@ Feature: Given I am visiting the collection homepage
       | collection | Turin Egyptian Collection   |
       | state      | validated                   |
     And discussion content:
-      | title                                 | state     | collection                |
-      | Bigger than Egyptian Museum of Cairo? | validated | Turin Egyptian Collection |
+      | title                                 | body                                                                                                    | state     | collection                |
+      | Bigger than Egyptian Museum of Cairo? | value: <p><a href="#link">Link to the museum</a> web<strong>site</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And document content:
-      | title           | state     | collection                |
-      | Upper Floor Map | validated | Turin Egyptian Collection |
+      | title           | body                                                                             | state     | collection                |
+      | Upper Floor Map | value: <p>A sample <a href="#link">map</a> example.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And event content:
       | title                                     | state     | collection                |
       | Opening of the Hellenistic Period Section | validated | Turin Egyptian Collection |
     And news content:
-      | title                          | state     | collection                |
-      | Turin Egyptian Museum Reopened | validated | Turin Egyptian Collection |
+      | title                          | body                                                                                           | state     | collection                |
+      | Turin Egyptian Museum Reopened | value: <p>After <em>more than</em> <a href="#link">two years</a>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And newsletter content:
-      | title                                                | state     | collection                |
-      | Stay informed about this year events and exhibitions | validated | Turin Egyptian Collection |
+      | title                                                | body                                                                                                                         | state     | collection                |
+      | Stay informed about this year events and exhibitions | value: <p><a href="#link">Subscribe to the newsletter</a> to stay <strong>up-to-date!</strong>.</p> - format: content_editor | validated | Turin Egyptian Collection |
     And video content:
       | title                                  | state     | collection                |
       | Watch the mummy conservation technique | validated | Turin Egyptian Collection |
 
-  Scenario: Test that publishing new solutions result in counters being properly updated.
+  Scenario: Publishing new solutions should result in counters being properly updated.
     Given owner:
       | name             | type                  |
       | Particle sweeper | Private Individual(s) |
@@ -78,7 +80,7 @@ Feature: Given I am visiting the collection homepage
     Then I delete the "Solution from draft to validated" solution
     And I delete the "Costas Papazoglou" contact information
 
-  Scenario: Test label variant based on the content count of each category.
+  Scenario: Content type facet labels should show the plural form when multiple results are available.
     Given I go to the homepage of the "Turin Egyptian Collection" collection
     Then the "Discussion" content tab is displayed
     And the "Document" content tab is displayed
@@ -124,3 +126,23 @@ Feature: Given I am visiting the collection homepage
     And I should see the link "Newsletters (2)"
     And I should see the link "Solutions (2)"
     And I should see the link "Videos (2)"
+
+  Scenario: Links and markup should be stripped from tiles abstract.
+    Given I go to the homepage of the "Turin Egyptian Collection" collection
+    # Check the discussion tile.
+    Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
+    # Check into the HTML so that we assert that actually the HTML has been stripped.
+    And the page should contain the html text "Link to the museum web site ."
+    And I should not see the link "Link to the museum"
+    # Check the document tile.
+    And I should see the "Upper Floor Map" tile
+    And the page should contain the html text "A sample map example."
+    And I should not see the link "map"
+    # Check the news tile.
+    And I should see the "Turin Egyptian Museum Reopened" tile
+    And the page should contain the html text "After more than two years ."
+    And I should not see the link "two years"
+    # Check the newsletter tile.
+    And I should see the "Stay informed about this year events and exhibitions" tile
+    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date! ."
+    And I should not see the link "Subscribe to the newsletter"

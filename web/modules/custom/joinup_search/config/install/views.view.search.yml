@@ -80,6 +80,7 @@ display:
               event: view_mode_tile
               news: view_mode_tile
               newsletter: view_mode_tile
+              tallinn_report: view_mode_tile
               video: view_mode_tile
             'entity:rdf_entity':
               asset_distribution: view_mode_tile
