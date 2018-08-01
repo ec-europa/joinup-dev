@@ -902,6 +902,29 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 }
 
 /**
+ * Invalidate Joinup user membership cache tags after a user is updated.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $user
+ *   The user entity.
+ *
+ * @see joinup_core_og_membership_invalidate_group_tags()
+ */
+function joinup_core_user_update(EntityInterface $user) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $memberships = $membership_manager->getMemberships($user);
+
+  $tags = [];
+  foreach ($memberships as $membership) {
+    $tag = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
+    $tags_to_invalidate = Cache::buildTags('joinup-membership', [$tag]);
+    $tags = Cache::mergeTags($tags, $tags_to_invalidate);
+  }
+
+  Cache::invalidateTags($tags);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Adds result counts to the role options on the membership overview for
