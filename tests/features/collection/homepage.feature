@@ -7,10 +7,10 @@ Feature: Collection homepage
   Background:
     Given users:
       | Username | Status |
-      | Frodo    | 1      |
-      | Boromir  | 1      |
-      | Legoloas | 1      |
-      | Gimli    | 1      |
+      | Frodo    | active |
+      | Boromir  | active |
+      | Legoloas | active |
+      | Gimli    | active |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
