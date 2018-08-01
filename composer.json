@@ -69,7 +69,7 @@
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
-        "openeuropa/webtools-geocoding-provider": "~0.1",
+        "openeuropa/oe_webtools_location": "~0.1",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "predis/predis": "~1.1",
@@ -254,6 +254,11 @@
         {
             "type": "vcs",
             "url": "https://github.com/Gizra/og.git"
+        },
+        {
+            "_comment": "This directly references the repository. This can be removed once a release is made and the repository is announced on Packagist.",
+            "type": "vcs",
+            "url": "https://github.com/openeuropa/oe_webtools_location.git"
         },
         {
             "_comment": "This directly references the repository. This can be removed once a release is made and the repository is announced on Packagist.",
