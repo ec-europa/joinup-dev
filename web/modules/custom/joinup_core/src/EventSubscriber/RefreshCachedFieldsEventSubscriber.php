@@ -108,7 +108,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
 
       if ($parameters = $this->getSubQueryParameters($entity)) {
-        $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
+        // http_build_query builds the query parameters by replacing blank
+        // spaces with '+'. Use the PHP_QUERY_RFC3986 encoding type which
+        // properly encodes the parameters.
+        $query_parameters = http_build_query($parameters, NULL, '&', PHP_QUERY_RFC3986);
+        $query->setParameter('urls[' . $url_index++ . ']', $query_parameters);
       }
       else {
         // Update the entity so that it wont be requested to update the value
