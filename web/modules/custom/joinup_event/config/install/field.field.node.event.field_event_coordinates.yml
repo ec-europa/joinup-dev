@@ -19,7 +19,7 @@ third_party_settings:
     delta_handling: default
     failure:
       handling: preserve
-      status_message: false
+      status_message: true
       log: true
     providers:
       - openstreetmap
