@@ -31,12 +31,15 @@ content:
       trim_length: 200
       trim_type: chars
       trim_suffix: …
-      more_link: false
+      wrap_class: trimmed
       more_text: More
+      more_class: more-link
       summary_handler: trim
       trim_options:
-        text: false
-      more_class: more-link
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
     third_party_settings:
       ds:
         ft:
@@ -93,6 +96,7 @@ hidden:
   field_site_pinned: true
   field_state: true
   field_visit_count: true
+  flag_subscribe_discussions: true
   invite_link: true
   langcode: true
   links: true

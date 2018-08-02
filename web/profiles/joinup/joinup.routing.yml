@@ -28,19 +28,31 @@ joinup.collection_tca_form:
   requirements:
     _permission: 'propose collection rdf entity'
 
-joinup.legal_notice:
-  path: '/joinup/legal-notice'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
-    _title: 'Legal notice'
-  requirements:
-    _access: 'TRUE'
-
 joinup.eligibility_criteria:
   path: '/joinup/eligibility-criteria'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::eligibilityCriteria'
     _title: 'Eligibility criteria'
+  requirements:
+    _access: 'TRUE'
+
+joinup.group_administrators_report:
+  path: '/admin/reporting/group-administrators/{entity_type_id}/{bundle_id}/{format}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\GroupAdministratorsController::report'
+    _title_callback: '\Drupal\joinup\Controller\GroupAdministratorsController::reportTitle'
+    format: 'html'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\GroupAdministratorsController::access'
+    _permission: 'administer group'
+  options:
+    _admin_route: TRUE
+
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
   requirements:
     _access: 'TRUE'
 
