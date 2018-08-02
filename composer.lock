@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd6cab755195c9044360898200b35323",
+    "content-hash": "e1d30aace5f2735eca78661d08323728",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5541,16 +5541,16 @@
         },
         {
             "name": "ec-europa/joinup-tallinn-dashboard",
-            "version": "dev-master",
+            "version": "dev-ISAICP-4673",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "4d6f7af924e604f41b271271ddce298b847d24f9"
+                "reference": "c9f64326d26f4dbbd780dbbe26412ad01c9b55b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/4d6f7af924e604f41b271271ddce298b847d24f9",
-                "reference": "4d6f7af924e604f41b271271ddce298b847d24f9",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/c9f64326d26f4dbbd780dbbe26412ad01c9b55b9",
+                "reference": "c9f64326d26f4dbbd780dbbe26412ad01c9b55b9",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5563,7 +5563,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-07-18T09:22:46+00:00"
+            "time": "2018-08-02T16:15:33+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
