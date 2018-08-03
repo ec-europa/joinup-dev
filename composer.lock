@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1d30aace5f2735eca78661d08323728",
+    "content-hash": "bd6cab755195c9044360898200b35323",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1830,11 +1830,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2937,7 +2933,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1530810825",
+                    "datestamp": "1533065280",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5284,8 +5280,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+2-dev",
-                    "datestamp": "1525107184",
+                    "version": "8.x-1.0-alpha4+1-dev",
+                    "datestamp": "1486397282",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5541,16 +5537,16 @@
         },
         {
             "name": "ec-europa/joinup-tallinn-dashboard",
-            "version": "dev-ISAICP-4673",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "c9f64326d26f4dbbd780dbbe26412ad01c9b55b9"
+                "reference": "23d062509bb00eacab21dac42debe2136263f1f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/c9f64326d26f4dbbd780dbbe26412ad01c9b55b9",
-                "reference": "c9f64326d26f4dbbd780dbbe26412ad01c9b55b9",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/23d062509bb00eacab21dac42debe2136263f1f5",
+                "reference": "23d062509bb00eacab21dac42debe2136263f1f5",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5563,7 +5559,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-02T16:15:33+00:00"
+            "time": "2018-08-03T10:41:35+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -5606,7 +5602,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
@@ -10777,8 +10773,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+1-dev",
-                    "datestamp": "1510738685",
+                    "version": "8.x-1.0-alpha2+23-dev",
+                    "datestamp": "1493538844",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
