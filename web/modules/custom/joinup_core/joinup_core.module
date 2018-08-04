@@ -1278,6 +1278,20 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_core_og_membership_presave(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
  * Invalidates the Joinup tags related to a group of a membership.
  *
  * @param \Drupal\og\OgMembershipInterface $entity
