@@ -104,10 +104,10 @@ themes:
 config_devel:
   - block.block.authoredon
   - block.block.changed
+  - block.block.contentbundle
   - block.block.entity_bundle_facet
   - block.block.eventdate
   - block.block.exposed_form_search_page
-  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader
@@ -120,8 +120,8 @@ config_devel:
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
   - block.block.menusubpages
-  - block.block.mycontentcollection
   - block.block.mycontent
+  - block.block.mycontentcollection
   - block.block.mycontentsolution
   - block.block.navigation
   - block.block.overviewmessage
@@ -205,6 +205,7 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - geocoder.settings
   - honeypot.settings
   - image.style.profile_icon
   - image.style.profile_icon_big

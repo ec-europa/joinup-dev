@@ -7,6 +7,7 @@ package: Joinup
 dependencies:
   - cached_computed_field
   - datetime_range
+  - geocoder
   - geocoder_field
   - geocoder_geofield
   - geofield
