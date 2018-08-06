@@ -30,6 +30,7 @@
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "^5.0-beta6",
+        "drupal/matomo": "^1.7",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
@@ -41,7 +42,7 @@
         "drupal/pathauto": "~1.1",
         "drupal/persistent_login": "^1.0-alpha4",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
-        "drupal/piwik": "~1.2.0",
+        "drupal/piwik": "~1.4",
         "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/rdf_entity": "^1.0.0-alpha7",
@@ -189,6 +190,9 @@
             },
             "drupal/rdf_entity": {
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+            },
+            "drupal/piwik_reporting_api": {
+                "Replace piwik dependency with matomo @see https://www.drupal.org/project/piwik_reporting_api/issues/2982802": "https://www.drupal.org/files/issues/2018-08-06/piwik_reporting_api-dependency_update-2982802-3.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
