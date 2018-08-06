@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "811ad3e6ff7062c6118c7e2cf31a5a99",
+    "content-hash": "36e04d1233b29cebd82e43e2928f28be",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13685,7 +13685,6 @@
         "drupal/config_sync": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
-        "drupal/geocoder": 20,
         "drupal/geofield": 10,
         "drupal/inline_entity_form": 20,
         "drupal/og": 20,
