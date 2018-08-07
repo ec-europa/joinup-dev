@@ -908,7 +908,8 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $form_state->get('view');
-  if ($view->id() !== 'members_overview') {
+  $view_id = $view->id();
+  if (!in_array($view_id, ['members_overview', 'og_members_overview'])) {
     return;
   }
 
@@ -923,9 +924,9 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
 
   // Define a function that gets the result count for a given exposed filter
   // option.
-  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+  $get_result_count = function ($view_id, $display_id, $arguments, $exposed_option) {
     /** @var \Drupal\views\ViewExecutable $view */
-    $view = Views::getView('members_overview');
+    $view = Views::getView($view_id);
     // Make sure we do not get into an endless loop when building the view,
     // since it will try to build the exposed form again.
     $view->do_not_recurse = TRUE;
@@ -955,7 +956,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
       unset($form['roles_target_id']['#options'][$exposed_option]);
     }
     else {
-      $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+      $count = $get_result_count($view_id, $view->getDisplay()->getPluginId(), $view->args, $exposed_option);
       $key = $exposed_option ?: 'All';
       $option_text = (string) $form['roles_target_id']['#options'][$key];
       $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
