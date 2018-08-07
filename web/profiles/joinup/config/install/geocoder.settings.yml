@@ -1,12 +1,6 @@
 cache: true
 plugins_options:
-  nominatim:
-    rootUrl: ''
-    userAgent: ''
-    referer: ''
-  openstreetmap:
-    userAgent: Joinup
-    referer: 'https://joinup.ec.europa.eu/'
   file: {  }
   gpxfile: {  }
   random: {  }
+  webtools_geocoding: {  }

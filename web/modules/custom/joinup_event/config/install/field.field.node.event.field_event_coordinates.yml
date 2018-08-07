@@ -16,12 +16,12 @@ third_party_settings:
     hidden: false
     disabled: false
     plugins:
-      - openstreetmap
+      - webtools_geocoding
     dumper: wkt
     delta_handling: default
     failure:
       handling: preserve
-      status_message: false
+      status_message: true
       log: true
 id: node.event.field_event_coordinates
 field_name: field_event_coordinates
