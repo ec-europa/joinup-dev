@@ -31,6 +31,7 @@ Feature: Filtering the member list
     When I go to the homepage of the "Coffee makers" collection
     And I click "Members" in the "Left sidebar"
     Then the following fields should not be present "Username, First name, Family name"
+    But the following fields should be present "Roles"
 
     Examples:
       | user       |
