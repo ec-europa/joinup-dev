@@ -924,7 +924,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
 
   // Define a function that gets the result count for a given exposed filter
   // option.
-  $get_result_count = function ($view_id, $display_id, $arguments, $exposed_option) {
+  $get_result_count = function ($view_id, $display_id, $arguments, $exposed_option, array $exposed_input) {
     /** @var \Drupal\views\ViewExecutable $view */
     $view = Views::getView($view_id);
     // Make sure we do not get into an endless loop when building the view,
@@ -934,7 +934,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
     // the request arguments. If we want to override them with "there is no
     // exposed input" then we need to pass a value that is not considered empty,
     // hence we use "[TRUE]" instead of "[]".
-    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $exposed_input['roles_target_id'] = $exposed_option ?: TRUE;
     $view->setExposedInput($exposed_input);
     $view->executeDisplay($display_id, $arguments);
     // Apparently it is not guaranteed that the `total_rows` will be populated.
@@ -956,7 +956,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
       unset($form['roles_target_id']['#options'][$exposed_option]);
     }
     else {
-      $count = $get_result_count($view_id, $view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+      $count = $get_result_count($view_id, $view->getDisplay()->getPluginId(), $view->args, $exposed_option, $view->getExposedInput());
       $key = $exposed_option ?: 'All';
       $option_text = (string) $form['roles_target_id']['#options'][$key];
       $form['roles_target_id']['#options'][$key] = "$option_text ($count)";

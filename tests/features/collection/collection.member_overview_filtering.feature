@@ -89,3 +89,8 @@ Feature: Filtering the member list
     But I should not see the link "Seamus Emerson"
     And I should not see the link "Brooke Kingsley"
     And I should not see the link "Nell Gibb"
+    And I fill in "Family name" with "eme"
+    And I press "Apply"
+    Then I should see the link "King Emerson"
+    But I should not see the link "King Seabrooke"
+    And the option with text "Facilitator (1)" from select "Roles" is selected
