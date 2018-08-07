@@ -35,6 +35,7 @@ Feature: Filtering the member list
     When I go to the homepage of the "Coffee grinders" solution
     And I click "Members" in the "Left sidebar"
     Then the following fields should not be present "Username, First name, Family name"
+    But the following fields should be present "Roles"
 
     Examples:
       | user         |
@@ -74,3 +75,27 @@ Feature: Filtering the member list
     And I press "Apply"
     Then I should see the link "Jack Edgar"
     But I should not see the link "Carter Edgar"
+
+    When I clear the content of the field "Username"
+    And I clear the content of the field "Family name"
+    And I press "Apply"
+    And I select "Owner (1)" from "Roles"
+    And I press "Apply"
+    Then I should see the link "Jack Cartwright"
+    But I should not see the link "Jack Edgar"
+    And I should not see the link "Carter Edgar"
+    And I should not see the link "Wright Jackson"
+    And I should not see the link "Lavonne Atkins"
+
+    When I select "Facilitator (2)" from "Roles"
+    And I press "Apply"
+    Then I should see the link "Jack Edgar"
+    And I should see the link "Jack Cartwright"
+    But I should not see the link "Carter Edgar"
+    And I should not see the link "Wright Jackson"
+    And I should not see the link "Lavonne Atkins"
+    And I fill in "Family name" with "edg"
+    And I press "Apply"
+    Then I should see the link "Jack Edgar"
+    But I should not see the link "Jack Cartwright"
+    And the option with text "Facilitator (1)" from select "Roles" is selected

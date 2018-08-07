@@ -74,6 +74,7 @@ Feature: Filtering the member list
 
     When I clear the field "Username"
     And I clear the field "Family name"
+    And I press "Apply"
     And I select "Owner (1)" from "Roles"
     And I press "Apply"
     Then I should see the link "King Seabrooke"
