@@ -35,7 +35,7 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
         "drupal/migrate_spreadsheet": "^1.0-beta6",
-        "drupal/og": "dev-8.x-1.x#ae99712a9adce6794709c0e42832d392dd8c1789 as 1.0",
+        "drupal/og": "dev-8.x-1.x#bb8dc168ba5d5c7ee99bc1349e42a8ce6a797258 as 1.0",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/password_policy": "^3.0-alpha4",
         "drupal/pathauto": "~1.1",
