@@ -1620,6 +1620,7 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
   if (isset($variables['attributes']['_block_id']) && ($block = Block::load($variables['attributes']['_block_id']))) {
     $region = $block->getRegion();
     $suggestions[] = $variables['theme_hook_original'] . '__region_' . $region;
+    unset($variables['attributes']['_block_id']);
   }
 }
 
