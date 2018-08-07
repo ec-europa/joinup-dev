@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36e04d1233b29cebd82e43e2928f28be",
+    "content-hash": "0a5b96dd8b7c76e89dbf9f73d1031149",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6805,13 +6805,13 @@
             "version": "dev-ISAICP-4675",
             "source": {
                 "type": "git",
-                "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "f3133fbe2b55e7a2dfda2ff3084552ebe2be4595"
+                "url": "https://github.com/claudiu-cristea/oe_webtools_location.git",
+                "reference": "8917b477932c1ec19fd79257c31eaf10e339b2f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/f3133fbe2b55e7a2dfda2ff3084552ebe2be4595",
-                "reference": "f3133fbe2b55e7a2dfda2ff3084552ebe2be4595",
+                "url": "https://api.github.com/repos/claudiu-cristea/oe_webtools_location/zipball/8917b477932c1ec19fd79257c31eaf10e339b2f7",
+                "reference": "8917b477932c1ec19fd79257c31eaf10e339b2f7",
                 "shasum": ""
             },
             "require": {
@@ -6849,10 +6849,9 @@
             ],
             "description": "Adds support for Webtools location services in Drupal.",
             "support": {
-                "source": "https://github.com/openeuropa/oe_webtools_location/tree/ISAICP-4675",
-                "issues": "https://github.com/openeuropa/oe_webtools_location/issues"
+                "source": "https://github.com/claudiu-cristea/oe_webtools_location/tree/ISAICP-4675"
             },
-            "time": "2018-08-02T10:12:26+00:00"
+            "time": "2018-08-07T07:33:19+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",

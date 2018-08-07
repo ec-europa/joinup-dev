@@ -244,7 +244,7 @@
         {
             "_comment": "This directly references the repository. This can be removed once a release is made and the repository is announced on Packagist.",
             "type": "vcs",
-            "url": "https://github.com/openeuropa/oe_webtools_location.git"
+            "url": "https://github.com/claudiu-cristea/oe_webtools_location.git"
         },
         {
             "_comment": "This directly references the repository. This can be removed once a release is made and the repository is announced on Packagist.",
