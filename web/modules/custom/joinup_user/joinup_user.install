@@ -85,10 +85,3 @@ function joinup_user_setup_default_avatar() {
 
   $field_user_photo->set('settings.default_image', $default_image)->save(TRUE);
 }
-
-/**
- * Grant the authenticated users the 'never autoplay videos' permission.
- */
-function joinup_user_update_8001() {
-  user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, ['never autoplay videos']);
-}
