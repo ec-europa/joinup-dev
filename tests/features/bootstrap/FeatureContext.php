@@ -10,13 +10,14 @@ declare(strict_types = 1);
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
-use Drupal\joinup\KeyboardEventKeyCodes as Key;
+use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -24,6 +25,8 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
+use WebDriver\Exception;
+use WebDriver\Key;
 
 /**
  * Defines generic step definitions.
@@ -656,7 +659,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
     }
-    $key = $direction === 'left' ? Key::LEFT_ARROW : Key::RIGHT_ARROW;
+    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
 
     // Locate the slider starting from the label:
     // - Find the label with the given label text.
@@ -1273,6 +1276,47 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
     $html_manipulator = new HtmlManipulator($scope->getHtml());
     $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
+  }
+
+  /**
+   * Fills in the autocomplete field with the given text.
+   *
+   * This differs from MinkContext::fillField() in that this will no remove the
+   * focus on the field after entering the text, so that the autocomplete
+   * results will not disappear. The final action taken on the field will be the
+   * "keyup" event for the last character.
+   *
+   * @param string $field
+   *   The ID, name, label or value of the autocomplete field to fill in.
+   * @param string $value
+   *   The text to type in the autocomplete field.
+   *
+   * @When I type :value in the :field autocomplete field
+   */
+  public function fillAutoCompleteField(string $field, string $value): void {
+    $this->assertJavaScriptEnabledBrowser();
+
+    $driver = $this->getSession()->getDriver();
+    if (!$driver instanceof Selenium2Driver) {
+      throw new \RuntimeException("Only Selenium is currently supported for typing in autocomplete fields.");
+    }
+
+    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', ['field', $field]);
+    try {
+      $element = $driver->getWebDriverSession()->element('xpath', $xpath);
+    }
+    catch (Exception $e) {
+      throw new \RuntimeException("Field with locator '$field' was not found in the page.");
+    }
+
+    // Clear any existing data in the field before typing the new data.
+    $value = str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
+
+    // Fill in the field by directly using the postValue() method of the
+    // webdriver. This executes the keystrokes that make up the text but will
+    // not remove focus from the field so the autocomplete results remain
+    // visible and can be inspected.
+    $element->postValue(['value' => [$value]]);
   }
 
 }
