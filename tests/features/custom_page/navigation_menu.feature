@@ -341,15 +341,16 @@ Feature: Navigation menu for custom pages
       | title                     | state     |
       | Table of contents outline | validated |
     And custom_page content:
-      | title      | collection                |
-      | TOCO 1     | Table of contents outline |
-      | TOCO 1-1   | Table of contents outline |
-      | TOCO 1-1-1 | Table of contents outline |
-      | TOCO 1-1-2 | Table of contents outline |
-      | TOCO 1-2   | Table of contents outline |
-      | TOCO 2     | Table of contents outline |
-      | TOCO 2-1   | Table of contents outline |
-      | TOCO 2-1-1 | Table of contents outline |
+      | title      | collection                | status      |
+      | TOCO 1     | Table of contents outline | published   |
+      | TOCO 1-1   | Table of contents outline | published   |
+      | TOCO 1-1-1 | Table of contents outline | published   |
+      | TOCO 1-1-2 | Table of contents outline | published   |
+      | TOCO 1-2   | Table of contents outline | published   |
+      | TOCO 2     | Table of contents outline | published   |
+      | TOCO 2-1   | Table of contents outline | published   |
+      | TOCO 2-1-1 | Table of contents outline | published   |
+      | TOCO 2-1-2 | Table of contents outline | unpublished |
     And the following custom page menu structure:
       | title      | parent   | weight |
       | TOCO 1     |          | 1      |
@@ -360,6 +361,7 @@ Feature: Navigation menu for custom pages
       | TOCO 2     |          | 2      |
       | TOCO 2-1   | TOCO 2   | 1      |
       | TOCO 2-1-1 | TOCO 2-1 | 1      |
+      | TOCO 2-1-2 | TOCO 2-1 | 1      |
 
     When I am logged in as a member of the "Table of contents outline" collection
     And I go to the homepage of the "Table of contents outline" collection
@@ -381,6 +383,7 @@ Feature: Navigation menu for custom pages
     And I click "TOCO 2" in the "Table of contents outline"
     And I click "TOCO 2-1" in the "Table of contents outline"
     And I click "TOCO 2-1-1" in the "Table of contents outline"
+    Then I should not see the link "TOCO 2-1-2" in the "Table of contents outline"
     # Navigate backwards.
     And I click "TOCO 2-1" in the "Table of contents outline"
     And I click "TOCO 2" in the "Table of contents outline"
