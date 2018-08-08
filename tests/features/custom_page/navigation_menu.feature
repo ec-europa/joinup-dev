@@ -407,3 +407,17 @@ Feature: Navigation menu for custom pages
     And I visit the "TOCO 1" custom page
     And I click "Edit" in the "Entity actions" region
     Then I should not see the "Table of contents outline" region
+
+    Given the following custom page menu structure:
+      | title      | parent | weight |
+      | TOCO 1     |        | 1      |
+      | TOCO 1-1   |        | 2      |
+      | TOCO 1-1-1 |        | 3      |
+      | TOCO 1-1-2 |        | 4      |
+      | TOCO 1-2   |        | 5      |
+      | TOCO 2     |        | 6      |
+      | TOCO 2-1   |        | 7      |
+      | TOCO 2-1-1 |        | 8      |
+      | TOCO 2-1-2 |        | 9      |
+    When I visit the "TOCO 1-1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
