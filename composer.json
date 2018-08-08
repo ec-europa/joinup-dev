@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.1.0",
         "SEMICeu/adms-ap_validator": "dev-master",
-        "composer/composer": "^1.6.5",
+        "composer/composer": "^1.7.1",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "^1.6.4",
