@@ -2,9 +2,9 @@ dashboard:
   version: 1.0
   css:
     component:
-      lib/tallinn-dashboard.css: {}
+      lib/dist/tallinn-dashboard.css: {}
   js:
-    lib/tallinn-dashboard.js:
+    lib/dist/tallinn-dashboard.js:
       attributes:
         defer: true
   dependencies:
