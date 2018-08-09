@@ -469,6 +469,15 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
 
   /** @var \Drupal\og\OgMembershipInterface $original_membership */
   $original_membership = $entity->original;
+
+  // The group bundle is only stored in memberships after og_update_8001() has
+  // run. If our original entity doesn't have the bundle set we cannot retrieve
+  // the roles from it. Make sure this field is populated.
+  // @todo This can be removed once we have released ISAICP-4679 in production.
+  if (empty($original_membership->getGroupBundle())) {
+    $original_membership->set('entity_bundle', $entity->getGroupBundle());
+  }
+
   // Do not send a notification about changes in the membership if the roles did
   // not change.
   if ($entity->getRolesIds() === $original_membership->getRolesIds()) {
