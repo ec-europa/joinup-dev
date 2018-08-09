@@ -65,7 +65,7 @@
         "drush/drush": "^9.0.0",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
-        "ec-europa/joinup-tallinn-dashboard": "dev-master",
+        "ec-europa/joinup-tallinn-dashboard": "dev-ISAICP-4649",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "2.1.0",
         "jacklmoore/autosize": "dev-master",
