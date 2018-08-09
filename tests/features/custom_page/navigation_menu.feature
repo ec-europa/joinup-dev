@@ -408,6 +408,10 @@ Feature: Navigation menu for custom pages
     And I click "Edit" in the "Entity actions" region
     Then I should not see the "Table of contents outline" region
 
+    When I disable "TOCO 1-1-2" in the navigation menu of the "Table of contents outline" collection
+    And I visit the "TOCO 1-1-1" custom page
+    Then I should not see the link "TOCO 1-1-2" in the "Table of contents outline"
+
     Given the following custom page menu structure:
       | title      | parent | weight |
       | TOCO 1     |        | 1      |
