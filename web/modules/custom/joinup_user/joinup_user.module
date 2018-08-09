@@ -22,6 +22,13 @@ use Drupal\user\UserInterface;
  * Implements hook_ENTITY_TYPE_update().
  *
  * Send a notification whenever an admin updates a user profile.
+ *
+ * @todo This is a very complicated, hard to follow and hard to maintain
+ * implementation. Basically what we need here is to move the whole logic in the
+ * form API layer and avoid using all the confusing workarounds with the storing
+ * the form ID in a service. Then we can drop also the form alter and the
+ * 'joinup_user.active_form_submit' service. Fix this in ISAICP-4698.
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
  */
 function joinup_user_user_update(UserInterface $account) {
   $current_user = \Drupal::currentUser()->getAccount();
