@@ -312,6 +312,34 @@ function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id
 }
 
 /**
+ * Implements joinup_user_FORM_ID_alter().
+ */
+function joinup_user_form_user_register_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'joinup_user_submit_spam_guard';
+}
+
+/**
+ * Represents an additional submit callback for the user registration form.
+ *
+ * @param array $form
+ *   The form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ */
+function joinup_user_submit_spam_guard(array $form, FormStateInterface $form_state) {
+  $user_id = $form_state->getFormObject()->getEntity()->id();
+  // We reload the user entity because the one stored in the form state is not
+  // entirely formed, and it's possible to triggers errors when other modules
+  // are participating to the entity deletion.
+  $user = User::load($user_id);
+  // If the user's family and fist names are identical, this is 99.99% spam.
+  if ($user->get('field_user_family_name')->value === $user->get('field_user_first_name')->value) {
+    $user->skip_notification = TRUE;
+    $user->delete();
+  }
+}
+
+/**
  * Implements hook_form_user_form_alter().
  *
  * Adds a submit callback to redirect to the canonical user page after updating
