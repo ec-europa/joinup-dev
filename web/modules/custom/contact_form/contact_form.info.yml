@@ -15,6 +15,7 @@ config_devel:
  - core.entity_view_display.message.contact_form_submission.mail_subject
  - field.field.message.contact_form_submission.field_contact_attachment
  - field.field.message.contact_form_submission.field_contact_category
+ - field.field.message.contact_form_submission.field_contact_copy
  - field.field.message.contact_form_submission.field_contact_email
  - field.field.message.contact_form_submission.field_contact_first_name
  - field.field.message.contact_form_submission.field_contact_last_name
@@ -24,6 +25,7 @@ config_devel:
  - field.field.message.contact_form_submission.field_contact_url
  - field.storage.message.field_contact_attachment
  - field.storage.message.field_contact_category
+ - field.storage.message.field_contact_copy
  - field.storage.message.field_contact_email
  - field.storage.message.field_contact_first_name
  - field.storage.message.field_contact_last_name
