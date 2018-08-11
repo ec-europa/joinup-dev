@@ -13,6 +13,7 @@ use Drupal\rdf_entity\Database\Driver\sparql\Connection;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,6 +44,13 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   protected $entityFieldManager;
 
   /**
+   * The field validator service.
+   *
+   * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
+   */
+  protected $fieldValidator;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -57,11 +65,14 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The entity type manager service.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager service.
+   * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $field_validator
+   *   The field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
+    $this->fieldValidator = $field_validator;
   }
 
   /**
@@ -74,7 +85,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       $plugin_definition,
       $container->get('sparql_endpoint'),
       $container->get('entity_type.manager'),
-      $container->get('entity_field.manager')
+      $container->get('entity_field.manager'),
+      $container->get('rdf_schema_field_validation.schema_field_validator')
     );
   }
 
@@ -192,6 +204,12 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       }
       // Only stored fields are allowed.
       if ($field_definition->isComputed()) {
+        continue;
+      }
+
+      // Values of fields defined in ADMS schema must always persist over local
+      // values.
+      if ($this->fieldValidator->isDefinedInSchema($incoming_entity->getEntityTypeId(), $incoming_entity->bundle(), $field_name)) {
         continue;
       }
 
