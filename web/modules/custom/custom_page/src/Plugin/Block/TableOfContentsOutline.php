@@ -297,7 +297,9 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
   protected function getMenuTree(): array {
     if (empty($this->menuTree)) {
       $og_menu_id = $this->getOgMenuName();
-      $this->menuTree = $this->menuLinkTree->load($og_menu_id, new MenuTreeParameters());
+      $menu_tree_parameters = new MenuTreeParameters();
+      $menu_tree_parameters->onlyEnabledLinks();
+      $this->menuTree = $this->menuLinkTree->load($og_menu_id, $menu_tree_parameters);
     }
 
     return $this->menuTree;
