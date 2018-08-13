@@ -132,6 +132,12 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function build(): array {
+    // In case no active link is detected, escape early as there are no relative
+    // links to the menu.
+    if (empty($this->getActiveLink())) {
+      return [];
+    }
+
     $prev = $this->getPrevElement();
     $up = $this->getParentElement($this->getMenuTree(), $this->getActiveLink()->getPluginId());
     $next = $this->getNextElement();
