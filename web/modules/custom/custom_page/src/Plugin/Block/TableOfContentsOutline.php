@@ -179,21 +179,23 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * To get the correct element we will get the previous element from the
    * flattened list which is naturally the next element in the list.
    *
-   * @return \Drupal\Core\Menu\MenuLinkInterface|null
+   * @return \Drupal\Core\Menu\MenuLinkInterface|false
    *   The previous menu link element or null if no element is found.
    */
   protected function getPrevElement(): ?MenuLinkInterface {
     $flattened_menu = $this->getFlattenedMenu();
     $active_link_id = $this->getActiveLink()->getPluginId();
 
-    $prev = NULL;
     reset($flattened_menu);
-    while (($key = key($flattened_menu)) && ($key !== $active_link_id)) {
-      $prev = current($flattened_menu);
+    $curr = NULL;
+    do {
+      $prev = $curr;
+      $key = key($flattened_menu);
+      $curr = current($flattened_menu);
       next($flattened_menu);
-    }
+    } while ($key && $key !== $active_link_id);
 
-    return $key ? $prev : NULL;
+    return $prev;
   }
 
   /**
@@ -202,21 +204,24 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * To get the correct element we will use the flattened list in which holds
    * the natural prev/next list.
    *
-   * @return \Drupal\Core\Menu\MenuLinkInterface|null
+   * @return \Drupal\Core\Menu\MenuLinkInterface|false
    *   The next menu link.
    */
   protected function getNextElement(): ?MenuLinkInterface {
     $flattened_menu = $this->getFlattenedMenu();
     $active_link_id = $this->getActiveLink()->getPluginId();
 
-    $next = NULL;
     reset($flattened_menu);
     do {
-      if (($key = key($flattened_menu)) && $key === $active_link_id) {
-        return next($flattened_menu) ? current($flattened_menu) : NULL;
-      }
-    } while (next($flattened_menu));
-    return NULL;
+      $key = key($flattened_menu);
+      next($flattened_menu);
+    } while ($key && $key !== $active_link_id);
+
+    if ($key === $active_link_id) {
+      return current($flat);
+    }
+
+    return FALSE;
   }
 
   /**
