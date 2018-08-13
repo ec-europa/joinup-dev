@@ -66,8 +66,11 @@ Feature: User registration
     account would have been created.
 
     Given I am an anonymous user
-    And I go to "/user/register"
-    When I fill in "E-mail" with "spam@example.com"
+    And I am on the homepage
+    When I click "Sign in"
+    Then I click "Create new account"
+
+    Given I fill in "E-mail" with "spam@example.com"
     And I fill in "Username" with "spam"
     And I fill in "First name" with "Spam"
     And I fill in "Family name" with "Spam"
