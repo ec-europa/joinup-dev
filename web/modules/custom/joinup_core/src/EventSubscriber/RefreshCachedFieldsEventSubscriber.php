@@ -13,7 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
-use Drupal\file_url\Entity\RemoteFile;
+use Drupal\file_url\FileUrlHandler;
 use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
 
 /**
@@ -298,7 +298,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
     /** @var \Drupal\file\FileInterface $file */
     foreach ($entity->field_ad_access_url->referencedEntities() as $file) {
-      if ($file !== NULL && !($file instanceof RemoteFile)) {
+      if ($file !== NULL && !FileUrlHandler::isRemote($file)) {
         return Url::fromUri(file_create_url($file->getFileUri()))
           ->setAbsolute()
           ->toString();
