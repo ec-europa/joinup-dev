@@ -196,27 +196,3 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
   }
   return AccessResult::neutral();
 }
-
-/**
- * Implements hook_preprocess_HOOK().
- *
- * Remove the default links from the table of contents.
- */
-function custom_page_preprocess_menu__og__navigation__content_bottom(array &$variables) {
-  foreach ($variables['items'] as $menu_link_id => $menu_item) {
-    /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $title */
-    $title = $menu_item['title'];
-    /** @var \Drupal\Core\Url $url */
-    $url = $menu_item['url'];
-
-    if ($title == 'Overview' && $url->getRouteName() === 'entity.rdf_entity.canonical') {
-      unset($variables['items'][$menu_link_id]);
-    }
-    elseif ($title == 'Members' && $url->getRouteName() === 'entity.rdf_entity.member_overview') {
-      unset($variables['items'][$menu_link_id]);
-    }
-    elseif ($title == 'About' && $url->getRouteName() === 'entity.rdf_entity.about_page') {
-      unset($variables['items'][$menu_link_id]);
-    }
-  }
-}

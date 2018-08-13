@@ -304,18 +304,15 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       $tree = $this->menuLinkTree->load($og_menu_id, new MenuTreeParameters());
       $this->flatOutlineTree($tree);
 
-      foreach ($this->flattenedMenu as $menu_link_id => $menu_item) {
-        $title = $menu_item->getTitle();
-        /** @var \Drupal\Core\Url $url */
-        $route_name = $menu_item->getRouteName();
+      $links_to_be_stripped = [
+        'entity.rdf_entity.canonical' => 'Overview',
+        'entity.rdf_entity.member_overview' => 'Members',
+        'entity.rdf_entity.about_page' => 'About',
+      ];
 
-        if ($title == 'Overview' && $route_name === 'entity.rdf_entity.canonical') {
-          unset($this->flattenedMenu[$menu_link_id]);
-        }
-        elseif ($title == 'Members' && $route_name === 'entity.rdf_entity.member_overview') {
-          unset($this->flattenedMenu[$menu_link_id]);
-        }
-        elseif ($title == 'About' && $route_name === 'entity.rdf_entity.about_page') {
+      foreach ($this->flattenedMenu as $menu_link_id => $menu_item) {
+        $route_name = $menu_item->getRouteName();
+        if (isset($links_to_be_stripped[$route_name]) && $links_to_be_stripped[$route_name] == $menu_item->getTitle()) {
           unset($this->flattenedMenu[$menu_link_id]);
         }
       }
