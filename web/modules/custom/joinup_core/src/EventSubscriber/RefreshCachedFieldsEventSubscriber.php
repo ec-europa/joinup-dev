@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\file_url\FileUrlHandler;
 use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
 
 /**
@@ -107,7 +108,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
 
       if ($parameters = $this->getSubQueryParameters($entity)) {
-        $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
+        // http_build_query builds the query parameters by replacing blank
+        // spaces with '+'. Use the PHP_QUERY_RFC3986 encoding type which
+        // properly encodes the parameters.
+        $query_parameters = http_build_query($parameters, NULL, '&', PHP_QUERY_RFC3986);
+        $query->setParameter('urls[' . $url_index++ . ']', $query_parameters);
       }
       else {
         // Update the entity so that it wont be requested to update the value
@@ -117,6 +122,15 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
     }
 
+    // If all items were already updated, i.e. non of them has an internal file
+    // url, do not bother with requesting anything from the tracking service.
+    if (empty($items)) {
+      return;
+    }
+
+    // Reindex the items because unset() does not squash the keys and we need to
+    // check the queried values depending on the index.
+    $items = array_values($items);
     try {
       $response = $query->execute()->getResponse();
     }
@@ -284,7 +298,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
     /** @var \Drupal\file\FileInterface $file */
     foreach ($entity->field_ad_access_url->referencedEntities() as $file) {
-      if ($file !== NULL) {
+      if ($file !== NULL && !FileUrlHandler::isRemote($file)) {
         return Url::fromUri(file_create_url($file->getFileUri()))
           ->setAbsolute()
           ->toString();
@@ -334,17 +348,19 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param array $parameters
    *   A list of extra parameters to pass to the array of parameters.
    *
-   * @return array|false
-   *   A list of parameters or false if the entity does not have a valid url to
+   * @return array|null
+   *   A list of parameters or NULL if the entity does not have a valid url to
    *   request.
    */
-  protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): array {
+  protected function getSubQueryParameters(EntityInterface $entity, array $parameters = []): ?array {
     $bundle = $entity->bundle();
     $period = $this->getTimePeriod($bundle);
     $type = $this->getType($bundle);
     $method = $this->getPiwikMethod($bundle);
     $url_parameter_name = $this->getUrlParameterName($bundle);
-    $url_parameter = $this->getUrlParameter($entity);
+    if (empty($url_parameter = $this->getUrlParameter($entity))) {
+      return NULL;
+    }
 
     $sub_query = $this->piwikQueryFactory->getQuery($method);
     $date_range = [
