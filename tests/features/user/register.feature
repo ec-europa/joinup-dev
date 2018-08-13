@@ -77,10 +77,4 @@ Feature: User registration
       | recipient_mail | spam@example.com                                                                                                                                                                                                                                 |
       | subject        | Your Joinup account is pending approval.                                                                                                                                                                                                         |
       | body           | Thank you for registering at Joinup. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to sign in, set your password, and other details. |
-    # Creating a new account with same username and E-mail just to prove that,
-    # the in previous attempt, the user has been deleted.
-    Given user:
-      | Username    | spam             |
-      | E-mail      | spam@example.com |
-      | First name  | Nomore           |
-      | Family name | Spam             |
+    Then I should not have a spam user
