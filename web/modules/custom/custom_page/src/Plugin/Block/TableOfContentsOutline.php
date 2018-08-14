@@ -6,6 +6,7 @@ namespace Drupal\custom_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Menu\InaccessibleMenuLink;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
@@ -168,7 +169,9 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     ];
 
     $og_menu_id = $this->getOgMenuName();
-    $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $og_menu_id;
+    $system_menu_tags = Cache::buildTags('config:system.menu', [$og_menu_id], '.');
+    $og_menu_instance_tags = Cache::buildTags('ogmenu_instance', [$this->getOgMenuInstance()->id()]);
+    $build['#cache']['tags'] = Cache::mergeTags($system_menu_tags, $og_menu_instance_tags);
 
     return $build;
   }
@@ -300,6 +303,10 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       $menu_tree_parameters = new MenuTreeParameters();
       $menu_tree_parameters->onlyEnabledLinks();
       $this->menuTree = $this->menuLinkTree->load($og_menu_id, $menu_tree_parameters);
+      $manipulators = [
+        ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ];
+      $this->menuTree = $this->menuLinkTree->transform($this->menuTree, $manipulators);
     }
 
     return $this->menuTree;
@@ -313,8 +320,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function getFlattenedMenu(): array {
     if (empty($this->flattenedMenu)) {
-      $og_menu_id = $this->getOgMenuName();
-      $tree = $this->menuLinkTree->load($og_menu_id, new MenuTreeParameters());
+      $tree = $this->getMenuTree();
       $this->flatOutlineTree($tree);
 
       $links_to_be_stripped = [
@@ -330,6 +336,12 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
         }
       }
     }
+
+    // Inaccessible links are still returned but as an instance of
+    // Drupal\Core\Menu\InaccessibleMenuLink. Strip off these links from here.
+    $this->flattenedMenu = array_filter($this->flattenedMenu, function(MenuLinkInterface $menu_link) {
+      return !($menu_link instanceof InaccessibleMenuLink);
+    });
 
     return $this->flattenedMenu;
   }
