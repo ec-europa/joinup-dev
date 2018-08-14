@@ -179,7 +179,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * To get the correct element we will get the previous element from the
    * flattened list which is naturally the next element in the list.
    *
-   * @return \Drupal\Core\Menu\MenuLinkInterface|false
+   * @return \Drupal\Core\Menu\MenuLinkInterface|null
    *   The previous menu link element or null if no element is found.
    */
   protected function getPrevElement(): ?MenuLinkInterface {
@@ -195,7 +195,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       next($flattened_menu);
     } while ($key && $key !== $active_link_id);
 
-    return $prev;
+    return $prev ? $prev : NULL;
   }
 
   /**
@@ -204,7 +204,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * To get the correct element we will use the flattened list in which holds
    * the natural prev/next list.
    *
-   * @return \Drupal\Core\Menu\MenuLinkInterface|false
+   * @return \Drupal\Core\Menu\MenuLinkInterface|null
    *   The next menu link.
    */
   protected function getNextElement(): ?MenuLinkInterface {
@@ -217,11 +217,11 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       next($flattened_menu);
     } while ($key && $key !== $active_link_id);
 
-    if ($key === $active_link_id) {
-      return current($flat);
+    if (($key === $active_link_id) && ($return = current($flattened_menu))) {
+      return $return;
     }
 
-    return FALSE;
+    return NULL;
   }
 
   /**
