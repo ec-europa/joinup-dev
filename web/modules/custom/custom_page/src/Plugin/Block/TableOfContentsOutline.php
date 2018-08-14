@@ -339,7 +339,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
 
     // Inaccessible links are still returned but as an instance of
     // Drupal\Core\Menu\InaccessibleMenuLink. Strip off these links from here.
-    $this->flattenedMenu = array_filter($this->flattenedMenu, function(MenuLinkInterface $menu_link) {
+    $this->flattenedMenu = array_filter($this->flattenedMenu, function (MenuLinkInterface $menu_link) {
       return !($menu_link instanceof InaccessibleMenuLink);
     });
 
