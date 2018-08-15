@@ -43,6 +43,8 @@
         "drupal/pathauto": "~1.1",
         "drupal/persistent_login": "^1.0-alpha4",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
+        "drupal/piwik": "~1.2.0",
+        "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
         "drupal/rdf_entity": "^1.0.0-alpha8",
         "drupal/redirect": "^1.0",
