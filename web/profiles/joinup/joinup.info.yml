@@ -51,6 +51,7 @@ dependencies:
   - language
   - link
   - linkit
+  - matomo
   - menu_ui
   - moderation
   - node
@@ -66,7 +67,6 @@ dependencies:
   - path
   - pathauto
   - persistent_login
-  - piwik
   - r4032login
   - rdf_draft
   - rdf_entity

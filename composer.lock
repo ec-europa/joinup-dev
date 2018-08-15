@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff4e8acebefda96adb85bd7dfb0a34dd",
+    "content-hash": "ec5c199e56045296f9f0218dce38a166",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3467,6 +3467,126 @@
             }
         },
         {
+            "name": "drupal/matomo",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/matomo",
+                "reference": "8.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/matomo-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "6b7dbc8c76800a6dadb7568cf2a3f3efdde88e13"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/php": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.7",
+                    "datestamp": "1531470197",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/u/hass"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/247808/committers"
+                }
+            ],
+            "description": "Adds Matomo javascript tracking code to all your site's pages",
+            "homepage": "https://www.drupal.org/project/matomo",
+            "support": {
+                "source": "http://git.drupal.org/project/matomo.git",
+                "issues": "https://www.drupal.org/project/issues/matomo"
+            }
+        },
+        {
+            "name": "drupal/matomo_reporting_api",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/matomo_reporting_api",
+                "reference": "8966ceb7b3a8b27e89b80b1406d47a7eab6b0b7d"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/matomo": "^1.7",
+                "pfrenssen/matomo-reporting-api": "^2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1+7-dev",
+                    "datestamp": "1534324384",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                },
+                {
+                    "name": "sandervd",
+                    "homepage": "https://www.drupal.org/user/346775"
+                },
+                {
+                    "name": "sardara",
+                    "homepage": "https://www.drupal.org/user/2353864"
+                }
+            ],
+            "description": "Allows to retrieve reports from the Matomo API.",
+            "homepage": "https://www.drupal.org/project/matomo_reporting_api",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/matomo_reporting_api",
+                "issues": "https://www.drupal.org/project/issues/matomo_reporting_api"
+            },
+            "time": "2018-08-15T09:54:00+00:00"
+        },
+        {
             "name": "drupal/message",
             "version": "1.0.0-rc2",
             "source": {
@@ -4129,110 +4249,6 @@
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
             "time": "2017-09-01T16:27:45+00:00"
-        },
-        {
-            "name": "drupal/piwik",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/piwik",
-                "reference": "8.x-1.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/piwik-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "6ba9bcdd92533ad9138b09fdada1c1d5338a23b4"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "require-dev": {
-                "drupal/php": "*",
-                "drupal/token": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1528468685",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "hass",
-                    "homepage": "https://www.drupal.org/u/hass"
-                },
-                {
-                    "name": "See other contributors",
-                    "homepage": "https://www.drupal.org/node/247808/committers"
-                }
-            ],
-            "description": "Adds Piwik javascript tracking code to all your site's pages",
-            "homepage": "https://www.drupal.org/project/piwik",
-            "support": {
-                "source": "http://git.drupal.org/project/piwik.git",
-                "issues": "https://www.drupal.org/project/issues/piwik"
-            }
-        },
-        {
-            "name": "drupal/piwik_reporting_api",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/piwik_reporting_api",
-                "reference": "e042b23531e711b2063002bc11b8f8726035ba6f"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/piwik": "*",
-                "pfrenssen/piwik-reporting-api": "dev-master"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta2+1-dev",
-                    "datestamp": "1500465842",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                }
-            ],
-            "description": "Allows to retrieve reports from the Piwik API.",
-            "homepage": "https://www.drupal.org/project/piwik_reporting_api",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/piwik_reporting_api",
-                "issues": "https://www.drupal.org/project/issues/piwik_reporting_api"
-            },
-            "time": "2018-03-13T10:54:36+00:00"
         },
         {
             "name": "drupal/r4032login",
@@ -6992,17 +7008,17 @@
             "time": "2018-01-29T21:14:27+00:00"
         },
         {
-            "name": "pfrenssen/piwik-reporting-api",
-            "version": "dev-master",
+            "name": "pfrenssen/matomo-reporting-api",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pfrenssen/piwik-reporting-api.git",
-                "reference": "0f826f25296c9f8f77f123ebd49b097858a395a7"
+                "url": "https://github.com/pfrenssen/matomo-reporting-api.git",
+                "reference": "3ea0b084448849383ed5656cb8759b4bafd698d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/piwik-reporting-api/zipball/0f826f25296c9f8f77f123ebd49b097858a395a7",
-                "reference": "0f826f25296c9f8f77f123ebd49b097858a395a7",
+                "url": "https://api.github.com/repos/pfrenssen/matomo-reporting-api/zipball/3ea0b084448849383ed5656cb8759b4bafd698d4",
+                "reference": "3ea0b084448849383ed5656cb8759b4bafd698d4",
                 "shasum": ""
             },
             "require": {
@@ -7015,7 +7031,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Piwik\\ReportingApi\\": "src/"
+                    "Matomo\\ReportingApi\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -7024,12 +7040,16 @@
             ],
             "authors": [
                 {
+                    "name": "Claudiu Cristea",
+                    "email": "clau.cristea@gmail.com"
+                },
+                {
                     "name": "Pieter Frenssen",
                     "email": "pieter@frenssen.be"
                 }
             ],
-            "description": "PHP client library to query the Piwik Reporting API.",
-            "time": "2018-03-12T18:51:43+00:00"
+            "description": "PHP client library to query the Matomo Reporting API.",
+            "time": "2018-08-14T18:25:17+00:00"
         },
         {
             "name": "phing/phing",
@@ -12929,9 +12949,9 @@
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/matomo_reporting_api": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/piwik_reporting_api": 20,
         "drupal/r4032login": 20,
         "drupal/redis": 5,
         "drupal/subpathauto": 10,
