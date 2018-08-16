@@ -156,10 +156,10 @@ function contact_form_mail($key, &$message, $params) {
     $message['body'][] = '<blockquote>';
     $message['body'][] = check_markup($entity->field_contact_message->value, $entity->field_contact_message->format);
     $message['body'][] = '</blockquote>';
-    $message['body'][] = t('Thank you for your interest, we will revert back to you as soon as possible.');
+    $message['body'][] = t('Thank you for your interest, we will reply as soon as possible.');
   }
   else {
-    $message['body'][] = t('We will revert back to you as soon as possible.');
+    $message['body'][] = t('We will reply as soon as possible.');
   }
 
   $message['body'][] = t('Kind regards,');

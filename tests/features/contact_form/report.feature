@@ -48,9 +48,9 @@ Feature: Submit the contact form
       | subject   | Joinup: This content has invalid location                                                                                                                                                       |
       | body      | Balourdos Tsolias has reported the item "Event to report" as abusive due to The location described as "Somewhere" could not be found by my map application. You can access the reported content |
     And the following email should have been sent:
-      | recipient_mail | balourdos@example.rg                             |
-      | subject        | Joinup: Contact form notification                |
-      | body           | We will revert back to you as soon as possible. |
+      | recipient_mail | balourdos@example.rg               |
+      | subject        | Joinup: Contact form notification  |
+      | body           | We will reply as soon as possible. |
 
     # Now the reporter requires also a copy of its message.
     When I go to the "Event to report" event
