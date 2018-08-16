@@ -1,10 +1,10 @@
 diff --git a/src/OgDeleteOrphansBase.php b/src/OgDeleteOrphansBase.php
-index 64adc409..29db16d2 100644
+index 64adc409..aeb316c6 100644
 --- a/src/OgDeleteOrphansBase.php
 +++ b/src/OgDeleteOrphansBase.php
-@@ -129,6 +129,17 @@ abstract class OgDeleteOrphansBase extends PluginBase implements OgDeleteOrphans
-   protected function deleteOrphan($entity_type, $entity_id) {
-     $entity = $this->entityTypeManager->getStorage($entity_type)->load($entity_id);
+@@ -135,6 +135,18 @@ abstract class OgDeleteOrphansBase extends PluginBase implements OgDeleteOrphans
+       return;
+     }
  
 +    if ($entity->getEntityTypeId() === 'og_membership' && $entity_id == 172) {
 +      /** @var OgMembershipInterface $entity */
@@ -17,6 +17,7 @@ index 64adc409..29db16d2 100644
 +      ob_flush();
 +    }
 +
-     // The entity might already be removed by other modules that implement
-     // hook_entity_delete().
-     if (!$entity) {
++
+     // Only delete content that is fully orphaned, i.e. it is no longer
+     // associated with any groups.
+     $group_count = $this->membershipManager->getGroupCount($entity);
