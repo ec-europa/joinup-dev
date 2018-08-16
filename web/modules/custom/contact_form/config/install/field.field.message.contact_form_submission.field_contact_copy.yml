@@ -9,7 +9,7 @@ field_name: field_contact_copy
 entity_type: message
 bundle: contact_form_submission
 label: 'Send yourself a copy'
-description: 'Send yourself a copy of this message.'
+description: ''
 required: false
 translatable: false
 default_value:
