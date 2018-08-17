@@ -19,8 +19,8 @@ project root to download and run Matomo:
 $ ./vendor/bin/phing setup-matomo
 ```
 
-This will download Matomo in ./vendor/matomo/matomo and start a running instance
-at http://localhost:8000.
+This will download Matomo in ./vendor/matomo-org/matomo and start a running
+instance at http://localhost:8000.
 
 Now, visit the web UI at `http://localhost:8000`, or the host and port that were
 configured previously in `./build.properties.local` and follow the installation
