@@ -2301,7 +2301,18 @@ JS;
     }
 
     $element->keyDown("\r");
-    $element->keyUp("\r");
+    try {
+      $element->keyUp("\r");
+    }
+    catch (StaleElementReference $e) {
+      // Depending on the implementation of the user interaction we are trying
+      // to trigger by pressing the enter key, it is posssible the action is
+      // triggered on the keydown event or on the keyup event. If it is
+      // implemented on the keydown event then it might happen that the page
+      // refreshes immediately without waiting for the key to be released.
+      // Ignore the fact that the field might already be gone when performing
+      // the keyup event.
+    }
   }
 
   /**
