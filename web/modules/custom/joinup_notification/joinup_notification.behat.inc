@@ -334,6 +334,39 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Clicks on the mail change link received via a verification E-mail.
+   *
+   * @param string $mail
+   *   The recipient E-mail address.
+   *
+   * @throws \Exception
+   *   If no mail change verification E-mail was sent to the given address or
+   *   the E-mail doesn't contain a valid verification link.
+   *
+   * @Given I click the mail change link from the email sent to :mail
+   */
+  public function clickMailChangeLinkFromMail(string $mail): void {
+    $found = FALSE;
+    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+      if ($mail_sent['key'] === 'mail_change_verification' && $mail_sent['to'] === $mail) {
+        $found = TRUE;
+        break;
+      }
+    }
+
+    if (!$found) {
+      throw new \Exception("No mail change verification E-mail has been sent to $mail.");
+    }
+
+    $pattern = '#http://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
+    if (!preg_match($pattern, $mail_sent['plain'], $match)) {
+      throw new \Exception("The mail change verification E-mail doesn't contain a valid verification link.");
+    }
+
+    $this->visitPath($match[0]);
+  }
+
+  /**
    * Swaps the mailing system settings with a test one.
    *
    * @BeforeScenario @email

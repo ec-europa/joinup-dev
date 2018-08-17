@@ -246,3 +246,40 @@ Feature: User profile
     Then I should not see the link "Subscription Settings"
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
+
+  @email
+  Scenario: A user, changing its E-mail should receive a notification on his old
+    E-mail address and a verification link on its new address.
+
+    Given users:
+      | Username       | E-mail         | Password | First name | Family name |
+      | Caitlyn Jenner | he@example.com | secret   | Caitlyn    | Jenner      |
+    When I am logged in as "Caitlyn Jenner"
+    And I am on the homepage
+    And I click "My account"
+    When I click "Edit"
+    Then the "Email address" field should contain "he@example.com"
+
+    Given I fill in "Current password" with "secret"
+    And I fill in "Email address" with "she@example.com"
+    When I press "Save"
+    Then I should see the following warning messages:
+      | warning messages                                                                                                 |
+      | Your updated email address needs to be validated. Further instructions have been sent to your new email address. |
+    And the following email should have been sent:
+      | recipient_mail | he@example.com                                                                                                          |
+      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                     |
+      | body           | In order to complete the change you will need to follow the instructions sent to your new email address within one day. |
+    And the following email should have been sent:
+      | recipient_mail | she@example.com                                                                                                                    |
+      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                                |
+      | body           | A request to change your email address has been made in your Joinup profile. To confirm the request, please click the link bellow: |
+
+    But I click the mail change link from the email sent to "she@example.com"
+    Then I should see the following success messages:
+      | success messages                                        |
+      | Your email address has been changed to she@example.com. |
+    # Check that the E-mail has been successfully updated.
+    When I click "My account"
+    And I click "Edit"
+    Then the "Email address" field should contain "she@example.com"
