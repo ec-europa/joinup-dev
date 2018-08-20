@@ -31,8 +31,8 @@ dependencies:
   - file
   - flag
   - geocoder
-  - geocoder_geofield
   - geocoder_field
+  - geocoder_geofield
   - geofield
   - help
   - honeypot
@@ -59,6 +59,7 @@ dependencies:
   - menu_ui
   - moderation
   - node
+  - oe_webtools_geocoding
   - og
   - og_menu
   - options
@@ -92,10 +93,10 @@ dependencies:
   - tour
   - trr
   - user
+  - view_unpublished
   - views
   - views_bulk_operations
   - views_data_export
-  - view_unpublished
 
 themes:
   - seven
