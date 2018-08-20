@@ -114,8 +114,7 @@ Feature: As a site moderator I am able to import RDF files.
       | description | Licence agreement details    |
       | type        | Public domain                |
 
-    Given I go to "/admin/content/pipeline/spain/reset"
-    And I go to "/admin/content/pipeline/spain/execute"
+    Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
