@@ -1,0 +1,27 @@
+// Navigation bottom
+//
+// Navigation bottom component
+
+// Component
+// --------------------------------------------------
+.navigation-bottom
+  @extend .white-box
+
+// Elements
+// --------------------------------------------------
+ul.navigation-bottom__list
+  margin: 0
+  padding: 0
+  a
+    color: $color-base
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    &.is-active
+      font-weight: $font-weight-medium
+      &:hover
+        text-decoration: none
+
+
+// Modifiers
+// --------------------------------------------------
