@@ -86,11 +86,11 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
-      | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.                                     |
-      | The distribution Windows is linked also by the http://example.com/solution/2 solution.                                   |
-      | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist.                                   |
-      | This value should not be null.                                                                                           |
-      | The distribution Windows is linked also by the Asset release 1 release.                                                  |
+      | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
+      | The distribution Windows is linked also by the http://example.com/solution/2 solution. |
+      | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
+      | This value should not be null.                                                         |
+      | The distribution Windows is linked also by the Asset release 1 release.                |
 
   Scenario: Test a successful import.
     Given solutions:
@@ -105,8 +105,17 @@ Feature: As a site moderator I am able to import RDF files.
       | entity                        | enabled | author          | started          |
       | Local version of Solution 2   | yes     | Antoine Batiste | 2012-07-07 23:01 |
       | http://example.com/solution/3 | no      | Antoine Batiste | 2015-12-25 01:30 |
+    # The license contained in valid_adms.rdf is named "A federated license".
+    # However, the goal is to not import or update any values in the license entity so
+    # the following license has different details.
+    And the following licence:
+      | uri         | http://example.com/license/1 |
+      | title       | Federated open license       |
+      | description | Licence agreement details    |
+      | type        | Public domain                |
 
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I go to "/admin/content/pipeline/spain/reset"
+    And I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -145,9 +154,11 @@ Feature: As a site moderator I am able to import RDF files.
     And the "The Publisher" entity is not blacklisted for federation
     And the "A local authority" entity is not blacklisted for federation
     And the "Contact" entity is not blacklisted for federation
-    And the "A federated licence" entity is not blacklisted for federation
     But the "http://example.com/solution/3" entity is blacklisted for federation
     And the "http://example.com/distribution/4" entity is blacklisted for federation
+
+    # License should be excluded from the import process.
+    And the "Federated open license" entity should not have a related provenance activity
 
     # Check the affiliation of federated solutions.
     But the "Solution 1" solution should be affiliated with the "Spain" collection
@@ -181,7 +192,9 @@ Feature: As a site moderator I am able to import RDF files.
     And the "The Publisher" entity is not blacklisted for federation
     And the "A local authority" entity is not blacklisted for federation
     And the "Contact" entity is not blacklisted for federation
-    And the "A federated licence" entity is not blacklisted for federation
+
+    # Licenses should still be excluded from the import process.
+    And the "Federated open license" entity should not have a related provenance activity
 
     But the "Solution 1" entity is blacklisted for federation
     And the "Asset release 1" entity is blacklisted for federation
@@ -213,8 +226,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I delete the provenance activity of "http://example.com/owner/1" entity
     And I delete the provenance activity of "http://example.com/owner/2" entity
     And I delete the provenance activity of "http://example.com/contact/1" entity
-    And I delete the provenance activity of "http://example.com/license/1" entity
-    And I delete the "A federated licence" licence
+    And I delete the "Federated open license" licence
     And I delete the "Contact" contact information
     And I delete the "The Publisher" owner
     And I delete the "A local authority" owner
