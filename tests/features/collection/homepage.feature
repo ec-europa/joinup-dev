@@ -6,11 +6,11 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username |
-      | Frodo    |
-      | Boromir  |
-      | Legoloas |
-      | Gimli    |
+      | Username | Status |
+      | Frodo    | active |
+      | Boromir  | active |
+      | Legoloas | active |
+      | Gimli    | active |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -48,15 +48,8 @@ Feature: Collection homepage
     Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
-    # Test caching of the metrics: Members.
-    # Gimli is not a member yet.
-    When I am logged in as Gimli
-    And I go to the homepage of the "Middle earth daily" collection
-    And I press the "Join this collection" button
-    And I go to the homepage of the "Middle earth daily" collection
-    Then I see the text "4 Members" in the "Header" region
 
-    # see ISAICP-3599
+    # @see ISAICP-3599
     # Test caching of the metrics: Solutions.
 #    Then I delete the "Bilbo's book" solution
 #    When I am logged in as Gimli

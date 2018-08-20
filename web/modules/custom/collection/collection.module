@@ -360,7 +360,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    // @see collection_og_membership_presave()
+    // @see joinup_core_og_membership_invalidate_group_tags()
     $tags = Cache::buildTags('joinup-membership', [$tag]);
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
@@ -418,12 +418,13 @@ function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity
  *   Amount of members.
  */
 function collection_member_count(RdfInterface $entity) {
-  return \Drupal::entityQuery('og_membership')
+  $query = \Drupal::database()->select('og_membership', 'om');
+  $query->innerJoin('users_field_data', 'ufd', 'om.uid = ufd.uid');
+  $query->condition('ufd.status', 1)
     ->condition('entity_type', 'rdf_entity')
     ->condition('entity_id', $entity->id())
-    ->condition('state', OgMembershipInterface::STATE_ACTIVE)
-    ->count()
-    ->execute();
+    ->condition('state', OgMembershipInterface::STATE_ACTIVE);
+  return $query->countQuery()->execute()->fetchField();
 }
 
 /**
@@ -557,14 +558,6 @@ function collection_search_api_solr_query_alter(Query $solarium_query, QueryInte
     'score' => 'desc',
     'ds_entity_created' => 'desc',
   ]);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function collection_og_membership_presave(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
-  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }
 
 /**
