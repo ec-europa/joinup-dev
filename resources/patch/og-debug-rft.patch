@@ -1,23 +1,23 @@
 diff --git a/src/OgDeleteOrphansBase.php b/src/OgDeleteOrphansBase.php
-index 64adc409..aeb316c6 100644
+index 64adc409..40d011c6 100644
 --- a/src/OgDeleteOrphansBase.php
 +++ b/src/OgDeleteOrphansBase.php
-@@ -135,6 +135,18 @@ abstract class OgDeleteOrphansBase extends PluginBase implements OgDeleteOrphans
-       return;
+@@ -86,6 +86,18 @@ abstract class OgDeleteOrphansBase extends PluginBase implements OgDeleteOrphans
+           'type' => $entity_type,
+           'id' => $orphan,
+         ]);
++
++        if ($entity_type === 'og_membership' && $orphan == 172) {
++          /** @var OgMembershipInterface $orphan */
++          $orphaned_entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($orphan);
++          $group = $orphaned_entity->getGroup();
++          $user = $orphaned_entity->getOwner();
++          $roles = $orphaned_entity->getRolesIds();
++          var_dump($group->label());
++          var_dump($user->label());
++          var_dump($roles);
++          ob_flush();
++        }
+       }
      }
- 
-+    if ($entity->getEntityTypeId() === 'og_membership' && $entity_id == 172) {
-+      /** @var OgMembershipInterface $entity */
-+      $group = $entity->getGroup();
-+      $user = $entity->getOwner();
-+      $roles = $entity->getRolesIds();
-+      var_dump($group->label());
-+      var_dump($user->label());
-+      var_dump($roles);
-+      ob_flush();
-+    }
-+
-+
-     // Only delete content that is fully orphaned, i.e. it is no longer
-     // associated with any groups.
-     $group_count = $this->membershipManager->getGroupCount($entity);
+   }
