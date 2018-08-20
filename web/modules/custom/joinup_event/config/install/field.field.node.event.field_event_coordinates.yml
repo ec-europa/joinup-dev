@@ -10,10 +10,8 @@ dependencies:
     - oe_webtools_geocoding
 third_party_settings:
   geocoder_field:
-    method: source
+    method: geocode
     weight: 0
-    geocode_field: field_location
-    reverse_geocode_field: ''
     hidden: false
     disabled: false
     dumper: wkt
@@ -22,6 +20,7 @@ third_party_settings:
       handling: preserve
       status_message: true
       log: true
+    field: field_location
     providers:
       - openstreetmap
 id: node.event.field_event_coordinates
