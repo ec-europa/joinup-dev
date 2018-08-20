@@ -7,7 +7,9 @@
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing users.
@@ -15,6 +17,7 @@ use Drupal\joinup\Traits\UserTrait;
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use UserTrait;
+  use UtilityTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
@@ -119,6 +122,27 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     $extension = $parts['extension'];
     $filename = $parts['filename'];
     $this->assertSession()->elementExists('css', "[src*='$filename.$extension']");
+  }
+
+  /**
+   * Replaces human readable values with their real counterparts for users.
+   *
+   * @param \Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope $scope
+   *   An object containing the entity properties and fields that are to be used
+   *   for creating the user as properties on the object.
+   *
+   * @throws \Exception
+   *   Thrown when some of the values are not one of the expected ones.
+   *
+   * @BeforeUserCreate
+   */
+  public static function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope) {
+    $user = $scope->getEntity();
+
+    self::convertObjectPropertyValues($user, 'status', [
+      'blocked' => 0,
+      'active' => 1,
+    ]);
   }
 
 }
