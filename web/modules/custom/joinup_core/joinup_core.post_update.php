@@ -97,10 +97,11 @@ function joinup_core_post_update_install_tallinn() {
 function joinup_core_post_update_install_piwik2matomo() {
   /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
   $installer = \Drupal::service('module_installer');
-  // Uninstall the Piwik-related modules. Note that the module installer API
-  // requires the presence of the modules in the codebase. For this reason they
-  // will be removed from the codebase in a follow-up.
-  $installer->uninstall(['piwik_reporting_api', 'piwik']);
-  // Install the new modules.
+  // Install the new modules. This is also uninstalling 'piwik_reporting_api'.
   $installer->install(['matomo_reporting_api']);
+  // Uninstall the Piwik module.
+  $installer->uninstall(['piwik']);
+  // Note that the module installer API requires the presence of the modules in
+  // the codebase. For this reason they will be removed from the codebase in a
+  // follow-up.
 }
