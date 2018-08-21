@@ -6,6 +6,7 @@
  */
 
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -110,6 +111,9 @@ function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
 
   // Delete duplicates.
   _joinup_core_post_update_ctt_duplicates_delete_duplicates();
+
+  // Update the ctt collection relationships.
+  _joinup_core_post_update_ctt_duplicates_collection_relations();
 }
 
 /**
@@ -254,6 +258,53 @@ function _joinup_core_post_update_ctt_duplicates_delete_duplicates() {
     foreach (Rdf::loadMultiple($duplicated_ids) as $entity) {
       $entity->skip_notification = 1;
       $entity->delete();
+    }
+  }
+}
+
+/**
+ * Update the affiliates of the ctt collection.
+ */
+function _joinup_core_post_update_ctt_duplicates_collection_relations() {
+  // The id of the ctt collection.
+  $id = 'http://administracionelectronica.gob.es/ctt';
+
+  $collection = Rdf::load($id);
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+    $collection->field_ar_affiliates->appendItem($original_id);
+  }
+  $collection->skip_notification = 1;
+  $collection->save();
+
+  $connection = \Drupal::service('sparql_endpoint');
+  // Update all other references.
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+    $ids = SparqlArg::serializeUris($duplicate_ids, ' ');
+    if (!empty($ids)) {
+      $query = <<<QUERY
+        INSERT { GRAPH ?g { ?subject ?predicate <$original_id> } }
+        WHERE {
+          GRAPH ?g {
+            ?subject ?predicate ?object .
+            VALUES ?object { $ids } .
+            FILTER NOT EXISTS {
+              ?subject ?predicate <$original_id> .
+            }
+          }
+        }
+QUERY;
+      $connection->query($query);
+
+      $query = <<<QUERY
+        DELETE { GRAPH ?g { ?subject ?predicate ?object } }
+        WHERE {
+          GRAPH ?g {
+            ?subject ?predicate ?object .
+            VALUES ?object { $ids } .
+          }
+        }
+QUERY;
+      $connection->query($query);
     }
   }
 }
