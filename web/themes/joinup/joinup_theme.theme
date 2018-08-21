@@ -382,6 +382,8 @@ function joinup_theme_preprocess_page_title(&$variables) {
 
   $variables['visually_hidden_class'] = '';
 
+  // @todo Move the permalink computing outside the theme layer, in ISAICP-4724.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4724
   if ($permalink = joinup_build_permalink($route_match)) {
     $variables['permalink'] = $permalink;
   }
